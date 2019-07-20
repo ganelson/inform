@@ -41,6 +41,7 @@ void CodeGen::Stage::make_stages(void) {
 	if (stages_made == FALSE) {
 		stages_made = TRUE;
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG);
+		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG);
 
 		CodeGen::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
@@ -61,4 +62,13 @@ the pipeline:
 =
 int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 	return FALSE;
+}
+
+int CodeGen::Stage::run_read_stage(pipeline_step *step) {
+	filename *F = Filenames::from_text(step->step_argument);
+	if (Inter::Binary::test_file(F))
+		Inter::Binary::read(step->repository, F);
+	else
+		Inter::Textual::read(step->repository, F);
+	return TRUE;
 }

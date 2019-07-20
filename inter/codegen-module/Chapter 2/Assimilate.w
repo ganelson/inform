@@ -143,9 +143,6 @@ void CodeGen::Assimilate::visitor3(inter_repository *I, inter_frame P, void *sta
 	text_stream *suffix = NULL;
 	inter_symbol *subpackage_type = plain_packagetype;
 
-	if (plm == ATTRIBUTE_PLM) trace_AME = TRUE;
-	else trace_AME = FALSE;
-
 	switch (plm) {
 		case VERB_PLM:
 			if (command_ptype_symbol) subpackage_type = command_ptype_symbol;

@@ -142,8 +142,8 @@ option name is taken from the |...| or |###| as appropriate:
 	<definite-article> ...	|						==> 0
 	...												==> 0
 
-<use-inter-chain> ::=
-	inter chain {<quoted-text>} 					==> TRUE
+<use-inter-pipeline> ::=
+	inter pipeline {<quoted-text>} 					==> TRUE
 
 @ These are use option names which Inform provides special support for; it
 recognises the English names when they are defined by the Standard Rules. (So
@@ -206,7 +206,7 @@ void UseOptions::set_use_options(parse_node *p) {
 		UseOptions::set_use_options(p->down->next);
 		return;
 	}
-	if (<use-inter-chain>(ParseTree::get_text(p))) @<Set the chain given in this word range@>
+	if (<use-inter-pipeline>(ParseTree::get_text(p))) @<Set the chain given in this word range@>
 	else if (<use-sentence-object>(ParseTree::get_text(p))) @<Set the option given in this word range@>;
 	if (traverse == 1) return;
 	LOG("Used: %W\n", ParseTree::get_text(p));
@@ -239,8 +239,8 @@ void UseOptions::set_use_options(parse_node *p) {
 	}
 
 @<Set the chain given in this word range@> =
-	wording CW = GET_RW(<use-inter-chain>, 1);
-	if (traverse == 1) CoreMain::set_inter_chain(CW);
+	wording CW = GET_RW(<use-inter-pipeline>, 1);
+	if (traverse == 1) CoreMain::set_inter_pipeline(CW);
 	return;
 
 @<Adjust the minimum setting@> =

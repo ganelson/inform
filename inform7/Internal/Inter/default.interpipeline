@@ -1,0 +1,8 @@
+link: Output.i6t
+parse-linked-matter
+resolve-conditional-compilation
+assimilate
+make-identifiers-unique
+resolve-external-symbols
+reconcile-verbs
+generate: inform6 -> *out

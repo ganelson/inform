@@ -437,25 +437,6 @@ define clean-ebooks
 endef
 
 # -----------------------------------------------------------------------------
-# Target "csr"
-# -----------------------------------------------------------------------------
-# "make csr" is for use while experimenting with Inter - it caches the Standard
-# Rules as inter files, one for Z, one for Glulx.
-# -----------------------------------------------------------------------------
-
-.PHONY: csr
-csr:
-	cp -f $(INFORM7WEB)/Home.txt $(INTESTWEB)/Workspace/T0/Example.inform/Source/story.ni
-	'inform7/Tangled/inform7' '-format=z8' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'inform7/Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'inform7/Internal/I6T/sr-Z.intert' '-inter'  'stop'
-	$(INTERTOOLWEB)/Tangled/inter inform7/Internal/I6T/sr-Z.intert -binary inform7/Internal/I6T/sr-Z.interb
-	cp -f inform7/Internal/I6T/sr-Z.intert $(INTERNAL)/I6T/sr-Z.intert 
-	cp -f inform7/Internal/I6T/sr-Z.interb $(INTERNAL)/I6T/sr-Z.interb 
-	'inform7/Tangled/inform7' '-format=ulx' '-noprogress' '-fixtime' '-rng' '-sigils' '-clock' '-log' 'nothing' '-external' 'inform7/Tests' '-transient' 'intest/Workspace/T0/Transient' '-noindex' '-internal' 'inform7/Internal' '-project'  'intest/Workspace/T0/Example.inform' '-export' 'inform7/Internal/I6T/sr-G.intert' '-inter'  'stop'
-	$(INTERTOOLWEB)/Tangled/inter inform7/Internal/I6T/sr-G.intert -binary inform7/Internal/I6T/sr-G.interb
-	cp -f inform7/Internal/I6T/sr-G.intert $(INTERNAL)/I6T/sr-G.intert 
-	cp -f inform7/Internal/I6T/sr-G.interb $(INTERNAL)/I6T/sr-G.interb 
-
-# -----------------------------------------------------------------------------
 # Targets "integration" and "forceintegration"
 # -----------------------------------------------------------------------------
 # This copies material into the user interface application.
@@ -482,6 +463,7 @@ integration: \
 		$(INTERNAL)/Languages/English/Syntax.preform \
 		$(SRULESINPLACE) \
 		$(INTERNAL)/I6T/Main.i6t \
+		$(INTERNAL)/Inter/default.interpipeline \
 		$(INTERNALEXEMPLUM) \
 		$(IMAGESEXEMPLUM) \
 		$(DOCEXEMPLUM) \
@@ -493,6 +475,7 @@ forceintegration:
 	$(call transfer-preform)
 	$(call transfer-standard-rules)
 	$(call transfer-i6-template)
+	$(call transfer-inter-resources)
 	$(call transfer-internal-tree)
 	$(call transfer-images)
 	$(call make-inapp-documentation)
@@ -566,6 +549,15 @@ define transfer-i6-template
 	mkdir -p "$(INTERNAL)/I6T"
 	rm -f $(INTERNAL)/I6T/*.i6t
 	cp -R -f inform7/Internal/I6T/*.i6t $(INTERNAL)/I6T
+endef
+
+$(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline
+	$(call transfer-inter-resources)
+
+define transfer-inter-resources
+	mkdir -p "$(INTERNAL)/Inter"
+	rm -f $(INTERNAL)/Inter/*.interpipeline
+	cp -R -f inform7/Internal/Inter/*.interpipeline $(INTERNAL)/Inter
 endef
 
 # (e) Copying internal resources into the app

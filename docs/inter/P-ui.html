@@ -30,17 +30,22 @@ or for future applications of inter code.
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Command-line usage. </b>If you have compiled the standard distribution of the command-line tools
 for Inform then the Inter executable will be at <code class="display"><span class="extract">inter/Tangled/inter</span></code>.
-The usage is:
+</p>
+
+<p class="inwebparagraph">Inter has three basic modes. In the first, the command line specifies only
+a single file:
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter FILE1 FILE2 ... [OPTIONS]</span>
+        <span class="plain">$ inter/Tangled/inter INTERFILE</span>
 </pre>
 
-<p class="inwebparagraph">Though multiple files can be supplied, it's usual to supply just one.
+<p class="inwebparagraph">Inter simply verifies this file for correctness: that is, to see if the inter
+code supplied conforms to the inter specification. It returns the exit code 0
+if all is well, and issues error messages and returns 1 if not.
 </p>
 
 <p class="inwebparagraph">Such files can be in either textual or binary form, and Inter automatically
@@ -49,13 +54,7 @@ have the filename extension <code class="display"><span class="extract">.intert<
 not how Inter decides.)
 </p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Inter has three basic modes. In the first, when no options are supplied,
-Inter simply verifies its input for correctness: that is, to see if the inter
-code supplied conforms to the inter specification. It returns the exit code 0
-if all is well, and issues error messages and returns 1 if not.
-</p>
-
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In the second mode, Inter converts from textual to binary form or vice
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In the second mode, Inter converts from textual to binary form or vice
 versa. The option <code class="display"><span class="extract">-binary X</span></code> writes a binary form of the inter to file <code class="display"><span class="extract">X</span></code>,
 and <code class="display"><span class="extract">-textual X</span></code> writes a text form. So, for example,
 </p>
@@ -80,48 +79,72 @@ and <code class="display"><span class="extract">-textual X</span></code> writes 
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>In the third and most flexible mode, Inter runs the supplied code through
-a "chain" of processing stages. The chain, which must contain at least
-one stage, is a textual list of comma-separated stage names. For example,
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In the third and most flexible mode, Inter runs the supplied code through
+a pipeline of processing stages. The pipeline, which must contain at least
+one stage, can be quite elaborate (see later), but for example:
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">resolve-conditional-compilation,assimilate,make-identifiers-unique</span>
+        <span class="plain">read: 0 &lt;- myfile.inter, resolve-conditional-compilation, generate: inform6 -&gt; myfile.i6</span>
 </pre>
 
-<p class="inwebparagraph">is a valid three-stage chain. The command to do this is then:
+<p class="inwebparagraph">is a valid three-stage pipeline. The command to do this is then:
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter my.intert -inter 'CHAIN'</span>
+        <span class="plain">$ inter/Tangled/inter -pipeline 'PIPELINE'</span>
 </pre>
 
-<p class="inwebparagraph">where <code class="display"><span class="extract">CHAIN</span></code> is the chain description.
-</p>
-
-<p class="inwebparagraph">In practice, this will only be useful if you can access the result, so it's
-normal for the final stage to output something: perhaps Inform 6 code, perhaps
-textual inter. For example:
+<p class="inwebparagraph">where <code class="display"><span class="extract">PIPELINE</span></code> is a textual description like the one above. In practice,
+it may not be convenient to spell the pipeline out on the command line, so
+one can also put it into a text file:
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter in.intert -inter 'parse-linked-matter, generate-inter:out.intert'</span>
+        <span class="plain">$ inter/Tangled/inter -pipeline-file mypl.interpipeline</span>
 </pre>
 
-<p class="inwebparagraph">Two more options may be helpful to supplement this: <code class="display"><span class="extract">-domain D</span></code> sets the
-directory <code class="display"><span class="extract">D</span></code> to be the default location for reading and writing inter files;
-and <code class="display"><span class="extract">-template T</span></code> tells Inter that it can find the I6T template files at
-the file system location <code class="display"><span class="extract">T</span></code>. (Some code-generation stages import these.)
+<p class="inwebparagraph">Pipelines can contain variables, and their values can be set at the command
+line with e.g.:
 </p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">-variable '*out=myfile.i6'</span>
+</pre>
+
+<p class="inwebparagraph">It is also possible to set the default directory for reading and writing files:
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">-domain D</span>
+</pre>
+
+<p class="inwebparagraph">Finally, we can tell Inter where to find I6T template files:
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">-template T</span>
+</pre>
+
+<p class="inwebparagraph"></p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Preliminaries.)</i></li><li><a href="P-ti.html">Continue with 'Textual Inter'</a></li></ul><hr class="tocbar">

@@ -19,21 +19,20 @@ or for future applications of inter code.
 @h Command-line usage.
 If you have compiled the standard distribution of the command-line tools
 for Inform then the Inter executable will be at |inter/Tangled/inter|.
-The usage is:
 
-	|$ inter/Tangled/inter FILE1 FILE2 ... [OPTIONS]|
+Inter has three basic modes. In the first, the command line specifies only
+a single file:
 
-Though multiple files can be supplied, it's usual to supply just one.
+	|$ inter/Tangled/inter INTERFILE|
+
+Inter simply verifies this file for correctness: that is, to see if the inter
+code supplied conforms to the inter specification. It returns the exit code 0
+if all is well, and issues error messages and returns 1 if not.
 
 Such files can be in either textual or binary form, and Inter automatically
 detects which by looking at their contents. (Conventionally, such files
 have the filename extension |.intert| or |.interb| respectively, but that's
 not how Inter decides.)
-
-@ Inter has three basic modes. In the first, when no options are supplied,
-Inter simply verifies its input for correctness: that is, to see if the inter
-code supplied conforms to the inter specification. It returns the exit code 0
-if all is well, and issues error messages and returns 1 if not.
 
 @ In the second mode, Inter converts from textual to binary form or vice
 versa. The option |-binary X| writes a binary form of the inter to file |X|,
@@ -47,24 +46,30 @@ converts |my.intert| (a textual inter file) to its binary equivalent
 	|$ inter/Tangled/inter my.interb -textual my.intert|
 
 @ In the third and most flexible mode, Inter runs the supplied code through
-a "chain" of processing stages. The chain, which must contain at least
-one stage, is a textual list of comma-separated stage names. For example,
+a pipeline of processing stages. The pipeline, which must contain at least
+one stage, can be quite elaborate (see later), but for example:
 
-	|resolve-conditional-compilation,assimilate,make-identifiers-unique|
+	|read: 0 <- myfile.inter, resolve-conditional-compilation, generate: inform6 -> myfile.i6|
 
-is a valid three-stage chain. The command to do this is then:
+is a valid three-stage pipeline. The command to do this is then:
 
-	|$ inter/Tangled/inter my.intert -inter 'CHAIN'|
+	|$ inter/Tangled/inter -pipeline 'PIPELINE'|
 
-where |CHAIN| is the chain description.
+where |PIPELINE| is a textual description like the one above. In practice,
+it may not be convenient to spell the pipeline out on the command line, so
+one can also put it into a text file:
 
-In practice, this will only be useful if you can access the result, so it's
-normal for the final stage to output something: perhaps Inform 6 code, perhaps
-textual inter. For example:
+	|$ inter/Tangled/inter -pipeline-file mypl.interpipeline|
 
-	|$ inter/Tangled/inter in.intert -inter 'parse-linked-matter, generate-inter:out.intert'|
+Pipelines can contain variables, and their values can be set at the command
+line with e.g.:
 
-Two more options may be helpful to supplement this: |-domain D| sets the
-directory |D| to be the default location for reading and writing inter files;
-and |-template T| tells Inter that it can find the I6T template files at
-the file system location |T|. (Some code-generation stages import these.)
+	|-variable '*out=myfile.i6'|
+
+It is also possible to set the default directory for reading and writing files:
+
+	|-domain D|
+
+Finally, we can tell Inter where to find I6T template files:
+
+	|-template T|

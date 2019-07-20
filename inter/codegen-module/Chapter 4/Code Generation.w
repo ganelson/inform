@@ -25,6 +25,7 @@ int CodeGen::run_pipeline_stage(pipeline_step *step) {
 			internal_error("that's not a package name");
 		}
 	}
+
 	code_generation *gen =
 		CodeGen::new_generation(step, step->repository, which, step->target_argument);
 	if (CodeGen::Targets::begin_generation(gen) == FALSE) {

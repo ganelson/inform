@@ -1,0 +1,5 @@
+read: 0 <- *in
+parse-linked-matter
+assimilate
+resolve-external-symbols
+generate: text -> *out

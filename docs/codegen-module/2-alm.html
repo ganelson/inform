@@ -201,9 +201,6 @@
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">suffix</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">subpackage_type</span><span class="plain"> = </span><span class="identifier">plain_packagetype</span><span class="plain">;</span>
 
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plm</span><span class="plain"> == </span><span class="identifier">ATTRIBUTE_PLM</span><span class="plain">) </span><span class="identifier">trace_AME</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">trace_AME</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">plm</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERB_PLM</span><span class="plain">:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">command_ptype_symbol</span><span class="plain">) </span><span class="identifier">subpackage_type</span><span class="plain"> = </span><span class="identifier">command_ptype_symbol</span><span class="plain">;</span>

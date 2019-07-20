@@ -18,7 +18,7 @@ Preliminaries
 	Inform Primitives
 	Inform Annotations
 	Inform Organisation
-	Chains and Stages
+	Pipelines and Stages
 
 Chapter 1: Everything
 	Basics

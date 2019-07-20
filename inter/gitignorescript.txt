@@ -5,19 +5,9 @@ inter-module/Woven/
 
 inter.mk
 
-Tests/Assimilate/_Results_Actual/
-Tests/Assimilate/_Console/
-Tests/Generations/_Results_Actual/
-Tests/Generations/_Console/
-Tests/Graph/_Results_Actual/
-Tests/Graph/_Console/
 Tests/Invalid/_Results_Actual/
-Tests/PLM/_Results_Actual/
-Tests/PLM/_Console/
-Tests/RCC/_Results_Actual/
-Tests/RCC/_Console/
-Tests/ERL/_Results_Actual/
-Tests/ERL/_Console/
+Tests/General/_Results_Actual/
+Tests/General/_Console/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/

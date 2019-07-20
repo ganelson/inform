@@ -58,7 +58,8 @@ int indexing_stage = FALSE; /* Everything is done except indexing */
 @ =
 int report_clock_time = FALSE;
 time_t right_now;
-text_stream *inter_processing_chain = NULL;
+text_stream *inter_processing_file = NULL;
+text_stream *inter_processing_pipeline = NULL;
 pathname *path_to_inform7 = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
@@ -97,7 +98,7 @@ int CoreMain::main(int argc, char *argv[]) {
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	story_filename_extension = I"ulx";
-	inter_processing_chain = I"link: Output.i6t, parse-linked-matter, resolve-conditional-compilation, assimilate, make-identifiers-unique, resolve-external-symbols, reconcile-verbs, generate: inform6 -> *";
+	inter_processing_pipeline = Str::new();
 
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
 	STREAM_FLUSH(STDOUT);
@@ -122,7 +123,8 @@ list is not exhaustive.
 @e RNG_CLSW
 @e SIGILS_CLSW
 @e TRANSIENT_CLSW
-@e INTER_CLSW
+@e PIPELINE_CLSW
+@e PIPELINE_FILE_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::declare_heading(
@@ -153,8 +155,10 @@ list is not exhaustive.
 		L"make any source links refer to the source in extension example X");
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated (for testing)");
-	CommandLine::declare_switch(INTER_CLSW, L"inter", 2,
-		L"specify code-generation chain for inter code");
+	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
+		L"specify code-generation pipeline");
+	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
+		L"specify code-generation pipeline from file X");
 
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
@@ -390,13 +394,28 @@ with "Output.i6t".
 		LOG("Front end elapsed time: %dcs\n", ((int) (front_end - start)) / (CLOCKS_PER_SEC/100));
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
-			codegen_pipeline *SS = CodeGen::Pipeline::new();
-			CodeGen::Pipeline::parse_into(SS, inter_processing_chain,
+			dictionary *D = CodeGen::Pipeline::basic_dictionary(
 				Filenames::get_leafname(filename_of_compiled_i6_code));
+			codegen_pipeline *SS = NULL;
+			if (inter_processing_file)
+				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), D);
+			else if (Str::len(inter_processing_pipeline) > 0)
+				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, D);
+			else {
+				for (int area=0; area<NO_FS_AREAS; area++) {
+					pathname *P = pathname_of_inter_resources[area];
+					filename *F = Filenames::in_folder(P, I"default.interpipeline");
+					LOG("Trying %f\n", F);
+					if (TextFiles::exists(F)) {
+						SS = CodeGen::Pipeline::parse_from_file(F, D);
+						break;
+					}
+				}
+			}
+			if (SS == NULL) internal_error("no inter pipeline could be found");
+			CodeGen::Pipeline::set_repository(SS, Emit::repository());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, Emit::repository(), NO_FS_AREAS, pathname_of_i6t_files,
-				pathname_of_i6t_files[INTERNAL_FS_AREA],
-				pathname_of_i6t_files[INTERNAL_FS_AREA]);
+				SS, NO_FS_AREAS, pathname_of_i6t_files);
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
@@ -467,7 +486,8 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
-		case INTER_CLSW: inter_processing_chain = Str::duplicate(arg); break;
+		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
+		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
 
 		/* Useful pathnames */
 		case PROJECT_CLSW: Locations::set_project(arg); break;
@@ -488,10 +508,10 @@ void CoreMain::disable_importation(void) {
 	disable_import = TRUE;
 }
 
-void CoreMain::set_inter_chain(wording W) {
-	inter_processing_chain = Str::new();
-	WRITE_TO(inter_processing_chain, "%W", W);
-	Str::delete_first_character(inter_processing_chain);
-	Str::delete_last_character(inter_processing_chain);
-	LOG("Setting chain %S\n", inter_processing_chain);
+void CoreMain::set_inter_pipeline(wording W) {
+	inter_processing_pipeline = Str::new();
+	WRITE_TO(inter_processing_pipeline, "%W", W);
+	Str::delete_first_character(inter_processing_pipeline);
+	Str::delete_last_character(inter_processing_pipeline);
+	LOG("Setting pipeline %S\n", inter_processing_pipeline);
 }

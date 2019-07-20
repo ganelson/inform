@@ -63,6 +63,7 @@ to the routine below.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stages_made</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">stages_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"stop"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">);</span>
+            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"read"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_read_stage</span><span class="plain">, </span><span class="constant">FILE_STAGE_ARG</span><span class="plain">);</span>
 
             <span class="functiontext">CodeGen::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Assimilate::create_pipeline_stage</span><span class="plain">();</span>
@@ -91,11 +92,22 @@ the pipeline:
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_read_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Binary::test_file</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">))</span>
+            <span class="identifier">Inter::Binary::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">else</span>
+            <span class="identifier">Inter::Textual::read</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Stage::run_stop_stage is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="endnote">The function CodeGen::Stage::run_read_stage is used in <a href="#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-cm.html">Back to 'Codegen Module'</a></li><li><a href="1-ppl.html">Continue with 'Pipelines'</a></li></ul><hr class="tocbar">

@@ -214,8 +214,8 @@ option name is taken from the <code class="display"><span class="extract">...</s
         <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; ...	|						==&gt; 0</span>
         <span class="plain">...												==&gt; 0</span>
 
-    <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">chain</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">inter</span><span class="plain"> </span><span class="identifier">chain</span><span class="plain"> {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt;} 					==&gt; </span><span class="identifier">TRUE</span>
+    <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt; ::=</span>
+        <span class="identifier">inter</span><span class="plain"> </span><span class="identifier">pipeline</span><span class="plain"> {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt;} 					==&gt; </span><span class="identifier">TRUE</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -292,7 +292,7 @@ there is no need to translate this to other languages.)
             <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">chain</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Set the chain given in this word range</span> <span class="cwebmacronumber">11.2</span>&gt;
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Set the chain given in this word range</span> <span class="cwebmacronumber">11.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Set the option given in this word range</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Used: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
@@ -349,8 +349,8 @@ there is no need to translate this to other languages.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">chain</span><span class="plain">&gt;, 1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="functiontext">CoreMain::set_inter_chain</span><span class="plain">(</span><span class="identifier">CW</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;, 1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="functiontext">CoreMain::set_inter_pipeline</span><span class="plain">(</span><span class="identifier">CW</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 

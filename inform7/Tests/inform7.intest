@@ -5,7 +5,6 @@
 -set hash_cache						'inform7/Tests/hashes.intest'
 
 -cases			[Main] 'inform7/Tests/Test Cases'
-! -cases			[Inter] 'inform7/Tests/Test Inter'
 -if osx -cases	[Index] 'inform7/Tests/Test Index'
 -if osx -cases	[Map] 'inform7/Tests/Test Maps'
 -if osx -cases	[Release] 'inform7/Tests/Test Releases'
@@ -80,7 +79,7 @@
 		set: $SRINTERB = inform7/Internal/I6T/sr-Z.interb
 	endif
 
-	set: $INTERCHAIN = link:Output.i6t,parse-linked-matter,resolve-conditional-compilation,assimilate,make-identifiers-unique,resolve-external-symbols,reconcile-verbs,generate:inform6->*
+	set: $PIPELINE = inform7/Tests/test-pl.interpipeline
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -88,7 +87,7 @@
 	if: $TYPE problem
 		set: $A = $PATH/_Results_Actual/$CASE.txt
 		set: $I = $PATH/_Results_Ideal/$CASE.txt
-		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -inter $INTERCHAIN >$A 2>&1
+		fail step: $I7 `$I7OPTIONS -require-problem $CASE -project $WORK/Example.inform -pipeline-file $PIPELINE >$A 2>&1
 		or: 'failed to produce its namesake Problem message' $A
 		show: $A
 		exists: $I
@@ -101,7 +100,7 @@
 	! And then the general case.
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -inter $INTERCHAIN >$I7CONSOLE 2>&1
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline-file $PIPELINE >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
 
@@ -262,69 +261,6 @@
 	step: diff $A $I >$WORK/diff.txt
 	or: 'produced the wrong map' $WORK/diff.txt
 
-	pass: 'passed'
-
--end
-
--recipe [Inter]
-
-	set: $I7 = inform7/Tangled/inform7
-	set: $INTER = inter/Tangled/inter
-	set: $INTERNAL = inform7/Internal
-	set: $WORKSPACE = intest/Workspace
-
-	! First we decide whether to compile it for the Z-machine or Glulx.
-
-	set: $VM = Z
-	if: $CASE %c*-G
-		set: $VM = G
-	endif
-	if: $CASE %c*Metric%c*Units%c*
-		set: $VM = G
-	endif
-
-	! On the basis of which:
-
-	if: $VM G
-		set: $FORMAT 		= ulx
-	else
-		set: $FORMAT		= z8
-	endif
-
-	mkdir: $PATH/_Inter_Binary
-	mkdir: $PATH/_Inter_Textual
-	mkdir: $PATH/_Inter_Actual
-	mkdir: $PATH/_Inter_Ideal
-
-	! Now we extract the source text from whatever file originated the test
-	! case: this is a non-trivial operation when the file is an Extension or
-	! an example, but is a simple copy operation otherwise.
-
-	extract: $WORK/Example.inform/Source/story.ni $VM
-
-	set: $I7OPTIONS = -format=$FORMAT -noprogress -fixtime -rng -sigils -clock -log nothing -external inform7/Tests -transient $WORK/Transient -noindex -internal $INTERNAL
-
-	set: $INTERB = $PATH/_Inter_Binary/$CASE.interb
-	set: $INTERT = $PATH/_Inter_Textual/$CASE.intert
-	set: $INTERCHAIN = generate-inter:$INTERT,generate-inter-binary:$INTERB
-
-	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -inter $INTERCHAIN >$I7CONSOLE 2>&1
-	or: 'failed with Problem message(s)' $I7CONSOLE
-
-	set: $INTERA = $PATH/_Inter_Actual/$CASE.intert
-	set: $INTERI = $PATH/_Inter_Ideal/$CASE.intert
-
-	set: $INTERCONSOLE = $WORK/Example.inform/Build/inter_output.txt
-	step: $INTER $INTERB -textual $INTERA >$INTERCONSOLE 2>&1
-	or: 'failed to read inter' $INTERCONSOLE
-
-	show: $INTERCONSOLE
-
-	match text: $INTERA $INTERI
-	or: 'produced the wrong inter code'
-	show: $INTERA
-	
 	pass: 'passed'
 
 -end

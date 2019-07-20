@@ -24,6 +24,7 @@ char *AREA_NAME[3] = { "from .materials", "installed", "built in" };
 pathname *pathname_of_area[NO_FS_AREAS]              = { NULL, NULL, NULL };
 pathname *pathname_of_extensions[NO_FS_AREAS]        = { NULL, NULL, NULL };
 pathname *pathname_of_i6t_files[NO_FS_AREAS]         = { NULL, NULL, NULL };
+pathname *pathname_of_inter_resources[NO_FS_AREAS]   = { NULL, NULL, NULL };
 pathname *pathname_of_languages[NO_FS_AREAS]         = { NULL, NULL, NULL };
 pathname *pathname_of_website_templates[NO_FS_AREAS] = { NULL, NULL, NULL };
 
@@ -50,6 +51,7 @@ filename *filename_of_cblorb_report = NULL;
 filename *filename_of_cblorb_report_model = NULL;
 filename *filename_of_compiled_i6_code = NULL;
 filename *filename_of_debugging_log = NULL;
+filename *filename_of_default_inter_pipeline = NULL;
 filename *filename_of_documentation_snippets = NULL;
 filename *filename_of_epsfile = NULL;
 filename *filename_of_existing_story_file = NULL;
@@ -157,6 +159,11 @@ example, live inside the Extensions part of this.
 		Problems::Fatal::issue("Did not set -internal when calling");
 
 	Locations::EILT_at(INTERNAL_FS_AREA, pathname_of_area[INTERNAL_FS_AREA]);
+
+	pathname *inter_resources =
+		Pathnames::subfolder(pathname_of_area[INTERNAL_FS_AREA], I"Inter");
+	filename_of_default_inter_pipeline =
+		Filenames::in_folder(inter_resources, I"default.interpipeline");
 
 	@<Miscellaneous other stuff@>;
 
@@ -463,6 +470,7 @@ void Locations::EILT_at(int area, pathname *P) {
 	pathname_of_i6t_files[area] =         Pathnames::subfolder(P, I"I6T");
 	pathname_of_languages[area] =         Pathnames::subfolder(P, I"Languages");
 	pathname_of_website_templates[area] = Pathnames::subfolder(P, I"Templates");
+	pathname_of_inter_resources[area] =   Pathnames::subfolder(P, I"Inter");
 }
 
 @h Location of extensions.

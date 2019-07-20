@@ -1,0 +1,5 @@
+read: 0 <- *in
+parse-linked-matter
+resolve-conditional-compilation
+assimilate
+generate: inform6 -> *out

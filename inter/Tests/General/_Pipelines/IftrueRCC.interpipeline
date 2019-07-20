@@ -1,0 +1,4 @@
+read: 0 <- *in
+parse-linked-matter
+resolve-conditional-compilation
+generate: text -> *out

@@ -1,0 +1,3 @@
+read: 0 <- *in
+eliminate-redundant-labels
+generate: text -> *out

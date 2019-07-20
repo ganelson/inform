@@ -1,0 +1,3 @@
+read: 0 <- *in
+parse-linked-matter
+generate: text -> *out

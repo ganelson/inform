@@ -1,11 +1,7 @@
 -cases [Valid] 'inter/Tests/Valid'
 -cases [Invalid] 'inter/Tests/Invalid'
--cases [Generations] 'inter/Tests/Generations'
--cases [RCC] 'inter/Tests/RCC'
--cases [PLM] 'inter/Tests/PLM'
--cases [Assimilate] 'inter/Tests/Assimilate'
+-cases [General] 'inter/Tests/General'
 -cases [Units] 'inter/Tests/Units'
--cases [ERL] 'inter/Tests/ERL'
 
 -recipe [Valid]
 
@@ -50,9 +46,10 @@
 
 -end
 
--recipe [Generations]
+-recipe [General]
 
 	set: $O = $PATH/$CASE.intert
+	set: $P = $PATH/_Pipelines/$CASE.interpipeline
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	set: $T = $PATH/_Console/$CASE.txt
@@ -61,91 +58,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, assimilate, generate: inform6 -> $A' >$T 2>&1
-	or: 'failed to produce output' $T
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
-
--end
-
--recipe [RCC]
-
-	set: $O = $PATH/$CASE.intert
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $T = $PATH/_Console/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, resolve-conditional-compilation, generate: text ->$A' >$T 2>&1
-	or: 'failed to produce output' $T
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
-
--end
-
--recipe [PLM]
-
-	set: $O = $PATH/$CASE.intert
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $T = $PATH/_Console/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, generate: text ->$A' >$T 2>&1
-	or: 'failed to produce output' $T
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
-
--end
-
--recipe [ERL]
-
-	set: $O = $PATH/$CASE.intert
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $T = $PATH/_Console/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter $O -inter 'eliminate-redundant-labels, generate: text ->$A' >$T 2>&1
-	or: 'failed to produce output' $T
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
-
--end
-
--recipe [Assimilate]
-
-	set: $O = $PATH/$CASE.intert
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $T = $PATH/_Console/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter $O -inter 'parse-linked-matter, assimilate, resolve-external-symbols, generate: text ->$A' >$T 2>&1
+	step: inter/Tangled/inter -variable '*in=$O' -variable '*out=$A' -pipeline-file $P >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
