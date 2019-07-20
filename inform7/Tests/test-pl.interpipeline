@@ -1,3 +1,4 @@
+read: 0 <- *in
 link: Output.i6t
 parse-linked-matter
 resolve-conditional-compilation

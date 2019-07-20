@@ -30,6 +30,7 @@ have no meaningful contents when the step is not running.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">the_PP</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_N</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_debugging_log</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_memory</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">repository_argument</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text_out_file</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repository</span><span class="plain">;</span>
@@ -63,6 +64,7 @@ have no meaningful contents when the step is not running.
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain"> = -1;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;to_debugging_log</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;from_memory</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -156,6 +158,7 @@ logging:
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">codegen_pipeline</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">variables</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">memory_repository</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">repositories</span><span class="plain">[10];</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">steps</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">pipeline_step</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -172,6 +175,7 @@ logging:
         <span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">codegen_pipeline</span><span class="plain">);</span>
         <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;variables</span><span class="plain"> = </span><span class="identifier">D</span><span class="plain">;</span>
         <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain">);</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;memory_repository</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;10; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;repositories</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -218,7 +222,7 @@ logging:
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::set_repository</span><span class="plain">(</span><span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;repositories</span><span class="plain">[0] = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;memory_repository</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">) {</span>
@@ -255,6 +259,8 @@ logging:
                     <span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_stage</span><span class="plain">-</span><span class="element">&gt;stage_arg</span><span class="plain"> == </span><span class="constant">EXT_TEXT_OUT_STAGE_ARG</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*log"</span><span class="plain">)) {</span>
                         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;to_debugging_log</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*memory"</span><span class="plain">)) {</span>
+                        <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;from_memory</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">slashes</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -285,7 +291,10 @@ logging:
                     <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">;</span>
                 <span class="plain">}</span>
 
-                <span class="identifier">active</span><span class="plain"> = (*(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_stage</span><span class="plain">-</span><span class="element">&gt;execute</span><span class="plain">))(</span><span class="identifier">step</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;from_memory</span><span class="plain">) &amp;&amp; (</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository_argument</span><span class="plain"> &gt;= 0))</span>
+                    <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;repositories</span><span class="plain">[</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository_argument</span><span class="plain">] = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;memory_repository</span><span class="plain">;</span>
+                <span class="reserved">else</span>
+                    <span class="identifier">active</span><span class="plain"> = (*(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_stage</span><span class="plain">-</span><span class="element">&gt;execute</span><span class="plain">))(</span><span class="identifier">step</span><span class="plain">);</span>
 
                 <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_stage</span><span class="plain">-</span><span class="element">&gt;stage_arg</span><span class="plain"> == </span><span class="constant">TEXT_OUT_STAGE_ARG</span><span class="plain">) ||</span>
                     <span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_stage</span><span class="plain">-</span><span class="element">&gt;stage_arg</span><span class="plain"> == </span><span class="constant">EXT_TEXT_OUT_STAGE_ARG</span><span class="plain">)) &amp;&amp;</span>

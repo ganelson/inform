@@ -127,11 +127,24 @@ no repositories, no variables.
 </p>
 
 <p class="inwebparagraph">When a pipeline is being run by the main Inform 7 compiler, however,
-repository <code class="display"><span class="extract">0</span></code> will be preloaded with the inter code Inform has generated
-in memory. The variable <code class="display"><span class="extract">*out</span></code> is set to the filename to which final I6 code
-needs to be written, and the "domain" is the directory containing that.
-The template search path is set to the one used in Inform, that is, the
-template file <code class="display"><span class="extract">Whatever.i6t</span></code> would be looked for first in the project's
+two variables are created in advance. <code class="display"><span class="extract">*in</span></code> is set to the inter code
+which Inform has generated on the current run, and <code class="display"><span class="extract">*out</span></code> is set to the
+filename to which final I6 code needs to be written. The practical
+effect is that any useful pipeline for Inform will begin and end thus:
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">read: 0 &lt;- *in</span>
+        <span class="plain">...</span>
+        <span class="plain">generate: inform6 -&gt; *out</span>
+</pre>
+
+<p class="inwebparagraph">In addition, the "domain" is set to the directory containing the <code class="display"><span class="extract">*out</span></code>
+file, and the template search path is set to the one used in Inform, that is,
+the template file <code class="display"><span class="extract">Whatever.i6t</span></code> would be looked for first in the project's
 <code class="display"><span class="extract">X.materials/I6T</span></code> directory, then in the user's <code class="display"><span class="extract">I6T</span></code> directory, and failing
 that in Inform's built-in one.
 </p>

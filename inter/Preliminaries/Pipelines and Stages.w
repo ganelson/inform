@@ -71,11 +71,18 @@ As the above implies, Inter pipelines normally begin with a clean slate:
 no repositories, no variables. 
 
 When a pipeline is being run by the main Inform 7 compiler, however,
-repository |0| will be preloaded with the inter code Inform has generated
-in memory. The variable |*out| is set to the filename to which final I6 code
-needs to be written, and the "domain" is the directory containing that.
-The template search path is set to the one used in Inform, that is, the
-template file |Whatever.i6t| would be looked for first in the project's
+two variables are created in advance. |*in| is set to the inter code
+which Inform has generated on the current run, and |*out| is set to the
+filename to which final I6 code needs to be written. The practical
+effect is that any useful pipeline for Inform will begin and end thus:
+
+	|read: 0 <- *in|
+	|...|
+	|generate: inform6 -> *out|
+
+In addition, the "domain" is set to the directory containing the |*out|
+file, and the template search path is set to the one used in Inform, that is,
+the template file |Whatever.i6t| would be looked for first in the project's
 |X.materials/I6T| directory, then in the user's |I6T| directory, and failing
 that in Inform's built-in one.
 

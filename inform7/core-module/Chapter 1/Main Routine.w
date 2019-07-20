@@ -396,6 +396,7 @@ with "Output.i6t".
 		if (existing_story_file == FALSE) {
 			dictionary *D = CodeGen::Pipeline::basic_dictionary(
 				Filenames::get_leafname(filename_of_compiled_i6_code));
+			Str::copy(Dictionaries::create_text(D, I"*in"), I"*memory");
 			codegen_pipeline *SS = NULL;
 			if (inter_processing_file)
 				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), D);

@@ -18,6 +18,7 @@ typedef struct pipeline_step {
 	struct pathname **the_PP;
 	int the_N;
 	int to_debugging_log;
+	int from_memory;
 	int repository_argument;
 	struct text_stream *text_out_file;
 	struct inter_repository *repository;
@@ -42,6 +43,7 @@ void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->text_out_file = NULL;
 	step->the_N = -1;
 	step->to_debugging_log = FALSE;
+	step->from_memory = FALSE;
 	step->the_PP = NULL;
 	step->repository = NULL;
 }
@@ -118,6 +120,7 @@ And then a pipeline is just a linked list of steps.
 =
 typedef struct codegen_pipeline {
 	struct dictionary *variables;
+	struct inter_repository *memory_repository;
 	struct inter_repository *repositories[10];
 	struct linked_list *steps; /* of |pipeline_step| */
 	MEMORY_MANAGEMENT
@@ -134,6 +137,7 @@ codegen_pipeline *CodeGen::Pipeline::new(dictionary *D) {
 	codegen_pipeline *S = CREATE(codegen_pipeline);
 	S->variables = D;
 	S->steps = NEW_LINKED_LIST(pipeline_step);
+	S->memory_repository = NULL;
 	for (int i=0; i<10; i++) S->repositories[i] = NULL;
 	return S;
 }
@@ -180,7 +184,7 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 }
 
 void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_repository *I) {
-	S->repositories[0] = I;
+	S->memory_repository = I;
 }
 
 void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **PP) {
@@ -217,6 +221,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				if (Str::eq(step->step_argument, I"*log")) {
 					step->to_debugging_log = TRUE;
+				} else if (Str::eq(step->step_argument, I"*memory")) {
+					step->from_memory = TRUE;
 				} else {
 					step->parsed_filename = Filenames::from_text(step->step_argument);
 					int slashes = FALSE;
@@ -247,7 +253,10 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 				step->text_out_file = T;
 			}
 
-			active = (*(step->step_stage->execute))(step);
+			if ((step->from_memory) && (step->repository_argument >= 0))
+				S->repositories[step->repository_argument] = S->memory_repository;
+			else
+				active = (*(step->step_stage->execute))(step);
 
 			if (((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) &&
