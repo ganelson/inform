@@ -1,6 +1,7 @@
 -cases [Valid] 'inter/Tests/Valid'
 -cases [Invalid] 'inter/Tests/Invalid'
 -cases [General] 'inter/Tests/General'
+-cases [PipelineErrors] 'inter/Tests/PipelineErrors'
 -cases [Units] 'inter/Tests/Units'
 
 -recipe [Valid]
@@ -65,6 +66,26 @@
 
 	match text: $A $I
 	or: 'produced incorrect output'
+
+-end
+
+-recipe [PipelineErrors]
+
+	set: $O = $PATH/$CASE.intert
+	set: $P = $PATH/$CASE.interpipeline
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	fail step: inter/Tangled/inter -variable '*in=$O' -pipeline-file $P >$A 2>&1
+	or: 'failed to produce errors' $A
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect errors'
 
 -end
 

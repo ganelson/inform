@@ -591,7 +591,8 @@ list is not exhaustive.
                             <span class="plain">}</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SS</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no inter pipeline could be found"</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SS</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                        <span class="identifier">Problems::Fatal::issue</span><span class="plain">(</span><span class="string">"The Inter pipeline description contained errors"</span><span class="plain">);</span>
                     <span class="identifier">CodeGen::Pipeline::set_repository</span><span class="plain">(</span><span class="identifier">SS</span><span class="plain">, </span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
                     <span class="identifier">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">),</span>
                         <span class="identifier">SS</span><span class="plain">, </span><span class="constant">NO_FS_AREAS</span><span class="plain">, </span><span class="identifier">pathname_of_i6t_files</span><span class="plain">);</span>

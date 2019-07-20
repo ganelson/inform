@@ -113,7 +113,7 @@ void Main::act(void) {
 		codegen_pipeline *SS;
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
-		CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files);
+		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files);
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);
 	} else {

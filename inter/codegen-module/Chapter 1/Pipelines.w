@@ -55,21 +55,32 @@ logging:
 void CodeGen::Pipeline::write_step(OUTPUT_STREAM, pipeline_step *step) {
 	WRITE("%S", step->step_stage->stage_name);
 	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
-		WRITE(" %d", step->repository_argument);
-		if (Str::len(step->package_argument) > 0) WRITE(":%S", step->package_argument);
-		if (step->step_stage->takes_repository >= 0) WRITE(" <- %S", step->step_argument);
+		if (step->repository_argument > 0) {
+			WRITE(" %d", step->repository_argument);
+			if (Str::len(step->package_argument) > 0) WRITE(":%S", step->package_argument);
+		} else {
+			if (Str::len(step->package_argument) > 0) WRITE(" %S", step->package_argument);
+		}
+		if (step->step_stage->takes_repository) WRITE(" <- %S", step->step_argument);
 		if (step->target_argument) WRITE(" %S -> %S", step->target_argument->target_name, step->step_argument);
 	}
 }
 
-pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
+pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
+	text_file_position *tfp) {
 	CodeGen::Stage::make_stages();
 	CodeGen::Targets::make_targets();
 	pipeline_step *ST = CodeGen::Pipeline::new_step();
 	match_results mr = Regexp::create_mr();
 	int left_arrow_used = FALSE;
 	if (Regexp::match(&mr, step, L"(%c+?) *<- *(%c*)")) {
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D);
+		if (Str::len(mr.exp[1]) > 0) {
+			ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
+			if (ST->step_argument == NULL) return NULL;
+		} else {
+			Errors::in_text_file_S(I"no source to right of arrow", tfp);
+			return NULL;
+		}
 		Str::copy(step, mr.exp[0]);
 		left_arrow_used = TRUE;
 	} else if (Regexp::match(&mr, step, L"(%c+?) *(%C*) *-> *(%c*)")) {
@@ -78,10 +89,14 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 			if (Str::eq(mr.exp[1], cgt->target_name))
 				ST->target_argument = cgt;
 		if (ST->target_argument == NULL) {
-			WRITE_TO(STDERR, "No such code generation target as '%S'\n", mr.exp[1]);
-			internal_error("no such target");
+			TEMPORARY_TEXT(ERR);
+			WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
+			Errors::in_text_file_S(ERR, tfp);
+			DISCARD_TEXT(ERR);
+			return NULL;
 		}
-		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D);
+		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
 	if (Regexp::match(&mr, step, L"(%C+?) (%d)")) {
@@ -89,10 +104,14 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%d):(%c*)")) {
 		ST->repository_argument = Str::atoi(mr.exp[1], 0);
-		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D);
+		if (Str::len(mr.exp[2]) > 0) {
+			ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
+			if (ST->package_argument == NULL) return NULL;
+		}
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
-		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D);
+		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
+		if (ST->step_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
 
@@ -101,27 +120,37 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D) {
 		if (Str::eq(step, stage->stage_name))
 			ST->step_stage = stage;
 	if (ST->step_stage == NULL) {
-		WRITE_TO(STDERR, "No such step as '%S'\n", step);
-		internal_error("no such step code");
+		TEMPORARY_TEXT(ERR);
+		WRITE_TO(ERR, "no such stage as '%S'\n", step);
+		Errors::in_text_file_S(ERR, tfp);
+		DISCARD_TEXT(ERR);
+		return NULL;
 	}
 	if (ST->step_stage->takes_repository) {
-		if (left_arrow_used == FALSE)
-			internal_error("should use a left arrow");
+		if (left_arrow_used == FALSE) {
+			Errors::in_text_file_S(I"this stage should take a left arrow and a source", tfp);
+			return NULL;
+		}
 	} else {
-		if (left_arrow_used)
-			internal_error("should not use a left arrow");
+		if (left_arrow_used) {
+			Errors::in_text_file_S(I"this stage should not take a left arrow and a source", tfp);
+			return NULL;
+		}
 	}
 	
 	Regexp::dispose_of(&mr);
 	return ST;
 }
 
-text_stream *CodeGen::Pipeline::read_parameter(text_stream *from, dictionary *D) {
+text_stream *CodeGen::Pipeline::read_parameter(text_stream *from, dictionary *D,
+	text_file_position *tfp) {
 	if (Str::get_first_char(from) == '*') {
 		text_stream *find = Dictionaries::get_text(D, from);
 		if (find) return Str::duplicate(find);
-		WRITE_TO(STDERR, "No such pipeline variable as '%S'\n", from);
-		internal_error("no such pipeline variable");		
+		TEMPORARY_TEXT(ERR);
+		WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
+		Errors::in_text_file_S(ERR, tfp);
+		DISCARD_TEXT(ERR);
 	}
 	return Str::duplicate(from);
 }
@@ -135,6 +164,7 @@ typedef struct codegen_pipeline {
 	struct inter_repository *memory_repository;
 	struct inter_repository *repositories[10];
 	struct linked_list *steps; /* of |pipeline_step| */
+	int erroneous;
 	MEMORY_MANAGEMENT
 } codegen_pipeline;
 
@@ -150,33 +180,33 @@ codegen_pipeline *CodeGen::Pipeline::new(dictionary *D) {
 	S->variables = D;
 	S->steps = NEW_LINKED_LIST(pipeline_step);
 	S->memory_repository = NULL;
+	S->erroneous = FALSE;
 	for (int i=0; i<10; i++) S->repositories[i] = NULL;
 	return S;
 }
 
 codegen_pipeline *CodeGen::Pipeline::parse_from_file(filename *F, dictionary *D) {
-	TEMPORARY_TEXT(A);
-	TextFiles::read(F, FALSE, "can't open inter pipeline file",
-		TRUE, CodeGen::Pipeline::scan_line, NULL, (void *) A);
 	codegen_pipeline *S = CodeGen::Pipeline::new(D);
-	CodeGen::Pipeline::parse_into(S, A);
-	DISCARD_TEXT(A);
+	TextFiles::read(F, FALSE, "can't open inter pipeline file",
+		TRUE, CodeGen::Pipeline::scan_line, NULL, (void *) S);
+	if (S->erroneous) return NULL;
 	return S;
 }
 
 void CodeGen::Pipeline::scan_line(text_stream *line, text_file_position *tfp, void *X) {
-	text_stream *A = (text_stream *) X;
-	if (Str::len(A) > 0) WRITE_TO(A, ", ");
-	WRITE_TO(A, "%S", line);
+	codegen_pipeline *S = (codegen_pipeline *) X;
+	CodeGen::Pipeline::parse_into(S, line, tfp);
 }
 
 codegen_pipeline *CodeGen::Pipeline::parse(text_stream *instructions, dictionary *D) {
 	codegen_pipeline *S = CodeGen::Pipeline::new(D);
-	CodeGen::Pipeline::parse_into(S, instructions);
+	CodeGen::Pipeline::parse_into(S, instructions, NULL);
+	if (S->erroneous) return NULL;
 	return S;
 }
 
-void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instructions) {
+void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instructions,
+	text_file_position *tfp) {
 	TEMPORARY_TEXT(T);
 	LOOP_THROUGH_TEXT(P, instructions)
 		if (Characters::is_babel_whitespace(Str::get(P)))
@@ -185,14 +215,18 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 			PUT_TO(T, Str::get(P));
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, T, L" *(%c+?) *,+ *(%c*?) *")) {
-		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], S->variables);
+		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], S->variables, tfp);
 		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
+		else S->erroneous = TRUE;
 		Str::copy(T, mr.exp[1]);
 	}
 	if (Regexp::match(&mr, T, L" *(%c+?) *")) {
-		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], S->variables);
+		pipeline_step *ST = CodeGen::Pipeline::read_step(mr.exp[0], S->variables, tfp);
 		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
+		else S->erroneous = TRUE;
 	}
+	Regexp::dispose_of(&mr);
+	DISCARD_TEXT(T);
 }
 
 void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_repository *I) {

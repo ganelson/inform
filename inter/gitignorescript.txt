@@ -11,4 +11,5 @@ Tests/General/_Console/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/
+Tests/PipelineErrors/_Results_Actual/
 Tests/Units/_Results_Actual/

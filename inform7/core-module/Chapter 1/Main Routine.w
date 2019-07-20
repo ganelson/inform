@@ -413,7 +413,8 @@ with "Output.i6t".
 					}
 				}
 			}
-			if (SS == NULL) internal_error("no inter pipeline could be found");
+			if (SS == NULL)
+				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::repository());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
 				SS, NO_FS_AREAS, pathname_of_i6t_files);
