@@ -57,6 +57,8 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 	inter_package *pack = Inter::Packages::from_PID(IBM->read_into, PID);
 	Inter::Packages::set_name(pack, package_name);
 	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
+	if ((linkage_packagetype) && (ptype_name == linkage_packagetype))
+		Inter::Packages::make_linklike(pack);
 	Inter::Packages::set_scope(pack, Inter::Package::local_symbols(package_name));
 	P.data[PID_PACKAGE_IFLD] = PID;
 

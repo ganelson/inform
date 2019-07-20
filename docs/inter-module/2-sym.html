@@ -32,6 +32,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">PRIVATE_ISYMS</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PUBLIC_ISYMS</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_ISYMS</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">LINK_ISYMS</span>
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> {</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">symbol_ID</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">owning_table</span><span class="plain">;</span>
@@ -141,6 +142,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"private"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"public"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"external"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LINK_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"link"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown symbol type"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
@@ -153,13 +155,17 @@
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">, </span><span class="constant">MAKE_NAME_UNIQUE</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"*"</span><span class="plain">);</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">trans_name</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::get_translate</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">trans_name</span><span class="plain">) &gt; 0)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" -&gt; %S"</span><span class="plain">, </span><span class="identifier">trans_name</span><span class="plain">);</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">eq</span><span class="plain"> = </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;equated_to</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">eq</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" == "</span><span class="plain">);</span>
-            <span class="functiontext">Inter::SymbolsTables::symbol_to_url_name</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">eq</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> == </span><span class="constant">LINK_ISYMS</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" == %S"</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">trans_name</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::get_translate</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">trans_name</span><span class="plain">) &gt; 0)</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" -&gt; %S"</span><span class="plain">, </span><span class="identifier">trans_name</span><span class="plain">);</span>
+            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">eq</span><span class="plain"> = </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;equated_to</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">eq</span><span class="plain">) {</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" == "</span><span class="plain">);</span>
+                <span class="functiontext">Inter::SymbolsTables::symbol_to_url_name</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">eq</span><span class="plain">);</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

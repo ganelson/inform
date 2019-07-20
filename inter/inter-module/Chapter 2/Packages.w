@@ -17,7 +17,8 @@ typedef struct inter_package {
 @
 
 @d CODELIKE_PACKAGE_FLAG 1
-@d USED_PACKAGE_FLAG 2
+@d LINKAGE_PACKAGE_FLAG 2
+@d USED_PACKAGE_FLAG 4
 
 @ =
 inter_package *Inter::Packages::new(inter_repository *I, inter_t n) {
@@ -38,6 +39,17 @@ int Inter::Packages::is_codelike(inter_package *pack) {
 void Inter::Packages::make_codelike(inter_package *pack) {
 	if (pack) {
 		pack->package_flags |= CODELIKE_PACKAGE_FLAG;
+	}
+}
+
+int Inter::Packages::is_linklike(inter_package *pack) {
+	if ((pack) && (pack->package_flags & LINKAGE_PACKAGE_FLAG)) return TRUE;
+	return FALSE;
+}
+
+void Inter::Packages::make_linklike(inter_package *pack) {
+	if (pack) {
+		pack->package_flags |= LINKAGE_PACKAGE_FLAG;
 	}
 }
 
@@ -185,3 +197,7 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	}
 	return NULL;
 }
+
+void Inter::Packages::wrap(inter_package *P) {
+}
+

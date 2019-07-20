@@ -193,8 +193,18 @@ that's the end of the list and therefore the block.
 			if (Inter::Defn::is_invalid(IA)) Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
 			Inter::Symbols::annotate(I, S, IA);
 		}
+		if (S->symbol_scope == LINK_ISYMS) {
+			S->equated_name = Str::new();
+			while (TRUE) {
+				unsigned int c;
+				if (BinaryFiles::read_int32(fh, &c) == FALSE)
+					Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+				if (c == 0) break;
+				PUT_TO(S->equated_name, (wchar_t) c);
+			}
+		}
 
-		if (S) LOGIF(INTER_BINARY, "Read symbol $3\n", S);
+		LOGIF(INTER_BINARY, "Read symbol $3\n", S);
 		DISCARD_TEXT(name);
 		DISCARD_TEXT(trans);
 	}
@@ -220,6 +230,11 @@ that's the end of the list and therefore the block.
 					Inter::Defn::annotation_to_bytecode(symb->symbol_annotations[i], &c1, &c2);
 					BinaryFiles::write_int32(fh, (unsigned int) c1);
 					BinaryFiles::write_int32(fh, (unsigned int) c2);
+				}
+				if (symb->symbol_scope == LINK_ISYMS) {
+					LOOP_THROUGH_TEXT(pos, symb->equated_name)
+						BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
+					BinaryFiles::write_int32(fh, 0);
 				}
 			}
 		}

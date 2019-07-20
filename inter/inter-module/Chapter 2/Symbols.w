@@ -16,6 +16,7 @@ To manage named symbols in inter code.
 @e PRIVATE_ISYMS from 1
 @e PUBLIC_ISYMS
 @e EXTERNAL_ISYMS
+@e LINK_ISYMS
 
 =
 typedef struct inter_symbol {
@@ -99,6 +100,7 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 		case PRIVATE_ISYMS: WRITE("private"); break;
 		case PUBLIC_ISYMS: WRITE("public"); break;
 		case EXTERNAL_ISYMS: WRITE("external"); break;
+		case LINK_ISYMS: WRITE("link"); break;
 		default: internal_error("unknown symbol type"); break;
 	}
 	WRITE(" ");
@@ -111,13 +113,17 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	}
 	WRITE(" %S", mark->symbol_name);
 	if (Inter::Symbols::get_flag(mark, MAKE_NAME_UNIQUE)) WRITE("*");
-	text_stream *trans_name = Inter::Symbols::get_translate(mark);
-	if (Str::len(trans_name) > 0)
-		WRITE(" -> %S", trans_name);
-	inter_symbol *eq = mark->equated_to;
-	if (eq) {
-		WRITE(" == ");
-		Inter::SymbolsTables::symbol_to_url_name(OUT, eq);
+	if (mark->symbol_scope == LINK_ISYMS) {
+		WRITE(" == %S", mark->equated_name);
+	} else {
+		text_stream *trans_name = Inter::Symbols::get_translate(mark);
+		if (Str::len(trans_name) > 0)
+			WRITE(" -> %S", trans_name);
+		inter_symbol *eq = mark->equated_to;
+		if (eq) {
+			WRITE(" == ");
+			Inter::SymbolsTables::symbol_to_url_name(OUT, eq);
+		}
 	}
 }
 

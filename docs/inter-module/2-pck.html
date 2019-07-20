@@ -36,7 +36,8 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">CODELIKE_PACKAGE_FLAG</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">USED_PACKAGE_FLAG</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LINKAGE_PACKAGE_FLAG</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">USED_PACKAGE_FLAG</span><span class="plain"> 4</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -60,6 +61,17 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::make_codelike</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">) {</span>
             <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_flags</span><span class="plain"> |= </span><span class="constant">CODELIKE_PACKAGE_FLAG</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Packages::is_linklike</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pack</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_flags</span><span class="plain"> &amp; </span><span class="constant">LINKAGE_PACKAGE_FLAG</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::make_linklike</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain">) {</span>
+            <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_flags</span><span class="plain"> |= </span><span class="constant">LINKAGE_PACKAGE_FLAG</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -207,6 +219,10 @@
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::wrap</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+    <span class="plain">}</span>
+
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -216,6 +232,10 @@
 <p class="endnote">The function Inter::Packages::is_codelike is used in 2/iibf (<a href="2-iibf.html#SP1_1_3_3">&#167;1.1.3.3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
 <p class="endnote">The function Inter::Packages::make_codelike is used in 2/iibf (<a href="2-iibf.html#SP1_5_3">&#167;1.5.3</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Packages::is_linklike is used in 2/st (<a href="2-st.html#SP10">&#167;10</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Inter::Packages::make_linklike is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Packages::parent is used in 2/st (<a href="2-st.html#SP11">&#167;11</a>), 2/iibf (<a href="2-iibf.html#SP1_1_3_3">&#167;1.1.3.3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
@@ -256,6 +276,8 @@
 <p class="endnote">The function Inter::Packages::baseline is used in 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Packages::read_metadata appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Packages::wrap appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-st.html">Back to 'Symbols Tables'</a></li><li><a href="2-sym.html">Continue with 'Symbols'</a></li></ul><hr class="tocbar">

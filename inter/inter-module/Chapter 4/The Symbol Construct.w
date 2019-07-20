@@ -59,6 +59,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (Str::eq(ilp->mr.exp[0], I"private")) name_name->symbol_scope = PRIVATE_ISYMS;
 	else if (Str::eq(ilp->mr.exp[0], I"public")) name_name->symbol_scope = PUBLIC_ISYMS;
 	else if (Str::eq(ilp->mr.exp[0], I"external")) name_name->symbol_scope = EXTERNAL_ISYMS;
+	else if (Str::eq(ilp->mr.exp[0], I"link")) name_name->symbol_scope = LINK_ISYMS;
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
 
 	if (Str::eq(ilp->mr.exp[1], I"label")) name_name->symbol_type = LABEL_ISYMT;
@@ -67,11 +68,28 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) name_name->symbol_type = PTYPE_ISYMT;
 	else { *E = Inter::Errors::plain(I"unknown symbol-type keyword", eloc); return; }
 
-	if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
-	if (equate_name) {
-		inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(IBM->read_into, Inter::Bookmarks::scope(IBM), equate_name);
-		if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
-		else Inter::SymbolsTables::equate(name_name, eq);
+	if ((trans_name) && (equate_name)) {
+		*E = Inter::Errors::plain(I"a symbol cannot be both translated and equated", eloc); return;
+	}
+
+	if (Inter::Packages::is_linklike(Inter::Bookmarks::package(IBM))) {
+		if (name_name->symbol_scope != LINK_ISYMS) {
+			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be links", eloc); return;
+		}
+		if (equate_name) Inter::SymbolsTables::link(name_name, equate_name);
+		else {
+			*E = Inter::Errors::plain(I"link symbol not equated", eloc); return;
+		}
+	} else {
+		if (name_name->symbol_scope == LINK_ISYMS) {
+			*E = Inter::Errors::plain(I"links may only occur in a _linkage package", eloc); return;
+		}
+		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
+		if (equate_name) {
+			inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(IBM->read_into, Inter::Bookmarks::scope(IBM), equate_name);
+			if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
+			else Inter::SymbolsTables::equate(name_name, eq);
+		}
 	}
 
 	if (starred) {

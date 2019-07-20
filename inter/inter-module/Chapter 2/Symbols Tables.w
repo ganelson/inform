@@ -325,6 +325,13 @@ void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *nam
 	S_from->symbol_scope = EXTERNAL_ISYMS;
 }
 
+void Inter::SymbolsTables::link(inter_symbol *S_from, text_stream *name) {
+	if ((S_from == NULL) || (name == NULL)) internal_error("bad link equation");
+	S_from->equated_to = NULL;
+	S_from->equated_name = Str::duplicate(name);
+	S_from->symbol_scope = LINK_ISYMS;
+}
+
 void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter_error_location *eloc) {
 	Inter::traverse_tree(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
@@ -332,6 +339,7 @@ void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter
 void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
+	if (Inter::Packages::is_linklike(pack)) return;
 	inter_symbols_table *T = Inter::Packages::scope(pack);
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
