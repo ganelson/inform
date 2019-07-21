@@ -20,7 +20,7 @@ typedef struct uniqueness_count {
 	MEMORY_MANAGEMENT
 } uniqueness_count;
 
-void CodeGen::Uniqueness::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Uniqueness::visitor(inter_tree *I, inter_frame P, void *state) {
 	dictionary *D = (dictionary *) state;
 	if (P.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *Q = Inter::Package::defined_by_frame(P);

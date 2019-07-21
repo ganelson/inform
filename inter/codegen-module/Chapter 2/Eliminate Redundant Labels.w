@@ -21,7 +21,7 @@ int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
 	return TRUE;
 }
 
-void CodeGen::Labels::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Labels::visitor(inter_tree *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (Inter::Packages::is_codelike(pack)) @<Perform peephole optimisation on this block@>;

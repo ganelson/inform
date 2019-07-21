@@ -78,6 +78,6 @@ void Inter::Pragma::verify(inter_construct *IC, inter_frame P, inter_package *ow
 void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	inter_t ID = P.data[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+	text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 	WRITE("pragma %S \"%S\"", target_name->symbol_name, S);
 }

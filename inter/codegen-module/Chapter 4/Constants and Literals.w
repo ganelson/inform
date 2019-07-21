@@ -43,7 +43,7 @@ void CodeGen::CL::responses(code_generation *gen) {
 @
 
 =
-void CodeGen::CL::response_visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::CL::response_visitor(inter_tree *I, inter_frame P, void *state) {
 	response_traverse_state *rts = (response_traverse_state *) state;
 	generated_segment *saved = CodeGen::select(rts->gen, CodeGen::Targets::general_segment(rts->gen, P));
 	inter_symbol *resp_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_RESPONSE_IFLD);
@@ -55,7 +55,7 @@ void CodeGen::CL::response_visitor(inter_repository *I, inter_frame P, void *sta
 	CodeGen::deselect(rts->gen, saved);
 }
 
-void CodeGen::CL::response_revisitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::CL::response_revisitor(inter_tree *I, inter_frame P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], FALSE);
 	WRITE_TO(CodeGen::current(gen), " ");
@@ -154,7 +154,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_t ID = P.data[DATA_CONST_IFLD];
-		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+		text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 		WRITE("Array UUID_ARRAY string \"UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE("%c", Characters::toupper(Str::get_at(S, i)));
 		WRITE("//\";\n");
@@ -172,7 +172,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_frame P) {
 	switch (P.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_t ID = P.data[DATA_CONST_IFLD];
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+			text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			WRITE("\"%S\"", S);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
@@ -297,7 +297,7 @@ void CodeGen::CL::exit_print_mode(void) {
 }
 
 void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_t val1, inter_t val2, int unsub) {
-	inter_repository *I = gen->from;
+	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		int hex = FALSE;

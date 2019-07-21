@@ -108,7 +108,7 @@ void Inter::Inv::verify(inter_construct *IC, inter_frame P, inter_package *owner
 
 void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
 	if (P.data[METHOD_INV_IFLD] == INVOKED_OPCODE) {
-		WRITE("inv %S", Inter::get_text(P.repo_segment->owning_repo, P.data[INVOKEE_INV_IFLD]));
+		WRITE("inv %S", Inter::Frame::ID_to_text(&P, P.data[INVOKEE_INV_IFLD]));
 	} else {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (invokee) {
@@ -127,16 +127,15 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame P, inter_error
 	int arity_as_invoked=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE
-	inter_repository *I = P.repo_segment->owning_repo;
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (Primitives::is_indirect_interp(invokee)) {
 			inter_symbol *better = Primitives::indirect_interp(arity_as_invoked - 1);
-			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol(I, NULL, better);
+			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(&P, NULL, better);
 		} else if (Primitives::is_indirectv_interp(invokee)) {
 			inter_symbol *better = Primitives::indirectv_interp(arity_as_invoked - 1);
-			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol(I, NULL, better);
+			P.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(&P, NULL, better);
 		}
 	}
 	#endif

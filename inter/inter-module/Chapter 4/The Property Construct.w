@@ -36,7 +36,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IBM->read_into, prop_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(prop_name, ilp->annotations[i]);
 
 	*E = Inter::Property::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_t) ilp->indent_level, eloc);
 }
@@ -67,7 +67,7 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 	inter_symbol *prop_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
-		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, prop_name);
+		Inter::Symbols::write_annotations(OUT, &P, prop_name);
 	} else { *E = Inter::Frame::error(&P, I"cannot write property", NULL); return; }
 }
 

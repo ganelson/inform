@@ -145,7 +145,7 @@ fact, it is null only fleetingly: as soon as the |main| package is created,
 very early on, the enclosure is always an enclosing package.)
 
 =
-void Packaging::initialise_state(inter_repository *I) {
+void Packaging::initialise_state(inter_tree *I) {
 	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::at_start_of_this_repository(I));
 	current_state.saved_enclosure = NULL;
 }

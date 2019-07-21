@@ -6,10 +6,11 @@ To manage packages of inter code.
 
 =
 typedef struct inter_package {
-	struct inter_repository *stored_in;
+	struct inter_tree *stored_in;
 	inter_t index_n;
 	struct inter_symbol *package_name;
 	struct inter_symbols_table *package_scope;
+	struct inter_package *mask_down;
 	int package_flags;
 	MEMORY_MANAGEMENT
 } inter_package;
@@ -21,12 +22,13 @@ typedef struct inter_package {
 @d USED_PACKAGE_FLAG 4
 
 @ =
-inter_package *Inter::Packages::new(inter_repository *I, inter_t n) {
+inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
 	inter_package *pack = CREATE(inter_package);
 	pack->stored_in = I;
 	pack->package_scope = NULL;
 	pack->package_name = NULL;
 	pack->package_flags = 0;
+	pack->mask_down = NULL;
 	pack->index_n = n;
 	return pack;
 }
@@ -58,7 +60,7 @@ inter_package *Inter::Packages::parent(inter_package *pack) {
 		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
 		inter_t P_index = Inter::Frame::get_parent_index(D);
 		if (P_index == 0) return NULL;
-		inter_frame P = Inter::Frame::from_index(pack->stored_in, P_index);
+		inter_frame P = Inter::Warehouse::frame_from_index(Inter::Frame::warehouse(&D), P_index);
 		return Inter::Package::defined_by_frame(P);
 	}
 	return NULL;
@@ -93,24 +95,24 @@ void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 	}
 }
 
-inter_package *Inter::Packages::main(inter_repository *I) {
+inter_package *Inter::Packages::main(inter_tree *I) {
 	if (I) return I->main_package;
 	return NULL;
 }
 
-inter_package *Inter::Packages::basics(inter_repository *I) {
+inter_package *Inter::Packages::basics(inter_tree *I) {
 	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"basics");
 	if (S) return Inter::Package::which(S);
 	return NULL;
 }
 
-inter_package *Inter::Packages::veneer(inter_repository *I) {
+inter_package *Inter::Packages::veneer(inter_tree *I) {
 	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"veneer");
 	if (S) return Inter::Package::which(S);
 	return NULL;
 }
 
-inter_package *Inter::Packages::template(inter_repository *I) {
+inter_package *Inter::Packages::template(inter_tree *I) {
 	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"template");
 	if (S) return Inter::Package::which(S);
 	return NULL;
@@ -130,11 +132,11 @@ inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream
 	return NULL;
 }
 
-inter_symbol *Inter::Packages::search_main_exhaustively(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stream *S) {
 	return Inter::Packages::search_exhaustively(Inter::Packages::main(I), S);
 }
 
-inter_symbol *Inter::Packages::search_resources_exhaustively(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
 	inter_package *main_package = Inter::Packages::main(I);
 	if (main_package) {
 		inter_frame D = Inter::Symbols::defining_frame(main_package->package_name);
@@ -154,14 +156,14 @@ inter_t Inter::Packages::to_PID(inter_package *P) {
 	return P->index_n;
 }
 
-inter_package *Inter::Packages::from_PID(inter_repository *I, inter_t PID) {
+inter_package *Inter::Packages::from_PID(inter_tree *I, inter_t PID) {
 	if (PID == 0) return NULL;
 	return Inter::get_package(I, PID);
 }
 
 inter_package *Inter::Packages::container(inter_frame P) {
 	if (P.repo_segment == NULL) return NULL;
-	return Inter::Packages::from_PID(P.repo_segment->owning_repo, Inter::Frame::get_package(P));
+	return Inter::Frame::ID_to_package(&P, Inter::Frame::get_package(P));
 }
 
 inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
@@ -172,7 +174,7 @@ inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
 inter_symbols_table *Inter::Packages::scope_of(inter_frame P) {
 	inter_package *pack = Inter::Packages::container(P);
 	if (pack) return pack->package_scope;
-	return Inter::Frame::global_symbols(P);
+	return Inter::Frame::globals(&P);
 }
 
 inter_symbol *Inter::Packages::type(inter_package *P) {

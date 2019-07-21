@@ -92,7 +92,7 @@ void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter
 	}
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++) {
 		WRITE(" \"");
-		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[i]);
+		text_stream *S = Inter::Frame::ID_to_text(&P, P.data[i]);
 		Inter::Constant::write_text(OUT, S);
 		WRITE("\"");
 	}

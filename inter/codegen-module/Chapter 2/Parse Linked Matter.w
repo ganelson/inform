@@ -17,10 +17,10 @@ int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
 @h Parsing.
 
 =
-void CodeGen::PLM::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::PLM::visitor(inter_tree *I, inter_frame P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
-		text_stream *S = Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]);
+		text_stream *S = Inter::Frame::ID_to_text(&P, P.data[MATTER_SPLAT_IFLD]);
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L" *(%C+) *(%c*);%c*")) {
 			inter_t keyword = 0;

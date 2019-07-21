@@ -11,6 +11,7 @@ Chapter 1: Setting Up
 Chapter 2: Interoperability
 	Inter Errors
 	Inter in Memory
+	The Warehouse
 	Symbols Tables
 	Packages
 	Symbols

@@ -67,7 +67,7 @@ void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 	inter_symbol *key_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_MD_IFLD);
 	if (key_name) {
 		WRITE("metadata %S: ", key_name->symbol_name);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, NULL,
+		Inter::Types::write(OUT, &P, NULL,
 			P.data[VAL1_MD_IFLD], P.data[VAL1_MD_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
 		{ *E = Inter::Frame::error(&P, I"metadata can't be written", NULL); return; }

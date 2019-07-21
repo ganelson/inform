@@ -46,7 +46,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IBM->read_into, var_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(var_name, ilp->annotations[i]);
 
 	*E = Inter::Local::new(IBM, routine, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
 }
@@ -74,7 +74,7 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inte
 	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
-		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, var_name);
+		Inter::Symbols::write_annotations(OUT, &P, var_name);
 	} else { *E = Inter::Frame::error(&P, I"cannot write local", NULL); return; }
 }
 

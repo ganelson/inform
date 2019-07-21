@@ -7,7 +7,7 @@ To read inter from a textual file.
 =
 int no_blank_lines_stacked = 0;
 
-void Inter::Textual::read(inter_repository *I, filename *F) {
+void Inter::Textual::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading textual inter file %f)\n", F);
 	no_blank_lines_stacked = 0;
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
@@ -17,7 +17,7 @@ void Inter::Textual::read(inter_repository *I, filename *F) {
 	Inter::traverse_tree(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void Inter::Textual::lint_visitor(inter_repository *I, inter_frame P, void *state) {
+void Inter::Textual::lint_visitor(inter_tree *I, inter_frame P, void *state) {
 	inter_error_message *E = Inter::Defn::verify_children_inner(P);
 	if (E) Inter::Errors::issue(E);
 }
@@ -36,7 +36,7 @@ inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbo
 	return Inter::SymbolsTables::symbol_from_name_creating(T, name);
 }
 
-inter_symbol *Inter::Textual::find_symbol(inter_repository *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_t construct, inter_error_message **E) {
+inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_t construct, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -100,7 +100,7 @@ void Inter::Textual::read_line(text_stream *line, text_file_position *tfp, void 
 
 =
 void Inter::Textual::writer(OUTPUT_STREAM, char *format_string, void *vI) {
-	inter_repository *I = (inter_repository *) vI;
+	inter_tree *I = (inter_tree *) vI;
 	Inter::Textual::write(OUT, I, NULL, 1);
 }
 
@@ -110,7 +110,7 @@ typedef struct textual_write_state {
 	int pass;
 } textual_write_state;
 
-void Inter::Textual::write(OUTPUT_STREAM, inter_repository *I, int (*filter)(inter_frame, int), int pass) {
+void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_frame, int), int pass) {
 	if (I == NULL) { WRITE("<no-inter>\n"); return; }
 	textual_write_state tws;
 	tws.to = OUT;
@@ -119,7 +119,7 @@ void Inter::Textual::write(OUTPUT_STREAM, inter_repository *I, int (*filter)(int
 	Inter::traverse_global_list(I, Inter::Textual::visitor, &tws, -PACKAGE_IST);
 	Inter::traverse_tree(I, Inter::Textual::visitor, &tws, NULL, 0);
 }
-void Inter::Textual::visitor(inter_repository *I, inter_frame P, void *state) {
+void Inter::Textual::visitor(inter_tree *I, inter_frame P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(P, tws->pass) == FALSE)) return;
 	inter_error_message *E = Inter::Defn::write_construct_text(tws->to, P);

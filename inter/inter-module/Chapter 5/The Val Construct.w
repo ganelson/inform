@@ -81,6 +81,6 @@ void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_
 	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
 		WRITE("val %S ", val_kind->symbol_name);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, val_kind, P.data[VAL1_VAL_IFLD], P.data[VAL2_VAL_IFLD], locals, FALSE);
+		Inter::Types::write(OUT, &P, val_kind, P.data[VAL1_VAL_IFLD], P.data[VAL2_VAL_IFLD], locals, FALSE);
 	} else { *E = Inter::Frame::error(&P, I"cannot write val", NULL); return; }
 }

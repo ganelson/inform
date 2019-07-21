@@ -167,7 +167,6 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t 
 			return Inter::Errors::plain(I"can't extend", eloc);
 		for (int i=0; i<arity; i++) P.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
-	Inter::check_segments(IBM->read_into);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
@@ -321,7 +320,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter
 			}
 		}
 	} else { *E = Inter::Frame::error(&P, I"cannot write kind", NULL); return; }
-	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, symb);
+	Inter::Symbols::write_annotations(OUT, &P, symb);
 }
 
 void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_name) {

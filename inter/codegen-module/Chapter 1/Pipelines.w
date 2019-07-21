@@ -21,7 +21,7 @@ typedef struct pipeline_step {
 	int from_memory;
 	int repository_argument;
 	struct text_stream *text_out_file;
-	struct inter_repository *repository;
+	struct inter_tree *repository;
 	MEMORY_MANAGEMENT
 } pipeline_step;
 
@@ -161,8 +161,8 @@ And then a pipeline is just a linked list of steps.
 =
 typedef struct codegen_pipeline {
 	struct dictionary *variables;
-	struct inter_repository *memory_repository;
-	struct inter_repository *repositories[10];
+	struct inter_tree *memory_repository;
+	struct inter_tree *repositories[10];
 	struct linked_list *steps; /* of |pipeline_step| */
 	int erroneous;
 	MEMORY_MANAGEMENT
@@ -229,7 +229,7 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 	DISCARD_TEXT(T);
 }
 
-void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_repository *I) {
+void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
 	S->memory_repository = I;
 }
 
@@ -245,8 +245,8 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
 			if (S->repositories[step->repository_argument] == NULL)
-				S->repositories[step->repository_argument] = Inter::create(1, 32);
-			inter_repository *I = S->repositories[step->repository_argument];
+				S->repositories[step->repository_argument] = Inter::create();
+			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::lint(I);
 			CodeGen::Pipeline::prepare_to_run(I);
@@ -351,7 +351,7 @@ inter_symbol *to_phrase_ptype_symbol = NULL;
 inter_symbol *template_symbol = NULL;
 inter_package *template_package = NULL;
 
-void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
+void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 
 	submodule_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
 	function_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
@@ -388,17 +388,17 @@ void CodeGen::Pipeline::prepare_to_run(inter_repository *I) {
 	verb_directive_multiexcept_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTIEXCEPT");
 }
 
-void CodeGen::Pipeline::lint(inter_repository *I) {
+void CodeGen::Pipeline::lint(inter_tree *I) {
 	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void CodeGen::Pipeline::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Pipeline::visitor(inter_tree *I, inter_frame P, void *state) {
 	inter_t c = Inter::Frame::get_package(P);
 	inter_t a = Inter::Frame::get_package_alt(P);
 	if (c != a) {
 		LOG("Frame gives package as $3, but its location is in package $3\n",
-			Inter::Packages::from_PID(I, c)->package_name,
-			Inter::Packages::from_PID(I, a)->package_name);
+			Inter::Frame::ID_to_package(&P, c)->package_name,
+			Inter::Frame::ID_to_package(&P, a)->package_name);
 		internal_error("zap");
 	}
 

@@ -114,7 +114,7 @@ inter_symbol *read_interp = NULL;
 inter_symbol *inversion_interp = NULL;
 
 @ =
-void Primitives::emit(inter_repository *I, inter_bookmark *IBM) {
+void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!font", I"val -> void", &font_interp);
 	Primitives::emit_one(I, IBM, I"!stylebold", I"void -> void", &stylebold_interp);
 	Primitives::emit_one(I, IBM, I"!styleunderline", I"void -> void", &styleunderline_interp);
@@ -226,7 +226,7 @@ void Primitives::emit(inter_repository *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!inversion", I"void -> void", &inversion_interp);
 }
 
-void Primitives::emit_one(inter_repository *I, inter_bookmark *IBM, text_stream *prim, text_stream *category, inter_symbol **to) {
+void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim, text_stream *category, inter_symbol **to) {
 	if (to == NULL) internal_error("no symbol");
 	TEMPORARY_TEXT(prim_command);
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
@@ -397,7 +397,7 @@ inter_symbol *Primitives::indirectv_interp(int arity) {
 @e INVERSION_BIP
 
 =
-inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
+inter_t Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (symb == NULL) return 0;
 	int B = Inter::Symbols::read_annotation(symb, BIP_CODE_IANN);
 	inter_t bip = (B > 0)?((inter_t) B):0;
@@ -513,7 +513,7 @@ inter_t Primitives::to_bip(inter_repository *I, inter_symbol *symb) {
 	if (Str::eq(symb->symbol_name, I"!read")) bip = READ_BIP;
 	if (Str::eq(symb->symbol_name, I"!inversion")) bip = INVERSION_BIP;
 	if (bip != 0) {
-		Inter::Symbols::annotate_i(I, symb, BIP_CODE_IANN, bip);
+		Inter::Symbols::annotate_i(symb, BIP_CODE_IANN, bip);
 		return bip;
 	}
 	return 0;

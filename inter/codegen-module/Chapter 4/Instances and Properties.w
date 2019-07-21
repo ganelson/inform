@@ -34,13 +34,13 @@ void CodeGen::IP::prepare(code_generation *gen) {
 	Inter::traverse_tree(gen->from, CodeGen::IP::store, NULL, NULL, 0);
 }
 
-void CodeGen::IP::count(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::IP::count(inter_tree *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == PROPERTY_IST) no_property_frames++;
 	if (P.data[ID_IFLD] == INSTANCE_IST) no_instance_frames++;
 	if (P.data[ID_IFLD] == KIND_IST) no_kind_frames++;
 }
 
-void CodeGen::IP::store(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::IP::store(inter_tree *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == PROPERTY_IST) property_frames[no_property_frames++] = P;
 	if (P.data[ID_IFLD] == INSTANCE_IST) instance_frames[no_instance_frames++] = P;
 	if (P.data[ID_IFLD] == KIND_IST) kind_frames[no_kind_frames++] = P;
@@ -136,7 +136,7 @@ Some either-or properties of object instances can be stored as I6
 limited number can be stored this way. Here we choose which.
 
 =
-void CodeGen::IP::property(inter_repository *I, inter_symbol *prop_name, code_generation *gen) {
+void CodeGen::IP::property(inter_tree *I, inter_symbol *prop_name, code_generation *gen) {
 	if (prop_name == NULL) internal_error("bad property");
 	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) >= 0) {
 		int translated = FALSE;
@@ -279,7 +279,7 @@ above has been tried on all properties:
 =
 void CodeGen::IP::knowledge(code_generation *gen) {
 	text_stream *OUT = CodeGen::current(gen);
-	inter_repository *I = gen->from;
+	inter_tree *I = gen->from;
 	if ((FBNA_found == FALSE) && (properties_found)) {
 		generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::constant_segment(gen));
 		CodeGen::Targets::begin_constant(gen, I"FBNA_PROP_NUMBER", TRUE);
@@ -433,7 +433,7 @@ bother to force them.)
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
 		if (CodeGen::IP::is_kind_of_object(kind_name))
-			Inter::Symbols::annotate_i(I, kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
+			Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN,  c++);
 	}
 
 @h The kind inheritance tree.
@@ -638,12 +638,10 @@ because I6 doesn't allow function calls in a constant context.
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
 			inter_frame_list *PVL =
-				Inter::find_frame_list(
-					X.repo_segment->owning_repo,
+				Inter::Frame::ID_to_frame_list(&X,
 					Inter::Instance::properties_list(inst_name));
 			@<Work through this frame list of values@>;
-			PVL = Inter::find_frame_list(
-					X.repo_segment->owning_repo,
+			PVL = Inter::Frame::ID_to_frame_list(&X,
 					Inter::Kind::properties_list(kind_name));
 			@<Work through this frame list of values@>;
 			if (found == 0) WRITE_TO(sticks, " (0)");
@@ -943,8 +941,7 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_frame P) {
 		WRITE("\n    class %S\n", CodeGen::CL::name(inst_kind));
 		CodeGen::IP::append(gen, inst_name);
 		inter_frame_list *FL =
-			Inter::find_frame_list(
-				P.repo_segment->owning_repo,
+			Inter::Frame::ID_to_frame_list(&P,
 				Inter::Instance::properties_list(inst_name));
 		CodeGen::IP::plist(gen, FL);
 		WRITE(";\n\n");
@@ -988,7 +985,7 @@ void CodeGen::IP::plist(code_generation *gen, inter_frame_list *FL) {
 
 void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
 	text_stream *OUT = CodeGen::current(gen);
-	inter_repository *I = gen->from;
+	inter_tree *I = gen->from;
 	text_stream *S = Inter::Symbols::get_append(symb);
 	if (Str::len(S) == 0) return;
 	WRITE("    ");

@@ -70,7 +70,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	*E = Inter__Verify__defn(owner, P, DEFN_PACKAGE_IFLD); if (*E) return;
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	if (T == NULL) T = Inter::Frame::globals(&P);
 	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_id(T, P.data[DEFN_PACKAGE_IFLD]);
 	Inter::Defn::set_latest_package_symbol(package_name);
 }
@@ -108,13 +108,13 @@ inter_package *Inter::Package::which(inter_symbol *package_name) {
 	inter_frame D = Inter::Symbols::defining_frame(package_name);
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);
+	return Inter::Frame::ID_to_package(&D, D.data[PID_PACKAGE_IFLD]);
 }
 
 inter_package *Inter::Package::defined_by_frame(inter_frame D) {
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::get_package(D.repo_segment->owning_repo, D.data[PID_PACKAGE_IFLD]);
+	return Inter::Frame::ID_to_package(&D, D.data[PID_PACKAGE_IFLD]);
 }
 
 inter_symbol *Inter::Package::type(inter_symbol *package_name) {
@@ -131,7 +131,7 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 	inter_frame D = Inter::Symbols::defining_frame(package_name);
 	if (Inter::Frame::valid(&D) == FALSE) return NULL;
 	if (D.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::get_symbols_table(D.repo_segment->owning_repo, D.data[SYMBOLS_PACKAGE_IFLD]);
+	return Inter::Frame::ID_to_symbols_table(&D, D.data[SYMBOLS_PACKAGE_IFLD]);
 }
 
 void Inter::Package::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {

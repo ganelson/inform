@@ -69,7 +69,7 @@ void Inter::Response::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 	inter_symbol *rule_name = Inter::SymbolsTables::symbol_from_frame_data(P, RULE_RESPONSE_IFLD);
 	if ((resp_name) && (rule_name)) {
 		WRITE("response %S %S %d = ", resp_name->symbol_name, rule_name->symbol_name, P.data[MARKER_RESPONSE_IFLD]);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, NULL,
+		Inter::Types::write(OUT, &P, NULL,
 			P.data[VAL1_RESPONSE_IFLD], P.data[VAL1_RESPONSE_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
 		*E = Inter::Frame::error(&P, I"response can't be written", NULL);

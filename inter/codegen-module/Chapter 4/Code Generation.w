@@ -59,7 +59,7 @@ only when assembling other material, and not for the final output.
 =
 typedef struct code_generation {
 	struct pipeline_step *from_step;
-	struct inter_repository *from;
+	struct inter_tree *from;
 	struct code_generation_target *target;
 	struct inter_package *just_this_package;
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
@@ -68,7 +68,7 @@ typedef struct code_generation {
 	MEMORY_MANAGEMENT
 } code_generation;
 
-code_generation *CodeGen::new_generation(pipeline_step *step, inter_repository *I,
+code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	inter_package *just, code_generation_target *target) {
 	code_generation *gen = CREATE(code_generation);
 	gen->from_step = step;
@@ -181,12 +181,12 @@ void CodeGen::generate(code_generation *gen) {
 @
 
 =
-void CodeGen::pragma(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::pragma(inter_tree *I, inter_frame P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
 	inter_t ID = P.data[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+	text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 	CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
 }
 

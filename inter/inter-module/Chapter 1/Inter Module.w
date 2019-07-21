@@ -8,8 +8,9 @@ Setting up the use of this module.
 
 @ To begin with, this module needs to allocate memory:
 
-@e inter_repository_MT
-@e inter_repository_segment_MT
+@e inter_tree_MT
+@e inter_warehouse_MT
+@e inter_warehouse_room_MT
 @e inter_symbols_table_MT
 @e inter_symbol_MT
 @e inter_data_type_MT
@@ -19,10 +20,13 @@ Setting up the use of this module.
 @e inter_error_message_MT
 @e inter_error_stash_MT
 @e inter_package_MT
+@e inter_frame_list_MT
+@e inter_frame_list_entry_MT
 
 =
-ALLOCATE_INDIVIDUALLY(inter_repository)
-ALLOCATE_INDIVIDUALLY(inter_repository_segment)
+ALLOCATE_INDIVIDUALLY(inter_tree)
+ALLOCATE_INDIVIDUALLY(inter_warehouse)
+ALLOCATE_INDIVIDUALLY(inter_warehouse_room)
 ALLOCATE_INDIVIDUALLY(inter_symbols_table)
 ALLOCATE_INDIVIDUALLY(inter_symbol)
 ALLOCATE_INDIVIDUALLY(inter_data_type)
@@ -32,6 +36,8 @@ ALLOCATE_INDIVIDUALLY(inter_error_location)
 ALLOCATE_INDIVIDUALLY(inter_error_message)
 ALLOCATE_INDIVIDUALLY(inter_error_stash)
 ALLOCATE_INDIVIDUALLY(inter_package)
+ALLOCATE_INDIVIDUALLY(inter_frame_list)
+ALLOCATE_INDIVIDUALLY(inter_frame_list_entry)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

@@ -57,7 +57,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame 
 	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", con_kind->symbol_name);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, con_kind,
+		Inter::Types::write(OUT, &P, con_kind,
 			P.data[VAL1_DEF_IFLD], P.data[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
 		*E = Inter::Frame::error(&P, I"defaultvalue can't be written", NULL);

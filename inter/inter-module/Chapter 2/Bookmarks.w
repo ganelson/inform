@@ -4,14 +4,14 @@ Write positions for inter code being generated.
 
 @ =
 typedef struct inter_bookmark {
-	struct inter_repository *read_into;
+	struct inter_tree *read_into;
 	struct inter_package *current_package;
 	struct inter_frame R;
 	int placement_wrt_R;
 } inter_bookmark;
 
 @ =
-inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_repository *I) {
+inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_tree *I) {
 	inter_bookmark IBM;
 	IBM.read_into = I;
 	IBM.current_package = NULL;
@@ -30,10 +30,10 @@ inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	return IBM;
 }
 
-inter_bookmark Inter::Bookmarks::after_this_frame(inter_frame D) {
+inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_frame D) {
 	if (Inter::Frame::valid(&D) == FALSE) internal_error("invalid frame supplied");
 	inter_bookmark IBM;
-	IBM.read_into = D.repo_segment->owning_repo;
+	IBM.read_into = I;
 	IBM.current_package = Inter::Packages::container(D);
 	IBM.R = D;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;

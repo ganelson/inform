@@ -38,11 +38,6 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
-	if (Inter::PropertyValue::permitted(IBM->read_into, Inter::Bookmarks::package(IBM), owner_name, prop_name) == FALSE) {
-		*E = Inter::Errors::quoted(I"no permission to have this property", ilp->mr.exp[1], eloc);
-		return;
-	}
-
 	inter_t plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
@@ -66,11 +61,11 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 		con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
 }
 
-int Inter::PropertyValue::permitted(inter_repository *I, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
+int Inter::PropertyValue::permitted(inter_frame *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
 	inter_t plist_ID;
 	if (Inter::Kind::is(owner)) plist_ID = Inter::Kind::permissions_list(owner);
 	else plist_ID = Inter::Instance::permissions_list(owner);
-	inter_frame_list *FL = Inter::find_frame_list(I, plist_ID);
+	inter_frame_list *FL = Inter::Frame::ID_to_frame_list(F, plist_ID);
 	inter_frame X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_allowed = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
@@ -82,7 +77,7 @@ int Inter::PropertyValue::permitted(inter_repository *I, inter_package *pack, in
 	else inst_kind = Inter::Instance::kind_of(owner);
 	while (inst_kind) {
 		inter_frame_list *FL =
-			Inter::find_frame_list(I, Inter::Kind::permissions_list(inst_kind));
+			Inter::Frame::ID_to_frame_list(F, Inter::Kind::permissions_list(inst_kind));
 		if (FL == NULL) internal_error("no permissions list");
 		inter_frame X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
@@ -115,7 +110,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_pack
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PVAL_IFLD]);;
 		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PVAL_IFLD]);;
 
-		if (Inter::PropertyValue::permitted(P.repo_segment->owning_repo, owner, owner_name, prop_name) == FALSE) {
+		if (Inter::PropertyValue::permitted(&P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
 			WRITE_TO(err, "no permission for '%S' have this property", owner_name->symbol_name);
 			*E = Inter::Frame::error(&P, err, prop_name->symbol_name); return;
@@ -125,10 +120,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_pack
 		if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 		else plist_ID = Inter::Instance::properties_list(owner_name);
 
-		inter_frame_list *FL =
-			Inter::find_frame_list(
-				P.repo_segment->owning_repo,
-				plist_ID);
+		inter_frame_list *FL = Inter::Frame::ID_to_frame_list(&P, plist_ID);
 		if (FL == NULL) internal_error("no properties list");
 
 		inter_frame X;
@@ -147,6 +139,6 @@ void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame
 	if ((prop_name) && (owner_name)) {
 		inter_symbol *val_kind = Inter::Property::kind_of(Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
 		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, val_kind, P.data[DVAL1_PVAL_IFLD], P.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, &P, val_kind, P.data[DVAL1_PVAL_IFLD], P.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
 	} else { *E = Inter::Frame::error(&P, I"cannot write propertyvalue", NULL); return; }
 }

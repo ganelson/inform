@@ -20,7 +20,7 @@ int CodeGen::Inventory::inv(code_generation_target *cgt, code_generation *gen) {
 	return TRUE;
 }
 
-void CodeGen::Inventory::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Inventory::visitor(inter_tree *I, inter_frame P, void *state) {
 	text_stream *OUT = (text_stream *) state;
 	if (P.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *from = Inter::Package::defined_by_frame(P);

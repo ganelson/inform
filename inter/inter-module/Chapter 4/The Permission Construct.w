@@ -114,9 +114,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package
 		if (Inter::Kind::is(owner_name)) {
 			if (Inter::Types::is_enumerated(Inter::Kind::data_type(owner_name)) == FALSE)
 				{ *E = Inter::Frame::error(&P, I"property permission for non-enumerated kind", NULL); return; }
-			FL = Inter::find_frame_list(
-					P.repo_segment->owning_repo,
-					Inter::Kind::permissions_list(owner_name));
+			FL = Inter::Frame::ID_to_frame_list(&P, Inter::Kind::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
@@ -128,9 +126,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package
 				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed A", owner_name->symbol_name); return; }
 			}
 		} else {
-			FL = Inter::find_frame_list(
-					P.repo_segment->owning_repo,
-					Inter::Instance::permissions_list(owner_name));
+			FL = Inter::Frame::ID_to_frame_list(&P, Inter::Instance::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");
 			inter_frame X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
@@ -145,9 +141,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package
 
 		Inter::add_to_frame_list(FL, P);
 
-		FL = Inter::find_frame_list(
-				P.repo_segment->owning_repo,
-				Inter::Property::permissions_list(prop_name));
+		FL = Inter::Frame::ID_to_frame_list(&P, Inter::Property::permissions_list(prop_name));
 		Inter::add_to_frame_list(FL, P);
 	}
 }

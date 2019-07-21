@@ -76,6 +76,6 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_
 	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
 	if (ref_kind) {
 		WRITE("ref %S ", ref_kind->symbol_name);
-		Inter::Types::write(OUT, P.repo_segment->owning_repo, ref_kind, P.data[VAL1_REF_IFLD], P.data[VAL2_REF_IFLD], locals, FALSE);
+		Inter::Types::write(OUT, &P, ref_kind, P.data[VAL1_REF_IFLD], P.data[VAL2_REF_IFLD], locals, FALSE);
 	} else { *E = Inter::Frame::error(&P, I"cannot write ref", NULL); return; }
 }

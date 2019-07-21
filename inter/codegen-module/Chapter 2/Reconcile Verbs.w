@@ -17,13 +17,13 @@ int CodeGen::ReconcileVerbs::run_pipeline_stage(pipeline_step *step) {
 @h Parsing.
 
 =
-void CodeGen::ReconcileVerbs::reconcile(inter_repository *I) {
+void CodeGen::ReconcileVerbs::reconcile(inter_tree *I) {
 	dictionary *observed_verbs = Dictionaries::new(1024, TRUE);
 	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs, NULL, 0);
 	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs, NULL, 0);
 }
 
-void CodeGen::ReconcileVerbs::visitor1(inter_repository *I, inter_frame P, void *v_state) {
+void CodeGen::ReconcileVerbs::visitor1(inter_tree *I, inter_frame P, void *v_state) {
 	dictionary *observed_verbs = (dictionary *) v_state;
 	if (P.data[ID_IFLD] == CONSTANT_IST) {
 		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
@@ -34,7 +34,7 @@ void CodeGen::ReconcileVerbs::visitor1(inter_repository *I, inter_frame P, void 
 }
 
 
-void CodeGen::ReconcileVerbs::visitor2(inter_repository *I, inter_frame P, void *v_state) {
+void CodeGen::ReconcileVerbs::visitor2(inter_tree *I, inter_frame P, void *v_state) {
 	dictionary *observed_verbs = (dictionary *) v_state;
 	if (P.data[ID_IFLD] == CONSTANT_IST) {
 		inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);

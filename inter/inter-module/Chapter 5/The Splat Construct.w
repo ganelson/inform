@@ -135,6 +135,6 @@ void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inte
 	WRITE("splat ");
 	Inter::Splat::write_plm(OUT, P.data[PLM_SPLAT_IFLD]);
 	WRITE("&\"");
-	Inter::Constant::write_text(OUT, Inter::get_text(P.repo_segment->owning_repo, P.data[MATTER_SPLAT_IFLD]));
+	Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(&P, P.data[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 }

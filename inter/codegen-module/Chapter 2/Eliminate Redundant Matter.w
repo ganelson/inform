@@ -18,7 +18,7 @@ void CodeGen::Eliminate::create_pipeline_stage(void) {
 }
 
 int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {
-	inter_repository *I = step->repository;
+	inter_tree *I = step->repository;
 	Inter::traverse_tree(I, CodeGen::Eliminate::package_preserver, NULL, NULL, PACKAGE_IST);
 	Inter::traverse_tree(I, CodeGen::Eliminate::package_destroyer, NULL, NULL, PACKAGE_IST);
 	return TRUE;
@@ -36,7 +36,7 @@ we can't detect the dependency here. So we require all command packages to
 be included.
 
 =
-void CodeGen::Eliminate::package_preserver(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_frame P, void *state) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	inter_symbol *ptype = Inter::Packages::type(pack);
 	if (ptype == command_ptype_symbol)
@@ -109,7 +109,7 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 Whatever has not been preserved, is now destroyed.
 
 =
-void CodeGen::Eliminate::package_destroyer(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::Eliminate::package_destroyer(inter_tree *I, inter_frame P, void *state) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $3 (type %S)\n",

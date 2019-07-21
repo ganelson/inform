@@ -124,35 +124,35 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_creating_at_ID(inter_symbol
 	return Inter::SymbolsTables::search_inner(T, S, TRUE, ID, TRUE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Inter::Packages::main(I)), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_basics(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::basics(I);
 	if (P == NULL) return NULL;
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_veneer(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::veneer(I);
 	if (P == NULL) return NULL;
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::template(I);
 	if (P == NULL) return NULL;
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template_creating(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template_creating(inter_tree *I, text_stream *S) {
 	inter_package *P = Inter::Packages::template(I);
 	if (P == NULL) return NULL;
 	return Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_repository *I, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_tree *I, text_stream *S) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_veneer(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_main(I, S);
@@ -210,7 +210,7 @@ inter_symbol *Inter::SymbolsTables::symbol_from_frame_data(inter_frame P, int x)
 }
 
 inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_frame P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::get_global_symbols(P.repo_segment->owning_repo), P.data[x]);
+	return Inter::SymbolsTables::symbol_from_id(Inter::Frame::globals(&P), P.data[x]);
 }
 
 inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_symbol *routine, inter_t ID) {
@@ -231,7 +231,7 @@ If all we want is to read the ID of a symbol definitely present in the given
 symbols table, that's easy:
 
 =
-inter_t Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_repository *I, inter_package *P, inter_symbol *S) {
+inter_t Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T == NULL) T = Inter::get_global_symbols(I);
@@ -242,7 +242,7 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_repository
 	return S->symbol_ID;
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol_not_creating(inter_repository *I, inter_package *P, inter_symbol *S) {
+inter_t Inter::SymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
 }
 
@@ -261,13 +261,13 @@ well if we did.) It's therefore an internal error to call this routine with
 a global symbol in any non-global context.
 
 =
-inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_repository *I, inter_package *P, inter_symbol *S) {
+inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
-	if (T == NULL) T = Inter::get_global_symbols(I);
+	if (T == NULL) T = G;
 	if (T != S->owning_table) {
 		LOGIF(INTER_SYMBOLS, "Seek ID of $3 from $4, which is not its owner $4\n", S, T, S->owning_table);
-		if (S->owning_table == Inter::get_global_symbols(I)) {
+		if (S->owning_table == G) {
 			LOG("Seek ID of $3 from $4, which is not its owner $4\n", S, T, S->owning_table);
 			internal_error("attempted to equate to global");
 		}
@@ -292,12 +292,16 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_repository *I, inter_pa
 	return S->symbol_ID;
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol(inter_repository *I, inter_package *P, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(I, P, S);
+inter_t Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner(Inter::get_global_symbols(I), P, S);
+}
+
+inter_t Inter::SymbolsTables::id_from_symbol_F(inter_frame *F, inter_package *P, inter_symbol *S) {
+	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Frame::globals(F), P, S);
 }
 
 inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(IBM->read_into, Inter::Bookmarks::package(IBM), S);
+	return Inter::SymbolsTables::id_from_symbol_inner(Inter::get_global_symbols(IBM->read_into), Inter::Bookmarks::package(IBM), S);
 }
 
 @h Equations.
@@ -332,11 +336,11 @@ void Inter::SymbolsTables::link(inter_symbol *S_from, text_stream *name) {
 	S_from->symbol_scope = LINK_ISYMS;
 }
 
-void Inter::SymbolsTables::resolve_forward_references(inter_repository *I, inter_error_location *eloc) {
+void Inter::SymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
 	Inter::traverse_tree(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
-void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void *state) {
+void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_frame P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (Inter::Packages::is_linklike(pack)) return;
@@ -357,7 +361,7 @@ void Inter::SymbolsTables::rfr_visitor(inter_repository *I, inter_frame P, void 
 @d MAX_URL_SYMBOL_NAME_DEPTH 512
 
 =
-inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_repository *I, inter_symbols_table *T, text_stream *S) {
+inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbols_table *T, text_stream *S) {
 	inter_symbols_table *at = Inter::get_global_symbols(I);
 	if (Str::get_first_char(S) == '/') {
 		TEMPORARY_TEXT(C);

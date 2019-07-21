@@ -406,7 +406,6 @@ with "Output.i6t".
 				for (int area=0; area<NO_FS_AREAS; area++) {
 					pathname *P = pathname_of_inter_resources[area];
 					filename *F = Filenames::in_folder(P, I"default.interpipeline");
-					LOG("Trying %f\n", F);
 					if (TextFiles::exists(F)) {
 						SS = CodeGen::Pipeline::parse_from_file(F, D);
 						break;

@@ -167,7 +167,7 @@ inter_symbol *Veneer::make(inter_package *veneer_package, inter_bookmark *IBM, i
 		inter_symbols_table *tab = Inter::Packages::scope(veneer_package);
 		*slot = Inter::SymbolsTables::symbol_from_name_creating(tab, S);
 		if (Str::len(T) > 0) Inter::Symbols::set_translate(*slot, T);
-		Inter::Symbols::annotate_i(IBM->read_into, *slot, VENEER_IANN, 1);
+		Inter::Symbols::annotate_i(*slot, VENEER_IANN, 1);
 		CodeGen::MergeTemplate::guard(Inter::Constant::new_numerical(IBM,
 			Inter::SymbolsTables::id_from_symbol(IBM->read_into, veneer_package, *slot),
 			Inter::SymbolsTables::id_from_symbol(IBM->read_into, veneer_package, unchecked_kind_symbol),

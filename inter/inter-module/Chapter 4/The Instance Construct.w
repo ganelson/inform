@@ -100,11 +100,11 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 		if (idt) {
 			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
-			Inter::Types::write(OUT, P.repo_segment->owning_repo, NULL,
+			Inter::Types::write(OUT, &P, NULL,
 				P.data[VAL1_INST_IFLD], P.data[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
 		} else { *E = Inter::Frame::error(&P, I"instance with bad data type", NULL); return; }
 	} else { *E = Inter::Frame::error(&P, I"bad instance", NULL); return; }
-	Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, inst_name);
+	Inter::Symbols::write_annotations(OUT, &P, inst_name);
 }
 
 inter_t Inter::Instance::properties_list(inter_symbol *inst_name) {

@@ -23,29 +23,128 @@ To store bytecode-like intermediate code in memory.
 @d PREFRAME_LAST_CHILD 7
 @d PREFRAME_PREVIOUS 8
 @d PREFRAME_NEXT 9
-@d PREFRAME_SIZE 10
+@d PREFRAME_GLOBALS 10
+@d PREFRAME_SIZE 11
 
 =
-typedef struct inter_repository {
-	int ref;
-	struct inter_repository_segment *first_repo_segment;
-	int size;
-	int capacity;
-	struct inter_resource_holder *stored_resources;
-	struct filename *origin_file;
+typedef struct inter_tree {
+	struct inter_warehouse *warehouse;
+	inter_t global_symbols_table_ID;
 	struct inter_frame_list global_material;
-	struct inter_repository *main_repo;
 	struct inter_package *main_package;
 	MEMORY_MANAGEMENT
-} inter_repository;
+} inter_tree;
 
-typedef struct inter_resource_holder {
-	struct inter_symbols_table *stored_symbols_table;
-	struct inter_frame_list stored_frame_list;
-	struct inter_package *stored_package;
-	struct text_stream *stored_text_stream;
-	void *stored_ref;
-} inter_resource_holder;
+@ =
+inter_tree *Inter::create(void) {
+	inter_tree *I = CREATE(inter_tree);
+	I->global_material.spare_storage = NULL;
+	I->global_material.storage_used = 0;
+	I->global_material.storage_capacity = 0;
+	I->main_package = NULL;
+
+	I->warehouse = Inter::Warehouse::new(I);
+	I->global_symbols_table_ID = Inter::create_symbols_table(I);
+	
+	return I;
+}
+
+inter_warehouse *Inter::warehouse(inter_tree *I) {
+	return I->warehouse;
+}
+
+inter_t Inter::create_symbols_table(inter_tree *I) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_symbols_table == NULL) {
+		warehouse->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
+		warehouse->stored_resources[n].stored_symbols_table->n_index = (int) n;
+	}
+	return n;
+}
+
+inter_symbols_table *Inter::get_global_symbols(inter_tree *I) {
+	return Inter::get_symbols_table(I, I->global_symbols_table_ID);
+}
+
+inter_symbols_table *Inter::get_symbols_table(inter_tree *I, inter_t n) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	if (n >= (inter_t) warehouse->size) return NULL;
+	if (n == 0) return NULL;
+	return warehouse->stored_resources[n].stored_symbols_table;
+}
+
+inter_t Inter::create_package(inter_tree *I) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_package == NULL) {
+		warehouse->stored_resources[n].stored_package = Inter::Packages::new(I, n);
+	}
+	return n;
+}
+
+inter_package *Inter::get_package(inter_tree *I, inter_t n) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	if (n >= (inter_t) warehouse->size) return NULL;
+	if (n == 0) return NULL;
+	return warehouse->stored_resources[n].stored_package;
+}
+
+inter_t Inter::create_text(inter_tree *I) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_text_stream == NULL) {
+		warehouse->stored_resources[n].stored_text_stream = Str::new();
+	}
+	return n;
+}
+
+text_stream *Inter::get_text(inter_tree *I, inter_t n) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	if (n >= (inter_t) warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_text_stream;
+}
+
+inter_t Inter::create_ref(inter_tree *I) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	warehouse->stored_resources[n].stored_ref = NULL;
+	return n;
+}
+
+void *Inter::get_ref(inter_tree *I, inter_t n) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	if (n >= (inter_t) warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_ref;
+}
+
+void Inter::set_ref(inter_tree *I, inter_t n, void *ref) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	if (n >= (inter_t) warehouse->size) return;
+	warehouse->stored_resources[n].stored_ref = ref;
+}
+
+inter_frame_list *Inter::new_frame_list(void) {
+	inter_frame_list *ifl = CREATE(inter_frame_list);
+	ifl->spare_storage = NULL;
+	ifl->storage_used = 0;
+	ifl->storage_capacity = 0;
+	ifl->first_in_ifl = NULL;
+	ifl->last_in_ifl = NULL;
+	return ifl;
+}
+
+inter_t Inter::create_frame_list(inter_tree *I) {
+	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	warehouse->stored_resources[n].stored_frame_list = CREATE(inter_frame_list);
+	warehouse->stored_resources[n].stored_frame_list->spare_storage = NULL;
+	warehouse->stored_resources[n].stored_frame_list->storage_used = 0;
+	warehouse->stored_resources[n].stored_frame_list->storage_capacity = 0;
+	warehouse->stored_resources[n].stored_frame_list->first_in_ifl = NULL;
+	warehouse->stored_resources[n].stored_frame_list->last_in_ifl = NULL;
+	return n;
+}
 
 typedef struct inter_frame_list {
 	int storage_used;
@@ -53,214 +152,15 @@ typedef struct inter_frame_list {
 	struct inter_frame_list_entry *spare_storage;
 	struct inter_frame_list_entry *first_in_ifl;
 	struct inter_frame_list_entry *last_in_ifl;
+	MEMORY_MANAGEMENT
 } inter_frame_list;
 
 typedef struct inter_frame_list_entry {
 	struct inter_frame listed_frame;
 	struct inter_frame_list_entry *next_in_ifl;
 	struct inter_frame_list_entry *prev_in_ifl;
-} inter_frame_list_entry;
-
-typedef struct inter_repository_segment {
-	struct inter_repository *owning_repo;
-	inter_t index_offset;
-	int size;
-	int capacity;
-	inter_t *bytecode;
-	struct inter_repository_segment *next_repo_segment;
 	MEMORY_MANAGEMENT
-} inter_repository_segment;
-
-@ =
-inter_repository *Inter::create(int ref, int capacity) {
-	inter_repository *I = CREATE(inter_repository);
-	I->ref = ref;
-	I->first_repo_segment = Inter::create_segment(capacity, I, NULL);
-	I->size = 1;
-	I->capacity = 0;
-	I->stored_resources = NULL;
-	I->origin_file = NULL;
-	Inter::create_symbols_table(I);
-	I->global_material.spare_storage = NULL;
-	I->global_material.storage_used = 0;
-	I->global_material.storage_capacity = 0;
-	I->main_repo = NULL;
-	I->main_package = NULL;
-	return I;
-}
-
-inter_repository_segment *Inter::create_segment(int capacity, inter_repository *owner, inter_repository_segment *prec) {
-	inter_repository_segment *IS = CREATE(inter_repository_segment);
-	IS->index_offset = (prec)?(prec->index_offset + (inter_t) prec->capacity):0;
-	IS->owning_repo = owner;
-	IS->size = 0;
-	IS->capacity = capacity;
-	IS->bytecode = (inter_t *)
-		Memory::I7_calloc(capacity, sizeof(inter_t), INTER_BYTECODE_MREASON);
-	LOGIF(INTER_MEMORY, "Created repository %d segment %d with capacity %d\n",
-		owner->allocation_id, IS->allocation_id, IS->capacity);
-	return IS;
-}
-
-int Inter::enlarge_size(int n, int at_least) {
-	int next_size = 2*n;
-	if (next_size < 128) next_size = 128;
-	while (n + at_least > next_size) next_size = 2*next_size;
-	return next_size;
-}
-
-inter_frame Inter::find_room(inter_repository *I, int n, inter_error_location *eloc, inter_package *owner) {
-	if (I == NULL) internal_error("no repository");
-	inter_repository_segment *IS = I->first_repo_segment;
-	while (IS->next_repo_segment) IS = IS->next_repo_segment;
-	inter_frame F = Inter::find_room_in_segment(IS, n);
-	F.repo_segment->bytecode[F.index + PREFRAME_ORIGIN] = Inter::store_origin(I, eloc);
-	Inter::Frame::attach_package(F, Inter::Packages::to_PID(owner));
-	return F;
-}
-
-void Inter::dump_segments(OUTPUT_STREAM, inter_repository *I) {
-	for (inter_repository_segment *J = I->first_repo_segment; J; J = J->next_repo_segment) {
-		WRITE("%08x: size %d capacity %d: ", (long int) J, J->size, J->capacity);
-		for (int i=0; i<J->size; i++) {
-			WRITE("%08x ", J->bytecode[i]);
-		}
-		WRITE("\n");
-	}
-}
-
-void Inter::check_segments(inter_repository *I) {
-	for (inter_repository_segment *J = I->first_repo_segment; J; J = J->next_repo_segment) {
-		if ((J->size > 0) && (J->bytecode[0] == 0)) {
-			WRITE_TO(STDERR, "Repository segment %d is corrupt\n", J->allocation_id);
-			internal_error("segment corrupt");
-		}
-	}
-}
-
-inter_frame Inter::find_room_in_segment(inter_repository_segment *IS, int n) {
-	if ((IS->size < 0) || (IS->size > IS->capacity)) internal_error("bad segment");
-	if (IS->next_repo_segment != NULL) internal_error("nonfinal segment");
-	if (IS->size + n + PREFRAME_SIZE > IS->capacity) {
-		int next_size = Inter::enlarge_size(IS->capacity, n + PREFRAME_SIZE);
-		IS->capacity = IS->size;
-		IS->next_repo_segment = Inter::create_segment(next_size, IS->owning_repo, IS);
-		IS = IS->next_repo_segment;
-		Inter::check_segments(IS->owning_repo);
-	}
-
-	int at = IS->size;
-	IS->bytecode[at + PREFRAME_SKIP_AMOUNT] = (inter_t) (n + PREFRAME_SIZE);
-	IS->bytecode[at + PREFRAME_VERIFICATION_COUNT] = 0;
-	IS->bytecode[at + PREFRAME_ORIGIN] = 0;
-	IS->bytecode[at + PREFRAME_COMMENT] = 0;
-	IS->bytecode[at + PREFRAME_PACKAGE] = 0;
-	IS->bytecode[at + PREFRAME_PARENT] = 0;
-	IS->bytecode[at + PREFRAME_FIRST_CHILD] = 0;
-	IS->bytecode[at + PREFRAME_LAST_CHILD] = 0;
-	IS->bytecode[at + PREFRAME_PREVIOUS] = 0;
-	IS->bytecode[at + PREFRAME_NEXT] = 0;
-	for (int i=0; i<n; i++) IS->bytecode[at + PREFRAME_SIZE + i] = 0;
-	IS->size += n + PREFRAME_SIZE;
-	inter_frame F = Inter::Frame::around(IS, at);
-	return F;
-}
-
-inter_t Inter::create_resource(inter_repository *I) {
-	if (I == NULL) internal_error("no repository");
-	if (I->size >= I->capacity) {
-		int new_size = 128;
-		while (new_size < 2*I->capacity) new_size = 2*new_size;
-
-		LOGIF(INTER_MEMORY, "Giving repository %d frame list of size %d (up from %d)\n",
-			I->allocation_id, new_size, I->capacity);
-
-		inter_resource_holder *storage = (inter_resource_holder *) Memory::I7_calloc(new_size, sizeof(inter_resource_holder), INTER_LINKS_MREASON);
-		inter_resource_holder *old = I->stored_resources;
-		for (int i=0; i<I->capacity; i++) storage[i] = old[i];
-		if (I->capacity > 0)
-			Memory::I7_free(old, INTER_LINKS_MREASON, I->capacity);
-		I->stored_resources = storage;
-		I->capacity = new_size;
-	}
-	int n = I->size ++;
-	I->stored_resources[n].stored_symbols_table = NULL;
-	I->stored_resources[n].stored_ref = NULL;
-	I->stored_resources[n].stored_package = NULL;
-	I->stored_resources[n].stored_text_stream = NULL;
-	I->stored_resources[n].stored_frame_list.spare_storage = NULL;
-	I->stored_resources[n].stored_frame_list.storage_used = 0;
-	I->stored_resources[n].stored_frame_list.storage_capacity = 0;
-	I->stored_resources[n].stored_frame_list.first_in_ifl = NULL;
-	I->stored_resources[n].stored_frame_list.last_in_ifl = NULL;
-	return (inter_t) n;
-}
-
-inter_t Inter::create_symbols_table(inter_repository *I) {
-	inter_t n = Inter::create_resource(I);
-	if (I->stored_resources[n].stored_symbols_table == NULL) {
-		I->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
-		I->stored_resources[n].stored_symbols_table->n_index = (int) n;
-	}
-	return n;
-}
-
-inter_symbols_table *Inter::get_global_symbols(inter_repository *I) {
-	return Inter::get_symbols_table(I, 1);
-}
-
-inter_symbols_table *Inter::get_symbols_table(inter_repository *I, inter_t n) {
-	if (n >= (inter_t) I->size) return NULL;
-	if (n == 0) return NULL;
-	return I->stored_resources[n].stored_symbols_table;
-}
-
-inter_t Inter::create_package(inter_repository *I) {
-	inter_t n = Inter::create_resource(I);
-	if (I->stored_resources[n].stored_package == NULL) {
-		I->stored_resources[n].stored_package = Inter::Packages::new(I, n);
-	}
-	return n;
-}
-
-inter_package *Inter::get_package(inter_repository *I, inter_t n) {
-	if (n >= (inter_t) I->size) return NULL;
-	if (n == 0) return NULL;
-	return I->stored_resources[n].stored_package;
-}
-
-inter_t Inter::create_text(inter_repository *I) {
-	inter_t n = Inter::create_resource(I);
-	if (I->stored_resources[n].stored_text_stream == NULL) {
-		I->stored_resources[n].stored_text_stream = Str::new();
-	}
-	return n;
-}
-
-text_stream *Inter::get_text(inter_repository *I, inter_t n) {
-	if (n >= (inter_t) I->size) return NULL;
-	return I->stored_resources[n].stored_text_stream;
-}
-
-inter_t Inter::create_ref(inter_repository *I) {
-	inter_t n = Inter::create_resource(I);
-	I->stored_resources[n].stored_ref = NULL;
-	return n;
-}
-
-void *Inter::get_ref(inter_repository *I, inter_t n) {
-	if (n >= (inter_t) I->size) return NULL;
-	return I->stored_resources[n].stored_ref;
-}
-
-void Inter::set_ref(inter_repository *I, inter_t n, void *ref) {
-	if (n >= (inter_t) I->size) return;
-	I->stored_resources[n].stored_ref = ref;
-}
-
-inter_t Inter::create_frame_list(inter_repository *I) {
-	return Inter::create_resource(I);
-}
+} inter_frame_list_entry;
 
 @
 
@@ -269,11 +169,12 @@ inter_t Inter::create_frame_list(inter_repository *I) {
 		if (Inter::Frame::valid(((F = F##_entry->listed_frame), &F)))
 
 =
-inter_frame_list *Inter::find_frame_list(inter_repository *I, inter_t N) {
+inter_frame_list *Inter::find_frame_list(inter_tree *I, inter_t N) {
 	if (I == NULL) return NULL;
+	inter_warehouse *warehouse = Inter::warehouse(I);
 	int n = (int) N;
-	if (n >= I->size) return NULL;
-	return &(I->stored_resources[n].stored_frame_list);
+	if (n >= warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_frame_list;
 }
 
 inter_frame Inter::first_child(inter_frame P) {
@@ -344,44 +245,13 @@ void Inter::add_to_frame_list(inter_frame_list *FL, inter_frame F) {
 	if (FL->first_in_ifl == NULL) FL->first_in_ifl = entry;
 }
 
-inter_t Inter::store_origin(inter_repository *I, inter_error_location *eloc) {
-	if (eloc) {
-		if (eloc->error_interb) {
-			I->origin_file = eloc->error_interb;
-			return (inter_t) (0x10000000 + eloc->error_offset);
-		}
-		if (eloc->error_tfp) {
-			I->origin_file = eloc->error_tfp->text_file_filename;
-			return (inter_t) (eloc->error_tfp->line_count);
-		}
-	}
-	return 0;
-}
-
 typedef struct inter_error_stash {
 	struct inter_error_location stashed_eloc;
 	struct text_file_position stashed_tfp;
 	MEMORY_MANAGEMENT
 } inter_error_stash;
 
-inter_error_location *Inter::retrieve_origin(inter_repository *I, inter_t C) {
-	if ((I) && (I->origin_file)) {
-		inter_error_stash *stash = CREATE(inter_error_stash);
-		stash->stashed_tfp = TextFiles::nowhere();
-		if (C < 0x10000000) {
-			text_file_position *tfp = &(stash->stashed_tfp);
-			tfp->text_file_filename = I->origin_file;
-			tfp->line_count = (int) C;
-			stash->stashed_eloc = Inter::Errors::file_location(NULL, tfp);
-		} else {
-			stash->stashed_eloc = Inter::Errors::interb_location(I->origin_file, (size_t) (C - 0x10000000));
-		}
-		return &(stash->stashed_eloc);
-	}
-	return NULL;
-}
-
-void Inter::traverse_global_list(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state, int filter) {
+void Inter::traverse_global_list(inter_tree *from, void (*visitor)(inter_tree *, inter_frame, void *), void *state, int filter) {
 	inter_frame P;
 	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(from->global_material))) {
 		if ((filter == 0) ||
@@ -391,9 +261,35 @@ void Inter::traverse_global_list(inter_repository *from, void (*visitor)(inter_r
 	}
 }
 
-void Inter::traverse_tree(inter_repository *from, void (*visitor)(inter_repository *, inter_frame, void *), void *state, inter_package *mp, int filter) {
+void Inter::set_mask(inter_tree *I, inter_package *mp) {
+	if (mp) {
+		while (mp) {
+			inter_package *par = Inter::Packages::parent(mp);
+			if (par) par->mask_down = mp;
+			mp = par;
+		}
+	} else {
+		mp = Inter::Packages::main(I);
+		while (mp->mask_down) {
+			inter_package *ch = mp->mask_down;
+			mp->mask_down = NULL;
+			mp = ch;
+		}
+	}
+}
+
+void Inter::traverse_tree(inter_tree *from, void (*visitor)(inter_tree *, inter_frame, void *), void *state, inter_package *mp, int filter) {
 	if (mp == NULL) mp = Inter::Packages::main(from);
 	if (mp) {
+		while (mp->mask_down) {
+			inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
+			mp = mp->mask_down;
+			if ((filter == 0) ||
+				((filter > 0) && (D.data[ID_IFLD] == (inter_t) filter)) ||
+				((filter < 0) && (D.data[ID_IFLD] != (inter_t) -filter)))
+				(*visitor)(from, D, state);
+			Inter::traverse_tree_r(from, D, visitor, state, filter);
+		}
 		inter_frame D = Inter::Symbols::defining_frame(mp->package_name);
 		if ((filter == 0) ||
 			((filter > 0) && (D.data[ID_IFLD] == (inter_t) filter)) ||
@@ -402,7 +298,7 @@ void Inter::traverse_tree(inter_repository *from, void (*visitor)(inter_reposito
 		Inter::traverse_tree_r(from, D, visitor, state, filter);
 	}
 }
-void Inter::traverse_tree_r(inter_repository *from, inter_frame P, void (*visitor)(inter_repository *, inter_frame, void *), void *state, int filter) {
+void Inter::traverse_tree_r(inter_tree *from, inter_frame P, void (*visitor)(inter_tree *, inter_frame, void *), void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((filter == 0) ||
 			((filter > 0) && (C.data[ID_IFLD] == (inter_t) filter)) ||

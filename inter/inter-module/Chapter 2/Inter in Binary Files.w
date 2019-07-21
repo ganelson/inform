@@ -7,7 +7,7 @@ The binary representation of Inter, saved out to a file, is portable and
 complete in itself.
 
 =
-void Inter::Binary::read(inter_repository *I, filename *F) {
+void Inter::Binary::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading binary inter file %f)\n", F);
 	long int max_offset = BinaryFiles::size(F);
 
@@ -15,6 +15,8 @@ void Inter::Binary::read(inter_repository *I, filename *F) {
 
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
 	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
+
+	inter_warehouse *warehouse = Inter::warehouse(I);
 
 	unsigned int X = 0;
 
@@ -30,9 +32,10 @@ void Inter::Binary::read(inter_repository *I, filename *F) {
 @ Symmetrically:
 
 =
-void Inter::Binary::write(filename *F, inter_repository *I) {
+void Inter::Binary::write(filename *F, inter_tree *I) {
 	LOGIF(INTER_FILE_READ, "(Writing binary inter file %f)\n", F);
 	FILE *fh = BinaryFiles::open_for_writing(F);
+	inter_warehouse *warehouse = Inter::warehouse(I);
 
 	@<Write the shibboleth@>;
 	@<Write the annotations@>;
@@ -107,9 +110,9 @@ that's the end of the list and therefore the block.
 		if (X == NO_IRSRC) break;
 
 		inter_t n = 1;
-		if (first_one == FALSE) n = Inter::create_resource(I);
+		if (first_one == FALSE) n = Inter::Warehouse::create_resource(warehouse);
 		first_one = FALSE;
-		inter_resource_holder *res = &(I->stored_resources[n]);
+		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 
 		switch (X) {
 			case STRING_IRSRC: @<Read a string resource@>; break;
@@ -120,8 +123,8 @@ that's the end of the list and therefore the block.
 	}
 
 @<Write the resources@> =
-	for (int n = 1; n < I->size; n++) {
-		inter_resource_holder *res = &(I->stored_resources[n]);
+	for (int n = 1; n < warehouse->size; n++) {
+		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 		if (res->stored_text_stream) {
 			BinaryFiles::write_int32(fh, STRING_IRSRC);
 			@<Write a string resource@>;
@@ -191,7 +194,7 @@ that's the end of the list and therefore the block.
 			if (BinaryFiles::read_int32(fh, &c2) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			inter_annotation IA = Inter::Defn::annotation_from_bytecode(c1, c2);
 			if (Inter::Defn::is_invalid(IA)) Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
-			Inter::Symbols::annotate(I, S, IA);
+			Inter::Symbols::annotate(S, IA);
 		}
 		if (S->symbol_scope == LINK_ISYMS) {
 			S->equated_name = Str::new();
@@ -288,7 +291,7 @@ that's the end of the list and therefore the block.
 enough that the slot exists for the eventual list to be stored in.
 
 @<Read a frame list resource@> =
-	;
+	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::new_frame_list();
 
 @<Write a frame list resource@> =
 	;
@@ -315,8 +318,8 @@ enough that the slot exists for the eventual list to be stored in.
 
 
 @<Write the symbol equations@> =
-	for (int n = 1; n < I->size; n++) {
-		inter_resource_holder *res = &(I->stored_resources[n]);
+	for (int n = 1; n < warehouse->size; n++) {
+		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 		if (res->stored_symbols_table) {
 			inter_symbols_table *from_T = res->stored_symbols_table;
 			BinaryFiles::write_int32(fh, (unsigned int) n);
@@ -343,7 +346,7 @@ enough that the slot exists for the eventual list to be stored in.
 		unsigned int PID = 0;
 		if (BinaryFiles::read_int32(fh, &PID)) owner = Inter::Packages::from_PID(I, PID);
 
-		inter_frame P = Inter::find_room(I, extent-1, &eloc, owner);
+		inter_frame P = Inter::Warehouse::find_room(I, extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;
@@ -359,14 +362,13 @@ enough that the slot exists for the eventual list to be stored in.
 		if (E) { Inter::Errors::issue(E); exit(1); }
 		Inter::Frame::insert(P, &at);
 	}
-	Inter::check_segments(I);
 
 @<Write the bytecode@> =
 	Inter::traverse_global_list(I, Inter::Binary::visitor, fh, -PACKAGE_IST);
 	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
-void Inter::Binary::visitor(inter_repository *I, inter_frame P, void *state) {
+void Inter::Binary::visitor(inter_tree *I, inter_frame P, void *state) {
 	FILE *fh = (FILE *) state;
 	BinaryFiles::write_int32(fh, (unsigned int) (P.extent + 1));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)));

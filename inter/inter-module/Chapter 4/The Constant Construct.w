@@ -43,7 +43,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(IBM->read_into, con_name, ilp->annotations[i]);
+		Inter::Symbols::annotate(con_name, ilp->annotations[i]);
 
 	inter_symbol *con_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
@@ -308,7 +308,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_frame P, inter_package *
 				for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 					inter_t V1 = P.data[i];
 					inter_t V2 = P.data[i+1];
-					inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(P.repo_segment->owning_repo, Inter::Packages::scope(owner), V1, V2);
+					inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(Inter::Packages::scope(owner), V1, V2);
 					if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inter::Frame::error(&P, I"not a table column constant", NULL); return; }
 				}
 			} else {
@@ -336,7 +336,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_frame P, inter_package *
 		case CONSTANT_INDIRECT_TEXT:
 			if (P.extent != DATA_CONST_IFLD + 1) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
 			inter_t ID = P.data[DATA_CONST_IFLD];
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+			text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 			if (S == NULL) { *E = Inter::Frame::error(&P, I"no text in comment", NULL); return; }
 			LOOP_THROUGH_TEXT(pos, S)
 				if (Inter::Constant::char_acceptable(Str::get(pos)) == FALSE)
@@ -360,7 +360,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 		WRITE("constant %S %S = ", con_name->symbol_name, con_kind->symbol_name);
 		switch (P.data[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				Inter::Types::write(OUT, P.repo_segment->owning_repo, con_kind,
+				Inter::Types::write(OUT, &P, con_kind,
 					P.data[DATA_CONST_IFLD], P.data[DATA_CONST_IFLD+1], Inter::Packages::scope_of(P), hex);
 				break;
 			case CONSTANT_SUM_LIST:			
@@ -377,7 +377,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 				for (int i=DATA_CONST_IFLD; i<P.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					Inter::Types::write(OUT, P.repo_segment->owning_repo, conts_kind, P.data[i], P.data[i+1], Inter::Packages::scope_of(P), hex);
+					Inter::Types::write(OUT, &P, conts_kind, P.data[i], P.data[i+1], Inter::Packages::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -388,7 +388,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-					Inter::Types::write(OUT, P.repo_segment->owning_repo, conts_kind, P.data[i], P.data[i+1], Inter::Packages::scope_of(P), hex);
+					Inter::Types::write(OUT, &P, conts_kind, P.data[i], P.data[i+1], Inter::Packages::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -396,7 +396,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 			case CONSTANT_INDIRECT_TEXT:
 				WRITE("\"");
 				inter_t ID = P.data[DATA_CONST_IFLD];
-				text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+				text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 				Inter::Constant::write_text(OUT, S);
 				WRITE("\"");
 				break;
@@ -406,7 +406,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, i
 				break;
 			}
 		}
-		Inter::Symbols::write_annotations(OUT, P.repo_segment->owning_repo, con_name);
+		Inter::Symbols::write_annotations(OUT, &P, con_name);
 	} else {
 		*E = Inter::Frame::error(&P, I"constant can't be written", NULL);
 		return;

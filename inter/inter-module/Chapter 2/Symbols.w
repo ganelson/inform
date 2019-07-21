@@ -87,7 +87,7 @@ int Inter::Symbols::is_stored_in_data(inter_t val1, inter_t val2) {
 	return FALSE;
 }
 
-void Inter::Symbols::to_data(inter_repository *I, inter_package *pack, inter_symbol *S, inter_t *val1, inter_t *val2) {
+void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_t *val1, inter_t *val2) {
 	if (S == NULL) internal_error("no symbol");
 	*val1 = ALIAS_IVAL; *val2 = Inter::SymbolsTables::id_from_symbol(I, pack, S);
 }
@@ -253,19 +253,16 @@ text_stream *Inter::Symbols::get_append(inter_symbol *symb) {
 	return symb->append_text;
 }
 
-void Inter::Symbols::annotate(inter_repository *I, inter_symbol *symb, inter_annotation IA) {
+void Inter::Symbols::annotate(inter_symbol *symb, inter_annotation IA) {
 	if (symb == NULL) internal_error("annotated null symbol");
 	if (symb->no_symbol_annotations >= MAX_INTER_ANNOTATIONS_PER_SYMBOL)
 		internal_error("too many annotations");
-	LOGIF(INTER_SYMBOLS, "Annot %d of %S is ", symb->no_symbol_annotations, symb->symbol_name);
-	if (Log::aspect_switched_on(INTER_SYMBOLS_DA)) Inter::Defn::write_annotation(DL, I, IA);
-	LOGIF(INTER_SYMBOLS, "\n");
 	symb->symbol_annotations[symb->no_symbol_annotations++] = IA;
 }
 
-void Inter::Symbols::annotate_i(inter_repository *I, inter_symbol *symb, inter_t annot_ID, inter_t n) {
+void Inter::Symbols::annotate_i(inter_symbol *symb, inter_t annot_ID, inter_t n) {
 	inter_annotation IA = Inter::Defn::annotation_from_bytecode(annot_ID, n);
-	Inter::Symbols::annotate(I, symb, IA);
+	Inter::Symbols::annotate(symb, IA);
 }
 
 int Inter::Symbols::read_annotation(inter_symbol *symb, inter_t ID) {
@@ -275,7 +272,7 @@ int Inter::Symbols::read_annotation(inter_symbol *symb, inter_t ID) {
 	return -1;
 }
 
-text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_repository *I, inter_t ID) {
+text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_t ID) {
 	for (int i=0; i<symb->no_symbol_annotations; i++)
 		if (symb->symbol_annotations[i].annot->annotation_ID == ID) {
 			inter_t N = symb->symbol_annotations[i].annot_value;
@@ -284,17 +281,17 @@ text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_reposit
 	return NULL;
 }
 
-void Inter::Symbols::annotate_t(inter_repository *I, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
+void Inter::Symbols::annotate_t(inter_tree *I, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
 	inter_t n = Inter::create_text(I);
 	Str::copy(Inter::get_text(I, n), S);
 	inter_annotation IA = Inter::Defn::annotation_from_bytecode(annot_ID, n);
-	Inter::Symbols::annotate(I, symb, IA);
+	Inter::Symbols::annotate(symb, IA);
 }
 
-void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_repository *I, inter_symbol *symb) {
+void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_frame *F, inter_symbol *symb) {
 	if (symb)
 		for (int i=0; i<symb->no_symbol_annotations; i++)
-			Inter::Defn::write_annotation(OUT, I, symb->symbol_annotations[i]);
+			Inter::Defn::write_annotation(OUT, F, symb->symbol_annotations[i]);
 }
 
 @ =

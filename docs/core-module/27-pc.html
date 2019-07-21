@@ -222,7 +222,7 @@ very early on, the enclosure is always an enclosing package.)
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">inter_repository</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">current_state</span><span class="element">.saved_IRS</span><span class="plain"> = </span><span class="functiontext">Packaging::push_IRS</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="identifier">current_state</span><span class="element">.saved_enclosure</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>

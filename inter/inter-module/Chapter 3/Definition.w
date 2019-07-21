@@ -153,7 +153,7 @@ inter_annotation Inter::Defn::invalid_annotation(void) {
 	return IA;
 }
 
-inter_annotation Inter::Defn::read_annotation(inter_repository *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
+inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
 	inter_t val = 0;
 	int textual = FALSE;
 	*E = NULL;
@@ -210,12 +210,12 @@ void Inter::Defn::annotation_to_bytecode(inter_annotation IA, inter_t *c1, inter
 	*c2 = IA.annot_value;
 }
 
-void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_repository *I, inter_annotation IA) {
+void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_frame *F, inter_annotation IA) {
 	WRITE(" %S", IA.annot->annotation_keyword);
 	if (IA.annot_value != 0) {
 		if (IA.annot->textual_flag) {
 			WRITE("=\"");
-			Inter::Constant::write_text(OUT, Inter::get_text(I, IA.annot_value));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, IA.annot_value));
 			WRITE("\"");
 		} else {
 			WRITE("=%d", IA.annot_value);
@@ -265,7 +265,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	inter_t ID = Inter::Frame::get_comment(P);
 	if (ID != 0) {
 		if (P.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
-		WRITE("# %S", Inter::get_text(P.repo_segment->owning_repo, ID));
+		WRITE("# %S", Inter::Frame::ID_to_text(&P, ID));
 	}
 	WRITE("\n");
 	if (P.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);

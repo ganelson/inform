@@ -16,7 +16,7 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
-void CodeGen::FC::iterate(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::FC::iterate(inter_tree *I, inter_frame P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
@@ -42,7 +42,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 			inter_symbol *con_name =
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
-			inter_repository *I = gen->from;
+			inter_tree *I = gen->from;
 			if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
 				WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 				internal_error("constant defined in main");
@@ -50,7 +50,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 			if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
 				inter_t ID = P.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
-					Inter::get_text(P.repo_segment->owning_repo, ID));
+					Inter::Frame::ID_to_text(&P, ID));
 				CodeGen::select_temporary(gen, S);
 				CodeGen::CL::constant(gen, P);
 				CodeGen::deselect_temporary(gen);
@@ -88,7 +88,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 =
 void CodeGen::FC::splat(code_generation *gen, inter_frame P) {
 	text_stream *OUT = CodeGen::current(gen);
-	inter_repository *I = gen->from;
+	inter_tree *I = gen->from;
 	text_stream *S = Inter::get_text(I, P.data[MATTER_SPLAT_IFLD]);
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
@@ -133,7 +133,7 @@ void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	int function_code_block = FALSE;
 	inter_t PAR_index = Inter::Frame::get_parent_index(P);
 	if (PAR_index == 0) internal_error("misplaced code node");
-	inter_frame PAR = Inter::Frame::from_index(P.repo_segment->owning_repo, PAR_index);
+	inter_frame PAR = Inter::Frame::ID_to_frame(&P, PAR_index);
 	if (PAR.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
 	if (function_code_block) { WRITE(";\n"); INDENT; }
@@ -275,7 +275,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 		}
 		case INVOKED_OPCODE: {
 			inter_t ID = P.data[INVOKEE_INV_IFLD];
-			text_stream *S = Inter::get_text(P.repo_segment->owning_repo, ID);
+			text_stream *S = Inter::Frame::ID_to_text(&P, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {

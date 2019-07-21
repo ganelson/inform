@@ -10,7 +10,7 @@ inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-inter_repository *Emit::repository(void) {
+inter_tree *Emit::repository(void) {
 	return Packaging::at()->read_into;
 }
 
@@ -45,7 +45,7 @@ dictionary *extern_symbols = NULL;
 int glob_count = 0;
 
 void Emit::begin(void) {
-	inter_repository *repo = Inter::create(1, 4096);
+	inter_tree *repo = Inter::create();
 	Packaging::initialise_state(repo);
 	Packaging::outside_all_packages();
 	
@@ -217,11 +217,11 @@ void Emit::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
 }
 
 void Emit::annotate_symbol_i(inter_symbol *symb, inter_t annot_ID, inter_t V) {
-	Inter::Symbols::annotate_i(Emit::repository(), symb, annot_ID, V);
+	Inter::Symbols::annotate_i(symb, annot_ID, V);
 }
 
 void Emit::annotate_iname_i(inter_name *N, inter_t annot_ID, inter_t V) {
-	Inter::Symbols::annotate_i(Emit::repository(), InterNames::to_symbol(N), annot_ID, V);
+	Inter::Symbols::annotate_i(InterNames::to_symbol(N), annot_ID, V);
 }
 
 void Emit::guard(inter_error_message *ERR) {

@@ -131,7 +131,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 	inter_symbol *prim_name, inter_frame P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
-	inter_repository *I = gen->from;
+	inter_tree *I = gen->from;
 	inter_t bip = Primitives::to_bip(I, prim_name);
 	switch (bip) {
 		case INVERSION_BIP:		WRITE("inversion"); break;

@@ -87,7 +87,7 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_t cat) {
 void Inter::Primitive::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
 	if (P.extent < MIN_EXTENT_PRIM_IFR) { *E = Inter::Frame::error(&P, I"p extent wrong", NULL); return; }
 	*E = Inter__Verify__defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
-	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_id(Inter::get_global_symbols(P.repo_segment->owning_repo), P.data[DEFN_PRIM_IFLD]);
+	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_id(Inter::Frame::globals(&P), P.data[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
 		{ *E = Inter::Frame::error(&P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;

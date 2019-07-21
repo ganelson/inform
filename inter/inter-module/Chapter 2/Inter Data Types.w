@@ -105,7 +105,7 @@ inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symb
 	return Inter::Frame::error(&P, I"value of unknown category", NULL);
 }
 
-inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_repository *I, inter_symbols_table *T, inter_t V1, inter_t V2) {
+inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_t V1, inter_t V2) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(V1, V2, T);
 	if (symb) {
 		inter_frame D = Inter::Symbols::defining_frame(symb);
@@ -132,7 +132,7 @@ inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_repository *I, i
 
 =
 
-void Inter::Types::write(OUTPUT_STREAM, inter_repository *IC, inter_symbol *kind_symbol,
+void Inter::Types::write(OUTPUT_STREAM, inter_frame *F, inter_symbol *kind_symbol,
 	inter_t V1, inter_t V2, inter_symbols_table *scope, int hex_flag) {
 	switch (V1) {
 		case LITERAL_IVAL:
@@ -140,12 +140,12 @@ void Inter::Types::write(OUTPUT_STREAM, inter_repository *IC, inter_symbol *kind
 			else WRITE("%d", V2); break;
 		case REAL_IVAL:
 			WRITE("r\"");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case LITERAL_TEXT_IVAL:
 			WRITE("\"");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case ALIAS_IVAL: {
@@ -156,29 +156,29 @@ void Inter::Types::write(OUTPUT_STREAM, inter_repository *IC, inter_symbol *kind
 		case UNDEF_IVAL: WRITE("undef"); break;
 		case GLOB_IVAL:
 			WRITE("&\"");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case DWORD_IVAL:
 			WRITE("dw'");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("'");
 			break;
 		case PDWORD_IVAL:
 			WRITE("dwp'");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("'");
 			break;
 		case DIVIDER_IVAL:
 			WRITE("^\"");
-			Inter::Constant::write_text(OUT, Inter::get_text(IC, V2));
+			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		default: WRITE("<invalid-value-type>"); break;
 	}
 }
 
-inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_repository *IC, inter_package *pack, inter_symbol *kind_symbol, text_stream *S, inter_t *val1, inter_t *val2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_tree *IC, inter_package *pack, inter_symbol *kind_symbol, text_stream *S, inter_t *val1, inter_t *val2, inter_symbols_table *scope) {
 	if (Str::eq(S, I"undef")) {
 		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
 	}

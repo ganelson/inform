@@ -21,7 +21,7 @@ int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 inter_symbols_table *link_search_list[10];
 int link_search_list_len = 0;
 
-void CodeGen::MergeTemplate::ensure_search_list(inter_repository *I) {
+void CodeGen::MergeTemplate::ensure_search_list(inter_tree *I) {
 	if (link_search_list_len == 0) {
 		if (template_package) {
 			link_search_list[1] = Inter::Packages::scope(Inter::Packages::main(I));
@@ -36,7 +36,7 @@ void CodeGen::MergeTemplate::ensure_search_list(inter_repository *I) {
 
 void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
-	inter_repository *I = IBM->read_into;
+	inter_tree *I = IBM->read_into;
 	Inter::traverse_tree(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
 	if (template_package == NULL) internal_error("unable to find template");
@@ -56,13 +56,13 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	TemplateReader::extract(template_file, &kit);
 }
 
-void CodeGen::MergeTemplate::visitor(inter_repository *I, inter_frame P, void *state) {
+void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_frame P, void *state) {
 	if (P.data[ID_IFLD] == LINK_IST) {
-		text_stream *S1 = Inter::get_text(P.repo_segment->owning_repo, P.data[SEGMENT_LINK_IFLD]);
-		text_stream *S2 = Inter::get_text(P.repo_segment->owning_repo, P.data[PART_LINK_IFLD]);
-		text_stream *S3 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inter::get_text(P.repo_segment->owning_repo, P.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inter::get_ref(P.repo_segment->owning_repo, P.data[REF_LINK_IFLD]);
+		text_stream *S1 = Inter::Frame::ID_to_text(&P, P.data[SEGMENT_LINK_IFLD]);
+		text_stream *S2 = Inter::Frame::ID_to_text(&P, P.data[PART_LINK_IFLD]);
+		text_stream *S3 = Inter::Frame::ID_to_text(&P, P.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inter::Frame::ID_to_text(&P, P.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inter::Frame::ID_to_ref(&P, P.data[REF_LINK_IFLD]);
 		TemplateReader::new_intervention((int) P.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 	}
 }
@@ -70,7 +70,7 @@ void CodeGen::MergeTemplate::visitor(inter_repository *I, inter_frame P, void *s
 dictionary *linkable_namespace = NULL;
 int linkable_namespace_created = FALSE;
 
-inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_repository *I, text_stream *name) {
+inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stream *name) {
 	if (linkable_namespace_created == FALSE) {
 		linkable_namespace_created = TRUE;
 		linkable_namespace = Dictionaries::new(512, FALSE);
@@ -119,7 +119,7 @@ void CodeGen::MergeTemplate::build_only(inter_package *P) {
 	}
 }
 
-inter_symbol *CodeGen::MergeTemplate::find_name(inter_repository *I, text_stream *S, int deeply) {
+inter_symbol *CodeGen::MergeTemplate::find_name(inter_tree *I, text_stream *S, int deeply) {
 	for (int i=0; i<link_search_list_len; i++) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
 		if (symb) return symb;

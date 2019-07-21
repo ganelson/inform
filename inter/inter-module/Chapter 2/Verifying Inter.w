@@ -5,7 +5,7 @@ Verifying that a chunk of inter is correct and consistent.
 @ =
 inter_error_message *Inter::Verify::defn(inter_package *owner, inter_frame P, int index) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	if (T == NULL) T = Inter::Frame::globals(&P);
 	inter_symbol *S = Inter::SymbolsTables::unequated_symbol_from_id(T, P.data[index]);
 	if (S == NULL) return Inter::Frame::error(&P, I"no symbol for ID (case 1)", NULL);
 	if (S->equated_to) {
@@ -37,7 +37,7 @@ inter_error_message *Inter::Verify::local_defn(inter_frame P, int index, inter_s
 
 inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_frame P, inter_t ID, inter_t construct) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	if (T == NULL) T = Inter::Frame::globals(&P);
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inter::Frame::error(&P, I"no symbol for ID (case 3)", NULL);
 	inter_frame D = Inter::Symbols::defining_frame(S);
@@ -53,7 +53,7 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_frame P, 
 }
 
 inter_error_message *Inter::Verify::global_symbol(inter_frame P, inter_t ID, inter_t construct) {
-	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(Inter::get_global_symbols(P.repo_segment->owning_repo), ID);
+	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(Inter::Frame::globals(&P), ID);
 	if (S == NULL) { internal_error("IO"); return Inter::Frame::error(&P, I"3no symbol for ID", NULL); }
 	inter_frame D = Inter::Symbols::defining_frame(S);
 	if (Inter::Symbols::is_extern(S)) return NULL;
@@ -84,7 +84,7 @@ inter_error_message *Inter::Verify::local_symbol(inter_frame P, inter_t ID, inte
 
 inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_frame P, inter_t ID) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	if (T == NULL) T = Inter::Frame::globals(&P);
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inter::Frame::error(&P, I"5no symbol for ID", NULL);
 	inter_frame D = Inter::Symbols::defining_frame(S);
@@ -107,7 +107,7 @@ inter_error_message *Inter::Verify::data_type(inter_frame P, int index) {
 
 inter_error_message *Inter::Verify::value(inter_package *owner, inter_frame P, int index, inter_symbol *kind_symbol) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::get_global_symbols(P.repo_segment->owning_repo);
+	if (T == NULL) T = Inter::Frame::globals(&P);
 	if (kind_symbol == NULL) return Inter::Frame::error(&P, I"unknown kind for value", NULL);
 	inter_t V1 = P.data[index];
 	inter_t V2 = P.data[index+1];
