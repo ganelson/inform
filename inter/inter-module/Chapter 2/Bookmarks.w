@@ -4,7 +4,6 @@ Write positions for inter code being generated.
 
 @ =
 typedef struct inter_bookmark {
-	struct inter_tree *read_into;
 	struct inter_package *current_package;
 	struct inter_frame R;
 	int placement_wrt_R;
@@ -13,17 +12,21 @@ typedef struct inter_bookmark {
 @ =
 inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_tree *I) {
 	inter_bookmark IBM;
-	IBM.read_into = I;
-	IBM.current_package = NULL;
-	IBM.R = Inter::Frame::around(NULL, -1);
+	IBM.current_package = I->root_package;
+	IBM.R = I->root_definition_frame;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;
 	return IBM;
+}
+
+inter_tree *Inter::Bookmarks::tree(inter_bookmark *IBM) {
+	if (IBM == NULL) return NULL;
+	if (IBM->current_package == NULL) internal_error("no package");
+	return IBM->current_package->stored_in;
 }
 
 inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	if (pack == NULL) internal_error("no package supplied"); 
 	inter_bookmark IBM;
-	IBM.read_into = pack->stored_in;
 	IBM.current_package = pack;
 	IBM.R = Inter::Symbols::defining_frame(pack->package_name);
 	IBM.placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
@@ -33,8 +36,8 @@ inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_frame D) {
 	if (Inter::Frame::valid(&D) == FALSE) internal_error("invalid frame supplied");
 	inter_bookmark IBM;
-	IBM.read_into = I;
 	IBM.current_package = Inter::Packages::container(D);
+	if (IBM.current_package == NULL) IBM.current_package = I->root_package;
 	IBM.R = D;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;
 	return IBM;
@@ -42,10 +45,15 @@ inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_frame D) 
 
 void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
+	if (P == NULL) internal_error("invalid package supplied");
 	IBM->current_package = P;
-	if (P) IBM->R = Inter::Symbols::defining_frame(P->package_name);
-	else IBM->R = Inter::Frame::around(NULL, -1);
-	IBM->placement_wrt_R = AFTER_ICPLACEMENT;
+	if (Inter::Packages::is_rootlike(P)) {
+		IBM->R = P->stored_in->root_definition_frame;
+		IBM->placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
+	} else {
+		IBM->R = Inter::Symbols::defining_frame(P->package_name);
+		IBM->placement_wrt_R = AFTER_ICPLACEMENT;
+	}
 }
 
 int Inter::Bookmarks::get_placement(inter_bookmark *IBM) {
@@ -83,8 +91,6 @@ void Inter::Bookmarks::log(OUTPUT_STREAM, void *virs) {
 	if (IBM == NULL) WRITE("<null-bookmark>");
 	else {
 		LOG("<bookmark:");
-		if (IBM->read_into) LOG("%d:", IBM->read_into->allocation_id);
-		else LOG("--:");
 		if (IBM->current_package == NULL) LOG("--");
 		else LOG("$3", IBM->current_package->package_name);
 		LOG("(%d)>", Inter::Bookmarks::baseline(IBM));
@@ -93,7 +99,7 @@ void Inter::Bookmarks::log(OUTPUT_STREAM, void *virs) {
 
 inter_symbols_table *Inter::Bookmarks::scope(inter_bookmark *IBM) {
 	if ((IBM) && (IBM->current_package)) return Inter::Packages::scope(IBM->current_package);
-	return Inter::get_global_symbols(IBM->read_into);
+	return Inter::get_global_symbols(Inter::Bookmarks::tree(IBM));
 }
 
 inter_package *Inter::Bookmarks::package(inter_bookmark *IBM) {

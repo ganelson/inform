@@ -38,7 +38,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
-	inter_t ID = Inter::create_text(IBM->read_into);
+	inter_t ID = Inter::create_text(Inter::Bookmarks::tree(IBM));
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		int c = (int) Str::get(pos);
@@ -54,7 +54,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
-		PUT_TO(Inter::get_text(IBM->read_into, ID), c);
+		PUT_TO(Inter::get_text(Inter::Bookmarks::tree(IBM), ID), c);
 		literal_mode = FALSE;
 	}
 

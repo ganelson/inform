@@ -33,7 +33,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *var_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
@@ -41,7 +41,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind), var_val1, var_val2, (inter_t) ilp->indent_level, eloc);

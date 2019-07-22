@@ -45,7 +45,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	for (int i=0; i<ilp->no_annotations; i++)
 		Inter::Symbols::annotate(con_name, ilp->annotations[i]);
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 	text_stream *S = ilp->mr.exp[2];
 
@@ -165,8 +165,8 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 			inter_t ID = 0;
 			if (*E == NULL) {
-				ID = Inter::create_text(IBM->read_into);
-				Str::copy(Inter::get_text(IBM->read_into, ID), parsed_text);
+				ID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+				Str::copy(Inter::get_text(Inter::Bookmarks::tree(IBM), ID), parsed_text);
 			}
 			DISCARD_TEXT(parsed_text);
 			if (*E) return;
@@ -176,7 +176,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	}
 
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
-		inter_symbol *block_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), S, PACKAGE_IST, E);
+		inter_symbol *block_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), S, PACKAGE_IST, E);
 		if (*E) return;
 		*E = Inter::Constant::new_function(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, block_name), (inter_t) ilp->indent_level, eloc);
 		return;
@@ -187,7 +187,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if (Str::eq(S, I"0")) { con_val1 = LITERAL_IVAL; con_val2 = 0; }
 	else {
-		*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), con_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+		*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), con_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 		if (*E) return;
 	}
 
@@ -259,16 +259,16 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
 	if (conts_kind == NULL) {
-		inter_symbol *tc = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), S, CONSTANT_IST, E);
+		inter_symbol *tc = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
-			Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), tc, &con_val1, &con_val2);
+			Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), tc, &con_val1, &con_val2);
 		} else {
 			*E = Inter::Errors::quoted(I"not a table column constant", S, eloc);
 			return FALSE;
 		}
 	} else {
-		*E = Inter::Types::read(line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+		*E = Inter::Types::read(line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 		if (*E) return FALSE;
 	}
 	if (Inter::Frame::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }

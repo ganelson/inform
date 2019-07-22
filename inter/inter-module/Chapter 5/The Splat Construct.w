@@ -62,8 +62,8 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_t plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
-	inter_t SID = Inter::create_text(IBM->read_into);
-	text_stream *glob_storage = Inter::get_text(IBM->read_into, SID);
+	inter_t SID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	text_stream *glob_storage = Inter::get_text(Inter::Bookmarks::tree(IBM), SID);
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 

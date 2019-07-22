@@ -198,7 +198,7 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, int
 			if (temporary_generation == NULL) {
 				CodeGen::Targets::make_targets();
 				temporary_generation =
-					CodeGen::new_generation(NULL, IBM->read_into, NULL, CodeGen::I6::target());
+					CodeGen::new_generation(NULL, Inter::Bookmarks::tree(IBM), NULL, CodeGen::I6::target());
 			}
 			CodeGen::select_temporary(temporary_generation, OUT);
 			CodeGen::CL::literal(temporary_generation, NULL, NULL, val1, val2, FALSE);

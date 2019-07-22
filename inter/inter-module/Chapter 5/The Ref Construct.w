@@ -41,12 +41,12 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *ref_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *ref_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
+	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, routine, ref_kind, ilp->indent_level, var_val1, var_val2, eloc);

@@ -40,8 +40,8 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		return;
 	}
 
-	inter_t ID = Inter::create_text(IBM->read_into);
-	*E = Inter::Constant::parse_text(Inter::get_text(IBM->read_into, ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	inter_t ID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	*E = Inter::Constant::parse_text(Inter::get_text(Inter::Bookmarks::tree(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
 	*E = Inter::Append::new(IBM, symbol, ID, (inter_t) ilp->indent_level, eloc);

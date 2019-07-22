@@ -299,11 +299,11 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		literal = FALSE;
 		if (c == '\\') literal = TRUE;
 		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = Inter::create_text(IBM->read_into);
+			ilp.terminal_comment = Inter::create_text(Inter::Bookmarks::tree(IBM));
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(Inter::get_text(IBM->read_into, ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::substr(Inter::get_text(Inter::Bookmarks::tree(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
 			Str::truncate(ilp.line, at);
 			break;
 		}
@@ -313,14 +313,14 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	if (ilp.indent_level == 0) latest_block_symbol = NULL;
 
-	while ((Inter::Bookmarks::package(IBM)) && (ilp.indent_level <= Inter::Bookmarks::baseline(IBM))) {
+	while ((Inter::Bookmarks::package(IBM)) && (Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE) && (ilp.indent_level <= Inter::Bookmarks::baseline(IBM))) {
 		Inter::Bookmarks::set_current_package(IBM, Inter::Packages::parent(Inter::Bookmarks::package(IBM)));
 	}
 
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
 		Str::copy(ilp.line, ilp.mr.exp[0]);
 		inter_error_message *E = NULL;
-		inter_annotation IA = Inter::Defn::read_annotation(IBM->read_into, ilp.mr.exp[1], eloc, &E);
+		inter_annotation IA = Inter::Defn::read_annotation(Inter::Bookmarks::tree(IBM), ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
 		if (ilp.no_annotations >= MAX_INTER_ANNOTATIONS_PER_SYMBOL)
 			return Inter::Errors::quoted(I"too many annotations", ilp.mr.exp[1], eloc);
@@ -347,7 +347,9 @@ inter_symbol *Inter::Defn::get_latest_block_symbol(void) {
 
 inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_t cons, int level, inter_error_location *eloc) {
 	int actual = level;
-	if (Inter::Bookmarks::package(IBM)) actual = level - Inter::Bookmarks::baseline(IBM) - 1;
+	if ((Inter::Bookmarks::package(IBM)) &&
+		(Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE))	
+		actual = level - Inter::Bookmarks::baseline(IBM) - 1;
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
 		if (proposed->construct_ID == cons) {

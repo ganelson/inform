@@ -10,13 +10,14 @@ inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-inter_tree *Emit::repository(void) {
-	return Packaging::at()->read_into;
+inter_tree *Emit::tree(void) {
+	return Inter::Bookmarks::tree(Packaging::at());
 }
 
 inter_t Emit::baseline(inter_bookmark *IBM) {
 	if (IBM == NULL) return 0;
 	if (Inter::Bookmarks::package(IBM) == NULL) return 0;
+	if (Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM))) return 0;
 	if (Inter::Packages::is_codelike(Inter::Bookmarks::package(IBM)))
 		return (inter_t) Inter::Packages::baseline(Inter::Packages::parent(Inter::Bookmarks::package(IBM))) + 1;
 	return (inter_t) Inter::Packages::baseline(Inter::Bookmarks::package(IBM)) + 1;
@@ -93,15 +94,15 @@ void Emit::version(int N) {
 }
 
 inter_symbol *Emit::packagetype(text_stream *name, int enclosing) {
-	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::repository()), name);
+	inter_symbol *pt = Emit::new_symbol(Inter::get_global_symbols(Emit::tree()), name);
 	Emit::guard(Inter::PackageType::new_packagetype(&package_types_bookmark, pt, Emit::baseline(&package_types_bookmark), NULL));
 	if (enclosing) Emit::annotate_symbol_i(pt, ENCLOSING_IANN, 1);
 	return pt;
 }
 
 void Emit::comment(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), text);
+	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL, ID));
 }
 
@@ -128,7 +129,7 @@ inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name 
 	inter_symbol *rsymb = InterNames::to_symbol(Rules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
 	inter_t val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Packaging::at()->read_into, Inter::Bookmarks::package(Packaging::at()), vsymb, &val1, &val2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at()), Inter::Bookmarks::package(Packaging::at()), vsymb, &val1, &val2);
 	Emit::guard(Inter::Response::new(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), rsymb), (inter_t) marker, val1, val2, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 	return symb;
@@ -147,29 +148,29 @@ insert them into the Inter stream close to the top.
 
 =
 void Emit::pragma(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), text);
+	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	inter_symbol *target_name =
 		Inter::SymbolsTables::symbol_from_name_creating(
-			Inter::get_global_symbols(Emit::repository()), I"target_I6");
+			Inter::get_global_symbols(Emit::tree()), I"target_I6");
 	Emit::guard(Inter::Pragma::new(&pragmas_bookmark, target_name, ID, 0, NULL));
 }
 
 void Emit::append(inter_name *iname, text_stream *text) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), text);
+	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Append::new(Packaging::at(), symbol, ID, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 }
 
 inter_symbols_table *Emit::main_scope(void) {
-	return Inter::Packages::scope(Inter::Packages::main(Emit::repository()));
+	return Inter::Packages::scope(Inter::Packages::main(Emit::tree()));
 }
 
 inter_symbols_table *Emit::global_scope(void) {
-	return Inter::get_global_symbols(Emit::repository());
+	return Inter::get_global_symbols(Emit::tree());
 }
 
 void Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
@@ -206,13 +207,13 @@ inter_symbol *Emit::new_local_symbol(inter_symbol *rsymb, text_stream *name) {
 }
 
 void Emit::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_stream *S) {
-	Inter::Symbols::annotate_t(Emit::repository(), symb, annot_ID, S);
+	Inter::Symbols::annotate_t(Emit::tree(), symb, annot_ID, S);
 }
 
 void Emit::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
 	TEMPORARY_TEXT(temp);
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(Emit::repository(), symb, annot_ID, temp);
+	Inter::Symbols::annotate_t(Emit::tree(), symb, annot_ID, temp);
 	DISCARD_TEXT(temp);
 }
 
@@ -352,16 +353,16 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_t v1, inter_t 
 
 void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 	packaging_state save = Packaging::enter_home_of(name);
-	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), contents);
+	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), contents);
 	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::guard(Inter::Constant::new_textual(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), string_interk), ID, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 }
 
 void Emit::metadata(package_request *P, text_stream *key, text_stream *value) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), value);
+	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), value);
 	inter_name *iname = InterNames::explicitly_named(key, P);
 	inter_symbol *key_name = Emit::define_symbol(iname);
 	packaging_state save = Packaging::enter_home_of(iname);
@@ -382,7 +383,7 @@ void Emit::instance(inter_name *name, kind *K, int v) {
 
 void Emit::named_generic_constant_xiname(package_request *PR, inter_name *name, inter_name *xiname) {
 	inter_t v1 = 0, v2 = 0;
-	Inter::Symbols::to_data(Emit::repository(), Packaging::incarnate(PR), InterNames::to_symbol(xiname), &v1, &v2);
+	Inter::Symbols::to_data(Emit::tree(), Packaging::incarnate(PR), InterNames::to_symbol(xiname), &v1, &v2);
 	Emit::named_generic_constant(name, v1, v2);
 }
 
@@ -563,7 +564,7 @@ void Emit::array_iname_entry(inter_name *iname) {
 	else alias = InterNames::to_symbol(iname);
 	inter_t val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Emit::array_IRS();
-	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), alias, &val1, &val2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), alias, &val1, &val2);
 	Emit::add_entry(val1, val2);
 }
 
@@ -586,7 +587,7 @@ void Emit::array_action_entry(action_name *an) {
 	inter_t v1 = 0, v2 = 0;
 	inter_symbol *symb = InterNames::to_symbol(PL::Actions::iname(an));
 	inter_bookmark *IBM = Emit::array_IRS();
-	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), symb, &v1, &v2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), symb, &v1, &v2);
 	Emit::add_entry(v1, v2);
 }
 #endif
@@ -619,8 +620,8 @@ void Emit::array_numeric_entry(inter_t N) {
 
 void Emit::array_divider(text_stream *divider_text) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t S = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), S), divider_text);
+	inter_t S = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), S), divider_text);
 	Emit::add_entry(DIVIDER_IVAL, S);
 }
 
@@ -671,7 +672,7 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 		else internal_error("can't handle a null alias");
 	}
 	inter_t val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Packaging::at()->read_into, Inter::Bookmarks::package(Packaging::at()), alias, &val1, &val2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at()), Inter::Bookmarks::package(Packaging::at()), alias, &val1, &val2);
 	Emit::guard(Inter::Constant::new_numerical(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), val_kind), val1, val2, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 	return name;
@@ -711,15 +712,15 @@ inter_bookmark begin_bookmark;
 inter_bookmark code_bookmark;
 
 void Emit::early_comment(text_stream *text) {
-/*	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), text);
+/*	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Packaging::at(), Emit::baseline(Packaging::at()) + 1, NULL, ID));
 */
 }
 
 void Emit::code_comment(text_stream *text) {
-/*	inter_t ID = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID), text);
+/*	inter_t ID = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Emit::at(), (inter_t) Emit::level(), NULL, ID));
 */
 }
@@ -829,8 +830,8 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 	inter_symbol *loc_kind = Emit::kind_to_symbol(K);
 	inter_t ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
-		ID = Inter::create_text(Emit::repository());
-		Str::copy(Inter::get_text(Emit::repository(), ID), comm);
+		ID = Inter::create_text(Emit::tree());
+		Str::copy(Inter::get_text(Emit::tree(), ID), comm);
 	}
 	if (annot) Emit::annotate_symbol_i(loc_name, annot, 0);
 	Inter::Symbols::local(loc_name);
@@ -875,8 +876,8 @@ void Emit::inv_indirect_call(int arity) {
 
 void Emit::inv_assembly(text_stream *opcode) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_t SID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), SID);
+	inter_t SID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), SID);
 	Str::copy(glob_storage, opcode);
 	Emit::guard(Inter::Inv::new_assembly(Emit::at(), current_inter_routine, SID, (inter_t) Emit::level(), NULL));
 }
@@ -1066,7 +1067,7 @@ void Emit::val_iname(kind *K, inter_name *iname) {
 void Emit::val_symbol(kind *K, inter_symbol *s) {
 	inter_t val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at();
-	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), s, &val1, &val2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Emit::val(K, val1, val2);
 }
 
@@ -1105,7 +1106,7 @@ void Emit::ref_iname(kind *K, inter_name *iname) {
 void Emit::ref_symbol(kind *K, inter_symbol *s) {
 	inter_t val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at();
-	Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), s, &val1, &val2);
+	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Emit::ref(K, val1, val2);
 }
 
@@ -1148,8 +1149,8 @@ void Emit::end_splat(void) {
 
 void Emit::entire_splat(text_stream *content, inter_t level) {
 	if (Str::len(content) == 0) return;
-	inter_t SID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), SID);
+	inter_t SID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), SID);
 	Str::copy(glob_storage, content);
 
 	if (level > Emit::baseline(Packaging::at())) {
@@ -1165,12 +1166,12 @@ void Emit::entire_splat_code(text_stream *content) {
 
 void Emit::write_bytecode(filename *F) {
 	if (Packaging::at() == NULL) internal_error("no inter repository");
-	Inter::Binary::write(F, Emit::repository());
+	Inter::Binary::write(F, Emit::tree());
 }
 
 void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = GLOB_IVAL;
 	*v2 = ID;
@@ -1180,8 +1181,8 @@ void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
 }
 
 void Emit::text_value(inter_t *v1, inter_t *v2, text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *text_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *text_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(text_storage, text);
 	*v1 = LITERAL_TEXT_IVAL;
 	*v2 = ID;
@@ -1192,8 +1193,8 @@ int Emit::glob_count(void) {
 }
 
 void Emit::real_value(inter_t *v1, inter_t *v2, double g) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	if (g > 0) WRITE_TO(glob_storage, "+");
 	WRITE_TO(glob_storage, "%g", g);
 	*v1 = REAL_IVAL;
@@ -1201,8 +1202,8 @@ void Emit::real_value(inter_t *v1, inter_t *v2, double g) {
 }
 
 void Emit::real_value_from_text(inter_t *v1, inter_t *v2, text_stream *S) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '$')
 			PUT_TO(glob_storage, Str::get(pos));
@@ -1211,36 +1212,36 @@ void Emit::real_value_from_text(inter_t *v1, inter_t *v2, text_stream *S) {
 }
 
 void Emit::dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = DWORD_IVAL;
 	*v2 = ID;
 }
 
 void Emit::plural_dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::create_text(Emit::repository());
-	text_stream *glob_storage = Inter::get_text(Emit::repository(), ID);
+	inter_t ID = Inter::create_text(Emit::tree());
+	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = PDWORD_IVAL;
 	*v2 = ID;
 }
 
 void Emit::intervention(int stage, text_stream *segment, text_stream *part, text_stream *i6, text_stream *seg) {
-	inter_t ID1 = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID1), segment);
+	inter_t ID1 = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID1), segment);
 
-	inter_t ID2 = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID2), part);
+	inter_t ID2 = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID2), part);
 
-	inter_t ID3 = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID3), i6);
+	inter_t ID3 = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID3), i6);
 
-	inter_t ID4 = Inter::create_text(Emit::repository());
-	Str::copy(Inter::get_text(Emit::repository(), ID4), seg);
+	inter_t ID4 = Inter::create_text(Emit::tree());
+	Str::copy(Inter::get_text(Emit::tree(), ID4), seg);
 
-	inter_t ref = Inter::create_ref(Emit::repository());
-	Inter::set_ref(Emit::repository(), ref, (void *) current_sentence);
+	inter_t ref = Inter::create_ref(Emit::tree());
+	Inter::set_ref(Emit::tree(), ref, (void *) current_sentence);
 
 	Emit::guard(Inter::Link::new(Packaging::at(), (inter_t) stage, ID1, ID2, ID3, ID4, ref, Emit::baseline(Packaging::at()), NULL));
 }
@@ -1329,14 +1330,14 @@ void Emit::holster(value_holster *VH, inter_name *iname) {
 
 void Emit::symbol_to_ival(inter_t *val1, inter_t *val2, inter_symbol *S) {
 	inter_bookmark *IBM = Packaging::at();
-	if (S) { Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), S, val1, val2); return; }
+	if (S) { Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 
 void Emit::to_ival(inter_t *val1, inter_t *val2, inter_name *iname) {
 	inter_bookmark *IBM = Packaging::at();
 	inter_symbol *S = InterNames::to_symbol(iname);
-	if (S) { Inter::Symbols::to_data(IBM->read_into, Inter::Bookmarks::package(IBM), S, val1, val2); return; }
+	if (S) { Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 

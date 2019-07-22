@@ -177,7 +177,9 @@ inter_package *Inter::Packages::from_PID(inter_tree *I, inter_t PID) {
 
 inter_package *Inter::Packages::container(inter_frame P) {
 	if (P.repo_segment == NULL) return NULL;
-	return Inter::Frame::ID_to_package(&P, Inter::Frame::get_package(P));
+	inter_package *pack = Inter::Frame::ID_to_package(&P, Inter::Frame::get_package(P));
+	if (Inter::Packages::is_rootlike(pack)) return NULL;
+	return pack;
 }
 
 inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
@@ -200,6 +202,7 @@ inter_symbol *Inter::Packages::type(inter_package *P) {
 int Inter::Packages::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (P->package_name == NULL) return 0;
+	if (Inter::Packages::is_rootlike(P)) return 0;
 	return Inter::Defn::get_level(Inter::Symbols::defining_frame(P->package_name));
 }
 

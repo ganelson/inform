@@ -34,7 +34,7 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::get_global_symbols(IBM->read_into), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::get_global_symbols(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
@@ -45,16 +45,16 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
-	inter_t STID = Inter::create_symbols_table(IBM->read_into);
+	inter_t STID = Inter::create_symbols_table(Inter::Bookmarks::tree(IBM));
 	LOGIF(INTER_SYMBOLS, "Package $3 at IBM $5\n", package_name, IBM);
 	inter_frame P = Inter::Frame::fill_4(IBM,
-		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(IBM->read_into, NULL, ptype_name), STID, 0, eloc, level);
+		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);
 
-	inter_t PID = Inter::create_package(IBM->read_into);
-	inter_package *pack = Inter::Packages::from_PID(IBM->read_into, PID);
+	inter_t PID = Inter::create_package(Inter::Bookmarks::tree(IBM));
+	inter_package *pack = Inter::Packages::from_PID(Inter::Bookmarks::tree(IBM), PID);
 	Inter::Packages::set_name(pack, package_name);
 	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
 	if ((linkage_packagetype) && (ptype_name == linkage_packagetype))

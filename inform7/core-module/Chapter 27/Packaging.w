@@ -29,7 +29,7 @@ package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	R->eventual_type = pt;
 	R->actual_package = NULL;
 	R->parent_request = InterNames::location(name);
-	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Emit::repository());
+	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Emit::tree());
 	R->iname_generators = NULL;
 	return R;
 }
@@ -207,7 +207,7 @@ void Packaging::outside_all_packages(void) {
 	pragmas_bookmark = Packaging::bubble();
 
 	Emit::comment(I"Primitives:");
-	Primitives::emit(Emit::repository(), Packaging::at());
+	Primitives::emit(Emit::tree(), Packaging::at());
 
 	Packaging::enter(Hierarchy::main()); // Which we never exit
 	holdings_bookmark = Packaging::bubble();

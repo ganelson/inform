@@ -36,7 +36,7 @@ void CodeGen::MergeTemplate::ensure_search_list(inter_tree *I) {
 
 void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
-	inter_tree *I = IBM->read_into;
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	Inter::traverse_tree(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
 	if (template_package == NULL) internal_error("unable to find template");
@@ -144,8 +144,8 @@ void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 }
 
 void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
-	inter_t SID = Inter::create_text(IBM->read_into);
-	text_stream *glob_storage = Inter::get_text(IBM->read_into, SID);
+	inter_t SID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	text_stream *glob_storage = Inter::get_text(Inter::Bookmarks::tree(IBM), SID);
 	Str::copy(glob_storage, content);
 	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
 }

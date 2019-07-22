@@ -33,7 +33,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
 	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
@@ -41,7 +41,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_t plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
-	inter_frame_list *FL = Inter::find_frame_list(IBM->read_into, plist_ID);
+	inter_frame_list *FL = Inter::find_frame_list(Inter::Bookmarks::tree(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
 	inter_frame X;
@@ -54,7 +54,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_symbol *val_kind = Inter::Property::kind_of(prop_name);
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::PropertyValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),

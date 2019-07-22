@@ -499,7 +499,7 @@ inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbo
 		Str::copy(SR, S);
 		Str::delete_first_character(SR);
 		Str::delete_last_character(SR);
-		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Emit::repository(), NULL, SR);
+		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Emit::tree(), NULL, SR);
 		DISCARD_TEXT(SR);
 		if (I) return I;
 	}

@@ -50,7 +50,7 @@ called "incarnation".
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;eventual_type</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;actual_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;parent_request</span><span class="plain"> = </span><span class="functiontext">InterNames::location</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">());</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;write_position</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::at_start_of_this_repository</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;iname_generators</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -301,7 +301,7 @@ room to insert those resources, then incarnate <code class="display"><span class
         <span class="identifier">pragmas_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>
 
         <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Primitives:"</span><span class="plain">);</span>
-        <span class="identifier">Primitives::emit</span><span class="plain">(</span><span class="functiontext">Emit::repository</span><span class="plain">(), </span><span class="functiontext">Packaging::at</span><span class="plain">());</span>
+        <span class="identifier">Primitives::emit</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Packaging::at</span><span class="plain">());</span>
 
         <span class="functiontext">Packaging::enter</span><span class="plain">(</span><span class="functiontext">Hierarchy::main</span><span class="plain">()); </span>    <span class="comment">Which we never exit</span>
         <span class="identifier">holdings_bookmark</span><span class="plain"> = </span><span class="functiontext">Packaging::bubble</span><span class="plain">();</span>

@@ -86,7 +86,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		}
 		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
 		if (equate_name) {
-			inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(IBM->read_into, Inter::Bookmarks::scope(IBM), equate_name);
+			inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
 			if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
 			else Inter::SymbolsTables::equate(name_name, eq);
 		}

@@ -32,7 +32,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *prop_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *prop_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	for (int i=0; i<ilp->no_annotations; i++)
@@ -42,7 +42,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, Inter::create_frame_list(IBM->read_into), eloc, level);
+	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, Inter::create_frame_list(Inter::Bookmarks::tree(IBM)), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);

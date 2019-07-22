@@ -30,12 +30,12 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = Inter::Defn::vet_level(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_t con_val1 = 0;
 	inter_t con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::DefaultValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_t) ilp->indent_level, eloc);

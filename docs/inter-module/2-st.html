@@ -340,7 +340,7 @@ symbols table, that's easy:
     <span class="plain">}</span>
 
     <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating</span><span class="plain">(</span><span class="reserved">inter_bookmark</span><span class="plain"> *</span><span class="identifier">IBM</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_symbol_inner_not_creating</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">-</span><span class="element">&gt;read_into</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_symbol_inner_not_creating</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -406,7 +406,7 @@ a global symbol in any non-global context.
     <span class="plain">}</span>
 
     <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_IRS_and_symbol</span><span class="plain">(</span><span class="reserved">inter_bookmark</span><span class="plain"> *</span><span class="identifier">IBM</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_symbol_inner</span><span class="plain">(</span><span class="functiontext">Inter::get_global_symbols</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">-</span><span class="element">&gt;read_into</span><span class="plain">), </span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::SymbolsTables::id_from_symbol_inner</span><span class="plain">(</span><span class="functiontext">Inter::get_global_symbols</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">)), </span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

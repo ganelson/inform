@@ -42,7 +42,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *inst_kind = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ktext, KIND_IST, E);
+	inter_symbol *inst_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ktext, KIND_IST, E);
 	if (*E) return;
 
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
@@ -51,14 +51,14 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		*E = Inter::Types::read(ilp->line, eloc, IBM->read_into, Inter::Bookmarks::package(IBM), NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IBM));
+		*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IBM));
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, Inter::create_frame_list(IBM->read_into), Inter::create_frame_list(IBM->read_into), eloc, level);
+	inter_frame P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, Inter::create_frame_list(Inter::Bookmarks::tree(IBM)), Inter::create_frame_list(Inter::Bookmarks::tree(IBM)), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);

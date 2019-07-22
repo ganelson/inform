@@ -34,7 +34,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
 	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
@@ -45,7 +45,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 		inter_frame_list *FL =
 			Inter::find_frame_list(
-				IBM->read_into,
+				Inter::Bookmarks::tree(IBM),
 				Inter::Kind::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -58,7 +58,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	} else {
 		inter_frame_list *FL =
 			Inter::find_frame_list(
-				IBM->read_into,
+				Inter::Bookmarks::tree(IBM),
 				Inter::Instance::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -78,7 +78,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	inter_symbol *store = NULL;
 	if (Str::len(ilp->mr.exp[2]) > 0) {
-		store = Inter::Textual::find_symbol(IBM->read_into, eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
+		store = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
 		if (*E) return;
 	}
 

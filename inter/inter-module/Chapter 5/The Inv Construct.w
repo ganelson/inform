@@ -42,7 +42,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
-	inter_symbol *invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(IBM->read_into), ilp->mr.exp[0]);
+	inter_symbol *invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::get_global_symbols(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[0]);
 	if (invoked_name == NULL) invoked_name = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
@@ -66,7 +66,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(IBM->read_into, NULL, invoked_name),
+	inter_frame P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
 		eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
