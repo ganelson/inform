@@ -24,7 +24,6 @@ typedef struct inter_resource_holder {
 
 typedef struct inter_warehouse_room {
 	struct inter_warehouse *owning_warehouse;
-	struct inter_tree *owning_repo;
 	inter_t index_offset;
 	int size;
 	int capacity;
@@ -34,21 +33,25 @@ typedef struct inter_warehouse_room {
 } inter_warehouse_room;
 
 @ =
-inter_warehouse *Inter::Warehouse::new(inter_tree *I) {
-	inter_warehouse *warehouse = CREATE(inter_warehouse);
-	warehouse->origin_file = NULL;
-	warehouse->first_room = Inter::Warehouse::new_room(warehouse, 4096, I, NULL);
-	warehouse->size = 1;
-	warehouse->capacity = 0;
-	warehouse->stored_resources = NULL;
-	return warehouse;
+inter_warehouse *the_only_warehouse = NULL;
+
+inter_warehouse *Inter::Warehouse::new(void) {
+	if (the_only_warehouse == NULL) {
+		inter_warehouse *warehouse = CREATE(inter_warehouse);
+		warehouse->origin_file = NULL;
+		warehouse->first_room = Inter::Warehouse::new_room(warehouse, 4096, NULL);
+		warehouse->size = 1;
+		warehouse->capacity = 0;
+		warehouse->stored_resources = NULL;
+		the_only_warehouse = warehouse;
+	}
+	return the_only_warehouse;
 }
 
-inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int capacity, inter_tree *owning_tree, inter_warehouse_room *prec) {
+inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int capacity, inter_warehouse_room *prec) {
 	inter_warehouse_room *IS = CREATE(inter_warehouse_room);
 	IS->owning_warehouse = owner;
 	IS->index_offset = (prec)?(prec->index_offset + (inter_t) prec->capacity):0;
-	IS->owning_repo = owning_tree;
 	IS->size = 0;
 	IS->capacity = capacity;
 	IS->bytecode = (inter_t *)
@@ -64,7 +67,7 @@ inter_frame Inter::Warehouse::find_room_in_room(inter_warehouse_room *IS, int n)
 	if (IS->size + n + PREFRAME_SIZE > IS->capacity) {
 		int next_size = Inter::Warehouse::enlarge_size(IS->capacity, n + PREFRAME_SIZE);
 		IS->capacity = IS->size;
-		IS->next_room = Inter::Warehouse::new_room(IS->owning_warehouse, next_size, IS->owning_repo, IS);
+		IS->next_room = Inter::Warehouse::new_room(IS->owning_warehouse, next_size, IS);
 		IS = IS->next_room;
 	}
 
@@ -82,14 +85,13 @@ int Inter::Warehouse::enlarge_size(int n, int at_least) {
 	return next_size;
 }
 
-inter_frame Inter::Warehouse::find_room(inter_tree *I, int n, inter_error_location *eloc, inter_package *owner) {
-	if (I == NULL) internal_error("no repository");
-	inter_warehouse *warehouse = Inter::warehouse(I);
+inter_frame Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_symbols_table *T,
+	int n, inter_error_location *eloc, inter_package *owner) {
+	if (warehouse == NULL) internal_error("no warehouse");
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
 	inter_frame F = Inter::Warehouse::find_room_in_room(IS, n);
 	F.repo_segment->bytecode[F.index + PREFRAME_ORIGIN] = Inter::Warehouse::store_origin(warehouse, eloc);
-	inter_symbols_table *T = Inter::get_global_symbols(I);
 	if (T)
 		F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = (inter_t) T->n_index;
 	else
@@ -163,4 +165,33 @@ inter_frame Inter::Warehouse::frame_from_index(inter_warehouse *warehouse, inter
 	}
 	internal_error("index not found in warehouse");
 	return Inter::Frame::around(NULL, -1);
+}
+
+inter_symbols_table *Inter::Warehouse::get_symbols_table(inter_warehouse *warehouse, inter_t n) {
+	if (n >= (inter_t) warehouse->size) return NULL;
+	if (n == 0) return NULL;
+	return warehouse->stored_resources[n].stored_symbols_table;
+}
+
+text_stream *Inter::Warehouse::get_text(inter_warehouse *warehouse, inter_t n) {
+	if (n >= (inter_t) warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_text_stream;
+}
+
+inter_package *Inter::Warehouse::get_package(inter_warehouse *warehouse, inter_t n) {
+	if (n >= (inter_t) warehouse->size) return NULL;
+	if (n == 0) return NULL;
+	return warehouse->stored_resources[n].stored_package;
+}
+
+void *Inter::Warehouse::get_ref(inter_warehouse *warehouse, inter_t n) {
+	if (n >= (inter_t) warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_ref;
+}
+
+inter_frame_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_t N) {
+	if (warehouse == NULL) return NULL;
+	int n = (int) N;
+	if (n >= warehouse->size) return NULL;
+	return warehouse->stored_resources[n].stored_frame_list;
 }

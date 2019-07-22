@@ -350,7 +350,7 @@ enough that the slot exists for the eventual list to be stored in.
 		inter_package *owner = NULL;
 		unsigned int PID = 0;
 		if (BinaryFiles::read_int32(fh, &PID)) owner = Inter::Packages::from_PID(I, PID);
-		inter_frame P = Inter::Warehouse::find_room(I, extent-1, &eloc, owner);
+		inter_frame P = Inter::Warehouse::find_room(warehouse, Inter::get_global_symbols(I), extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;

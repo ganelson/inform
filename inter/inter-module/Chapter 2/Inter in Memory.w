@@ -40,7 +40,7 @@ inter_tree *Inter::create(void) {
 	inter_tree *I = CREATE(inter_tree);
 	I->main_package = NULL;
 
-	I->warehouse = Inter::Warehouse::new(I);
+	I->warehouse = Inter::Warehouse::new();
 	inter_t N = Inter::create_symbols_table(I);
 	I->root_package = Inter::get_package(I, Inter::create_package(I));
 	I->root_definition_frame = Inter::Frame::root_frame(I);
@@ -68,10 +68,7 @@ inter_symbols_table *Inter::get_global_symbols(inter_tree *I) {
 }
 
 inter_symbols_table *Inter::get_symbols_table(inter_tree *I, inter_t n) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	if (n >= (inter_t) warehouse->size) return NULL;
-	if (n == 0) return NULL;
-	return warehouse->stored_resources[n].stored_symbols_table;
+	return Inter::Warehouse::get_symbols_table(Inter::warehouse(I), n);
 }
 
 inter_t Inter::create_package(inter_tree *I) {
@@ -84,10 +81,7 @@ inter_t Inter::create_package(inter_tree *I) {
 }
 
 inter_package *Inter::get_package(inter_tree *I, inter_t n) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	if (n >= (inter_t) warehouse->size) return NULL;
-	if (n == 0) return NULL;
-	return warehouse->stored_resources[n].stored_package;
+	return Inter::Warehouse::get_package(Inter::warehouse(I), n);
 }
 
 inter_t Inter::create_text(inter_tree *I) {
@@ -100,9 +94,7 @@ inter_t Inter::create_text(inter_tree *I) {
 }
 
 text_stream *Inter::get_text(inter_tree *I, inter_t n) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	if (n >= (inter_t) warehouse->size) return NULL;
-	return warehouse->stored_resources[n].stored_text_stream;
+	return Inter::Warehouse::get_text(Inter::warehouse(I), n);
 }
 
 inter_t Inter::create_ref(inter_tree *I) {
@@ -113,9 +105,7 @@ inter_t Inter::create_ref(inter_tree *I) {
 }
 
 void *Inter::get_ref(inter_tree *I, inter_t n) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	if (n >= (inter_t) warehouse->size) return NULL;
-	return warehouse->stored_resources[n].stored_ref;
+	return Inter::Warehouse::get_ref(Inter::warehouse(I), n);
 }
 
 void Inter::set_ref(inter_tree *I, inter_t n, void *ref) {
@@ -171,10 +161,7 @@ typedef struct inter_frame_list_entry {
 =
 inter_frame_list *Inter::find_frame_list(inter_tree *I, inter_t N) {
 	if (I == NULL) return NULL;
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	int n = (int) N;
-	if (n >= warehouse->size) return NULL;
-	return warehouse->stored_resources[n].stored_frame_list;
+	return Inter::Warehouse::get_frame_list(Inter::warehouse(I), N);
 }
 
 inter_frame Inter::first_child(inter_frame P) {

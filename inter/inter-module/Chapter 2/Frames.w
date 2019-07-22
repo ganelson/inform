@@ -18,22 +18,17 @@ inter_warehouse *Inter::Frame::warehouse(inter_frame *F) {
 	return F->repo_segment->owning_warehouse;
 }
 
-inter_tree *Inter::Frame::tree(inter_frame *F) {
-	if (F == NULL) return NULL;
-	return F->repo_segment->owning_repo;
-}
-
 inter_symbols_table *Inter::Frame::ID_to_symbols_table(inter_frame *F, inter_t ID) {
-	return Inter::get_symbols_table(Inter::Frame::tree(F), ID);
+	return Inter::Warehouse::get_symbols_table(Inter::Frame::warehouse(F), ID);
 }
 
 text_stream *Inter::Frame::ID_to_text(inter_frame *F, inter_t ID) {
-	return Inter::get_text(Inter::Frame::tree(F), ID);
+	return Inter::Warehouse::get_text(Inter::Frame::warehouse(F), ID);
 }
 
 inter_package *Inter::Frame::ID_to_package(inter_frame *F, inter_t ID) {
 	if (ID == 0) return NULL; // yes?
-	return Inter::get_package(Inter::Frame::tree(F), ID);
+	return Inter::Warehouse::get_package(Inter::Frame::warehouse(F), ID);
 }
 
 inter_frame Inter::Frame::ID_to_frame(inter_frame *F, inter_t ID) {
@@ -41,11 +36,11 @@ inter_frame Inter::Frame::ID_to_frame(inter_frame *F, inter_t ID) {
 }
 
 inter_frame_list *Inter::Frame::ID_to_frame_list(inter_frame *F, inter_t N) {
-	return Inter::find_frame_list(Inter::Frame::tree(F), N);
+	return Inter::Warehouse::get_frame_list(Inter::Frame::warehouse(F), N);
 }
 
 void *Inter::Frame::ID_to_ref(inter_frame *F, inter_t N) {
-	return Inter::get_ref(Inter::Frame::tree(F), N);
+	return Inter::Warehouse::get_ref(Inter::Frame::warehouse(F), N);
 }
 
 inter_symbols_table *Inter::Frame::globals(inter_frame *F) {
@@ -84,21 +79,23 @@ int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 
 @ =
 inter_frame Inter::Frame::root_frame(inter_tree *I) {
-	inter_frame P = Inter::Warehouse::find_room(I, 2, NULL, NULL);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 2, NULL, NULL);
 	P.data[ID_IFLD] = (inter_t) NOP_IST;
 	P.data[LEVEL_IFLD] = 0;
 	return P;
 }
 
 inter_frame Inter::Frame::fill_0(inter_bookmark *IBM, int S, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 2, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 2, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	return P;
 }
 
 inter_frame Inter::Frame::fill_1(inter_bookmark *IBM, int S, inter_t V, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 3, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 3, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V;
@@ -106,7 +103,8 @@ inter_frame Inter::Frame::fill_1(inter_bookmark *IBM, int S, inter_t V, inter_er
 }
 
 inter_frame Inter::Frame::fill_2(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 4, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 4, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -115,7 +113,8 @@ inter_frame Inter::Frame::fill_2(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_3(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 5, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 5, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -125,7 +124,8 @@ inter_frame Inter::Frame::fill_3(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_4(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 6, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 6, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -136,7 +136,8 @@ inter_frame Inter::Frame::fill_4(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_5(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 7, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 7, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -148,7 +149,8 @@ inter_frame Inter::Frame::fill_5(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_6(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 8, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 8, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -161,7 +163,8 @@ inter_frame Inter::Frame::fill_6(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_7(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 9, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 9, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -175,7 +178,8 @@ inter_frame Inter::Frame::fill_7(inter_bookmark *IBM, int S, inter_t V1, inter_t
 }
 
 inter_frame Inter::Frame::fill_8(inter_bookmark *IBM, int S, inter_t V1, inter_t V2, inter_t V3, inter_t V4, inter_t V5, inter_t V6, inter_t V7, inter_t V8, inter_error_location *eloc, inter_t level) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::Bookmarks::tree(IBM), 10, eloc, Inter::Bookmarks::package(IBM));
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 10, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
 	P.data[LEVEL_IFLD] = level;
 	P.data[DATA_IFLD] = V1;
@@ -204,7 +208,7 @@ int Inter::Frame::extend(inter_frame *F, inter_t by) {
 	int next_size = Inter::Warehouse::enlarge_size(F->repo_segment->capacity, F->extent + PREFRAME_SIZE + (int) by);
 
 	F->repo_segment->next_room = Inter::Warehouse::new_room(F->repo_segment->owning_warehouse,
-		next_size, Inter::Frame::tree(F), F->repo_segment);
+		next_size, F->repo_segment);
 
 	inter_frame XF = Inter::Warehouse::find_room_in_room(F->repo_segment->next_room, F->extent + (int) by);
 
