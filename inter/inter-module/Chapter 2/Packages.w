@@ -20,6 +20,7 @@ typedef struct inter_package {
 @d CODELIKE_PACKAGE_FLAG 1
 @d LINKAGE_PACKAGE_FLAG 2
 @d USED_PACKAGE_FLAG 4
+@d ROOT_PACKAGE_FLAG 8
 
 @ =
 inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
@@ -55,8 +56,20 @@ void Inter::Packages::make_linklike(inter_package *pack) {
 	}
 }
 
+int Inter::Packages::is_rootlike(inter_package *pack) {
+	if ((pack) && (pack->package_flags & ROOT_PACKAGE_FLAG)) return TRUE;
+	return FALSE;
+}
+
+void Inter::Packages::make_rootlike(inter_package *pack) {
+	if (pack) {
+		pack->package_flags |= ROOT_PACKAGE_FLAG;
+	}
+}
+
 inter_package *Inter::Packages::parent(inter_package *pack) {
 	if (pack) {
+		if (Inter::Packages::is_rootlike(pack)) return NULL;
 		inter_frame D = Inter::Symbols::defining_frame(pack->package_name);
 		inter_t P_index = Inter::Frame::get_parent_index(D);
 		if (P_index == 0) return NULL;
@@ -69,7 +82,8 @@ inter_package *Inter::Packages::parent(inter_package *pack) {
 void Inter::Packages::unmark_all(void) {
 	inter_package *pack;
 	LOOP_OVER(pack, inter_package)
-		CodeGen::unmark(pack->package_name);
+		if (pack->package_name)
+			CodeGen::unmark(pack->package_name);
 }
 
 void Inter::Packages::set_scope(inter_package *P, inter_symbols_table *T) {

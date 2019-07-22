@@ -83,6 +83,13 @@ int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 }
 
 @ =
+inter_frame Inter::Frame::root_frame(inter_tree *I) {
+	inter_frame P = Inter::Warehouse::find_room(I, 2, NULL, NULL);
+	P.data[ID_IFLD] = (inter_t) NOP_IST;
+	P.data[LEVEL_IFLD] = 0;
+	return P;
+}
+
 inter_frame Inter::Frame::fill_0(inter_bookmark *IBM, int S, inter_error_location *eloc, inter_t level) {
 	inter_frame P = Inter::Warehouse::find_room(IBM->read_into, 2, eloc, Inter::Bookmarks::package(IBM));
 	P.data[ID_IFLD] = (inter_t) S;
@@ -239,7 +246,7 @@ void Inter::Frame::insert(inter_frame F, inter_bookmark *at) {
 	if (trace_inter_insertion) Inter::Defn::write_construct_text(DL, F);
 	inter_t F_level = F.data[LEVEL_IFLD];
 	if (F_level == 0) {
-		Inter::add_to_frame_list(&(I->global_material), F);
+		Inter::Frame::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_definition_frame);
 		if ((Inter::Bookmarks::get_placement(at) == AFTER_ICPLACEMENT) ||
 			(Inter::Bookmarks::get_placement(at) == IMMEDIATELY_AFTER_ICPLACEMENT))
 			Inter::Bookmarks::set_ref(at, F);

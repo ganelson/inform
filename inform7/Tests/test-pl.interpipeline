@@ -6,4 +6,5 @@ assimilate
 make-identifiers-unique
 resolve-external-symbols
 reconcile-verbs
+generate 0:/main/template inventory -> *log
 generate inform6 -> *out

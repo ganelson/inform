@@ -89,7 +89,11 @@ inter_frame Inter::Warehouse::find_room(inter_tree *I, int n, inter_error_locati
 	while (IS->next_room) IS = IS->next_room;
 	inter_frame F = Inter::Warehouse::find_room_in_room(IS, n);
 	F.repo_segment->bytecode[F.index + PREFRAME_ORIGIN] = Inter::Warehouse::store_origin(warehouse, eloc);
-	F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = I->global_symbols_table_ID;
+	inter_symbols_table *T = Inter::get_global_symbols(I);
+	if (T)
+		F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = (inter_t) T->n_index;
+	else
+		F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = 1;
 	Inter::Frame::attach_package(F, Inter::Packages::to_PID(owner));
 	return F;
 }

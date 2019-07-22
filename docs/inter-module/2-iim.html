@@ -43,8 +43,8 @@
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">;</span>
-        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">global_symbols_table_ID</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame_list</span><span class="plain"> </span><span class="identifier">global_material</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">root_definition_frame</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">root_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">main_package</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inter_tree</span><span class="plain">;</span>
@@ -52,7 +52,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_tree is accessed in 2/tw, 2/pck, 2/frm and here.</p>
+<p class="endnote">The structure inter_tree is accessed in 2/pck, 2/frm and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -60,14 +60,14 @@
 <pre class="display">
     <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="functiontext">Inter::create</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.spare_storage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.storage_used</span><span class="plain"> = 0;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_material.storage_capacity</span><span class="plain"> = 0;</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;warehouse</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::new</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_symbols_table_ID</span><span class="plain"> = </span><span class="functiontext">Inter::create_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Inter::create_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain"> = </span><span class="functiontext">Inter::get_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">Inter::create_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_definition_frame</span><span class="plain"> = </span><span class="functiontext">Inter::Frame::root_frame</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Packages::make_rootlike</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Packages::set_scope</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">, </span><span class="functiontext">Inter::get_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -86,7 +86,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">Inter::get_global_symbols</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::get_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;global_symbols_table_ID</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="functiontext">Inter::get_symbols_table</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
@@ -193,7 +193,7 @@
 
 <p class="endnote">The function Inter::create_symbols_table is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::get_global_symbols is used in 2/st (<a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP11">&#167;11</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::get_global_symbols is used in 2/tw (<a href="2-tw.html#SP2">&#167;2</a>), 2/st (<a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP11">&#167;11</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::get_symbols_table is used in 2/frm (<a href="2-frm.html#SP2">&#167;2</a>), 2/iibf (<a href="2-iibf.html#SP1_5_3">&#167;1.5.3</a>, <a href="2-iibf.html#SP1_6">&#167;1.6</a>).</p>
 
@@ -312,8 +312,7 @@
     <span class="plain">} </span><span class="reserved">inter_error_stash</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::traverse_global_list</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="reserved">inter_tree</span><span class="plain"> *, </span><span class="reserved">inter_frame</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain">) {</span>
-        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_THROUGH_INTER_FRAME_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, (&amp;(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;global_material</span><span class="plain">))) {</span>
+        <span class="identifier">PROTECTED_LOOP_THROUGH_INTER_CHILDREN</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, (</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;root_definition_frame</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == 0) ||</span>
                 <span class="plain">((</span><span class="identifier">filter</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] == (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">filter</span><span class="plain">)) ||</span>
                 <span class="plain">((</span><span class="identifier">filter</span><span class="plain"> &lt; 0) &amp;&amp; (</span><span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] != (</span><span class="constant">inter_t</span><span class="plain">) -</span><span class="identifier">filter</span><span class="plain">)))</span>
@@ -385,7 +384,7 @@
 
 <p class="endnote">The function Inter::sixth_child appears nowhere else.</p>
 
-<p class="endnote">The function Inter::add_to_frame_list is used in 2/frm (<a href="2-frm.html#SP5">&#167;5</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::add_to_frame_list is used in 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::traverse_global_list is used in 2/iibf (<a href="2-iibf.html#SP1_1_5">&#167;1.1.5</a>), 2/iitf (<a href="2-iitf.html#SP2">&#167;2</a>).</p>
 

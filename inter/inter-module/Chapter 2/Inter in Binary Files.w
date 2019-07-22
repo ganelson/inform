@@ -105,13 +105,13 @@ that's the end of the list and therefore the block.
 @e PACKAGE_IRSRC
 
 @<Read the resources@> =
-	int first_one = TRUE;
+	int resource_counter = 0;
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == NO_IRSRC) break;
 
-		inter_t n = 1;
-		if (first_one == FALSE) n = Inter::Warehouse::create_resource(warehouse);
-		first_one = FALSE;
+		resource_counter++;
+		inter_t n = (inter_t) resource_counter;
+		if (resource_counter >= 3) n = Inter::Warehouse::create_resource(warehouse);
 		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 
 		switch (X) {
@@ -256,25 +256,20 @@ that's the end of the list and therefore the block.
 	unsigned int nid;
 	if (BinaryFiles::read_int32(fh, &nid) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	inter_package *parent = NULL;
-	if (p != 0) {
-		parent = Inter::get_package(I, p);
-		if (parent == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"packages not well founded");
-	}
+	if (p != 0) parent = Inter::get_package(I, p);
 	if (res->stored_package == NULL) {
 		res->stored_package = Inter::Packages::new(I, n);
 	}
+	if (cl) Inter::Packages::make_codelike(res->stored_package);
+	if (nid == 0) Inter::Packages::make_rootlike(res->stored_package);
 	if (sc != 0) Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
 	if (nid != 0) {
 		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::get_global_symbols(I), nid);
-		if (pack_name == NULL) {
-			LOG("Parent is $6\n", parent);
-			if (parent) Inter::Binary::read_error(&eloc, ftell(fh), I"package name can't be found in scope");
-			else Inter::Binary::read_error(&eloc, ftell(fh), I"package name can't be found in globals");
-		} else {
+		if (pack_name)
 			Inter::Packages::set_name(res->stored_package, pack_name);
-		}
+		else
+			Inter::Binary::read_error(&eloc, ftell(fh), I"unable to retrieve package name");
 	}
-	if (cl) Inter::Packages::make_codelike(res->stored_package);
 
 @<Write a package resource@> =
 	inter_package *P = res->stored_package;
@@ -284,7 +279,10 @@ that's the end of the list and therefore the block.
 		else BinaryFiles::write_int32(fh, (unsigned int) par->index_n);
 		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
-		BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
+		if (P->package_name)
+			BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
+		else
+			BinaryFiles::write_int32(fh, 0);
 	}
 
 @ We do nothing here, because frame lists are built new on reading. It's
@@ -300,6 +298,10 @@ enough that the slot exists for the eventual list to be stored in.
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
 		inter_symbols_table *from_T = Inter::get_symbols_table(I, X);
+		if (from_T == NULL) {
+			WRITE_TO(STDERR, "It's %d\n", X);
+			internal_error("no from_T");
+		}
 		unsigned int from_ID = 0;
 		while (BinaryFiles::read_int32(fh, &from_ID)) {
 			if (from_ID == 0) break;
@@ -310,8 +312,11 @@ enough that the slot exists for the eventual list to be stored in.
 			if (BinaryFiles::read_int32(fh, &to_ID) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			inter_symbols_table *to_T = Inter::get_symbols_table(I, to_T_id);
+			if (from_T == NULL) internal_error("no to_T");
 			inter_symbol *from_S = Inter::SymbolsTables::symbol_from_id(from_T, from_ID);
+			if (from_S == NULL) internal_error("no from_S");
 			inter_symbol *to_S = Inter::SymbolsTables::symbol_from_id(to_T, to_ID);
+			if (to_S == NULL) internal_error("no to_S");
 			Inter::SymbolsTables::equate(from_S, to_S);
 		}
 	}

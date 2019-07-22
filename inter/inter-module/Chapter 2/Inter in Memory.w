@@ -29,8 +29,8 @@ To store bytecode-like intermediate code in memory.
 =
 typedef struct inter_tree {
 	struct inter_warehouse *warehouse;
-	inter_t global_symbols_table_ID;
-	struct inter_frame_list global_material;
+	struct inter_frame root_definition_frame;
+	struct inter_package *root_package;
 	struct inter_package *main_package;
 	MEMORY_MANAGEMENT
 } inter_tree;
@@ -38,14 +38,14 @@ typedef struct inter_tree {
 @ =
 inter_tree *Inter::create(void) {
 	inter_tree *I = CREATE(inter_tree);
-	I->global_material.spare_storage = NULL;
-	I->global_material.storage_used = 0;
-	I->global_material.storage_capacity = 0;
 	I->main_package = NULL;
 
 	I->warehouse = Inter::Warehouse::new(I);
-	I->global_symbols_table_ID = Inter::create_symbols_table(I);
-	
+	inter_t N = Inter::create_symbols_table(I);
+	I->root_package = Inter::get_package(I, Inter::create_package(I));
+	I->root_definition_frame = Inter::Frame::root_frame(I);
+	Inter::Packages::make_rootlike(I->root_package);
+	Inter::Packages::set_scope(I->root_package, Inter::get_symbols_table(I, N));
 	return I;
 }
 
@@ -64,7 +64,7 @@ inter_t Inter::create_symbols_table(inter_tree *I) {
 }
 
 inter_symbols_table *Inter::get_global_symbols(inter_tree *I) {
-	return Inter::get_symbols_table(I, I->global_symbols_table_ID);
+	return Inter::Packages::scope(I->root_package);
 }
 
 inter_symbols_table *Inter::get_symbols_table(inter_tree *I, inter_t n) {
@@ -252,8 +252,7 @@ typedef struct inter_error_stash {
 } inter_error_stash;
 
 void Inter::traverse_global_list(inter_tree *from, void (*visitor)(inter_tree *, inter_frame, void *), void *state, int filter) {
-	inter_frame P;
-	LOOP_THROUGH_INTER_FRAME_LIST(P, (&(from->global_material))) {
+	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(P, (from->root_definition_frame)) {
 		if ((filter == 0) ||
 			((filter > 0) && (P.data[ID_IFLD] == (inter_t) filter)) ||
 			((filter < 0) && (P.data[ID_IFLD] != (inter_t) -filter)))
