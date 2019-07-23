@@ -123,7 +123,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package
 				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
-				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed A", owner_name->symbol_name); return; }
+				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed", owner_name->symbol_name); return; }
 			}
 		} else {
 			FL = Inter::Frame::ID_to_frame_list(&P, Inter::Instance::permissions_list(owner_name));
@@ -135,7 +135,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package
 				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
-				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed A", owner_name->symbol_name); return; }
+				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"instance permission list malformed", owner_name->symbol_name); return; }
 			}
 		}
 

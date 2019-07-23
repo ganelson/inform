@@ -13,6 +13,7 @@ void Inter::Kind::define(void) {
 		L"kind (%i+) (%c+)",
 		I"kind", I"kinds");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Kind::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Kind::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Kind::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Kind::write);
 }
@@ -159,8 +160,13 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t SUP,
 	int constructor, int arity, inter_t *operands, inter_t level, inter_error_location *eloc) {
+	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
+	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_t L2 = Inter::Warehouse::create_frame_list(warehouse);
+	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
+	Inter::Warehouse::attribute_resource(warehouse, L2, Inter::Bookmarks::package(IBM));
 	inter_frame P = Inter::Frame::fill_8(IBM,
-		KIND_IST, SID, TID, 0, 0, SUP, Inter::create_frame_list(Inter::Bookmarks::tree(IBM)), Inter::create_frame_list(Inter::Bookmarks::tree(IBM)),
+		KIND_IST, SID, TID, 0, 0, SUP, L1, L2,
 		(inter_t) constructor, eloc, level);
 	if (arity > 0) {
 		if (Inter::Frame::extend(&P, (inter_t) arity) == FALSE)
@@ -170,6 +176,11 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t 
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
+}
+
+void Inter::Kind::transpose(inter_construct *IC, inter_frame P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P.data[PERM_LIST_KIND_IFLD] = grid[P.data[PERM_LIST_KIND_IFLD]];
+	P.data[PLIST_KIND_IFLD] = grid[P.data[PLIST_KIND_IFLD]];
 }
 
 void Inter::Kind::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {

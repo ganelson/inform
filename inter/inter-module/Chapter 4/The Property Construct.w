@@ -13,6 +13,7 @@ void Inter::Property::define(void) {
 		L"property (%i+) (%i+)",
 		I"property", I"properties");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Property::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Property::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Property::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Property::write);
 }
@@ -42,11 +43,18 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, Inter::create_frame_list(Inter::Bookmarks::tree(IBM)), eloc, level);
+	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
+	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
+	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
+	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
+}
+
+void Inter::Property::transpose(inter_construct *IC, inter_frame P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P.data[PERM_LIST_PROP_IFLD] = grid[P.data[PERM_LIST_PROP_IFLD]];
 }
 
 void Inter::Property::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {

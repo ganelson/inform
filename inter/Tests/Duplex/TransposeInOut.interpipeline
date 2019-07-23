@@ -1,0 +1,5 @@
+read 0 <- *inA
+read 1 <- *inB
+move 1 <- 0:/main/my_fn
+generate 0 text -> *outA
+generate 1 text -> *outB

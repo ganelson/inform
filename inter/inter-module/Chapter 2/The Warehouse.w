@@ -14,7 +14,19 @@ typedef struct inter_warehouse {
 	MEMORY_MANAGEMENT
 } inter_warehouse;
 
+@
+
+@e NO_IRSRC from 0
+@e STRING_IRSRC
+@e SYMBOLS_TABLE_IRSRC
+@e FRAME_LIST_IRSRC
+@e PACKAGE_IRSRC
+@e REF_IRSRC
+
+=
 typedef struct inter_resource_holder {
+	int irsrc;
+	struct inter_package *owning_package;
 	struct inter_symbols_table *stored_symbols_table;
 	struct inter_frame_list *stored_frame_list;
 	struct inter_package *stored_package;
@@ -117,6 +129,8 @@ inter_t Inter::Warehouse::create_resource(inter_warehouse *warehouse) {
 		warehouse->capacity = new_size;
 	}
 	int n = warehouse->size ++;
+	warehouse->stored_resources[n].irsrc = NO_IRSRC;
+	warehouse->stored_resources[n].owning_package = NULL;
 	warehouse->stored_resources[n].stored_symbols_table = NULL;
 	warehouse->stored_resources[n].stored_ref = NULL;
 	warehouse->stored_resources[n].stored_package = NULL;
@@ -173,9 +187,34 @@ inter_symbols_table *Inter::Warehouse::get_symbols_table(inter_warehouse *wareho
 	return warehouse->stored_resources[n].stored_symbols_table;
 }
 
+inter_t Inter::Warehouse::create_symbols_table(inter_warehouse *warehouse) {
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_symbols_table == NULL) {
+		warehouse->stored_resources[n].irsrc = SYMBOLS_TABLE_IRSRC;
+		warehouse->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
+		warehouse->stored_resources[n].stored_symbols_table->n_index = (int) n;
+	}
+	return n;
+}
+
+void Inter::Warehouse::attribute_resource(inter_warehouse *warehouse, inter_t n, inter_package *owner) {
+	if (n >= (inter_t) warehouse->size) internal_error("out of range");
+	warehouse->stored_resources[n].owning_package = owner;
+}
+
 text_stream *Inter::Warehouse::get_text(inter_warehouse *warehouse, inter_t n) {
 	if (n >= (inter_t) warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_text_stream;
+}
+
+inter_t Inter::Warehouse::create_text(inter_warehouse *warehouse, inter_package *owner) {
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_text_stream == NULL) {
+		warehouse->stored_resources[n].irsrc = STRING_IRSRC;
+		warehouse->stored_resources[n].stored_text_stream = Str::new();
+		warehouse->stored_resources[n].owning_package = owner;
+	}
+	return n;
 }
 
 inter_package *Inter::Warehouse::get_package(inter_warehouse *warehouse, inter_t n) {
@@ -184,9 +223,27 @@ inter_package *Inter::Warehouse::get_package(inter_warehouse *warehouse, inter_t
 	return warehouse->stored_resources[n].stored_package;
 }
 
+inter_t Inter::Warehouse::create_package(inter_warehouse *warehouse, inter_tree *I) {
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	if (warehouse->stored_resources[n].stored_package == NULL) {
+		warehouse->stored_resources[n].irsrc = PACKAGE_IRSRC;
+		warehouse->stored_resources[n].stored_package = Inter::Packages::new(I, n);
+		warehouse->stored_resources[n].owning_package =
+			warehouse->stored_resources[n].stored_package;
+	}
+	return n;
+}
+
 void *Inter::Warehouse::get_ref(inter_warehouse *warehouse, inter_t n) {
 	if (n >= (inter_t) warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_ref;
+}
+
+inter_t Inter::Warehouse::create_ref(inter_warehouse *warehouse) {
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	warehouse->stored_resources[n].irsrc = REF_IRSRC;
+	warehouse->stored_resources[n].stored_ref = NULL;
+	return n;
 }
 
 inter_frame_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_t N) {
@@ -194,4 +251,11 @@ inter_frame_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, i
 	int n = (int) N;
 	if (n >= warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_frame_list;
+}
+
+inter_t Inter::Warehouse::create_frame_list(inter_warehouse *warehouse) {
+	inter_t n = Inter::Warehouse::create_resource(warehouse);
+	warehouse->stored_resources[n].irsrc = FRAME_LIST_IRSRC;
+	warehouse->stored_resources[n].stored_frame_list = Inter::new_frame_list();
+	return n;
 }

@@ -557,7 +557,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_t ID = Inter::create_text(I);
+		inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
 		text_stream *glob_storage = Inter::get_text(I, ID);
 		Str::copy(glob_storage, dw);
 		*val1 = DWORD_IVAL; *val2 = ID;
@@ -574,7 +574,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_t ID = Inter::create_text(I);
+		inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
 		text_stream *glob_storage = Inter::get_text(I, ID);
 		Str::copy(glob_storage, dw);
 		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
@@ -675,7 +675,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	WRITE_TO(STDERR, "Forced to glob: %S\n", sch->converted_from);
 	internal_error("Reduced to glob in assimilation");
 
-	inter_t ID = Inter::create_text(I);
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
 	text_stream *glob_storage = Inter::get_text(I, ID);
 	Str::copy(glob_storage, sch->converted_from);
 

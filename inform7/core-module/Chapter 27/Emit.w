@@ -101,7 +101,7 @@ inter_symbol *Emit::packagetype(text_stream *name, int enclosing) {
 }
 
 void Emit::comment(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Packaging::at(), Emit::baseline(Packaging::at()), NULL, ID));
 }
@@ -148,18 +148,19 @@ insert them into the Inter stream close to the top.
 
 =
 void Emit::pragma(text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::tree());
-	Str::copy(Inter::get_text(Emit::tree(), ID), text);
+	inter_tree *I = Emit::tree();
+	inter_t ID = Inter::Warehouse::create_text(I, I->root_package);
+	Str::copy(Inter::get_text(I, ID), text);
 	inter_symbol *target_name =
 		Inter::SymbolsTables::symbol_from_name_creating(
-			Inter::get_global_symbols(Emit::tree()), I"target_I6");
+			Inter::get_global_symbols(I), I"target_I6");
 	Emit::guard(Inter::Pragma::new(&pragmas_bookmark, target_name, ID, 0, NULL));
 }
 
 void Emit::append(inter_name *iname, text_stream *text) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Append::new(Packaging::at(), symbol, ID, Emit::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
@@ -207,13 +208,14 @@ inter_symbol *Emit::new_local_symbol(inter_symbol *rsymb, text_stream *name) {
 }
 
 void Emit::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_stream *S) {
-	Inter::Symbols::annotate_t(Emit::tree(), symb, annot_ID, S);
+	
+	Inter::Symbols::annotate_t(symb->owning_table->owning_package->stored_in, symb->owning_table->owning_package, symb, annot_ID, S);
 }
 
 void Emit::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
 	TEMPORARY_TEXT(temp);
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(Emit::tree(), symb, annot_ID, temp);
+	Inter::Symbols::annotate_t(symb->owning_table->owning_package->stored_in, symb->owning_table->owning_package, symb, annot_ID, temp);
 	DISCARD_TEXT(temp);
 }
 
@@ -353,7 +355,7 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_t v1, inter_t 
 
 void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 	packaging_state save = Packaging::enter_home_of(name);
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), contents);
 	inter_symbol *con_name = Emit::define_symbol(name);
 	Emit::guard(Inter::Constant::new_textual(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), string_interk), ID, Emit::baseline(Packaging::at()), NULL));
@@ -361,7 +363,7 @@ void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 }
 
 void Emit::metadata(package_request *P, text_stream *key, text_stream *value) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), value);
 	inter_name *iname = InterNames::explicitly_named(key, P);
 	inter_symbol *key_name = Emit::define_symbol(iname);
@@ -620,7 +622,7 @@ void Emit::array_numeric_entry(inter_t N) {
 
 void Emit::array_divider(text_stream *divider_text) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t S = Inter::create_text(Emit::tree());
+	inter_t S = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), S), divider_text);
 	Emit::add_entry(DIVIDER_IVAL, S);
 }
@@ -712,14 +714,14 @@ inter_bookmark begin_bookmark;
 inter_bookmark code_bookmark;
 
 void Emit::early_comment(text_stream *text) {
-/*	inter_t ID = Inter::create_text(Emit::tree());
+/*	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Packaging::at(), Emit::baseline(Packaging::at()) + 1, NULL, ID));
 */
 }
 
 void Emit::code_comment(text_stream *text) {
-/*	inter_t ID = Inter::create_text(Emit::tree());
+/*	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID), text);
 	Emit::guard(Inter::Comment::new(Emit::at(), (inter_t) Emit::level(), NULL, ID));
 */
@@ -830,7 +832,7 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 	inter_symbol *loc_kind = Emit::kind_to_symbol(K);
 	inter_t ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
-		ID = Inter::create_text(Emit::tree());
+		ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at()));
 		Str::copy(Inter::get_text(Emit::tree(), ID), comm);
 	}
 	if (annot) Emit::annotate_symbol_i(loc_name, annot, 0);
@@ -876,7 +878,7 @@ void Emit::inv_indirect_call(int arity) {
 
 void Emit::inv_assembly(text_stream *opcode) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_t SID = Inter::create_text(Emit::tree());
+	inter_t SID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), SID);
 	Str::copy(glob_storage, opcode);
 	Emit::guard(Inter::Inv::new_assembly(Emit::at(), current_inter_routine, SID, (inter_t) Emit::level(), NULL));
@@ -1149,7 +1151,7 @@ void Emit::end_splat(void) {
 
 void Emit::entire_splat(text_stream *content, inter_t level) {
 	if (Str::len(content) == 0) return;
-	inter_t SID = Inter::create_text(Emit::tree());
+	inter_t SID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), SID);
 	Str::copy(glob_storage, content);
 
@@ -1170,7 +1172,7 @@ void Emit::write_bytecode(filename *F) {
 }
 
 void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = GLOB_IVAL;
@@ -1181,7 +1183,7 @@ void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
 }
 
 void Emit::text_value(inter_t *v1, inter_t *v2, text_stream *text) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *text_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(text_storage, text);
 	*v1 = LITERAL_TEXT_IVAL;
@@ -1193,7 +1195,7 @@ int Emit::glob_count(void) {
 }
 
 void Emit::real_value(inter_t *v1, inter_t *v2, double g) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	if (g > 0) WRITE_TO(glob_storage, "+");
 	WRITE_TO(glob_storage, "%g", g);
@@ -1202,7 +1204,7 @@ void Emit::real_value(inter_t *v1, inter_t *v2, double g) {
 }
 
 void Emit::real_value_from_text(inter_t *v1, inter_t *v2, text_stream *S) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '$')
@@ -1212,7 +1214,7 @@ void Emit::real_value_from_text(inter_t *v1, inter_t *v2, text_stream *S) {
 }
 
 void Emit::dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = DWORD_IVAL;
@@ -1220,7 +1222,7 @@ void Emit::dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
 }
 
 void Emit::plural_dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::create_text(Emit::tree());
+	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::get_text(Emit::tree(), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = PDWORD_IVAL;
@@ -1228,20 +1230,23 @@ void Emit::plural_dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
 }
 
 void Emit::intervention(int stage, text_stream *segment, text_stream *part, text_stream *i6, text_stream *seg) {
-	inter_t ID1 = Inter::create_text(Emit::tree());
+	inter_warehouse *warehouse = Inter::warehouse(Emit::tree());
+	inter_t ID1 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID1), segment);
 
-	inter_t ID2 = Inter::create_text(Emit::tree());
+	inter_t ID2 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID2), part);
 
-	inter_t ID3 = Inter::create_text(Emit::tree());
+	inter_t ID3 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID3), i6);
 
-	inter_t ID4 = Inter::create_text(Emit::tree());
+	inter_t ID4 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::get_text(Emit::tree(), ID4), seg);
 
-	inter_t ref = Inter::create_ref(Emit::tree());
+	inter_t ref = Inter::Warehouse::create_ref(warehouse, Inter::Bookmarks::package(Packaging::at()));
 	Inter::set_ref(Emit::tree(), ref, (void *) current_sentence);
+
+	Inter::Warehouse::attribute_resource(warehouse, ref, Inter::Bookmarks::package(Packaging::at()));
 
 	Emit::guard(Inter::Link::new(Packaging::at(), (inter_t) stage, ID1, ID2, ID3, ID4, ref, Emit::baseline(Packaging::at()), NULL));
 }
@@ -1306,10 +1311,6 @@ void Emit::clear_flag(inter_name *iname, int f) {
 
 void Emit::annotate_i(inter_name *iname, inter_t annot_ID, inter_t V) {
 	if (iname) Emit::annotate_symbol_i(InterNames::to_symbol(iname), annot_ID, V);
-}
-
-void Emit::annotate_t(inter_name *iname, inter_t annot_ID, text_stream *text) {
-	if (iname) Emit::annotate_symbol_t(InterNames::to_symbol(iname), annot_ID, text);
 }
 
 void Emit::annotate_w(inter_name *iname, inter_t annot_ID, wording W) {

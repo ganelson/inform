@@ -51,7 +51,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_t SIDS[5];
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
-		SIDS[i] = Inter::create_text(Inter::Bookmarks::tree(IBM));
+		SIDS[i] = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 		*E = Inter::Constant::parse_text(Inter::get_text(Inter::Bookmarks::tree(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
 		if (*E) return;
 	}

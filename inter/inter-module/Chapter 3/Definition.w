@@ -71,12 +71,14 @@ inter_symbol *linkage_packagetype = NULL;
 @
 
 @e CONSTRUCT_READ_MTID
+@e CONSTRUCT_TRANSPOSE_MTID
 @e CONSTRUCT_VERIFY_MTID
 @e CONSTRUCT_WRITE_MTID
 @e VERIFY_INTER_CHILDREN_MTID
 
 =
 VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_frame P, inter_t *grid, inter_t max, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E)
 VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame P, inter_error_message **E)
 VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame P, inter_error_message **E)
@@ -163,7 +165,8 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				TEMPORARY_TEXT(parsed_text);
 				inter_error_message *EP =
 					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
-				val = Inter::create_text(I);
+				inter_warehouse *warehouse = Inter::warehouse(I);
+				val = Inter::Warehouse::create_text(warehouse, I->root_package);
 				Str::copy(Inter::get_text(I, val), parsed_text);
 				DISCARD_TEXT(parsed_text);
 				if (EP) *E = EP;
@@ -239,6 +242,14 @@ inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_f
 	return E;
 }
 
+inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_frame P, inter_t *grid, inter_t max) {
+	inter_construct *IC = NULL;
+	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	if (E) return E;
+	VMETHOD_CALL(IC, CONSTRUCT_TRANSPOSE_MTID, P, grid, max, &E);
+	return E;
+}
+
 inter_error_message *Inter::Defn::get_construct(inter_frame P, inter_construct **to) {
 	if (Inter::Frame::valid(&P) == FALSE) {
 		return Inter::Frame::error(&P, I"invalid frame", NULL);
@@ -299,7 +310,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		literal = FALSE;
 		if (c == '\\') literal = TRUE;
 		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = Inter::create_text(Inter::Bookmarks::tree(IBM));
+			ilp.terminal_comment = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);

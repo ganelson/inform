@@ -22,6 +22,7 @@ typedef struct pipeline_step {
 	int repository_argument;
 	struct text_stream *text_out_file;
 	struct inter_tree *repository;
+	struct codegen_pipeline *pipeline;
 	MEMORY_MANAGEMENT
 } pipeline_step;
 
@@ -46,6 +47,7 @@ void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->from_memory = FALSE;
 	step->the_PP = NULL;
 	step->repository = NULL;
+	step->pipeline = NULL;
 }
 
 @ Here we write a textual description to a string, which is useful for
@@ -255,6 +257,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 			step->the_N = N;
 			step->the_PP = PP;
 			step->repository = I;
+			step->pipeline = S;
 
 			TEMPORARY_TEXT(STAGE_NAME);
 			WRITE_TO(STAGE_NAME, "inter step %d/%d (at %dcs): ", ++step_count, step_total,
@@ -399,6 +402,9 @@ void CodeGen::Pipeline::visitor(inter_tree *I, inter_frame P, void *state) {
 		LOG("Frame gives package as $3, but its location is in package $3\n",
 			Inter::Frame::ID_to_package(&P, c)->package_name,
 			Inter::Frame::ID_to_package(&P, a)->package_name);
+		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
+			Inter::Frame::ID_to_package(&P, c)->index_n,
+			Inter::Frame::ID_to_package(&P, a)->index_n);
 		internal_error("zap");
 	}
 

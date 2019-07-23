@@ -78,8 +78,8 @@ int Inter::Frame::eq(inter_frame *F1, inter_frame *F2) {
 }
 
 @ =
-inter_frame Inter::Frame::root_frame(inter_tree *I) {
-	inter_frame P = Inter::Warehouse::find_room(Inter::warehouse(I), Inter::get_global_symbols(I), 2, NULL, NULL);
+inter_frame Inter::Frame::root_frame(inter_warehouse *warehouse, inter_symbols_table *globals) {
+	inter_frame P = Inter::Warehouse::find_room(warehouse, globals, 2, NULL, NULL);
 	P.data[ID_IFLD] = (inter_t) NOP_IST;
 	P.data[LEVEL_IFLD] = 0;
 	return P;

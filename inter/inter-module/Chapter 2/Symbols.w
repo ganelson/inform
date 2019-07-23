@@ -281,8 +281,8 @@ text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I
 	return NULL;
 }
 
-void Inter::Symbols::annotate_t(inter_tree *I, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
-	inter_t n = Inter::create_text(I);
+void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
+	inter_t n = Inter::Warehouse::create_text(Inter::warehouse(I), owner);
 	Str::copy(Inter::get_text(I, n), S);
 	inter_annotation IA = Inter::Defn::annotation_from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);

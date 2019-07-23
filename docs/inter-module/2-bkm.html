@@ -44,6 +44,10 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IBM</span><span class="plain">-</span><span class="element">&gt;current_package</span><span class="plain">-</span><span class="element">&gt;stored_in</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="functiontext">Inter::Bookmarks::warehouse</span><span class="plain">(</span><span class="reserved">inter_bookmark</span><span class="plain"> *</span><span class="identifier">IBM</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::warehouse</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">));</span>
+    <span class="plain">}</span>
+
     <span class="reserved">inter_bookmark</span><span class="plain"> </span><span class="functiontext">Inter::Bookmarks::at_end_of_this_package</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no package supplied"</span><span class="plain">);</span>
         <span class="reserved">inter_bookmark</span><span class="plain"> </span><span class="identifier">IBM</span><span class="plain">;</span>
@@ -133,6 +137,8 @@
 <p class="endnote">The function Inter::Bookmarks::at_start_of_this_repository is used in 2/iibf (<a href="2-iibf.html#SP1">&#167;1</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inter::Bookmarks::tree is used in 2/st (<a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>), 2/frm (<a href="2-frm.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Bookmarks::warehouse is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Bookmarks::at_end_of_this_package appears nowhere else.</p>
 

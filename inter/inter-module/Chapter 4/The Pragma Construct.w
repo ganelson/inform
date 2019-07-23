@@ -38,7 +38,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
-	inter_t ID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	inter_t ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		int c = (int) Str::get(pos);

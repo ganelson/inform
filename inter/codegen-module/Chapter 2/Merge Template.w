@@ -144,7 +144,7 @@ void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 }
 
 void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
-	inter_t SID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	text_stream *glob_storage = Inter::get_text(Inter::Bookmarks::tree(IBM), SID);
 	Str::copy(glob_storage, content);
 	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));

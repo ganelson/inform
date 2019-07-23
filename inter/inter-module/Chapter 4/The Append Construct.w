@@ -40,7 +40,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		return;
 	}
 
-	inter_t ID = Inter::create_text(Inter::Bookmarks::tree(IBM));
+	inter_t ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	*E = Inter::Constant::parse_text(Inter::get_text(Inter::Bookmarks::tree(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 

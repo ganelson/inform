@@ -1,6 +1,7 @@
 -cases [Valid] 'inter/Tests/Valid'
 -cases [Invalid] 'inter/Tests/Invalid'
 -cases [General] 'inter/Tests/General'
+-cases [Duplex] 'inter/Tests/Duplex'
 -cases [PipelineErrors] 'inter/Tests/PipelineErrors'
 -cases [Units] 'inter/Tests/Units'
 
@@ -66,6 +67,37 @@
 
 	match text: $A $I
 	or: 'produced incorrect output'
+
+-end
+
+-recipe [Duplex]
+
+	set: $P = $PATH/$CASE.interpipeline
+	set: $OA = $PATH/_Pairs/$CASE+A.intert
+	set: $OB = $PATH/_Pairs/$CASE+B.intert
+	set: $BA = $PATH/_Binaries/$CASE+A.interb
+	set: $BB = $PATH/_Binaries/$CASE+B.interb
+	set: $AA = $PATH/_Results_Actual/$CASE+A.txt
+	set: $IA = $PATH/_Results_Ideal/$CASE+A.txt
+	set: $AB = $PATH/_Results_Actual/$CASE+B.txt
+	set: $IB = $PATH/_Results_Ideal/$CASE+B.txt
+	set: $T = $PATH/_Console/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Console
+	mkdir: $PATH/_Binaries
+
+	step: inter/Tangled/inter -variable '*inA=$OA' -variable '*inB=$OB' -variable '*binA=$BA' -variable '*binB=$BB' -variable '*outA=$AA' -variable '*outB=$AB' -pipeline-file $P
+	or: 'failed to produce output' $T
+
+	show: $A
+
+	match text: $AA $IA
+	or: 'produced incorrect output on A'
+
+	match text: $AB $IB
+	or: 'produced incorrect output on B'
 
 -end
 

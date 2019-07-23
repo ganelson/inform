@@ -23,8 +23,28 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_resource_holder</span><span class="plain"> *</span><span class="identifier">stored_resources</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inter_warehouse</span><span class="plain">;</span>
+</pre>
 
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The structure inter_warehouse is accessed in 2/iim, 2/st, 2/frm, 2/iibf and here.</p>
+
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">NO_IRSRC</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">STRING_IRSRC</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SYMBOLS_TABLE_IRSRC</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">FRAME_LIST_IRSRC</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PACKAGE_IRSRC</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">REF_IRSRC</span>
+</pre>
+
+<pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_resource_holder</span><span class="plain"> {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">irsrc</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">owning_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">stored_symbols_table</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="identifier">stored_frame_list</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">stored_package</span><span class="plain">;</span>
@@ -45,13 +65,11 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_warehouse is accessed in 2/iim, 2/st, 2/frm, 2/iibf and here.</p>
-
-<p class="endnote">The structure inter_resource_holder is accessed in 2/iim, 2/iibf and here.</p>
+<p class="endnote">The structure inter_resource_holder is accessed in 2/iim, 2/st, 2/pck, 2/iibf and here.</p>
 
 <p class="endnote">The structure inter_warehouse_room is accessed in 2/iim, 2/st, 2/frm, 2/iibf, 4/tac, 4/tic, 4/tpc5, 4/tpc6 and here.</p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
 <pre class="display">
@@ -139,6 +157,8 @@
             <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain"> = </span><span class="identifier">new_size</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain"> ++;</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">NO_IRSRC</span><span class="plain">;</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.owning_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_symbols_table</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_ref</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -195,9 +215,34 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_symbols_table</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::create_symbols_table</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_resource</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_symbols_table</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">SYMBOLS_TABLE_IRSRC</span><span class="plain">;</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_symbols_table</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::new</span><span class="plain">();</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_symbols_table</span><span class="plain">-</span><span class="element">&gt;n_index</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::attribute_resource</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"out of range"</span><span class="plain">);</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.owning_package</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Inter::Warehouse::get_text</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_text_stream</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::create_text</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_resource</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_text_stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">STRING_IRSRC</span><span class="plain">;</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_text_stream</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.owning_package</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Warehouse::get_package</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
@@ -206,9 +251,27 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_package</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::create_package</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_resource</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">PACKAGE_IRSRC</span><span class="plain">;</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_package</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::new</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">);</span>
+            <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.owning_package</span><span class="plain"> =</span>
+                <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_package</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Inter::Warehouse::get_ref</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_ref</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::create_ref</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_resource</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">);</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">REF_IRSRC</span><span class="plain">;</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_ref</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Warehouse::get_frame_list</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
@@ -216,6 +279,13 @@
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_frame_list</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="constant">inter_t</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::create_frame_list</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">) {</span>
+        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_resource</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">);</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> = </span><span class="constant">FRAME_LIST_IRSRC</span><span class="plain">;</span>
+        <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_frame_list</span><span class="plain"> = </span><span class="functiontext">Inter::new_frame_list</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -229,9 +299,9 @@
 
 <p class="endnote">The function Inter::Warehouse::enlarge_size is used in 2/frm (<a href="2-frm.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function Inter::Warehouse::find_room is used in 2/frm (<a href="2-frm.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP1_7">&#167;1.7</a>).</p>
+<p class="endnote">The function Inter::Warehouse::find_room is used in 2/frm (<a href="2-frm.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP1_6">&#167;1.6</a>).</p>
 
-<p class="endnote">The function Inter::Warehouse::create_resource is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP1_5">&#167;1.5</a>).</p>
+<p class="endnote">The function Inter::Warehouse::create_resource is used in 2/iibf (<a href="2-iibf.html#SP1_4">&#167;1.4</a>).</p>
 
 <p class="endnote">The function Inter::Warehouse::store_origin appears nowhere else.</p>
 
@@ -241,13 +311,25 @@
 
 <p class="endnote">The function Inter::Warehouse::get_symbols_table is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
 
+<p class="endnote">The function Inter::Warehouse::create_symbols_table is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Warehouse::attribute_resource is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>).</p>
+
 <p class="endnote">The function Inter::Warehouse::get_text is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Warehouse::create_text is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>, <a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Warehouse::get_package is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
 
+<p class="endnote">The function Inter::Warehouse::create_package is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
+
 <p class="endnote">The function Inter::Warehouse::get_ref is used in 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
 
+<p class="endnote">The function Inter::Warehouse::create_ref appears nowhere else.</p>
+
 <p class="endnote">The function Inter::Warehouse::get_frame_list is used in 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/frm (<a href="2-frm.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Warehouse::create_frame_list is used in 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-iim.html">Back to 'Inter in Memory'</a></li><li><a href="2-st.html">Continue with 'Symbols Tables'</a></li></ul><hr class="tocbar">

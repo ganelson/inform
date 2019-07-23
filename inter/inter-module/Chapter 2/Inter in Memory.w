@@ -28,7 +28,6 @@ To store bytecode-like intermediate code in memory.
 
 =
 typedef struct inter_tree {
-	struct inter_warehouse *warehouse;
 	struct inter_frame root_definition_frame;
 	struct inter_package *root_package;
 	struct inter_package *main_package;
@@ -40,27 +39,19 @@ inter_tree *Inter::create(void) {
 	inter_tree *I = CREATE(inter_tree);
 	I->main_package = NULL;
 
-	I->warehouse = Inter::Warehouse::new();
-	inter_t N = Inter::create_symbols_table(I);
-	I->root_package = Inter::get_package(I, Inter::create_package(I));
-	I->root_definition_frame = Inter::Frame::root_frame(I);
+	inter_warehouse *warehouse = Inter::Warehouse::new();
+	inter_t N = Inter::Warehouse::create_symbols_table(warehouse);
+	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(warehouse, N);
+	I->root_package = Inter::Warehouse::get_package(warehouse, Inter::Warehouse::create_package(warehouse, I));
+	I->root_definition_frame = Inter::Frame::root_frame(warehouse, globals);
 	Inter::Packages::make_rootlike(I->root_package);
-	Inter::Packages::set_scope(I->root_package, Inter::get_symbols_table(I, N));
+	Inter::Packages::set_scope(I->root_package, globals);
+	Inter::Warehouse::attribute_resource(warehouse, N, I->root_package);
 	return I;
 }
 
 inter_warehouse *Inter::warehouse(inter_tree *I) {
-	return I->warehouse;
-}
-
-inter_t Inter::create_symbols_table(inter_tree *I) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
-	if (warehouse->stored_resources[n].stored_symbols_table == NULL) {
-		warehouse->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
-		warehouse->stored_resources[n].stored_symbols_table->n_index = (int) n;
-	}
-	return n;
+	return Inter::Frame::warehouse(&(I->root_definition_frame));
 }
 
 inter_symbols_table *Inter::get_global_symbols(inter_tree *I) {
@@ -71,37 +62,16 @@ inter_symbols_table *Inter::get_symbols_table(inter_tree *I, inter_t n) {
 	return Inter::Warehouse::get_symbols_table(Inter::warehouse(I), n);
 }
 
-inter_t Inter::create_package(inter_tree *I) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
-	if (warehouse->stored_resources[n].stored_package == NULL) {
-		warehouse->stored_resources[n].stored_package = Inter::Packages::new(I, n);
-	}
-	return n;
-}
-
 inter_package *Inter::get_package(inter_tree *I, inter_t n) {
 	return Inter::Warehouse::get_package(Inter::warehouse(I), n);
 }
 
 inter_t Inter::create_text(inter_tree *I) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
-	if (warehouse->stored_resources[n].stored_text_stream == NULL) {
-		warehouse->stored_resources[n].stored_text_stream = Str::new();
-	}
-	return n;
+	return Inter::Warehouse::create_text(Inter::warehouse(I), NULL);
 }
 
 text_stream *Inter::get_text(inter_tree *I, inter_t n) {
 	return Inter::Warehouse::get_text(Inter::warehouse(I), n);
-}
-
-inter_t Inter::create_ref(inter_tree *I) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
-	warehouse->stored_resources[n].stored_ref = NULL;
-	return n;
 }
 
 void *Inter::get_ref(inter_tree *I, inter_t n) {
@@ -122,18 +92,6 @@ inter_frame_list *Inter::new_frame_list(void) {
 	ifl->first_in_ifl = NULL;
 	ifl->last_in_ifl = NULL;
 	return ifl;
-}
-
-inter_t Inter::create_frame_list(inter_tree *I) {
-	inter_warehouse *warehouse = Inter::warehouse(I);
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
-	warehouse->stored_resources[n].stored_frame_list = CREATE(inter_frame_list);
-	warehouse->stored_resources[n].stored_frame_list->spare_storage = NULL;
-	warehouse->stored_resources[n].stored_frame_list->storage_used = 0;
-	warehouse->stored_resources[n].stored_frame_list->storage_capacity = 0;
-	warehouse->stored_resources[n].stored_frame_list->first_in_ifl = NULL;
-	warehouse->stored_resources[n].stored_frame_list->last_in_ifl = NULL;
-	return n;
 }
 
 typedef struct inter_frame_list {

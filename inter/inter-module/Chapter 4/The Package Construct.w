@@ -14,6 +14,7 @@ void Inter::Package::define(void) {
 		I"package", I"packages");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Package::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Package::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Package::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Package::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Package::verify_children);
@@ -45,7 +46,7 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
-	inter_t STID = Inter::create_symbols_table(Inter::Bookmarks::tree(IBM));
+	inter_t STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
 	LOGIF(INTER_SYMBOLS, "Package $3 at IBM $5\n", package_name, IBM);
 	inter_frame P = Inter::Frame::fill_4(IBM,
 		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
@@ -53,7 +54,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);
 
-	inter_t PID = Inter::create_package(Inter::Bookmarks::tree(IBM));
+	inter_t PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Packages::from_PID(Inter::Bookmarks::tree(IBM), PID);
 	Inter::Packages::set_name(pack, package_name);
 	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
@@ -61,10 +62,16 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 		Inter::Packages::make_linklike(pack);
 	Inter::Packages::set_scope(pack, Inter::Package::local_symbols(package_name));
 	P.data[PID_PACKAGE_IFLD] = PID;
+	Inter::Warehouse::attribute_resource(Inter::Bookmarks::warehouse(IBM), STID, pack);
 
 	if (created) *created = pack;
 
 	return NULL;
+}
+
+void Inter::Package::transpose(inter_construct *IC, inter_frame P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P.data[PID_PACKAGE_IFLD] = grid[P.data[PID_PACKAGE_IFLD]];
+	P.data[SYMBOLS_PACKAGE_IFLD] = grid[P.data[SYMBOLS_PACKAGE_IFLD]];
 }
 
 void Inter::Package::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {

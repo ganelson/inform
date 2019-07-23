@@ -1,0 +1,4 @@
+read 0 <- *inA
+read 1 <- *inB
+generate 0 text -> *outA
+generate 1 text -> *outB

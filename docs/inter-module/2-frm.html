@@ -100,7 +100,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Frame::warehouse is used in <a href="#SP5">&#167;5</a>, 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Frame::warehouse is used in <a href="#SP5">&#167;5</a>, 2/iim (<a href="2-iim.html#SP3">&#167;3</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Inter::Frame::ID_to_symbols_table is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
 
@@ -116,7 +116,7 @@
 
 <p class="endnote">The function Inter::Frame::globals is used in 2/st (<a href="2-st.html#SP7">&#167;7</a>, <a href="2-st.html#SP9">&#167;9</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Frame::around is used in <a href="#SP6">&#167;6</a>, 2/ie (<a href="2-ie.html#SP1">&#167;1</a>), 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/tw (<a href="2-tw.html#SP2">&#167;2</a>), 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::Frame::around is used in <a href="#SP6">&#167;6</a>, 2/ie (<a href="2-ie.html#SP1">&#167;1</a>), 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/tw (<a href="2-tw.html#SP3">&#167;3</a>), 2/sym (<a href="2-sym.html#SP2">&#167;2</a>, <a href="2-sym.html#SP4">&#167;4</a>).</p>
 
 <p class="endnote">The function Inter::Frame::valid is used in <a href="#SP5">&#167;5</a>, 2/iim (<a href="2-iim.html#SP4">&#167;4</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/bkm (<a href="2-bkm.html#SP2">&#167;2</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>, <a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
 
@@ -126,8 +126,8 @@
 
 
 <pre class="display">
-    <span class="reserved">inter_frame</span><span class="plain"> </span><span class="functiontext">Inter::Frame::root_frame</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::find_room</span><span class="plain">(</span><span class="functiontext">Inter::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="functiontext">Inter::get_global_symbols</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), 2, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+    <span class="reserved">inter_frame</span><span class="plain"> </span><span class="functiontext">Inter::Frame::root_frame</span><span class="plain">(</span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">globals</span><span class="plain">) {</span>
+        <span class="reserved">inter_frame</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::find_room</span><span class="plain">(</span><span class="identifier">warehouse</span><span class="plain">, </span><span class="identifier">globals</span><span class="plain">, 2, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">ID_IFLD</span><span class="plain">] = (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="constant">NOP_IST</span><span class="plain">;</span>
         <span class="identifier">P</span><span class="element">.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">] = 0;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
@@ -532,7 +532,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Frame::insert is used in 2/iibf (<a href="2-iibf.html#SP1_7">&#167;1.7</a>), 4/tnc (<a href="4-tnc.html#SP1">&#167;1</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Frame::insert is used in 2/iibf (<a href="2-iibf.html#SP1_6">&#167;1.6</a>), 4/tnc (<a href="4-tnc.html#SP1">&#167;1</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::retrieve_origin appears nowhere else.</p>
 
@@ -540,7 +540,7 @@
 
 <p class="endnote">The function Inter::Frame::get_comment is used in 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Inter::Frame::attach_comment is used in 2/iibf (<a href="2-iibf.html#SP1_7">&#167;1.7</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Frame::attach_comment is used in 2/iibf (<a href="2-iibf.html#SP1_6">&#167;1.6</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Frame::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>).</p>
 
@@ -548,7 +548,7 @@
 
 <p class="endnote">The function Inter::Frame::backtrace is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Inter::Frame::attach_package is used in 2/tw (<a href="2-tw.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Frame::attach_package is used in 2/tw (<a href="2-tw.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Inter::Frame::get_first_child_index is used in <a href="#SP6_1">&#167;6.1</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_5">&#167;6.5</a>.</p>
 

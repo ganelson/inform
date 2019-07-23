@@ -24,6 +24,10 @@ inter_tree *Inter::Bookmarks::tree(inter_bookmark *IBM) {
 	return IBM->current_package->stored_in;
 }
 
+inter_warehouse *Inter::Bookmarks::warehouse(inter_bookmark *IBM) {
+	return Inter::warehouse(Inter::Bookmarks::tree(IBM));
+}
+
 inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	if (pack == NULL) internal_error("no package supplied"); 
 	inter_bookmark IBM;

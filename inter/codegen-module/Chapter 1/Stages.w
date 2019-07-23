@@ -46,6 +46,7 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG, FALSE);
 
 		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG, TRUE);
+		CodeGen::Stage::new(I"move", CodeGen::Stage::run_move_stage, GENERAL_STAGE_ARG, TRUE);
 		CodeGen::Stage::new(I"mask", CodeGen::Stage::run_mask_stage, GENERAL_STAGE_ARG, TRUE);
 		CodeGen::Stage::new(I"unmask", CodeGen::Stage::run_unmask_stage, NO_STAGE_ARG, FALSE);
 
@@ -74,6 +75,27 @@ int CodeGen::Stage::run_read_stage(pipeline_step *step) {
 	filename *F = step->parsed_filename;
 	if (Inter::Binary::test_file(F)) Inter::Binary::read(step->repository, F);
 	else Inter::Textual::read(step->repository, F);
+	return TRUE;
+}
+
+int CodeGen::Stage::run_move_stage(pipeline_step *step) {
+	LOG("Arg is %S.\n", step->step_argument);
+	match_results mr = Regexp::create_mr();
+	inter_symbol *S = NULL;
+	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
+		int from_rep = Str::atoi(mr.exp[0], 0);
+		if (step->pipeline->repositories[from_rep] == NULL)
+			internal_error("no such repository");
+		S = Inter::SymbolsTables::url_name_to_symbol(
+			step->pipeline->repositories[from_rep], NULL, mr.exp[1]);
+	}
+	Regexp::dispose_of(&mr);
+	if (S == NULL) internal_error("no such location");
+	inter_package *pack = Inter::Package::which(S);
+	if (pack == NULL) internal_error("not a package");
+
+	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", pack->package_name->symbol_name);
+
 	return TRUE;
 }
 

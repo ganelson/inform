@@ -7,6 +7,8 @@ The binary representation of Inter, saved out to a file, is portable and
 complete in itself.
 
 =
+int trace_bin = FALSE;
+
 void Inter::Binary::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading binary inter file %f)\n", F);
 	long int max_offset = BinaryFiles::size(F);
@@ -18,6 +20,8 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 
 	inter_warehouse *warehouse = Inter::warehouse(I);
 
+	inter_t *grid = NULL;
+	inter_t grid_extent = 0;
 	unsigned int X = 0;
 
 	@<Read the shibboleth@>;
@@ -25,6 +29,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	@<Read the resources@>;
 	@<Read the symbol equations@>;
 	@<Read the bytecode@>;
+	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON, (int) grid_extent, sizeof(inter_t));
 
 	BinaryFiles::close(fh);
 }
@@ -33,6 +38,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 
 =
 void Inter::Binary::write(filename *F, inter_tree *I) {
+	if (trace_bin) WRITE_TO(STDOUT, "Writing binary inter file %f\n", F);
 	LOGIF(INTER_FILE_READ, "(Writing binary inter file %f)\n", F);
 	FILE *fh = BinaryFiles::open_for_writing(F);
 	inter_warehouse *warehouse = Inter::warehouse(I);
@@ -95,51 +101,106 @@ resource block later on.
 	BinaryFiles::write_int32(fh, 0);
 
 @ There follows a block of resources, which is a list in which each entry opens
-with a word identifying which resource is meant; when |NO_IRSRC| is reached,
-that's the end of the list and therefore the block.
-
-@e NO_IRSRC from 0
-@e STRING_IRSRC
-@e SYMBOLS_TABLE_IRSRC
-@e FRAME_LIST_IRSRC
-@e PACKAGE_IRSRC
+with a word identifying which resource number is meant; when this is zero,
+that's the end of the list and therefore the block. (There is no resource 0.)
 
 @<Read the resources@> =
-	int resource_counter = 0;
-	while (BinaryFiles::read_int32(fh, &X)) {
-		if (X == NO_IRSRC) break;
-
-		resource_counter++;
-		inter_t n = (inter_t) resource_counter;
-		if (resource_counter >= 3) n = Inter::Warehouse::create_resource(warehouse);
-		inter_resource_holder *res = &(warehouse->stored_resources[n]);
-
-		switch (X) {
-			case STRING_IRSRC: @<Read a string resource@>; break;
-			case SYMBOLS_TABLE_IRSRC: @<Read a symbols table resource@>; break;
-			case FRAME_LIST_IRSRC: @<Read a frame list resource@>; break;
-			case PACKAGE_IRSRC: @<Read a package resource@>; break;
+	unsigned int count = 0;
+	if (BinaryFiles::read_int32(fh, &count) == FALSE)
+		Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+	if (count > 0) {
+		unsigned int grid_extent = 0;
+		if (BinaryFiles::read_int32(fh, &grid_extent) == FALSE)
+			Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		if (grid_extent == 0) {
+			Inter::Binary::read_error(&eloc, ftell(fh), I"max zero");
+			grid_extent = 1000;
+		}
+		grid = (inter_t *) Memory::I7_calloc((int) grid_extent, sizeof(inter_t), INTER_BYTECODE_MREASON);
+		for (inter_t i=0; i<grid_extent; i++) grid[i] = 0;
+		for (inter_t i=0; i<count; i++) {
+			unsigned int from_N;
+			if (BinaryFiles::read_int32(fh, &from_N)) {
+				inter_t n;
+				switch (i) {
+					case 0: n = (inter_t) I->root_package->package_scope->n_index; break;
+					case 1: n =  (inter_t) I->root_package->index_n; break;
+					default: n = Inter::Warehouse::create_resource(warehouse); break;
+				}
+	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
+				if (from_N >= grid_extent) {
+					from_N = grid_extent-1;
+					Inter::Binary::read_error(&eloc, ftell(fh), I"max incorrect");
+				}
+				grid[from_N] = n;
+			} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		}
+		for (inter_t i=0; i<grid_extent; i++) {
+	if (trace_bin) WRITE_TO(STDOUT, "%d ", grid[i]);
+		}
+	if (trace_bin) WRITE_TO(STDOUT, "\n");
+		
+		for (inter_t i=0; i<count; i++) {
+			unsigned int from_N = 0;
+			if (BinaryFiles::read_int32(fh, &from_N) == FALSE)
+				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+			if ((from_N == 0) || (from_N >= grid_extent)) {
+				Inter::Binary::read_error(&eloc, ftell(fh), I"from-N out of range");
+				from_N = grid_extent - 1;
+			}
+			inter_t n = grid[from_N];
+			inter_resource_holder *res = &(warehouse->stored_resources[n]);
+			unsigned int X = NO_IRSRC;
+			if (BinaryFiles::read_int32(fh, &X) == FALSE)
+				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d -> %d type %d\n", from_N, n, X);
+			switch (X) {
+				case STRING_IRSRC: @<Read a string resource@>; break;
+				case SYMBOLS_TABLE_IRSRC: @<Read a symbols table resource@>; break;
+				case FRAME_LIST_IRSRC: @<Read a frame list resource@>; break;
+				case PACKAGE_IRSRC: @<Read a package resource@>; break;
+			}
 		}
 	}
 
 @<Write the resources@> =
+	int max = -1, count = 0;
 	for (int n = 1; n < warehouse->size; n++) {
-		inter_resource_holder *res = &(warehouse->stored_resources[n]);
-		if (res->stored_text_stream) {
-			BinaryFiles::write_int32(fh, STRING_IRSRC);
-			@<Write a string resource@>;
-		} else if (res->stored_symbols_table) {
-			BinaryFiles::write_int32(fh, SYMBOLS_TABLE_IRSRC);
-			@<Write a symbols table resource@>;
-		} else if (res->stored_package) {
-			BinaryFiles::write_int32(fh, PACKAGE_IRSRC);
-			@<Write a package resource@>;
-		} else {
-			BinaryFiles::write_int32(fh, FRAME_LIST_IRSRC);
-			@<Write a frame list resource@>;
+		inter_package *owner = warehouse->stored_resources[n].owning_package;
+		if ((owner) && (owner->stored_in != I)) continue;
+		count++;
+		if (n+1 > max) max = n+1;
+	}
+	BinaryFiles::write_int32(fh, (unsigned int) count);
+	if (count >= 0) {
+		BinaryFiles::write_int32(fh, (unsigned int) max);
+		for (int n = 1; n < warehouse->size; n++) {
+			inter_package *owner = warehouse->stored_resources[n].owning_package;
+			if ((owner) && (owner->stored_in != I)) continue;
+			BinaryFiles::write_int32(fh, (unsigned int) n);
+		}
+		for (int n = 1; n < warehouse->size; n++) {
+			inter_package *owner = warehouse->stored_resources[n].owning_package;
+			if ((owner) && (owner->stored_in != I)) continue;
+	if (trace_bin) WRITE_TO(STDOUT, "Writing resource %d type %d owner %s\n", n, warehouse->stored_resources[n].irsrc,
+		(owner)?"yes":"no");
+			BinaryFiles::write_int32(fh, (unsigned int) n);
+			inter_resource_holder *res = &(warehouse->stored_resources[n]);
+			if (res->stored_text_stream) {
+				BinaryFiles::write_int32(fh, STRING_IRSRC);
+				@<Write a string resource@>;
+			} else if (res->stored_symbols_table) {
+				BinaryFiles::write_int32(fh, SYMBOLS_TABLE_IRSRC);
+				@<Write a symbols table resource@>;
+			} else if (res->stored_package) {
+				BinaryFiles::write_int32(fh, PACKAGE_IRSRC);
+				@<Write a package resource@>;
+			} else {
+				BinaryFiles::write_int32(fh, FRAME_LIST_IRSRC);
+				@<Write a frame list resource@>;
+			}
 		}
 	}
-	BinaryFiles::write_int32(fh, NO_IRSRC);
 
 @<Read a string resource@> =
 	res->stored_text_stream = Str::new();
@@ -251,18 +312,23 @@ that's the end of the list and therefore the block.
 	if (BinaryFiles::read_int32(fh, &p) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	unsigned int cl;
 	if (BinaryFiles::read_int32(fh, &cl) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+	unsigned int rl;
+	if (BinaryFiles::read_int32(fh, &rl) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	unsigned int sc;
 	if (BinaryFiles::read_int32(fh, &sc) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	unsigned int nid;
 	if (BinaryFiles::read_int32(fh, &nid) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	inter_package *parent = NULL;
-	if (p != 0) parent = Inter::get_package(I, p);
+	if (p != 0) parent = Inter::get_package(I, grid[p]);
 	if (res->stored_package == NULL) {
 		res->stored_package = Inter::Packages::new(I, n);
 	}
 	if (cl) Inter::Packages::make_codelike(res->stored_package);
-	if (nid == 0) Inter::Packages::make_rootlike(res->stored_package);
-	if (sc != 0) Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
+	if (rl) Inter::Packages::make_rootlike(res->stored_package);
+	if (sc != 0) {
+		if (grid) sc = grid[sc];
+		Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
+	}
 	if (nid != 0) {
 		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::get_global_symbols(I), nid);
 		if (pack_name)
@@ -278,6 +344,7 @@ that's the end of the list and therefore the block.
 		if (par == NULL) BinaryFiles::write_int32(fh, 0);
 		else BinaryFiles::write_int32(fh, (unsigned int) par->index_n);
 		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
+		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_rootlike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
 		if (P->package_name)
 			BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
@@ -297,6 +364,7 @@ enough that the slot exists for the eventual list to be stored in.
 @<Read the symbol equations@> =
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
+		if (grid) X = grid[X];
 		inter_symbols_table *from_T = Inter::get_symbols_table(I, X);
 		if (from_T == NULL) {
 			WRITE_TO(STDERR, "It's %d\n", X);
@@ -309,6 +377,8 @@ enough that the slot exists for the eventual list to be stored in.
 			unsigned int to_ID = 0;
 			if (BinaryFiles::read_int32(fh, &to_T_id) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+			if (grid) to_T_id = grid[to_T_id];
+	if (trace_bin) WRITE_TO(STDOUT, "Read eqn %d -> %d\n", X, to_T_id);
 			if (BinaryFiles::read_int32(fh, &to_ID) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			inter_symbols_table *to_T = Inter::get_symbols_table(I, to_T_id);
@@ -321,9 +391,10 @@ enough that the slot exists for the eventual list to be stored in.
 		}
 	}
 
-
 @<Write the symbol equations@> =
 	for (int n = 1; n < warehouse->size; n++) {
+		inter_package *owner = warehouse->stored_resources[n].owning_package;
+		if ((owner) && (owner->stored_in != I)) continue;
 		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 		if (res->stored_symbols_table) {
 			inter_symbols_table *from_T = res->stored_symbols_table;
@@ -333,6 +404,7 @@ enough that the slot exists for the eventual list to be stored in.
 				if ((symb) && (symb->equated_to)) {
 					BinaryFiles::write_int32(fh, symb->symbol_ID);
 					BinaryFiles::write_int32(fh, (unsigned int) symb->equated_to->owning_table->n_index);
+	if (trace_bin) WRITE_TO(STDOUT, "Write eqn %d -> %d\n", n, symb->equated_to->owning_table->n_index);
 					BinaryFiles::write_int32(fh, symb->equated_to->symbol_ID);
 				}
 			}
@@ -346,10 +418,17 @@ enough that the slot exists for the eventual list to be stored in.
 		eloc.error_offset = (size_t) ftell(fh) - PREFRAME_SIZE;
 		int extent = (int) X;
 		if ((extent < 2) || ((long int) extent >= max_offset)) Inter::Binary::read_error(&eloc, ftell(fh), I"overlarge line");
+	if (trace_bin) WRITE_TO(STDOUT, "Reading bytecode, extent %d\n", extent);
 
 		inter_package *owner = NULL;
 		unsigned int PID = 0;
-		if (BinaryFiles::read_int32(fh, &PID)) owner = Inter::Packages::from_PID(I, PID);
+		if (BinaryFiles::read_int32(fh, &PID)) {
+			if (grid) PID = grid[PID];
+	if (trace_bin) WRITE_TO(STDOUT, "PID %d\n", PID);
+			owner = Inter::Packages::from_PID(I, PID);
+	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
+
+		}
 		inter_frame P = Inter::Warehouse::find_room(warehouse, Inter::get_global_symbols(I), extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
@@ -361,9 +440,13 @@ enough that the slot exists for the eventual list to be stored in.
 		if (BinaryFiles::read_int32(fh, &comment)) {
 			if (comment != 0) Inter::Frame::attach_comment(P, (inter_t) comment);
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-
-		inter_error_message *E = Inter::Defn::verify_construct(owner, P);
+	if (trace_bin) WRITE_TO(STDOUT, "Verify\n");
+		inter_error_message *E = NULL;
+		if (grid) E = Inter::Defn::transpose_construct(owner, P, grid, grid_extent);
 		if (E) { Inter::Errors::issue(E); exit(1); }
+		E = Inter::Defn::verify_construct(owner, P);
+		if (E) { Inter::Errors::issue(E); exit(1); }
+	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
 		Inter::Frame::insert(P, &at);
 	}
 

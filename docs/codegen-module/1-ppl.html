@@ -34,6 +34,7 @@ have no meaningful contents when the step is not running.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">repository_argument</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text_out_file</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">repository</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">pipeline</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">pipeline_step</span><span class="plain">;</span>
 
@@ -67,6 +68,7 @@ have no meaningful contents when the step is not running.
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;from_memory</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;pipeline</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -293,6 +295,7 @@ logging:
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">PP</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+                <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;pipeline</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
 
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STAGE_NAME</span><span class="plain">, </span><span class="string">"inter step %d/%d (at %dcs): "</span><span class="plain">, ++</span><span class="identifier">step_count</span><span class="plain">, </span><span class="identifier">step_total</span><span class="plain">,</span>
@@ -371,7 +374,7 @@ logging:
 
 <p class="endnote">The function CodeGen::Pipeline::run appears nowhere else.</p>
 
-<p class="endnote">The structure codegen_pipeline is private to this section.</p>
+<p class="endnote">The structure codegen_pipeline is accessed in 1/stg and here.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Following. </b></p>
 
@@ -459,6 +462,9 @@ logging:
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Frame gives package as $3, but its location is in package $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                 <span class="identifier">Inter::Frame::ID_to_package</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">)-&gt;</span><span class="identifier">package_name</span><span class="plain">,</span>
                 <span class="identifier">Inter::Frame::ID_to_package</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">a</span><span class="plain">)-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"Frame gives package as %d, but its location is in package %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                <span class="identifier">Inter::Frame::ID_to_package</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">)-&gt;</span><span class="identifier">index_n</span><span class="plain">,</span>
+                <span class="identifier">Inter::Frame::ID_to_package</span><span class="plain">(&amp;</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">a</span><span class="plain">)-&gt;</span><span class="identifier">index_n</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"zap"</span><span class="plain">);</span>
         <span class="plain">}</span>
 

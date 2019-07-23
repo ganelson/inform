@@ -18,6 +18,9 @@ inter.mk
 Tests/Invalid/_Results_Actual/
 Tests/General/_Results_Actual/
 Tests/General/_Console/
+Tests/Duplex/_Results_Actual/
+Tests/Duplex/_Console/
+Tests/Duplex/_Binaries/
 Tests/Valid/_Binary/
 Tests/Valid/_Console/
 Tests/Valid/_Textual/
