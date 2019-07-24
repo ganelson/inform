@@ -51,7 +51,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 		*E = Inter::Inv::new_call(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
-	switch (Inter::Symbols::definition(invoked_name)->node->W.data[ID_IFLD]) {
+	switch (Inter::Symbols::definition(invoked_name)->W.data[ID_IFLD]) {
 		case PRIMITIVE_IST:
 			*E = Inter::Inv::new_primitive(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
 			return;
@@ -66,36 +66,36 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
+	inter_tree_node *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
 		eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
 inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
 inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Frame::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Inv::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_INV_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+void Inter::Inv::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_INV_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 
-	switch (P->node->W.data[METHOD_INV_IFLD]) {
+	switch (P->W.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE:
-			*E = Inter::Verify::global_symbol(P, P->node->W.data[INVOKEE_INV_IFLD], PRIMITIVE_IST); if (*E) return;
+			*E = Inter::Verify::global_symbol(P, P->W.data[INVOKEE_INV_IFLD], PRIMITIVE_IST); if (*E) return;
 			break;
 		case INVOKED_OPCODE:
 		case INVOKED_ROUTINE:
@@ -106,9 +106,9 @@ void Inter::Inv::verify(inter_construct *IC, inter_frame *P, inter_package *owne
 	}
 }
 
-void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
-	if (P->node->W.data[METHOD_INV_IFLD] == INVOKED_OPCODE) {
-		WRITE("inv %S", Inter::Frame::ID_to_text(P, P->node->W.data[INVOKEE_INV_IFLD]));
+void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+	if (P->W.data[METHOD_INV_IFLD] == INVOKED_OPCODE) {
+		WRITE("inv %S", Inter::Frame::ID_to_text(P, P->W.data[INVOKEE_INV_IFLD]));
 	} else {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (invokee) {
@@ -117,13 +117,13 @@ void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter
 	}
 }
 
-inter_symbol *Inter::Inv::invokee(inter_frame *P) {
-	if (P->node->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
+inter_symbol *Inter::Inv::invokee(inter_tree_node *P) {
+	if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
 		return Inter::SymbolsTables::global_symbol_from_frame_data(P, INVOKEE_INV_IFLD);
  	return Inter::SymbolsTables::symbol_from_frame_data(P, INVOKEE_INV_IFLD);
 }
 
-void Inter::Inv::verify_children(inter_construct *IC, inter_frame *P, inter_error_message **E) {
+void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	int arity_as_invoked=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
 	#ifdef CORE_MODULE
@@ -132,10 +132,10 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame *P, inter_erro
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (Primitives::is_indirect_interp(invokee)) {
 			inter_symbol *better = Primitives::indirect_interp(arity_as_invoked - 1);
-			P->node->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
+			P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
 		} else if (Primitives::is_indirectv_interp(invokee)) {
 			inter_symbol *better = Primitives::indirectv_interp(arity_as_invoked - 1);
-			P->node->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
+			P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
 		}
 	}
 	#endif
@@ -151,16 +151,16 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_frame *P, inter_erro
 	int i=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		i++;
-		if (C->node->W.data[0] == SPLAT_IST) continue;
-		if ((C->node->W.data[0] != INV_IST) && (C->node->W.data[0] != REF_IST) && (C->node->W.data[0] != LAB_IST) &&
-			(C->node->W.data[0] != CODE_IST) && (C->node->W.data[0] != VAL_IST) && (C->node->W.data[0] != EVALUATION_IST) &&
-			(C->node->W.data[0] != REFERENCE_IST) && (C->node->W.data[0] != CAST_IST) && (C->node->W.data[0] != SPLAT_IST) && (C->node->W.data[0] != COMMENT_IST)) {
+		if (C->W.data[0] == SPLAT_IST) continue;
+		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != REF_IST) && (C->W.data[0] != LAB_IST) &&
+			(C->W.data[0] != CODE_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != EVALUATION_IST) &&
+			(C->W.data[0] != REFERENCE_IST) && (C->W.data[0] != CAST_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != COMMENT_IST)) {
 			*E = Inter::Frame::error(P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
 			return;
 		}
 		inter_t cat_as_invoked = Inter::Inv::evaluated_category(C);
 		inter_t cat_needed = Inter::Inv::operand_category(P, i-1);
-		if ((cat_as_invoked != cat_needed) && (P->node->W.data[METHOD_INV_IFLD] != INVOKED_OPCODE)) {
+		if ((cat_as_invoked != cat_needed) && (P->W.data[METHOD_INV_IFLD] != INVOKED_OPCODE)) {
 			inter_symbol *invokee = Inter::Inv::invokee(P);
 			text_stream *err = Str::new();
 			WRITE_TO(err, "operand %d of inv '%S' should be %s, but this is %s",
@@ -183,9 +183,9 @@ char *Inter::Inv::cat_name(inter_t cat) {
 	return "<unknown>";
 }
 
-int Inter::Inv::arity(inter_frame *P) {
+int Inter::Inv::arity(inter_tree_node *P) {
 	inter_symbol *invokee = Inter::Inv::invokee(P);
-	switch (P->node->W.data[METHOD_INV_IFLD]) {
+	switch (P->W.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE:
 			return Inter::Primitive::arity(invokee);
 		case INVOKED_ROUTINE:
@@ -196,17 +196,17 @@ int Inter::Inv::arity(inter_frame *P) {
 	return 0;
 }
 
-inter_t Inter::Inv::evaluated_category(inter_frame *P) {
-	if (P->node->W.data[0] == REF_IST) return REF_PRIM_CAT;
-	if (P->node->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
-	if (P->node->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
-	if (P->node->W.data[0] == CODE_IST) return CODE_PRIM_CAT;
-	if (P->node->W.data[0] == INV_IST) {
+inter_t Inter::Inv::evaluated_category(inter_tree_node *P) {
+	if (P->W.data[0] == REF_IST) return REF_PRIM_CAT;
+	if (P->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
+	if (P->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
+	if (P->W.data[0] == CODE_IST) return CODE_PRIM_CAT;
+	if (P->W.data[0] == INV_IST) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (P->node->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
+		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
 			return Inter::Primitive::result_category(invokee);
 		return VAL_PRIM_CAT;
 	}
@@ -214,16 +214,16 @@ inter_t Inter::Inv::evaluated_category(inter_frame *P) {
 	return 0;
 }
 
-inter_t Inter::Inv::operand_category(inter_frame *P, int i) {
-	if (P->node->W.data[0] == REF_IST) return REF_PRIM_CAT;
-	if (P->node->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
-	if (P->node->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
-	if (P->node->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
-	if (P->node->W.data[0] == INV_IST) {
+inter_t Inter::Inv::operand_category(inter_tree_node *P, int i) {
+	if (P->W.data[0] == REF_IST) return REF_PRIM_CAT;
+	if (P->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
+	if (P->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
+	if (P->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
+	if (P->W.data[0] == INV_IST) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (P->node->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
+		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
 			return Inter::Primitive::operand_category(invokee, i);
 		return VAL_PRIM_CAT;
 	}

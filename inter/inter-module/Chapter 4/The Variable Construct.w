@@ -48,33 +48,33 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
+	inter_tree_node *P = Inter::Frame::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Variable::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_VAR_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->node->W.data[KIND_VAR_IFLD], KIND_IST);
+	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_VAR_IFLD], KIND_IST);
 }
 
-void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *var_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
 	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAR_IFLD);
 	if ((var_name) && (var_kind)) {
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
-		Inter::Types::write(OUT, P, var_kind, P->node->W.data[VAL1_VAR_IFLD], P->node->W.data[VAL2_VAR_IFLD], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, P, var_kind, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], Inter::Packages::scope_of(P), FALSE);
 		Inter::Symbols::write_annotations(OUT, P, var_name);
 	} else { *E = Inter::Frame::error(P, I"cannot write variable", NULL); return; }
 }
 
 inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
-	inter_frame *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
-	if (D->node->W.data[ID_IFLD] != VARIABLE_IST) return NULL;
+	if (D->W.data[ID_IFLD] != VARIABLE_IST) return NULL;
 	return Inter::SymbolsTables::symbol_from_frame_data(D, KIND_VAR_IFLD);
 }

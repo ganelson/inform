@@ -44,30 +44,30 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 }
 
 inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_2(IBM, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, lab_name), eloc, level);
+	inter_tree_node *P = Inter::Frame::fill_2(IBM, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, lab_name), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Label::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_LABEL_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *routine = owner->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LABEL_IFLD]);
 	if (Inter::Symbols::is_label(lab_name) == FALSE) {
 		*E = Inter::Frame::error(P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
 		return;
 	}
-	if (P->node->W.data[LEVEL_IFLD] < 1) { *E = Inter::Frame::error(P, I"label with bad level", NULL); return; }
+	if (P->W.data[LEVEL_IFLD] < 1) { *E = Inter::Frame::error(P, I"label with bad level", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inter::Frame::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LABEL_IFLD, locals);
 }
 
-void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LABEL_IFLD]);
 	if (lab_name) {
 		WRITE("%S", lab_name->symbol_name);
 	} else { *E = Inter::Frame::error(P, I"cannot write label", NULL); return; }

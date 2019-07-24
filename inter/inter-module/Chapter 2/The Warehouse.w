@@ -11,9 +11,6 @@ typedef struct inter_warehouse {
 	int size;
 	int capacity;
 	struct inter_resource_holder *stored_resources;
-	int itn_store_capacity;
-	struct inter_tree_node *itn_store;
-	int next_unique_frame_ID;
 	MEMORY_MANAGEMENT
 } inter_warehouse;
 
@@ -58,9 +55,6 @@ inter_warehouse *Inter::Warehouse::new(void) {
 		warehouse->size = 1;
 		warehouse->capacity = 0;
 		warehouse->stored_resources = NULL;
-		warehouse->itn_store_capacity = 0;
-		warehouse->itn_store = NULL;
-		warehouse->next_unique_frame_ID = 1;
 		the_only_warehouse = warehouse;
 	}
 	return the_only_warehouse;
@@ -119,30 +113,14 @@ int Inter::Warehouse::enlarge_size(int n, int at_least) {
 	return next_size;
 }
 
-inter_frame *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_tree *I,
+inter_tree_node *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_tree *I,
 	int n, inter_error_location *eloc, inter_package *owner) {
 	if (warehouse == NULL) internal_error("no warehouse");
 	if (I == NULL) internal_error("no tree supplied");
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
-	int ID = warehouse->next_unique_frame_ID++;
-	if (warehouse->itn_store_capacity <= ID) {
-		int new_size = 65536;
-		while (new_size < 2*ID) new_size = 2*new_size;
-		inter_tree_node *storage = (inter_tree_node *) Memory::I7_calloc(new_size, sizeof(inter_tree_node), INTER_LINKS_MREASON);
-		inter_tree_node *old = warehouse->itn_store;
-		for (int i=0; i<warehouse->itn_store_capacity; i++) storage[i] = old[i];
-		if (warehouse->itn_store_capacity > 0)
-			Memory::I7_free(old, INTER_LINKS_MREASON, warehouse->itn_store_capacity);
-		warehouse->itn_store = storage;
-		warehouse->itn_store_capacity = new_size;
-	}
-	warehouse->itn_store[ID] = Inter::new_itn(I);
-	warehouse->itn_store[ID].node = &(warehouse->itn_store[ID]);
-//	inter_frame *F = &(warehouse->itn_store[ID].content);
-	inter_frame *F = &(warehouse->itn_store[ID]);
-	F->node = &(warehouse->itn_store[ID]);
-	F->node->W = Inter::Warehouse::find_room_in_room(IS, n);
+	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(IS, n);
+	inter_tree_node *F = Inter::new_itn(I, W);
 	Inter::Frame::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
 	Inter::Frame::attach_package(F, owner);
 	return F;

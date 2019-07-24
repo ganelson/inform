@@ -205,12 +205,12 @@ inter_symbol *Inter::SymbolsTables::symbol_from_id(inter_symbols_table *T, inter
 @ It's convenient to have some abbreviations for common ways to access the above.
 
 =
-inter_symbol *Inter::SymbolsTables::symbol_from_frame_data(inter_frame *P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->node->W.data[x]);
+inter_symbol *Inter::SymbolsTables::symbol_from_frame_data(inter_tree_node *P, int x) {
+	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.data[x]);
 }
 
-inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_frame *P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::Frame::globals(P), P->node->W.data[x]);
+inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
+	return Inter::SymbolsTables::symbol_from_id(Inter::Frame::globals(P), P->W.data[x]);
 }
 
 inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_symbol *routine, inter_t ID) {
@@ -222,7 +222,7 @@ inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_table(inter_t val1
 	return NULL;
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_frame(inter_t val1, inter_t val2, inter_frame *P) {
+inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_frame(inter_t val1, inter_t val2, inter_tree_node *P) {
 	return Inter::SymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 }
 
@@ -296,7 +296,7 @@ inter_t Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, in
 	return Inter::SymbolsTables::id_from_symbol_inner(Inter::get_global_symbols(I), P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol_F(inter_frame *F, inter_package *P, inter_symbol *S) {
+inter_t Inter::SymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Frame::globals(F), P, S);
 }
 
@@ -340,7 +340,7 @@ void Inter::SymbolsTables::resolve_forward_references(inter_tree *I, inter_error
 	Inter::traverse_tree(I, Inter::SymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
 
-void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_frame *P, void *state) {
+void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (Inter::Packages::is_linklike(pack)) return;

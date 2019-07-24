@@ -9,6 +9,7 @@ Setting up the use of this module.
 @ To begin with, this module needs to allocate memory:
 
 @e inter_tree_MT
+@e inter_tree_node_array_MT
 @e inter_warehouse_MT
 @e inter_warehouse_room_MT
 @e inter_symbols_table_MT
@@ -38,6 +39,7 @@ ALLOCATE_INDIVIDUALLY(inter_error_stash)
 ALLOCATE_INDIVIDUALLY(inter_package)
 ALLOCATE_INDIVIDUALLY(inter_frame_list)
 ALLOCATE_INDIVIDUALLY(inter_frame_list_entry)
+ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

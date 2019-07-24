@@ -5,7 +5,7 @@ Write positions for inter code being generated.
 @ =
 typedef struct inter_bookmark {
 	struct inter_package *current_package;
-	struct inter_frame *R;
+	struct inter_tree_node *R;
 	int placement_wrt_R;
 } inter_bookmark;
 
@@ -13,7 +13,7 @@ typedef struct inter_bookmark {
 inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_tree *I) {
 	inter_bookmark IBM;
 	IBM.current_package = I->root_package;
-	IBM.R = I->root_definition_frame;
+	IBM.R = I->root_node;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;
 	return IBM;
 }
@@ -37,7 +37,7 @@ inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	return IBM;
 }
 
-inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_frame *D) {
+inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_tree_node *D) {
 	if (D == NULL) internal_error("invalid frame supplied");
 	inter_bookmark IBM;
 	IBM.current_package = Inter::Packages::container(D);
@@ -52,10 +52,10 @@ void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P
 	if (P == NULL) internal_error("invalid package supplied");
 	IBM->current_package = P;
 	if (Inter::Packages::is_rootlike(P)) {
-		IBM->R = P->stored_in->root_definition_frame;
+		IBM->R = P->stored_in->root_node;
 		IBM->placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
 	} else {
-		inter_frame *D = Inter::Symbols::definition(P->package_name);
+		inter_tree_node *D = Inter::Symbols::definition(P->package_name);
 		IBM->R = D;
 		IBM->placement_wrt_R = AFTER_ICPLACEMENT;
 	}
@@ -71,12 +71,12 @@ void Inter::Bookmarks::set_placement(inter_bookmark *IBM, int p) {
 	IBM->placement_wrt_R = p;
 }
 
-inter_frame *Inter::Bookmarks::get_ref(inter_bookmark *IBM) {
+inter_tree_node *Inter::Bookmarks::get_ref(inter_bookmark *IBM) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	return IBM->R;
 }
 
-void Inter::Bookmarks::set_ref(inter_bookmark *IBM, inter_frame *F) {
+void Inter::Bookmarks::set_ref(inter_bookmark *IBM, inter_tree_node *F) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	IBM->R = F;
 }

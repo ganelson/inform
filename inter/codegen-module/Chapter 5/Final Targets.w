@@ -55,13 +55,13 @@ int CodeGen::Targets::begin_generation(code_generation *gen) {
 @e TL_SEGMENT_MTID
 
 =
-IMETHOD_TYPE(GENERAL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, inter_frame *P)
+IMETHOD_TYPE(GENERAL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P)
 IMETHOD_TYPE(DEFAULT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 IMETHOD_TYPE(CONSTANT_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 IMETHOD_TYPE(PROPERTY_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 IMETHOD_TYPE(TL_SEGMENT_MTID, code_generation_target *cgt, code_generation *gen)
 
-int CodeGen::Targets::general_segment(code_generation *gen, inter_frame *P) {
+int CodeGen::Targets::general_segment(code_generation *gen, inter_tree_node *P) {
 	int rv = 0;
 	IMETHOD_CALL(rv, gen->target, GENERAL_SEGMENT_MTID, gen, P);
 	return rv;
@@ -96,8 +96,8 @@ int CodeGen::Targets::tl_segment(code_generation *gen) {
 @e COMPILE_PRIMITIVE_MTID
 
 =
-IMETHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prim_name, inter_frame *P)
-int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_frame *P) {
+IMETHOD_TYPE(COMPILE_PRIMITIVE_MTID, code_generation_target *cgt, code_generation *gen, inter_symbol *prim_name, inter_tree_node *P)
+int CodeGen::Targets::compile_primitive(code_generation *gen, inter_symbol *prim_name, inter_tree_node *P) {
 	int rv = FALSE;
 	IMETHOD_CALL(rv, gen->target, COMPILE_PRIMITIVE_MTID, gen, prim_name, P);
 	return rv;
@@ -140,20 +140,20 @@ void CodeGen::Targets::declare_property(code_generation *gen, inter_symbol *prop
 @e DECLARE_LOCAL_VARIABLE_MTID
 
 =
-IMETHOD_TYPE(PREPARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame *P, inter_symbol *var_name, int k)
-IMETHOD_TYPE(DECLARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame *P, inter_symbol *var_name, int k, int of)
-VMETHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_frame *P, inter_symbol *var_name)
-int CodeGen::Targets::prepare_variable(code_generation *gen, inter_frame *P, inter_symbol *var_name, int k) {
+IMETHOD_TYPE(PREPARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
+IMETHOD_TYPE(DECLARE_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
+VMETHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+int CodeGen::Targets::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
 	int rv = 0;
 	IMETHOD_CALL(rv, gen->target, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
 	return rv;
 }
-int CodeGen::Targets::declare_variable(code_generation *gen, inter_frame *P, inter_symbol *var_name, int k, int of) {
+int CodeGen::Targets::declare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of) {
 	int rv = 0;
 	IMETHOD_CALL(rv, gen->target, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
 	return rv;
 }
-void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_frame *P, inter_symbol *var_name) {
+void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name) {
 	VMETHOD_CALL(gen->target, DECLARE_LOCAL_VARIABLE_MTID, gen, P, var_name);
 }
 
@@ -162,8 +162,8 @@ void CodeGen::Targets::declare_local_variable(code_generation *gen, inter_frame 
 @e OFFER_PRAGMA_MTID
 
 =
-VMETHOD_TYPE(OFFER_PRAGMA_MTID, code_generation_target *cgt, code_generation *gen, inter_frame *P, text_stream *tag, text_stream *content)
-void CodeGen::Targets::offer_pragma(code_generation *gen, inter_frame *P, text_stream *tag, text_stream *content) {
+VMETHOD_TYPE(OFFER_PRAGMA_MTID, code_generation_target *cgt, code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content)
+void CodeGen::Targets::offer_pragma(code_generation *gen, inter_tree_node *P, text_stream *tag, text_stream *content) {
 	VMETHOD_CALL(gen->target, OFFER_PRAGMA_MTID, gen, P, tag, content);
 }
 

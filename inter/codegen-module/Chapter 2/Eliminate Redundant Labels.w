@@ -21,8 +21,8 @@ int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
 	return TRUE;
 }
 
-void CodeGen::Labels::visitor(inter_tree *I, inter_frame *P, void *state) {
-	if (P->node->W.data[ID_IFLD] == PACKAGE_IST) {
+void CodeGen::Labels::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (Inter::Packages::is_codelike(pack)) @<Perform peephole optimisation on this block@>;
 	}
@@ -49,7 +49,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
-	inter_frame *D = Inter::Symbols::definition(pack->package_name);
+	inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
 	CodeGen::Labels::traverse_code_tree(D);
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this
@@ -72,7 +72,7 @@ anywhere) we may as well remove it.
 it would be written out in a listing.
 
 =
-void CodeGen::Labels::traverse_code_tree(inter_frame *P) {
+void CodeGen::Labels::traverse_code_tree(inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		@<Examine a line of code in the function@>;
 		CodeGen::Labels::traverse_code_tree(F);
@@ -83,7 +83,7 @@ void CodeGen::Labels::traverse_code_tree(inter_frame *P) {
 We look for such lines.
 
 @<Examine a line of code in the function@> =
-	if (F->node->W.data[ID_IFLD] == LAB_IST) {
+	if (F->W.data[ID_IFLD] == LAB_IST) {
 		inter_symbol *lab = Inter::Lab::label_symbol(F);
 		Inter::Symbols::set_flag(lab, USED_MARK_BIT);
 	}

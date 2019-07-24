@@ -36,7 +36,7 @@ we can't detect the dependency here. So we require all command packages to
 be included.
 
 =
-void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_frame *P, void *state) {
+void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	inter_symbol *ptype = Inter::Packages::type(pack);
 	if (ptype == command_ptype_symbol)
@@ -96,9 +96,9 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 	if (ptype == function_ptype_symbol) rationale = I"it's a _function block";
 	if (ptype == action_ptype_symbol) rationale = I"it's an _action subpackage";
 	if (rationale) {
-		inter_frame *D = Inter::Symbols::definition(pack->package_name);
+		inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->node->W.data[ID_IFLD] == PACKAGE_IST) {
+			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *P = Inter::Package::defined_by_frame(C);
 				CodeGen::Eliminate::require(P, pack, rationale);
 			}
@@ -109,11 +109,11 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 Whatever has not been preserved, is now destroyed.
 
 =
-void CodeGen::Eliminate::package_destroyer(inter_tree *I, inter_frame *P, void *state) {
+void CodeGen::Eliminate::package_destroyer(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $3 (type %S)\n",
 			pack->package_name, Inter::Packages::type(pack)->symbol_name);
-		Inter::Frame::remove_from_tree(P);
+		Inter::remove_from_tree(P);
 	}
 }

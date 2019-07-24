@@ -34,15 +34,15 @@ void CodeGen::RCC::resolve(inter_tree *I) {
 		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
 
-void CodeGen::RCC::visitor(inter_tree *I, inter_frame *P, void *v_state) {
+void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	rcc_state *state = (rcc_state *) v_state;
 	int allow = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) allow = FALSE;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
-		if (P->node->W.data[ID_IFLD] == SPLAT_IST) {
-			text_stream *S = Inter::Frame::ID_to_text(P, P->node->W.data[MATTER_SPLAT_IFLD]);
-			switch (P->node->W.data[PLM_SPLAT_IFLD]) {
+		if (P->W.data[ID_IFLD] == SPLAT_IST) {
+			text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+			switch (P->W.data[PLM_SPLAT_IFLD]) {
 				case CONSTANT_PLM:
 				case GLOBAL_PLM:
 				case ARRAY_PLM:
@@ -59,7 +59,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_frame *P, void *v_state) {
 			}
 		}
 	}
-	if (allow == FALSE) Inter::Frame::remove_from_tree(P);
+	if (allow == FALSE) Inter::remove_from_tree(P);
 }
 
 @<Extract second token into ident@> =
@@ -136,12 +136,12 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_frame *P, void *v_state) {
 		text_stream *identifier = mr2.exp[0];
 		inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, identifier);
 		if (symbol) {
-			inter_frame *P = Inter::Symbols::definition(symbol);
+			inter_tree_node *P = Inter::Symbols::definition(symbol);
 			if ((P) &&
-				(P->node->W.data[ID_IFLD] == CONSTANT_IST) &&
-				(P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-				(P->node->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
-				int V = (int) P->node->W.data[DATA_CONST_IFLD + 1];
+				(P->W.data[ID_IFLD] == CONSTANT_IST) &&
+				(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+				(P->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
+				int V = (int) P->W.data[DATA_CONST_IFLD + 1];
 				int W = Str::atoi(mr2.exp[1], 0);
 				if (V == W) result = TRUE; else result = FALSE;
 			}

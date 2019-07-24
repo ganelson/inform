@@ -10,9 +10,9 @@ int properties_written = FALSE;
 int FBNA_found = FALSE, properties_found = FALSE, attribute_slots_used = 0;
 
 int no_property_frames = 0, no_instance_frames = 0, no_kind_frames = 0;
-inter_frame **property_frames = NULL;
-inter_frame **instance_frames = NULL;
-inter_frame **kind_frames = NULL;
+inter_tree_node **property_frames = NULL;
+inter_tree_node **instance_frames = NULL;
+inter_tree_node **kind_frames = NULL;
 
 void CodeGen::IP::prepare(code_generation *gen) {
 	properties_written = FALSE;
@@ -22,28 +22,28 @@ void CodeGen::IP::prepare(code_generation *gen) {
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
 	Inter::traverse_tree(gen->from, CodeGen::IP::count, NULL, NULL, 0);
 	if (no_property_frames > 0)
-		property_frames = (inter_frame **)
-			(Memory::I7_calloc(no_property_frames, sizeof(inter_frame *), CODE_GENERATION_MREASON));
+		property_frames = (inter_tree_node **)
+			(Memory::I7_calloc(no_property_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	if (no_instance_frames > 0)
-		instance_frames = (inter_frame **)
-			(Memory::I7_calloc(no_instance_frames, sizeof(inter_frame *), CODE_GENERATION_MREASON));
+		instance_frames = (inter_tree_node **)
+			(Memory::I7_calloc(no_instance_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	if (no_kind_frames > 0)
-		kind_frames = (inter_frame **)
-			(Memory::I7_calloc(no_kind_frames, sizeof(inter_frame *), CODE_GENERATION_MREASON));
+		kind_frames = (inter_tree_node **)
+			(Memory::I7_calloc(no_kind_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
 	Inter::traverse_tree(gen->from, CodeGen::IP::store, NULL, NULL, 0);
 }
 
-void CodeGen::IP::count(inter_tree *I, inter_frame *P, void *state) {
-	if (P->node->W.data[ID_IFLD] == PROPERTY_IST) no_property_frames++;
-	if (P->node->W.data[ID_IFLD] == INSTANCE_IST) no_instance_frames++;
-	if (P->node->W.data[ID_IFLD] == KIND_IST) no_kind_frames++;
+void CodeGen::IP::count(inter_tree *I, inter_tree_node *P, void *state) {
+	if (P->W.data[ID_IFLD] == PROPERTY_IST) no_property_frames++;
+	if (P->W.data[ID_IFLD] == INSTANCE_IST) no_instance_frames++;
+	if (P->W.data[ID_IFLD] == KIND_IST) no_kind_frames++;
 }
 
-void CodeGen::IP::store(inter_tree *I, inter_frame *P, void *state) {
-	if (P->node->W.data[ID_IFLD] == PROPERTY_IST) property_frames[no_property_frames++] = P;
-	if (P->node->W.data[ID_IFLD] == INSTANCE_IST) instance_frames[no_instance_frames++] = P;
-	if (P->node->W.data[ID_IFLD] == KIND_IST) kind_frames[no_kind_frames++] = P;
+void CodeGen::IP::store(inter_tree *I, inter_tree_node *P, void *state) {
+	if (P->W.data[ID_IFLD] == PROPERTY_IST) property_frames[no_property_frames++] = P;
+	if (P->W.data[ID_IFLD] == INSTANCE_IST) instance_frames[no_instance_frames++] = P;
+	if (P->W.data[ID_IFLD] == KIND_IST) kind_frames[no_kind_frames++] = P;
 }
 
 void CodeGen::IP::write_properties(code_generation *gen) {
@@ -165,18 +165,18 @@ must rule out any property which might belong to any value.
 
 @<Any either/or property which can belong to a value instance is ineligible@> =
 	inter_frame_list *PL =
-		Inter::get_frame_list(
-			I,
+		Inter::Warehouse::get_frame_list(
+			Inter::warehouse(I),
 			Inter::Property::permissions_list(prop_name));
 	if (PL == NULL) internal_error("no permissions list");
-	inter_frame *X;
+	inter_tree_node *X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, PL) {
 		inter_symbol *owner_name =
-			Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->node->W.data[OWNER_PERM_IFLD]);
+			Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
 		if (owner_name == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind = NULL;
-		inter_frame *D = Inter::Symbols::definition(owner_name);
-		if ((D) && (D->node->W.data[ID_IFLD] == INSTANCE_IST)) {
+		inter_tree_node *D = Inter::Symbols::definition(owner_name);
+		if ((D) && (D->W.data[ID_IFLD] == INSTANCE_IST)) {
 			owner_kind = Inter::Instance::kind_of(owner_name);
 		} else {
 			owner_kind = owner_name;
@@ -314,7 +314,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 
 @<Make a list of properties in source order@> =
 	for (int i=0; i<no_property_frames; i++) {
-		inter_frame *P = property_frames[i];
+		inter_tree_node *P = property_frames[i];
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 		if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 			total_no_properties++;
@@ -328,7 +328,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			(Memory::I7_calloc(total_no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
-			inter_frame *P = property_frames[i];
+			inter_tree_node *P = property_frames[i];
 			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 				all_props_in_source_order[c++] = prop_name;
@@ -348,14 +348,14 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 			(Memory::I7_calloc(no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
-			inter_frame *P = property_frames[i];
+			inter_tree_node *P = property_frames[i];
 			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) != 1)
 				props_in_source_order[c++] = prop_name;
 		}
 
 		for (int i=0; i<no_property_frames; i++) {
-			inter_frame *P = property_frames[i];
+			inter_tree_node *P = property_frames[i];
 			inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 			if ((Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1) &&
 				(Inter::Symbols::read_annotation(prop_name, ATTRIBUTE_IANN) != 1)) {
@@ -370,7 +370,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	kinds_in_source_order = (inter_symbol **)
 		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
-		inter_frame *P = kind_frames[i];
+		inter_tree_node *P = kind_frames[i];
 		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 		kinds_in_source_order[i] = kind_name;
 	}
@@ -381,7 +381,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	kinds_in_declaration_order = (inter_symbol **)
 		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
-		inter_frame *P = kind_frames[i];
+		inter_tree_node *P = kind_frames[i];
 		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
 		kinds_in_declaration_order[i] = kind_name;
 	}
@@ -393,7 +393,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 		instances_in_declaration_order = (inter_symbol **)
 			(Memory::I7_calloc(no_instance_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		for (int i=0; i<no_instance_frames; i++) {
-			inter_frame *P = instance_frames[i];
+			inter_tree_node *P = instance_frames[i];
 			inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 			instances_in_declaration_order[i] = inst_name;
 		}
@@ -494,8 +494,8 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 	@<Define the I6 VPH class@>;
 	inter_symbol *max_weak_id = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, I"MAX_WEAK_ID");
 	if (max_weak_id) {
-		inter_frame *P = Inter::Symbols::definition(max_weak_id);
-		int M = (int) P->node->W.data[DATA_CONST_IFLD + 1];
+		inter_tree_node *P = Inter::Symbols::definition(max_weak_id);
+		int M = (int) P->W.data[DATA_CONST_IFLD + 1];
 
 		@<Decide who gets a VPH@>;
 		@<Write the VPH lookup array@>;
@@ -512,13 +512,13 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							CodeGen::unmark(prop_name);
 						}
 						inter_frame_list *FL =
-							Inter::get_frame_list(I, Inter::Kind::permissions_list(kind_name));
+							Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::permissions_list(kind_name));
 						@<Work through this frame list of permissions@>;
 						for (int in=0; in<no_instance_frames; in++) {
 							inter_symbol *inst_name = instances_in_declaration_order[in];
 							if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 								inter_frame_list *FL =
-									Inter::get_frame_list(I, Inter::Instance::permissions_list(inst_name));
+									Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Instance::permissions_list(inst_name));
 								@<Work through this frame list of permissions@>;
 							}
 						}
@@ -549,13 +549,13 @@ words, the number of instances of this kind.
 		if (kind_name == unchecked_kind_symbol) continue;
 		int vph_me = FALSE;
 		inter_frame_list *FL =
-			Inter::get_frame_list(I, Inter::Kind::permissions_list(kind_name));
+			Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::permissions_list(kind_name));
 		if (FL->first_in_ifl) vph_me = TRUE;
 		else for (int in=0; in<no_instance_frames; in++) {
 			inter_symbol *inst_name = instances_in_declaration_order[in];
 			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 				inter_frame_list *FL =
-					Inter::get_frame_list(I, Inter::Instance::permissions_list(inst_name));
+					Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Instance::permissions_list(inst_name));
 				if (FL->first_in_ifl) vph_me = TRUE;
 			}
 		}
@@ -596,7 +596,7 @@ just to force the property into being.
 	if (vph == 0) WRITE("VPH_Class UnusedVPH with value_range 0;\n");
 
 @<Work through this frame list of permissions@> =
-	inter_frame *X;
+	inter_tree_node *X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 		if (prop_name == NULL) internal_error("no property");
@@ -604,7 +604,7 @@ just to force the property into being.
 			CodeGen::mark(prop_name);
 			text_stream *call_it = CodeGen::CL::name(prop_name);
 			WRITE("    with %S ", call_it);
-			if (X->node->W.data[STORAGE_PERM_IFLD]) {
+			if (X->W.data[STORAGE_PERM_IFLD]) {
 				inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 				if (store == NULL) internal_error("bad PP in inter");
 				WRITE("%S", CodeGen::CL::name(store));
@@ -651,13 +651,13 @@ because I6 doesn't allow function calls in a constant context.
 	WRITE_TO(sticks, ";\n");
 
 @<Work through this frame list of values@> =
-	inter_frame *Y;
+	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_FRAME_LIST(Y, PVL) {
-		inter_symbol *p_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(Y), Y->node->W.data[PROP_PVAL_IFLD]);
+		inter_symbol *p_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(Y), Y->W.data[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
-			inter_t v1 = Y->node->W.data[DVAL1_PVAL_IFLD];
-			inter_t v2 = Y->node->W.data[DVAL2_PVAL_IFLD];
+			inter_t v1 = Y->W.data[DVAL1_PVAL_IFLD];
+			inter_t v2 = Y->W.data[DVAL2_PVAL_IFLD];
 			WRITE_TO(sticks, " (");
 			CodeGen::select_temporary(gen, sticks);
 			CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
@@ -676,7 +676,7 @@ because I6 doesn't allow function calls in a constant context.
 			if (super_name) WRITE("    class %S\n", CodeGen::CL::name(super_name));
 			CodeGen::IP::append(gen, kind_name);
 			inter_frame_list *FL =
-				Inter::get_frame_list(I, Inter::Kind::properties_list(kind_name));
+				Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(gen, FL);
 			WRITE(";\n\n");
 		}
@@ -685,7 +685,7 @@ because I6 doesn't allow function calls in a constant context.
 @<Write an I6 Object definition for each object instance@> =
 	for (int i=0; i<no_instance_frames; i++) {
 		inter_symbol *inst_name = instances_in_declaration_order[i];
-		inter_frame *D = Inter::Symbols::definition(inst_name);
+		inter_tree_node *D = Inter::Symbols::definition(inst_name);
 		CodeGen::IP::object_instance(gen, D);
 	}
 
@@ -746,7 +746,7 @@ though this won't happen for any property created by I7 source text.
 	WRITE("\"");
 	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
 	if (N <= 0) WRITE("<nameless>");
-	else WRITE("%S", Inter::get_text(I, (inter_t) N));
+	else WRITE("%S", Inter::Warehouse::get_text(Inter::warehouse(I), (inter_t) N));
 	WRITE("\" ");
 	pos++;
 
@@ -770,7 +770,7 @@ linearly with the size of the source text, even though $N$ does.
 		inter_symbol *eprop_name = props_in_source_order[e];
 		if (Str::eq(CodeGen::CL::name(eprop_name), CodeGen::CL::name(prop_name))) {
 			inter_frame_list *EVL =
-				Inter::get_frame_list(I, Inter::Property::permissions_list(eprop_name));
+				Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Property::permissions_list(eprop_name));
 
 			@<List any O with an explicit permission@>;
 			@<List all top-level kinds if "object" itself has an explicit permission@>;
@@ -781,7 +781,7 @@ linearly with the size of the source text, even though $N$ does.
 	for (int k=0; k<no_kind_frames; k++) {
 		inter_symbol *kind_name = kinds_in_source_order[k];
 		if (CodeGen::IP::is_kind_of_object(kind_name)) {
-			inter_frame *X;
+			inter_tree_node *X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == kind_name) {
@@ -794,7 +794,7 @@ linearly with the size of the source text, even though $N$ does.
 	for (int in=0; in<no_instance_frames; in++) {
 		inter_symbol *inst_name = instances_in_declaration_order[in];
 		if (CodeGen::IP::is_kind_of_object(Inter::Instance::kind_of(inst_name))) {
-			inter_frame *X;
+			inter_tree_node *X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 				inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 				if (owner_name == inst_name) {
@@ -807,7 +807,7 @@ linearly with the size of the source text, even though $N$ does.
 
 @<List all top-level kinds if "object" itself has an explicit permission@> =
 	if (Inter::Symbols::read_annotation(eprop_name, RTO_IANN) < 0) {
-		inter_frame *X;
+		inter_tree_node *X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, EVL) {
 			inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
@@ -835,13 +835,13 @@ linearly with the size of the source text, even though $N$ does.
 @h Instances.
 
 =
-void CodeGen::IP::instance(code_generation *gen, inter_frame *P) {
+void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE) {
-		inter_t val1 = P->node->W.data[VAL1_INST_IFLD];
-		inter_t val2 = P->node->W.data[VAL2_INST_IFLD];
+		inter_t val1 = P->W.data[VAL1_INST_IFLD];
+		inter_t val2 = P->W.data[VAL2_INST_IFLD];
 		text_stream *OUT = CodeGen::current(gen);
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
@@ -926,7 +926,7 @@ really make much conceptual sense, and I7 dropped the idea -- it has no
 "compass".
 
 =
-void CodeGen::IP::object_instance(code_generation *gen, inter_frame *P) {
+void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
@@ -953,33 +953,33 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_frame *P) {
 void CodeGen::IP::plist(code_generation *gen, inter_frame_list *FL) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (FL == NULL) internal_error("no properties list");
-	inter_frame *X;
+	inter_tree_node *X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_name == NULL) internal_error("no property");
 		text_stream *call_it = CodeGen::CL::name(prop_name);
 		if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 			char *maybe = "";
-			if ((X->node->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
-				(X->node->W.data[DVAL2_PVAL_IFLD] == 0)) maybe = "~";
+			if ((X->W.data[DVAL1_PVAL_IFLD] == LITERAL_IVAL) &&
+				(X->W.data[DVAL2_PVAL_IFLD] == 0)) maybe = "~";
 			WRITE("    has %s%S\n", maybe, call_it);
 		} else {
 			WRITE("    with %S ", call_it);
 			int done = FALSE;
-			if (Inter::Symbols::is_stored_in_data(X->node->W.data[DVAL1_PVAL_IFLD], X->node->W.data[DVAL2_PVAL_IFLD])) {
-				inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(X->node->W.data[DVAL1_PVAL_IFLD], X->node->W.data[DVAL2_PVAL_IFLD], X);
+			if (Inter::Symbols::is_stored_in_data(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD])) {
+				inter_symbol *S = Inter::SymbolsTables::symbol_from_data_pair_and_frame(X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
 				if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
-					inter_frame *P = Inter::Symbols::definition(S);
-					for (int i=DATA_CONST_IFLD; i<P->node->W.extent; i=i+2) {
+					inter_tree_node *P = Inter::Symbols::definition(S);
+					for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 						if (i>DATA_CONST_IFLD) WRITE(" ");
-						CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->node->W.data[i], P->node->W.data[i+1], FALSE);
+						CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->W.data[i], P->W.data[i+1], FALSE);
 					}
 					done = TRUE;
 				}
 			}
 			if (done == FALSE)
 				CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(X),
-					X->node->W.data[DVAL1_PVAL_IFLD], X->node->W.data[DVAL2_PVAL_IFLD], FALSE);
+					X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], FALSE);
 			WRITE("\n");
 		}
 	}

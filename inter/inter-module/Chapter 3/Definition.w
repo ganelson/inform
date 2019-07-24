@@ -78,10 +78,10 @@ inter_symbol *linkage_packagetype = NULL;
 
 =
 VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_frame *P, inter_t *grid, inter_t max, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_frame *P, inter_error_message **E)
-VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_frame *P, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t max, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
+VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
+VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
 
 @
 
@@ -167,7 +167,7 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
 				inter_warehouse *warehouse = Inter::warehouse(I);
 				val = Inter::Warehouse::create_text(warehouse, I->root_package);
-				Str::copy(Inter::get_text(I, val), parsed_text);
+				Str::copy(Inter::Warehouse::get_text(warehouse, val), parsed_text);
 				DISCARD_TEXT(parsed_text);
 				if (EP) *E = EP;
 				textual = TRUE;
@@ -213,7 +213,7 @@ void Inter::Defn::annotation_to_bytecode(inter_annotation IA, inter_t *c1, inter
 	*c2 = IA.annot_value;
 }
 
-void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_frame *F, inter_annotation IA) {
+void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_annotation IA) {
 	WRITE(" %S", IA.annot->annotation_keyword);
 	if (IA.annot_value != 0) {
 		if (IA.annot->textual_flag) {
@@ -234,7 +234,7 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_frame *F, inter_annotati
 @d CAN_HAVE_CHILDREN 8
 
 =
-inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_frame *P) {
+inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
@@ -242,7 +242,7 @@ inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_f
 	return E;
 }
 
-inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_frame *P, inter_t *grid, inter_t max) {
+inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_tree_node *P, inter_t *grid, inter_t max) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
@@ -250,36 +250,36 @@ inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inte
 	return E;
 }
 
-inter_error_message *Inter::Defn::get_construct(inter_frame *P, inter_construct **to) {
+inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_construct **to) {
 	if ((P == NULL) || (Inter::Frame::valid(P) == FALSE)) {
 		return Inter::Frame::error(P, I"invalid frame", NULL);
 	}
-	if ((P->node->W.data[ID_IFLD] == INVALID_IST) || (P->node->W.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
+	if ((P->W.data[ID_IFLD] == INVALID_IST) || (P->W.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
 		return Inter::Frame::error(P, I"no such construct", NULL);
-	inter_construct *IC = IC_lookup[P->node->W.data[ID_IFLD]];
+	inter_construct *IC = IC_lookup[P->W.data[ID_IFLD]];
 	if (IC == NULL) return Inter::Frame::error(P, I"bad construct", NULL);
 	if (to) *to = IC;
 	return NULL;
 }
 
-inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_frame *P) {
-	if (P->node->W.data[ID_IFLD] == NOP_IST) return NULL;
+inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
+	if (P->W.data[ID_IFLD] == NOP_IST) return NULL;
 	return Inter::Defn::write_construct_text_allowing_nop(OUT, P);
 }
 
-inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREAM, inter_frame *P) {
+inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREAM, inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	for (inter_t L=0; L<P->node->W.data[LEVEL_IFLD]; L++) WRITE("\t");
+	for (inter_t L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
 	VMETHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	inter_t ID = Inter::Frame::get_comment(P);
 	if (ID != 0) {
-		if (P->node->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
+		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
 		WRITE("# %S", Inter::Frame::ID_to_text(P, ID));
 	}
 	WRITE("\n");
-	if (P->node->W.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
 	return E;
 }
 
@@ -314,7 +314,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(Inter::get_text(Inter::Bookmarks::tree(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::substr(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
 			Str::truncate(ilp.line, at);
 			break;
 		}
@@ -372,14 +372,14 @@ inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_t cons, i
 	return Inter::Errors::plain(I"no such construct", eloc);
 }
 
-int Inter::Defn::get_level(inter_frame *P) {
+int Inter::Defn::get_level(inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return 0;
-	return (int) P->node->W.data[LEVEL_IFLD];
+	return (int) P->W.data[LEVEL_IFLD];
 }
 
-inter_error_message *Inter::Defn::verify_children_inner(inter_frame *P) {
+inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
@@ -389,7 +389,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_frame *P) {
 	else if (Inter::Packages::is_codelike(pack)) need = INSIDE_CODE_PACKAGE;
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
-		WRITE_TO(M, "construct (%d) '", P->node->W.data[LEVEL_IFLD]);
+		WRITE_TO(M, "construct (%d) '", P->W.data[LEVEL_IFLD]);
 		Inter::Defn::write_construct_text(M, P);
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {
@@ -401,6 +401,6 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_frame *P) {
 	}
 	E = NULL;
 	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
-	if (E) Inter::Frame::backtrace(STDERR, P);
+	if (E) Inter::backtrace(STDERR, P);
 	return E;
 }

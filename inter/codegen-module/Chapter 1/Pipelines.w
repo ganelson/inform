@@ -395,7 +395,7 @@ void CodeGen::Pipeline::lint(inter_tree *I) {
 	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void CodeGen::Pipeline::visitor(inter_tree *I, inter_frame *P, void *state) {
+void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_t c = Inter::Frame::get_package(P)->index_n;
 	inter_t a = Inter::Frame::get_package_alt(P);
 	if (c != a) {

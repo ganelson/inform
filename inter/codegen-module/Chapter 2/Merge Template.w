@@ -56,14 +56,14 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	TemplateReader::extract(template_file, &kit);
 }
 
-void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_frame *P, void *state) {
-	if (P->node->W.data[ID_IFLD] == LINK_IST) {
-		text_stream *S1 = Inter::Frame::ID_to_text(P, P->node->W.data[SEGMENT_LINK_IFLD]);
-		text_stream *S2 = Inter::Frame::ID_to_text(P, P->node->W.data[PART_LINK_IFLD]);
-		text_stream *S3 = Inter::Frame::ID_to_text(P, P->node->W.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inter::Frame::ID_to_text(P, P->node->W.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inter::Frame::ID_to_ref(P, P->node->W.data[REF_LINK_IFLD]);
-		TemplateReader::new_intervention((int) P->node->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
+void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	if (P->W.data[ID_IFLD] == LINK_IST) {
+		text_stream *S1 = Inter::Frame::ID_to_text(P, P->W.data[SEGMENT_LINK_IFLD]);
+		text_stream *S2 = Inter::Frame::ID_to_text(P, P->W.data[PART_LINK_IFLD]);
+		text_stream *S3 = Inter::Frame::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inter::Frame::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inter::Frame::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 	}
 }
 
@@ -76,9 +76,9 @@ inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stre
 		linkable_namespace = Dictionaries::new(512, FALSE);
 		inter_package *main_package = Inter::Packages::main(I);
 		if (main_package) {
-			inter_frame *D = Inter::Symbols::definition(main_package->package_name);
+			inter_tree_node *D = Inter::Symbols::definition(main_package->package_name);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
-				if (C->node->W.data[ID_IFLD] == PACKAGE_IST) {
+				if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 					inter_package *P = Inter::Package::defined_by_frame(C);
 					if (Str::ne(P->package_name->symbol_name, I"template"))
 						CodeGen::MergeTemplate::build_r(P);
@@ -94,9 +94,9 @@ inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stre
 
 void CodeGen::MergeTemplate::build_r(inter_package *P) {
 	CodeGen::MergeTemplate::build_only(P);
-	inter_frame *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->node->W.data[ID_IFLD] == PACKAGE_IST) {
+		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
 			CodeGen::MergeTemplate::build_r(Q);
 		}
@@ -145,7 +145,7 @@ void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 
 void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
 	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-	text_stream *glob_storage = Inter::get_text(Inter::Bookmarks::tree(IBM), SID);
+	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 	Str::copy(glob_storage, content);
 	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
 }

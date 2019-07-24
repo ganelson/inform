@@ -26,8 +26,8 @@ typedef struct inter_symbol {
 	int symbol_type;
 	int symbol_scope;
 	int definition_status;
-	struct inter_frame *definition;
-	struct inter_frame *importation_frame;
+	struct inter_tree_node *definition;
+	struct inter_tree_node *importation_frame;
 	struct inter_bookmark following_symbol;
 	struct inter_symbol *equated_to;
 	struct text_stream *equated_name;
@@ -127,13 +127,13 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	}
 }
 
-void Inter::Symbols::define(inter_symbol *S, inter_frame *P) {
+void Inter::Symbols::define(inter_symbol *S, inter_tree_node *P) {
 	if (S == NULL) internal_error("tried to define null symbol");
 	S->definition = P;
 	S->definition_status = DEFINED_ISYMD;
 }
 
-inter_frame *Inter::Symbols::definition(inter_symbol *S) {
+inter_tree_node *Inter::Symbols::definition(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to find definition of null symbol");
 	return S->definition;
 }
@@ -145,19 +145,19 @@ int Inter::Symbols::is_defined(inter_symbol *S) {
 }
 
 int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
-	inter_frame *P = Inter::Symbols::definition(S);
+	inter_tree_node *P = Inter::Symbols::definition(S);
 	if ((P) &&
-		(P->node->W.data[ID_IFLD] == CONSTANT_IST) &&
-		(P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->node->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
-		return (int) P->node->W.data[DATA_CONST_IFLD + 1];
+		(P->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
+		return (int) P->W.data[DATA_CONST_IFLD + 1];
 	}
 	if ((P) &&
-		(P->node->W.data[ID_IFLD] == CONSTANT_IST) &&
-		(P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->node->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
+		(P->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P->node->W.data[DATA_CONST_IFLD + 1]);
+		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P->W.data[DATA_CONST_IFLD + 1]);
 		return Inter::Symbols::evaluate_to_int(alias_to);
 	}
 	return -1;
@@ -165,8 +165,8 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
-		inter_frame *D = Inter::Symbols::definition(S);
-		if (D) Inter::Frame::remove_from_tree(D);
+		inter_tree_node *D = Inter::Symbols::definition(S);
+		if (D) Inter::remove_from_tree(D);
 		Inter::Symbols::undefine(S);
 	}
 }
@@ -275,19 +275,19 @@ text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I
 	for (int i=0; i<symb->no_symbol_annotations; i++)
 		if (symb->symbol_annotations[i].annot->annotation_ID == ID) {
 			inter_t N = symb->symbol_annotations[i].annot_value;
-			return Inter::get_text(I, N);
+			return Inter::Warehouse::get_text(Inter::warehouse(I), N);
 		}
 	return NULL;
 }
 
 void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
 	inter_t n = Inter::Warehouse::create_text(Inter::warehouse(I), owner);
-	Str::copy(Inter::get_text(I, n), S);
+	Str::copy(Inter::Warehouse::get_text(Inter::warehouse(I), n), S);
 	inter_annotation IA = Inter::Defn::annotation_from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);
 }
 
-void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_frame *F, inter_symbol *symb) {
+void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *symb) {
 	if (symb)
 		for (int i=0; i<symb->no_symbol_annotations; i++)
 			Inter::Defn::write_annotation(OUT, F, symb->symbol_annotations[i]);

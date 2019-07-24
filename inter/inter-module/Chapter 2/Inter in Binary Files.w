@@ -319,7 +319,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	unsigned int nid;
 	if (BinaryFiles::read_int32(fh, &nid) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	inter_package *parent = NULL;
-	if (p != 0) parent = Inter::get_package(I, grid[p]);
+	if (p != 0) parent = Inter::Warehouse::get_package(warehouse, grid[p]);
 	if (res->stored_package == NULL) {
 		res->stored_package = Inter::Packages::new(I, n);
 	}
@@ -327,7 +327,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	if (rl) Inter::Packages::make_rootlike(res->stored_package);
 	if (sc != 0) {
 		if (grid) sc = grid[sc];
-		Inter::Packages::set_scope(res->stored_package, Inter::get_symbols_table(I, sc));
+		Inter::Packages::set_scope(res->stored_package, Inter::Warehouse::get_symbols_table(warehouse, sc));
 	}
 	if (nid != 0) {
 		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::get_global_symbols(I), nid);
@@ -365,7 +365,7 @@ enough that the slot exists for the eventual list to be stored in.
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
 		if (grid) X = grid[X];
-		inter_symbols_table *from_T = Inter::get_symbols_table(I, X);
+		inter_symbols_table *from_T = Inter::Warehouse::get_symbols_table(warehouse, X);
 		if (from_T == NULL) {
 			WRITE_TO(STDERR, "It's %d\n", X);
 			internal_error("no from_T");
@@ -381,7 +381,7 @@ enough that the slot exists for the eventual list to be stored in.
 	if (trace_bin) WRITE_TO(STDOUT, "Read eqn %d -> %d\n", X, to_T_id);
 			if (BinaryFiles::read_int32(fh, &to_ID) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-			inter_symbols_table *to_T = Inter::get_symbols_table(I, to_T_id);
+			inter_symbols_table *to_T = Inter::Warehouse::get_symbols_table(warehouse, to_T_id);
 			if (from_T == NULL) internal_error("no to_T");
 			inter_symbol *from_S = Inter::SymbolsTables::symbol_from_id(from_T, from_ID);
 			if (from_S == NULL) internal_error("no from_S");
@@ -425,15 +425,14 @@ enough that the slot exists for the eventual list to be stored in.
 		if (BinaryFiles::read_int32(fh, &PID)) {
 			if (grid) PID = grid[PID];
 	if (trace_bin) WRITE_TO(STDOUT, "PID %d\n", PID);
-			owner = Inter::Packages::from_PID(I, PID);
+			if (PID) owner = Inter::Warehouse::get_package(warehouse, PID);
 	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
-
 		}
-		inter_frame *P = Inter::Warehouse::find_room(warehouse, I, extent-1, &eloc, owner);
+		inter_tree_node *P = Inter::Warehouse::find_room(warehouse, I, extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;
-			if (BinaryFiles::read_int32(fh, &word)) P->node->W.data[i] = word;
+			if (BinaryFiles::read_int32(fh, &word)) P->W.data[i] = word;
 			else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		}
 		unsigned int comment = 0;
@@ -447,7 +446,7 @@ enough that the slot exists for the eventual list to be stored in.
 		E = Inter::Defn::verify_construct(owner, P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
-		Inter::Frame::insert(P, &at);
+		Inter::insert(P, &at);
 	}
 
 @<Write the bytecode@> =
@@ -455,12 +454,12 @@ enough that the slot exists for the eventual list to be stored in.
 	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
-void Inter::Binary::visitor(inter_tree *I, inter_frame *P, void *state) {
+void Inter::Binary::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	FILE *fh = (FILE *) state;
-	BinaryFiles::write_int32(fh, (unsigned int) (P->node->W.extent + 1));
+	BinaryFiles::write_int32(fh, (unsigned int) (P->W.extent + 1));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)->index_n));
-	for (int i=0; i<P->node->W.extent; i++)
-		BinaryFiles::write_int32(fh, (unsigned int) (P->node->W.data[i]));
+	for (int i=0; i<P->W.extent; i++)
+		BinaryFiles::write_int32(fh, (unsigned int) (P->W.data[i]));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_comment(P)));
 }
 

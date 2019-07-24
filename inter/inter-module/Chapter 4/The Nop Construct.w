@@ -16,10 +16,10 @@ void Inter::Nop::define(void) {
 }
 
 inter_error_message *Inter::Nop::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_0(IBM, NOP_IST, eloc, level);
+	inter_tree_node *P = Inter::Frame::fill_0(IBM, NOP_IST, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
@@ -27,6 +27,6 @@ inter_error_message *Inter::Nop::new(inter_bookmark *IBM, inter_t level, inter_e
 where any nop statements are simply ignored.
 
 =
-void Inter::Nop::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Nop::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("nop");
 }

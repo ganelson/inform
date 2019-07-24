@@ -48,19 +48,19 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 }
 
 inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_3(IBM, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Frame::fill_3(IBM, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Cast::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_CAST_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->node->W.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->node->W.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+void Inter::Cast::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_CAST_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::symbol(owner, P, P->W.data[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->W.data[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
 }
 
-void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = Inter::Packages::scope_of(P);
 	if (locals == NULL) { *E = Inter::Frame::error(P, I"function has no symbols table", NULL); return; }
 	inter_symbol *from_kind = Inter::SymbolsTables::symbol_from_frame_data(P, FROM_KIND_CAST_IFLD);
@@ -70,11 +70,11 @@ void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inte
 	} else { *E = Inter::Frame::error(P, I"cannot write cast", NULL); return; }
 }
 
-void Inter::Cast::verify_children(inter_construct *IC, inter_frame *P, inter_error_message **E) {
+void Inter::Cast::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	int arity_as_invoked = 0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		arity_as_invoked++;
-		if ((C->node->W.data[0] != INV_IST) && (C->node->W.data[0] != VAL_IST) && (C->node->W.data[0] != EVALUATION_IST) && (C->node->W.data[0] != CAST_IST)) {
+		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != EVALUATION_IST) && (C->W.data[0] != CAST_IST)) {
 			*E = Inter::Frame::error(P, I"only inv, cast, concatenate and val can be under a cast", NULL);
 			return;
 		}

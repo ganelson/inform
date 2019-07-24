@@ -17,7 +17,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	Inter::traverse_tree(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void Inter::Textual::lint_visitor(inter_tree *I, inter_frame *P, void *state) {
+void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_message *E = Inter::Defn::verify_children_inner(P);
 	if (E) Inter::Errors::issue(E);
 }
@@ -40,11 +40,11 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	inter_frame *D = Inter::Symbols::definition(symb);
+	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (Inter::Symbols::is_extern(symb)) return symb;
 	if (Inter::Symbols::is_predeclared(symb)) return symb;
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->node->W.data[ID_IFLD] != construct) && (Inter::Symbols::is_predeclared(symb) == FALSE)) {
+	if ((D->W.data[ID_IFLD] != construct) && (Inter::Symbols::is_predeclared(symb) == FALSE)) {
 		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}
 	return symb;
@@ -58,7 +58,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 		(Inter::Symbols::is_predeclared(symb) == FALSE) &&
 		(Inter::Symbols::is_predeclared_local(symb) == FALSE)) {
 		WRITE_TO(STDERR, "Ho! %S\n", symb->symbol_name);
-		inter_frame *D = Inter::Symbols::definition(symb);
+		inter_tree_node *D = Inter::Symbols::definition(symb);
 		Inter::Defn::write_construct_text(STDERR, D);
 		*E = Inter::Errors::quoted(I"symbol already defined", name, eloc);
 		return NULL;
@@ -70,10 +70,10 @@ inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	inter_frame *D = Inter::Symbols::definition(symb);
+	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->node->W.data[ID_IFLD] != KIND_IST) &&
-		(D->node->W.data[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
+	if ((D->W.data[ID_IFLD] != KIND_IST) &&
+		(D->W.data[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
 	return symb;
 }
 
@@ -107,11 +107,11 @@ void Inter::Textual::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 
 typedef struct textual_write_state {
 	struct text_stream *to;
-	int (*filter)(inter_frame, int);
+	int (*filter)(inter_tree_node, int);
 	int pass;
 } textual_write_state;
 
-void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_frame, int), int pass) {
+void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_node, int), int pass) {
 	if (I == NULL) { WRITE("<no-inter>\n"); return; }
 	textual_write_state tws;
 	tws.to = OUT;
@@ -120,7 +120,7 @@ void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_fra
 	Inter::traverse_global_list(I, Inter::Textual::visitor, &tws, -PACKAGE_IST);
 	Inter::traverse_tree(I, Inter::Textual::visitor, &tws, NULL, 0);
 }
-void Inter::Textual::visitor(inter_tree *I, inter_frame *P, void *state) {
+void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(*P, tws->pass) == FALSE)) return;
 	inter_error_message *E = Inter::Defn::write_construct_text(tws->to, P);

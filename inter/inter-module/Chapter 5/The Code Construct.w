@@ -41,23 +41,23 @@ void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 }
 
 inter_error_message *Inter::Code::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_1(IBM, CODE_IST, 0, eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Frame::fill_1(IBM, CODE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Code::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_CODE_IFR) *E = Inter::Frame::error(P, I"extent wrong", NULL);
+void Inter::Code::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_CODE_IFR) *E = Inter::Frame::error(P, I"extent wrong", NULL);
 }
 
-void Inter::Code::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Code::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("code");
 }
 
-void Inter::Code::verify_children(inter_construct *IC, inter_frame *P, inter_error_message **E) {
+void Inter::Code::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if ((C->node->W.data[0] != INV_IST) && (C->node->W.data[0] != SPLAT_IST) && (C->node->W.data[0] != EVALUATION_IST) && (C->node->W.data[0] != LABEL_IST) && (C->node->W.data[0] != VAL_IST) && (C->node->W.data[0] != COMMENT_IST) && (C->node->W.data[0] != NOP_IST)) {
+		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != EVALUATION_IST) && (C->W.data[0] != LABEL_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != COMMENT_IST) && (C->W.data[0] != NOP_IST)) {
 			*E = Inter::Frame::error(C, I"only an inv, a val, a splat, a concatenate or a label can be below a code", NULL);
 			return;
 		}

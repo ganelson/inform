@@ -31,7 +31,7 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 @h Parsing.
 
 =
-inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_stream *name, inter_frame *P) {
+inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_stream *name, inter_tree_node *P) {
 	if (submodule_ptype_symbol) {
 		inter_symbol *fns = Inter::SymbolsTables::symbol_from_name_in_template_creating(I, name);
 		if (Inter::Symbols::is_defined(fns) == FALSE) {
@@ -39,7 +39,7 @@ inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_strea
 			CodeGen::Assimilate::new_package(&IBM, fns, submodule_ptype_symbol);
 		}
 		if (Inter::Symbols::is_defined(fns) == FALSE) internal_error("failed to define");
-		inter_frame *D = Inter::Symbols::definition(fns);
+		inter_tree_node *D = Inter::Symbols::definition(fns);
 		inter_package *fns_package = Inter::Package::defined_by_frame(D);
 		if (fns_package == NULL) internal_error("not a package");
 		return Inter::Bookmarks::at_end_of_this_package(fns_package);
@@ -47,8 +47,8 @@ inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_strea
 	return Inter::Bookmarks::after_this_frame(I, P);
 }
 
-void CodeGen::Assimilate::visitor1(inter_tree *I, inter_frame *P, void *state) {
-	switch (P->node->W.data[PLM_SPLAT_IFLD]) {
+void CodeGen::Assimilate::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
+	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case PROPERTY_PLM:
 			if (unchecked_kind_symbol) @<Assimilate definition@>;
 			break;
@@ -63,8 +63,8 @@ void CodeGen::Assimilate::visitor1(inter_tree *I, inter_frame *P, void *state) {
 	}
 }
 
-void CodeGen::Assimilate::visitor2(inter_tree *I, inter_frame *P, void *state) {
-	switch (P->node->W.data[PLM_SPLAT_IFLD]) {
+void CodeGen::Assimilate::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
+	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case DEFAULT_PLM:
 		case CONSTANT_PLM:
 		case FAKEACTION_PLM:
@@ -78,8 +78,8 @@ void CodeGen::Assimilate::visitor2(inter_tree *I, inter_frame *P, void *state) {
 	}
 }
 
-void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
-	switch (P->node->W.data[PLM_SPLAT_IFLD]) {
+void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
+	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case GLOBAL_PLM:
 			if (unchecked_kind_symbol) @<Assimilate definition@>;
 			break;
@@ -91,7 +91,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
 @d MAX_ASSIMILATED_ARRAY_ENTRIES 2048
 
 @<Assimilate definition@> =
-	inter_t plm = P->node->W.data[PLM_SPLAT_IFLD];
+	inter_t plm = P->W.data[PLM_SPLAT_IFLD];
 	match_results mr = Regexp::create_mr();
 	text_stream *identifier = NULL;
 	text_stream *value = NULL;
@@ -104,12 +104,12 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
 			if (symbol == NULL) plm = CONSTANT_PLM;
 		}
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
-		Inter::Frame::remove_from_tree(P);
+		Inter::remove_from_tree(P);
 	}
 	Regexp::dispose_of(&mr);
 
 @<Parse text of splat for identifier and value@> =
-	text_stream *S = Inter::Frame::ID_to_text(P, P->node->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (plm == VERB_PLM) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			identifier = I"assim_gv"; value = mr.exp[0]; proceed = TRUE;
@@ -312,20 +312,20 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
 				DISCARD_TEXT(value);
 			}
 
-			inter_frame *array_in_progress =
+			inter_tree_node *array_in_progress =
 				Inter::Frame::fill_3(IBM, CONSTANT_IST,
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
 					CONSTANT_INDIRECT_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
-			int pos = array_in_progress->node->W.extent;
+			int pos = array_in_progress->W.extent;
 			if (Inter::Frame::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
 				internal_error("can't extend frame");
 			for (int i=0; i<no_assimilated_array_entries; i++) {
-				array_in_progress->node->W.data[pos++] = v1_pile[i];
-				array_in_progress->node->W.data[pos++] = v2_pile[i];
+				array_in_progress->W.data[pos++] = v1_pile[i];
+				array_in_progress->W.data[pos++] = v2_pile[i];
 			}
 			CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-			Inter::Frame::insert(array_in_progress, IBM);
+			Inter::insert(array_in_progress, IBM);
 			
 			if (plm == ARRAY_PLM) {
 				CodeGen::Assimilate::install_alias(con_name, identifier);
@@ -365,8 +365,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
 	if (identifier) @<Act on parsed header@>;
 
 @<Parse the routine or stub header@> =
-	text_stream *S = Inter::Frame::ID_to_text(P, P->node->W.data[MATTER_SPLAT_IFLD]);
-	if (P->node->W.data[PLM_SPLAT_IFLD] == ROUTINE_PLM) {
+	text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_PLM) {
 		if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 			identifier = mr.exp[0]; body = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
@@ -452,7 +452,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_frame *P, void *state) {
 	Inter::SymbolsTables::equate(alias_name, rsymb);
 	Inter::Symbols::set_flag(alias_name, ALIAS_ONLY_BIT);
 
-	Inter::Frame::remove_from_tree(P);
+	Inter::remove_from_tree(P);
 
 @ =
 inter_package *CodeGen::Assimilate::new_package(inter_bookmark *IBM, inter_symbol *pname, inter_symbol *ptype) {
@@ -469,10 +469,10 @@ void CodeGen::Assimilate::install_alias(inter_symbol *con_name, text_stream *aka
 
 		if (existing) {
 			if (existing->definition_status == DEFINED_ISYMD) {
-				inter_frame *Q = Inter::Symbols::definition(existing);
+				inter_tree_node *Q = Inter::Symbols::definition(existing);
 				if (Q == NULL) internal_error("undefined");
 				Inter::Symbols::undefine(existing);
-				Inter::Frame::remove_from_tree(Q);
+				Inter::remove_from_tree(Q);
 				if (trace_AME) LOG("AME: removing previous definition of $3\n", existing);
 			}
 			if (trace_AME) LOG("AME extra alias $3 = $3\n", existing, con_name);
@@ -501,10 +501,10 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *iden
 
 	if (existing->owning_table == into_scope) internal_error("already in this scope");
 	if (existing->definition_status == DEFINED_ISYMD) {
-		inter_frame *Q = Inter::Symbols::definition(existing);
+		inter_tree_node *Q = Inter::Symbols::definition(existing);
 		if (Q == NULL) internal_error("undefined");
 		Inter::Symbols::undefine(existing);
-		Inter::Frame::remove_from_tree(Q);
+		Inter::remove_from_tree(Q);
 		if (trace_AME) LOG("AME %S: removing previous definition of $3\n", identifier, existing);
 	}
 
@@ -515,7 +515,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *iden
 }
 
 @ =
-void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_frame *P, text_stream *value) {
+void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_stream *value) {
 	if (CodeGen::MergeTemplate::find_name(I, value, TRUE) == NULL) {
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
@@ -558,7 +558,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			PUT_TO(dw, c);
 		}
 		inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
-		text_stream *glob_storage = Inter::get_text(I, ID);
+		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = DWORD_IVAL; *val2 = ID;
 		DISCARD_TEXT(dw);
@@ -575,7 +575,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			PUT_TO(dw, c);
 		}
 		inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
-		text_stream *glob_storage = Inter::get_text(I, ID);
+		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
 		DISCARD_TEXT(dw);
@@ -676,7 +676,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	internal_error("Reduced to glob in assimilation");
 
 	inter_t ID = Inter::Warehouse::create_text(Inter::warehouse(I), pack);
-	text_stream *glob_storage = Inter::get_text(I, ID);
+	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::warehouse(I), ID);
 	Str::copy(glob_storage, sch->converted_from);
 
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
@@ -749,29 +749,29 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, operand1);
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
-	inter_frame *array_in_progress =
+	inter_tree_node *array_in_progress =
 		Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
-	int pos = array_in_progress->node->W.extent;
+	int pos = array_in_progress->W.extent;
 	if (Inter::Frame::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
-	array_in_progress->node->W.data[pos] = LITERAL_IVAL; array_in_progress->node->W.data[pos+1] = 0;
-	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->node->W.data[pos+2]), &(array_in_progress->node->W.data[pos+3]));
+	array_in_progress->W.data[pos] = LITERAL_IVAL; array_in_progress->W.data[pos+1] = 0;
+	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Frame::insert(array_in_progress, IBM);
+	Inter::insert(array_in_progress, IBM);
 	return mcc_name;
 }
 
 inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
-	inter_frame *array_in_progress =
+	inter_tree_node *array_in_progress =
 		Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
-	int pos = array_in_progress->node->W.extent;
+	int pos = array_in_progress->W.extent;
 	if (Inter::Frame::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
-	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->node->W.data[pos]), &(array_in_progress->node->W.data[pos+1]));
-	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->node->W.data[pos+2]), &(array_in_progress->node->W.data[pos+3]));
+	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos]), &(array_in_progress->W.data[pos+1]));
+	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Frame::insert(array_in_progress, IBM);
+	Inter::insert(array_in_progress, IBM);
 	return mcc_name;
 }
 

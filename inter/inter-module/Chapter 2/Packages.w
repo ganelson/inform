@@ -68,8 +68,8 @@ void Inter::Packages::make_rootlike(inter_package *pack) {
 inter_package *Inter::Packages::parent(inter_package *pack) {
 	if (pack) {
 		if (Inter::Packages::is_rootlike(pack)) return NULL;
-		inter_frame *D = Inter::Symbols::definition(pack->package_name);
-		inter_frame *P = Inter::get_parent(D);
+		inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
+		inter_tree_node *P = Inter::get_parent(D);
 		if (P == NULL) return NULL;
 		return Inter::Package::defined_by_frame(P);
 	}
@@ -132,9 +132,9 @@ inter_package *Inter::Packages::template(inter_tree *I) {
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;
-	inter_frame *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->node->W.data[ID_IFLD] == PACKAGE_IST) {
+		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
 			found = Inter::Packages::search_exhaustively(Q, S);
 			if (found) return found;
@@ -150,9 +150,9 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stre
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
 	inter_package *main_package = Inter::Packages::main(I);
 	if (main_package) {
-		inter_frame *D = Inter::Symbols::definition(main_package->package_name);
+		inter_tree_node *D = Inter::Symbols::definition(main_package->package_name);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->node->W.data[ID_IFLD] == PACKAGE_IST) {
+			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *Q = Inter::Package::defined_by_frame(C);
 				inter_symbol *found = Inter::Packages::search_exhaustively(Q, S);
 				if (found) return found;
@@ -167,12 +167,7 @@ inter_t Inter::Packages::to_PID(inter_package *P) {
 	return P->index_n;
 }
 
-inter_package *Inter::Packages::from_PID(inter_tree *I, inter_t PID) {
-	if (PID == 0) return NULL;
-	return Inter::get_package(I, PID);
-}
-
-inter_package *Inter::Packages::container(inter_frame *P) {
+inter_package *Inter::Packages::container(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	inter_package *pack = Inter::Frame::get_package(P);
 	if (Inter::Packages::is_rootlike(pack)) return NULL;
@@ -184,7 +179,7 @@ inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
 	return pack->package_scope;
 }
 
-inter_symbols_table *Inter::Packages::scope_of(inter_frame *P) {
+inter_symbols_table *Inter::Packages::scope_of(inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	if (pack) return pack->package_scope;
 	return Inter::Frame::globals(P);
@@ -207,9 +202,9 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	if (P == NULL) return NULL;
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
 	if ((found) && (Inter::Symbols::is_defined(found))) {
-		inter_frame *D = Inter::Symbols::definition(found);
-		inter_t val2 = D->node->W.data[VAL1_MD_IFLD + 1];
-		return Inter::get_text(P->stored_in, val2);
+		inter_tree_node *D = Inter::Symbols::definition(found);
+		inter_t val2 = D->W.data[VAL1_MD_IFLD + 1];
+		return Inter::Warehouse::get_text(Inter::warehouse(P->stored_in), val2);
 	}
 	return NULL;
 }

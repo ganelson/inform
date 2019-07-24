@@ -15,7 +15,7 @@ typedef struct inter_frame_list {
 } inter_frame_list;
 
 typedef struct inter_frame_list_entry {
-	struct inter_frame *listed_frame;
+	struct inter_tree_node *listed_frame;
 	struct inter_frame_list_entry *next_in_ifl;
 	struct inter_frame_list_entry *prev_in_ifl;
 	MEMORY_MANAGEMENT
@@ -38,7 +38,7 @@ inter_frame_list *Inter::Lists::new(void) {
 	return ifl;
 }
 
-void Inter::Lists::add(inter_frame_list *FL, inter_frame *F) {
+void Inter::Lists::add(inter_frame_list *FL, inter_tree_node *F) {
 	if (F == NULL) internal_error("linked imvalid frame");
 	if (FL == NULL) internal_error("bad frame list");
 	if (FL->storage_used >= FL->storage_capacity) {

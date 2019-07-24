@@ -54,7 +54,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
-		PUT_TO(Inter::get_text(Inter::Bookmarks::tree(IBM), ID), c);
+		PUT_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), c);
 		literal_mode = FALSE;
 	}
 
@@ -62,22 +62,22 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 }
 
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_t pragma_text, inter_t level, struct inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_2(IBM, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
+	inter_tree_node *P = Inter::Frame::fill_2(IBM, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Pragma::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_PRAGMA_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+void Inter::Pragma::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_PRAGMA_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_name == NULL) { *E = Inter::Frame::error(P, I"no target name", NULL); return; }
-	if (P->node->W.data[TEXT_PRAGMA_IFLD] == 0) { *E = Inter::Frame::error(P, I"no pragma text", NULL); return; }
+	if (P->W.data[TEXT_PRAGMA_IFLD] == 0) { *E = Inter::Frame::error(P, I"no pragma text", NULL); return; }
 }
 
-void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *target_name = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
-	inter_t ID = P->node->W.data[TEXT_PRAGMA_IFLD];
+	inter_t ID = P->W.data[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inter::Frame::ID_to_text(P, ID);
 	WRITE("pragma %S \"%S\"", target_name->symbol_name, S);
 }

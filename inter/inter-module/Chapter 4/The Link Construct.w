@@ -52,7 +52,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
 		SIDS[i] = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-		*E = Inter::Constant::parse_text(Inter::get_text(Inter::Bookmarks::tree(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
+		*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
 		if (*E) return;
 	}
 
@@ -62,29 +62,29 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_t stage, inter_t text1, inter_t text2, inter_t text3, inter_t text4, inter_t ref, inter_t level,
 	struct inter_error_location *eloc) {
-	inter_frame *P = Inter::Frame::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
+	inter_tree_node *P = Inter::Frame::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Frame::insert(P, IBM);
+	Inter::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Link::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
-	if (P->node->W.extent != EXTENT_LINK_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	if (P->W.extent != EXTENT_LINK_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 
-	if ((P->node->W.data[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
-		(P->node->W.data[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
-		(P->node->W.data[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&
-		(P->node->W.data[STAGE_LINK_IFLD] != AFTER_LINK_STAGE))
+	if ((P->W.data[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
+		(P->W.data[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
+		(P->W.data[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&
+		(P->W.data[STAGE_LINK_IFLD] != AFTER_LINK_STAGE))
 		{ *E = Inter::Frame::error(P, I"bad stage marker on link", NULL); return; }
-	if (P->node->W.data[SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no segment text", NULL); return; }
-	if (P->node->W.data[PART_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no part text", NULL); return; }
-	if (P->node->W.data[TO_RAW_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no to-raw text", NULL); return; }
-	if (P->node->W.data[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no to-segment text", NULL); return; }
+	if (P->W.data[SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no segment text", NULL); return; }
+	if (P->W.data[PART_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no part text", NULL); return; }
+	if (P->W.data[TO_RAW_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no to-raw text", NULL); return; }
+	if (P->W.data[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inter::Frame::error(P, I"no to-segment text", NULL); return; }
 }
 
-void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
+void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("link ");
-	switch (P->node->W.data[STAGE_LINK_IFLD]) {
+	switch (P->W.data[STAGE_LINK_IFLD]) {
 		case EARLY_LINK_STAGE: WRITE("early"); break;
 		case BEFORE_LINK_STAGE: WRITE("before"); break;
 		case INSTEAD_LINK_STAGE: WRITE("instead"); break;
@@ -92,7 +92,7 @@ void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inte
 	}
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++) {
 		WRITE(" \"");
-		text_stream *S = Inter::Frame::ID_to_text(P, P->node->W.data[i]);
+		text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[i]);
 		Inter::Constant::write_text(OUT, S);
 		WRITE("\"");
 	}
