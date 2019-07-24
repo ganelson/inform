@@ -55,7 +55,7 @@ inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *routin
 	inter_tree_node *P = Inter::Node::fill_3(IBM, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
 	Inter::Node::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

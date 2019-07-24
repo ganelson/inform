@@ -21,8 +21,8 @@ Setting up the use of this module.
 @e inter_error_message_MT
 @e inter_error_stash_MT
 @e inter_package_MT
-@e inter_frame_list_MT
-@e inter_frame_list_entry_MT
+@e inter_node_list_MT
+@e inter_node_list_entry_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inter_tree)
@@ -37,8 +37,8 @@ ALLOCATE_INDIVIDUALLY(inter_error_location)
 ALLOCATE_INDIVIDUALLY(inter_error_message)
 ALLOCATE_INDIVIDUALLY(inter_error_stash)
 ALLOCATE_INDIVIDUALLY(inter_package)
-ALLOCATE_INDIVIDUALLY(inter_frame_list)
-ALLOCATE_INDIVIDUALLY(inter_frame_list_entry)
+ALLOCATE_INDIVIDUALLY(inter_node_list)
+ALLOCATE_INDIVIDUALLY(inter_node_list_entry)
 ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
 
 @h The beginning.

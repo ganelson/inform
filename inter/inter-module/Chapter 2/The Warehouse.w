@@ -28,7 +28,7 @@ typedef struct inter_resource_holder {
 	int irsrc;
 	struct inter_package *owning_package;
 	struct inter_symbols_table *stored_symbols_table;
-	struct inter_frame_list *stored_frame_list;
+	struct inter_node_list *stored_frame_list;
 	struct inter_package *stored_package;
 	struct text_stream *stored_text_stream;
 	void *stored_ref;
@@ -120,7 +120,7 @@ inter_tree_node *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_t
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
 	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(IS, n);
-	inter_tree_node *F = Inter::Tree::new_node(I, W);
+	inter_tree_node *F = Inter::Node::new(I, W);
 	Inter::Node::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
 	Inter::Node::attach_package(F, owner);
 	return F;
@@ -255,7 +255,7 @@ inter_t Inter::Warehouse::create_ref(inter_warehouse *warehouse) {
 	return n;
 }
 
-inter_frame_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_t N) {
+inter_node_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_t N) {
 	if (warehouse == NULL) return NULL;
 	int n = (int) N;
 	if (n >= warehouse->size) return NULL;

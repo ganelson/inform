@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>2/it</title>
+		<title>2/bkm</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -20,6 +20,39 @@
     <span class="definitionkeyword">define</span> <span class="constant">inter_t</span><span class="plain"> </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span>
     <span class="definitionkeyword">define</span> <span class="constant">signed_inter_t</span><span class="plain"> </span><span class="reserved">int</span>
 </pre>
+
+<pre class="display">
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> {</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">tree</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">parent_itn</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">first_child_itn</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">last_child_itn</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">previous_itn</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">next_itn</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">warehouse_floor_space</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="reserved">inter_tree_node</span><span class="plain">;</span>
+
+    <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Node::new</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">warehouse_floor_space</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">itn</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain">);</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;tree</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;parent_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;first_child_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;last_child_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;previous_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;next_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;W</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">itn</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Inter::Node::new is used in 2/tw (<a href="2-tw.html#SP3">&#167;3</a>).</p>
+
+<p class="endnote">The structure inter_tree_node is accessed in 2/it, 2/bkm, 2/st, 2/pck, 2/sym, 3/dfn, 3/iibf, 3/iitf, 3/vi, 3/idt, 4/tmc, 4/tvc, 4/tpc, 4/tlc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
+
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Chunks. </b></p>
 
 
@@ -63,7 +96,7 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::get_package</span><span class="plain">(</span><span class="functiontext">Inter::Node::warehouse</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">), </span><span class="identifier">ID</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_frame_list</span><span class="plain"> *</span><span class="functiontext">Inter::Node::ID_to_frame_list</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
+    <span class="reserved">inter_node_list</span><span class="plain"> *</span><span class="functiontext">Inter::Node::ID_to_frame_list</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::get_frame_list</span><span class="plain">(</span><span class="functiontext">Inter::Node::warehouse</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">), </span><span class="identifier">N</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -97,7 +130,7 @@
 
 <p class="endnote">The function Inter::Node::ID_to_symbols_table is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Node::ID_to_text is used in 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>, <a href="3-dfn.html#SP5">&#167;5</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Node::ID_to_text is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>, <a href="3-dfn.html#SP5">&#167;5</a>), 3/idt (<a href="3-idt.html#SP3">&#167;3</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Node::ID_to_package is used in 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>).</p>
 
@@ -105,9 +138,9 @@
 
 <p class="endnote">The function Inter::Node::ID_to_ref appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Node::globals is used in 2/st (<a href="2-st.html#SP7">&#167;7</a>, <a href="2-st.html#SP9">&#167;9</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Node::globals is used in 2/st (<a href="2-st.html#SP7">&#167;7</a>, <a href="2-st.html#SP9">&#167;9</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Node::eq is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Inter::Node::eq is used in 3/vi (<a href="3-vi.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
@@ -374,20 +407,20 @@
 
 <p class="endnote">The function Inter::Node::retrieve_origin appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Node::error is used in 2/vi (<a href="2-vi.html#SP1">&#167;1</a>), 2/idt (<a href="2-idt.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Node::error is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 3/idt (<a href="3-idt.html#SP2">&#167;2</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Node::get_comment is used in 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>), 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Inter::Node::get_comment is used in 3/dfn (<a href="3-dfn.html#SP5">&#167;5</a>), 3/iibf (<a href="3-iibf.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Node::attach_comment is used in 2/iibf (<a href="2-iibf.html#SP1_6">&#167;1.6</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Node::attach_comment is used in 3/iibf (<a href="3-iibf.html#SP1_6">&#167;1.6</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Node::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/iibf (<a href="2-iibf.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Node::get_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 3/iibf (<a href="3-iibf.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Node::get_package_alt appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Node::attach_package is used in 2/tw (<a href="2-tw.html#SP3">&#167;3</a>).</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-it.html">Back to 'Inter Trees'</a></li><li><a href="2-tw.html">Continue with 'The Warehouse'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-bkm.html">Back to 'Bookmarks'</a></li><li><a href="2-tw.html">Continue with 'The Warehouse'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

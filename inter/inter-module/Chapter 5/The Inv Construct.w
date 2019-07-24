@@ -70,7 +70,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol
 		eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
@@ -78,7 +78,7 @@ inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *rou
 	inter_tree_node *P = Inter::Node::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
@@ -86,7 +86,7 @@ inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_symbol 
 	inter_tree_node *P = Inter::Node::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

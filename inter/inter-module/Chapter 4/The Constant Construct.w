@@ -72,7 +72,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			if (Inter::Constant::append(ilp->line, eloc, IBM, con_kind, P, mr3.exp[0], E) == FALSE)
 				return;
 		}
-		Inter::Tree::insert_node(P, IBM);
+		Inter::Bookmarks::insert(IBM, P);
 		return;
 	}
 
@@ -102,7 +102,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 					if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, P, mr3.exp[0], E) == FALSE)
 						return;
 				}
-				Inter::Tree::insert_node(P, IBM);
+				Inter::Bookmarks::insert(IBM, P);
 				return;
 			}
 		}
@@ -131,7 +131,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			if (counter != arity)
 				{ *E = Inter::Errors::quoted(I"wrong size", S, eloc); return; }
 			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (*E) return;
-			Inter::Tree::insert_node(P, IBM);
+			Inter::Bookmarks::insert(IBM, P);
 			return;
 		}
 	}
@@ -154,7 +154,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 				if (Inter::Constant::append(ilp->line, eloc, IBM, NULL, P, mr3.exp[0], E) == FALSE)
 					return;
 			}
-			Inter::Tree::insert_node(P, IBM);
+			Inter::Bookmarks::insert(IBM, P);
 			return;
 		}
 	}
@@ -234,7 +234,7 @@ inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_t
 	inter_tree_node *P = Inter::Node::fill_5(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
@@ -242,7 +242,7 @@ inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_t S
 	inter_tree_node *P = Inter::Node::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
@@ -250,7 +250,7 @@ inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_t 
 	inter_tree_node *P = Inter::Node::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

@@ -54,7 +54,7 @@ void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_5(IBM, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

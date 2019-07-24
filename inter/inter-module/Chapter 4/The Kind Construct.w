@@ -174,7 +174,7 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t 
 		for (int i=0; i<arity; i++) P->W.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

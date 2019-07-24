@@ -51,7 +51,7 @@ inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_t VID, inte
 	inter_tree_node *P = Inter::Node::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

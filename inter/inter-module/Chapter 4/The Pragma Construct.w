@@ -64,7 +64,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_t pragma_text, inter_t level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_2(IBM, PRAGMA_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

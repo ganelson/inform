@@ -325,7 +325,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				array_in_progress->W.data[pos++] = v2_pile[i];
 			}
 			CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-			Inter::Tree::insert_node(array_in_progress, IBM);
+			Inter::Bookmarks::insert(IBM, array_in_progress);
 			
 			if (plm == ARRAY_PLM) {
 				CodeGen::Assimilate::install_alias(con_name, identifier);
@@ -757,7 +757,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	array_in_progress->W.data[pos] = LITERAL_IVAL; array_in_progress->W.data[pos+1] = 0;
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Tree::insert_node(array_in_progress, IBM);
+	Inter::Bookmarks::insert(IBM, array_in_progress);
 	return mcc_name;
 }
 
@@ -771,7 +771,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op,
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos]), &(array_in_progress->W.data[pos+1]));
 	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Tree::insert_node(array_in_progress, IBM);
+	Inter::Bookmarks::insert(IBM, array_in_progress);
 	return mcc_name;
 }
 

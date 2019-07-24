@@ -446,7 +446,7 @@ enough that the slot exists for the eventual list to be stored in.
 		E = Inter::Defn::verify_construct(owner, P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
-		Inter::Tree::insert_node(P, &at);
+		Inter::Bookmarks::insert(&at, P);
 	}
 
 @<Write the bytecode@> =

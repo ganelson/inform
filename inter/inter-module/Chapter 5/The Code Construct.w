@@ -43,7 +43,7 @@ void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 inter_error_message *Inter::Code::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_1(IBM, CODE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

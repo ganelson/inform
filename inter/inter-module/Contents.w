@@ -10,22 +10,22 @@ Chapter 1: Setting Up
 
 Chapter 2: Interoperability
 	Inter Trees
+	Bookmarks
 	Inter Nodes
 	The Warehouse
+	Inter Node Lists
 	Symbols Tables
 	Packages
 	Symbols
-	Inter Frame Lists
-	Bookmarks
+
+Chapter 3: Language Definition
+	Canonical Annotations
+	Definition
 	Inter in Binary Files
 	Inter in Text Files
 	Verifying Inter
 	Inter Data Types
 	Inter Errors
-
-Chapter 3: Language Definition
-	Canonical Annotations
-	Definition
 
 Chapter 4: Void Constructs
 	The Nop Construct

@@ -702,7 +702,7 @@ insert them into the Inter stream close to the top.
             <span class="identifier">array_in_progress</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">pos</span><span class="plain">++] = </span><span class="identifier">current_A</span><span class="plain">-</span><span class="element">&gt;entry_data2</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::guard</span><span class="plain">(</span><span class="identifier">Inter::Defn::verify_construct</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">array_in_progress</span><span class="plain">));</span>
-        <span class="identifier">Inter::Tree::insert_node</span><span class="plain">(</span><span class="identifier">array_in_progress</span><span class="plain">, </span><span class="functiontext">Packaging::at</span><span class="plain">());</span>
+        <span class="identifier">Inter::Bookmarks::insert</span><span class="plain">(</span><span class="functiontext">Packaging::at</span><span class="plain">(), </span><span class="identifier">array_in_progress</span><span class="plain">);</span>
         <span class="functiontext">Emit::pull_array</span><span class="plain">();</span>
         <span class="functiontext">Packaging::exit</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -1219,12 +1219,10 @@ insert them into the Inter stream close to the top.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::down</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::set_level</span><span class="plain">(</span><span class="functiontext">Emit::level</span><span class="plain">() + 1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_inter_insertion</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Down to %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Emit::level</span><span class="plain">());</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::up</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::set_level</span><span class="plain">(</span><span class="functiontext">Emit::level</span><span class="plain">() - 1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_inter_insertion</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Up to %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Emit::level</span><span class="plain">());</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Emit::pop_code_position</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -8,6 +8,31 @@ tree locations.
 @d inter_t unsigned int
 @d signed_inter_t int
 
+=
+typedef struct inter_tree_node {
+	struct inter_tree *tree;
+	struct inter_package *package;
+	struct inter_tree_node *parent_itn;
+	struct inter_tree_node *first_child_itn;
+	struct inter_tree_node *last_child_itn;
+	struct inter_tree_node *previous_itn;
+	struct inter_tree_node *next_itn;
+	struct warehouse_floor_space W;
+} inter_tree_node;
+
+inter_tree_node *Inter::Node::new(inter_tree *I, warehouse_floor_space W) {
+	inter_tree_node *itn = CREATE(inter_tree_node);
+	itn->tree = I;
+	itn->package = NULL;
+	itn->parent_itn = NULL;
+	itn->first_child_itn = NULL;
+	itn->last_child_itn = NULL;
+	itn->previous_itn = NULL;
+	itn->next_itn = NULL;
+	itn->W = W;
+	return itn;
+}
+
 @h Chunks.
 
 @d IST_SIZE 100
@@ -50,7 +75,7 @@ inter_package *Inter::Node::ID_to_package(inter_tree_node *F, inter_t ID) {
 	return Inter::Warehouse::get_package(Inter::Node::warehouse(F), ID);
 }
 
-inter_frame_list *Inter::Node::ID_to_frame_list(inter_tree_node *F, inter_t N) {
+inter_node_list *Inter::Node::ID_to_frame_list(inter_tree_node *F, inter_t N) {
 	return Inter::Warehouse::get_frame_list(Inter::Node::warehouse(F), N);
 }
 

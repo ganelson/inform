@@ -660,7 +660,7 @@ void Emit::array_end(packaging_state save) {
 		array_in_progress->W.data[pos++] = current_A->entry_data2[i];
 	}
 	Emit::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Tree::insert_node(array_in_progress, Packaging::at());
+	Inter::Bookmarks::insert(Packaging::at(), array_in_progress);
 	Emit::pull_array();
 	Packaging::exit(save);
 }
@@ -1003,12 +1003,10 @@ inter_bookmark *Emit::at(void) {
 
 void Emit::down(void) {
 	Emit::set_level(Emit::level() + 1);
-	if (trace_inter_insertion) LOG("Down to %d\n", Emit::level());
 }
 
 void Emit::up(void) {
 	Emit::set_level(Emit::level() - 1);
-	if (trace_inter_insertion) LOG("Up to %d\n", Emit::level());
 }
 
 void Emit::pop_code_position(void) {

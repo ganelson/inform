@@ -22,42 +22,16 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">main_package</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inter_tree</span><span class="plain">;</span>
-
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">tree</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">parent_itn</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">first_child_itn</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">last_child_itn</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">previous_itn</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">next_itn</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">warehouse_floor_space</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">inter_tree_node</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The structure inter_tree is accessed in 2/bkm and here.</p>
 
-<p class="endnote">The structure inter_tree_node is accessed in 2/in, 2/st, 2/pck, 2/sym, 2/bkm, 2/iibf, 2/iitf, 2/vi, 2/idt, 3/dfn, 4/tmc, 4/tvc, 4/tpc, 4/tlc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
-
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 
 <pre class="display">
-    <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::new_node</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">warehouse_floor_space</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">itn</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain">);</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;tree</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;parent_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;first_child_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;last_child_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;previous_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;next_itn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">itn</span><span class="plain">-</span><span class="element">&gt;W</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">itn</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain">);</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -102,26 +76,14 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;previous_itn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;previous_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::next</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;next_itn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;next_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::first_child</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;first_child_itn</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_first_child</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;first_child_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::second_child</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -184,47 +146,31 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;last_child_itn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_last_child</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;last_child_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;parent_itn</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;parent_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Tree::new_node is used in 2/tw (<a href="2-tw.html#SP3">&#167;3</a>).</p>
-
 <p class="endnote">The function Inter::Tree::new appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Tree::root_package is used in 2/iibf (<a href="2-iibf.html#SP1_4">&#167;1.4</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::Tree::root_package is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 3/iibf (<a href="3-iibf.html#SP1_4">&#167;1.4</a>).</p>
 
-<p class="endnote">The function Inter::Tree::main_package is used in <a href="#SP4">&#167;4</a>, 2/st (<a href="2-st.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Tree::main_package is used in <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Inter::Tree::set_main_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Inter::Tree::warehouse is used in 2/in (<a href="2-in.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/iibf (<a href="2-iibf.html#SP1">&#167;1</a>, <a href="2-iibf.html#SP1_1">&#167;1.1</a>), 2/idt (<a href="2-idt.html#SP3">&#167;3</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::Tree::warehouse is used in 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/in (<a href="2-in.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 3/iibf (<a href="3-iibf.html#SP1">&#167;1</a>, <a href="3-iibf.html#SP1_1">&#167;1.1</a>), 3/idt (<a href="3-idt.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Inter::Tree::global_scope is used in 2/in (<a href="2-in.html#SP3">&#167;3</a>), 2/st (<a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP11">&#167;11</a>), 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/iibf (<a href="2-iibf.html#SP1_4">&#167;1.4</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Tree::global_scope is used in 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/in (<a href="2-in.html#SP3">&#167;3</a>), 2/st (<a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP11">&#167;11</a>), 3/iibf (<a href="3-iibf.html#SP1_4">&#167;1.4</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Tree::previous is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
 
-<p class="endnote">The function Inter::Tree::set_previous is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+<p class="endnote">The function Inter::Tree::next is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP5">&#167;5</a>.</p>
 
-<p class="endnote">The function Inter::Tree::next is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP4">&#167;4</a>.</p>
-
-<p class="endnote">The function Inter::Tree::set_next is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
-
-<p class="endnote">The function Inter::Tree::first_child is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_5">&#167;3.5</a>, <a href="#SP4">&#167;4</a>.</p>
-
-<p class="endnote">The function Inter::Tree::set_first_child is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+<p class="endnote">The function Inter::Tree::first_child is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_5">&#167;3.5</a>, <a href="#SP5">&#167;5</a>.</p>
 
 <p class="endnote">The function Inter::Tree::second_child appears nowhere else.</p>
 
@@ -238,64 +184,12 @@
 
 <p class="endnote">The function Inter::Tree::last_child is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Inter::Tree::set_last_child is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>.</p>
-
-<p class="endnote">The function Inter::Tree::parent is used in <a href="#SP3">&#167;3</a>, <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>, 2/in (<a href="2-in.html#SP6">&#167;6</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/ie (<a href="2-ie.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Inter::Tree::set_parent is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+<p class="endnote">The function Inter::Tree::parent is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>, 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/in (<a href="2-in.html#SP6">&#167;6</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 3/ie (<a href="3-ie.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">trace_inter_insertion</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::insert_node</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_bookmark</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no frame to insert"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"nowhere to insert"</span><span class="plain">);</span>
-        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">);</span>
-        <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;stored_in</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INTER_FRAMES</span><span class="plain">, </span><span class="string">"Insert frame %F\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, *</span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_inter_insertion</span><span class="plain">) </span><span class="functiontext">Inter::Defn::write_construct_text</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">F_level</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;W.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">];</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> == 0) {</span>
-            <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AS_LAST_CHILD_OF_ICPLACEMENT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_node</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">) ||</span>
-                <span class="plain">(</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">IMMEDIATELY_AFTER_ICPLACEMENT</span><span class="plain">)) {</span>
-                <span class="functiontext">Inter::Bookmarks::set_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">NOWHERE_ICPLACEMENT</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad wrt"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">) ||</span>
-                <span class="plain">(</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">IMMEDIATELY_AFTER_ICPLACEMENT</span><span class="plain">)) {</span>
-                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> &lt; </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)-</span><span class="element">&gt;W.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">]) {</span>
-                    <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">);</span>
-                    <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PR</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bubbled up out of tree"</span><span class="plain">);</span>
-                    <span class="functiontext">Inter::Bookmarks::set_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-                <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> &gt; </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)-</span><span class="element">&gt;W.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">] + 1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bubbled down off of tree"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F_level</span><span class="plain"> == </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)-</span><span class="element">&gt;W.data</span><span class="plain">[</span><span class="constant">LEVEL_IFLD</span><span class="plain">] + 1) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">IMMEDIATELY_AFTER_ICPLACEMENT</span><span class="plain">) {</span>
-                        <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AS_FIRST_CHILD_OF_ICPLACEMENT</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">));</span>
-                        <span class="functiontext">Inter::Bookmarks::set_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">);</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AS_LAST_CHILD_OF_ICPLACEMENT</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">));</span>
-                    <span class="plain">}</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">));</span>
-                <span class="plain">}</span>
-                <span class="functiontext">Inter::Bookmarks::set_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-                <span class="reserved">return</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">), </span><span class="functiontext">Inter::Bookmarks::get_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Bookmarks::get_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="constant">AS_FIRST_CHILD_OF_ICPLACEMENT</span><span class="plain">) {</span>
-                <span class="functiontext">Inter::Bookmarks::set_ref</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-                <span class="functiontext">Inter::Bookmarks::set_placement</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="constant">AFTER_ICPLACEMENT</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::remove_node</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="functiontext">Inter::Tree::place</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="constant">NOWHERE_ICPLACEMENT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -326,11 +220,9 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Tree::insert_node is used in 2/iibf (<a href="2-iibf.html#SP1_6">&#167;1.6</a>), 4/tnc (<a href="4-tnc.html#SP1">&#167;1</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tvc (<a href="4-tvc.html#SP2">&#167;2</a>), 4/tpc (<a href="4-tpc.html#SP2">&#167;2</a>), 4/tlc (<a href="4-tlc.html#SP2">&#167;2</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc2 (<a href="4-tpc2.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>), 5/tcc (<a href="5-tcc.html#SP2">&#167;2</a>), 5/tec (<a href="5-tec.html#SP2">&#167;2</a>), 5/trc2 (<a href="5-trc2.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>), 5/tsc (<a href="5-tsc.html#SP2">&#167;2</a>).</p>
-
 <p class="endnote">The function Inter::Tree::remove_node is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The function Inter::Tree::place appears nowhere else.</p>
+<p class="endnote">The function Inter::Tree::place is used in 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Extricate C from its current tree position</span> <span class="cwebmacronumber">3.1</span>&gt; =
@@ -341,21 +233,21 @@
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">OP</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OP</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Tree::first_child</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">) == </span><span class="identifier">C</span><span class="plain">)</span>
-                <span class="functiontext">Inter::Tree::set_first_child</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Tree::next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
+                <span class="functiontext">Inter::Tree::set_first_child_UNSAFE</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Tree::next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Tree::last_child</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">) == </span><span class="identifier">C</span><span class="plain">)</span>
-                <span class="functiontext">Inter::Tree::set_last_child</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Tree::previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
+                <span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="identifier">OP</span><span class="plain">, </span><span class="functiontext">Inter::Tree::previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">OB</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">OD</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OB</span><span class="plain">) {</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">OB</span><span class="plain">, </span><span class="identifier">OD</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">OB</span><span class="plain">, </span><span class="identifier">OD</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OD</span><span class="plain">) {</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">OD</span><span class="plain">, </span><span class="identifier">OB</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">OD</span><span class="plain">, </span><span class="identifier">OB</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -368,16 +260,16 @@
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::first_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Inter::Tree::set_last_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Inter::Tree::set_first_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_first_child_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -390,16 +282,16 @@
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::last_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Inter::Tree::set_first_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_first_child_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Inter::Tree::set_last_child</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -414,17 +306,17 @@
 <pre class="displaydefn">
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C after R when R is nowhere"</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Tree::last_child</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">R</span><span class="plain">)</span>
-            <span class="functiontext">Inter::Tree::set_last_child</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::next</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter tree broken"</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -439,17 +331,17 @@
 <pre class="displaydefn">
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C before R when R is nowhere"</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_parent</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Tree::first_child</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">R</span><span class="plain">)</span>
-            <span class="functiontext">Inter::Tree::set_first_child</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_first_child_UNSAFE</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::previous</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter tree broken"</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Inter::Tree::set_next</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Tree::set_previous</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -457,6 +349,43 @@
 <p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_previous_UNSAFE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;previous_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_next_UNSAFE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;next_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_first_child_UNSAFE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;first_child_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;last_child_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain">) </span><span class="identifier">F</span><span class="plain">-</span><span class="element">&gt;parent_itn</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Inter::Tree::set_previous_UNSAFE is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+
+<p class="endnote">The function Inter::Tree::set_next_UNSAFE is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+
+<p class="endnote">The function Inter::Tree::set_first_child_UNSAFE is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+
+<p class="endnote">The function Inter::Tree::set_last_child_UNSAFE is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>.</p>
+
+<p class="endnote">The function Inter::Tree::set_parent_UNSAFE is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>, <a href="#SP3_3">&#167;3.3</a>, <a href="#SP3_4">&#167;3.4</a>, <a href="#SP3_5">&#167;3.5</a>.</p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
 
 <pre class="definitions">
@@ -501,14 +430,14 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Tree::traverse_root_only is used in 2/iibf (<a href="2-iibf.html#SP1_1_5">&#167;1.1.5</a>), 2/iitf (<a href="2-iitf.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Tree::traverse_root_only is used in 3/iibf (<a href="3-iibf.html#SP1_1_5">&#167;1.1.5</a>), 3/iitf (<a href="3-iitf.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Tree::traverse is used in 2/st (<a href="2-st.html#SP10">&#167;10</a>), 2/iibf (<a href="2-iibf.html#SP1_1_5">&#167;1.1.5</a>), 2/iitf (<a href="2-iitf.html#SP1">&#167;1</a>, <a href="2-iitf.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Tree::traverse is used in 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_1_5">&#167;1.1.5</a>), 3/iitf (<a href="3-iitf.html#SP1">&#167;1</a>, <a href="3-iitf.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Tree::traverse_r appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><i>(This section begins Chapter 2: Interoperability.)</i></li><li><a href="2-in.html">Continue with 'Inter Nodes'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 2: Interoperability.)</i></li><li><a href="2-bkm.html">Continue with 'Bookmarks'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

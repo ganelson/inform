@@ -44,7 +44,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

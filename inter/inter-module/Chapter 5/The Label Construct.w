@@ -46,7 +46,7 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_2(IBM, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, lab_name), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

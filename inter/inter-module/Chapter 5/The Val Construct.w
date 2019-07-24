@@ -62,7 +62,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *val_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_4(IBM, VAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, val_kind), val1, val2, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

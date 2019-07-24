@@ -129,3 +129,49 @@ inter_package *Inter::Bookmarks::package(inter_bookmark *IBM) {
 	}
 	return pack;
 }
+
+void Inter::Bookmarks::insert(inter_bookmark *IBM, inter_tree_node *F) {
+	if (F == NULL) internal_error("no frame to insert");
+	if (IBM == NULL) internal_error("nowhere to insert");
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_tree *I = pack->stored_in;
+	LOGIF(INTER_FRAMES, "Insert frame %F\n", *F);
+	inter_t F_level = F->W.data[LEVEL_IFLD];
+	if (F_level == 0) {
+		Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_node);
+		if ((Inter::Bookmarks::get_placement(IBM) == AFTER_ICPLACEMENT) ||
+			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
+			Inter::Bookmarks::set_ref(IBM, F);
+		}
+	} else {
+		if (Inter::Bookmarks::get_placement(IBM) == NOWHERE_ICPLACEMENT) internal_error("bad wrt");
+		if ((Inter::Bookmarks::get_placement(IBM) == AFTER_ICPLACEMENT) ||
+			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
+			while (F_level < Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD]) {
+				inter_tree_node *R = Inter::Bookmarks::get_ref(IBM);
+				inter_tree_node *PR = Inter::Tree::parent(R);
+				if (PR == NULL) internal_error("bubbled up out of tree");
+				Inter::Bookmarks::set_ref(IBM, PR);
+			}
+			if (F_level > Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD] + 1) internal_error("bubbled down off of tree");
+			if (F_level == Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD] + 1) {
+				if (Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT) {
+					Inter::Tree::place(F, AS_FIRST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+					Inter::Bookmarks::set_placement(IBM, AFTER_ICPLACEMENT);
+				} else {
+					Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+				}
+			} else {
+				Inter::Tree::place(F, AFTER_ICPLACEMENT, Inter::Bookmarks::get_ref(IBM));
+			}
+			Inter::Bookmarks::set_ref(IBM, F);
+			return;
+		}
+		Inter::Tree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
+		if (Inter::Bookmarks::get_placement(IBM) == AS_FIRST_CHILD_OF_ICPLACEMENT) {
+			Inter::Bookmarks::set_ref(IBM, F);
+			Inter::Bookmarks::set_placement(IBM, AFTER_ICPLACEMENT);
+		}
+	}
+}
+

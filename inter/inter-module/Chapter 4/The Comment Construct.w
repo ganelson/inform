@@ -31,6 +31,6 @@ inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, int
 	inter_tree_node *P = Inter::Node::fill_0(IBM, COMMENT_IST, eloc, level);
 	Inter::Node::attach_comment(P, comment_ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }

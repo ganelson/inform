@@ -52,7 +52,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 
 	inter_t PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);

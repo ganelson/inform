@@ -64,7 +64,7 @@ inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	struct inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 

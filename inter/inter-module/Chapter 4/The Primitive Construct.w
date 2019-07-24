@@ -59,7 +59,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	F->W.data[F->W.extent - 1] = rcat;
 
 	*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), F); if (*E) return;
-	Inter::Tree::insert_node(F, IBM);
+	Inter::Bookmarks::insert(IBM, F);
 }
 
 inter_t Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {

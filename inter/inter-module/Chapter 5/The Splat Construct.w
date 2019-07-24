@@ -121,7 +121,7 @@ inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_symbol *routin
 	inter_tree_node *P = Inter::Node::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inter::Node::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Tree::insert_node(P, IBM);
+	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
