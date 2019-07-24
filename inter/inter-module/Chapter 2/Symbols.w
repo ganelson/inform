@@ -26,8 +26,8 @@ typedef struct inter_symbol {
 	int symbol_type;
 	int symbol_scope;
 	int definition_status;
-	struct inter_frame definition;
-	struct inter_frame importation_frame;
+	struct inter_frame *definition;
+	struct inter_frame *importation_frame;
 	struct inter_bookmark following_symbol;
 	struct inter_symbol *equated_to;
 	struct text_stream *equated_name;
@@ -54,7 +54,7 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->symbol_scope = PUBLIC_ISYMS;
 	symb->symbol_name = Str::duplicate(name);
 	Inter::Symbols::undefine(symb);
-	symb->importation_frame = Inter::Frame::around(NULL, -1);
+	symb->importation_frame = NULL;
 	symb->no_symbol_annotations = 0;
 	for (int i=0; i<MAX_INTER_ANNOTATIONS_PER_SYMBOL; i++)
 		symb->symbol_annotations[i] = Inter::Defn::invalid_annotation();
@@ -127,38 +127,37 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	}
 }
 
-void Inter::Symbols::define(inter_symbol *S, inter_frame P) {
+void Inter::Symbols::define(inter_symbol *S, inter_frame *P) {
 	if (S == NULL) internal_error("tried to define null symbol");
 	S->definition = P;
 	S->definition_status = DEFINED_ISYMD;
 }
 
-inter_frame Inter::Symbols::defining_frame(inter_symbol *S) {
+inter_frame *Inter::Symbols::definition(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to find definition of null symbol");
 	return S->definition;
 }
 
 int Inter::Symbols::is_defined(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	inter_frame D = Inter::Symbols::defining_frame(S);
-	if (Inter::Frame::valid(&D)) return TRUE;
+	if (Inter::Symbols::definition(S)) return TRUE;
 	return FALSE;
 }
 
 int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
-	inter_frame P = Inter::Symbols::defining_frame(S);
-	if ((Inter::Frame::valid(&P)) &&
-		(P.data[ID_IFLD] == CONSTANT_IST) &&
-		(P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
-		return (int) P.data[DATA_CONST_IFLD + 1];
+	inter_frame *P = Inter::Symbols::definition(S);
+	if ((P) &&
+		(P->node->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->node->W.data[DATA_CONST_IFLD] == LITERAL_IVAL)) {
+		return (int) P->node->W.data[DATA_CONST_IFLD + 1];
 	}
-	if ((Inter::Frame::valid(&P)) &&
-		(P.data[ID_IFLD] == CONSTANT_IST) &&
-		(P.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
+	if ((P) &&
+		(P->node->W.data[ID_IFLD] == CONSTANT_IST) &&
+		(P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
+		(P->node->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P.data[DATA_CONST_IFLD + 1]);
+		inter_symbol *alias_to = Inter::SymbolsTables::symbol_from_id(scope, P->node->W.data[DATA_CONST_IFLD + 1]);
 		return Inter::Symbols::evaluate_to_int(alias_to);
 	}
 	return -1;
@@ -166,8 +165,8 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
-		inter_frame D = Inter::Symbols::defining_frame(S);
-		if (Inter::Frame::valid(&D)) Inter::Frame::remove_from_tree(D);
+		inter_frame *D = Inter::Symbols::definition(S);
+		if (D) Inter::Frame::remove_from_tree(D);
 		Inter::Symbols::undefine(S);
 	}
 }
@@ -179,7 +178,7 @@ void Inter::Symbols::remove_from_table(inter_symbol *S) {
 
 void Inter::Symbols::undefine(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to undefine null symbol");
-	S->definition = Inter::Frame::around(NULL, -1);
+	S->definition = NULL;
 	S->definition_status = UNDEFINED_ISYMD;
 }
 

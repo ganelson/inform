@@ -16,13 +16,13 @@ void CodeGen::FC::prepare(code_generation *gen) {
 	temporary_generation = NULL;
 }
 
-void CodeGen::FC::iterate(inter_tree *I, inter_frame P, void *state) {
+void CodeGen::FC::iterate(inter_tree *I, inter_frame *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		generated_segment *saved =
 			CodeGen::select(gen, CodeGen::Targets::general_segment(gen, P));
-		switch (P.data[ID_IFLD]) {
+		switch (P->node->W.data[ID_IFLD]) {
 			case CONSTANT_IST:
 			case INSTANCE_IST:
 			case PROPERTYVALUE_IST:
@@ -35,8 +35,8 @@ void CodeGen::FC::iterate(inter_tree *I, inter_frame P, void *state) {
 	}
 }
 
-void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
-	switch (P.data[ID_IFLD]) {
+void CodeGen::FC::frame(code_generation *gen, inter_frame *P) {
+	switch (P->node->W.data[ID_IFLD]) {
 		case SYMBOL_IST: break;
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
@@ -48,9 +48,9 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 				internal_error("constant defined in main");
 			}
 			if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
-				inter_t ID = P.data[DATA_CONST_IFLD];
+				inter_t ID = P->node->W.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
-					Inter::Frame::ID_to_text(&P, ID));
+					Inter::Frame::ID_to_text(P, ID));
 				CodeGen::select_temporary(gen, S);
 				CodeGen::CL::constant(gen, P);
 				CodeGen::deselect_temporary(gen);
@@ -86,10 +86,10 @@ void CodeGen::FC::frame(code_generation *gen, inter_frame P) {
 @d URL_SYMBOL_CHAR 0x00A7
 
 =
-void CodeGen::FC::splat(code_generation *gen, inter_frame P) {
+void CodeGen::FC::splat(code_generation *gen, inter_frame *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::get_text(I, P.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inter::get_text(I, P->node->W.data[MATTER_SPLAT_IFLD]);
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);
@@ -107,34 +107,33 @@ void CodeGen::FC::splat(code_generation *gen, inter_frame P) {
 	}
 }
 
-void CodeGen::FC::local(code_generation *gen, inter_frame P) {
+void CodeGen::FC::local(code_generation *gen, inter_frame *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
-	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[DEFN_LOCAL_IFLD]);
 	CodeGen::Targets::declare_local_variable(gen, P, var_name);
 }
 
-void CodeGen::FC::label(code_generation *gen, inter_frame P) {
+void CodeGen::FC::label(code_generation *gen, inter_frame *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[DEFN_LABEL_IFLD]);
 	WRITE("%S;\n", lab_name->symbol_name);
 }
 
-void CodeGen::FC::block(code_generation *gen, inter_frame P) {
+void CodeGen::FC::block(code_generation *gen, inter_frame *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 }
 
-void CodeGen::FC::code(code_generation *gen, inter_frame P) {
+void CodeGen::FC::code(code_generation *gen, inter_frame *P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
 	int function_code_block = FALSE;
-	inter_t PAR_index = Inter::Frame::get_parent_index(P);
-	if (PAR_index == 0) internal_error("misplaced code node");
-	inter_frame PAR = Inter::Frame::ID_to_frame(&P, PAR_index);
-	if (PAR.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
+	inter_frame *PAR = Inter::get_parent(P);
+	if (PAR == NULL) internal_error("misplaced code node");
+	if (PAR->node->W.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
 	if (function_code_block) { WRITE(";\n"); INDENT; }
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
@@ -143,31 +142,31 @@ void CodeGen::FC::code(code_generation *gen, inter_frame P) {
 	if (function_code_block) { OUTDENT; WRITE("];\n"); }
 }
 
-void CodeGen::FC::evaluation(code_generation *gen, inter_frame P) {
+void CodeGen::FC::evaluation(code_generation *gen, inter_frame *P) {
 	int old_level = void_level;
 	LOOP_THROUGH_INTER_CHILDREN(F, P)
 		CodeGen::FC::frame(gen, F);
 	void_level = old_level;
 }
 
-void CodeGen::FC::reference(code_generation *gen, inter_frame P) {
+void CodeGen::FC::reference(code_generation *gen, inter_frame *P) {
 	int old_level = void_level;
 	LOOP_THROUGH_INTER_CHILDREN(C, P)
 		CodeGen::FC::frame(gen, C);
 	void_level = old_level;
 }
 
-void CodeGen::FC::cast(code_generation *gen, inter_frame P) {
+void CodeGen::FC::cast(code_generation *gen, inter_frame *P) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		CodeGen::FC::frame(gen, C);
 	}
 }
 
-void CodeGen::FC::lab(code_generation *gen, inter_frame P) {
+void CodeGen::FC::lab(code_generation *gen, inter_frame *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
-	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
+	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	text_stream *OUT = CodeGen::current(gen);
 	if (query_labels_mode) PUT('?');
@@ -207,11 +206,11 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, int
 	}
 }
 
-void CodeGen::FC::val(code_generation *gen, inter_frame P) {
+void CodeGen::FC::val(code_generation *gen, inter_frame *P) {
 	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
-		inter_t val1 = P.data[VAL1_VAL_IFLD];
-		inter_t val2 = P.data[VAL2_VAL_IFLD];
+		inter_t val1 = P->node->W.data[VAL1_VAL_IFLD];
+		inter_t val2 = P->node->W.data[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_package *pack = Inter::Packages::container(P);
 			inter_symbol *routine = pack->package_name;
@@ -240,21 +239,21 @@ void CodeGen::FC::val(code_generation *gen, inter_frame P) {
 
 @
 
-@d INV_A1 CodeGen::FC::frame(gen, Inter::first_child(P))
+@d INV_A1 CodeGen::FC::frame(gen, Inter::first_child_P(P))
 @d INV_A1_PRINTMODE CodeGen::CL::enter_print_mode(); INV_A1; CodeGen::CL::exit_print_mode();
 @d INV_A1_BOXMODE CodeGen::CL::enter_box_mode(); INV_A1; CodeGen::CL::exit_box_mode();
-@d INV_A2 CodeGen::FC::frame(gen, Inter::second_child(P))
-@d INV_A3 CodeGen::FC::frame(gen, Inter::third_child(P))
-@d INV_A4 CodeGen::FC::frame(gen, Inter::fourth_child(P))
-@d INV_A5 CodeGen::FC::frame(gen, Inter::fifth_child(P))
-@d INV_A6 CodeGen::FC::frame(gen, Inter::sixth_child(P))
+@d INV_A2 CodeGen::FC::frame(gen, Inter::second_child_P(P))
+@d INV_A3 CodeGen::FC::frame(gen, Inter::third_child_P(P))
+@d INV_A4 CodeGen::FC::frame(gen, Inter::fourth_child_P(P))
+@d INV_A5 CodeGen::FC::frame(gen, Inter::fifth_child_P(P))
+@d INV_A6 CodeGen::FC::frame(gen, Inter::sixth_child_P(P))
 
 =
-void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
+void CodeGen::FC::inv(code_generation *gen, inter_frame *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 
-	switch (P.data[METHOD_INV_IFLD]) {
+	switch (P->node->W.data[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			if (prim == NULL) internal_error("bad prim");
@@ -274,15 +273,15 @@ void CodeGen::FC::inv(code_generation *gen, inter_frame P) {
 			break;
 		}
 		case INVOKED_OPCODE: {
-			inter_t ID = P.data[INVOKEE_INV_IFLD];
-			text_stream *S = Inter::Frame::ID_to_text(&P, ID);
+			inter_t ID = P->node->W.data[INVOKEE_INV_IFLD];
+			text_stream *S = Inter::Frame::ID_to_text(P, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				query_labels_mode = TRUE;
-				if (F.data[ID_IFLD] == VAL_IST) {
-					inter_t val1 = F.data[VAL1_VAL_IFLD];
-					inter_t val2 = F.data[VAL2_VAL_IFLD];
+				if (F->node->W.data[ID_IFLD] == VAL_IST) {
+					inter_t val1 = F->node->W.data[VAL1_VAL_IFLD];
+					inter_t val2 = F->node->W.data[VAL2_VAL_IFLD];
 					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
 						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {

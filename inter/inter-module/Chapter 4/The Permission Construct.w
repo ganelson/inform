@@ -44,12 +44,12 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 			{ *E = Inter::Errors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_frame_list *FL =
-			Inter::find_frame_list(
+			Inter::get_frame_list(
 				Inter::Bookmarks::tree(IBM),
 				Inter::Kind::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
-		inter_frame X;
+		inter_frame *X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 			inter_symbol *prop_allowed = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
@@ -57,12 +57,12 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		}
 	} else {
 		inter_frame_list *FL =
-			Inter::find_frame_list(
+			Inter::get_frame_list(
 				Inter::Bookmarks::tree(IBM),
 				Inter::Instance::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
-		inter_frame X;
+		inter_frame *X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 			inter_symbol *prop_allowed = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
@@ -88,72 +88,72 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_t PID, inter_t KID,
 	inter_t PPID, inter_t SID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
+	inter_frame *P = Inter::Frame::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Permission::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
+void Inter::Permission::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	inter_t vcount = Inter::Frame::vcount(P);
 
-	if (P.extent != EXTENT_PERM_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+	if (P->node->W.extent != EXTENT_PERM_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 
-	*E = Inter__Verify__defn(owner, P, DEFN_PERM_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P.data[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(owner, P, P.data[OWNER_PERM_IFLD]); if (*E) return;
-	if (P.data[STORAGE_PERM_IFLD]) {
-		*E = Inter::Verify::symbol(owner, P, P.data[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
+	*E = Inter::Verify::defn(owner, P, DEFN_PERM_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->node->W.data[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P->node->W.data[OWNER_PERM_IFLD]); if (*E) return;
+	if (P->node->W.data[STORAGE_PERM_IFLD]) {
+		*E = Inter::Verify::symbol(owner, P, P->node->W.data[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
 	}
-	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
-	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
+	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[PROP_PERM_IFLD]);;
+	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[OWNER_PERM_IFLD]);;
 
 	if (vcount == 0) {
 		inter_frame_list *FL = NULL;
 
 		if (Inter::Kind::is(owner_name)) {
 			if (Inter::Types::is_enumerated(Inter::Kind::data_type(owner_name)) == FALSE)
-				{ *E = Inter::Frame::error(&P, I"property permission for non-enumerated kind", NULL); return; }
-			FL = Inter::Frame::ID_to_frame_list(&P, Inter::Kind::permissions_list(owner_name));
+				{ *E = Inter::Frame::error(P, I"property permission for non-enumerated kind", NULL); return; }
+			FL = Inter::Frame::ID_to_frame_list(P, Inter::Kind::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");
-			inter_frame X;
+			inter_frame *X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 				inter_symbol *prop_X = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
-				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
+				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[PROP_PERM_IFLD]);;
+				if (prop_X == prop_P) { *E = Inter::Frame::error(P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
-				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"kind permission list malformed", owner_name->symbol_name); return; }
+				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[OWNER_PERM_IFLD]);;
+				if (owner_X != owner_P) { *E = Inter::Frame::error(P, I"kind permission list malformed", owner_name->symbol_name); return; }
 			}
 		} else {
-			FL = Inter::Frame::ID_to_frame_list(&P, Inter::Instance::permissions_list(owner_name));
+			FL = Inter::Frame::ID_to_frame_list(P, Inter::Instance::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");
-			inter_frame X;
+			inter_frame *X;
 			LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 				inter_symbol *prop_X = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PERM_IFLD]);;
-				if (prop_X == prop_P) { *E = Inter::Frame::error(&P, I"duplicate permission", prop_name->symbol_name); return; }
+				inter_symbol *prop_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[PROP_PERM_IFLD]);;
+				if (prop_X == prop_P) { *E = Inter::Frame::error(P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PERM_IFLD]);;
-				if (owner_X != owner_P) { *E = Inter::Frame::error(&P, I"instance permission list malformed", owner_name->symbol_name); return; }
+				inter_symbol *owner_P = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[OWNER_PERM_IFLD]);;
+				if (owner_X != owner_P) { *E = Inter::Frame::error(P, I"instance permission list malformed", owner_name->symbol_name); return; }
 			}
 		}
 
-		Inter::add_to_frame_list(FL, P);
+		Inter::Lists::add(FL, P);
 
-		FL = Inter::Frame::ID_to_frame_list(&P, Inter::Property::permissions_list(prop_name));
-		Inter::add_to_frame_list(FL, P);
+		FL = Inter::Frame::ID_to_frame_list(P, Inter::Property::permissions_list(prop_name));
+		Inter::Lists::add(FL, P);
 	}
 }
 
-void Inter::Permission::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Permission::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PERM_IFLD);
 	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
 	if ((prop_name) && (owner_name)) {
 		WRITE("permission %S %S", prop_name->symbol_name, owner_name->symbol_name);
-		if (P.data[STORAGE_PERM_IFLD]) {
+		if (P->node->W.data[STORAGE_PERM_IFLD]) {
 			inter_symbol *store = Inter::SymbolsTables::symbol_from_frame_data(P, STORAGE_PERM_IFLD);
 			WRITE(" %S", store->symbol_name);
 		}
-	} else { *E = Inter::Frame::error(&P, I"cannot write permission", NULL); return; }
+	} else { *E = Inter::Frame::error(P, I"cannot write permission", NULL); return; }
 }

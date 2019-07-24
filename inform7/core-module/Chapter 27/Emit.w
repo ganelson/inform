@@ -186,7 +186,8 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if ((symb) && (Inter::Symbols::read_annotation(symb, HOLDING_IANN) == 1)) {
 		Emit::annotate_symbol_i(symb, DELENDA_EST_IANN, 1);
-		Inter::Frame::remove_from_tree(Inter::Symbols::defining_frame(symb));
+		inter_frame *D = Inter::Symbols::definition(symb);
+		Inter::Frame::remove_from_tree(D);
 		Inter::Symbols::undefine(symb);
 		return symb;
 	}
@@ -649,14 +650,14 @@ void Emit::array_end(packaging_state save) {
 	} else {
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
 	}
-	inter_frame array_in_progress =
+	inter_frame *array_in_progress =
 		Inter::Frame::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Emit::baseline(IBM));
-	int pos = array_in_progress.extent;
-	if (Inter::Frame::extend(&array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
+	int pos = array_in_progress->extent;
+	if (Inter::Frame::extend(array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
 		internal_error("can't extend frame");
 	for (int i=0; i<current_A->no_entries; i++) {
-		array_in_progress.data[pos++] = current_A->entry_data1[i];
-		array_in_progress.data[pos++] = current_A->entry_data2[i];
+		array_in_progress->data[pos++] = current_A->entry_data1[i];
+		array_in_progress->data[pos++] = current_A->entry_data2[i];
 	}
 	Emit::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Frame::insert(array_in_progress, Packaging::at());
@@ -1244,7 +1245,7 @@ void Emit::intervention(int stage, text_stream *segment, text_stream *part, text
 	Str::copy(Inter::get_text(Emit::tree(), ID4), seg);
 
 	inter_t ref = Inter::Warehouse::create_ref(warehouse, Inter::Bookmarks::package(Packaging::at()));
-	Inter::set_ref(Emit::tree(), ref, (void *) current_sentence);
+	Inter::Warehouse::set_ref(warehouse, ref, (void *) current_sentence);
 
 	Inter::Warehouse::attribute_resource(warehouse, ref, Inter::Bookmarks::package(Packaging::at()));
 

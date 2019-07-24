@@ -118,23 +118,23 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 }
 
 inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
+	inter_frame *P = Inter::Frame::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inter::Frame::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Splat::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_SPLAT_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	if (P.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Frame::error(&P, I"no matter text", NULL); return; }
-	if (P.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Frame::error(&P, I"plm out of range", NULL); return; }
+void Inter::Splat::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_SPLAT_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->node->W.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Frame::error(P, I"no matter text", NULL); return; }
+	if (P->node->W.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Frame::error(P, I"plm out of range", NULL); return; }
 }
 
-void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	WRITE("splat ");
-	Inter::Splat::write_plm(OUT, P.data[PLM_SPLAT_IFLD]);
+	Inter::Splat::write_plm(OUT, P->node->W.data[PLM_SPLAT_IFLD]);
 	WRITE("&\"");
-	Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(&P, P.data[MATTER_SPLAT_IFLD]));
+	Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(P, P->node->W.data[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 }

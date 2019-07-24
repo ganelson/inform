@@ -51,25 +51,25 @@ void Inter::Metadata::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM,
+	inter_frame *P = Inter::Frame::fill_3(IBM,
 		METADATA_IST, SID, LITERAL_TEXT_IVAL, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Metadata::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_MD_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter__Verify__defn(owner, P, DEFN_MD_IFLD);
+void Inter::Metadata::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_MD_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(owner, P, DEFN_MD_IFLD);
 }
 
-void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *key_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_MD_IFLD);
 	if (key_name) {
 		WRITE("metadata %S: ", key_name->symbol_name);
-		Inter::Types::write(OUT, &P, NULL,
-			P.data[VAL1_MD_IFLD], P.data[VAL1_MD_IFLD+1], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, P, NULL,
+			P->node->W.data[VAL1_MD_IFLD], P->node->W.data[VAL1_MD_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		{ *E = Inter::Frame::error(&P, I"metadata can't be written", NULL); return; }
+		{ *E = Inter::Frame::error(P, I"metadata can't be written", NULL); return; }
 	}
 }

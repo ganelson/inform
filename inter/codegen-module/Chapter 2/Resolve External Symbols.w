@@ -45,8 +45,8 @@ int CodeGen::Externals::run_pipeline_stage(pipeline_step *step) {
 @h The whole shebang.
 
 =
-void CodeGen::Externals::visitor(inter_tree *I, inter_frame P, void *state) {
-	if (P.data[ID_IFLD] == PACKAGE_IST) {
+void CodeGen::Externals::visitor(inter_tree *I, inter_frame *P, void *state) {
+	if (P->node->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *Q = Inter::Package::defined_by_frame(P);
 		if (Inter::Packages::main(I) == Q) return;
 		inter_symbols_table *ST = Inter::Packages::scope(Q);

@@ -28,7 +28,7 @@ void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc, inter_t comment_ID) {
-	inter_frame P = Inter::Frame::fill_0(IBM, COMMENT_IST, eloc, level);
+	inter_frame *P = Inter::Frame::fill_0(IBM, COMMENT_IST, eloc, level);
 	Inter::Frame::attach_comment(P, comment_ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);

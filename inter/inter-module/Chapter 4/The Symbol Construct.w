@@ -97,10 +97,10 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 }
 
-void Inter::Symbol::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
+void Inter::Symbol::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
 	internal_error("SYMBOL_IST structures cannot exist");
 }
 
-void Inter::Symbol::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Symbol::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	internal_error("SYMBOL_IST structures cannot exist");
 }

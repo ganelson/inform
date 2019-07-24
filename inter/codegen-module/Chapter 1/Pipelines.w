@@ -395,16 +395,16 @@ void CodeGen::Pipeline::lint(inter_tree *I) {
 	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void CodeGen::Pipeline::visitor(inter_tree *I, inter_frame P, void *state) {
-	inter_t c = Inter::Frame::get_package(P);
+void CodeGen::Pipeline::visitor(inter_tree *I, inter_frame *P, void *state) {
+	inter_t c = Inter::Frame::get_package(P)->index_n;
 	inter_t a = Inter::Frame::get_package_alt(P);
 	if (c != a) {
 		LOG("Frame gives package as $3, but its location is in package $3\n",
-			Inter::Frame::ID_to_package(&P, c)->package_name,
-			Inter::Frame::ID_to_package(&P, a)->package_name);
+			Inter::Frame::ID_to_package(P, c)->package_name,
+			Inter::Frame::ID_to_package(P, a)->package_name);
 		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
-			Inter::Frame::ID_to_package(&P, c)->index_n,
-			Inter::Frame::ID_to_package(&P, a)->index_n);
+			Inter::Frame::ID_to_package(P, c)->index_n,
+			Inter::Frame::ID_to_package(P, a)->index_n);
 		internal_error("zap");
 	}
 

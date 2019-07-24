@@ -41,24 +41,24 @@ void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 }
 
 inter_error_message *Inter::Reference::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_1(IBM, REFERENCE_IST, 0, eloc, (inter_t) level);
+	inter_frame *P = Inter::Frame::fill_1(IBM, REFERENCE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Reference::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_RCE_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+void Inter::Reference::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_RCE_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 }
 
-void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	WRITE("reference");
 }
 
-void Inter::Reference::verify_children(inter_construct *IC, inter_frame P, inter_error_message **E) {
+void Inter::Reference::verify_children(inter_construct *IC, inter_frame *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if ((C.data[0] != INV_IST) && (C.data[0] != REF_IST) && (C.data[0] != SPLAT_IST) && (C.data[0] != VAL_IST) && (C.data[0] != LABEL_IST)) {
-			*E = Inter::Frame::error(&C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
+		if ((C->node->W.data[0] != INV_IST) && (C->node->W.data[0] != REF_IST) && (C->node->W.data[0] != SPLAT_IST) && (C->node->W.data[0] != VAL_IST) && (C->node->W.data[0] != LABEL_IST)) {
+			*E = Inter::Frame::error(C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
 			return;
 		}
 	}

@@ -42,24 +42,24 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 }
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
+	inter_frame *P = Inter::Frame::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::DefaultValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_DEF_IFR) *E = Inter::Frame::error(&P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(owner, P, P.data[KIND_DEF_IFLD], KIND_IST);
+void Inter::DefaultValue::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_DEF_IFR) *E = Inter::Frame::error(P, I"extent wrong", NULL);
+	else *E = Inter::Verify::symbol(owner, P, P->node->W.data[KIND_DEF_IFLD], KIND_IST);
 }
 
-void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", con_kind->symbol_name);
-		Inter::Types::write(OUT, &P, con_kind,
-			P.data[VAL1_DEF_IFLD], P.data[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, P, con_kind,
+			P->node->W.data[VAL1_DEF_IFLD], P->node->W.data[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		*E = Inter::Frame::error(&P, I"defaultvalue can't be written", NULL);
+		*E = Inter::Frame::error(P, I"defaultvalue can't be written", NULL);
 	}
 }

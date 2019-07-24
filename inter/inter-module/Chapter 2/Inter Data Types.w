@@ -52,16 +52,16 @@ inter_data_type *Inter::Types::find_by_name(text_stream *name) {
 	return NULL;
 }
 
-inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symbol, inter_t V1, inter_t V2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::verify(inter_frame *P, inter_symbol *kind_symbol, inter_t V1, inter_t V2, inter_symbols_table *scope) {
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt) {
 				long long int I = (signed_inter_t) V2;
-				if ((I < idt->min_value) || (I > idt->max_value)) return Inter::Frame::error(&P, I"value out of range", NULL);
+				if ((I < idt->min_value) || (I > idt->max_value)) return Inter::Frame::error(P, I"value out of range", NULL);
 				return NULL;
 			}
-			return Inter::Frame::error(&P, I"unknown kind for value", NULL);
+			return Inter::Frame::error(P, I"unknown kind for value", NULL);
 		}
 		case ALIAS_IVAL: {
 			inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(scope, V2);
@@ -70,26 +70,26 @@ inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symb
 				LOG("V2 is %08x\n", V2);
 				LOG("IST is $4\n", scope);
 				LOG("(did you forget to make the package type enclosing?)\n");
-				return Inter::Frame::error(&P, I"no such symbol", NULL);
+				return Inter::Frame::error(P, I"no such symbol", NULL);
 			}
 			if (Inter::Symbols::is_predeclared(symb)) return NULL;
 			if (Inter::Symbols::is_extern(symb)) return NULL;
-			inter_frame D = Inter::Symbols::defining_frame(symb);
-			if (Inter::Frame::valid(&D) == FALSE) return Inter::Frame::error(&P, I"undefined symbol", symb->symbol_name);
+			inter_frame *D = Inter::Symbols::definition(symb);
+			if (D == NULL) return Inter::Frame::error(P, I"undefined symbol", symb->symbol_name);
 
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt == unchecked_idt) return NULL;
 
 			inter_symbol *ckind_symbol = NULL;
-			if (D.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-			else if (D.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
-			else if (D.data[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
-			else if (D.data[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
-			else if (D.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
-			else return Inter::Frame::error(&P, I"nonconstant symbol", symb->symbol_name);
+			if (D->node->W.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
+			else if (D->node->W.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
+			else if (D->node->W.data[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
+			else if (D->node->W.data[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
+			else if (D->node->W.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
+			else return Inter::Frame::error(P, I"nonconstant symbol", symb->symbol_name);
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
 				WRITE_TO(STDERR, "cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
-				return Inter::Frame::error(&P, I"value of wrong kind", symb->symbol_name);
+				return Inter::Frame::error(P, I"value of wrong kind", symb->symbol_name);
 			}
 			return NULL;
 		}
@@ -102,17 +102,17 @@ inter_error_message *Inter::Types::verify(inter_frame P, inter_symbol *kind_symb
 		case DIVIDER_IVAL:
 			return NULL;
 	}
-	return Inter::Frame::error(&P, I"value of unknown category", NULL);
+	return Inter::Frame::error(P, I"value of unknown category", NULL);
 }
 
 inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_t V1, inter_t V2) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(V1, V2, T);
 	if (symb) {
-		inter_frame D = Inter::Symbols::defining_frame(symb);
-		if (Inter::Frame::valid(&D) == FALSE) return NULL;
+		inter_frame *D = Inter::Symbols::definition(symb);
+		if (D == NULL) return NULL;
 		inter_symbol *ckind_symbol = NULL;
-		if (D.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-		else if (D.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
+		if (D->node->W.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
+		else if (D->node->W.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
 		return ckind_symbol;
 	}
 	return NULL;
@@ -216,7 +216,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	if (kind_symbol) idt = Inter::Kind::data_type(kind_symbol);
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(scope, S);
 	if (symb) {
-		inter_frame D = Inter::Symbols::defining_frame(symb);
+		inter_frame *D = Inter::Symbols::definition(symb);
 		if (Inter::Symbols::is_predeclared(symb)) {
 			Inter::Symbols::to_data(IC, pack, symb, val1, val2);
 			return NULL;
@@ -225,8 +225,8 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 			Inter::Symbols::to_data(IC, pack, symb, val1, val2);
 			return NULL;
 		}
-		if (Inter::Frame::valid(&D) == FALSE) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
-		if (D.data[ID_IFLD] == LOCAL_IST) {
+		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
+		if (D->node->W.data[ID_IFLD] == LOCAL_IST) {
 			inter_symbol *kind_loc = Inter::Local::kind_of(symb);
 			if (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE) {
 				text_stream *err = Str::new();
@@ -238,7 +238,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 			Inter::Symbols::to_data(IC, pack, symb, val1, val2);
 			return NULL;
 		}
-		if (D.data[ID_IFLD] == CONSTANT_IST) {
+		if (D->node->W.data[ID_IFLD] == CONSTANT_IST) {
 			inter_symbol *kind_const = Inter::Constant::kind_of(symb);
 			if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
 			Inter::Symbols::to_data(IC, pack, symb, val1, val2);
@@ -249,8 +249,8 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		inter_error_message *E;
 		inter_symbol *symb = Inter::Textual::find_symbol(IC, eloc, scope, S, INSTANCE_IST, &E);
 		if (E) return E;
-		inter_frame D = Inter::Symbols::defining_frame(symb);
-		if (Inter::Frame::valid(&D) == FALSE) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
+		inter_frame *D = Inter::Symbols::definition(symb);
+		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
 		inter_symbol *kind_const = Inter::Instance::kind_of(symb);
 		if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
 		Inter::Symbols::to_data(IC, pack, symb, val1, val2);

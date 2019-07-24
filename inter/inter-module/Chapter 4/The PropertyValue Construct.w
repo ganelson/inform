@@ -41,10 +41,10 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_t plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
-	inter_frame_list *FL = Inter::find_frame_list(Inter::Bookmarks::tree(IBM), plist_ID);
+	inter_frame_list *FL = Inter::get_frame_list(Inter::Bookmarks::tree(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
-	inter_frame X;
+	inter_frame *X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_X = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
 		if (prop_X == prop_name)
@@ -66,7 +66,7 @@ int Inter::PropertyValue::permitted(inter_frame *F, inter_package *pack, inter_s
 	if (Inter::Kind::is(owner)) plist_ID = Inter::Kind::permissions_list(owner);
 	else plist_ID = Inter::Instance::permissions_list(owner);
 	inter_frame_list *FL = Inter::Frame::ID_to_frame_list(F, plist_ID);
-	inter_frame X;
+	inter_frame *X;
 	LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 		inter_symbol *prop_allowed = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 		if (prop_allowed == prop_name)
@@ -79,7 +79,7 @@ int Inter::PropertyValue::permitted(inter_frame *F, inter_package *pack, inter_s
 		inter_frame_list *FL =
 			Inter::Frame::ID_to_frame_list(F, Inter::Kind::permissions_list(inst_kind));
 		if (FL == NULL) internal_error("no permissions list");
-		inter_frame X;
+		inter_frame *X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
 			inter_symbol *prop_allowed = Inter::SymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
@@ -92,53 +92,53 @@ int Inter::PropertyValue::permitted(inter_frame *F, inter_package *pack, inter_s
 
 inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_t PID, inter_t OID,
 	inter_t con_val1, inter_t con_val2, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_4(IBM, PROPERTYVALUE_IST,
+	inter_frame *P = Inter::Frame::fill_4(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::PropertyValue::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
+void Inter::PropertyValue::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	inter_t vcount = Inter::Frame::vcount(P);
 
-	if (P.extent != EXTENT_PVAL_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(owner, P, P.data[OWNER_PVAL_IFLD]); if (*E) return;
+	if (P->node->W.extent != EXTENT_PVAL_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::symbol(owner, P, P->node->W.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P->node->W.data[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[PROP_PVAL_IFLD]);;
-		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[OWNER_PVAL_IFLD]);;
+		inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[OWNER_PVAL_IFLD]);;
 
-		if (Inter::PropertyValue::permitted(&P, owner, owner_name, prop_name) == FALSE) {
+		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
 			WRITE_TO(err, "no permission for '%S' have this property", owner_name->symbol_name);
-			*E = Inter::Frame::error(&P, err, prop_name->symbol_name); return;
+			*E = Inter::Frame::error(P, err, prop_name->symbol_name); return;
 		}
 
 		inter_t plist_ID;
 		if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 		else plist_ID = Inter::Instance::properties_list(owner_name);
 
-		inter_frame_list *FL = Inter::Frame::ID_to_frame_list(&P, plist_ID);
+		inter_frame_list *FL = Inter::Frame::ID_to_frame_list(P, plist_ID);
 		if (FL == NULL) internal_error("no properties list");
 
-		inter_frame X;
+		inter_frame *X;
 		LOOP_THROUGH_INTER_FRAME_LIST(X, FL) {
-			if (X.data[PROP_PVAL_IFLD] == P.data[PROP_PVAL_IFLD]) { *E = Inter::Frame::error(&P, I"duplicate property value", NULL); return; }
-			if (X.data[OWNER_PVAL_IFLD] != P.data[OWNER_PVAL_IFLD]) { *E = Inter::Frame::error(&P, I"instance property list malformed", NULL); return; }
+			if (X->node->W.data[PROP_PVAL_IFLD] == P->node->W.data[PROP_PVAL_IFLD]) { *E = Inter::Frame::error(P, I"duplicate property value", NULL); return; }
+			if (X->node->W.data[OWNER_PVAL_IFLD] != P->node->W.data[OWNER_PVAL_IFLD]) { *E = Inter::Frame::error(P, I"instance property list malformed", NULL); return; }
 		}
 
-		Inter::add_to_frame_list(FL, P);
+		Inter::Lists::add(FL, P);
 	}
 }
 
-void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);
 	inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(P, OWNER_PVAL_IFLD);
 	if ((prop_name) && (owner_name)) {
 		inter_symbol *val_kind = Inter::Property::kind_of(Inter::SymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
 		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
-		Inter::Types::write(OUT, &P, val_kind, P.data[DVAL1_PVAL_IFLD], P.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
-	} else { *E = Inter::Frame::error(&P, I"cannot write propertyvalue", NULL); return; }
+		Inter::Types::write(OUT, P, val_kind, P->node->W.data[DVAL1_PVAL_IFLD], P->node->W.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
+	} else { *E = Inter::Frame::error(P, I"cannot write propertyvalue", NULL); return; }
 }

@@ -356,7 +356,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 enough that the slot exists for the eventual list to be stored in.
 
 @<Read a frame list resource@> =
-	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::new_frame_list();
+	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::Lists::new();
 
 @<Write a frame list resource@> =
 	;
@@ -429,11 +429,11 @@ enough that the slot exists for the eventual list to be stored in.
 	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
 
 		}
-		inter_frame P = Inter::Warehouse::find_room(warehouse, Inter::get_global_symbols(I), extent-1, &eloc, owner);
+		inter_frame *P = Inter::Warehouse::find_room(warehouse, I, extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;
-			if (BinaryFiles::read_int32(fh, &word)) P.data[i] = word;
+			if (BinaryFiles::read_int32(fh, &word)) P->node->W.data[i] = word;
 			else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		}
 		unsigned int comment = 0;
@@ -455,14 +455,13 @@ enough that the slot exists for the eventual list to be stored in.
 	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
-void Inter::Binary::visitor(inter_tree *I, inter_frame P, void *state) {
+void Inter::Binary::visitor(inter_tree *I, inter_frame *P, void *state) {
 	FILE *fh = (FILE *) state;
-	BinaryFiles::write_int32(fh, (unsigned int) (P.extent + 1));
-	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)));
-	for (int i=0; i<P.extent; i++)
-		BinaryFiles::write_int32(fh, (unsigned int) (P.data[i]));
+	BinaryFiles::write_int32(fh, (unsigned int) (P->node->W.extent + 1));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)->index_n));
+	for (int i=0; i<P->node->W.extent; i++)
+		BinaryFiles::write_int32(fh, (unsigned int) (P->node->W.data[i]));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_comment(P)));
-	LOGIF(INTER_BINARY, "Wrote %F\n", &P);
 }
 
 @ Errors in reading binary inter are not recoverable:

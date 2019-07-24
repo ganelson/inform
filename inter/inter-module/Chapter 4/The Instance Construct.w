@@ -64,34 +64,34 @@ inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inte
 	inter_t L2 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
 	Inter::Warehouse::attribute_resource(warehouse, L2, Inter::Bookmarks::package(IBM));
-	inter_frame P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
+	inter_frame *P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Instance::transpose(inter_construct *IC, inter_frame P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
-	P.data[PLIST_INST_IFLD] = grid[P.data[PLIST_INST_IFLD]];
-	P.data[PERM_LIST_INST_IFLD] = grid[P.data[PERM_LIST_INST_IFLD]];
+void Inter::Instance::transpose(inter_construct *IC, inter_frame *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P->node->W.data[PLIST_INST_IFLD] = grid[P->node->W.data[PLIST_INST_IFLD]];
+	P->node->W.data[PERM_LIST_INST_IFLD] = grid[P->node->W.data[PERM_LIST_INST_IFLD]];
 }
 
-void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_INST_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter__Verify__defn(owner, P, DEFN_INST_IFLD); if (*E) return;
-	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[DEFN_INST_IFLD]);
-	*E = Inter::Verify::symbol(owner, P, P.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P.data[KIND_INST_IFLD]);
+void Inter::Instance::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_INST_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
+	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[DEFN_INST_IFLD]);
+	*E = Inter::Verify::symbol(owner, P, P->node->W.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
+	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->node->W.data[KIND_INST_IFLD]);
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt)) {
-		if (P.data[VAL1_INST_IFLD] == UNDEF_IVAL) {
-			P.data[VAL1_INST_IFLD] = LITERAL_IVAL;
-			P.data[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
+		if (P->node->W.data[VAL1_INST_IFLD] == UNDEF_IVAL) {
+			P->node->W.data[VAL1_INST_IFLD] = LITERAL_IVAL;
+			P->node->W.data[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
-	} else { *E = Inter::Frame::error(&P, I"not a kind which has instances", NULL); return; }
+	} else { *E = Inter::Frame::error(P, I"not a kind which has instances", NULL); return; }
 	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
-	inter_t vcount = P.repo_segment->bytecode[P.index + PREFRAME_VERIFICATION_COUNT]++;
+	inter_t vcount = Inter::Frame::vcount(P);
 	if (vcount == 0) {
 		Inter::Kind::new_instance(inst_kind, inst_name);
 	}
@@ -99,36 +99,36 @@ void Inter::Instance::verify(inter_construct *IC, inter_frame P, inter_package *
 
 inter_t Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_frame D = Inter::Symbols::defining_frame(kind_symbol);
-	if (Inter::Frame::valid(&D) == FALSE) return 0;
-	return D.data[PERM_LIST_INST_IFLD];
+	inter_frame *D = Inter::Symbols::definition(kind_symbol);
+	if (D == NULL) return 0;
+	return D->node->W.data[PERM_LIST_INST_IFLD];
 }
 
-void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
 		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 		if (idt) {
 			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
-			Inter::Types::write(OUT, &P, NULL,
-				P.data[VAL1_INST_IFLD], P.data[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
-		} else { *E = Inter::Frame::error(&P, I"instance with bad data type", NULL); return; }
-	} else { *E = Inter::Frame::error(&P, I"bad instance", NULL); return; }
-	Inter::Symbols::write_annotations(OUT, &P, inst_name);
+			Inter::Types::write(OUT, P, NULL,
+				P->node->W.data[VAL1_INST_IFLD], P->node->W.data[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
+		} else { *E = Inter::Frame::error(P, I"instance with bad data type", NULL); return; }
+	} else { *E = Inter::Frame::error(P, I"bad instance", NULL); return; }
+	Inter::Symbols::write_annotations(OUT, P, inst_name);
 }
 
 inter_t Inter::Instance::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
-	inter_frame D = Inter::Symbols::defining_frame(inst_name);
-	if (Inter::Frame::valid(&D) == FALSE) return 0;
-	return D.data[PLIST_INST_IFLD];
+	inter_frame *D = Inter::Symbols::definition(inst_name);
+	if (D == NULL) return 0;
+	return D->node->W.data[PLIST_INST_IFLD];
 }
 
 inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
 	if (inst_name == NULL) return NULL;
-	inter_frame D = Inter::Symbols::defining_frame(inst_name);
-	if (Inter::Frame::valid(&D) == FALSE) return NULL;
-	if (D.data[ID_IFLD] != INSTANCE_IST) return NULL;
+	inter_frame *D = Inter::Symbols::definition(inst_name);
+	if (D == NULL) return NULL;
+	if (D->node->W.data[ID_IFLD] != INSTANCE_IST) return NULL;
 	return Inter::SymbolsTables::symbol_from_frame_data(D, KIND_INST_IFLD);
 }

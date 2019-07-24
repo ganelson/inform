@@ -46,43 +46,43 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inte
 	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
 	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
-	inter_frame P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
+	inter_frame *P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Property::transpose(inter_construct *IC, inter_frame P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
-	P.data[PERM_LIST_PROP_IFLD] = grid[P.data[PERM_LIST_PROP_IFLD]];
+void Inter::Property::transpose(inter_construct *IC, inter_frame *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P->node->W.data[PERM_LIST_PROP_IFLD] = grid[P->node->W.data[PERM_LIST_PROP_IFLD]];
 }
 
-void Inter::Property::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_PROP_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
-	*E = Inter__Verify__defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P.data[KIND_PROP_IFLD], KIND_IST);
+void Inter::Property::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_PROP_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	*E = Inter::Verify::defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->node->W.data[KIND_PROP_IFLD], KIND_IST);
 }
 
 inter_t Inter::Property::permissions_list(inter_symbol *prop_name) {
 	if (prop_name == NULL) return 0;
-	inter_frame D = Inter::Symbols::defining_frame(prop_name);
-	if (Inter::Frame::valid(&D) == FALSE) return 0;
-	return D.data[PERM_LIST_PROP_IFLD];
+	inter_frame *D = Inter::Symbols::definition(prop_name);
+	if (D == NULL) return 0;
+	return D->node->W.data[PERM_LIST_PROP_IFLD];
 }
 
-void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_symbol *prop_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
 	inter_symbol *prop_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
-		Inter::Symbols::write_annotations(OUT, &P, prop_name);
-	} else { *E = Inter::Frame::error(&P, I"cannot write property", NULL); return; }
+		Inter::Symbols::write_annotations(OUT, P, prop_name);
+	} else { *E = Inter::Frame::error(P, I"cannot write property", NULL); return; }
 }
 
 inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {
 	if (prop_symbol == NULL) return NULL;
-	inter_frame D = Inter::Symbols::defining_frame(prop_symbol);
-	if (Inter::Frame::valid(&D) == FALSE) return NULL;
-	if (D.data[ID_IFLD] != PROPERTY_IST) return NULL;
+	inter_frame *D = Inter::Symbols::definition(prop_symbol);
+	if (D == NULL) return NULL;
+	if (D->node->W.data[ID_IFLD] != PROPERTY_IST) return NULL;
 	return Inter::SymbolsTables::symbol_from_frame_data(D, KIND_PROP_IFLD);
 }

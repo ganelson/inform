@@ -10,7 +10,6 @@ typedef struct inter_error_location {
 	struct text_stream *error_line;
 	struct filename *error_interb;
 	size_t error_offset;
-	struct inter_frame error_frame;
 	MEMORY_MANAGEMENT
 } inter_error_location;
 
@@ -20,7 +19,6 @@ inter_error_location Inter::Errors::file_location(text_stream *line, text_file_p
 	eloc.error_line = line;
 	eloc.error_interb = NULL;
 	eloc.error_offset = 0;
-	eloc.error_frame = Inter::Frame::around(NULL, -1);
 	return eloc;
 }
 
@@ -30,7 +28,6 @@ inter_error_location Inter::Errors::interb_location(filename *F, size_t at) {
 	eloc.error_line = NULL;
 	eloc.error_interb = F;
 	eloc.error_offset = at;
-	eloc.error_frame = Inter::Frame::around(NULL, -1);
 	return eloc;
 }
 

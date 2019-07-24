@@ -10,12 +10,13 @@ Chapter 1: Setting Up
 
 Chapter 2: Interoperability
 	Inter Errors
+	Frames
 	Inter in Memory
 	The Warehouse
 	Symbols Tables
 	Packages
 	Symbols
-	Frames
+	Inter Frame Lists
 	Bookmarks
 	Inter in Binary Files
 	Inter in Text Files

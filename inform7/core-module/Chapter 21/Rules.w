@@ -689,7 +689,7 @@ void Rules::compile_definition(rule *R, int *i, int max_i) {
 void Rules::unimport(rule *R) {
 	if (R->defn_compiled == FALSE) { R->do_not_import = TRUE; return; }
 	inter_symbol *symb = InterNames::to_symbol(Rules::iname(R));
-	if (Inter::Frame::valid(&(symb->importation_frame))) {
+	if (symb->importation_frame) {
 		LOG("Unimport rule %n!\n", Rules::iname(R));
 		Inter::Frame::remove_from_tree(symb->importation_frame);
 		R->defn_compiled = FALSE;

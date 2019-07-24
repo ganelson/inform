@@ -17,10 +17,10 @@ int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
 @h Parsing.
 
 =
-void CodeGen::PLM::visitor(inter_tree *I, inter_frame P, void *state) {
+void CodeGen::PLM::visitor(inter_tree *I, inter_frame *P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
-	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P.data[ID_IFLD] == SPLAT_IST)) {
-		text_stream *S = Inter::Frame::ID_to_text(&P, P.data[MATTER_SPLAT_IFLD]);
+	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P->node->W.data[ID_IFLD] == SPLAT_IST)) {
+		text_stream *S = Inter::Frame::ID_to_text(P, P->node->W.data[MATTER_SPLAT_IFLD]);
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L" *(%C+) *(%c*);%c*")) {
 			inter_t keyword = 0;
@@ -43,7 +43,7 @@ void CodeGen::PLM::visitor(inter_tree *I, inter_frame P, void *state) {
 			else if (Str::eq_insensitive(mr.exp[0], I"Default")) keyword = DEFAULT_PLM;
 
 			else { keyword = MYSTERY_PLM; LOG("Mystery: %S\n", mr.exp[0]); }
-			P.data[PLM_SPLAT_IFLD] = keyword;
+			P->node->W.data[PLM_SPLAT_IFLD] = keyword;
 		} else {
 			int keep = FALSE;
 			LOOP_THROUGH_TEXT(pos, S)

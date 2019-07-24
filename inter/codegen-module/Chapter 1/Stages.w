@@ -47,8 +47,6 @@ void CodeGen::Stage::make_stages(void) {
 
 		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG, TRUE);
 		CodeGen::Stage::new(I"move", CodeGen::Stage::run_move_stage, GENERAL_STAGE_ARG, TRUE);
-		CodeGen::Stage::new(I"mask", CodeGen::Stage::run_mask_stage, GENERAL_STAGE_ARG, TRUE);
-		CodeGen::Stage::new(I"unmask", CodeGen::Stage::run_unmask_stage, NO_STAGE_ARG, FALSE);
 
 		CodeGen::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
@@ -96,20 +94,5 @@ int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 
 	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", pack->package_name->symbol_name);
 
-	return TRUE;
-}
-
-int CodeGen::Stage::run_mask_stage(pipeline_step *step) {
-	LOG("Arg is %S.\n", step->step_argument);
-	inter_symbol *S = Inter::SymbolsTables::url_name_to_symbol(step->repository, NULL, step->step_argument);
-	if (S == NULL) internal_error("no such location");
-	inter_package *pack = Inter::Package::which(S);
-	if (pack == NULL) internal_error("not a package");
-	Inter::set_mask(step->repository, pack);
-	return TRUE;
-}
-
-int CodeGen::Stage::run_unmask_stage(pipeline_step *step) {
-	Inter::set_mask(step->repository, NULL);
 	return TRUE;
 }

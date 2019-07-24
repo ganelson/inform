@@ -46,33 +46,33 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *label, inter_t level, inter_error_location *eloc) {
-	inter_frame P = Inter::Frame::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
+	inter_frame *P = Inter::Frame::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Frame::insert(P, IBM);
 	return NULL;
 }
 
-void Inter::Lab::verify(inter_construct *IC, inter_frame P, inter_package *owner, inter_error_message **E) {
-	if (P.extent != EXTENT_LAB_IFR) { *E = Inter::Frame::error(&P, I"extent wrong", NULL); return; }
+void Inter::Lab::verify(inter_construct *IC, inter_frame *P, inter_package *owner, inter_error_message **E) {
+	if (P->node->W.extent != EXTENT_LAB_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *routine = owner->package_name;
-	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
-	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Frame::error(&P, I"no such label", NULL); return; }
+	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[LABEL_LAB_IFLD]);
+	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Frame::error(P, I"no such label", NULL); return; }
 }
 
-void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_frame P, inter_error_message **E) {
+void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_frame *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
-	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
+	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[LABEL_LAB_IFLD]);
 	if (label) {
 		WRITE("lab %S", label->symbol_name);
-	} else { *E = Inter::Frame::error(&P, I"cannot write lab", NULL); return; }
+	} else { *E = Inter::Frame::error(P, I"cannot write lab", NULL); return; }
 }
 
-inter_symbol *Inter::Lab::label_symbol(inter_frame P) {
+inter_symbol *Inter::Lab::label_symbol(inter_frame *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
-	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P.data[LABEL_LAB_IFLD]);
+	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P->node->W.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	return lab;
 }

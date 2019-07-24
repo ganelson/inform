@@ -82,8 +82,8 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	return FALSE;
 }
 
-int CodeGen::I6::general_segment(code_generation_target *cgt, inter_frame P) {
-	switch (P.data[ID_IFLD]) {
+int CodeGen::I6::general_segment(code_generation_target *cgt, inter_frame *P) {
+	switch (P->node->W.data[ID_IFLD]) {
 		case CONSTANT_IST: {
 			inter_symbol *con_name =
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
@@ -93,7 +93,7 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, inter_frame P) {
 			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, STRINGARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
-			if (P.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = arrays_at_eof_I7CGS;
+			if (P->node->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_LIST) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1) choice = verbs_at_eof_I7CGS;
 			if (Inter::Constant::is_routine(con_name)) choice = routines_at_eof_I7CGS;
 			return choice;
@@ -118,7 +118,7 @@ int CodeGen::I6::tl_segment(code_generation_target *cgt) {
 }
 
 void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen,
-	inter_frame P, text_stream *tag, text_stream *content) {
+	inter_frame *P, text_stream *tag, text_stream *content) {
 	if (Str::eq(tag, I"target_I6")) {
 		generated_segment *saved = CodeGen::select(gen, pragmatic_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
@@ -128,7 +128,7 @@ void CodeGen::I6::offer_pragma(code_generation_target *cgt, code_generation *gen
 }
 
 int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation *gen,
-	inter_symbol *prim_name, inter_frame P) {
+	inter_symbol *prim_name, inter_frame *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
@@ -280,10 +280,10 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 
 @<Generate primitive for return@> =
 	int rboolean = NOT_APPLICABLE;
-	inter_frame V = Inter::first_child(P);
-	if (V.data[ID_IFLD] == VAL_IST) {
-		inter_t val1 = V.data[VAL1_VAL_IFLD];
-		inter_t val2 = V.data[VAL2_VAL_IFLD];
+	inter_frame *V = Inter::first_child_P(P);
+	if (V->node->W.data[ID_IFLD] == VAL_IST) {
+		inter_t val1 = V->node->W.data[VAL1_VAL_IFLD];
+		inter_t val2 = V->node->W.data[VAL2_VAL_IFLD];
 		if (val1 == LITERAL_IVAL) {
 			if (val2 == 0) rboolean = FALSE;
 			if (val2 == 1) rboolean = TRUE;
@@ -365,12 +365,12 @@ then the result.
 
 @<Generate primitive for for@> =
 	WRITE("for (");
-	inter_frame INIT = Inter::first_child(P);
-	if (!((INIT.data[ID_IFLD] == VAL_IST) && (INIT.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT.data[VAL2_VAL_IFLD] == 1))) INV_A1;
+	inter_frame *INIT = Inter::first_child_P(P);
+	if (!((INIT->node->W.data[ID_IFLD] == VAL_IST) && (INIT->node->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->node->W.data[VAL2_VAL_IFLD] == 1))) INV_A1;
 	WRITE(":"); INV_A2;
 	WRITE(":");
-	inter_frame U = Inter::third_child(P);
-	if (U.data[ID_IFLD] != VAL_IST)
+	inter_frame *U = Inter::third_child_P(P);
+	if (U->node->W.data[ID_IFLD] != VAL_IST)
 	CodeGen::FC::frame(gen, U);
 	WRITE(") {\n"); INDENT; INV_A4;
 	OUTDENT; WRITE("}\n");
@@ -378,8 +378,8 @@ then the result.
 
 @<Generate primitive for objectloop@> =
 	int in_flag = FALSE;
-	inter_frame U = Inter::third_child(P);
-	if ((U.data[ID_IFLD] == INV_IST) && (U.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+	inter_frame *U = Inter::third_child_P(P);
+	if ((U->node->W.data[ID_IFLD] == INV_IST) && (U->node->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
@@ -525,7 +525,7 @@ void CodeGen::I6::declare_property(code_generation_target *cgt, code_generation 
 
 =
 int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *gen,
-	inter_frame P, inter_symbol *var_name, int k) {
+	inter_frame *P, inter_symbol *var_name, int k) {
 	if (Inter::Symbols::read_annotation(var_name, EXPLICIT_VARIABLE_IANN) != 1) {
 		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			text_stream *S = Str::new();
@@ -538,12 +538,12 @@ int CodeGen::I6::prepare_variable(code_generation_target *cgt, code_generation *
 }
 
 int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *gen,
-	inter_frame P, inter_symbol *var_name, int k, int of) {
+	inter_frame *P, inter_symbol *var_name, int k, int of) {
 	if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) == 1) {
 		generated_segment *saved = CodeGen::select(gen, main_matter_I7CGS);
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Global %S = ", CodeGen::CL::name(var_name));
-		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P.data[VAL1_VAR_IFLD], P.data[VAL2_VAR_IFLD], FALSE);
+		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), P->node->W.data[VAL1_VAR_IFLD], P->node->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
 	}
@@ -553,7 +553,7 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 		if (k == 0) WRITE("Array Global_Vars -->\n");
 		WRITE("  (");
 		inter_symbols_table *globals = Inter::Packages::scope_of(P);
-		CodeGen::CL::literal(gen, NULL, globals, P.data[VAL1_VAR_IFLD], P.data[VAL2_VAR_IFLD], FALSE);
+		CodeGen::CL::literal(gen, NULL, globals, P->node->W.data[VAL1_VAR_IFLD], P->node->W.data[VAL2_VAR_IFLD], FALSE);
 		WRITE(") ! -->%d = %S (%S)\n", k, CodeGen::CL::name(var_name), var_name->symbol_name);
 		k++;
 		if (k == of) {
@@ -566,7 +566,7 @@ int CodeGen::I6::declare_variable(code_generation_target *cgt, code_generation *
 }
 
 void CodeGen::I6::declare_local_variable(code_generation_target *cgt, code_generation *gen,
-	inter_frame P, inter_symbol *var_name) {
+	inter_frame *P, inter_symbol *var_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" %S", var_name->symbol_name);
 }

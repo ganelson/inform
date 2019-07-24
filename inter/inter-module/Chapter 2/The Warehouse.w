@@ -11,6 +11,9 @@ typedef struct inter_warehouse {
 	int size;
 	int capacity;
 	struct inter_resource_holder *stored_resources;
+	int itn_store_capacity;
+	struct inter_tree_node *itn_store;
+	int next_unique_frame_ID;
 	MEMORY_MANAGEMENT
 } inter_warehouse;
 
@@ -55,6 +58,9 @@ inter_warehouse *Inter::Warehouse::new(void) {
 		warehouse->size = 1;
 		warehouse->capacity = 0;
 		warehouse->stored_resources = NULL;
+		warehouse->itn_store_capacity = 0;
+		warehouse->itn_store = NULL;
+		warehouse->next_unique_frame_ID = 1;
 		the_only_warehouse = warehouse;
 	}
 	return the_only_warehouse;
@@ -73,7 +79,14 @@ inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int cap
 	return IS;
 }
 
-inter_frame Inter::Warehouse::find_room_in_room(inter_warehouse_room *IS, int n) {
+typedef struct warehouse_floor_space {
+	struct inter_warehouse_room *repo_segment;
+	int index;
+	inter_t *data;
+	int extent;
+} warehouse_floor_space;
+
+warehouse_floor_space Inter::Warehouse::find_room_in_room(inter_warehouse_room *IS, int n) {
 	if ((IS->size < 0) || (IS->size > IS->capacity)) internal_error("bad segment");
 	if (IS->next_room != NULL) internal_error("nonfinal segment");
 	if (IS->size + n + PREFRAME_SIZE > IS->capacity) {
@@ -87,7 +100,16 @@ inter_frame Inter::Warehouse::find_room_in_room(inter_warehouse_room *IS, int n)
 	for (int i=0; i<this_piece; i++) IS->bytecode[at + i] = 0;
 	IS->bytecode[at + PREFRAME_SKIP_AMOUNT] = (inter_t) this_piece;
 	IS->size += this_piece;
-	return Inter::Frame::around(IS, at);
+
+	warehouse_floor_space W;
+	W.repo_segment = IS; W.index = at;
+	if ((IS) && (at >= 0) && (at < IS->size)) {
+		W.data = &(IS->bytecode[at + PREFRAME_SIZE]);
+		W.extent = ((int) IS->bytecode[at + PREFRAME_SKIP_AMOUNT]) - PREFRAME_SIZE;
+	} else {
+		W.data = NULL; W.extent = 0;
+	}
+	return W;
 }
 
 int Inter::Warehouse::enlarge_size(int n, int at_least) {
@@ -97,18 +119,32 @@ int Inter::Warehouse::enlarge_size(int n, int at_least) {
 	return next_size;
 }
 
-inter_frame Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_symbols_table *T,
+inter_frame *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_tree *I,
 	int n, inter_error_location *eloc, inter_package *owner) {
 	if (warehouse == NULL) internal_error("no warehouse");
+	if (I == NULL) internal_error("no tree supplied");
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
-	inter_frame F = Inter::Warehouse::find_room_in_room(IS, n);
-	F.repo_segment->bytecode[F.index + PREFRAME_ORIGIN] = Inter::Warehouse::store_origin(warehouse, eloc);
-	if (T)
-		F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = (inter_t) T->n_index;
-	else
-		F.repo_segment->bytecode[F.index + PREFRAME_GLOBALS] = 1;
-	Inter::Frame::attach_package(F, Inter::Packages::to_PID(owner));
+	int ID = warehouse->next_unique_frame_ID++;
+	if (warehouse->itn_store_capacity <= ID) {
+		int new_size = 65536;
+		while (new_size < 2*ID) new_size = 2*new_size;
+		inter_tree_node *storage = (inter_tree_node *) Memory::I7_calloc(new_size, sizeof(inter_tree_node), INTER_LINKS_MREASON);
+		inter_tree_node *old = warehouse->itn_store;
+		for (int i=0; i<warehouse->itn_store_capacity; i++) storage[i] = old[i];
+		if (warehouse->itn_store_capacity > 0)
+			Memory::I7_free(old, INTER_LINKS_MREASON, warehouse->itn_store_capacity);
+		warehouse->itn_store = storage;
+		warehouse->itn_store_capacity = new_size;
+	}
+	warehouse->itn_store[ID] = Inter::new_itn(I);
+	warehouse->itn_store[ID].node = &(warehouse->itn_store[ID]);
+//	inter_frame *F = &(warehouse->itn_store[ID].content);
+	inter_frame *F = &(warehouse->itn_store[ID]);
+	F->node = &(warehouse->itn_store[ID]);
+	F->node->W = Inter::Warehouse::find_room_in_room(IS, n);
+	Inter::Frame::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
+	Inter::Frame::attach_package(F, owner);
 	return F;
 }
 
@@ -153,6 +189,12 @@ inter_t Inter::Warehouse::store_origin(inter_warehouse *warehouse, inter_error_l
 	return 0;
 }
 
+typedef struct inter_error_stash {
+	struct inter_error_location stashed_eloc;
+	struct text_file_position stashed_tfp;
+	MEMORY_MANAGEMENT
+} inter_error_stash;
+
 inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehouse, inter_t C) {
 	if ((warehouse) && (warehouse->origin_file)) {
 		inter_error_stash *stash = CREATE(inter_error_stash);
@@ -168,17 +210,6 @@ inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehou
 		return &(stash->stashed_eloc);
 	}
 	return NULL;
-}
-
-inter_frame Inter::Warehouse::frame_from_index(inter_warehouse *warehouse, inter_t index) {
-	inter_warehouse_room *seg = warehouse->first_room;
-	while (seg) {
-		if (seg->index_offset + (inter_t) seg->capacity > index)
-			return Inter::Frame::around(seg, (int) (index - seg->index_offset));
-		seg = seg->next_room;
-	}
-	internal_error("index not found in warehouse");
-	return Inter::Frame::around(NULL, -1);
 }
 
 inter_symbols_table *Inter::Warehouse::get_symbols_table(inter_warehouse *warehouse, inter_t n) {
@@ -256,6 +287,11 @@ inter_frame_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, i
 inter_t Inter::Warehouse::create_frame_list(inter_warehouse *warehouse) {
 	inter_t n = Inter::Warehouse::create_resource(warehouse);
 	warehouse->stored_resources[n].irsrc = FRAME_LIST_IRSRC;
-	warehouse->stored_resources[n].stored_frame_list = Inter::new_frame_list();
+	warehouse->stored_resources[n].stored_frame_list = Inter::Lists::new();
 	return n;
+}
+
+void Inter::Warehouse::set_ref(inter_warehouse *warehouse, inter_t n, void *ref) {
+	if (n >= (inter_t) warehouse->size) return;
+	warehouse->stored_resources[n].stored_ref = ref;
 }
