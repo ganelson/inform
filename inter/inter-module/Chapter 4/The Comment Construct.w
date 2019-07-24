@@ -28,9 +28,9 @@ void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc, inter_t comment_ID) {
-	inter_tree_node *P = Inter::Frame::fill_0(IBM, COMMENT_IST, eloc, level);
-	Inter::Frame::attach_comment(P, comment_ID);
+	inter_tree_node *P = Inter::Node::fill_0(IBM, COMMENT_IST, eloc, level);
+	Inter::Node::attach_comment(P, comment_ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }

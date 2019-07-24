@@ -120,9 +120,9 @@ inter_tree_node *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_t
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
 	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(IS, n);
-	inter_tree_node *F = Inter::new_itn(I, W);
-	Inter::Frame::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
-	Inter::Frame::attach_package(F, owner);
+	inter_tree_node *F = Inter::Tree::new_node(I, W);
+	Inter::Node::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
+	Inter::Node::attach_package(F, owner);
 	return F;
 }
 

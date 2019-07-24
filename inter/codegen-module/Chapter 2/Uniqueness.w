@@ -11,7 +11,7 @@ void CodeGen::Uniqueness::create_pipeline_stage(void) {
 
 int CodeGen::Uniqueness::run_pipeline_stage(pipeline_step *step) {
 	dictionary *D = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
-	Inter::traverse_tree(step->repository, CodeGen::Uniqueness::visitor, D, NULL, 0);
+	Inter::Tree::traverse(step->repository, CodeGen::Uniqueness::visitor, D, NULL, 0);
 	return TRUE;
 }
 

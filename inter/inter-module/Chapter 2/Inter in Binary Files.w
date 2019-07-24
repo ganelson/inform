@@ -18,7 +18,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
 	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
 
-	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_warehouse *warehouse = Inter::Tree::warehouse(I);
 
 	inter_t *grid = NULL;
 	inter_t grid_extent = 0;
@@ -41,7 +41,7 @@ void Inter::Binary::write(filename *F, inter_tree *I) {
 	if (trace_bin) WRITE_TO(STDOUT, "Writing binary inter file %f\n", F);
 	LOGIF(INTER_FILE_READ, "(Writing binary inter file %f)\n", F);
 	FILE *fh = BinaryFiles::open_for_writing(F);
-	inter_warehouse *warehouse = Inter::warehouse(I);
+	inter_warehouse *warehouse = Inter::Tree::warehouse(I);
 
 	@<Write the shibboleth@>;
 	@<Write the annotations@>;
@@ -123,8 +123,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			if (BinaryFiles::read_int32(fh, &from_N)) {
 				inter_t n;
 				switch (i) {
-					case 0: n = (inter_t) I->root_package->package_scope->n_index; break;
-					case 1: n =  (inter_t) I->root_package->index_n; break;
+					case 0: n = (inter_t) Inter::Tree::global_scope(I)->n_index; break;
+					case 1: n = (inter_t) Inter::Tree::root_package(I)->index_n; break;
 					default: n = Inter::Warehouse::create_resource(warehouse); break;
 				}
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
@@ -330,7 +330,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		Inter::Packages::set_scope(res->stored_package, Inter::Warehouse::get_symbols_table(warehouse, sc));
 	}
 	if (nid != 0) {
-		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::get_global_symbols(I), nid);
+		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::Tree::global_scope(I), nid);
 		if (pack_name)
 			Inter::Packages::set_name(res->stored_package, pack_name);
 		else
@@ -437,7 +437,7 @@ enough that the slot exists for the eventual list to be stored in.
 		}
 		unsigned int comment = 0;
 		if (BinaryFiles::read_int32(fh, &comment)) {
-			if (comment != 0) Inter::Frame::attach_comment(P, (inter_t) comment);
+			if (comment != 0) Inter::Node::attach_comment(P, (inter_t) comment);
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	if (trace_bin) WRITE_TO(STDOUT, "Verify\n");
 		inter_error_message *E = NULL;
@@ -446,21 +446,21 @@ enough that the slot exists for the eventual list to be stored in.
 		E = Inter::Defn::verify_construct(owner, P);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
-		Inter::insert(P, &at);
+		Inter::Tree::insert_node(P, &at);
 	}
 
 @<Write the bytecode@> =
-	Inter::traverse_global_list(I, Inter::Binary::visitor, fh, -PACKAGE_IST);
-	Inter::traverse_tree(I, Inter::Binary::visitor, fh, NULL, 0);
+	Inter::Tree::traverse_root_only(I, Inter::Binary::visitor, fh, -PACKAGE_IST);
+	Inter::Tree::traverse(I, Inter::Binary::visitor, fh, NULL, 0);
 
 @ =
 void Inter::Binary::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	FILE *fh = (FILE *) state;
 	BinaryFiles::write_int32(fh, (unsigned int) (P->W.extent + 1));
-	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_package(P)->index_n));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Node::get_package(P)->index_n));
 	for (int i=0; i<P->W.extent; i++)
 		BinaryFiles::write_int32(fh, (unsigned int) (P->W.data[i]));
-	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Frame::get_comment(P)));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inter::Node::get_comment(P)));
 }
 
 @ Errors in reading binary inter are not recoverable:

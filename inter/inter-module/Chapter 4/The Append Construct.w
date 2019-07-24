@@ -48,23 +48,23 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 }
 
 inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_t append_text, inter_t level, struct inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_2(IBM, APPEND_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_2(IBM, APPEND_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_t vcount = Inter::Frame::vcount(P);
+	inter_t vcount = Inter::Node::vcount(P);
 
-	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[SYMBOL_APPEND_IFLD]);;
-	if (symbol == NULL) { *E = Inter::Frame::error(P, I"no target name", NULL); return; }
-	if (P->W.data[TEXT_APPEND_IFLD] == 0) { *E = Inter::Frame::error(P, I"no translation text", NULL); return; }
+	if (symbol == NULL) { *E = Inter::Node::error(P, I"no target name", NULL); return; }
+	if (P->W.data[TEXT_APPEND_IFLD] == 0) { *E = Inter::Node::error(P, I"no translation text", NULL); return; }
 
 	if (vcount == 0) {
 		inter_t ID = P->W.data[TEXT_APPEND_IFLD];
-		text_stream *S = Inter::Frame::ID_to_text(P, ID);
+		text_stream *S = Inter::Node::ID_to_text(P, ID);
 		Inter::Symbols::set_append(symbol, S);
 	}
 }
@@ -72,7 +72,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
 	inter_t ID = P->W.data[TEXT_APPEND_IFLD];
-	text_stream *S = Inter::Frame::ID_to_text(P, ID);
+	text_stream *S = Inter::Node::ID_to_text(P, ID);
 	WRITE("append %S \"", symbol->symbol_name);
 	Inter::Constant::write_text(OUT, S);
 	WRITE("\"");

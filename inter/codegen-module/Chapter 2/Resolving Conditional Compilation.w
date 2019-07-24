@@ -29,7 +29,7 @@ void CodeGen::RCC::resolve(inter_tree *I) {
 	rcc_state state;
 	state.I6_level_symbols = Dictionaries::new(1024, TRUE);
 	state.cc_sp = 0;
-	Inter::traverse_tree(I, CodeGen::RCC::visitor, &state, NULL, 0);
+	Inter::Tree::traverse(I, CodeGen::RCC::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
 		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
@@ -41,7 +41,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		if (P->W.data[ID_IFLD] == SPLAT_IST) {
-			text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+			text_stream *S = Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 			switch (P->W.data[PLM_SPLAT_IFLD]) {
 				case CONSTANT_PLM:
 				case GLOBAL_PLM:
@@ -59,7 +59,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 			}
 		}
 	}
-	if (allow == FALSE) Inter::remove_from_tree(P);
+	if (allow == FALSE) Inter::Tree::remove_node(P);
 }
 
 @<Extract second token into ident@> =

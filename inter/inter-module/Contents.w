@@ -9,9 +9,8 @@ Chapter 1: Setting Up
 	Inter Module
 
 Chapter 2: Interoperability
-	Inter Errors
-	Frames
-	Inter in Memory
+	Inter Trees
+	Inter Nodes
 	The Warehouse
 	Symbols Tables
 	Packages
@@ -22,6 +21,7 @@ Chapter 2: Interoperability
 	Inter in Text Files
 	Verifying Inter
 	Inter Data Types
+	Inter Errors
 
 Chapter 3: Language Definition
 	Canonical Annotations

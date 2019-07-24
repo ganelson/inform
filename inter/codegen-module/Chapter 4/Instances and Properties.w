@@ -20,7 +20,7 @@ void CodeGen::IP::prepare(code_generation *gen) {
 	properties_found = FALSE;
 	attribute_slots_used = 0;
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
-	Inter::traverse_tree(gen->from, CodeGen::IP::count, NULL, NULL, 0);
+	Inter::Tree::traverse(gen->from, CodeGen::IP::count, NULL, NULL, 0);
 	if (no_property_frames > 0)
 		property_frames = (inter_tree_node **)
 			(Memory::I7_calloc(no_property_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
@@ -31,7 +31,7 @@ void CodeGen::IP::prepare(code_generation *gen) {
 		kind_frames = (inter_tree_node **)
 			(Memory::I7_calloc(no_kind_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
-	Inter::traverse_tree(gen->from, CodeGen::IP::store, NULL, NULL, 0);
+	Inter::Tree::traverse(gen->from, CodeGen::IP::store, NULL, NULL, 0);
 }
 
 void CodeGen::IP::count(inter_tree *I, inter_tree_node *P, void *state) {
@@ -166,7 +166,7 @@ must rule out any property which might belong to any value.
 @<Any either/or property which can belong to a value instance is ineligible@> =
 	inter_frame_list *PL =
 		Inter::Warehouse::get_frame_list(
-			Inter::warehouse(I),
+			Inter::Tree::warehouse(I),
 			Inter::Property::permissions_list(prop_name));
 	if (PL == NULL) internal_error("no permissions list");
 	inter_tree_node *X;
@@ -512,13 +512,13 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							CodeGen::unmark(prop_name);
 						}
 						inter_frame_list *FL =
-							Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::permissions_list(kind_name));
+							Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 						@<Work through this frame list of permissions@>;
 						for (int in=0; in<no_instance_frames; in++) {
 							inter_symbol *inst_name = instances_in_declaration_order[in];
 							if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 								inter_frame_list *FL =
-									Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Instance::permissions_list(inst_name));
+									Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Instance::permissions_list(inst_name));
 								@<Work through this frame list of permissions@>;
 							}
 						}
@@ -549,13 +549,13 @@ words, the number of instances of this kind.
 		if (kind_name == unchecked_kind_symbol) continue;
 		int vph_me = FALSE;
 		inter_frame_list *FL =
-			Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::permissions_list(kind_name));
+			Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Kind::permissions_list(kind_name));
 		if (FL->first_in_ifl) vph_me = TRUE;
 		else for (int in=0; in<no_instance_frames; in++) {
 			inter_symbol *inst_name = instances_in_declaration_order[in];
 			if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 				inter_frame_list *FL =
-					Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Instance::permissions_list(inst_name));
+					Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Instance::permissions_list(inst_name));
 				if (FL->first_in_ifl) vph_me = TRUE;
 			}
 		}
@@ -639,10 +639,10 @@ because I6 doesn't allow function calls in a constant context.
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
 			inter_frame_list *PVL =
-				Inter::Frame::ID_to_frame_list(X,
+				Inter::Node::ID_to_frame_list(X,
 					Inter::Instance::properties_list(inst_name));
 			@<Work through this frame list of values@>;
-			PVL = Inter::Frame::ID_to_frame_list(X,
+			PVL = Inter::Node::ID_to_frame_list(X,
 					Inter::Kind::properties_list(kind_name));
 			@<Work through this frame list of values@>;
 			if (found == 0) WRITE_TO(sticks, " (0)");
@@ -676,7 +676,7 @@ because I6 doesn't allow function calls in a constant context.
 			if (super_name) WRITE("    class %S\n", CodeGen::CL::name(super_name));
 			CodeGen::IP::append(gen, kind_name);
 			inter_frame_list *FL =
-				Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Kind::properties_list(kind_name));
+				Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Kind::properties_list(kind_name));
 			CodeGen::IP::plist(gen, FL);
 			WRITE(";\n\n");
 		}
@@ -746,7 +746,7 @@ though this won't happen for any property created by I7 source text.
 	WRITE("\"");
 	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
 	if (N <= 0) WRITE("<nameless>");
-	else WRITE("%S", Inter::Warehouse::get_text(Inter::warehouse(I), (inter_t) N));
+	else WRITE("%S", Inter::Warehouse::get_text(Inter::Tree::warehouse(I), (inter_t) N));
 	WRITE("\" ");
 	pos++;
 
@@ -770,7 +770,7 @@ linearly with the size of the source text, even though $N$ does.
 		inter_symbol *eprop_name = props_in_source_order[e];
 		if (Str::eq(CodeGen::CL::name(eprop_name), CodeGen::CL::name(prop_name))) {
 			inter_frame_list *EVL =
-				Inter::Warehouse::get_frame_list(Inter::warehouse(I), Inter::Property::permissions_list(eprop_name));
+				Inter::Warehouse::get_frame_list(Inter::Tree::warehouse(I), Inter::Property::permissions_list(eprop_name));
 
 			@<List any O with an explicit permission@>;
 			@<List all top-level kinds if "object" itself has an explicit permission@>;
@@ -943,7 +943,7 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 		WRITE("\n    class %S\n", CodeGen::CL::name(inst_kind));
 		CodeGen::IP::append(gen, inst_name);
 		inter_frame_list *FL =
-			Inter::Frame::ID_to_frame_list(P,
+			Inter::Node::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		CodeGen::IP::plist(gen, FL);
 		WRITE(";\n\n");

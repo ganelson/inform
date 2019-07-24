@@ -232,7 +232,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
 	CodeGen::MergeTemplate::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
-	*to = Inter::Textual::find_symbol(I, NULL, Inter::get_global_symbols(I), prim, PRIMITIVE_IST, &E);
+	*to = Inter::Textual::find_symbol(I, NULL, Inter::Tree::global_scope(I), prim, PRIMITIVE_IST, &E);
 	CodeGen::MergeTemplate::guard(E);
 	DISCARD_TEXT(prim_command);
 }

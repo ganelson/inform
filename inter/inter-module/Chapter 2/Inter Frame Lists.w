@@ -25,7 +25,7 @@ typedef struct inter_frame_list_entry {
 
 @d LOOP_THROUGH_INTER_FRAME_LIST(F, ifl)
 	for (inter_frame_list_entry *F##_entry = (ifl)?(ifl->first_in_ifl):NULL; F##_entry; F##_entry = F##_entry->next_in_ifl)
-		if (Inter::Frame::valid(((F = F##_entry->listed_frame), F)))
+		if (((F = F##_entry->listed_frame), F))
 
 =
 inter_frame_list *Inter::Lists::new(void) {

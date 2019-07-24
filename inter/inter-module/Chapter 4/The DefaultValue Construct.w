@@ -42,14 +42,14 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 }
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_DEF_IFR) *E = Inter::Frame::error(P, I"extent wrong", NULL);
+	if (P->W.extent != EXTENT_DEF_IFR) *E = Inter::Node::error(P, I"extent wrong", NULL);
 	else *E = Inter::Verify::symbol(owner, P, P->W.data[KIND_DEF_IFLD], KIND_IST);
 }
 
@@ -60,6 +60,6 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 		Inter::Types::write(OUT, P, con_kind,
 			P->W.data[VAL1_DEF_IFLD], P->W.data[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		*E = Inter::Frame::error(P, I"defaultvalue can't be written", NULL);
+		*E = Inter::Node::error(P, I"defaultvalue can't be written", NULL);
 	}
 }

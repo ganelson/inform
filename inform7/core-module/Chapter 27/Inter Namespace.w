@@ -195,7 +195,7 @@ package_request *InterNames::location(inter_name *iname) {
 inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
-	if (P == NULL) return Inter::get_global_symbols(Emit::tree());
+	if (P == NULL) return Inter::Tree::global_scope(Emit::tree());
 	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 

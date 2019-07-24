@@ -14,7 +14,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
 	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
-	Inter::traverse_tree(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
+	Inter::Tree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
 
 void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
@@ -117,8 +117,8 @@ void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tre
 	tws.to = OUT;
 	tws.filter = filter;
 	tws.pass = pass;
-	Inter::traverse_global_list(I, Inter::Textual::visitor, &tws, -PACKAGE_IST);
-	Inter::traverse_tree(I, Inter::Textual::visitor, &tws, NULL, 0);
+	Inter::Tree::traverse_root_only(I, Inter::Textual::visitor, &tws, -PACKAGE_IST);
+	Inter::Tree::traverse(I, Inter::Textual::visitor, &tws, NULL, 0);
 }
 void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;

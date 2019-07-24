@@ -43,14 +43,14 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 			inter_tree *I = gen->from;
-			if (Inter::Packages::container(P) == Inter::Packages::main(I)) {
+			if (Inter::Packages::container(P) == Inter::Tree::main_package(I)) {
 				WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 				internal_error("constant defined in main");
 			}
 			if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
 				inter_t ID = P->W.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
-					Inter::Frame::ID_to_text(P, ID));
+					Inter::Node::ID_to_text(P, ID));
 				CodeGen::select_temporary(gen, S);
 				CodeGen::CL::constant(gen, P);
 				CodeGen::deselect_temporary(gen);
@@ -89,7 +89,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::Warehouse::get_text(Inter::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
 	int L = Str::len(S);
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);
@@ -131,7 +131,7 @@ void CodeGen::FC::code(code_generation *gen, inter_tree_node *P) {
 	int old_level = void_level;
 	void_level = Inter::Defn::get_level(P) + 1;
 	int function_code_block = FALSE;
-	inter_tree_node *PAR = Inter::get_parent(P);
+	inter_tree_node *PAR = Inter::Tree::parent(P);
 	if (PAR == NULL) internal_error("misplaced code node");
 	if (PAR->W.data[ID_IFLD] == PACKAGE_IST) function_code_block = TRUE;
 	text_stream *OUT = CodeGen::current(gen);
@@ -239,14 +239,14 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 
 @
 
-@d INV_A1 CodeGen::FC::frame(gen, Inter::first_child_P(P))
+@d INV_A1 CodeGen::FC::frame(gen, Inter::Tree::first_child(P))
 @d INV_A1_PRINTMODE CodeGen::CL::enter_print_mode(); INV_A1; CodeGen::CL::exit_print_mode();
 @d INV_A1_BOXMODE CodeGen::CL::enter_box_mode(); INV_A1; CodeGen::CL::exit_box_mode();
-@d INV_A2 CodeGen::FC::frame(gen, Inter::second_child_P(P))
-@d INV_A3 CodeGen::FC::frame(gen, Inter::third_child_P(P))
-@d INV_A4 CodeGen::FC::frame(gen, Inter::fourth_child_P(P))
-@d INV_A5 CodeGen::FC::frame(gen, Inter::fifth_child_P(P))
-@d INV_A6 CodeGen::FC::frame(gen, Inter::sixth_child_P(P))
+@d INV_A2 CodeGen::FC::frame(gen, Inter::Tree::second_child(P))
+@d INV_A3 CodeGen::FC::frame(gen, Inter::Tree::third_child(P))
+@d INV_A4 CodeGen::FC::frame(gen, Inter::Tree::fourth_child(P))
+@d INV_A5 CodeGen::FC::frame(gen, Inter::Tree::fifth_child(P))
+@d INV_A6 CodeGen::FC::frame(gen, Inter::Tree::sixth_child(P))
 
 =
 void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
@@ -274,7 +274,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		}
 		case INVOKED_OPCODE: {
 			inter_t ID = P->W.data[INVOKEE_INV_IFLD];
-			text_stream *S = Inter::Frame::ID_to_text(P, ID);
+			text_stream *S = Inter::Node::ID_to_text(P, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {

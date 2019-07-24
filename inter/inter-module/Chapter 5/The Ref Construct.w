@@ -53,16 +53,16 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *ref_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_4(IBM, REF_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Node::fill_4(IBM, REF_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_REF_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_REF_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
-	if (locals == NULL) { *E = Inter::Frame::error(P, I"no symbols table in function", NULL); return; }
+	if (locals == NULL) { *E = Inter::Node::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_REF_IFLD], KIND_IST); if (*E) return;
 	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_REF_IFLD]);;
 	*E = Inter::Verify::local_value(P, VAL1_REF_IFLD, ref_kind, locals); if (*E) return;
@@ -72,10 +72,10 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *routine = pack->package_name;
 	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
-	if (locals == NULL) { *E = Inter::Frame::error(P, I"function has no symbols table", NULL); return; }
+	if (locals == NULL) { *E = Inter::Node::error(P, I"function has no symbols table", NULL); return; }
 	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
 	if (ref_kind) {
 		WRITE("ref %S ", ref_kind->symbol_name);
 		Inter::Types::write(OUT, P, ref_kind, P->W.data[VAL1_REF_IFLD], P->W.data[VAL2_REF_IFLD], locals, FALSE);
-	} else { *E = Inter::Frame::error(P, I"cannot write ref", NULL); return; }
+	} else { *E = Inter::Node::error(P, I"cannot write ref", NULL); return; }
 }

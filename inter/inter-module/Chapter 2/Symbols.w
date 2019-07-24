@@ -166,7 +166,7 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_tree_node *D = Inter::Symbols::definition(S);
-		if (D) Inter::remove_from_tree(D);
+		if (D) Inter::Tree::remove_node(D);
 		Inter::Symbols::undefine(S);
 	}
 }
@@ -275,14 +275,14 @@ text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I
 	for (int i=0; i<symb->no_symbol_annotations; i++)
 		if (symb->symbol_annotations[i].annot->annotation_ID == ID) {
 			inter_t N = symb->symbol_annotations[i].annot_value;
-			return Inter::Warehouse::get_text(Inter::warehouse(I), N);
+			return Inter::Warehouse::get_text(Inter::Tree::warehouse(I), N);
 		}
 	return NULL;
 }
 
 void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
-	inter_t n = Inter::Warehouse::create_text(Inter::warehouse(I), owner);
-	Str::copy(Inter::Warehouse::get_text(Inter::warehouse(I), n), S);
+	inter_t n = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), owner);
+	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), n), S);
 	inter_annotation IA = Inter::Defn::annotation_from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);
 }

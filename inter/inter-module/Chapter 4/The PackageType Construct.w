@@ -43,20 +43,20 @@ inter_error_message *Inter::PackageType::new_packagetype(inter_bookmark *IBM, in
 	if (Str::eq(name, I"_code")) code_packagetype = ptype;
 	if (Str::eq(name, I"_linkage")) linkage_packagetype = ptype;
 
-	inter_tree_node *P = Inter::Frame::fill_1(IBM, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
+	inter_tree_node *P = Inter::Node::fill_1(IBM, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::PackageType::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent < EXTENT_PTYPE_IFR) { *E = Inter::Frame::error(P, I"package extent wrong", NULL); return; }
+	if (P->W.extent < EXTENT_PTYPE_IFR) { *E = Inter::Node::error(P, I"package extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PTYPE_IFLD);
 }
 
 void Inter::PackageType::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *ptype_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PTYPE_IFLD);
 	if (ptype_name) WRITE("packagetype %S", ptype_name->symbol_name);
-	else { *E = Inter::Frame::error(P, I"cannot write packagetype", NULL); return; }
+	else { *E = Inter::Node::error(P, I"cannot write packagetype", NULL); return; }
 }

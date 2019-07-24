@@ -165,8 +165,8 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				TEMPORARY_TEXT(parsed_text);
 				inter_error_message *EP =
 					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
-				inter_warehouse *warehouse = Inter::warehouse(I);
-				val = Inter::Warehouse::create_text(warehouse, I->root_package);
+				inter_warehouse *warehouse = Inter::Tree::warehouse(I);
+				val = Inter::Warehouse::create_text(warehouse, Inter::Tree::root_package(I));
 				Str::copy(Inter::Warehouse::get_text(warehouse, val), parsed_text);
 				DISCARD_TEXT(parsed_text);
 				if (EP) *E = EP;
@@ -218,7 +218,7 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_anno
 	if (IA.annot_value != 0) {
 		if (IA.annot->textual_flag) {
 			WRITE("=\"");
-			Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(F, IA.annot_value));
+			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, IA.annot_value));
 			WRITE("\"");
 		} else {
 			WRITE("=%d", IA.annot_value);
@@ -251,13 +251,11 @@ inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inte
 }
 
 inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_construct **to) {
-	if ((P == NULL) || (Inter::Frame::valid(P) == FALSE)) {
-		return Inter::Frame::error(P, I"invalid frame", NULL);
-	}
+	if (P == NULL) return Inter::Node::error(P, I"invalid frame", NULL);
 	if ((P->W.data[ID_IFLD] == INVALID_IST) || (P->W.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
-		return Inter::Frame::error(P, I"no such construct", NULL);
+		return Inter::Node::error(P, I"no such construct", NULL);
 	inter_construct *IC = IC_lookup[P->W.data[ID_IFLD]];
-	if (IC == NULL) return Inter::Frame::error(P, I"bad construct", NULL);
+	if (IC == NULL) return Inter::Node::error(P, I"bad construct", NULL);
 	if (to) *to = IC;
 	return NULL;
 }
@@ -273,10 +271,10 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	if (E) return E;
 	for (inter_t L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
 	VMETHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
-	inter_t ID = Inter::Frame::get_comment(P);
+	inter_t ID = Inter::Node::get_comment(P);
 	if (ID != 0) {
 		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
-		WRITE("# %S", Inter::Frame::ID_to_text(P, ID));
+		WRITE("# %S", Inter::Node::ID_to_text(P, ID));
 	}
 	WRITE("\n");
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
@@ -397,10 +395,10 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
 			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
 		}
-		return Inter::Frame::error(P, M, NULL);
+		return Inter::Node::error(P, M, NULL);
 	}
 	E = NULL;
 	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
-	if (E) Inter::backtrace(STDERR, P);
+	if (E) Inter::Errors::backtrace(STDERR, P);
 	return E;
 }

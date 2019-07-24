@@ -2,36 +2,31 @@
 
 Write positions for inter code being generated.
 
-@ =
+@ 
+
+@e BEFORE_ICPLACEMENT from 0
+@e AFTER_ICPLACEMENT
+@e IMMEDIATELY_AFTER_ICPLACEMENT
+@e AS_FIRST_CHILD_OF_ICPLACEMENT
+@e AS_LAST_CHILD_OF_ICPLACEMENT
+@e NOWHERE_ICPLACEMENT
+
+=
 typedef struct inter_bookmark {
-	struct inter_package *current_package;
 	struct inter_tree_node *R;
 	int placement_wrt_R;
 } inter_bookmark;
 
-@ =
 inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_tree *I) {
 	inter_bookmark IBM;
-	IBM.current_package = I->root_package;
 	IBM.R = I->root_node;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;
 	return IBM;
 }
 
-inter_tree *Inter::Bookmarks::tree(inter_bookmark *IBM) {
-	if (IBM == NULL) return NULL;
-	if (IBM->current_package == NULL) internal_error("no package");
-	return IBM->current_package->stored_in;
-}
-
-inter_warehouse *Inter::Bookmarks::warehouse(inter_bookmark *IBM) {
-	return Inter::warehouse(Inter::Bookmarks::tree(IBM));
-}
-
 inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	if (pack == NULL) internal_error("no package supplied"); 
 	inter_bookmark IBM;
-	IBM.current_package = pack;
 	IBM.R = Inter::Symbols::definition(pack->package_name);
 	IBM.placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
 	return IBM;
@@ -40,8 +35,6 @@ inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_tree_node *D) {
 	if (D == NULL) internal_error("invalid frame supplied");
 	inter_bookmark IBM;
-	IBM.current_package = Inter::Packages::container(D);
-	if (IBM.current_package == NULL) IBM.current_package = I->root_package;
 	IBM.R = D;
 	IBM.placement_wrt_R = AFTER_ICPLACEMENT;
 	return IBM;
@@ -50,15 +43,23 @@ inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_tree_node
 void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	if (P == NULL) internal_error("invalid package supplied");
-	IBM->current_package = P;
-	if (Inter::Packages::is_rootlike(P)) {
-		IBM->R = P->stored_in->root_node;
-		IBM->placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
-	} else {
-		inter_tree_node *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
+	if (D == NULL) D = P->stored_in->root_node;
+	IBM->R = Inter::Tree::last_child(D);
+	IBM->placement_wrt_R = AFTER_ICPLACEMENT;
+	if (IBM->R == NULL) {
 		IBM->R = D;
-		IBM->placement_wrt_R = AFTER_ICPLACEMENT;
+		IBM->placement_wrt_R = AS_FIRST_CHILD_OF_ICPLACEMENT;
 	}
+}
+
+inter_tree *Inter::Bookmarks::tree(inter_bookmark *IBM) {
+	if (IBM == NULL) return NULL;
+	return IBM->R->tree;
+}
+
+inter_warehouse *Inter::Bookmarks::warehouse(inter_bookmark *IBM) {
+	return Inter::Tree::warehouse(Inter::Bookmarks::tree(IBM));
 }
 
 int Inter::Bookmarks::get_placement(inter_bookmark *IBM) {
@@ -86,8 +87,8 @@ inter_bookmark Inter::Bookmarks::snapshot(inter_bookmark *IBM) {
 }
 
 int Inter::Bookmarks::baseline(inter_bookmark *IBM) {
-	if ((IBM) && (IBM->current_package))
-		return Inter::Packages::baseline(IBM->current_package);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	if (pack) return Inter::Packages::baseline(pack);
 	return 0;
 }
 
@@ -95,19 +96,36 @@ void Inter::Bookmarks::log(OUTPUT_STREAM, void *virs) {
 	inter_bookmark *IBM = (inter_bookmark *) virs;
 	if (IBM == NULL) WRITE("<null-bookmark>");
 	else {
-		LOG("<bookmark:");
-		if (IBM->current_package == NULL) LOG("--");
-		else LOG("$3", IBM->current_package->package_name);
+		LOG("<");
+		switch (IBM->placement_wrt_R) {
+			case BEFORE_ICPLACEMENT: WRITE("before:"); break;
+			case AFTER_ICPLACEMENT: WRITE("after:"); break;
+			case IMMEDIATELY_AFTER_ICPLACEMENT: WRITE("immediately-after:"); break;
+			case AS_FIRST_CHILD_OF_ICPLACEMENT: WRITE("first-child:"); break;
+			case AS_LAST_CHILD_OF_ICPLACEMENT: WRITE("last-child:"); break;
+			case NOWHERE_ICPLACEMENT: WRITE("nowhere"); break;
+			default: WRITE("?:"); break;
+		}
+		if (IBM->placement_wrt_R != NOWHERE_ICPLACEMENT) {
+			if (IBM->R) WRITE("%d", IBM->R->W.index);
+		}
 		LOG("(%d)>", Inter::Bookmarks::baseline(IBM));
 	}
 }
 
 inter_symbols_table *Inter::Bookmarks::scope(inter_bookmark *IBM) {
-	if ((IBM) && (IBM->current_package)) return Inter::Packages::scope(IBM->current_package);
-	return Inter::get_global_symbols(Inter::Bookmarks::tree(IBM));
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	if (pack) return Inter::Packages::scope(pack);
+	return Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM));
 }
 
 inter_package *Inter::Bookmarks::package(inter_bookmark *IBM) {
-	if ((IBM) && (IBM->current_package)) return IBM->current_package;
-	return NULL;
+	if (IBM == NULL) return NULL;
+	inter_package *pack = IBM->R->package;
+	if ((IBM->placement_wrt_R == AS_FIRST_CHILD_OF_ICPLACEMENT) ||
+		(IBM->placement_wrt_R == AS_LAST_CHILD_OF_ICPLACEMENT)) {
+		inter_package *R_defined = Inter::Package::defined_by_frame(IBM->R);
+		if (R_defined) pack = R_defined;
+	}
+	return pack;
 }

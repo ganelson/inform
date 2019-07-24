@@ -83,3 +83,36 @@ inter_error_message *Inter::Errors::gather_first(inter_error_message *E, inter_e
 	if (E) return E;
 	return F;
 }
+
+@
+
+=
+void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
+	inter_tree_node *X = F;
+	int n = 0;
+	while (TRUE) {
+		X = Inter::Tree::parent(X);
+		if (X == NULL) break;
+		n++;
+	}
+	for (int i = n; i >= 0; i--) {
+		inter_tree_node *X = F;
+		int m = 0;
+		while (TRUE) {
+			inter_tree_node *Y = Inter::Tree::parent(X);
+			if (Y == NULL) break;
+			if (m == i) {
+				WRITE("%2d. ", (n-i));
+				if (i == 0) WRITE("** "); else WRITE("   ");
+				Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+				break;
+			}
+			X = Y;
+			m++;
+		}
+	}
+	LOOP_THROUGH_INTER_CHILDREN(C, F) {
+		WRITE("%2d.    ", (n+1));
+		Inter::Defn::write_construct_text_allowing_nop(OUT, C);
+	}
+}		

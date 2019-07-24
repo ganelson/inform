@@ -48,15 +48,15 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_t VID, inter_t KID, inter_t var_val1, inter_t var_val2, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_VAR_IFLD], KIND_IST);
 }
@@ -68,7 +68,7 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Types::write(OUT, P, var_kind, P->W.data[VAL1_VAR_IFLD], P->W.data[VAL2_VAR_IFLD], Inter::Packages::scope_of(P), FALSE);
 		Inter::Symbols::write_annotations(OUT, P, var_name);
-	} else { *E = Inter::Frame::error(P, I"cannot write variable", NULL); return; }
+	} else { *E = Inter::Node::error(P, I"cannot write variable", NULL); return; }
 }
 
 inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {

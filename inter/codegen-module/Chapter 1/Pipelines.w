@@ -247,7 +247,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
 			if (S->repositories[step->repository_argument] == NULL)
-				S->repositories[step->repository_argument] = Inter::create();
+				S->repositories[step->repository_argument] = Inter::Tree::new();
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::lint(I);
@@ -392,19 +392,19 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_tree *I) {
-	Inter::traverse_tree(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
+	Inter::Tree::traverse(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 
 void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_t c = Inter::Frame::get_package(P)->index_n;
-	inter_t a = Inter::Frame::get_package_alt(P);
+	inter_t c = Inter::Node::get_package(P)->index_n;
+	inter_t a = Inter::Node::get_package_alt(P);
 	if (c != a) {
 		LOG("Frame gives package as $3, but its location is in package $3\n",
-			Inter::Frame::ID_to_package(P, c)->package_name,
-			Inter::Frame::ID_to_package(P, a)->package_name);
+			Inter::Node::ID_to_package(P, c)->package_name,
+			Inter::Node::ID_to_package(P, a)->package_name);
 		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
-			Inter::Frame::ID_to_package(P, c)->index_n,
-			Inter::Frame::ID_to_package(P, a)->index_n);
+			Inter::Node::ID_to_package(P, c)->index_n,
+			Inter::Node::ID_to_package(P, a)->index_n);
 		internal_error("zap");
 	}
 

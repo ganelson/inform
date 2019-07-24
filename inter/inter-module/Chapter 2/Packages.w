@@ -69,7 +69,7 @@ inter_package *Inter::Packages::parent(inter_package *pack) {
 	if (pack) {
 		if (Inter::Packages::is_rootlike(pack)) return NULL;
 		inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
-		inter_tree_node *P = Inter::get_parent(D);
+		inter_tree_node *P = Inter::Tree::parent(D);
 		if (P == NULL) return NULL;
 		return Inter::Package::defined_by_frame(P);
 	}
@@ -93,9 +93,8 @@ void Inter::Packages::set_name(inter_package *P, inter_symbol *N) {
 	if (P == NULL) internal_error("null package");
 	if (N == NULL) internal_error("null package name");
 	P->package_name = N;
-	if ((N) && (Str::eq(N->symbol_name, I"main"))) {
-		P->stored_in->main_package = P;
-	}
+	if ((N) && (Str::eq(N->symbol_name, I"main")))
+		Inter::Tree::set_main_package(P->stored_in, P);
 }
 
 void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
@@ -104,11 +103,6 @@ void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 	else {
 		WRITE("%S", pack->package_name->symbol_name);
 	}
-}
-
-inter_package *Inter::Packages::main(inter_tree *I) {
-	if (I) return I->main_package;
-	return NULL;
 }
 
 inter_package *Inter::Packages::basics(inter_tree *I) {
@@ -144,11 +138,11 @@ inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream
 }
 
 inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stream *S) {
-	return Inter::Packages::search_exhaustively(Inter::Packages::main(I), S);
+	return Inter::Packages::search_exhaustively(Inter::Tree::main_package(I), S);
 }
 
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
-	inter_package *main_package = Inter::Packages::main(I);
+	inter_package *main_package = Inter::Tree::main_package(I);
 	if (main_package) {
 		inter_tree_node *D = Inter::Symbols::definition(main_package->package_name);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -169,7 +163,7 @@ inter_t Inter::Packages::to_PID(inter_package *P) {
 
 inter_package *Inter::Packages::container(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	inter_package *pack = Inter::Frame::get_package(P);
+	inter_package *pack = Inter::Node::get_package(P);
 	if (Inter::Packages::is_rootlike(pack)) return NULL;
 	return pack;
 }
@@ -182,7 +176,7 @@ inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
 inter_symbols_table *Inter::Packages::scope_of(inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	if (pack) return pack->package_scope;
-	return Inter::Frame::globals(P);
+	return Inter::Node::globals(P);
 }
 
 inter_symbol *Inter::Packages::type(inter_package *P) {
@@ -204,7 +198,7 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	if ((found) && (Inter::Symbols::is_defined(found))) {
 		inter_tree_node *D = Inter::Symbols::definition(found);
 		inter_t val2 = D->W.data[VAL1_MD_IFLD + 1];
-		return Inter::Warehouse::get_text(Inter::warehouse(P->stored_in), val2);
+		return Inter::Warehouse::get_text(Inter::Tree::warehouse(P->stored_in), val2);
 	}
 	return NULL;
 }

@@ -46,10 +46,10 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inte
 	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
 	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
-	inter_tree_node *P = Inter::Frame::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
@@ -58,7 +58,7 @@ void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_PROP_IFLD], KIND_IST);
 }
@@ -76,7 +76,7 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
 		Inter::Symbols::write_annotations(OUT, P, prop_name);
-	} else { *E = Inter::Frame::error(P, I"cannot write property", NULL); return; }
+	} else { *E = Inter::Node::error(P, I"cannot write property", NULL); return; }
 }
 
 inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {

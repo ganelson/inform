@@ -35,15 +35,15 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_1(IBM, VERSION_IST, (inter_t) V, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_1(IBM, VERSION_IST, (inter_t) V, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Version::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_VERSION_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
-	if (P->W.data[NUMBER_VERSION_IFLD] < 1) { *E = Inter::Frame::error(P, I"version out of range", NULL); return; }
+	if (P->W.extent != EXTENT_VERSION_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.data[NUMBER_VERSION_IFLD] < 1) { *E = Inter::Node::error(P, I"version out of range", NULL); return; }
 }
 
 void Inter::Version::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

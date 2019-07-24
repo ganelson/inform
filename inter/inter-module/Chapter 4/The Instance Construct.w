@@ -64,10 +64,10 @@ inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inte
 	inter_t L2 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
 	Inter::Warehouse::attribute_resource(warehouse, L2, Inter::Bookmarks::package(IBM));
-	inter_tree_node *P = Inter::Frame::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
@@ -77,7 +77,7 @@ void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_INST_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_INST_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
 	inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[DEFN_INST_IFLD]);
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_INST_IFLD], KIND_IST); if (*E) return;
@@ -88,10 +88,10 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			P->W.data[VAL1_INST_IFLD] = LITERAL_IVAL;
 			P->W.data[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
-	} else { *E = Inter::Frame::error(P, I"not a kind which has instances", NULL); return; }
+	} else { *E = Inter::Node::error(P, I"not a kind which has instances", NULL); return; }
 	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
-	inter_t vcount = Inter::Frame::vcount(P);
+	inter_t vcount = Inter::Node::vcount(P);
 	if (vcount == 0) {
 		Inter::Kind::new_instance(inst_kind, inst_name);
 	}
@@ -113,8 +113,8 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
 			Inter::Types::write(OUT, P, NULL,
 				P->W.data[VAL1_INST_IFLD], P->W.data[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
-		} else { *E = Inter::Frame::error(P, I"instance with bad data type", NULL); return; }
-	} else { *E = Inter::Frame::error(P, I"bad instance", NULL); return; }
+		} else { *E = Inter::Node::error(P, I"instance with bad data type", NULL); return; }
+	} else { *E = Inter::Node::error(P, I"bad instance", NULL); return; }
 	Inter::Symbols::write_annotations(OUT, P, inst_name);
 }
 

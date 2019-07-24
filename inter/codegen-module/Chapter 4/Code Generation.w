@@ -75,7 +75,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	gen->from = I;
 	gen->target = target;
 	if (just) gen->just_this_package = just;
-	else gen->just_this_package = Inter::Packages::main(I);
+	else gen->just_this_package = Inter::Tree::main_package(I);
 	gen->current_segment = NULL;
 	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;
@@ -171,8 +171,8 @@ void CodeGen::generate(code_generation *gen) {
 	CodeGen::IP::prepare(gen);
 
 @<Phase two - traverse@> =
-	Inter::traverse_global_list(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
-	Inter::traverse_tree(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
+	Inter::Tree::traverse_root_only(gen->from, CodeGen::pragma, gen, PRAGMA_IST);
+	Inter::Tree::traverse(gen->from, CodeGen::FC::iterate, gen, NULL, -PACKAGE_IST);
 
 @<Phase three - consolidation@> =
 	CodeGen::CL::responses(gen);
@@ -187,7 +187,7 @@ void CodeGen::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
 	inter_t ID = P->W.data[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inter::Frame::ID_to_text(P, ID);
+	text_stream *S = Inter::Node::ID_to_text(P, ID);
 	CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
 }
 

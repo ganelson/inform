@@ -35,7 +35,7 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::get_global_symbols(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
@@ -48,11 +48,11 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
 	inter_t STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
 	LOGIF(INTER_SYMBOLS, "Package $3 at IBM $5\n", package_name, IBM);
-	inter_tree_node *P = Inter::Frame::fill_4(IBM,
+	inter_tree_node *P = Inter::Node::fill_4(IBM,
 		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 
 	inter_t PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);
@@ -77,7 +77,7 @@ void Inter::Package::transpose(inter_construct *IC, inter_tree_node *P, inter_t 
 void Inter::Package::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	*E = Inter::Verify::defn(owner, P, DEFN_PACKAGE_IFLD); if (*E) return;
 	inter_symbols_table *T = Inter::Packages::scope(owner);
-	if (T == NULL) T = Inter::Frame::globals(P);
+	if (T == NULL) T = Inter::Node::globals(P);
 	inter_symbol *package_name = Inter::SymbolsTables::symbol_from_id(T, P->W.data[DEFN_PACKAGE_IFLD]);
 	Inter::Defn::set_latest_package_symbol(package_name);
 }
@@ -88,8 +88,8 @@ void Inter::Package::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *
 	if ((package_name) && (ptype_name)) {
 		WRITE("package %S %S", package_name->symbol_name, ptype_name->symbol_name);
 	} else {
-		if (package_name == NULL) { *E = Inter::Frame::error(P, I"package can't be written - no name", NULL); return; }
-		*E = Inter::Frame::error(P, I"package can't be written - no type", NULL); return;
+		if (package_name == NULL) { *E = Inter::Node::error(P, I"package can't be written - no name", NULL); return; }
+		*E = Inter::Node::error(P, I"package can't be written - no type", NULL); return;
 	}
 }
 
@@ -114,13 +114,13 @@ inter_package *Inter::Package::which(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
 	inter_tree_node *D = Inter::Symbols::definition(package_name);
 	if (D == NULL) return NULL;
-	return Inter::Frame::ID_to_package(D, D->W.data[PID_PACKAGE_IFLD]);
+	return Inter::Node::ID_to_package(D, D->W.data[PID_PACKAGE_IFLD]);
 }
 
 inter_package *Inter::Package::defined_by_frame(inter_tree_node *D) {
-	if ((D == NULL) || (Inter::Frame::valid(D) == FALSE)) return NULL;
+	if (D == NULL) return NULL;
 	if (D->W.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::Frame::ID_to_package(D, D->W.data[PID_PACKAGE_IFLD]);
+	return Inter::Node::ID_to_package(D, D->W.data[PID_PACKAGE_IFLD]);
 }
 
 inter_symbol *Inter::Package::type(inter_symbol *package_name) {
@@ -137,7 +137,7 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 	inter_tree_node *D = Inter::Symbols::definition(package_name);
 	if (D == NULL) return NULL;
 	if (D->W.data[ID_IFLD] != PACKAGE_IST) return NULL;
-	return Inter::Frame::ID_to_symbols_table(D, D->W.data[SYMBOLS_PACKAGE_IFLD]);
+	return Inter::Node::ID_to_symbols_table(D, D->W.data[SYMBOLS_PACKAGE_IFLD]);
 }
 
 void Inter::Package::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
@@ -145,7 +145,7 @@ void Inter::Package::verify_children(inter_construct *IC, inter_tree_node *P, in
 	if (ptype_name == code_packagetype) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C->W.data[0] != LABEL_IST) && (C->W.data[0] != LOCAL_IST) && (C->W.data[0] != SYMBOL_IST)) {
-				*E = Inter::Frame::error(C, I"only a local or a symbol can be at the top level", NULL);
+				*E = Inter::Node::error(C, I"only a local or a symbol can be at the top level", NULL);
 				return;
 			}
 		}

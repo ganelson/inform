@@ -8,7 +8,7 @@ void CodeGen::Var::prepare(code_generation *gen) {
 	variables_written = FALSE;
 	prepare_counter = 0;
 	knowledge_counter = 0;
-	Inter::traverse_tree(gen->from, CodeGen::Var::visitor1, gen, NULL, VARIABLE_IST);
+	Inter::Tree::traverse(gen->from, CodeGen::Var::visitor1, gen, NULL, VARIABLE_IST);
 }
 
 void CodeGen::Var::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
@@ -20,7 +20,7 @@ void CodeGen::Var::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 void CodeGen::Var::knowledge(code_generation *gen) {
 	if (variables_written == FALSE) {
 		variables_written = TRUE;
-		Inter::traverse_tree(gen->from, CodeGen::Var::visitor2, gen, NULL, VARIABLE_IST);
+		Inter::Tree::traverse(gen->from, CodeGen::Var::visitor2, gen, NULL, VARIABLE_IST);
 	}
 }
 

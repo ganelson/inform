@@ -10,7 +10,7 @@ void CodeGen::PLM::create_pipeline_stage(void) {
 }
 
 int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
-	Inter::traverse_tree(step->repository, CodeGen::PLM::visitor, NULL, NULL, 0);
+	Inter::Tree::traverse(step->repository, CodeGen::PLM::visitor, NULL, NULL, 0);
 	return TRUE;
 }
 
@@ -20,7 +20,7 @@ int CodeGen::PLM::run_pipeline_stage(pipeline_step *step) {
 void CodeGen::PLM::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if (((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) && (P->W.data[ID_IFLD] == SPLAT_IST)) {
-		text_stream *S = Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+		text_stream *S = Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L" *(%C+) *(%c*);%c*")) {
 			inter_t keyword = 0;
@@ -49,7 +49,7 @@ void CodeGen::PLM::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			LOOP_THROUGH_TEXT(pos, S)
 				if (Characters::is_whitespace(Str::get(pos)) == FALSE)
 					keep = TRUE;
-			if (keep == FALSE) Inter::remove_from_tree(P);
+			if (keep == FALSE) Inter::Tree::remove_node(P);
 		}
 	}
 }

@@ -41,14 +41,14 @@ void Inter::Evaluation::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 }
 
 inter_error_message *Inter::Evaluation::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_1(IBM, EVALUATION_IST, 0, eloc, (inter_t) level);
+	inter_tree_node *P = Inter::Node::fill_1(IBM, EVALUATION_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Evaluation::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_EVAL_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_EVAL_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 }
 
 void Inter::Evaluation::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -58,7 +58,7 @@ void Inter::Evaluation::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 void Inter::Evaluation::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != LABEL_IST) && (C->W.data[0] != EVALUATION_IST)) {
-			*E = Inter::Frame::error(C, I"only an inv, a splat, a val, or a label can be below an evaluation", NULL);
+			*E = Inter::Node::error(C, I"only an inv, a splat, a val, or a label can be below an evaluation", NULL);
 			return;
 		}
 	}

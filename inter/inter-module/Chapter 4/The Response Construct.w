@@ -52,14 +52,14 @@ void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_5(IBM, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
+	inter_tree_node *P = Inter::Node::fill_5(IBM, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Response::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_RESPONSE_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_RESPONSE_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_RESPONSE_IFLD); if (*E) return;
 	if (P->W.data[MARKER_RESPONSE_IFLD] >= 26) { *E = Inter::Errors::plain(I"response marker out of range", NULL); return; }
 }
@@ -72,6 +72,6 @@ void Inter::Response::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		Inter::Types::write(OUT, P, NULL,
 			P->W.data[VAL1_RESPONSE_IFLD], P->W.data[VAL1_RESPONSE_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		*E = Inter::Frame::error(P, I"response can't be written", NULL);
+		*E = Inter::Node::error(P, I"response can't be written", NULL);
 	}
 }

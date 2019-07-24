@@ -691,7 +691,7 @@ void Rules::unimport(rule *R) {
 	inter_symbol *symb = InterNames::to_symbol(Rules::iname(R));
 	if (symb->importation_frame) {
 		LOG("Unimport rule %n!\n", Rules::iname(R));
-		Inter::remove_from_tree(symb->importation_frame);
+		Inter::Tree::remove_node(symb->importation_frame);
 		R->defn_compiled = FALSE;
 		R->do_not_import = TRUE;
 		R->defn_as_phrase->imported = FALSE;

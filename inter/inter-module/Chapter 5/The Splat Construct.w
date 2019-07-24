@@ -118,23 +118,23 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 }
 
 inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Frame::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
-	if (ID) Inter::Frame::attach_comment(P, ID);
+	inter_tree_node *P = Inter::Node::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
+	if (ID) Inter::Node::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::insert(P, IBM);
+	Inter::Tree::insert_node(P, IBM);
 	return NULL;
 }
 
 void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_SPLAT_IFR) { *E = Inter::Frame::error(P, I"extent wrong", NULL); return; }
-	if (P->W.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Frame::error(P, I"no matter text", NULL); return; }
-	if (P->W.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Frame::error(P, I"plm out of range", NULL); return; }
+	if (P->W.extent != EXTENT_SPLAT_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.data[MATTER_SPLAT_IFLD] == 0) { *E = Inter::Node::error(P, I"no matter text", NULL); return; }
+	if (P->W.data[PLM_SPLAT_IFLD] > MYSTERY_PLM) { *E = Inter::Node::error(P, I"plm out of range", NULL); return; }
 }
 
 void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("splat ");
 	Inter::Splat::write_plm(OUT, P->W.data[PLM_SPLAT_IFLD]);
 	WRITE("&\"");
-	Inter::Constant::write_text(OUT, Inter::Frame::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]));
+	Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 }

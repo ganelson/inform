@@ -280,7 +280,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 
 @<Generate primitive for return@> =
 	int rboolean = NOT_APPLICABLE;
-	inter_tree_node *V = Inter::first_child_P(P);
+	inter_tree_node *V = Inter::Tree::first_child(P);
 	if (V->W.data[ID_IFLD] == VAL_IST) {
 		inter_t val1 = V->W.data[VAL1_VAL_IFLD];
 		inter_t val2 = V->W.data[VAL2_VAL_IFLD];
@@ -365,11 +365,11 @@ then the result.
 
 @<Generate primitive for for@> =
 	WRITE("for (");
-	inter_tree_node *INIT = Inter::first_child_P(P);
+	inter_tree_node *INIT = Inter::Tree::first_child(P);
 	if (!((INIT->W.data[ID_IFLD] == VAL_IST) && (INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) && (INIT->W.data[VAL2_VAL_IFLD] == 1))) INV_A1;
 	WRITE(":"); INV_A2;
 	WRITE(":");
-	inter_tree_node *U = Inter::third_child_P(P);
+	inter_tree_node *U = Inter::Tree::third_child(P);
 	if (U->W.data[ID_IFLD] != VAL_IST)
 	CodeGen::FC::frame(gen, U);
 	WRITE(") {\n"); INDENT; INV_A4;
@@ -378,7 +378,7 @@ then the result.
 
 @<Generate primitive for objectloop@> =
 	int in_flag = FALSE;
-	inter_tree_node *U = Inter::third_child_P(P);
+	inter_tree_node *U = Inter::Tree::third_child(P);
 	if ((U->W.data[ID_IFLD] == INV_IST) && (U->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
 		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;

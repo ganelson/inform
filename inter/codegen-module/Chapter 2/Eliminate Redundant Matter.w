@@ -19,8 +19,8 @@ void CodeGen::Eliminate::create_pipeline_stage(void) {
 
 int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {
 	inter_tree *I = step->repository;
-	Inter::traverse_tree(I, CodeGen::Eliminate::package_preserver, NULL, NULL, PACKAGE_IST);
-	Inter::traverse_tree(I, CodeGen::Eliminate::package_destroyer, NULL, NULL, PACKAGE_IST);
+	Inter::Tree::traverse(I, CodeGen::Eliminate::package_preserver, NULL, NULL, PACKAGE_IST);
+	Inter::Tree::traverse(I, CodeGen::Eliminate::package_destroyer, NULL, NULL, PACKAGE_IST);
 	return TRUE;
 }
 
@@ -114,6 +114,6 @@ void CodeGen::Eliminate::package_destroyer(inter_tree *I, inter_tree_node *P, vo
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $3 (type %S)\n",
 			pack->package_name, Inter::Packages::type(pack)->symbol_name);
-		Inter::remove_from_tree(P);
+		Inter::Tree::remove_node(P);
 	}
 }

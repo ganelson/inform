@@ -19,8 +19,8 @@ int CodeGen::ReconcileVerbs::run_pipeline_stage(pipeline_step *step) {
 =
 void CodeGen::ReconcileVerbs::reconcile(inter_tree *I) {
 	dictionary *observed_verbs = Dictionaries::new(1024, TRUE);
-	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs, NULL, 0);
-	Inter::traverse_tree(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs, NULL, 0);
+	Inter::Tree::traverse(I, CodeGen::ReconcileVerbs::visitor1, observed_verbs, NULL, 0);
+	Inter::Tree::traverse(I, CodeGen::ReconcileVerbs::visitor2, observed_verbs, NULL, 0);
 }
 
 void CodeGen::ReconcileVerbs::visitor1(inter_tree *I, inter_tree_node *P, void *v_state) {
@@ -48,7 +48,7 @@ void CodeGen::ReconcileVerbs::visitor2(inter_tree *I, inter_tree_node *P, void *
 	if (P->W.extent > DATA_CONST_IFLD+1) {
 		inter_t V1 = P->W.data[DATA_CONST_IFLD], V2 = P->W.data[DATA_CONST_IFLD+1];
 		if (V1 == DWORD_IVAL) {
-			text_stream *glob_text = Inter::Warehouse::get_text(Inter::warehouse(I), V2);
+			text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), V2);
 			if (Dictionaries::find(observed_verbs, glob_text)) {
 				TEMPORARY_TEXT(nv);
 				WRITE_TO(nv, "!%S", glob_text);

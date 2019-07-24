@@ -15,7 +15,7 @@ void CodeGen::Inventory::create_target(void) {
 int CodeGen::Inventory::inv(code_generation_target *cgt, code_generation *gen) {
 	if (gen->from_step == NULL) internal_error("temporary generations cannot be output");
 	
-	Inter::traverse_tree(gen->from, CodeGen::Inventory::visitor,
+	Inter::Tree::traverse(gen->from, CodeGen::Inventory::visitor,
 		gen->from_step->text_out_file, gen->just_this_package, 0);
 	return TRUE;
 }

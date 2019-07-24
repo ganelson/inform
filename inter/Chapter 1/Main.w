@@ -117,7 +117,7 @@ void Main::act(void) {
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);
 	} else {
-		inter_tree *I = Inter::create();
+		inter_tree *I = Inter::Tree::new();
 		inter_file *IF;
 		LOOP_OVER(IF, inter_file) {
 			if (Inter::Binary::test_file(IF->inter_filename))
