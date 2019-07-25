@@ -13,7 +13,7 @@ Setting up the use of this module.
 @e inter_warehouse_MT
 @e inter_warehouse_room_MT
 @e inter_symbols_table_MT
-@e inter_symbol_MT
+@e inter_symbol_array_MT
 @e inter_data_type_MT
 @e inter_construct_MT
 @e inter_annotation_form_MT
@@ -29,7 +29,6 @@ ALLOCATE_INDIVIDUALLY(inter_tree)
 ALLOCATE_INDIVIDUALLY(inter_warehouse)
 ALLOCATE_INDIVIDUALLY(inter_warehouse_room)
 ALLOCATE_INDIVIDUALLY(inter_symbols_table)
-ALLOCATE_INDIVIDUALLY(inter_symbol)
 ALLOCATE_INDIVIDUALLY(inter_data_type)
 ALLOCATE_INDIVIDUALLY(inter_construct)
 ALLOCATE_INDIVIDUALLY(inter_annotation_form)
@@ -39,6 +38,7 @@ ALLOCATE_INDIVIDUALLY(inter_error_stash)
 ALLOCATE_INDIVIDUALLY(inter_package)
 ALLOCATE_INDIVIDUALLY(inter_node_list)
 ALLOCATE_INDIVIDUALLY(inter_node_list_entry)
+ALLOCATE_IN_ARRAYS(inter_symbol, 1024)
 ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
 
 @h The beginning.

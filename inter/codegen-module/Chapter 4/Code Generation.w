@@ -164,7 +164,7 @@ void CodeGen::generate(code_generation *gen) {
 }
 
 @<Phase one - preparation@> =
-	Inter::Symbols::clear_transient_flags();
+	Inter::Tree::traverse(gen->from, CodeGen::clear_transients, NULL, NULL, PACKAGE_IST);
 	CodeGen::FC::prepare(gen);
 	CodeGen::CL::prepare(gen);
 	CodeGen::Var::prepare(gen);
@@ -205,4 +205,12 @@ void CodeGen::mark(inter_symbol *symb_name) {
 
 void CodeGen::unmark(inter_symbol *symb_name) {
 	Inter::Symbols::clear_flag(symb_name, TRAVERSE_MARK_BIT);
+}
+
+void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_package *pack = Inter::Package::defined_by_frame(P);
+	inter_symbols_table *T = Inter::Packages::scope(pack);
+	for (int i=0; i<T->size; i++)
+		if (T->symbol_array[i])
+			Inter::Symbols::clear_transient_flags(T->symbol_array[i]);
 }

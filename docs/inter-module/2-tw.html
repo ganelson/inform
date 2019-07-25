@@ -97,7 +97,7 @@
         <span class="identifier">IS</span><span class="plain">-</span><span class="element">&gt;bytecode</span><span class="plain"> = (</span><span class="constant">inter_t</span><span class="plain"> *)</span>
             <span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">capacity</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="constant">inter_t</span><span class="plain">), </span><span class="constant">INTER_BYTECODE_MREASON</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INTER_MEMORY</span><span class="plain">, </span><span class="string">"Created repository %d segment %d with capacity %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">owner</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">IS</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">IS</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">);</span>
+            <span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">, </span><span class="identifier">IS</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">, </span><span class="identifier">IS</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IS</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -160,7 +160,7 @@
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">new_size</span><span class="plain"> &lt; 2*</span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">) </span><span class="identifier">new_size</span><span class="plain"> = 2*</span><span class="identifier">new_size</span><span class="plain">;</span>
 
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INTER_MEMORY</span><span class="plain">, </span><span class="string">"Giving warehouse %d frame list of size %d (up from %d)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">warehouse</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">new_size</span><span class="plain">, </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">);</span>
+                <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">, </span><span class="identifier">new_size</span><span class="plain">, </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;capacity</span><span class="plain">);</span>
 
             <span class="reserved">inter_resource_holder</span><span class="plain"> *</span><span class="identifier">storage</span><span class="plain"> = (</span><span class="reserved">inter_resource_holder</span><span class="plain"> *) </span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">new_size</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">inter_resource_holder</span><span class="plain">), </span><span class="constant">INTER_LINKS_MREASON</span><span class="plain">);</span>
             <span class="reserved">inter_resource_holder</span><span class="plain"> *</span><span class="identifier">old</span><span class="plain"> = </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">;</span>
@@ -350,7 +350,7 @@
 <p class="endnote">The structure inter_error_stash is private to this section.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-in.html">Back to 'Inter Nodes'</a></li><li><a href="2-ifl.html">Continue with 'Inter Frame Lists'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-in.html">Back to 'Inter Nodes'</a></li><li><a href="2-inl.html">Continue with 'Inter Node Lists'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

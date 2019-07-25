@@ -249,7 +249,7 @@ we also have to direct it to a given text.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Inter::Symbols::clear_transient_flags</span><span class="plain">();</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::clear_transients</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">PACKAGE_IST</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::FC::prepare</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::CL::prepare</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::Var::prepare</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
@@ -323,6 +323,14 @@ we also have to direct it to a given text.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::unmark</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb_name</span><span class="plain">) {</span>
         <span class="identifier">Inter::Symbols::clear_flag</span><span class="plain">(</span><span class="identifier">symb_name</span><span class="plain">, </span><span class="identifier">TRAVERSE_MARK_BIT</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::clear_transients</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">Inter::Package::defined_by_frame</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="identifier">size</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="identifier">symbol_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])</span>
+                <span class="identifier">Inter::Symbols::clear_transient_flags</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="identifier">symbol_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -332,6 +340,8 @@ we also have to direct it to a given text.
 <p class="endnote">The function CodeGen::mark is used in 4/iap (<a href="4-iap.html#SP5_8_4">&#167;5.8.4</a>), 5/fi (<a href="5-fi.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function CodeGen::unmark is used in 4/iap (<a href="4-iap.html#SP5_8">&#167;5.8</a>).</p>
+
+<p class="endnote">The function CodeGen::clear_transients is used in <a href="#SP8_1">&#167;8.1</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 4: Inter to Final Code.)</i></li><li><a href="4-fc.html">Continue with 'Frame Control'</a></li></ul><hr class="tocbar">

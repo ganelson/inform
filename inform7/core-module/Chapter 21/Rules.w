@@ -688,14 +688,14 @@ void Rules::compile_definition(rule *R, int *i, int max_i) {
 
 void Rules::unimport(rule *R) {
 	if (R->defn_compiled == FALSE) { R->do_not_import = TRUE; return; }
-	inter_symbol *symb = InterNames::to_symbol(Rules::iname(R));
-	if (symb->importation_frame) {
-		LOG("Unimport rule %n!\n", Rules::iname(R));
-		Inter::Tree::remove_node(symb->importation_frame);
+//	inter_symbol *symb = InterNames::to_symbol(Rules::iname(R));
+//	if (symb->importation_frame) {
+//		LOG("Unimport rule %n!\n", Rules::iname(R));
+//		Inter::Tree::remove_node(symb->importation_frame);
 		R->defn_compiled = FALSE;
 		R->do_not_import = TRUE;
 		R->defn_as_phrase->imported = FALSE;
-	}
+//	}
 }
 
 @ This is the trickiest case: where the user has asked for something like

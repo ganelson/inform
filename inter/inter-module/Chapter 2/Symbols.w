@@ -11,7 +11,6 @@ To manage named symbols in inter code.
 
 @e DEFINED_ISYMD from 1
 @e UNDEFINED_ISYMD
-@e LINKED_ISYMD
 
 @e PRIVATE_ISYMS from 1
 @e PUBLIC_ISYMS
@@ -20,6 +19,7 @@ To manage named symbols in inter code.
 
 =
 typedef struct inter_symbol {
+	int allocation_id;
 	inter_t symbol_ID;
 	struct inter_symbols_table *owning_table;
 	struct text_stream *symbol_name;
@@ -27,45 +27,36 @@ typedef struct inter_symbol {
 	int symbol_scope;
 	int definition_status;
 	struct inter_tree_node *definition;
-	struct inter_tree_node *importation_frame;
-	struct inter_bookmark following_symbol;
 	struct inter_symbol *equated_to;
 	struct text_stream *equated_name;
-	int transient_flags;
+	int symbol_flags;
 	int no_symbol_annotations;
 	struct inter_annotation symbol_annotations[MAX_INTER_ANNOTATIONS_PER_SYMBOL];
-	struct text_stream *splat_text;
 	struct text_stream *translate_text;
-	struct text_stream *export_name;
 	struct text_stream *append_text;
-	struct inter_symbol *bridge_symbol;
-	MEMORY_MANAGEMENT
 } inter_symbol;
 
 @ =
+int next_symbol_aid = 0;
 inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, inter_t ID) {
 	if (Str::len(name) == 0) internal_error("symbol cannot have empty text as identifier");
 
 	inter_symbol *symb = CREATE(inter_symbol);
-
+	symb->allocation_id = next_symbol_aid++;
 	symb->owning_table = T;
 	symb->symbol_ID = ID;
 	symb->symbol_type = MISC_ISYMT;
 	symb->symbol_scope = PUBLIC_ISYMS;
 	symb->symbol_name = Str::duplicate(name);
 	Inter::Symbols::undefine(symb);
-	symb->importation_frame = NULL;
 	symb->no_symbol_annotations = 0;
 	for (int i=0; i<MAX_INTER_ANNOTATIONS_PER_SYMBOL; i++)
 		symb->symbol_annotations[i] = Inter::Defn::invalid_annotation();
 	symb->equated_to = NULL;
 	symb->equated_name = NULL;
-	symb->transient_flags = 0;
-	symb->splat_text = NULL;
+	symb->symbol_flags = 0;
 	symb->translate_text = NULL;
-	symb->export_name = NULL;
 	symb->append_text = NULL;
-	symb->bridge_symbol = NULL;
 	LOGIF(INTER_SYMBOLS, "Created symbol $3 in $4\n", symb, T);
 
 	return symb;
@@ -182,44 +173,23 @@ void Inter::Symbols::undefine(inter_symbol *S) {
 	S->definition_status = UNDEFINED_ISYMD;
 }
 
-void Inter::Symbols::clear_transient_flags(void) {
-	inter_symbol *symb;
-	LOOP_OVER(symb, inter_symbol) symb->transient_flags = 0;
+void Inter::Symbols::clear_transient_flags(inter_symbol *symb) {
+	symb->symbol_flags = (symb->symbol_flags) & NONTRANSIENT_SYMBOL_BITS;
 }
 
 int Inter::Symbols::get_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
-	return (symb->transient_flags & f)?TRUE:FALSE;
+	return (symb->symbol_flags & f)?TRUE:FALSE;
 }
 
 void Inter::Symbols::set_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
-	symb->transient_flags = symb->transient_flags | f;
+	symb->symbol_flags = symb->symbol_flags | f;
 }
 
 void Inter::Symbols::clear_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
-	if (symb->transient_flags & f) symb->transient_flags = symb->transient_flags - f;
-}
-
-void Inter::Symbols::set_splat(inter_symbol *symb, text_stream *S) {
-	if (symb == NULL) internal_error("no symbol");
-	symb->splat_text = S;
-}
-
-text_stream *Inter::Symbols::get_splat(inter_symbol *symb) {
-	if (symb == NULL) internal_error("no symbol");
-	return symb->splat_text;
-}
-
-void Inter::Symbols::set_bridge(inter_symbol *symb, inter_symbol *B) {
-	if (symb == NULL) internal_error("no symbol");
-	symb->bridge_symbol = B;
-}
-
-inter_symbol *Inter::Symbols::get_bridge(inter_symbol *symb) {
-	if (symb == NULL) internal_error("no symbol");
-	return symb->bridge_symbol;
+	if (symb->symbol_flags & f) symb->symbol_flags = symb->symbol_flags - f;
 }
 
 void Inter::Symbols::set_translate(inter_symbol *symb, text_stream *S) {
@@ -230,16 +200,6 @@ void Inter::Symbols::set_translate(inter_symbol *symb, text_stream *S) {
 text_stream *Inter::Symbols::get_translate(inter_symbol *symb) {
 	if (symb == NULL) internal_error("no symbol");
 	return symb->translate_text;
-}
-
-void Inter::Symbols::set_export_name(inter_symbol *symb, text_stream *S) {
-	if (symb == NULL) internal_error("no symbol");
-	symb->export_name = S;
-}
-
-text_stream *Inter::Symbols::get_export_name(inter_symbol *symb) {
-	if (symb == NULL) internal_error("no symbol");
-	return symb->export_name;
 }
 
 void Inter::Symbols::set_append(inter_symbol *symb, text_stream *S) {

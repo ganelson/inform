@@ -54,6 +54,8 @@ symbol.
 @d EXTERN_TARGET_BIT 64
 @d ALIAS_ONLY_BIT 128
 
+@d NONTRANSIENT_SYMBOL_BITS (MAKE_NAME_UNIQUE + ALIAS_ONLY_BIT)
+
 @ =
 inter_annotation_form *invalid_IAF = NULL;
 inter_annotation_form *name_IAF = NULL;
