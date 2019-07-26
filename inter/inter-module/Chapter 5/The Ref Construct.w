@@ -70,8 +70,7 @@ void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 
 void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
+	inter_symbols_table *locals = Inter::Packages::scope(pack);
 	if (locals == NULL) { *E = Inter::Node::error(P, I"function has no symbols table", NULL); return; }
 	inter_symbol *ref_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
 	if (ref_kind) {

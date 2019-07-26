@@ -99,7 +99,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::definition</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">-&gt;</span><span class="identifier">package_name</span><span class="plain">);</span>
+        <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Inter::Packages::definition</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">);</span>
         <span class="functiontext">CodeGen::Labels::traverse_code_tree</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">);</span>
 </pre>
 

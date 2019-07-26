@@ -45,7 +45,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 					LOOP_THROUGH_INTER_CHILDREN(C, P) {
 						if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 							inter_package *R = Inter::Package::defined_by_frame(C);
-							if (CodeGen::marked(R->package_name)) continue;
+							if (Inter::Packages::get_flag(R, MARK_PACKAGE_FLAG)) continue;
 							inter_symbol *ptype = Inter::Packages::type(R);
 							OUTDENT;
 							WRITE("  %S ", ptype->symbol_name);
@@ -70,7 +70,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 										pos += Str::len(name) + 2;
 										if (pos > 80) { WRITE("\n"); pos = Str::len(name) + 2; }
 										WRITE("%S", name);
-										CodeGen::mark(R2->package_name);
+										Inter::Packages::set_flag(R2, MARK_PACKAGE_FLAG);
 										first = FALSE;
 									}
 								}

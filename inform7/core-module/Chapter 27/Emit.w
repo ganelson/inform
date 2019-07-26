@@ -729,9 +729,9 @@ void Emit::code_comment(text_stream *text) {
 }
 
 inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_package **P) {
+	if (ptype == NULL) internal_error("no package type");
 	inter_t B = Emit::baseline(Packaging::at());
 	inter_symbol *rsymb = Emit::define_symbol(iname);
-	if (ptype == NULL) internal_error("no package type");
 	inter_package *IP = NULL;
 	Emit::guard(Inter::Package::new_package(Packaging::at(), rsymb, ptype, B, NULL, &IP));
 	if (IP) {
@@ -1155,9 +1155,9 @@ void Emit::entire_splat(text_stream *content, inter_t level) {
 	Str::copy(glob_storage, content);
 
 	if (level > Emit::baseline(Packaging::at())) {
-		Emit::guard(Inter::Splat::new(Emit::at(), current_inter_routine, SID, 0, level, 0, NULL));
+		Emit::guard(Inter::Splat::new(Emit::at(), SID, 0, level, 0, NULL));
 	} else {
-		Emit::guard(Inter::Splat::new(Packaging::at(), current_inter_routine, SID, 0, level, 0, NULL));
+		Emit::guard(Inter::Splat::new(Packaging::at(), SID, 0, level, 0, NULL));
 	}
 }
 

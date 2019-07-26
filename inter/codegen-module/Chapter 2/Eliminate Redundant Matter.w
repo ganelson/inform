@@ -97,7 +97,7 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 	if (ptype == function_ptype_symbol) rationale = I"it's a _function block";
 	if (ptype == action_ptype_symbol) rationale = I"it's an _action subpackage";
 	if (rationale) {
-		inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
+		inter_tree_node *D = Inter::Packages::definition(pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *P = Inter::Package::defined_by_frame(C);
@@ -113,8 +113,8 @@ Whatever has not been preserved, is now destroyed.
 void CodeGen::Eliminate::package_destroyer(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
-		LOGIF(ELIMINATION, "Striking unused package $3 (type %S)\n",
-			pack->package_name, Inter::Packages::type(pack)->symbol_name);
+		LOGIF(ELIMINATION, "Striking unused package $6 (type %S)\n",
+			pack, Inter::Packages::type(pack)->symbol_name);
 		Inter::Tree::remove_node(P);
 	}
 }

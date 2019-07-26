@@ -20,6 +20,7 @@ typedef struct inter_package {
 @d LINKAGE_PACKAGE_FLAG 2
 @d USED_PACKAGE_FLAG 4
 @d ROOT_PACKAGE_FLAG 8
+@d MARK_PACKAGE_FLAG 16
 
 @ =
 inter_tree *default_ptree = NULL;
@@ -32,6 +33,11 @@ inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
 	pack->package_flags = 0;
 	pack->index_n = n;
 	return pack;
+}
+
+inter_tree_node *Inter::Packages::definition(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	return Inter::Symbols::definition(pack->package_name);
 }
 
 inter_tree *Inter::Packages::tree(inter_package *pack) {
@@ -80,7 +86,7 @@ void Inter::Packages::make_rootlike(inter_package *pack) {
 inter_package *Inter::Packages::parent(inter_package *pack) {
 	if (pack) {
 		if (Inter::Packages::is_rootlike(pack)) return NULL;
-		inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
+		inter_tree_node *D = Inter::Packages::definition(pack);
 		inter_tree_node *P = Inter::Tree::parent(D);
 		if (P == NULL) return NULL;
 		return Inter::Package::defined_by_frame(P);
@@ -91,8 +97,7 @@ inter_package *Inter::Packages::parent(inter_package *pack) {
 void Inter::Packages::unmark_all(void) {
 	inter_package *pack;
 	LOOP_OVER(pack, inter_package)
-		if (pack->package_name)
-			CodeGen::unmark(pack->package_name);
+		Inter::Packages::clear_flag(pack, MARK_PACKAGE_FLAG);
 }
 
 void Inter::Packages::set_scope(inter_package *P, inter_symbols_table *T) {
@@ -111,8 +116,7 @@ void Inter::Packages::set_name(inter_package *P, inter_symbol *N) {
 
 void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 	inter_package *pack = (inter_package *) vp;
-	if (pack == NULL) WRITE("<null-package>");
-	else WRITE("%S", Inter::Packages::name(pack));
+	Inter::Packages::write_url_name(OUT, pack);
 }
 
 inter_package *Inter::Packages::basics(inter_tree *I) {
@@ -136,7 +140,7 @@ inter_package *Inter::Packages::template(inter_tree *I) {
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 	if (found) return found;
-	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Packages::definition(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
@@ -154,7 +158,7 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stre
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
 	inter_package *main_package = Inter::Tree::main_package(I);
 	if (main_package) {
-		inter_tree_node *D = Inter::Symbols::definition(main_package->package_name);
+		inter_tree_node *D = Inter::Packages::definition(main_package);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *Q = Inter::Package::defined_by_frame(C);
@@ -197,9 +201,8 @@ inter_symbol *Inter::Packages::type(inter_package *P) {
 
 int Inter::Packages::baseline(inter_package *P) {
 	if (P == NULL) return 0;
-	if (P->package_name == NULL) return 0;
 	if (Inter::Packages::is_rootlike(P)) return 0;
-	return Inter::Defn::get_level(Inter::Symbols::definition(P->package_name));
+	return Inter::Defn::get_level(Inter::Packages::definition(P));
 }
 
 text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) {
@@ -211,4 +214,31 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 		return Inter::Warehouse::get_text(Inter::Tree::warehouse(Inter::Packages::tree(P)), val2);
 	}
 	return NULL;
+}
+
+void Inter::Packages::write_url_name(OUTPUT_STREAM, inter_package *P) {
+	if (P == NULL) { WRITE("<none>"); return; }
+	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
+	int chain_length = 0;
+	while (P) {
+		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
+		chain[chain_length++] = P;
+		P = Inter::Packages::parent(P);
+	}
+	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", Inter::Packages::name(chain[i]));
+}
+
+int Inter::Packages::get_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	return (P->package_flags & f)?TRUE:FALSE;
+}
+
+void Inter::Packages::set_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	P->package_flags = P->package_flags | f;
+}
+
+void Inter::Packages::clear_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	if (P->package_flags & f) P->package_flags = P->package_flags - f;
 }

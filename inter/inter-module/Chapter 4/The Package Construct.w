@@ -47,7 +47,6 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symbol *package_name, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
 	inter_t STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
-	LOGIF(INTER_SYMBOLS, "Package $3 at IBM $5\n", package_name, IBM);
 	inter_tree_node *P = Inter::Node::fill_4(IBM,
 		PACKAGE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, package_name), Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
@@ -66,6 +65,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 	Inter::Warehouse::attribute_resource(Inter::Bookmarks::warehouse(IBM), STID, pack);
 
 	if (created) *created = pack;
+	LOGIF(INTER_SYMBOLS, "Package $6 at IBM $5\n", pack, IBM);
 
 	return NULL;
 }

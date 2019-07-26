@@ -399,13 +399,13 @@ void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) 
 	inter_t c = Inter::Node::get_package(P)->index_n;
 	inter_t a = Inter::Node::get_package_alt(P);
 	if (c != a) {
-		LOG("Frame gives package as $3, but its location is in package $3\n",
-			Inter::Node::ID_to_package(P, c)->package_name,
-			Inter::Node::ID_to_package(P, a)->package_name);
+		LOG("Frame gives package as $6, but its location is in package $6\n",
+			Inter::Node::ID_to_package(P, c),
+			Inter::Node::ID_to_package(P, a));
 		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
 			Inter::Node::ID_to_package(P, c)->index_n,
 			Inter::Node::ID_to_package(P, a)->index_n);
-		internal_error("zap");
+		internal_error("misplaced package");
 	}
 
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_children_inner(P));

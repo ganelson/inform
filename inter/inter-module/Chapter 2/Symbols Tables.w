@@ -214,8 +214,7 @@ inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_nod
 }
 
 inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_t ID) {
-	inter_symbol *routine = owner->package_name;
-	return Inter::SymbolsTables::symbol_from_id(Inter::Package::local_symbols(routine), ID);
+	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), ID);
 }
 
 inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_table(inter_t val1, inter_t val2, inter_symbols_table *T) {

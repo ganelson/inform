@@ -27,7 +27,7 @@ inter_bookmark Inter::Bookmarks::at_start_of_this_repository(inter_tree *I) {
 inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	if (pack == NULL) internal_error("no package supplied"); 
 	inter_bookmark IBM;
-	IBM.R = Inter::Symbols::definition(pack->package_name);
+	IBM.R = Inter::Packages::definition(pack);
 	IBM.placement_wrt_R = AS_LAST_CHILD_OF_ICPLACEMENT;
 	return IBM;
 }
@@ -43,7 +43,7 @@ inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_tree_node
 void Inter::Bookmarks::set_current_package(inter_bookmark *IBM, inter_package *P) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	if (P == NULL) internal_error("invalid package supplied");
-	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Packages::definition(P);
 	if (D == NULL) D = Inter::Packages::tree(P)->root_node;
 	IBM->R = Inter::Tree::last_child(D);
 	IBM->placement_wrt_R = AFTER_ICPLACEMENT;

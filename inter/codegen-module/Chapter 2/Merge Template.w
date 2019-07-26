@@ -76,7 +76,7 @@ inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stre
 		linkable_namespace = Dictionaries::new(512, FALSE);
 		inter_package *main_package = Inter::Tree::main_package(I);
 		if (main_package) {
-			inter_tree_node *D = Inter::Symbols::definition(main_package->package_name);
+			inter_tree_node *D = Inter::Packages::definition(main_package);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 					inter_package *P = Inter::Package::defined_by_frame(C);
@@ -94,7 +94,7 @@ inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stre
 
 void CodeGen::MergeTemplate::build_r(inter_package *P) {
 	CodeGen::MergeTemplate::build_only(P);
-	inter_tree_node *D = Inter::Symbols::definition(P->package_name);
+	inter_tree_node *D = Inter::Packages::definition(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
@@ -143,11 +143,11 @@ void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 	if (ERR) { Inter::Errors::issue(ERR); internal_error("inter error"); }
 }
 
-void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level, inter_symbol *code_block) {
+void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level) {
 	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 	Str::copy(glob_storage, content);
-	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, code_block, SID, 0, level, 0, NULL));
+	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
 }
 
 @
@@ -215,7 +215,7 @@ void CodeGen::MergeTemplate::receive_raw(text_stream *S, I6T_kit *kit) {
 void CodeGen::MergeTemplate::chunked_raw(text_stream *S, I6T_kit *kit) {
 	if (Str::len(S) == 0) return;
 	PUT_TO(S, '\n');
-	CodeGen::MergeTemplate::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1), Inter::Bookmarks::package(kit->IBM)->package_name);
+	CodeGen::MergeTemplate::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1));
 	Str::clear(S);
 }
 

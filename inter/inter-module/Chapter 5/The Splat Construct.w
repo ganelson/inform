@@ -67,7 +67,7 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Splat::new(IBM, routine, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
+	*E = Inter::Splat::new(IBM, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
 }
 
 inter_t Inter::Splat::parse_plm(text_stream *S) {
@@ -117,7 +117,7 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 	}
 }
 
-inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_symbol *routine, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
+inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inter::Node::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;

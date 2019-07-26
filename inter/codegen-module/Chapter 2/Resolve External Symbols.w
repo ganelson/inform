@@ -58,7 +58,7 @@ void CodeGen::Externals::visitor(inter_tree *I, inter_tree_node *P, void *state)
 				S->equated_to = D;
 				Inter::Symbols::set_flag(D, EXTERN_TARGET_BIT);
 				if (!Inter::Symbols::is_defined(D)) {
-					LOG("In package $3:\n", Q->package_name);
+					LOG("In package $6:\n", Q);
 					LOG("$3 == $3 which is undefined\n", S, D);
 					WRITE_TO(STDERR, "Failed to resolve symbol: %S\n", D->symbol_name);
 					resolution_failed = TRUE;

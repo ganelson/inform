@@ -284,7 +284,7 @@ void Inter::Tree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tre
 void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, inter_package *mp, int filter) {
 	if (mp == NULL) mp = Inter::Tree::main_package(from);
 	if (mp) {
-		inter_tree_node *D = Inter::Symbols::definition(mp->package_name);
+		inter_tree_node *D = Inter::Packages::definition(mp);
 		if ((filter == 0) ||
 			((filter > 0) && (D->W.data[ID_IFLD] == (inter_t) filter)) ||
 			((filter < 0) && (D->W.data[ID_IFLD] != (inter_t) -filter)))

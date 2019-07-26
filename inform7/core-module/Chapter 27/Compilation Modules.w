@@ -58,10 +58,10 @@ compilation_module *Modules::new(parse_node *from) {
 	ParseTree::set_module(from, C);
 	Modules::propagate_downwards(from->down, C);
 
-	TEMPORARY_TEXT(package_name);
+	TEMPORARY_TEXT(pname);
 	@<Compose a name for the module package this will lead to@>;
-	C->inter_presence = Packaging::get_module(package_name);
-	DISCARD_TEXT(package_name);
+	C->inter_presence = Packaging::get_module(pname);
+	DISCARD_TEXT(pname);
 
 	if (owner) {
 		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_id.raw_author_name);
@@ -81,11 +81,11 @@ compilation_module *Modules::new(parse_node *from) {
 compiled from the compilation module will go into a package of that name.
 
 @<Compose a name for the module package this will lead to@> =
-	if (owner == standard_rules_extension) WRITE_TO(package_name, "standard_rules");
-	else if (owner == NULL) WRITE_TO(package_name, "source_text");
+	if (owner == standard_rules_extension) WRITE_TO(pname, "standard_rules");
+	else if (owner == NULL) WRITE_TO(pname, "source_text");
 	else {
-		WRITE_TO(package_name, "%X", Extensions::Files::get_eid(owner));
-		LOOP_THROUGH_TEXT(pos, package_name)
+		WRITE_TO(pname, "%X", Extensions::Files::get_eid(owner));
+		LOOP_THROUGH_TEXT(pos, pname)
 			if (Str::get(pos) == ' ')
 				Str::put(pos, '_');
 			else

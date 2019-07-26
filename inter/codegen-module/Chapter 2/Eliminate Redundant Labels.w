@@ -49,7 +49,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
-	inter_tree_node *D = Inter::Symbols::definition(pack->package_name);
+	inter_tree_node *D = Inter::Packages::definition(pack);
 	CodeGen::Labels::traverse_code_tree(D);
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this

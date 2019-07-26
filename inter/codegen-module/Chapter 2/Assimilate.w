@@ -810,7 +810,7 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_symbol *block_n
 	return TRUE;
 	#endif
 	#ifndef CORE_MODULE
-	CodeGen::MergeTemplate::entire_splat(IBM, NULL, body, offset, block_name);
+	CodeGen::MergeTemplate::entire_splat(IBM, NULL, body, offset);
 	LOG("Splat %d\n", rb_splat_count++);
 	return FALSE;
 	#endif
