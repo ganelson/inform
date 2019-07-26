@@ -4,31 +4,13 @@ Defining the Inter format.
 
 @
 
-@d MAX_INTER_ANNOTATIONS_PER_SYMBOL 8
-
-=
-typedef struct inter_annotation_form {
-	inter_t annotation_ID;
-	int textual_flag;
-	struct text_stream *annotation_keyword;
-	MEMORY_MANAGEMENT
-} inter_annotation_form;
-
-typedef struct inter_annotation {
-	struct inter_annotation_form *annot;
-	inter_t annot_value;
-} inter_annotation;
-
-@
-
 @d MAX_INTER_CONSTRUCTS 100
 
 =
 typedef struct inter_line_parse {
 	struct text_stream *line;
 	struct match_results mr;
-	int no_annotations;
-	struct inter_annotation *annotations;
+	struct inter_annotation_set set;
 	inter_t terminal_comment;
 	int indent_level;
 } inter_line_parse;
@@ -131,30 +113,6 @@ void Inter::Defn::create_language(void) {
 	Inter::Splat::define();
 }
 
-inter_annotation_form *Inter::Defn::create_annotation(inter_t ID, text_stream *keyword, int textual) {
-	inter_annotation_form *IAF;
-	LOOP_OVER(IAF, inter_annotation_form)
-		if (Str::eq(keyword, IAF->annotation_keyword)) {
-			if (IAF->annotation_ID == ID)
-				return IAF;
-			else
-				return NULL;
-		}
-
-	IAF = CREATE(inter_annotation_form);
-	IAF->annotation_ID = ID;
-	IAF->annotation_keyword = Str::duplicate(keyword);
-	IAF->textual_flag = textual;
-	return IAF;
-}
-
-inter_annotation Inter::Defn::invalid_annotation(void) {
-	inter_annotation IA;
-	IA.annot = invalid_IAF;
-	IA.annot_value = 0;
-	return IA;
-}
-
 inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
 	inter_t val = 0;
 	int textual = FALSE;
@@ -182,35 +140,10 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (Str::eq(keyword, IAF->annotation_keyword)) {
 			if (IAF->textual_flag != textual) *E = Inter::Errors::plain(I"bad type for =value", eloc);
-			inter_annotation IA;
-			IA.annot = IAF;
-			IA.annot_value = val;
-			return IA;
+			return Inter::Annotations::value_annotation(IAF, val);
 		}
 	*E = Inter::Errors::plain(I"unrecognised annotation", eloc);
-	return Inter::Defn::invalid_annotation();
-}
-
-inter_annotation Inter::Defn::annotation_from_bytecode(inter_t c1, inter_t c2) {
-	inter_annotation_form *IAF;
-	LOOP_OVER(IAF, inter_annotation_form)
-		if (c1 == IAF->annotation_ID) {
-			inter_annotation IA;
-			IA.annot = IAF;
-			IA.annot_value = c2;
-			return IA;
-		}
-	return Inter::Defn::invalid_annotation();
-}
-
-int Inter::Defn::is_invalid(inter_annotation IA) {
-	if ((IA.annot == NULL) || (IA.annot->annotation_ID == INVALID_IANN)) return TRUE;
-	return FALSE;
-}
-
-void Inter::Defn::annotation_to_bytecode(inter_annotation IA, inter_t *c1, inter_t *c2) {
-	*c1 = IA.annot->annotation_ID;
-	*c2 = IA.annot_value;
+	return Inter::Annotations::invalid_annotation();
 }
 
 void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_annotation IA) {
@@ -288,9 +221,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	ilp.line = line;
 	ilp.mr = Regexp::create_mr();
 	ilp.terminal_comment = 0;
-	ilp.no_annotations = 0;
-	inter_annotation annotations[MAX_INTER_ANNOTATIONS_PER_SYMBOL];
-	ilp.annotations = annotations;
+	ilp.set = Inter::Annotations::new_set();
 	ilp.indent_level = 0;
 
 	LOOP_THROUGH_TEXT(P, ilp.line) {
@@ -331,9 +262,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		inter_error_message *E = NULL;
 		inter_annotation IA = Inter::Defn::read_annotation(Inter::Bookmarks::tree(IBM), ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
-		if (ilp.no_annotations >= MAX_INTER_ANNOTATIONS_PER_SYMBOL)
-			return Inter::Errors::quoted(I"too many annotations", ilp.mr.exp[1], eloc);
-		annotations[ilp.no_annotations++] = IA;
+		Inter::Annotations::add_to_set(&(ilp.set), IA);
 	}
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)

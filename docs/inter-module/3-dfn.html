@@ -15,33 +15,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain"> 8</span>
-</pre>
-
-<pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation_form</span><span class="plain"> {</span>
-        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">annotation_ID</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual_flag</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">annotation_keyword</span><span class="plain">;</span>
-        <span class="identifier">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">inter_annotation_form</span><span class="plain">;</span>
-
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation_form</span><span class="plain"> *</span><span class="identifier">annot</span><span class="plain">;</span>
-        <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">annot_value</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">inter_annotation</span><span class="plain">;</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure inter_annotation_form is accessed in 2/sym, 3/iibf, 4/tcc2 and here.</p>
-
-<p class="endnote">The structure inter_annotation is accessed in 2/sym, 4/tcc2 and here.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
-
-
-<pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MAX_INTER_CONSTRUCTS</span><span class="plain"> 100</span>
 </pre>
 
@@ -49,8 +22,7 @@
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_line_parse</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_annotations</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation</span><span class="plain"> *</span><span class="identifier">annotations</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation_set</span><span class="plain"> </span><span class="identifier">set</span><span class="plain">;</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">terminal_comment</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indent_level</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">inter_line_parse</span><span class="plain">;</span>
@@ -93,13 +65,13 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Defn::create_construct is used in <a href="#SP4">&#167;4</a>, 4/tnc (<a href="4-tnc.html#SP1">&#167;1</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP1">&#167;1</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tvc (<a href="4-tvc.html#SP1">&#167;1</a>), 4/tpc (<a href="4-tpc.html#SP1">&#167;1</a>), 4/tlc (<a href="4-tlc.html#SP1">&#167;1</a>), 4/tac (<a href="4-tac.html#SP1">&#167;1</a>), 4/tpc2 (<a href="4-tpc2.html#SP1">&#167;1</a>), 4/tpc3 (<a href="4-tpc3.html#SP1">&#167;1</a>), 4/tkc (<a href="4-tkc.html#SP1">&#167;1</a>), 4/tdc (<a href="4-tdc.html#SP1">&#167;1</a>), 4/tvc2 (<a href="4-tvc2.html#SP1">&#167;1</a>), 4/tcc2 (<a href="4-tcc2.html#SP1">&#167;1</a>), 4/trc (<a href="4-trc.html#SP1">&#167;1</a>), 4/tic (<a href="4-tic.html#SP1">&#167;1</a>), 4/tpc4 (<a href="4-tpc4.html#SP1">&#167;1</a>), 4/tpc5 (<a href="4-tpc5.html#SP1">&#167;1</a>), 4/tpc6 (<a href="4-tpc6.html#SP1">&#167;1</a>), 4/tpc7 (<a href="4-tpc7.html#SP1">&#167;1</a>), 5/tlc (<a href="5-tlc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP1">&#167;1</a>), 5/tic (<a href="5-tic.html#SP1">&#167;1</a>), 5/trc (<a href="5-trc.html#SP1">&#167;1</a>), 5/tvc (<a href="5-tvc.html#SP1">&#167;1</a>), 5/tlc3 (<a href="5-tlc3.html#SP1">&#167;1</a>), 5/tcc (<a href="5-tcc.html#SP1">&#167;1</a>), 5/tec (<a href="5-tec.html#SP1">&#167;1</a>), 5/trc2 (<a href="5-trc2.html#SP1">&#167;1</a>), 5/tcc2 (<a href="5-tcc2.html#SP1">&#167;1</a>), 5/tsc (<a href="5-tsc.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Inter::Defn::create_construct is used in <a href="#SP3">&#167;3</a>, 4/tnc (<a href="4-tnc.html#SP1">&#167;1</a>), 4/tcc (<a href="4-tcc.html#SP1">&#167;1</a>), 4/tmc (<a href="4-tmc.html#SP1">&#167;1</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tvc (<a href="4-tvc.html#SP1">&#167;1</a>), 4/tpc (<a href="4-tpc.html#SP1">&#167;1</a>), 4/tlc (<a href="4-tlc.html#SP1">&#167;1</a>), 4/tac (<a href="4-tac.html#SP1">&#167;1</a>), 4/tpc2 (<a href="4-tpc2.html#SP1">&#167;1</a>), 4/tpc3 (<a href="4-tpc3.html#SP1">&#167;1</a>), 4/tkc (<a href="4-tkc.html#SP1">&#167;1</a>), 4/tdc (<a href="4-tdc.html#SP1">&#167;1</a>), 4/tvc2 (<a href="4-tvc2.html#SP1">&#167;1</a>), 4/tcc2 (<a href="4-tcc2.html#SP1">&#167;1</a>), 4/trc (<a href="4-trc.html#SP1">&#167;1</a>), 4/tic (<a href="4-tic.html#SP1">&#167;1</a>), 4/tpc4 (<a href="4-tpc4.html#SP1">&#167;1</a>), 4/tpc5 (<a href="4-tpc5.html#SP1">&#167;1</a>), 4/tpc6 (<a href="4-tpc6.html#SP1">&#167;1</a>), 4/tpc7 (<a href="4-tpc7.html#SP1">&#167;1</a>), 5/tlc (<a href="5-tlc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP1">&#167;1</a>), 5/tic (<a href="5-tic.html#SP1">&#167;1</a>), 5/trc (<a href="5-trc.html#SP1">&#167;1</a>), 5/tvc (<a href="5-tvc.html#SP1">&#167;1</a>), 5/tlc3 (<a href="5-tlc3.html#SP1">&#167;1</a>), 5/tcc (<a href="5-tcc.html#SP1">&#167;1</a>), 5/tec (<a href="5-tec.html#SP1">&#167;1</a>), 5/trc2 (<a href="5-trc2.html#SP1">&#167;1</a>), 5/tcc2 (<a href="5-tcc2.html#SP1">&#167;1</a>), 5/tsc (<a href="5-tsc.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The structure inter_line_parse is accessed in 4/tcc, 4/tmc, 4/tsc, 4/tvc, 4/tpc, 4/tlc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
 
 <p class="endnote">The structure inter_construct is accessed in 4/tnc, 4/tcc, 4/tsc, 4/tvc, 4/tpc, 4/tpc2, 4/tpc3, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 
 <pre class="definitions">
@@ -120,7 +92,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
 <pre class="definitions">
@@ -170,30 +142,6 @@
         <span class="functiontext">Inter::Splat::define</span><span class="plain">();</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_annotation_form</span><span class="plain"> *</span><span class="functiontext">Inter::Defn::create_annotation</span><span class="plain">(</span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">keyword</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">) {</span>
-        <span class="reserved">inter_annotation_form</span><span class="plain"> *</span><span class="identifier">IAF</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">IAF</span><span class="plain">, </span><span class="reserved">inter_annotation_form</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">keyword</span><span class="plain">, </span><span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_keyword</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain"> == </span><span class="identifier">ID</span><span class="plain">)</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IAF</span><span class="plain">;</span>
-                <span class="reserved">else</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="plain">}</span>
-
-        <span class="identifier">IAF</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_annotation_form</span><span class="plain">);</span>
-        <span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain"> = </span><span class="identifier">ID</span><span class="plain">;</span>
-        <span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_keyword</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">keyword</span><span class="plain">);</span>
-        <span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;textual_flag</span><span class="plain"> = </span><span class="identifier">textual</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IAF</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="functiontext">Inter::Defn::invalid_annotation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
-        <span class="identifier">IA</span><span class="element">.annot</span><span class="plain"> = </span><span class="identifier">invalid_IAF</span><span class="plain">;</span>
-        <span class="identifier">IA</span><span class="element">.annot_value</span><span class="plain"> = 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="functiontext">Inter::Defn::read_annotation</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">keyword</span><span class="plain">, </span><span class="reserved">inter_error_location</span><span class="plain"> *</span><span class="identifier">eloc</span><span class="plain">, </span><span class="reserved">inter_error_message</span><span class="plain"> **</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> = 0;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -221,35 +169,10 @@
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">IAF</span><span class="plain">, </span><span class="reserved">inter_annotation_form</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">keyword</span><span class="plain">, </span><span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_keyword</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;textual_flag</span><span class="plain"> != </span><span class="identifier">textual</span><span class="plain">) *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Errors::plain</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"bad type for =value"</span><span class="plain">, </span><span class="identifier">eloc</span><span class="plain">);</span>
-                <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
-                <span class="identifier">IA</span><span class="element">.annot</span><span class="plain"> = </span><span class="identifier">IAF</span><span class="plain">;</span>
-                <span class="identifier">IA</span><span class="element">.annot_value</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Annotations::value_annotation</span><span class="plain">(</span><span class="identifier">IAF</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">*</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Inter::Errors::plain</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unrecognised annotation"</span><span class="plain">, </span><span class="identifier">eloc</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Defn::invalid_annotation</span><span class="plain">();</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="functiontext">Inter::Defn::annotation_from_bytecode</span><span class="plain">(</span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">c1</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">c2</span><span class="plain">) {</span>
-        <span class="reserved">inter_annotation_form</span><span class="plain"> *</span><span class="identifier">IAF</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">IAF</span><span class="plain">, </span><span class="reserved">inter_annotation_form</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c1</span><span class="plain"> == </span><span class="identifier">IAF</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain">) {</span>
-                <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
-                <span class="identifier">IA</span><span class="element">.annot</span><span class="plain"> = </span><span class="identifier">IAF</span><span class="plain">;</span>
-                <span class="identifier">IA</span><span class="element">.annot_value</span><span class="plain"> = </span><span class="identifier">c2</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">;</span>
-            <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Defn::invalid_annotation</span><span class="plain">();</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Defn::is_invalid</span><span class="plain">(</span><span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">IA</span><span class="element">.annot</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">IA</span><span class="element">.annot</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain"> == </span><span class="constant">INVALID_IANN</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Defn::annotation_to_bytecode</span><span class="plain">(</span><span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> *</span><span class="identifier">c1</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> *</span><span class="identifier">c2</span><span class="plain">) {</span>
-        <span class="plain">*</span><span class="identifier">c1</span><span class="plain"> = </span><span class="identifier">IA</span><span class="element">.annot</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">c2</span><span class="plain"> = </span><span class="identifier">IA</span><span class="element">.annot_value</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Annotations::invalid_annotation</span><span class="plain">();</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Defn::write_annotation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">) {</span>
@@ -270,21 +193,11 @@
 
 <p class="endnote">The function Inter::Defn::create_language is used in 1/im (<a href="1-im.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Inter::Defn::create_annotation is used in 3/ca (<a href="3-ca.html#SP3">&#167;3</a>), 3/iibf (<a href="3-iibf.html#SP1_3">&#167;1.3</a>).</p>
+<p class="endnote">The function Inter::Defn::read_annotation is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="endnote">The function Inter::Defn::invalid_annotation is used in 2/sym (<a href="2-sym.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Defn::write_annotation is used in 2/ann (<a href="2-ann.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Defn::read_annotation is used in <a href="#SP5">&#167;5</a>.</p>
-
-<p class="endnote">The function Inter::Defn::annotation_from_bytecode is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>).</p>
-
-<p class="endnote">The function Inter::Defn::is_invalid is used in 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>).</p>
-
-<p class="endnote">The function Inter::Defn::annotation_to_bytecode is used in 3/iibf (<a href="3-iibf.html#SP1_1_3_2">&#167;1.1.3.2</a>).</p>
-
-<p class="endnote">The function Inter::Defn::write_annotation is used in 2/sym (<a href="2-sym.html#SP4">&#167;4</a>).</p>
-
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 
 <pre class="definitions">
@@ -349,9 +262,7 @@
         <span class="identifier">ilp</span><span class="element">.line</span><span class="plain"> = </span><span class="identifier">line</span><span class="plain">;</span>
         <span class="identifier">ilp</span><span class="element">.mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="identifier">ilp</span><span class="element">.terminal_comment</span><span class="plain"> = 0;</span>
-        <span class="identifier">ilp</span><span class="element">.no_annotations</span><span class="plain"> = 0;</span>
-        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">annotations</span><span class="plain">[</span><span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain">];</span>
-        <span class="identifier">ilp</span><span class="element">.annotations</span><span class="plain"> = </span><span class="identifier">annotations</span><span class="plain">;</span>
+        <span class="identifier">ilp</span><span class="element">.set</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::new_set</span><span class="plain">();</span>
         <span class="identifier">ilp</span><span class="element">.indent_level</span><span class="plain"> = 0;</span>
 
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">ilp</span><span class="element">.line</span><span class="plain">) {</span>
@@ -392,9 +303,7 @@
             <span class="reserved">inter_error_message</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::read_annotation</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">ilp</span><span class="element">.mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1], </span><span class="identifier">eloc</span><span class="plain">, &amp;</span><span class="identifier">E</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ilp</span><span class="element">.no_annotations</span><span class="plain"> &gt;= </span><span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain">)</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Errors::quoted</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"too many annotations"</span><span class="plain">, </span><span class="identifier">ilp</span><span class="element">.mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1], </span><span class="identifier">eloc</span><span class="plain">);</span>
-            <span class="identifier">annotations</span><span class="plain">[</span><span class="identifier">ilp</span><span class="element">.no_annotations</span><span class="plain">++] = </span><span class="identifier">IA</span><span class="plain">;</span>
+            <span class="functiontext">Inter::Annotations::add_to_set</span><span class="plain">(&amp;(</span><span class="identifier">ilp</span><span class="element">.set</span><span class="plain">), </span><span class="identifier">IA</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">inter_construct</span><span class="plain"> *</span><span class="identifier">IC</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">IC</span><span class="plain">, </span><span class="reserved">inter_construct</span><span class="plain">)</span>

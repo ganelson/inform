@@ -36,8 +36,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *prop_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(prop_name, ilp->annotations[i]);
+	Inter::Annotations::copy_set_to_symbol(&(ilp->set), prop_name);
 
 	*E = Inter::Property::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_t) ilp->indent_level, eloc);
 }

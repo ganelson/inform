@@ -16,72 +16,62 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Symbols themselves. </b></p>
 
 
-<pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">LABEL_ISYMT</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MISC_ISYMT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">PACKAGE_ISYMT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">PTYPE_ISYMT</span>
-</pre>
-
 <pre class="display">
-
-    <span class="definitionkeyword">enum</span> <span class="constant">DEFINED_ISYMD</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">UNDEFINED_ISYMD</span>
-
-    <span class="definitionkeyword">enum</span> <span class="constant">PRIVATE_ISYMS</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">PUBLIC_ISYMS</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_ISYMS</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">LINK_ISYMS</span>
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">;</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">symbol_ID</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">owning_table</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">symbol_name</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">symbol_type</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">symbol_scope</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">definition_status</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">definition</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">equated_to</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">equated_name</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">symbol_flags</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_symbol_annotations</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">symbol_annotations</span><span class="plain">[</span><span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain">];</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">symbol_status</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_annotation_set</span><span class="plain"> </span><span class="identifier">ann_set</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">translate_text</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">append_text</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">inter_symbol</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_symbol is accessed in 2/tw, 2/st, 2/pck, 3/dfn, 3/iibf, 3/iitf, 3/vi, 3/idt, 4/tmc, 4/tsc, 4/tpc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc2 and here.</p>
+<p class="endnote">The structure inter_symbol is accessed in 2/st, 2/pck, 3/dfn, 3/iibf, 3/iitf, 3/vi, 3/idt, 4/tmc, 4/tpc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc2 and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_symbol_aid</span><span class="plain"> = 0;</span>
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Symbols::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"symbol cannot have empty text as identifier"</span><span class="plain">);</span>
 
         <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain">);</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> = </span><span class="identifier">next_symbol_aid</span><span class="plain">++;</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;owning_table</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">;</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_ID</span><span class="plain"> = </span><span class="identifier">ID</span><span class="plain">;</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> = </span><span class="constant">MISC_ISYMT</span><span class="plain">;</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> = </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">;</span>
+        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = 0;</span>
+        <span class="functiontext">Inter::Symbols::set_type</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">MISC_ISYMT</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Symbols::set_scope</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">);</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="functiontext">Inter::Symbols::undefine</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">);</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Inter::Defn::invalid_annotation</span><span class="plain">();</span>
+        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;ann_set</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::new_set</span><span class="plain">();</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;equated_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> = 0;</span>
         <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;append_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INTER_SYMBOLS</span><span class="plain">, </span><span class="string">"Created symbol $3 in $4\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="constant">SYMBOL_TYPE_MASK_ISYMT</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="constant">SYMBOL_SCOPE_MASK_ISYMT</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::set_type</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> - (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="constant">SYMBOL_TYPE_MASK_ISYMT</span><span class="plain">) + </span><span class="identifier">V</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::set_scope</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> - (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="constant">SYMBOL_SCOPE_MASK_ISYMT</span><span class="plain">) + </span><span class="identifier">V</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain">) {</span>
@@ -93,13 +83,28 @@
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"'%S'"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::sort_number</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> 100000 * (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;owning_table</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">) + (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_ID</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Inter::Symbols::new is used in 2/st (<a href="2-st.html#SP3">&#167;3</a>).</p>
 
+<p class="endnote">The function Inter::Symbols::get_type is used in <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, 3/iibf (<a href="3-iibf.html#SP1_1_3_2">&#167;1.1.3.2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Symbols::get_scope is used in <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>, <a href="3-iibf.html#SP1_1_3_2">&#167;1.1.3.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Symbols::set_type is used in <a href="#SP5">&#167;5</a>, 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Inter::Symbols::set_scope is used in <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
+
 <p class="endnote">The function Inter::Symbols::log is used in 1/im (<a href="1-im.html#SP3_6">&#167;3.6</a>).</p>
+
+<p class="endnote">The function Inter::Symbols::sort_number appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -129,7 +134,7 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::write_declaration</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">mark</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">=0; </span><span class="identifier">L</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">L</span><span class="plain">++) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">t</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"symbol "</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain">) {</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">)) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"private"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"public"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"external"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
@@ -137,7 +142,7 @@
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown symbol type"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain">) {</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">)) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">LABEL_ISYMT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"label"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">MISC_ISYMT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"misc"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PACKAGE_ISYMT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"package"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
@@ -146,7 +151,7 @@
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">, </span><span class="constant">MAKE_NAME_UNIQUE</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"*"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> == </span><span class="constant">LINK_ISYMS</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">) == </span><span class="constant">LINK_ISYMS</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" == %S"</span><span class="plain">, </span><span class="identifier">mark</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">trans_name</span><span class="plain"> = </span><span class="functiontext">Inter::Symbols::get_translate</span><span class="plain">(</span><span class="identifier">mark</span><span class="plain">);</span>
@@ -163,7 +168,6 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::define</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to define null symbol"</span><span class="plain">);</span>
         <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> = </span><span class="constant">DEFINED_ISYMD</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="functiontext">Inter::Symbols::definition</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -212,26 +216,25 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::undefine</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to undefine null symbol"</span><span class="plain">);</span>
         <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> = </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::clear_transient_flags</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">) {</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> = (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain">) &amp; </span><span class="constant">NONTRANSIENT_SYMBOL_BITS</span><span class="plain">;</span>
+        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain">) &amp; </span><span class="constant">NONTRANSIENT_SYMBOL_BITS</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no symbol"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> &amp; </span><span class="identifier">f</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="identifier">f</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no symbol"</span><span class="plain">);</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> | </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> | </span><span class="identifier">f</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::clear_flag</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no symbol"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> &amp; </span><span class="identifier">f</span><span class="plain">) </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_flags</span><span class="plain"> - </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> &amp; </span><span class="identifier">f</span><span class="plain">) </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_status</span><span class="plain"> - </span><span class="identifier">f</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::set_translate</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -244,55 +247,38 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;translate_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::set_append</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no symbol"</span><span class="plain">);</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;append_text</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Inter::Symbols::get_append</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no symbol"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;append_text</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::annotate</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"annotated null symbol"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain"> &gt;= </span><span class="constant">MAX_INTER_ANNOTATIONS_PER_SYMBOL</span><span class="plain">)</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too many annotations"</span><span class="plain">);</span>
-        <span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain">++] = </span><span class="identifier">IA</span><span class="plain">;</span>
+        <span class="functiontext">Inter::Annotations::add_to_set</span><span class="plain">(&amp;(</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;ann_set</span><span class="plain">), </span><span class="identifier">IA</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::annotate_i</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::annotation_from_bytecode</span><span class="plain">(</span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">);</span>
+        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::from_bytecode</span><span class="plain">(</span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">);</span>
         <span class="functiontext">Inter::Symbols::annotate</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">IA</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.annot</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain"> == </span><span class="identifier">ID</span><span class="plain">)</span>
-                <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.annot_value</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
+        <span class="reserved">inter_annotation</span><span class="plain"> *</span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::find</span><span class="plain">(&amp;(</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;ann_set</span><span class="plain">), </span><span class="identifier">ID</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IA</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">IA</span><span class="plain">-</span><span class="element">&gt;annot_value</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Inter::Symbols::read_annotation_t</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.annot</span><span class="plain">-</span><span class="element">&gt;annotation_ID</span><span class="plain"> == </span><span class="identifier">ID</span><span class="plain">) {</span>
-                <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.annot_value</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::get_text</span><span class="plain">(</span><span class="functiontext">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">N</span><span class="plain">);</span>
-            <span class="plain">}</span>
+        <span class="reserved">inter_annotation</span><span class="plain"> *</span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::find</span><span class="plain">(&amp;(</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;ann_set</span><span class="plain">), </span><span class="identifier">ID</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IA</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::get_text</span><span class="plain">(</span><span class="functiontext">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">IA</span><span class="plain">-</span><span class="element">&gt;annot_value</span><span class="plain">);</span>
+    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"NO ANN\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::annotate_t</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">, </span><span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_text</span><span class="plain">(</span><span class="functiontext">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">owner</span><span class="plain">);</span>
         <span class="identifier">Str::copy</span><span class="plain">(</span><span class="functiontext">Inter::Warehouse::get_text</span><span class="plain">(</span><span class="functiontext">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">n</span><span class="plain">), </span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Defn::annotation_from_bytecode</span><span class="plain">(</span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">);</span>
+        <span class="reserved">inter_annotation</span><span class="plain"> </span><span class="identifier">IA</span><span class="plain"> = </span><span class="functiontext">Inter::Annotations::from_bytecode</span><span class="plain">(</span><span class="identifier">annot_ID</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">);</span>
         <span class="functiontext">Inter::Symbols::annotate</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">IA</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::write_annotations</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;no_symbol_annotations</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-                <span class="functiontext">Inter::Defn::write_annotation</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;symbol_annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">symb</span><span class="plain">) </span><span class="functiontext">Inter::Annotations::write_set</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, &amp;(</span><span class="identifier">symb</span><span class="plain">-</span><span class="element">&gt;ann_set</span><span class="plain">), </span><span class="identifier">F</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -304,7 +290,7 @@
 
 <p class="endnote">The function Inter::Symbols::definition is used in 2/it (<a href="2-it.html#SP5">&#167;5</a>), 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 3/iitf (<a href="3-iitf.html#SP1">&#167;1</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 3/idt (<a href="3-idt.html#SP2">&#167;2</a>, <a href="3-idt.html#SP3">&#167;3</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 4/tpc7 (<a href="4-tpc7.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/tic (<a href="5-tic.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Symbols::is_defined is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inter::Symbols::is_defined is used in <a href="#SP5">&#167;5</a>, 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 3/iitf (<a href="3-iitf.html#SP1">&#167;1</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inter::Symbols::evaluate_to_int appears nowhere else.</p>
 
@@ -326,11 +312,7 @@
 
 <p class="endnote">The function Inter::Symbols::get_translate appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Symbols::set_append is used in 4/tac (<a href="4-tac.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Inter::Symbols::get_append appears nowhere else.</p>
-
-<p class="endnote">The function Inter::Symbols::annotate is used in 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Symbols::annotate is used in 2/ann (<a href="2-ann.html#SP2">&#167;2</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>).</p>
 
 <p class="endnote">The function Inter::Symbols::annotate_i appears nowhere else.</p>
 
@@ -338,7 +320,7 @@
 
 <p class="endnote">The function Inter::Symbols::read_annotation_t appears nowhere else.</p>
 
-<p class="endnote">The function Inter::Symbols::annotate_t appears nowhere else.</p>
+<p class="endnote">The function Inter::Symbols::annotate_t is used in 4/tac (<a href="4-tac.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Symbols::write_annotations is used in 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
 
@@ -348,43 +330,43 @@
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_predeclared</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> != </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> != </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">PUBLIC_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::is_defined</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_predeclared_local</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> != </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::is_defined</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_undefined_private</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> != </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::is_defined</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_extern</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> == </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::extern</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> = </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> = </span><span class="constant">MISC_ISYMT</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> = </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">;</span>
+        <span class="functiontext">Inter::Symbols::set_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Symbols::set_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">MISC_ISYMT</span><span class="plain">);</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_label</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> != </span><span class="constant">LABEL_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">LABEL_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -393,21 +375,21 @@
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Name is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a label name"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> = </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> = </span><span class="constant">LABEL_ISYMT</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> = </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">;</span>
+        <span class="functiontext">Inter::Symbols::set_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Symbols::set_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">LABEL_ISYMT</span><span class="plain">);</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::local</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> = </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> = </span><span class="constant">MISC_ISYMT</span><span class="plain">;</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition_status</span><span class="plain"> = </span><span class="constant">UNDEFINED_ISYMD</span><span class="plain">;</span>
+        <span class="functiontext">Inter::Symbols::set_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">);</span>
+        <span class="functiontext">Inter::Symbols::set_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">MISC_ISYMT</span><span class="plain">);</span>
+        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;definition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_local</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_scope</span><span class="plain"> != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;symbol_type</span><span class="plain"> != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">PRIVATE_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_type</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) != </span><span class="constant">MISC_ISYMT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -433,7 +415,7 @@
 <p class="endnote">The function Inter::Symbols::is_local appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-pck.html">Back to 'Packages'</a></li><li><i>(This section ends Chapter 2: Interoperability.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-pck.html">Back to 'Packages'</a></li><li><a href="2-ann.html">Continue with 'Annotations'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

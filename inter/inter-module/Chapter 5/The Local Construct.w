@@ -39,14 +39,13 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
 	if (*E) return;
-	if ((var_name->symbol_scope != PRIVATE_ISYMS) ||
-		(var_name->symbol_type != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
+	if ((Inter::Symbols::get_scope(var_name) != PRIVATE_ISYMS) ||
+		(Inter::Symbols::get_type(var_name) != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
 
 	inter_symbol *var_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(var_name, ilp->annotations[i]);
+	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
 
 	*E = Inter::Local::new(IBM, routine, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
 }

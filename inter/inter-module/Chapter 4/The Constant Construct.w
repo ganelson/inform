@@ -42,8 +42,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(con_name, ilp->annotations[i]);
+	Inter::Annotations::copy_set_to_symbol(&(ilp->set), con_name);
 
 	inter_symbol *con_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
@@ -353,9 +352,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_CONST_IFLD);
 	int hex = FALSE;
-	for (int i=0; i<con_name->no_symbol_annotations; i++)
-		if (con_name->symbol_annotations[i].annot->annotation_ID == HEX_IANN)
-			hex = TRUE;
+	if (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
 		WRITE("constant %S %S = ", con_name->symbol_name, con_kind->symbol_name);
 		switch (P->W.data[FORMAT_CONST_IFLD]) {

@@ -54,7 +54,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	if ((symb->definition_status != UNDEFINED_ISYMD) &&
+	if ((Inter::Symbols::is_defined(symb)) &&
 		(Inter::Symbols::is_predeclared(symb) == FALSE) &&
 		(Inter::Symbols::is_predeclared_local(symb) == FALSE)) {
 		WRITE_TO(STDERR, "Ho! %S\n", symb->symbol_name);

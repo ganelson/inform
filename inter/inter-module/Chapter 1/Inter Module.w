@@ -14,6 +14,7 @@ Setting up the use of this module.
 @e inter_warehouse_room_MT
 @e inter_symbols_table_MT
 @e inter_symbol_array_MT
+@e inter_annotation_array_MT
 @e inter_data_type_MT
 @e inter_construct_MT
 @e inter_annotation_form_MT
@@ -40,6 +41,7 @@ ALLOCATE_INDIVIDUALLY(inter_node_list)
 ALLOCATE_INDIVIDUALLY(inter_node_list_entry)
 ALLOCATE_IN_ARRAYS(inter_symbol, 1024)
 ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
+ALLOCATE_IN_ARRAYS(inter_annotation, 8192)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

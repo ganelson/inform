@@ -23,7 +23,7 @@ void Inter::Comment::define(void) {
 void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = Inter::Defn::vet_level(IBM, COMMENT_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 	*E = Inter::Comment::new(IBM, (inter_t) ilp->indent_level, eloc, ilp->terminal_comment);
 }
 

@@ -848,9 +848,7 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 		CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(inst_name), defined);
 		if (defined) {
 			int hex = FALSE;
-			for (int i=0; i<inst_name->no_symbol_annotations; i++)
-				if (inst_name->symbol_annotations[i].annot->annotation_ID == HEX_IANN)
-					hex = TRUE;
+			if (Inter::Annotations::find(&(inst_name->ann_set), HEX_IANN)) hex = TRUE;
 			if (hex) WRITE("$%x", val2); else WRITE("%d", val2);
 		}
 		CodeGen::Targets::end_constant(gen, CodeGen::CL::name(inst_name));
@@ -859,9 +857,8 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 
 @ =
 int CodeGen::IP::pnum(inter_symbol *prop_name) {
-	for (int i=0; i<prop_name->no_symbol_annotations; i++)
-		if (prop_name->symbol_annotations[i].annot->annotation_ID == SOURCE_ORDER_IANN)
-			return (int) prop_name->symbol_annotations[i].annot_value;
+	int N = Inter::Symbols::read_annotation(prop_name, SOURCE_ORDER_IANN);
+	if (N >= 0) return N;
 	return 0;
 }
 
@@ -873,7 +870,7 @@ int CodeGen::IP::compare_kind_symbols(const void *elem1, const void *elem2) {
 	int s1 = CodeGen::IP::kind_sequence_number(*e1);
 	int s2 = CodeGen::IP::kind_sequence_number(*e2);
 	if (s1 != s2) return s1-s2;
-	return (*e1)->allocation_id - (*e2)->allocation_id;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
 }
 
 int CodeGen::IP::compare_kind_symbols_decl(const void *elem1, const void *elem2) {
@@ -884,29 +881,24 @@ int CodeGen::IP::compare_kind_symbols_decl(const void *elem1, const void *elem2)
 	int s1 = CodeGen::IP::kind_sequence_number_decl(*e1);
 	int s2 = CodeGen::IP::kind_sequence_number_decl(*e2);
 	if (s1 != s2) return s1-s2;
-	return (*e1)->allocation_id - (*e2)->allocation_id;
+	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
 }
 
 int CodeGen::IP::kind_sequence_number(const inter_symbol *kind_name) {
-	int A = 100000000;
-	for (int i=0; i<kind_name->no_symbol_annotations; i++)
-		if (kind_name->symbol_annotations[i].annot->annotation_ID == SOURCE_ORDER_IANN)
-			A = (int) kind_name->symbol_annotations[i].annot_value;
-	return A;
+	int N = Inter::Symbols::read_annotation(kind_name, SOURCE_ORDER_IANN);
+	if (N >= 0) return N;
+	return 100000000;
 }
 
 int CodeGen::IP::kind_sequence_number_decl(const inter_symbol *kind_name) {
-	int A = 100000000;
-	for (int i=0; i<kind_name->no_symbol_annotations; i++)
-		if (kind_name->symbol_annotations[i].annot->annotation_ID == DECLARATION_ORDER_IANN)
-			A = (int) kind_name->symbol_annotations[i].annot_value;
-	return A;
+	int N = Inter::Symbols::read_annotation(kind_name, DECLARATION_ORDER_IANN);
+	if (N >= 0) return N;
+	return 100000000;
 }
 
 int CodeGen::IP::weak_id(inter_symbol *kind_name) {
-	for (int i=0; i<kind_name->no_symbol_annotations; i++)
-		if (kind_name->symbol_annotations[i].annot->annotation_ID == WEAK_ID_IANN)
-			return (int) kind_name->symbol_annotations[i].annot_value;
+	int N = Inter::Symbols::read_annotation(kind_name, WEAK_ID_IANN);
+	if (N >= 0) return N;
 	return 0;
 }
 
@@ -933,10 +925,7 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE("Object ");
-		int c = 0;
-		for (int i=0; i<inst_name->no_symbol_annotations; i++)
-			if (inst_name->symbol_annotations[i].annot->annotation_ID == ARROW_COUNT_IANN)
-				c = (int) inst_name->symbol_annotations[i].annot_value;
+		int c = Inter::Symbols::read_annotation(inst_name, ARROW_COUNT_IANN);
 		for (int i=0; i<c; i++) WRITE("-> ");
 		WRITE("%S \"\"", CodeGen::CL::name(inst_name));
 		if (Inter::Kind::is_a(inst_kind, direction_kind_symbol)) { WRITE(" Compass"); }
@@ -988,7 +977,7 @@ void CodeGen::IP::plist(code_generation *gen, inter_node_list *FL) {
 void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::Symbols::get_append(symb);
+	text_stream *S = Inter::Symbols::read_annotation_t(symb, I, APPEND_IANN);
 	if (Str::len(S) == 0) return;
 	WRITE("    ");
 	int L = Str::len(S);
@@ -1023,8 +1012,7 @@ int CodeGen::IP::is_kind_of_object(inter_symbol *kind_name) {
 =
 inter_t CodeGen::IP::kind_of_object_count(inter_symbol *kind_name) {
 	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
-	for (int i=0; i<kind_name->no_symbol_annotations; i++)
-		if (kind_name->symbol_annotations[i].annot->annotation_ID == OBJECT_KIND_COUNTER_IANN)
-			return kind_name->symbol_annotations[i].annot_value;
+	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
+	if (N >= 0) return (inter_t) N;
 	return 0;
 }

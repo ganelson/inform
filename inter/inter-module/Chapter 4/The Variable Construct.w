@@ -36,8 +36,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *var_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	for (int i=0; i<ilp->no_annotations; i++)
-		Inter::Symbols::annotate(var_name, ilp->annotations[i]);
+	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
 
 	inter_t var_val1 = 0;
 	inter_t var_val2 = 0;

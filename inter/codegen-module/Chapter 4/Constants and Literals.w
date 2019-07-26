@@ -303,9 +303,7 @@ void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_sy
 	if (val1 == LITERAL_IVAL) {
 		int hex = FALSE;
 		if (con_name)
-			for (int i=0; i<con_name->no_symbol_annotations; i++)
-				if (con_name->symbol_annotations[i].annot->annotation_ID == HEX_IANN)
-					hex = TRUE;
+			if (Inter::Annotations::find(&(con_name->ann_set), HEX_IANN)) hex = TRUE;
 		if (hex) WRITE("$%x", val2);
 		else WRITE("%d", val2);
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {

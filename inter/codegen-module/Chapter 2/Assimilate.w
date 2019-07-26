@@ -468,7 +468,7 @@ void CodeGen::Assimilate::install_alias(inter_symbol *con_name, text_stream *aka
 			Inter::Packages::scope(template_package), aka_text);
 
 		if (existing) {
-			if (existing->definition_status == DEFINED_ISYMD) {
+			if (Inter::Symbols::is_defined(existing)) {
 				inter_tree_node *Q = Inter::Symbols::definition(existing);
 				if (Q == NULL) internal_error("undefined");
 				Inter::Symbols::undefine(existing);
@@ -500,7 +500,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *iden
 	}
 
 	if (existing->owning_table == into_scope) internal_error("already in this scope");
-	if (existing->definition_status == DEFINED_ISYMD) {
+	if (Inter::Symbols::is_defined(existing)) {
 		inter_tree_node *Q = Inter::Symbols::definition(existing);
 		if (Q == NULL) internal_error("undefined");
 		Inter::Symbols::undefine(existing);

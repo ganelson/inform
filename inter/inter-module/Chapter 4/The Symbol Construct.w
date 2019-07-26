@@ -22,7 +22,7 @@ void Inter::Symbol::define(void) {
 void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = Inter::Defn::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (ilp->no_annotations > 0) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 
@@ -56,16 +56,16 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		if (*E) return;
 	}
 
-	if (Str::eq(ilp->mr.exp[0], I"private")) name_name->symbol_scope = PRIVATE_ISYMS;
-	else if (Str::eq(ilp->mr.exp[0], I"public")) name_name->symbol_scope = PUBLIC_ISYMS;
-	else if (Str::eq(ilp->mr.exp[0], I"external")) name_name->symbol_scope = EXTERNAL_ISYMS;
-	else if (Str::eq(ilp->mr.exp[0], I"link")) name_name->symbol_scope = LINK_ISYMS;
+	if (Str::eq(ilp->mr.exp[0], I"private")) Inter::Symbols::set_scope(name_name, PRIVATE_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"public")) Inter::Symbols::set_scope(name_name, PUBLIC_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"external")) Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"link")) Inter::Symbols::set_scope(name_name, LINK_ISYMS);
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
 
-	if (Str::eq(ilp->mr.exp[1], I"label")) name_name->symbol_type = LABEL_ISYMT;
-	else if (Str::eq(ilp->mr.exp[1], I"misc")) name_name->symbol_type = MISC_ISYMT;
-	else if (Str::eq(ilp->mr.exp[1], I"package")) name_name->symbol_type = PACKAGE_ISYMT;
-	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) name_name->symbol_type = PTYPE_ISYMT;
+	if (Str::eq(ilp->mr.exp[1], I"label")) Inter::Symbols::set_type(name_name, LABEL_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"misc")) Inter::Symbols::set_type(name_name, MISC_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"package")) Inter::Symbols::set_type(name_name, PACKAGE_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) Inter::Symbols::set_type(name_name, PTYPE_ISYMT);
 	else { *E = Inter::Errors::plain(I"unknown symbol-type keyword", eloc); return; }
 
 	if ((trans_name) && (equate_name)) {
@@ -73,7 +73,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	if (Inter::Packages::is_linklike(Inter::Bookmarks::package(IBM))) {
-		if (name_name->symbol_scope != LINK_ISYMS) {
+		if (Inter::Symbols::get_scope(name_name) != LINK_ISYMS) {
 			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be links", eloc); return;
 		}
 		if (equate_name) Inter::SymbolsTables::link(name_name, equate_name);
@@ -81,7 +81,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			*E = Inter::Errors::plain(I"link symbol not equated", eloc); return;
 		}
 	} else {
-		if (name_name->symbol_scope == LINK_ISYMS) {
+		if (Inter::Symbols::get_scope(name_name) == LINK_ISYMS) {
 			*E = Inter::Errors::plain(I"links may only occur in a _linkage package", eloc); return;
 		}
 		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);

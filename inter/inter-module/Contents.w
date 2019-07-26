@@ -17,6 +17,7 @@ Chapter 2: Interoperability
 	Symbols Tables
 	Packages
 	Symbols
+	Annotations
 
 Chapter 3: Language Definition
 	Canonical Annotations

@@ -32,7 +32,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inter::Variable::define is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inter::Variable::define is used in 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -55,8 +55,7 @@
         <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_kind</span><span class="plain"> = </span><span class="functiontext">Inter::Textual::find_symbol</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">eloc</span><span class="plain">, </span><span class="functiontext">Inter::Bookmarks::scope</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">ilp</span><span class="plain">-</span><span class="element">&gt;mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1], </span><span class="constant">KIND_IST</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">E</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ilp</span><span class="plain">-</span><span class="element">&gt;no_annotations</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="functiontext">Inter::Symbols::annotate</span><span class="plain">(</span><span class="identifier">var_name</span><span class="plain">, </span><span class="identifier">ilp</span><span class="plain">-</span><span class="element">&gt;annotations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+        <span class="functiontext">Inter::Annotations::copy_set_to_symbol</span><span class="plain">(&amp;(</span><span class="identifier">ilp</span><span class="plain">-</span><span class="element">&gt;set</span><span class="plain">), </span><span class="identifier">var_name</span><span class="plain">);</span>
 
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">var_val1</span><span class="plain"> = 0;</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">var_val2</span><span class="plain"> = 0;</span>

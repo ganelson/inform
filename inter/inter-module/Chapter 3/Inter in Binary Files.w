@@ -84,7 +84,7 @@ resource block later on.
 			if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			PUT_TO(keyword, (int) c);
 		}
-		inter_annotation_form *IA = Inter::Defn::create_annotation(ID, keyword, FALSE);
+		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, FALSE);
 		if (IA == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"conflicting annotation name");
 		DISCARD_TEXT(keyword);
 	}
@@ -243,21 +243,21 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		}
 
 		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_creating_at_ID(res->stored_symbols_table, name, X);
-		S->symbol_type = (int) st;
-		S->symbol_scope = (int) sc;
+		Inter::Symbols::set_type(S, (int) st);
+		Inter::Symbols::set_scope(S, (int) sc);
 		if (Str::len(trans) > 0) Inter::Symbols::set_translate(S, trans);
 
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		for (unsigned int i=0; i<L; i++) {
-			if (i >= MAX_INTER_ANNOTATIONS_PER_SYMBOL) Inter::Binary::read_error(&eloc, ftell(fh), I"excessive annotation");
 			unsigned int c1, c2;
 			if (BinaryFiles::read_int32(fh, &c1) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			if (BinaryFiles::read_int32(fh, &c2) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-			inter_annotation IA = Inter::Defn::annotation_from_bytecode(c1, c2);
-			if (Inter::Defn::is_invalid(IA)) Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
+			inter_annotation IA = Inter::Annotations::from_bytecode(c1, c2);
+			if (Inter::Annotations::is_invalid(IA))
+				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
 			Inter::Symbols::annotate(S, IA);
 		}
-		if (S->symbol_scope == LINK_ISYMS) {
+		if (Inter::Symbols::get_scope(S) == LINK_ISYMS) {
 			S->equated_name = Str::new();
 			while (TRUE) {
 				unsigned int c;
@@ -280,22 +280,16 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			inter_symbol *symb = T->symbol_array[i];
 			if (symb) {
 				BinaryFiles::write_int32(fh, symb->symbol_ID);
-				BinaryFiles::write_int32(fh, (unsigned int) symb->symbol_type);
-				BinaryFiles::write_int32(fh, (unsigned int) symb->symbol_scope);
+				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_type(symb));
+				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_scope(symb));
 				BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->symbol_name));
 				LOOP_THROUGH_TEXT(P, symb->symbol_name)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 				BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->translate_text));
 				LOOP_THROUGH_TEXT(P, symb->translate_text)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
-				BinaryFiles::write_int32(fh, (unsigned int) symb->no_symbol_annotations);
-				for (int i=0; i<symb->no_symbol_annotations; i++) {
-					inter_t c1 = 0, c2 = 0;
-					Inter::Defn::annotation_to_bytecode(symb->symbol_annotations[i], &c1, &c2);
-					BinaryFiles::write_int32(fh, (unsigned int) c1);
-					BinaryFiles::write_int32(fh, (unsigned int) c2);
-				}
-				if (symb->symbol_scope == LINK_ISYMS) {
+				Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
+				if (Inter::Symbols::get_scope(symb) == LINK_ISYMS) {
 					LOOP_THROUGH_TEXT(pos, symb->equated_name)
 						BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
 					BinaryFiles::write_int32(fh, 0);

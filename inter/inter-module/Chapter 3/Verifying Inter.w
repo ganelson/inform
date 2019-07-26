@@ -28,7 +28,7 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, inter_symbols_table *T) {
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, P->W.data[index]);
 	if (S == NULL) return Inter::Node::error(P, I"no symbol for ID (case 2)", NULL);
-	if ((S->definition_status != UNDEFINED_ISYMD) &&
+	if ((Inter::Symbols::is_defined(S)) &&
 		(Inter::Symbols::is_predeclared_local(S) == FALSE))
 		return Inter::Node::error(P, I"duplicated symbol", S->symbol_name);
 	Inter::Symbols::define(S, P);
