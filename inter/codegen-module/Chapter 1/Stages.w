@@ -92,7 +92,7 @@ int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 	inter_package *pack = Inter::Package::which(S);
 	if (pack == NULL) internal_error("not a package");
 
-	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", pack->package_name->symbol_name);
+	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", Inter::Packages::name(pack));
 
 	return TRUE;
 }

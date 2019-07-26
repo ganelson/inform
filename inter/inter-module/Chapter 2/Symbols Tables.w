@@ -213,7 +213,8 @@ inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_nod
 	return Inter::SymbolsTables::symbol_from_id(Inter::Node::globals(P), P->W.data[x]);
 }
 
-inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_symbol *routine, inter_t ID) {
+inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_t ID) {
+	inter_symbol *routine = owner->package_name;
 	return Inter::SymbolsTables::symbol_from_id(Inter::Package::local_symbols(routine), ID);
 }
 
@@ -348,7 +349,7 @@ void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
 		if ((symb) && (symb->equated_name)) {
-			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(pack->stored_in, T, symb->equated_name);
+			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, symb->equated_name);
 			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
 			else Inter::SymbolsTables::equate(symb, S_to);
 			symb->equated_name = NULL;
@@ -397,7 +398,7 @@ void Inter::SymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
 		chain[chain_length++] = P;
 		P = Inter::Packages::parent(P);
 	}
-	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", chain[i]->package_name->symbol_name);
+	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", Inter::Packages::name(chain[i]));
 	WRITE("/%S", S->symbol_name);
 }
 

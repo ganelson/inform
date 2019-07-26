@@ -9,11 +9,13 @@ int no_blank_lines_stacked = 0;
 
 void Inter::Textual::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading textual inter file %f)\n", F);
+	default_ptree = I;
 	no_blank_lines_stacked = 0;
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
 	Inter::SymbolsTables::resolve_forward_references(I, &eloc);
+	default_ptree = NULL;
 	Inter::Tree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
 

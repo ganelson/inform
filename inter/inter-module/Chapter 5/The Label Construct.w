@@ -52,8 +52,7 @@ inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *routin
 
 void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *routine = owner->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(owner, P->W.data[DEFN_LABEL_IFLD]);
 	if (Inter::Symbols::is_label(lab_name) == FALSE) {
 		*E = Inter::Node::error(P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
 		return;
@@ -66,8 +65,7 @@ void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package
 
 void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
 	if (lab_name) {
 		WRITE("%S", lab_name->symbol_name);
 	} else { *E = Inter::Node::error(P, I"cannot write label", NULL); return; }

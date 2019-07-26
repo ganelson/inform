@@ -44,15 +44,16 @@ void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, vo
 	else if (ptype == property_ptype_symbol)
 		CodeGen::Eliminate::require(pack, NULL, I"it's a _property package");
 	else if (ptype == function_ptype_symbol) {
-		if (Str::eq(pack->package_name->symbol_name, I"Main_fn"))
+		text_stream *N = Inter::Packages::name(pack);
+		if (Str::eq(N, I"Main_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
-		else if (Str::eq(pack->package_name->symbol_name, I"DefArt_fn"))
+		else if (Str::eq(N, I"DefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(pack->package_name->symbol_name, I"CDefArt_fn"))
+		else if (Str::eq(N, I"CDefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(pack->package_name->symbol_name, I"IndefArt_fn"))
+		else if (Str::eq(N, I"IndefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
-		else if (Str::eq(pack->package_name->symbol_name, I"CIndefArt_fn"))
+		else if (Str::eq(N, I"CIndefArt_fn"))
 			CodeGen::Eliminate::require(pack, NULL, I"it's a veneer replacement");
 	}
 }

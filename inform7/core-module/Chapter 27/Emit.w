@@ -210,13 +210,13 @@ inter_symbol *Emit::new_local_symbol(inter_symbol *rsymb, text_stream *name) {
 
 void Emit::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_stream *S) {
 	
-	Inter::Symbols::annotate_t(symb->owning_table->owning_package->stored_in, symb->owning_table->owning_package, symb, annot_ID, S);
+	Inter::Symbols::annotate_t(Inter::Packages::tree(symb->owning_table->owning_package), symb->owning_table->owning_package, symb, annot_ID, S);
 }
 
 void Emit::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
 	TEMPORARY_TEXT(temp);
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(symb->owning_table->owning_package->stored_in, symb->owning_table->owning_package, symb, annot_ID, temp);
+	Inter::Symbols::annotate_t(Inter::Packages::tree(symb->owning_table->owning_package), symb->owning_table->owning_package, symb, annot_ID, temp);
 	DISCARD_TEXT(temp);
 }
 
@@ -1345,7 +1345,7 @@ void Emit::to_ival_in_context(inter_name *context, inter_t *val1, inter_t *val2,
 	package_request *PR = InterNames::location(context);
 	inter_package *pack = Packaging::incarnate(PR);
 	inter_symbol *S = InterNames::to_symbol(iname);
-	if (S) { Inter::Symbols::to_data(pack->stored_in, pack, S, val1, val2); return; }
+	if (S) { Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 

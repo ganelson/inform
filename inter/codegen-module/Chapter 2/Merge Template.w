@@ -80,7 +80,7 @@ inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stre
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 					inter_package *P = Inter::Package::defined_by_frame(C);
-					if (Str::ne(P->package_name->symbol_name, I"template"))
+					if (Str::ne(Inter::Packages::name(P), I"template"))
 						CodeGen::MergeTemplate::build_r(P);
 				}
 			}

@@ -47,7 +47,7 @@ void Packaging::log(package_request *R) {
 		while (R) {
 			if (c++ > 0) LOG("\\");
 			if (R->actual_package)
-				LOG("%S", R->actual_package->package_name->symbol_name);
+				LOG("%S", Inter::Packages::name(R->actual_package));
 			else
 				LOG("'%n'", R->eventual_name);
 			R = R->parent_request;

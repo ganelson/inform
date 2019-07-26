@@ -6,7 +6,7 @@ To manage packages of inter code.
 
 =
 typedef struct inter_package {
-	struct inter_tree *stored_in;
+	struct inter_tree_node *package_head;
 	inter_t index_n;
 	struct inter_symbol *package_name;
 	struct inter_symbols_table *package_scope;
@@ -22,14 +22,26 @@ typedef struct inter_package {
 @d ROOT_PACKAGE_FLAG 8
 
 @ =
+inter_tree *default_ptree = NULL;
+
 inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
 	inter_package *pack = CREATE(inter_package);
-	pack->stored_in = I;
+	pack->package_head = NULL;
 	pack->package_scope = NULL;
 	pack->package_name = NULL;
 	pack->package_flags = 0;
 	pack->index_n = n;
 	return pack;
+}
+
+inter_tree *Inter::Packages::tree(inter_package *pack) {
+	if (default_ptree) return default_ptree;
+	return pack->package_head->tree;
+}
+
+text_stream *Inter::Packages::name(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	return pack->package_name->symbol_name;
 }
 
 int Inter::Packages::is_codelike(inter_package *pack) {
@@ -94,15 +106,13 @@ void Inter::Packages::set_name(inter_package *P, inter_symbol *N) {
 	if (N == NULL) internal_error("null package name");
 	P->package_name = N;
 	if ((N) && (Str::eq(N->symbol_name, I"main")))
-		Inter::Tree::set_main_package(P->stored_in, P);
+		Inter::Tree::set_main_package(Inter::Packages::tree(P), P);
 }
 
 void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 	inter_package *pack = (inter_package *) vp;
 	if (pack == NULL) WRITE("<null-package>");
-	else {
-		WRITE("%S", pack->package_name->symbol_name);
-	}
+	else WRITE("%S", Inter::Packages::name(pack));
 }
 
 inter_package *Inter::Packages::basics(inter_tree *I) {
@@ -198,11 +208,7 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	if ((found) && (Inter::Symbols::is_defined(found))) {
 		inter_tree_node *D = Inter::Symbols::definition(found);
 		inter_t val2 = D->W.data[VAL1_MD_IFLD + 1];
-		return Inter::Warehouse::get_text(Inter::Tree::warehouse(P->stored_in), val2);
+		return Inter::Warehouse::get_text(Inter::Tree::warehouse(Inter::Packages::tree(P)), val2);
 	}
 	return NULL;
 }
-
-void Inter::Packages::wrap(inter_package *P) {
-}
-

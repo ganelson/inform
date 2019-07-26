@@ -68,8 +68,7 @@ void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package
 
 void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 	inter_symbol *var_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);

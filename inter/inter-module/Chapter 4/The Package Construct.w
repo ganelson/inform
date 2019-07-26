@@ -56,6 +56,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, inter_symb
 
 	inter_t PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);
+	pack->package_head = P;
 	Inter::Packages::set_name(pack, package_name);
 	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
 	if ((linkage_packagetype) && (ptype_name == linkage_packagetype))

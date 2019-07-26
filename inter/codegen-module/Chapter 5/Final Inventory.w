@@ -27,7 +27,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 		inter_symbol *ptype = Inter::Packages::type(from);
 
 		if (Str::eq(ptype->symbol_name, I"_module")) {
-			WRITE("Module '%S'\n", from->package_name->symbol_name);
+			WRITE("Module '%S'\n", Inter::Packages::name(from));
 			text_stream *title = Inter::Packages::read_metadata(from, I"`title");
 			if (title) WRITE("From extension '%S by %S' version %S\n", title,
 				Inter::Packages::read_metadata(from, I"`author"),
@@ -39,7 +39,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 			int contents = 0;
 			LOOP_THROUGH_INTER_CHILDREN(C, P) contents++;
 			if (contents > 0) {
-				WRITE("%S:\n", from->package_name->symbol_name);
+				WRITE("%S:\n", Inter::Packages::name(from));
 				INDENT;
 					Inter::Packages::unmark_all();
 					LOOP_THROUGH_INTER_CHILDREN(C, P) {
@@ -65,7 +65,7 @@ void CodeGen::Inventory::visitor(inter_tree *I, inter_tree_node *P, void *state)
 									inter_package *R2 = Inter::Package::defined_by_frame(D);
 									if (Inter::Packages::type(R2) == ptype) {
 										text_stream *name = Inter::Packages::read_metadata(R2, I"`name");
-										if (name == NULL) name = R2->package_name->symbol_name;
+										if (name == NULL) name = Inter::Packages::name(R2);
 										if ((pos > 0) && (first == FALSE)) WRITE(", ");
 										pos += Str::len(name) + 2;
 										if (pos > 80) { WRITE("\n"); pos = Str::len(name) + 2; }

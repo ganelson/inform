@@ -321,8 +321,8 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {
 			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
-			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
-			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", (pack->package_name)?(pack->package_name->symbol_name):I"<nameless>"); break;
+			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", Inter::Packages::name(pack)); break;
+			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", Inter::Packages::name(pack)); break;
 		}
 		return Inter::Node::error(P, M, NULL);
 	}

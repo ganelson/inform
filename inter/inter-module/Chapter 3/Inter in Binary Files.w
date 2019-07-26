@@ -19,6 +19,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
 
 	inter_warehouse *warehouse = Inter::Tree::warehouse(I);
+	default_ptree = I;
 
 	inter_t *grid = NULL;
 	inter_t grid_extent = 0;
@@ -32,6 +33,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON, (int) grid_extent, sizeof(inter_t));
 
 	BinaryFiles::close(fh);
+	default_ptree = NULL;
 }
 
 @ Symmetrically:
@@ -167,7 +169,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	int max = -1, count = 0;
 	for (int n = 1; n < warehouse->size; n++) {
 		inter_package *owner = warehouse->stored_resources[n].owning_package;
-		if ((owner) && (owner->stored_in != I)) continue;
+		if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
 		count++;
 		if (n+1 > max) max = n+1;
 	}
@@ -176,12 +178,12 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		BinaryFiles::write_int32(fh, (unsigned int) max);
 		for (int n = 1; n < warehouse->size; n++) {
 			inter_package *owner = warehouse->stored_resources[n].owning_package;
-			if ((owner) && (owner->stored_in != I)) continue;
+			if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
 			BinaryFiles::write_int32(fh, (unsigned int) n);
 		}
 		for (int n = 1; n < warehouse->size; n++) {
 			inter_package *owner = warehouse->stored_resources[n].owning_package;
-			if ((owner) && (owner->stored_in != I)) continue;
+			if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
 	if (trace_bin) WRITE_TO(STDOUT, "Writing resource %d type %d owner %s\n", n, warehouse->stored_resources[n].irsrc,
 		(owner)?"yes":"no");
 			BinaryFiles::write_int32(fh, (unsigned int) n);
@@ -388,7 +390,7 @@ enough that the slot exists for the eventual list to be stored in.
 @<Write the symbol equations@> =
 	for (int n = 1; n < warehouse->size; n++) {
 		inter_package *owner = warehouse->stored_resources[n].owning_package;
-		if ((owner) && (owner->stored_in != I)) continue;
+		if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
 		inter_resource_holder *res = &(warehouse->stored_resources[n]);
 		if (res->stored_symbols_table) {
 			inter_symbols_table *from_T = res->stored_symbols_table;

@@ -109,16 +109,14 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 
 void CodeGen::FC::local(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
 	CodeGen::Targets::declare_local_variable(gen, P, var_name);
 }
 
 void CodeGen::FC::label(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
 	WRITE("%S;\n", lab_name->symbol_name);
 }
 
@@ -164,9 +162,7 @@ void CodeGen::FC::cast(code_generation *gen, inter_tree_node *P) {
 
 void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *routine = pack->package_name;
-	if (Inter::Package::is(routine) == FALSE) internal_error("bad lab");
-	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(routine, P->W.data[LABEL_LAB_IFLD]);
+	inter_symbol *lab = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");
 	text_stream *OUT = CodeGen::current(gen);
 	if (query_labels_mode) PUT('?');
@@ -213,8 +209,7 @@ void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 		inter_t val2 = P->W.data[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_package *pack = Inter::Packages::container(P);
-			inter_symbol *routine = pack->package_name;
-			inter_symbol *symb = Inter::SymbolsTables::local_symbol_from_id(routine, val2);
+			inter_symbol *symb = Inter::SymbolsTables::local_symbol_from_id(pack, val2);
 			if (symb == NULL) symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), val2);
 			if (symb == NULL) internal_error("bad val");
 			text_stream *OUT = CodeGen::current(gen);
