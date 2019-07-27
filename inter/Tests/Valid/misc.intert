@@ -67,9 +67,7 @@ package main _plain
 	symbol public misc R_after2
 	symbol public misc RB_after
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_102_B
 	symbol public misc R_102
 	symbol public misc amount
 	symbol public misc R_101_A

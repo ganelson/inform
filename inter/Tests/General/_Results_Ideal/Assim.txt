@@ -23,17 +23,7 @@ package main _plain
 		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
 		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
 	package template _module
-		symbol public misc functions
-		symbol public misc properties
-		symbol public misc constants
-		symbol public misc arrays
-		symbol public misc variables
 		package constants _submodule
-			symbol public misc DEBUG_con
-			symbol public misc Badger_con
-			symbol public misc Bodger_con
-			symbol public misc Budger_con
-			symbol public misc Bydger_con
 			package DEBUG_con _plain
 				symbol public misc DEBUG
 				symbol external misc K_unchecked == /main/other/K_unchecked
@@ -55,12 +45,7 @@ package main _plain
 				symbol external misc K_unchecked == /main/other/K_unchecked
 				constant Bydger K_unchecked = 777 __assimilated=1
 		package functions _submodule
-			symbol public misc Falsity_fn
-			symbol public misc Demo_fn
-			symbol public misc Banana_fn
-			symbol public misc Peach_fn
 			package Falsity_fn _function
-				symbol public misc Falsity_B
 				symbol public misc Falsity
 				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
 				package Falsity_B _code
@@ -68,7 +53,6 @@ package main _plain
 					splat &"return false;"
 				constant Falsity K_unchecked_function = Falsity_B __assimilated=1
 			package Demo_fn _function
-				symbol public misc Demo_B
 				symbol public misc Demo
 				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
 				package Demo_B _code
@@ -81,7 +65,6 @@ package main _plain
 					splat &"return x+y;"
 				constant Demo K_unchecked_function = Demo_B __assimilated=1
 			package Banana_fn _function
-				symbol public misc Banana_B
 				symbol public misc Banana
 				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
 				package Banana_B _code
@@ -94,7 +77,6 @@ package main _plain
 					splat &"rfalse;"
 				constant Banana K_unchecked_function = Banana_B __assimilated=1
 			package Peach_fn _function
-				symbol public misc Peach_B
 				symbol public misc Peach
 				symbol external misc K_unchecked_function == /main/other/K_unchecked_function
 				package Peach_B _code
@@ -102,12 +84,6 @@ package main _plain
 					splat &"rfalse;"
 				constant Peach K_unchecked_function = Peach_B __assimilated=1
 		package arrays _submodule
-			symbol public misc XA_arr
-			symbol public misc XB_arr
-			symbol public misc XC_arr
-			symbol public misc XD_arr
-			symbol public misc XE_arr
-			symbol public misc XF_arr
 			package XA_arr _plain
 				symbol public misc XA
 				symbol external misc K_list_of_values == /main/other/K_list_of_values
@@ -140,14 +116,11 @@ package main _plain
 				symbol external misc K_list_of_values == /main/other/K_list_of_values
 				constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __buffer_array=1
 		package variables _submodule
-			symbol public misc nitwit_var
 			package nitwit_var _plain
 				symbol public misc nitwit
 				symbol external misc K_unchecked == /main/other/K_unchecked
 				variable nitwit K_unchecked = 2 __assimilated=1
 		package properties _submodule
-			symbol public misc marmorial_prop
-			symbol public misc density_prop
 			package marmorial_prop _plain
 				symbol public misc marmorial -> marmorial
 				symbol external misc K_truth_state == /main/other/K_truth_state

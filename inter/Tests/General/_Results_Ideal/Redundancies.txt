@@ -8,11 +8,9 @@ primitive !minus val val -> val
 primitive !jump lab -> void
 
 package main _plain
-	symbol public misc resources
 	package resources _plain
 		symbol public misc K_number
 		symbol public misc K_phrase_number____nothing
-		symbol public misc MyRoutine_B
 		symbol public misc MyRoutine
 		kind K_number int32
 		kind K_phrase_number____nothing function K_number -> void

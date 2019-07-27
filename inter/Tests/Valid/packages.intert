@@ -4,7 +4,6 @@ packagetype _code
 package main _plain
 	symbol public misc K_number
 	symbol public misc x
-	symbol public misc sub
 	symbol public misc y
 	kind K_number int32
 	constant x K_number = 11

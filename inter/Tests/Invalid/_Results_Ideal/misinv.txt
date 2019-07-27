@@ -11,9 +11,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 30: local has kind K_colour which
 	symbol public misc K_colour
 	symbol public misc K_stuff
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_101_A
 	symbol public misc R_102
  2.    	package R_101_B _code
 		symbol private misc x
@@ -30,9 +28,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 22: this inv of !increment should
 	symbol public misc K_colour
 	symbol public misc K_stuff
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_101_A
 	symbol public misc R_102
  2.    	package R_101_B _code
 		symbol private misc x
@@ -50,9 +46,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 27: operand 1 of inv '!increment'
 	symbol public misc K_colour
 	symbol public misc K_stuff
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_101_A
 	symbol public misc R_102
  2.    	package R_101_B _code
 		symbol private misc x
@@ -70,9 +64,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv 'R_101' shou
 	symbol public misc K_colour
 	symbol public misc K_stuff
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_101_A
 	symbol public misc R_102
  2.    	package R_101_B _code
 		symbol private misc x
@@ -90,9 +82,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 29: this inv of !increment should
 	symbol public misc K_colour
 	symbol public misc K_stuff
 	symbol public misc K_colour____colour
-	symbol public misc R_101_B
 	symbol public misc R_101
-	symbol public misc R_101_A
 	symbol public misc R_102
  2.    	package R_101_A _code
 		symbol private misc x

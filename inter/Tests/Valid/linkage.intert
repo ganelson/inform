@@ -5,8 +5,6 @@ packagetype _linkage
 package main _plain
 	symbol public misc K_number
 	symbol public misc C_alpha
-	symbol public misc sub
-	symbol public misc references
 	kind K_number int32
 	constant C_alpha K_number = 1
 	package references _linkage
@@ -14,7 +12,6 @@ package main _plain
 		symbol link misc distant == /main/template/ultima/thule
 	package sub _plain
 		symbol public misc C_beta
-		symbol public misc subsub
 		symbol external misc C_gamma == /main/sub/subsub/C_gamma
 		symbol external misc C_alpha == /main/C_alpha
 		symbol external misc K_number == /main/K_number
