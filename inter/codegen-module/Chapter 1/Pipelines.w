@@ -351,7 +351,6 @@ inter_symbol *command_ptype_symbol = NULL;
 inter_symbol *property_ptype_symbol = NULL;
 inter_symbol *to_phrase_ptype_symbol = NULL;
 
-inter_symbol *template_symbol = NULL;
 inter_package *template_package = NULL;
 
 void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
@@ -363,8 +362,7 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 	property_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
 	to_phrase_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
 
-	template_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/main/template");
-	if (template_symbol) template_package = Inter::Package::which(template_symbol);
+	template_package = Inter::Packages::by_url(I, I"/main/template");
 
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");

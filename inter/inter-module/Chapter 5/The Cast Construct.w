@@ -36,7 +36,7 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	*E = Inter::Defn::vet_level(IBM, CAST_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
+	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
 	inter_symbol *from_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);

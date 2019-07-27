@@ -32,9 +32,9 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 	*E = Inter::Defn::vet_level(IBM, LABEL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
+	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
-	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
+	inter_symbols_table *locals = Inter::Packages::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *lab_name = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);

@@ -214,7 +214,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	return E;
 }
 
-inter_symbol *latest_block_symbol = NULL;
+inter_package *latest_block_package = NULL;
 
 inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
 	inter_line_parse ilp;
@@ -251,7 +251,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	Str::trim_white_space(ilp.line);
 
-	if (ilp.indent_level == 0) latest_block_symbol = NULL;
+	if (ilp.indent_level == 0) latest_block_package = NULL;
 
 	while ((Inter::Bookmarks::package(IBM)) && (Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE) && (ilp.indent_level <= Inter::Bookmarks::baseline(IBM))) {
 		Inter::Bookmarks::set_current_package(IBM, Inter::Packages::parent(Inter::Bookmarks::package(IBM)));
@@ -275,12 +275,12 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	return Inter::Errors::plain(I"bad inter line", eloc);
 }
 
-void Inter::Defn::set_latest_package_symbol(inter_symbol *F) {
-	latest_block_symbol = F;
+void Inter::Defn::set_latest_block_package(inter_package *F) {
+	latest_block_package = F;
 }
 
-inter_symbol *Inter::Defn::get_latest_block_symbol(void) {
-	return latest_block_symbol;
+inter_package *Inter::Defn::get_latest_block_package(void) {
+	return latest_block_package;
 }
 
 inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_t cons, int level, inter_error_location *eloc) {

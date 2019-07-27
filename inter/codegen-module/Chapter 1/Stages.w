@@ -79,17 +79,15 @@ int CodeGen::Stage::run_read_stage(pipeline_step *step) {
 int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 	LOG("Arg is %S.\n", step->step_argument);
 	match_results mr = Regexp::create_mr();
-	inter_symbol *S = NULL;
+	inter_package *pack = NULL;
 	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
 		int from_rep = Str::atoi(mr.exp[0], 0);
 		if (step->pipeline->repositories[from_rep] == NULL)
 			internal_error("no such repository");
-		S = Inter::SymbolsTables::url_name_to_symbol(
-			step->pipeline->repositories[from_rep], NULL, mr.exp[1]);
+		pack = Inter::Packages::by_url(
+			step->pipeline->repositories[from_rep], mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);
-	if (S == NULL) internal_error("no such location");
-	inter_package *pack = Inter::Package::which(S);
 	if (pack == NULL) internal_error("not a package");
 
 	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", Inter::Packages::name(pack));

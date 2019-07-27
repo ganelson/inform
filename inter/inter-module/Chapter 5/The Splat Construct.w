@@ -53,9 +53,9 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = Inter::Defn::vet_level(IBM, SPLAT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *routine = NULL;
+	inter_package *routine = NULL;
 	if (ilp->indent_level > 0) {
-		routine = Inter::Defn::get_latest_block_symbol();
+		routine = Inter::Defn::get_latest_block_package();
 		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 

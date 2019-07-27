@@ -32,9 +32,9 @@ void Inter::Local::define(void) {
 void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = Inter::Defn::vet_level(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
+	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
-	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
+	inter_symbols_table *locals = Inter::Packages::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);

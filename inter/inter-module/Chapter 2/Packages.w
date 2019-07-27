@@ -8,9 +8,10 @@ To manage packages of inter code.
 typedef struct inter_package {
 	struct inter_tree_node *package_head;
 	inter_t index_n;
-	struct inter_symbol *package_name;
+	struct text_stream *package_name_t;
 	struct inter_symbols_table *package_scope;
 	int package_flags;
+	struct dictionary *name_lookup;
 	MEMORY_MANAGEMENT
 } inter_package;
 
@@ -29,9 +30,10 @@ inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
 	inter_package *pack = CREATE(inter_package);
 	pack->package_head = NULL;
 	pack->package_scope = NULL;
-	pack->package_name = NULL;
 	pack->package_flags = 0;
+	pack->package_name_t = NULL;
 	pack->index_n = n;
+	pack->name_lookup = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
 	return pack;
 }
 
@@ -48,7 +50,7 @@ inter_tree *Inter::Packages::tree(inter_package *pack) {
 
 text_stream *Inter::Packages::name(inter_package *pack) {
 	if (pack == NULL) return NULL;
-	return pack->package_name->symbol_name;
+	return pack->package_name_t;
 }
 
 int Inter::Packages::is_codelike(inter_package *pack) {
@@ -107,12 +109,20 @@ void Inter::Packages::set_scope(inter_package *P, inter_symbols_table *T) {
 	if (T) T->owning_package = P;
 }
 
-void Inter::Packages::set_name(inter_package *P, inter_symbol *N) {
+void Inter::Packages::set_name(inter_package *Q, inter_package *P, text_stream *N) {
+	if (Q == NULL) internal_error("no parent supplied");
 	if (P == NULL) internal_error("null package");
 	if (N == NULL) internal_error("null package name");
-	P->package_name = N;
-	if ((N) && (Str::eq(N->symbol_name, I"main")))
+	P->package_name_t = Str::duplicate(N);
+	if ((N) && (Str::eq(P->package_name_t, I"main")))
 		Inter::Tree::set_main_package(Inter::Packages::tree(P), P);
+
+	if (Str::len(N) > 0) {
+		dict_entry *de = Dictionaries::find(Q->name_lookup, N);
+		if (de) internal_error("duplicated package name");
+		Dictionaries::create(Q->name_lookup, N);
+		Dictionaries::write_value(Q->name_lookup, N, (void *) P);
+	}
 }
 
 void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
@@ -121,21 +131,15 @@ void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 }
 
 inter_package *Inter::Packages::basics(inter_tree *I) {
-	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"basics");
-	if (S) return Inter::Package::which(S);
-	return NULL;
+	return Inter::Packages::by_url(I, I"/main/generic/basics");
 }
 
 inter_package *Inter::Packages::veneer(inter_tree *I) {
-	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"veneer");
-	if (S) return Inter::Package::which(S);
-	return NULL;
+	return Inter::Packages::by_url(I, I"/main/veneer");
 }
 
 inter_package *Inter::Packages::template(inter_tree *I) {
-	inter_symbol *S = Inter::Packages::search_main_exhaustively(I, I"template");
-	if (S) return Inter::Package::which(S);
-	return NULL;
+	return Inter::Packages::by_url(I, I"/main/template");
 }
 
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {
@@ -245,8 +249,28 @@ void Inter::Packages::clear_flag(inter_package *P, int f) {
 
 inter_package *Inter::Packages::by_name(inter_package *P, text_stream *name) {
 	if (P == NULL) return NULL;
-	inter_symbols_table *at = Inter::Packages::scope(P);
-	inter_symbol *next_sym = Inter::SymbolsTables::symbol_from_name(at, name);
-	if (next_sym == NULL) return NULL;
-	return Inter::Package::which(next_sym);
+	dict_entry *de = Dictionaries::find(P->name_lookup, name);
+	if (de) return (inter_package *) Dictionaries::read_value(P->name_lookup, name);
+	return NULL;
+}
+
+inter_package *Inter::Packages::by_url(inter_tree *I, text_stream *S) {
+	if (Str::get_first_char(S) == '/') {
+		inter_package *at_P = I->root_package;
+		TEMPORARY_TEXT(C);
+		LOOP_THROUGH_TEXT(P, S) {
+			wchar_t c = Str::get(P);
+			if (c == '/') {
+				if (Str::len(C) > 0) {
+					at_P = Inter::Packages::by_name(at_P, C);
+					if (at_P == NULL) return NULL;
+				}
+				Str::clear(C);
+			} else {
+				PUT_TO(C, c);
+			}
+		}
+		return Inter::Packages::by_name(at_P, C);
+	}
+	return Inter::Packages::by_name(I->root_package, S);
 }

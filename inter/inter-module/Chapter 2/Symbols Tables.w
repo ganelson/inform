@@ -337,8 +337,10 @@ void Inter::SymbolsTables::resolve_forward_references(inter_tree *I, inter_error
 void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
+	if (pack == NULL) internal_error("no package defined here");
 	if (Inter::Packages::is_linklike(pack)) return;
 	inter_symbols_table *T = Inter::Packages::scope(pack);
+	if (T == NULL) internal_error("package with no symbols");
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
 		if ((symb) && (symb->equated_name)) {

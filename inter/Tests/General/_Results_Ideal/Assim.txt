@@ -7,8 +7,6 @@ packagetype _command
 packagetype _action
 
 package main _plain
-	symbol public misc other
-	symbol public misc template
 	package other _module
 		symbol public misc K_unchecked
 		symbol public misc K_unchecked_function

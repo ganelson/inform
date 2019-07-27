@@ -20,16 +20,17 @@
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">package_head</span><span class="plain">;</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">index_n</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">package_name</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">package_name_t</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">package_scope</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">package_flags</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">name_lookup</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inter_package</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_package is accessed in 2/it, 3/iibf, 4/tpc3, 4/tcc2 and here.</p>
+<p class="endnote">The structure inter_package is accessed in 2/it, 2/st, 3/iibf, 4/tpc3, 4/tcc2 and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -51,9 +52,10 @@
         <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain">);</span>
         <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_head</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_scope</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_flags</span><span class="plain"> = 0;</span>
+        <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name_t</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;index_n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(</span><span class="constant">INITIAL_INTER_SYMBOLS_ID_RANGE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pack</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -70,7 +72,7 @@
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::name</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pack</span><span class="plain">-</span><span class="element">&gt;package_name_t</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Packages::is_codelike</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
@@ -129,12 +131,20 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">) </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;owning_package</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::set_name</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::set_name</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">Q</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no parent supplied"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null package"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null package name"</span><span class="plain">);</span>
-        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">N</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"main"</span><span class="plain">)))</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name_t</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">N</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;package_name_t</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"main"</span><span class="plain">)))</span>
             <span class="functiontext">Inter::Tree::set_main_package</span><span class="plain">(</span><span class="functiontext">Inter::Packages::tree</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">);</span>
+
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">) &gt; 0) {</span>
+            <span class="identifier">dict_entry</span><span class="plain"> *</span><span class="identifier">de</span><span class="plain"> = </span><span class="identifier">Dictionaries::find</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">de</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"duplicated package name"</span><span class="plain">);</span>
+            <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+            <span class="identifier">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Packages::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vp</span><span class="plain">) {</span>
@@ -143,21 +153,15 @@
     <span class="plain">}</span>
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::basics</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"basics"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::by_url</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/main/generic/basics"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::veneer</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"veneer"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::by_url</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/main/veneer"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::template</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::search_main_exhaustively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::by_url</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/main/template"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::search_exhaustively</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -267,10 +271,30 @@
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">next_sym</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_sym</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Package::which</span><span class="plain">(</span><span class="identifier">next_sym</span><span class="plain">);</span>
+        <span class="identifier">dict_entry</span><span class="plain"> *</span><span class="identifier">de</span><span class="plain"> = </span><span class="identifier">Dictionaries::find</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">de</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="reserved">inter_package</span><span class="plain"> *) </span><span class="identifier">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;name_lookup</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Packages::by_url</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="character">'/'</span><span class="plain">) {</span>
+            <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">at_P</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">;</span>
+            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">) {</span>
+                <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'/'</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">) &gt; 0) {</span>
+                        <span class="identifier">at_P</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="identifier">at_P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at_P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+                    <span class="plain">}</span>
+                    <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="identifier">at_P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -282,7 +306,7 @@
 
 <p class="endnote">The function Inter::Packages::tree is used in 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_1_3">&#167;1.1.3</a>, <a href="3-iibf.html#SP1_1_4">&#167;1.1.4</a>).</p>
 
-<p class="endnote">The function Inter::Packages::name is used in 2/st (<a href="2-st.html#SP11">&#167;11</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Packages::name is used in 2/st (<a href="2-st.html#SP11">&#167;11</a>), 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Packages::is_codelike is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 3/iibf (<a href="3-iibf.html#SP1_1_3_3">&#167;1.1.3.3</a>).</p>
 
@@ -322,7 +346,7 @@
 
 <p class="endnote">The function Inter::Packages::container is used in 3/dfn (<a href="3-dfn.html#SP4">&#167;4</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Packages::scope is used in 2/it (<a href="2-it.html#SP2">&#167;2</a>), 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/st (<a href="2-st.html#SP4">&#167;4</a>, <a href="2-st.html#SP7">&#167;7</a>, <a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP10">&#167;10</a>, <a href="2-st.html#SP11">&#167;11</a>), 3/iibf (<a href="3-iibf.html#SP1_4_3">&#167;1.4.3</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Inter::Packages::scope is used in 2/it (<a href="2-it.html#SP2">&#167;2</a>), 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/st (<a href="2-st.html#SP4">&#167;4</a>, <a href="2-st.html#SP7">&#167;7</a>, <a href="2-st.html#SP8">&#167;8</a>, <a href="2-st.html#SP9">&#167;9</a>, <a href="2-st.html#SP10">&#167;10</a>, <a href="2-st.html#SP11">&#167;11</a>), 3/vi (<a href="3-vi.html#SP1">&#167;1</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 4/tac (<a href="4-tac.html#SP2">&#167;2</a>), 4/tpc3 (<a href="4-tpc3.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 4/tpc6 (<a href="4-tpc6.html#SP2">&#167;2</a>), 5/tlc (<a href="5-tlc.html#SP2">&#167;2</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>), 5/trc (<a href="5-trc.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tlc3 (<a href="5-tlc3.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Packages::scope_of is used in 2/st (<a href="2-st.html#SP7">&#167;7</a>), 4/tmc (<a href="4-tmc.html#SP2">&#167;2</a>), 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tdc (<a href="4-tdc.html#SP2">&#167;2</a>), 4/tvc2 (<a href="4-tvc2.html#SP2">&#167;2</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>), 4/trc (<a href="4-trc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc5 (<a href="4-tpc5.html#SP2">&#167;2</a>), 5/tvc (<a href="5-tvc.html#SP2">&#167;2</a>), 5/tcc2 (<a href="5-tcc2.html#SP2">&#167;2</a>).</p>
 
@@ -341,6 +365,8 @@
 <p class="endnote">The function Inter::Packages::clear_flag appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Packages::by_name is used in 2/st (<a href="2-st.html#SP11">&#167;11</a>), 4/tcc2 (<a href="4-tcc2.html#SP2">&#167;2</a>).</p>
+
+<p class="endnote">The function Inter::Packages::by_url appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-st.html">Back to 'Symbols Tables'</a></li><li><a href="2-sym.html">Continue with 'Symbols'</a></li></ul><hr class="tocbar">

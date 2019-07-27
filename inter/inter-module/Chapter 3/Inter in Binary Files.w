@@ -312,8 +312,6 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	if (BinaryFiles::read_int32(fh, &rl) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	unsigned int sc;
 	if (BinaryFiles::read_int32(fh, &sc) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-	unsigned int nid;
-	if (BinaryFiles::read_int32(fh, &nid) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	inter_package *parent = NULL;
 	if (p != 0) parent = Inter::Warehouse::get_package(warehouse, grid[p]);
 	if (res->stored_package == NULL) {
@@ -325,13 +323,16 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (grid) sc = grid[sc];
 		Inter::Packages::set_scope(res->stored_package, Inter::Warehouse::get_symbols_table(warehouse, sc));
 	}
-	if (nid != 0) {
-		inter_symbol *pack_name = Inter::SymbolsTables::symbol_from_id(parent?(Inter::Packages::scope(parent)):Inter::Tree::global_scope(I), nid);
-		if (pack_name)
-			Inter::Packages::set_name(res->stored_package, pack_name);
-		else
-			Inter::Binary::read_error(&eloc, ftell(fh), I"unable to retrieve package name");
+	TEMPORARY_TEXT(N);
+	unsigned int L;
+	if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+	for (unsigned int i=0; i<L; i++) {
+		unsigned int c;
+		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		PUT_TO(N, (int) c);
 	}
+	Inter::Packages::set_name((parent)?(parent):(I->root_package), res->stored_package, N);
+	DISCARD_TEXT(N);
 
 @<Write a package resource@> =
 	inter_package *P = res->stored_package;
@@ -342,10 +343,9 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_rootlike(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
-		if (P->package_name)
-			BinaryFiles::write_int32(fh, (unsigned int) P->package_name->symbol_ID);
-		else
-			BinaryFiles::write_int32(fh, 0);
+		BinaryFiles::write_int32(fh, (unsigned int) Str::len(P->package_name_t));
+		LOOP_THROUGH_TEXT(C, P->package_name_t)
+			BinaryFiles::write_int32(fh, (unsigned int) Str::get(C));
 	}
 
 @ We do nothing here, because frame lists are built new on reading. It's

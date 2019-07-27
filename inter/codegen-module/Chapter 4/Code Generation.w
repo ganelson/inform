@@ -13,16 +13,11 @@ int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->target_argument == NULL) internal_error("no target specified");
 	inter_package *which = NULL;
 	if (Str::len(step->package_argument) > 0) {
-		inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(step->repository,
-			NULL, step->package_argument);
-		if (symb == NULL) {
-			LOG("Arg %S\n", step->package_argument);
-			internal_error("no such package name");
-		}
-		which = Inter::Package::which(symb);
+		which = Inter::Packages::by_url(step->repository,
+			step->package_argument);
 		if (which == NULL) {
 			LOG("Arg %S\n", step->package_argument);
-			internal_error("that's not a package name");
+			internal_error("no such package name");
 		}
 	}
 

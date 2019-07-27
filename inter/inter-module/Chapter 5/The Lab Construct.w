@@ -34,9 +34,9 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = Inter::Defn::vet_level(IBM, LAB_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
+	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'lab' used outside function", eloc); return; }
-	inter_symbols_table *locals = Inter::Package::local_symbols(routine);
+	inter_symbols_table *locals = Inter::Packages::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *label = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);

@@ -24,7 +24,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (*E) return;
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
+	inter_package *routine = Inter::Defn::get_latest_block_package();
 
 	text_stream *symbol_name = ilp->mr.exp[2];
 	text_stream *trans_name = NULL;
@@ -46,7 +46,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	inter_symbol *name_name = NULL;
 	inter_t level = 0;
 	if (routine) {
-		inter_symbols_table *locals = Inter::Package::local_symbols(routine);
+		inter_symbols_table *locals = Inter::Packages::scope(routine);
 		if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 		name_name = Inter::Textual::new_symbol(eloc, locals, symbol_name, E);
 		if (*E) return;
