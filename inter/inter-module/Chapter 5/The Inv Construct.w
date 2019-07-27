@@ -48,16 +48,16 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 	if ((Inter::Symbols::is_extern(invoked_name)) ||
 		(Inter::Symbols::is_predeclared(invoked_name))) {
-		*E = Inter::Inv::new_call(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Inv::new_call(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 	switch (Inter::Symbols::definition(invoked_name)->W.data[ID_IFLD]) {
 		case PRIMITIVE_IST:
-			*E = Inter::Inv::new_primitive(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+			*E = Inter::Inv::new_primitive(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
 			return;
 		case CONSTANT_IST:
 			if (Inter::Constant::is_routine(invoked_name)) {
-				*E = Inter::Inv::new_call(IBM, routine, invoked_name, (inter_t) ilp->indent_level, eloc);
+				*E = Inter::Inv::new_call(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
 				return;
 			}
 			break;
@@ -65,7 +65,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
 }
 
-inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
 		eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
@@ -74,7 +74,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
@@ -82,7 +82,7 @@ inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *rou
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_symbol *routine, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;

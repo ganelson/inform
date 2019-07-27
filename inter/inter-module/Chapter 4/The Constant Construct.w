@@ -13,6 +13,7 @@ void Inter::Constant::define(void) {
 		L"constant (%C+) (%i+) = (%c+)",
 		I"constant", I"constants");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Constant::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Constant::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Constant::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Constant::write);
 }
@@ -175,9 +176,11 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	}
 
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
-		inter_symbol *block_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), S, PACKAGE_IST, E);
-		if (*E) return;
-		*E = Inter::Constant::new_function(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, block_name), (inter_t) ilp->indent_level, eloc);
+		inter_package *block = Inter::Packages::by_name(Inter::Bookmarks::package(IBM), S);
+		if (block == NULL) {
+			*E = Inter::Errors::quoted(I"no such code block", S, eloc); return;
+		}
+		*E = Inter::Constant::new_function(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), block, (inter_t) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -245,7 +248,8 @@ inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_t S
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t BID, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_package *block, inter_t level, inter_error_location *eloc) {
+	inter_t BID = block->index_n;
 	inter_tree_node *P = Inter::Node::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
@@ -274,6 +278,11 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	P->W.data[P->W.extent-2] = con_val1;
 	P->W.data[P->W.extent-1] = con_val2;
 	return TRUE;
+}
+
+void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_ROUTINE)
+		P->W.data[DATA_CONST_IFLD] = grid[P->W.data[DATA_CONST_IFLD]];
 }
 
 void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
@@ -343,7 +352,6 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			break;
 		case CONSTANT_ROUTINE:
 			if (P->W.extent != DATA_CONST_IFLD + 1) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[DATA_CONST_IFLD], PACKAGE_IST); if (*E) return;
 			break;
 	}
 }
@@ -398,8 +406,8 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				WRITE("\"");
 				break;
 			case CONSTANT_ROUTINE: {
-				inter_symbol *block = Inter::SymbolsTables::symbol_from_frame_data(P, DATA_CONST_IFLD);
-				WRITE("%S", block->symbol_name);
+				inter_package *block = Inter::Node::ID_to_package(P, P->W.data[DATA_CONST_IFLD]);
+				WRITE("%S", Inter::Packages::name(block));
 				break;
 			}
 		}
@@ -418,13 +426,13 @@ inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
 	return Inter::SymbolsTables::symbol_from_frame_data(D, KIND_CONST_IFLD);
 }
 
-inter_symbol *Inter::Constant::code_block(inter_symbol *con_symbol) {
+inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
 	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.data[ID_IFLD] != CONSTANT_IST) return NULL;
 	if (D->W.data[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) return NULL;
-	return Inter::SymbolsTables::symbol_from_frame_data(D, DATA_CONST_IFLD);
+	return Inter::Node::ID_to_package(D, D->W.data[DATA_CONST_IFLD]);
 }
 
 int Inter::Constant::is_routine(inter_symbol *con_symbol) {
@@ -437,9 +445,7 @@ int Inter::Constant::is_routine(inter_symbol *con_symbol) {
 }
 
 inter_symbols_table *Inter::Constant::local_symbols(inter_symbol *con_symbol) {
-	inter_symbol *block = Inter::Constant::code_block(con_symbol);
-	if (block == NULL) return NULL;
-	return Inter::Package::local_symbols(block);
+	return Inter::Packages::scope(Inter::Constant::code_block(con_symbol));
 }
 
 int Inter::Constant::char_acceptable(int c) {

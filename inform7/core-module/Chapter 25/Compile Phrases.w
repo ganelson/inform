@@ -543,7 +543,7 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYL);
 	WRITE_TO(SAYL, ".");
 	JumpLabels::write(SAYL, I"Say");
-	Emit::place_label(Emit::reserve_label(SAYL), TRUE);
+	Emit::place_label(Emit::reserve_label(SAYL));
 	DISCARD_TEXT(SAYL);
 
 	JumpLabels::read_counter(I"Say", TRUE);
@@ -551,7 +551,7 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYXL);
 	WRITE_TO(SAYXL, ".");
 	JumpLabels::write(SAYXL, I"SayX");
-	Emit::place_label(Emit::reserve_label(SAYXL), TRUE);
+	Emit::place_label(Emit::reserve_label(SAYXL));
 	DISCARD_TEXT(SAYXL);
 
 	JumpLabels::read_counter(I"SayX", TRUE);

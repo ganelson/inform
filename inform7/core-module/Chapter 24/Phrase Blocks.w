@@ -183,7 +183,7 @@ void Frames::Blocks::close_code_block(void) {
 	if (block_being_compiled->label_following >= 0) {
 		TEMPORARY_TEXT(TL);
 		WRITE_TO(TL, ".loop_break_%d", block_being_compiled->label_following);
-		Emit::place_label(Emit::reserve_label(TL), TRUE);
+		Emit::place_label(Emit::reserve_label(TL));
 		DISCARD_TEXT(TL);
 	}
 

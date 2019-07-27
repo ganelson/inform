@@ -204,8 +204,8 @@ inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
 	return symb;
 }
 
-inter_symbol *Emit::new_local_symbol(inter_symbol *rsymb, text_stream *name) {
-	return Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(rsymb), name);
+inter_symbol *Emit::new_local_symbol(inter_package *rpack, text_stream *name) {
+	return Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(rpack), name);
 }
 
 void Emit::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_stream *S) {
@@ -708,7 +708,7 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 	return name;
 }
 
-inter_symbol *current_inter_routine = NULL;
+inter_package *current_inter_routine = NULL;
 inter_bookmark current_inter_bookmark;
 inter_bookmark locals_bookmark;
 inter_bookmark begin_bookmark;
@@ -728,20 +728,20 @@ void Emit::code_comment(text_stream *text) {
 */
 }
 
-inter_symbol *Emit::package(inter_name *iname, inter_symbol *ptype, inter_package **P) {
+inter_package *Emit::package(inter_name *iname, inter_symbol *ptype) {
 	if (ptype == NULL) internal_error("no package type");
 	inter_t B = Emit::baseline(Packaging::at());
-	inter_symbol *rsymb = Emit::define_symbol(iname);
+//	inter_symbol *rsymb = Emit::define_symbol(iname);
 	inter_package *IP = NULL;
-	Emit::guard(Inter::Package::new_package(Packaging::at(), rsymb, ptype, B, NULL, &IP));
-	if (IP) {
-		Inter::Bookmarks::set_current_package(Packaging::at(), IP);
-		if (P) *P = IP;
-	}
-	return rsymb;
+	TEMPORARY_TEXT(hmm);
+	WRITE_TO(hmm, "%n", iname);
+	Emit::guard(Inter::Package::new_package_named(Packaging::at(), hmm, TRUE, ptype, B, NULL, &IP));
+	DISCARD_TEXT(hmm);
+	if (IP) Inter::Bookmarks::set_current_package(Packaging::at(), IP);
+	return IP;
 }
 
-inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
+inter_package *Emit::block(packaging_state *save, inter_name *iname) {
 	if (current_inter_routine) internal_error("nested routines");
 	if (Packaging::at() == NULL) internal_error("no inter repository");
 	if (save) {
@@ -758,10 +758,10 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 		block_iname = Hierarchy::make_block_iname(InterNames::location(iname));
 	else internal_error("routine outside function package");
 	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at());
-	inter_symbol *rsymb = Emit::package(block_iname, code_packagetype, NULL);
+	current_inter_routine = Emit::package(block_iname, code_packagetype);
 
-	current_inter_routine = rsymb;
 	current_inter_bookmark = Emit::bookmark();
+
 	Emit::guard(Inter::Code::new(Packaging::at(),
 		(int) Emit::baseline(Packaging::at()) + 1, NULL));
 
@@ -774,7 +774,7 @@ inter_symbol *Emit::block(packaging_state *save, inter_name *iname) {
 	code_bookmark = Emit::bookmark();
 	code_insertion_point cip = Emit::new_cip(&code_bookmark);
 	Emit::push_code_position(cip, save_ib);
-	return rsymb;
+	return current_inter_routine;
 }
 
 inter_name *Emit::kernel(inter_name *public_name) {
@@ -787,14 +787,14 @@ void Emit::end_main_block(packaging_state save) {
 	Packaging::exit(save);
 }
 
-void Emit::routine(inter_name *rname, kind *rkind, inter_symbol *block_name) {
+void Emit::routine(inter_name *rname, kind *rkind, inter_package *block) {
 	if (Packaging::at() == NULL) internal_error("no inter repository");
 	inter_symbol *AB_symbol = Emit::kind_to_symbol(rkind);
 	inter_symbol *rsymb = Emit::define_symbol(rname);
 	Emit::guard(Inter::Constant::new_function(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), rsymb),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), AB_symbol),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), block_name),
+		block,
 		Emit::baseline(Packaging::at()), NULL));
 }
 
@@ -814,16 +814,12 @@ inter_symbol *Emit::reserve_label(text_stream *lname) {
 	return lab_name;
 }
 
-void Emit::place_label(inter_symbol *lab_name, int inside) {
-	if (inside) {
-		Emit::guard(Inter::Label::new(Emit::at(), current_inter_routine, lab_name, (inter_t) Emit::level(), NULL));
-	} else {
-		Emit::guard(Inter::Label::new(Packaging::at(), current_inter_routine, lab_name, Emit::baseline(Packaging::at()) + 1, NULL));
-	}
+void Emit::place_label(inter_symbol *lab_name) {
+	Emit::guard(Inter::Label::new(Emit::at(), lab_name, (inter_t) Emit::level(), NULL));
 }
 
 inter_symbol *Emit::local_exists(text_stream *lname) {
-	return Inter::SymbolsTables::symbol_from_name(Inter::Package::local_symbols(current_inter_routine), lname);
+	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(current_inter_routine), lname);
 }
 
 inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_stream *comm) {
@@ -838,7 +834,7 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 	}
 	if (annot) Emit::annotate_symbol_i(loc_name, annot, 0);
 	Inter::Symbols::local(loc_name);
-	Emit::guard(Inter::Local::new(&locals_bookmark, current_inter_routine, loc_name, loc_kind, ID, Emit::baseline(&locals_bookmark) + 1, NULL));
+	Emit::guard(Inter::Local::new(&locals_bookmark, loc_name, loc_kind, ID, Emit::baseline(&locals_bookmark) + 1, NULL));
 	return loc_name;
 }
 
@@ -852,18 +848,18 @@ void Emit::inv_primitive(inter_symbol *prim_symb) {
 		(prim_symb == do_interp) ||
 		(prim_symb == objectloop_interp)) Emit::note_level(prim_symb);
 
-	Emit::guard(Inter::Inv::new_primitive(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Inv::new_primitive(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
 }
 
 void Emit::inv_call(inter_symbol *prim_symb) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Inv::new_call(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Inv::new_call(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
 }
 
 void Emit::inv_call_iname(inter_name *iname) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
 	inter_symbol *prim_symb = InterNames::to_symbol(iname);
-	Emit::guard(Inter::Inv::new_call(Emit::at(), current_inter_routine, prim_symb, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Inv::new_call(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
 }
 
 void Emit::inv_indirect_call(int arity) {
@@ -882,7 +878,7 @@ void Emit::inv_assembly(text_stream *opcode) {
 	inter_t SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Emit::at()));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), SID);
 	Str::copy(glob_storage, opcode);
-	Emit::guard(Inter::Inv::new_assembly(Emit::at(), current_inter_routine, SID, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Inv::new_assembly(Emit::at(), SID, (inter_t) Emit::level(), NULL));
 }
 
 void Emit::return(kind *K, inter_name *iname) {
@@ -1025,19 +1021,19 @@ void Emit::code(void) {
 
 void Emit::evaluation(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Evaluation::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
+	Emit::guard(Inter::Evaluation::new(Emit::at(), Emit::level(), NULL));
 }
 
 void Emit::reference(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Reference::new(Emit::at(), current_inter_routine, Emit::level(), NULL));
+	Emit::guard(Inter::Reference::new(Emit::at(), Emit::level(), NULL));
 }
 
 void Emit::val(kind *K, inter_t val1, inter_t val2) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for val");
-	Emit::guard(Inter::Val::new(Emit::at(), current_inter_routine, val_kind, Emit::level(), val1, val2, NULL));
+	Emit::guard(Inter::Val::new(Emit::at(), val_kind, Emit::level(), val1, val2, NULL));
 }
 
 void Emit::val_nothing(void) {
@@ -1046,14 +1042,14 @@ void Emit::val_nothing(void) {
 
 void Emit::lab(inter_symbol *L) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Emit::guard(Inter::Lab::new(Emit::at(), current_inter_routine, L, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Lab::new(Emit::at(), L, (inter_t) Emit::level(), NULL));
 }
 
 void Emit::ref(kind *K, inter_t val1, inter_t val2) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
 	inter_symbol *val_kind = Emit::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for ref");
-	Emit::guard(Inter::Ref::new(Emit::at(), current_inter_routine, val_kind, Emit::level(), val1, val2, NULL));
+	Emit::guard(Inter::Ref::new(Emit::at(), val_kind, Emit::level(), val1, val2, NULL));
 }
 
 void Emit::val_iname(kind *K, inter_name *iname) {
@@ -1114,12 +1110,11 @@ void Emit::ref_symbol(kind *K, inter_symbol *s) {
 void Emit::cast(kind *F, kind *T) {
 	inter_symbol *from_kind = Emit::kind_to_symbol(F);
 	inter_symbol *to_kind = Emit::kind_to_symbol(T);
-	Emit::guard(Inter::Cast::new(Emit::at(), current_inter_routine, from_kind, to_kind, (inter_t) Emit::level(), NULL));
+	Emit::guard(Inter::Cast::new(Emit::at(), from_kind, to_kind, (inter_t) Emit::level(), NULL));
 }
 
-void Emit::end_block(inter_symbol *rsymb) {
+void Emit::end_block(void) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	if (current_inter_routine != rsymb) internal_error("wrong inter routine ended");
 	current_inter_routine = NULL;
 	Emit::pop_code_position();
 }

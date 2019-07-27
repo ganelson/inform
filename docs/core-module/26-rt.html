@@ -38,7 +38,7 @@ we need to keep track of:
 <pre class="display">
     <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">currently_compiling_in_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the stack frame for this routine</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">currently_compiling_nnp</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">is this a nonphrasal stack frame we made ourselves?</span>
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">currently_compiling_inter_block</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where Inter is being emitted to</span>
+    <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">currently_compiling_inter_block</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where Inter is being emitted to</span>
     <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">currently_compiling_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">routine we end up with</span>
 </pre>
 
@@ -63,17 +63,11 @@ pre-existing stack frame:
         <span class="functiontext">LocalVariables::declare</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">save</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Routines::self</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">currently_compiling_inter_block</span><span class="plain">;</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Routines::begin_framed is used in <a href="#SP1">&#167;1</a>, 25/cp (<a href="25-cp.html#SP3">&#167;3</a>).</p>
-
-<p class="endnote">The function Routines::self appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>If the <code class="display"><span class="extract">phsf</span></code> argument is set, then we'll use that; otherwise we will
 create a new nonphrasal stack frame.
@@ -123,7 +117,7 @@ did not.
             &lt;<span class="cwebmacro">Issue a problem for too many locals</span> <span class="cwebmacronumber">4.2</span>&gt;<span class="plain">;</span>
 
         <span class="functiontext">LocalVariables::declare</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">Emit::end_block</span><span class="plain">(</span><span class="identifier">currently_compiling_inter_block</span><span class="plain">);</span>
+        <span class="functiontext">Emit::end_block</span><span class="plain">();</span>
 
         <span class="functiontext">Emit::routine</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">?</span><span class="identifier">kernel_name</span><span class="plain">:</span><span class="identifier">public_name</span><span class="plain">,</span>
             <span class="identifier">R_kind</span><span class="plain">, </span><span class="identifier">currently_compiling_inter_block</span><span class="plain">);</span>
@@ -150,7 +144,7 @@ did not.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">returns_block_value</span><span class="plain"> =</span>
             <span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;kind_returned</span><span class="plain">);</span>
 
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">rsymb</span><span class="plain"> = </span><span class="functiontext">Emit::block</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">public_name</span><span class="plain">);</span>
+        <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">block_package</span><span class="plain"> = </span><span class="functiontext">Emit::block</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">public_name</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile I6 locals for the outer shell</span> <span class="cwebmacronumber">4.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NBV</span><span class="plain"> = 0;</span>
@@ -158,8 +152,8 @@ did not.
         &lt;<span class="cwebmacro">Compile a call to the kernel</span> <span class="cwebmacronumber">4.1.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile some teardown code now that the kernel has finished</span> <span class="cwebmacronumber">4.1.4</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile a return from the outer shell</span> <span class="cwebmacronumber">4.1.5</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">Emit::end_block</span><span class="plain">(</span><span class="identifier">rsymb</span><span class="plain">);</span>
-        <span class="functiontext">Emit::routine</span><span class="plain">(</span><span class="identifier">public_name</span><span class="plain">, </span><span class="identifier">R_kind</span><span class="plain">, </span><span class="identifier">rsymb</span><span class="plain">);</span>
+        <span class="functiontext">Emit::end_block</span><span class="plain">();</span>
+        <span class="functiontext">Emit::routine</span><span class="plain">(</span><span class="identifier">public_name</span><span class="plain">, </span><span class="identifier">R_kind</span><span class="plain">, </span><span class="identifier">block_package</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

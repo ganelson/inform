@@ -750,7 +750,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		}
 	}
 
-	Emit::place_label(succeeded_label, TRUE);
+	Emit::place_label(succeeded_label);
 
 	Emit::inv_primitive(if_interp);
 	Emit::down();
@@ -839,7 +839,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 	Emit::up();
-	Emit::place_label(failed_label, TRUE);
+	Emit::place_label(failed_label);
 }
 
 @<Compile I6 code to match a fixed word token within a literal pattern@> =
@@ -2083,7 +2083,7 @@ the sorting measure.
 @<Print according to this particular literal pattern@> =
 
 	LiteralPatterns::comment_use_of_lp(lp);
-	Emit::place_label(LiteralPatterns::jump_label(lp), TRUE);
+	Emit::place_label(LiteralPatterns::jump_label(lp));
 
 	int ec=0, oc=0;
 	for (int tc=0; tc<lp->no_lp_tokens; tc++) {

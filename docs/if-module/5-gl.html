@@ -1309,7 +1309,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
@@ -1350,7 +1350,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
@@ -1375,7 +1375,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
@@ -1452,7 +1452,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_reserved_label</span><span class="plain">) </span><span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">next_reserved_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_reserved_label</span><span class="plain">) </span><span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">next_reserved_label</span><span class="plain">);</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="string">".group_%d_%d_%d"</span><span class="plain">, </span><span class="identifier">current_grammar_block</span><span class="plain">, </span><span class="identifier">lexeme_equivalence_class</span><span class="plain">, </span><span class="identifier">alternative_number</span><span class="plain">+1);</span>
                     <span class="identifier">next_reserved_label</span><span class="plain"> = </span><span class="identifier">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
@@ -1503,7 +1503,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">empty_text_allowed_in_lexeme</span><span class="plain">) {</span>
                             &lt;<span class="cwebmacro">Jump to end of group</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_reserved_label</span><span class="plain">)</span>
-                                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">next_reserved_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">next_reserved_label</span><span class="plain">);</span>
                             <span class="identifier">next_reserved_label</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -1511,7 +1511,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;group_wn_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">eog_reserved_label</span><span class="plain">) </span><span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">eog_reserved_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">eog_reserved_label</span><span class="plain">) </span><span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">eog_reserved_label</span><span class="plain">);</span>
                         <span class="identifier">eog_reserved_label</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         &lt;<span class="cwebmacro">Jump to end of group</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>

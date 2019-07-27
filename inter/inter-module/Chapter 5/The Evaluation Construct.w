@@ -37,10 +37,10 @@ void Inter::Evaluation::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	inter_symbol *routine = Inter::Defn::get_latest_block_symbol();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'evaluation' used outside function", eloc); return; }
 
-	*E = Inter::Evaluation::new(IBM, routine, ilp->indent_level, eloc);
+	*E = Inter::Evaluation::new(IBM, ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Evaluation::new(inter_bookmark *IBM, inter_symbol *routine, int level, inter_error_location *eloc) {
+inter_error_message *Inter::Evaluation::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_1(IBM, EVALUATION_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);

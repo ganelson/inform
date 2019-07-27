@@ -19,7 +19,7 @@ we need to keep track of:
 =
 ph_stack_frame *currently_compiling_in_frame = NULL; /* the stack frame for this routine */
 int currently_compiling_nnp = FALSE; /* is this a nonphrasal stack frame we made ourselves? */
-inter_symbol *currently_compiling_inter_block = NULL; /* where Inter is being emitted to */
+inter_package *currently_compiling_inter_block = NULL; /* where Inter is being emitted to */
 inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 
 @ So here is the general version, in which |phsf| may or may not be a
@@ -38,10 +38,6 @@ packaging_state Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) 
 	currently_compiling_inter_block = Emit::block(&save, iname);
 	LocalVariables::declare(phsf, FALSE);
 	return save;
-}
-
-inter_symbol *Routines::self(void) {
-	return currently_compiling_inter_block;
 }
 
 @ If the |phsf| argument is set, then we'll use that; otherwise we will
@@ -78,7 +74,7 @@ void Routines::end(packaging_state save) {
 		@<Issue a problem for too many locals@>;
 
 	LocalVariables::declare(currently_compiling_in_frame, FALSE);
-	Emit::end_block(currently_compiling_inter_block);
+	Emit::end_block();
 
 	Emit::routine(kernel_name?kernel_name:public_name,
 		R_kind, currently_compiling_inter_block);
@@ -95,7 +91,7 @@ void Routines::end(packaging_state save) {
 	int returns_block_value =
 		Kinds::Behaviour::uses_pointer_values(currently_compiling_in_frame->kind_returned);
 
-	inter_symbol *rsymb = Emit::block(NULL, public_name);
+	inter_package *block_package = Emit::block(NULL, public_name);
 	inter_symbol *I7RBLK_symbol = NULL;
 	@<Compile I6 locals for the outer shell@>;
 	int NBV = 0;
@@ -103,8 +99,8 @@ void Routines::end(packaging_state save) {
 	@<Compile a call to the kernel@>;
 	@<Compile some teardown code now that the kernel has finished@>;
 	@<Compile a return from the outer shell@>;
-	Emit::end_block(rsymb);
-	Emit::routine(public_name, R_kind, rsymb);
+	Emit::end_block();
+	Emit::routine(public_name, R_kind, block_package);
 
 @ Suppose the routine has to return a list. Then the routine is compiled
 with an extra first parameter (called |I7RBLK|), which is a pointer to the

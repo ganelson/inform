@@ -266,7 +266,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			Packaging::set_state(&(R->parent_request->write_position), E);
 			inter_bookmark package_bubble = Packaging::bubble();
 			Packaging::set_state(&package_bubble, E);
-			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
+			R->actual_package = Emit::package(R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble();
 			Packaging::set_state(save_IRS, E);
 		} else {
@@ -274,7 +274,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			package_bubble = Packaging::bubble();
 			inter_bookmark *save_IRS = Packaging::at();
 			Packaging::set_state(&package_bubble, E);
-			Emit::package(R->eventual_name, R->eventual_type, &(R->actual_package));
+			R->actual_package = Emit::package(R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble();
 			Packaging::set_state(save_IRS, E);
 		}

@@ -1060,7 +1060,7 @@ if we fail to make a match.
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">succeeded_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">succeeded_label</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1149,7 +1149,7 @@ if we fail to make a match.
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">GPR_NUMBER_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">failed_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">failed_label</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -2636,7 +2636,7 @@ the sorting measure.
 <pre class="displaydefn">
 
         <span class="functiontext">LiteralPatterns::comment_use_of_lp</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">);</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">LiteralPatterns::jump_label</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">LiteralPatterns::jump_label</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">));</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ec</span><span class="plain">=0, </span><span class="identifier">oc</span><span class="plain">=0;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">=0; </span><span class="identifier">tc</span><span class="plain">&lt;</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_tokens</span><span class="plain">; </span><span class="identifier">tc</span><span class="plain">++) {</span>

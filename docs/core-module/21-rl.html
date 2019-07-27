@@ -747,7 +747,7 @@ do.
 
 <p class="endnote">The function Rules::shell_iname is used in <a href="#SP22_1">&#167;22.1</a>.</p>
 
-<p class="endnote">The function Rules::iname is used in <a href="#SP11_2">&#167;11.2</a>, <a href="#SP20_2">&#167;20.2</a>, <a href="#SP20_2_1">&#167;20.2.1</a>, <a href="#SP22">&#167;22</a>, 14/rv (<a href="14-rv.html#SP24_3">&#167;24.3</a>), 17/rs (<a href="17-rs.html#SP7_2">&#167;7.2</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Rules::iname is used in <a href="#SP11_2">&#167;11.2</a>, <a href="#SP20_2">&#167;20.2</a>, <a href="#SP20_2_1">&#167;20.2.1</a>, 14/rv (<a href="14-rv.html#SP24_3">&#167;24.3</a>), 17/rs (<a href="17-rs.html#SP7_2">&#167;7.2</a>), 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Printing rule names at run time. </b></p>
 
@@ -956,14 +956,9 @@ what we compile, of course, is the phrase in question.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::unimport</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
-    <span class="comment">inter_symbol *symb = InterNames::to_symbol(Rules::iname(R));</span>
-    <span class="comment">if (symb-&gt;importation_frame) {</span>
-    <span class="comment">LOG("Unimport rule %n!\n", Rules::iname(R));</span>
-    <span class="comment">Inter::Tree::remove_node(symb-&gt;importation_frame);</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="comment">}</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

@@ -457,7 +457,7 @@ void PL::Parsing::Tokens::General::after_gl_failed(gpr_kit *gprk, inter_symbol *
 	Emit::up();
 	Emit::inv_primitive(continue_interp);
 
-	Emit::place_label(label, TRUE);
+	Emit::place_label(label);
 	Emit::inv_primitive(store_interp);
 	Emit::down();
 		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
@@ -1022,7 +1022,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 			PL::Parsing::Tokens::General::parse_visible_either_or(
 				gprk, prnbar, visibility_level, pass_label);
 
-		Emit::place_label(pass_label, TRUE);
+		Emit::place_label(pass_label);
 	} else {
 		Emit::inv_primitive(store_interp);
 		Emit::down();

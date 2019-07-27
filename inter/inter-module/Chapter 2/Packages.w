@@ -37,7 +37,8 @@ inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
 
 inter_tree_node *Inter::Packages::definition(inter_package *pack) {
 	if (pack == NULL) return NULL;
-	return Inter::Symbols::definition(pack->package_name);
+	if (Inter::Packages::is_rootlike(pack)) return NULL;
+	return pack->package_head;
 }
 
 inter_tree *Inter::Packages::tree(inter_package *pack) {
@@ -195,8 +196,7 @@ inter_symbols_table *Inter::Packages::scope_of(inter_tree_node *P) {
 
 inter_symbol *Inter::Packages::type(inter_package *P) {
 	if (P == NULL) return NULL;
-	if (P->package_name == NULL) return NULL;
-	return Inter::Package::type(P->package_name);
+	return Inter::Package::type(P);
 }
 
 int Inter::Packages::baseline(inter_package *P) {
@@ -241,4 +241,12 @@ void Inter::Packages::set_flag(inter_package *P, int f) {
 void Inter::Packages::clear_flag(inter_package *P, int f) {
 	if (P == NULL) internal_error("no package");
 	if (P->package_flags & f) P->package_flags = P->package_flags - f;
+}
+
+inter_package *Inter::Packages::by_name(inter_package *P, text_stream *name) {
+	if (P == NULL) return NULL;
+	inter_symbols_table *at = Inter::Packages::scope(P);
+	inter_symbol *next_sym = Inter::SymbolsTables::symbol_from_name(at, name);
+	if (next_sym == NULL) return NULL;
+	return Inter::Package::which(next_sym);
 }

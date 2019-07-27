@@ -163,10 +163,10 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 
 	if (Inter::Constant::is_routine(con_name)) {
-		inter_symbol *code_block = Inter::Constant::code_block(con_name);
+		inter_package *code_block = Inter::Constant::code_block(con_name);
 		WRITE("[ %S", CodeGen::CL::name(con_name));
 		void_level = Inter::Defn::get_level(P) + 2;
-		inter_tree_node *D = Inter::Symbols::definition(code_block);
+		inter_tree_node *D = Inter::Packages::definition(code_block);
 		CodeGen::FC::frame(gen, D);
 		return;
 	}

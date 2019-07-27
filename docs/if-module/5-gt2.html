@@ -855,7 +855,7 @@ nothing else.
                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Jump to our doom</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
-                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
@@ -930,7 +930,7 @@ nothing else.
                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Jump to our doom</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
-                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">);</span>
                 <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
@@ -1252,7 +1252,7 @@ nothing else.
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Jump to our doom</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
-                    <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                    <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">exit_label</span><span class="plain">);</span>
                     <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>

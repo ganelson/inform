@@ -865,7 +865,7 @@ inline definitions for "say if" and similar.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">, </span><span class="string">"."</span><span class="plain">);</span>
         <span class="functiontext">JumpLabels::write</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Say"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">);</span>
 
         <span class="functiontext">JumpLabels::read_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Say"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -873,7 +873,7 @@ inline definitions for "say if" and similar.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">, </span><span class="string">"."</span><span class="plain">);</span>
         <span class="functiontext">JumpLabels::write</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"SayX"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">);</span>
 
         <span class="functiontext">JumpLabels::read_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SayX"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>

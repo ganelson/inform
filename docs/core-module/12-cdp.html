@@ -1506,7 +1506,7 @@ syntax to break or continue a loop other than the innermost one.
             <span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="identifier">reason</span><span class="plain">] = </span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="identifier">reason</span><span class="plain">], </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="identifier">reason</span><span class="plain">]);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

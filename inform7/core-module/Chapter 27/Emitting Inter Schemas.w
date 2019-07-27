@@ -169,7 +169,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			} else internal_error("bad label stuff");
 		}
 	}
-	Emit::place_label(Emit::reserve_label(L), TRUE);
+	Emit::place_label(Emit::reserve_label(L));
 	DISCARD_TEXT(L);
 
 @<Code block@> =

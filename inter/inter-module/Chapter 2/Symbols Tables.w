@@ -146,12 +146,6 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template(inter_tree *I, 
 	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_in_template_creating(inter_tree *I, text_stream *S) {
-	inter_package *P = Inter::Packages::template(I);
-	if (P == NULL) return NULL;
-	return Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(P), S);
-}
-
 inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_tree *I, text_stream *S) {
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_basics(I, S);
 	if (symbol == NULL) symbol = Inter::SymbolsTables::symbol_from_name_in_veneer(I, S);
@@ -364,22 +358,21 @@ void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *
 inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbols_table *T, text_stream *S) {
 	inter_symbols_table *at = Inter::Tree::global_scope(I);
 	if (Str::get_first_char(S) == '/') {
+		inter_package *at_P = I->root_package;
 		TEMPORARY_TEXT(C);
 		LOOP_THROUGH_TEXT(P, S) {
 			wchar_t c = Str::get(P);
 			if (c == '/') {
 				if (Str::len(C) > 0) {
-					inter_symbol *next_sym = Inter::SymbolsTables::symbol_from_name(at, C);
-					inter_package *next_pack = Inter::Package::which(next_sym);
-					if (next_pack) at = Inter::Packages::scope(next_pack);
-					else return NULL;
+					at_P = Inter::Packages::by_name(at_P, C);
+					if (at_P == NULL) return NULL;
 				}
 				Str::clear(C);
 			} else {
 				PUT_TO(C, c);
 			}
 		}
-		return Inter::SymbolsTables::symbol_from_name(at, C);
+		return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(at_P), C);
 	}
 	inter_symbol *try = Inter::SymbolsTables::symbol_from_name(at, S);
 	if (try) return try;

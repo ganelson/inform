@@ -1101,7 +1101,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->rv_s);
 			Emit::up();
-			Emit::place_label(fail_label, TRUE);
+			Emit::place_label(fail_label);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
@@ -1142,7 +1142,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Emit::up();
 			Emit::up();
 
-			Emit::place_label(fail_label, TRUE);
+			Emit::place_label(fail_label);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
@@ -1167,7 +1167,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
 			Emit::up();
-			Emit::place_label(fail_label, TRUE);
+			Emit::place_label(fail_label);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
@@ -1244,7 +1244,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 						Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::up();
 				}
-				if (next_reserved_label) Emit::place_label(next_reserved_label, TRUE);
+				if (next_reserved_label) Emit::place_label(next_reserved_label);
 				TEMPORARY_TEXT(L);
 				WRITE_TO(L, ".group_%d_%d_%d", current_grammar_block, lexeme_equivalence_class, alternative_number+1);
 				next_reserved_label = Emit::reserve_label(L);
@@ -1295,7 +1295,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 					if (empty_text_allowed_in_lexeme) {
 						@<Jump to end of group@>;
 						if (next_reserved_label)
-							Emit::place_label(next_reserved_label, TRUE);
+							Emit::place_label(next_reserved_label);
 						next_reserved_label = NULL;
 						Emit::inv_primitive(store_interp);
 						Emit::down();
@@ -1303,7 +1303,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 							Emit::val_symbol(K_value, gprk->group_wn_s);
 						Emit::up();
 					}
-					if (eog_reserved_label) Emit::place_label(eog_reserved_label, TRUE);
+					if (eog_reserved_label) Emit::place_label(eog_reserved_label);
 					eog_reserved_label = NULL;
 				} else {
 					@<Jump to end of group@>;

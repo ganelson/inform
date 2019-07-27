@@ -575,7 +575,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 	scene *sc;
 	LOOP_OVER(sc, scene) @<Compile code detecting the ends of a specific scene@>;
 
-	Emit::place_label(CScene_l, TRUE);
+	Emit::place_label(CScene_l);
 	@<Add the scene-change tail@>;
 
 	Routines::end(save);

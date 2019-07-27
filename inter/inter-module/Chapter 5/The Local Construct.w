@@ -47,10 +47,10 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
 
-	*E = Inter::Local::new(IBM, routine, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Local::new(IBM, var_name, var_kind, ilp->terminal_comment, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_3(IBM, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
 	Inter::Node::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;

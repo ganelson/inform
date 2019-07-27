@@ -630,7 +630,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			@<Jump to our doom@>;
-			Emit::place_label(exit_label, TRUE);
+			Emit::place_label(exit_label);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
@@ -705,7 +705,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			@<Jump to our doom@>;
-			Emit::place_label(exit_label, TRUE);
+			Emit::place_label(exit_label);
 			Emit::inv_primitive(store_interp);
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
@@ -1027,7 +1027,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::up();
 				@<Jump to our doom@>;
-				Emit::place_label(exit_label, TRUE);
+				Emit::place_label(exit_label);
 				Emit::inv_primitive(store_interp);
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->rv_s);

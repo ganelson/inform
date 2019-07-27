@@ -980,7 +980,7 @@ syntax to break or continue a loop other than the innermost one.
 		NextOuterLoop_labels[reason] = Emit::reserve_label(L);
 		DISCARD_TEXT(L);
 	}
-	Emit::place_label(NextOuterLoop_labels[reason], TRUE);
+	Emit::place_label(NextOuterLoop_labels[reason]);
 
 @ The continue-outer-loop labels are marked with the reason number so that
 if code is compiled for each reason in turn within a single routine -- which

@@ -271,7 +271,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 						Emit::up();
 					Emit::up();
 				}
-				Emit::place_label(flab, TRUE);
+				Emit::place_label(flab);
 			}
 		}
 	}

@@ -295,7 +295,7 @@ many of them.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;label_following</span><span class="plain"> &gt;= 0) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">, </span><span class="string">".loop_break_%d"</span><span class="plain">, </span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;label_following</span><span class="plain">);</span>
-            <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">));</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
         <span class="plain">}</span>
 

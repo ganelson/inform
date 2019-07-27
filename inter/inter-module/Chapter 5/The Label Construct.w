@@ -40,10 +40,10 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_symbol *lab_name = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
 	if (Inter::Symbols::is_label(lab_name) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
-	*E = Inter::Label::new(IBM, routine, lab_name, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Label::new(IBM, lab_name, (inter_t) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *routine, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *lab_name, inter_t level, inter_error_location *eloc) {
 	inter_tree_node *P = Inter::Node::fill_2(IBM, LABEL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, lab_name), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);

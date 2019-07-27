@@ -545,7 +545,7 @@ of a GL to parse.
         <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">continue_interp</span><span class="plain">);</span>
 
-        <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">label</span><span class="plain">);</span>
         <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
@@ -1169,7 +1169,7 @@ alter the value of <code class="display"><span class="extract">self</span></code
                 <span class="functiontext">PL::Parsing::Tokens::General::parse_visible_either_or</span><span class="plain">(</span>
                     <span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">prnbar</span><span class="plain">, </span><span class="identifier">visibility_level</span><span class="plain">, </span><span class="identifier">pass_label</span><span class="plain">);</span>
 
-            <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">pass_label</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">pass_label</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>

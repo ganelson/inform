@@ -33,16 +33,13 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 =
 inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_stream *name, inter_tree_node *P) {
 	if (submodule_ptype_symbol) {
-		inter_symbol *fns = Inter::SymbolsTables::symbol_from_name_in_template_creating(I, name);
-		if (Inter::Symbols::is_defined(fns) == FALSE) {
+		inter_package *t_p = Inter::Packages::by_name(template_package, name);
+		if (t_p == NULL) {
 			inter_bookmark IBM = Inter::Bookmarks::after_this_frame(I, P);
-			CodeGen::Assimilate::new_package(&IBM, fns, submodule_ptype_symbol);
+			t_p = CodeGen::Assimilate::new_package_named(&IBM, name, submodule_ptype_symbol);
 		}
-		if (Inter::Symbols::is_defined(fns) == FALSE) internal_error("failed to define");
-		inter_tree_node *D = Inter::Symbols::definition(fns);
-		inter_package *fns_package = Inter::Package::defined_by_frame(D);
-		if (fns_package == NULL) internal_error("not a package");
-		return Inter::Bookmarks::at_end_of_this_package(fns_package);
+		if (t_p == NULL) internal_error("failed to define");
+		return Inter::Bookmarks::at_end_of_this_package(t_p);
 	}
 	return Inter::Bookmarks::after_this_frame(I, P);
 }
@@ -170,11 +167,10 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		} else {
 			WRITE_TO(subpackage_name, "assim_command_%d", ++no_assimilated_commands);
 		}
-		inter_symbol *subpackage_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), subpackage_name);
+		Inter::Bookmarks::set_current_package(IBM,
+			CodeGen::Assimilate::new_package_named(IBM, subpackage_name, subpackage_type));
 		DISCARD_TEXT(subpackage_name);
 
-		Inter::Bookmarks::set_current_package(IBM,
-			CodeGen::Assimilate::new_package(IBM, subpackage_symbol, subpackage_type));
 	}
 
 	inter_symbol *con_name = CodeGen::Assimilate::maybe_extern(I, identifier, Inter::Bookmarks::scope(IBM));
@@ -389,25 +385,21 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"functions", P);
 	inter_bookmark *IBM = &IBM_d;
 
-	TEMPORARY_TEXT(fname);
-	WRITE_TO(fname, "%S_fn", identifier);
-	inter_symbol *function_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), fname);
-	DISCARD_TEXT(fname);
-
 	inter_symbol *fnt = function_ptype_symbol;
 	if (fnt == NULL) fnt = plain_packagetype;
 
-	inter_package *FP = CodeGen::Assimilate::new_package(IBM, function_name, fnt);
+	TEMPORARY_TEXT(fname);
+	WRITE_TO(fname, "%S_fn", identifier);
+	inter_package *FP = CodeGen::Assimilate::new_package_named(IBM, fname, fnt);
+	DISCARD_TEXT(fname);
 
 	inter_bookmark outer_save = Inter::Bookmarks::snapshot(IBM);
 	Inter::Bookmarks::set_current_package(IBM, FP);
 
 	TEMPORARY_TEXT(bname);
 	WRITE_TO(bname, "%S_B", identifier);
-	inter_symbol *block_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), bname);
+	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, code_packagetype);
 	DISCARD_TEXT(bname);
-
-	inter_package *IP = CodeGen::Assimilate::new_package(IBM, block_name, code_packagetype);
 
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
 	Inter::Bookmarks::set_current_package(IBM, IP);
@@ -419,9 +411,9 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			TEMPORARY_TEXT(value);
 			@<Extract a token@>;
 			if (Str::len(value) == 0) break;
-			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Package::local_symbols(block_name), value);
+			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
 			Inter::Symbols::local(loc_name);
-			CodeGen::MergeTemplate::guard(Inter::Local::new(IBM, block_name, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			CodeGen::MergeTemplate::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			DISCARD_TEXT(value);
 		}
 	}
@@ -432,7 +424,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		while ((L>0) && (Str::get_at(body, L) != ']')) L--;
 		while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 		Str::truncate(body, L);
-		CodeGen::Assimilate::routine_body(IBM, block_name, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, body, block_bookmark);
+		CodeGen::Assimilate::routine_body(IBM, IP, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, body, block_bookmark);
 	}
 
 	*IBM = inner_save;
@@ -442,7 +434,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	CodeGen::MergeTemplate::guard(Inter::Constant::new_function(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, FP, rsymb),
 		Inter::SymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
-		Inter::SymbolsTables::id_from_symbol(I, FP, block_name),
+		IP,
 		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
 	*IBM = outer_save;
@@ -455,9 +447,9 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	Inter::Tree::remove_node(P);
 
 @ =
-inter_package *CodeGen::Assimilate::new_package(inter_bookmark *IBM, inter_symbol *pname, inter_symbol *ptype) {
+inter_package *CodeGen::Assimilate::new_package_named(inter_bookmark *IBM, text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	CodeGen::MergeTemplate::guard(Inter::Package::new_package(IBM, pname,
+	CodeGen::MergeTemplate::guard(Inter::Package::new_package_named(IBM, name, TRUE,
 		ptype, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
@@ -519,13 +511,12 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 	if (CodeGen::MergeTemplate::find_name(I, value, TRUE) == NULL) {
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
-		TEMPORARY_TEXT(an);
-		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
-		inter_symbol *housing_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), an);
-		DISCARD_TEXT(an);
 		inter_symbol *ptype = action_ptype_symbol;
 		if (ptype == NULL) ptype = plain_packagetype;
-		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package(IBM, housing_symbol, ptype));
+		TEMPORARY_TEXT(an);
+		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
+		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
+		DISCARD_TEXT(an);
 		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Bookmarks::scope(IBM));
 		TEMPORARY_TEXT(unsharped);
 		WRITE_TO(unsharped, "%SSub", value);
@@ -790,21 +781,21 @@ typedef struct routine_body_request {
 	#ifdef CORE_MODULE
 	struct package_request *enclosure;
 	#endif
-	struct inter_symbol *block_name;
+	struct inter_package *block_package;
 	int pass2_offset;
 	struct text_stream *body;
 	MEMORY_MANAGEMENT
 } routine_body_request;
 
 int rb_splat_count = 1;
-int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_symbol *block_name, inter_t offset, text_stream *body, inter_bookmark bb) {
+int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_package, inter_t offset, text_stream *body, inter_bookmark bb) {
 	if (Str::is_whitespace(body)) return FALSE;
 	#ifdef CORE_MODULE
 	routine_body_request *req = CREATE(routine_body_request);
 	req->block_bookmark = bb;
 	req->enclosure = Packaging::enclosure();
 	req->position = Packaging::bubble_at(IBM);
-	req->block_name = block_name;
+	req->block_package = block_package;
 	req->pass2_offset = (int) offset - 2;
 	req->body = Str::duplicate(body);
 	return TRUE;
@@ -819,7 +810,7 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_symbol *block_n
 void CodeGen::Assimilate::function_bodies(void) {
 	routine_body_request *req;
 	LOOP_OVER(req, routine_body_request) {
-		LOGIF(SCHEMA_COMPILATION, "=======\n\nRoutine (%S) len %d: '%S'\n\n", req->block_name->symbol_name, Str::len(req->body), req->body);
+		LOGIF(SCHEMA_COMPILATION, "=======\n\nRoutine (%S) len %d: '%S'\n\n", Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
 		inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
 		
 		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) {
@@ -831,11 +822,11 @@ void CodeGen::Assimilate::function_bodies(void) {
 		}
 		
 		#ifdef CORE_MODULE
-		current_inter_routine = req->block_name;
+		current_inter_routine = req->block_package;
 		Packaging::set_state(&(req->position), req->enclosure);
 		Emit::push_code_position(Emit::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
 		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-		inter_symbols_table *scope1 = Inter::Package::local_symbols(req->block_name);
+		inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
 		inter_symbols_table *scope2 = Inter::Packages::scope(Packaging::incarnate(Hierarchy::template()));
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 		Emit::pop_code_position();
