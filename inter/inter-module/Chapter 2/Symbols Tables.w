@@ -7,7 +7,7 @@ To manage searchable tables of named symbols.
 =
 typedef struct inter_symbols_table {
 	struct inter_package *owning_package;
-	struct dictionary *name_lookup;
+	struct dictionary *symbols_lookup;
 	int size;
 	struct inter_symbol **symbol_array;
 	int n_index;
@@ -18,11 +18,12 @@ typedef struct inter_symbols_table {
 @
 
 @d INITIAL_INTER_SYMBOLS_ID_RANGE 16
+@d SYMBOLS_THRESHOLD 5
 
 =
 inter_symbols_table *Inter::SymbolsTables::new(void) {
 	inter_symbols_table *ST = CREATE(inter_symbols_table);
-	ST->name_lookup = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
+	ST->symbols_lookup = NULL;
 	ST->size = INITIAL_INTER_SYMBOLS_ID_RANGE;
 	ST->symbol_array = (inter_symbol **)
 		Memory::I7_calloc(INITIAL_INTER_SYMBOLS_ID_RANGE, sizeof(inter_symbol *), INTER_SYMBOLS_MREASON);
@@ -64,23 +65,51 @@ void Inter::SymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table
 inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_t ID, int equating) {
 	if (T == NULL) internal_error("no IST");
 	if (S == NULL) return NULL;
-	dict_entry *de = Dictionaries::find(T->name_lookup, S);
-	if (de) {
-		inter_symbol *A = (inter_symbol *) Dictionaries::read_value(T->name_lookup, S);
-		if (A) {
-			if (equating) {
-				while (A->equated_to) A = A->equated_to;
+	
+	if ((T->symbols_lookup == NULL) &&
+		(T->next_free_ID - SYMBOL_BASE_VAL >= SYMBOLS_THRESHOLD)) {
+		T->symbols_lookup = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
+		for (int i=0; i<T->size; i++) {
+			inter_symbol *A = T->symbol_array[i];
+			if (A) {
+				Dictionaries::create(T->symbols_lookup, A->symbol_name);
+				Dictionaries::write_value(T->symbols_lookup, A->symbol_name, (void *) A);
 			}
-			return A;
 		}
 	}
+	
+	if (T->symbols_lookup == NULL) {
+		for (int i=0; i<T->size; i++) {
+			inter_symbol *A = T->symbol_array[i];
+			if ((A) && (Str::eq(S, A->symbol_name))) {
+				if (equating) {
+					while (A->equated_to) A = A->equated_to;
+				}
+				return A;
+			}
+		}
+	} else {	
+		dict_entry *de = Dictionaries::find(T->symbols_lookup, S);
+		if (de) {
+			inter_symbol *A = (inter_symbol *) Dictionaries::read_value(T->symbols_lookup, S);
+			if (A) {
+				if (equating) {
+					while (A->equated_to) A = A->equated_to;
+				}
+				return A;
+			}
+		}
+	}
+
 	if (create == FALSE) return NULL;
 
 	if (ID == 0) ID = T->next_free_ID++;
 	inter_symbol *ST = Inter::Symbols::new(S, T, ID);
 
-	Dictionaries::create(T->name_lookup, S);
-	Dictionaries::write_value(T->name_lookup, S, (void *) ST);
+	if (T->symbols_lookup) {
+		Dictionaries::create(T->symbols_lookup, S);
+		Dictionaries::write_value(T->symbols_lookup, S, (void *) ST);
+	}
 
 	int index = (int) ID - (int) SYMBOL_BASE_VAL;
 	if (index < 0) internal_error("bad symbol ID index");

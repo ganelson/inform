@@ -216,7 +216,6 @@ int Inter::Symbols::read_annotation(const inter_symbol *symb, inter_t ID) {
 text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_t ID) {
 	inter_annotation *IA = Inter::Annotations::find(&(symb->ann_set), ID);
 	if (IA) return Inter::Warehouse::get_text(Inter::Tree::warehouse(I), IA->annot_value);
-LOG("NO ANN\n");
 	return NULL;
 }
 

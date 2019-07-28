@@ -50,6 +50,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	text_stream *S = ilp->mr.exp[2];
 
 	inter_data_type *idt = Inter::Kind::data_type(con_kind);
+
 	match_results mr2 = Regexp::create_mr();
 	inter_t op = 0;
 	if (Regexp::match(&mr2, S, L"sum{ (%c*) }")) op = CONSTANT_SUM_LIST;

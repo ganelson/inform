@@ -69,6 +69,7 @@
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">ilp</span><span class="plain">-</span><span class="element">&gt;mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[2];</span>
 
         <span class="reserved">inter_data_type</span><span class="plain"> *</span><span class="identifier">idt</span><span class="plain"> = </span><span class="functiontext">Inter::Kind::data_type</span><span class="plain">(</span><span class="identifier">con_kind</span><span class="plain">);</span>
+
         <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr2</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">op</span><span class="plain"> = 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"sum{ (%c*) }"</span><span class="plain">)) </span><span class="identifier">op</span><span class="plain"> = </span><span class="constant">CONSTANT_SUM_LIST</span><span class="plain">;</span>
