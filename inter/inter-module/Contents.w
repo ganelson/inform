@@ -18,6 +18,7 @@ Chapter 2: Interoperability
 	Packages
 	Symbols
 	Annotations
+	Transmigration
 
 Chapter 3: Language Definition
 	Canonical Annotations

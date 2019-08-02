@@ -32,7 +32,7 @@ inter_bookmark Inter::Bookmarks::at_end_of_this_package(inter_package *pack) {
 	return IBM;
 }
 
-inter_bookmark Inter::Bookmarks::after_this_frame(inter_tree *I, inter_tree_node *D) {
+inter_bookmark Inter::Bookmarks::after_this_node(inter_tree *I, inter_tree_node *D) {
 	if (D == NULL) internal_error("invalid frame supplied");
 	inter_bookmark IBM;
 	IBM.R = D;

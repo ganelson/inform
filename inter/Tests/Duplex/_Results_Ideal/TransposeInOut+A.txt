@@ -1,0 +1,20 @@
+packagetype _plain
+packagetype _code
+packagetype _linkage
+
+primitive !if val code -> void
+primitive !goto lab -> void
+
+package main _plain
+	symbol public misc K_number
+	symbol public misc K_func
+	symbol public misc awkward
+	symbol public misc troublesome
+	symbol external misc secret == /main/links/secret
+	kind K_number int32
+	kind K_func function K_number -> K_number
+	# Exported my_fn here
+	package links _linkage
+		symbol link misc secret == /main/my_fn/secret
+	constant awkward K_number = secret
+	constant troublesome K_number = 12

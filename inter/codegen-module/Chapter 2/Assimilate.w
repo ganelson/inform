@@ -35,13 +35,13 @@ inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_strea
 	if (submodule_ptype_symbol) {
 		inter_package *t_p = Inter::Packages::by_name(template_package, name);
 		if (t_p == NULL) {
-			inter_bookmark IBM = Inter::Bookmarks::after_this_frame(I, P);
+			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
 			t_p = CodeGen::Assimilate::new_package_named(&IBM, name, submodule_ptype_symbol);
 		}
 		if (t_p == NULL) internal_error("failed to define");
 		return Inter::Bookmarks::at_end_of_this_package(t_p);
 	}
-	return Inter::Bookmarks::after_this_frame(I, P);
+	return Inter::Bookmarks::after_this_node(I, P);
 }
 
 void CodeGen::Assimilate::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
@@ -133,7 +133,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	if (plm == OBJECT_PLM) value = NULL;
 
 @<Act on parsed constant definition@> =
-	inter_bookmark IBM_d = Inter::Bookmarks::after_this_frame(I, P);
+	inter_bookmark IBM_d = Inter::Bookmarks::after_this_node(I, P);
 	inter_bookmark *IBM = &IBM_d;
 
 	text_stream *submodule_name = NULL;
@@ -439,7 +439,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	*IBM = outer_save;
 
-	inter_bookmark T_IBM = Inter::Bookmarks::after_this_frame(I, P);
+	inter_bookmark T_IBM = Inter::Bookmarks::after_this_node(I, P);
 	inter_symbol *alias_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&T_IBM), identifier);
 	Inter::SymbolsTables::equate(alias_name, rsymb);
 	Inter::Symbols::set_flag(alias_name, ALIAS_ONLY_BIT);

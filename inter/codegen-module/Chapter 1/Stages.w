@@ -89,8 +89,7 @@ int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 	}
 	Regexp::dispose_of(&mr);
 	if (pack == NULL) internal_error("not a package");
-
-	if (trace_bin) WRITE_TO(STDOUT, "Move %S\n", Inter::Packages::name(pack));
+	Inter::Transmigration::move(pack, Inter::Tree::main_package(step->repository), TRUE);
 
 	return TRUE;
 }

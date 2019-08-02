@@ -88,7 +88,7 @@
 	mkdir: $PATH/_Console
 	mkdir: $PATH/_Binaries
 
-	step: inter/Tangled/inter -variable '*inA=$OA' -variable '*inB=$OB' -variable '*binA=$BA' -variable '*binB=$BB' -variable '*outA=$AA' -variable '*outB=$AB' -pipeline-file $P
+	step: inter/Tangled/inter -variable '*inA=$OA' -variable '*inB=$OB' -variable '*binA=$BA' -variable '*binB=$BB' -variable '*outA=$AA' -variable '*outB=$AB' -pipeline-file $P >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A

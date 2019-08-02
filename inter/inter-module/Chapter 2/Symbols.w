@@ -15,6 +15,8 @@ typedef struct inter_symbol {
 	int symbol_status;
 	struct inter_annotation_set ann_set;
 	struct text_stream *translate_text;
+	int link_time;
+	struct inter_symbol *linked_to;
 } inter_symbol;
 
 @ =
@@ -33,6 +35,8 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->equated_to = NULL;
 	symb->equated_name = NULL;
 	symb->translate_text = NULL;
+	symb->link_time = 0;
+	symb->linked_to = NULL;
 	LOGIF(INTER_SYMBOLS, "Created symbol $3 in $4\n", symb, T);
 
 	return symb;

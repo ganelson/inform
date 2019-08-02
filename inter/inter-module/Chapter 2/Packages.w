@@ -110,18 +110,30 @@ void Inter::Packages::set_scope(inter_package *P, inter_symbols_table *T) {
 }
 
 void Inter::Packages::set_name(inter_package *Q, inter_package *P, text_stream *N) {
-	if (Q == NULL) internal_error("no parent supplied");
 	if (P == NULL) internal_error("null package");
 	if (N == NULL) internal_error("null package name");
 	P->package_name_t = Str::duplicate(N);
 	if ((N) && (Str::eq(P->package_name_t, I"main")))
 		Inter::Tree::set_main_package(Inter::Packages::tree(P), P);
 
-	if (Str::len(N) > 0) {
-		dict_entry *de = Dictionaries::find(Q->name_lookup, N);
-		if (de) internal_error("duplicated package name");
-		Dictionaries::create(Q->name_lookup, N);
-		Dictionaries::write_value(Q->name_lookup, N, (void *) P);
+	if (Str::len(N) > 0) Inter::Packages::add_subpackage_name(Q, P);
+}
+
+void Inter::Packages::add_subpackage_name(inter_package *Q, inter_package *P) {
+	if (Q == NULL) internal_error("no parent supplied");
+	text_stream *N = P->package_name_t;
+	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
+	if (de) internal_error("duplicated package name");
+	Dictionaries::create(Q->name_lookup, N);
+	Dictionaries::write_value(Q->name_lookup, N, (void *) P);
+}
+
+void Inter::Packages::remove_subpackage_name(inter_package *Q, inter_package *P) {
+	if (Q == NULL) internal_error("no parent supplied");
+	text_stream *N = P->package_name_t;
+	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
+	if (de) {
+		Dictionaries::write_value(Q->name_lookup, N, NULL);
 	}
 }
 

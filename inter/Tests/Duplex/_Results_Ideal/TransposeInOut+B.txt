@@ -2,6 +2,7 @@
 
 packagetype _plain
 packagetype _code
+packagetype _linkage
 
 version 7
 
@@ -11,6 +12,8 @@ primitive !plus val val -> val
 
 pragma target_I6 "$MAX_STATIC_DATA=180000"
 
+primitive !if val code -> void
+primitive !goto lab -> void
 package main _plain
 	symbol public misc K_number
 	symbol public misc K_truth_state
@@ -162,3 +165,26 @@ package main _plain
 	constant R_102 K_colour____colour = R_102_B
 	constant amount K_number = sum{ 2, C_taxes }
 	response R_101_A R_101 0 = C_taxes
+	# Imported my_fn here
+	package my_fn _plain
+		symbol public misc R_101
+		symbol public misc secret
+		symbol external misc K_func == /main/K_func
+		symbol external misc K_number == /main/K_number
+		package R_101_B _code
+			symbol private misc x
+			symbol private label .begin
+			symbol external misc K_number == /main/K_number
+			symbol external misc troublesome == /main/my_fn/links/troublesome
+			local x K_number __call_parameter
+			code
+				.begin
+				inv !if
+					val K_number troublesome
+					code
+						inv !goto
+							lab .begin
+		constant R_101 K_func = R_101_B
+		constant secret K_number = 7
+		package links _linkage
+			symbol link misc troublesome == /main/troublesome
