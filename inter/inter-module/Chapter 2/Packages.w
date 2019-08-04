@@ -45,6 +45,7 @@ inter_tree_node *Inter::Packages::definition(inter_package *pack) {
 
 inter_tree *Inter::Packages::tree(inter_package *pack) {
 	if (default_ptree) return default_ptree;
+	if (pack == NULL) return NULL;
 	return pack->package_head->tree;
 }
 

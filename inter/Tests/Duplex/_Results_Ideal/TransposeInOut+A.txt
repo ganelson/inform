@@ -14,7 +14,7 @@ package main _plain
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	# Exported my_fn here
-	package connectors _linkage
-		symbol plug misc secret --? /main/my_fn/secret
 	constant awkward K_number = secret
 	constant troublesome K_number = 12
+	package connectors _linkage
+		symbol plug misc secret --? /main/my_fn/secret

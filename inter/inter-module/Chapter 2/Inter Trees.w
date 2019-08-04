@@ -11,6 +11,7 @@ typedef struct inter_tree {
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
 	struct inter_package *main_package;
+	struct inter_package *connectors_package;
 	MEMORY_MANAGEMENT
 } inter_tree;
 
@@ -18,6 +19,7 @@ typedef struct inter_tree {
 inter_tree *Inter::Tree::new(void) {
 	inter_tree *I = CREATE(inter_tree);
 	I->main_package = NULL;
+	I->connectors_package = NULL;
 	I->housed = Inter::Warehouse::new();
 	inter_t N = Inter::Warehouse::create_symbols_table(I->housed);
 	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
@@ -42,9 +44,19 @@ inter_package *Inter::Tree::main_package(inter_tree *I) {
 	return NULL;
 }
 
+inter_package *Inter::Tree::connectors_package(inter_tree *I) {
+	if (I) return I->connectors_package;
+	return NULL;
+}
+
 void Inter::Tree::set_main_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->main_package = M;
+}
+
+void Inter::Tree::set_connectors_package(inter_tree *I, inter_package *M) {
+	if (I == NULL) internal_error("no tree"); 
+	I->connectors_package = M;
 }
 
 inter_warehouse *Inter::Tree::warehouse(inter_tree *I) {

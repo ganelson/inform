@@ -175,7 +175,7 @@ package main _plain
 			symbol private misc x
 			symbol private label .begin
 			symbol external misc K_number --> /main/K_number
-			symbol external misc troublesome --> /main/my_fn/connectors/troublesome
+			symbol external misc troublesome --> /main/connectors/troublesome
 			local x K_number __call_parameter
 			code
 				.begin
@@ -186,5 +186,5 @@ package main _plain
 							lab .begin
 		constant R_101 K_func = R_101_B
 		constant secret K_number = 7
-		package connectors _linkage
-			symbol plug misc troublesome --? /main/troublesome
+	package connectors _linkage
+		symbol plug misc troublesome --? /main/troublesome

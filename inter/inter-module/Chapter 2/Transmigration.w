@@ -16,8 +16,10 @@ inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
 
 void Inter::Transmigration::move(inter_package *migrant, inter_package *destination, int tidy_origin) {
 	LOG("Move $5 to $5\n", migrant, destination);
+	inter_tree *origin_tree = Inter::Packages::tree(migrant);
+	inter_tree *destination_tree = Inter::Packages::tree(destination);
 	inter_package *origin = Inter::Packages::parent(migrant);
-	inter_bookmark deletion_point, insertion_point, linkage_point, primitives_point;
+	inter_bookmark deletion_point, insertion_point, primitives_point;
 	@<Create these bookmarks@>;
 	@<Mark the insertion and deletion points with comments@>;
 	@<Physically move the subtree to its new home@>;
@@ -30,7 +32,6 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 		Inter::Bookmarks::after_this_node(migrant->package_head->tree, migrant->package_head);
 	insertion_point =
 		Inter::Bookmarks::at_end_of_this_package(destination);
-	linkage_point = Inter::Bookmarks::at_end_of_this_package(migrant);
 	inter_tree_node *prims = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
 		if (F->W.data[ID_IFLD] == PRIMITIVE_IST)
@@ -58,23 +59,22 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 typedef struct ipct_state {
 	inter_package *migrant;
 	inter_package *destination;
-	inter_package *links;
-	inter_bookmark *linkage_point;
 	inter_bookmark *primitives_point;
-	inter_symbols_table *origin_globals;
-	inter_symbols_table *destination_globals;
+	inter_tree *origin_tree;
+	inter_tree *destination_tree;
 } ipct_state;
 
-@<Correct any references from the migrant to the origin@> =
+@<Initialise the IPCT state@> =
 	ipct_cache_count++;
-	ipct_state ipct;
 	ipct.migrant = migrant;
 	ipct.destination = destination;
-	ipct.links = NULL;
-	ipct.origin_globals = Inter::Tree::global_scope(migrant->package_head->tree);
-	ipct.destination_globals = Inter::Tree::global_scope(destination->package_head->tree);
-	ipct.linkage_point = &linkage_point;
+	ipct.origin_tree = origin_tree;
+	ipct.destination_tree = destination_tree;
 	ipct.primitives_point = &primitives_point;
+
+@<Correct any references from the migrant to the origin@> =
+	ipct_state ipct;
+	@<Initialise the IPCT state@>;
 	Inter::Tree::traverse(destination->package_head->tree,
 		Inter::Transmigration::correct_migrant, &ipct, migrant, 0);
 
@@ -84,7 +84,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	P->tree = I;
 	if ((P->W.data[ID_IFLD] == INV_IST) && (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *primitive =
-			Inter::SymbolsTables::symbol_from_id(ipct->origin_globals, P->W.data[INVOKEE_INV_IFLD]);
+			Inter::SymbolsTables::symbol_from_id(Inter::Tree::global_scope(ipct->origin_tree), P->W.data[INVOKEE_INV_IFLD]);
 		if (primitive) @<Correct the reference to this primitive@>;
 	}
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
@@ -112,16 +112,16 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this primitive@> =
 	inter_symbol *equivalent_primitive = Inter::Transmigration::cached_equivalent(primitive);
 	if (equivalent_primitive == NULL) {
-		equivalent_primitive = Inter::SymbolsTables::symbol_from_name(ipct->destination_globals, primitive->symbol_name);
+		equivalent_primitive = Inter::SymbolsTables::symbol_from_name(Inter::Tree::global_scope(ipct->destination_tree), primitive->symbol_name);
 		if (equivalent_primitive == NULL) @<Duplicate this primitive@>;
 		if (equivalent_primitive) Inter::Transmigration::cache(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_inner(ipct->destination_globals, NULL, equivalent_primitive);
+		P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
 
 @<Duplicate this primitive@> =
-	equivalent_primitive = Inter::SymbolsTables::symbol_from_name_creating(ipct->destination_globals, primitive->symbol_name);
-	inter_tree_node *D = Inter::Node::fill_1(ipct->primitives_point, PRIMITIVE_IST, Inter::SymbolsTables::id_from_symbol_inner(ipct->destination_globals, NULL, equivalent_primitive), NULL, 0);
+	equivalent_primitive = Inter::SymbolsTables::symbol_from_name_creating(Inter::Tree::global_scope(ipct->destination_tree), primitive->symbol_name);
+	inter_tree_node *D = Inter::Node::fill_1(ipct->primitives_point, PRIMITIVE_IST, Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
 		if (Inter::Node::extend(D, (inter_t) 1) == FALSE) internal_error("can't extend");
@@ -142,25 +142,15 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = Inter::SymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if (equivalent == NULL)
-			@<Create a link symbol to represent the unavailability of this symbol@>;
+			equivalent = Inter::Connectors::plug(ipct->destination_tree, target->symbol_name, URL);
 		DISCARD_TEXT(URL);
 		Inter::Transmigration::cache(target, equivalent);
 	}
 	symb->equated_to = equivalent;
 
-@<Create a link symbol to represent the unavailability of this symbol@> =
-	equivalent = Inter::Connectors::plug(ipct->linkage_point, target->symbol_name, URL, &(ipct->links));
-
 @<Correct any references from the origin to the migrant@> =
-	ipct_cache_count++;
 	ipct_state ipct;
-	ipct.migrant = migrant;
-	ipct.destination = destination;
-	ipct.links = NULL;
-	ipct.origin_globals = NULL;
-	ipct.destination_globals = NULL;
-	ipct.linkage_point = &deletion_point;
-	ipct.primitives_point = NULL;
+	@<Initialise the IPCT state@>;
 	Inter::Tree::traverse(origin->package_head->tree,
 		Inter::Transmigration::correct_origin, &ipct, NULL, 0);
 
@@ -192,13 +182,10 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 @<Correct the origin reference to this migrant symbol@> =
 	inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 	if (equivalent == NULL) {
-		@<Create a link symbol in the origin@>;
+		TEMPORARY_TEXT(URL);
+		Inter::SymbolsTables::symbol_to_url_name(URL, target);
+		equivalent = Inter::Connectors::plug(ipct->origin_tree, target->symbol_name, URL);
+		DISCARD_TEXT(URL);
 		Inter::Transmigration::cache(target, equivalent);
 	}
 	symb->equated_to = equivalent;
-
-@<Create a link symbol in the origin@> =
-	TEMPORARY_TEXT(URL);
-	Inter::SymbolsTables::symbol_to_url_name(URL, target);
-	equivalent = Inter::Connectors::plug(ipct->linkage_point, target->symbol_name, URL, &(ipct->links));
-	DISCARD_TEXT(URL);
