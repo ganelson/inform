@@ -333,7 +333,8 @@ inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_
 void Inter::SymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
 	if ((S_from == NULL) || (S_to == NULL)) internal_error("bad symbol equation");
 	S_from->equated_to = S_to;
-	Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
+	if (Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS)
+		Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
 	LOGIF(INTER_SYMBOLS, "Equate $3 to $3\n", S_from, S_to);
 	int c = 0;
 	for (inter_symbol *S = S_from; S; S = S->equated_to, c++)
@@ -352,11 +353,17 @@ void Inter::SymbolsTables::equate_textual(inter_symbol *S_from, text_stream *nam
 	Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
 }
 
-void Inter::SymbolsTables::link(inter_symbol *S_from, text_stream *name) {
-	if ((S_from == NULL) || (name == NULL)) internal_error("bad link equation");
+void Inter::SymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) {
+	if ((S_from == NULL) || (wanted == NULL)) internal_error("bad link equation");
 	S_from->equated_to = NULL;
-	S_from->equated_name = Str::duplicate(name);
-	Inter::Symbols::set_scope(S_from, LINK_ISYMS);
+	S_from->equated_name = Str::duplicate(wanted);
+	Inter::Symbols::set_scope(S_from, PLUG_ISYMS);
+}
+
+void Inter::SymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_from) {
+	if (S_from == NULL) internal_error("bad link equation");
+	S_from->equated_to = wired_from;
+	Inter::Symbols::set_scope(S_from, SOCKET_ISYMS);
 }
 
 void Inter::SymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
@@ -367,14 +374,16 @@ void Inter::SymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (pack == NULL) internal_error("no package defined here");
-	if (Inter::Packages::is_linklike(pack)) return;
 	inter_symbols_table *T = Inter::Packages::scope(pack);
 	if (T == NULL) internal_error("package with no symbols");
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
 		if ((symb) && (symb->equated_name)) {
+			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) continue;
 			inter_symbol *S_to = Inter::SymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, symb->equated_name);
 			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
+			else if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)
+				Inter::SymbolsTables::make_socket(symb, S_to);
 			else Inter::SymbolsTables::equate(symb, S_to);
 			symb->equated_name = NULL;
 		}

@@ -31,10 +31,13 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	text_stream *equate_name = NULL;
 	int starred = FALSE;
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, symbol_name, L"(%C+) -> (%C+)")) {
+	if (Regexp::match(&mr2, symbol_name, L"(%C+) `(%C+)`")) {
 		symbol_name = mr2.exp[0];
 		trans_name = mr2.exp[1];
-	} else if (Regexp::match(&mr2, symbol_name, L"(%C+) == (%C+)")) {
+	} else if (Regexp::match(&mr2, symbol_name, L"(%C+) --%? (%C+)")) {
+		symbol_name = mr2.exp[0];
+		equate_name = mr2.exp[1];
+	} else if (Regexp::match(&mr2, symbol_name, L"(%C+) --> (%C+)")) {
 		symbol_name = mr2.exp[0];
 		equate_name = mr2.exp[1];
 	}
@@ -59,7 +62,8 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (Str::eq(ilp->mr.exp[0], I"private")) Inter::Symbols::set_scope(name_name, PRIVATE_ISYMS);
 	else if (Str::eq(ilp->mr.exp[0], I"public")) Inter::Symbols::set_scope(name_name, PUBLIC_ISYMS);
 	else if (Str::eq(ilp->mr.exp[0], I"external")) Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"link")) Inter::Symbols::set_scope(name_name, LINK_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"plug")) Inter::Symbols::set_scope(name_name, PLUG_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"socket")) Inter::Symbols::set_scope(name_name, SOCKET_ISYMS);
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
 
 	if (Str::eq(ilp->mr.exp[1], I"label")) Inter::Symbols::set_type(name_name, LABEL_ISYMT);
@@ -73,16 +77,23 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	if (Inter::Packages::is_linklike(Inter::Bookmarks::package(IBM))) {
-		if (Inter::Symbols::get_scope(name_name) != LINK_ISYMS) {
-			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be links", eloc); return;
+		if (Inter::Symbols::is_connector(name_name) == FALSE) {
+			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be plugs or sockets", eloc); return;
 		}
-		if (equate_name) Inter::SymbolsTables::link(name_name, equate_name);
-		else {
+		if (equate_name) {
+			if (Inter::Symbols::get_scope(name_name) == PLUG_ISYMS)
+				Inter::SymbolsTables::make_plug(name_name, equate_name);
+			else {
+				inter_symbol *eq = Inter::SymbolsTables::url_name_to_symbol(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::scope(IBM), equate_name);
+				if (eq == NULL) Inter::SymbolsTables::equate_textual(name_name, equate_name);
+				Inter::SymbolsTables::make_socket(name_name, eq);
+			}
+		} else {
 			*E = Inter::Errors::plain(I"link symbol not equated", eloc); return;
 		}
 	} else {
-		if (Inter::Symbols::get_scope(name_name) == LINK_ISYMS) {
-			*E = Inter::Errors::plain(I"links may only occur in a _linkage package", eloc); return;
+		if (Inter::Symbols::is_connector(name_name)) {
+			*E = Inter::Errors::plain(I"plugs and sockets may only occur in a _linkage package", eloc); return;
 		}
 		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
 		if (equate_name) {

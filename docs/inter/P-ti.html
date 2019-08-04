@@ -174,7 +174,7 @@ one of these three forms:
 <pre class="display">
         <span class="plain">symbol private TYPE NAME</span>
         <span class="plain">symbol public TYPE NAME</span>
-        <span class="plain">symbol external TYPE NAME == SYMBOL</span>
+        <span class="plain">symbol external TYPE NAME --&gt; SYMBOL</span>
 </pre>
 
 <p class="inwebparagraph">For example,
@@ -185,7 +185,7 @@ one of these three forms:
 
 <pre class="display">
         <span class="plain">symbol public misc MEMORY_HEAP_SIZE</span>
-        <span class="plain">symbol external misc AllowInShowme == /main/resources/template/AllowInShowme</span>
+        <span class="plain">symbol external misc AllowInShowme --&gt; /main/resources/template/AllowInShowme</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">private</span></code> means that the meaning and existence of <code class="display"><span class="extract">NAME</span></code> are invisible
@@ -205,9 +205,9 @@ to write
 <pre class="display">
         <span class="plain">package main _plain</span>
         <span class="plain">    package A _plain</span>
-        <span class="plain">        symbol external misc S == /main/B/T</span>
+        <span class="plain">        symbol external misc S --&gt; /main/B/T</span>
         <span class="plain">    package B _plain</span>
-        <span class="plain">        symbol external misc T == /main/B/S</span>
+        <span class="plain">        symbol external misc T --&gt; /main/B/S</span>
 </pre>
 
 <p class="inwebparagraph">The symbol <code class="display"><span class="extract">TYPE</span></code> must be one of four possibilities:
@@ -261,7 +261,7 @@ wishes to be given when the Inter is translated into some other language
 
 
 <pre class="display">
-        <span class="plain">symbol private TYPE NAME -&gt; TRANSLATION</span>
+        <span class="plain">symbol private TYPE NAME `TRANSLATION`</span>
 </pre>
 
 <p class="inwebparagraph">So, for example,
@@ -271,7 +271,7 @@ wishes to be given when the Inter is translated into some other language
 
 
 <pre class="display">
-        <span class="plain">symbol public misc launcher -&gt; launcher_U32</span>
+        <span class="plain">symbol public misc launcher `launcher_U32`</span>
 </pre>
 
 <p class="inwebparagraph">Symbols tabulated as <code class="display"><span class="extract">external</span></code> cannot be marked in this way, but of course
@@ -285,9 +285,9 @@ For example,
 <pre class="display">
         <span class="plain">package main _plain</span>
         <span class="plain">    package A _plain</span>
-        <span class="plain">        symbol external misc S == /main/B/T</span>
+        <span class="plain">        symbol external misc S --&gt; /main/B/T</span>
         <span class="plain">    package B _plain</span>
-        <span class="plain">        symbol public misc T -&gt; FancyName </span>
+        <span class="plain">        symbol public misc T `FancyName`</span>
 </pre>
 
 <p class="inwebparagraph">would result in the names <code class="display"><span class="extract">S</span></code> and <code class="display"><span class="extract">T</span></code> both being compiled to the name

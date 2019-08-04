@@ -9,7 +9,7 @@ package main _plain
 	constant x K_number = 11
 	package sub _plain
 		symbol public misc y
-		symbol external misc K_number == /main/K_number
+		symbol external misc K_number --> /main/K_number
 		symbol public misc `name
 		symbol public misc `purpose
 		metadata `name: "My test subpackage"

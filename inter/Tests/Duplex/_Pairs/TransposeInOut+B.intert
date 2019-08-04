@@ -135,11 +135,11 @@ package main _plain
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
 		symbol private misc x
-		symbol external misc K_colour == /main/K_colour
-		symbol external misc R_102 == /main/R_102
-		symbol external misc I_green == /main/I_green
-		symbol external misc K_number == /main/K_number
-		symbol external misc K_truth_state == /main/K_truth_state
+		symbol external misc K_colour --> /main/K_colour
+		symbol external misc R_102 --> /main/R_102
+		symbol external misc I_green --> /main/I_green
+		symbol external misc K_number --> /main/K_number
+		symbol external misc K_truth_state --> /main/K_truth_state
 		local x K_colour __call_parameter
 		code
 			inv R_102
@@ -154,8 +154,8 @@ package main _plain
 	constant R_101 K_colour____colour = R_101_B
 	package R_102_B _code
 		symbol private misc x
-		symbol external misc K_colour == /main/K_colour
-		symbol external misc I_red == /main/I_red
+		symbol external misc K_colour --> /main/K_colour
+		symbol external misc I_red --> /main/I_red
 		local x K_colour __call_parameter
 		code
 			inv !return

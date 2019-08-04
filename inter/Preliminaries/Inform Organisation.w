@@ -75,7 +75,7 @@ All functions compiled by Inform 7 are expressed in inter code by packages
 of type |_function|. The only externally visible symbol is |call|, which is
 what is invoked. For example:
 
-	|symbol X == /main/kinds/kind_6/gpr_fn/call|
+	|symbol X --> /main/kinds/kind_6/gpr_fn/call|
 	|...|
 	|        inv X|
 
@@ -95,7 +95,7 @@ defining |call| as an alias for a routine which we'll simply have to assume
 will be present at eventual compile time. For example:
 
 	|package print_fn _function|
-	|    symbol public misc call -> REAL_NUMBER_TY_Say|
+	|    symbol public misc call `REAL_NUMBER_TY_Say`|
 
 More often, however, and always for functions derived from Inform 7 source
 text, the package contains a code subpackage, and then defines |call| to

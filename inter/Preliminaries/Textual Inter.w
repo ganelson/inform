@@ -121,12 +121,12 @@ one of these three forms:
 
 	|symbol private TYPE NAME|
 	|symbol public TYPE NAME|
-	|symbol external TYPE NAME == SYMBOL|
+	|symbol external TYPE NAME --> SYMBOL|
 
 For example,
 
 	|symbol public misc MEMORY_HEAP_SIZE|
-	|symbol external misc AllowInShowme == /main/resources/template/AllowInShowme|
+	|symbol external misc AllowInShowme --> /main/resources/template/AllowInShowme|
 
 |private| means that the meaning and existence of |NAME| are invisible
 from outside the current package; |public| means that other packages are
@@ -140,9 +140,9 @@ to write
 
 	|package main _plain|
 	|    package A _plain|
-	|        symbol external misc S == /main/B/T|
+	|        symbol external misc S --> /main/B/T|
 	|    package B _plain|
-	|        symbol external misc T == /main/B/S|
+	|        symbol external misc T --> /main/B/S|
 
 The symbol |TYPE| must be one of four possibilities:
 (a) |label|, used to mark execution positions in code packages;
@@ -179,11 +179,11 @@ means "the symbol |AllowInShowme| in package |template| inside package
 wishes to be given when the Inter is translated into some other language
 (i.e., Inform 6 or similar). This is written like so:
 
-	|symbol private TYPE NAME -> TRANSLATION|
+	|symbol private TYPE NAME `TRANSLATION`|
 
 So, for example,
 
-	|symbol public misc launcher -> launcher_U32|
+	|symbol public misc launcher `launcher_U32`|
 
 Symbols tabulated as |external| cannot be marked in this way, but of course
 the original definition (to which the external link eventually leads) can be.
@@ -191,9 +191,9 @@ For example,
 
 	|package main _plain|
 	|    package A _plain|
-	|        symbol external misc S == /main/B/T|
+	|        symbol external misc S --> /main/B/T|
 	|    package B _plain|
-	|        symbol public misc T -> FancyName |
+	|        symbol public misc T `FancyName`|
 
 would result in the names |S| and |T| both being compiled to the name
 |FancyName| in the final code.

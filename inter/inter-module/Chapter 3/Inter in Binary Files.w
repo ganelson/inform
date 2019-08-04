@@ -259,7 +259,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
 			Inter::Symbols::annotate(S, IA);
 		}
-		if (Inter::Symbols::get_scope(S) == LINK_ISYMS) {
+		if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) {
 			S->equated_name = Str::new();
 			while (TRUE) {
 				unsigned int c;
@@ -291,7 +291,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				LOOP_THROUGH_TEXT(P, symb->translate_text)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 				Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
-				if (Inter::Symbols::get_scope(symb) == LINK_ISYMS) {
+				if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) {
 					LOOP_THROUGH_TEXT(pos, symb->equated_name)
 						BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
 					BinaryFiles::write_int32(fh, 0);

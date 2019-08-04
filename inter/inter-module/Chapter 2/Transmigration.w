@@ -149,17 +149,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	symb->equated_to = equivalent;
 
 @<Create a link symbol to represent the unavailability of this symbol@> =
-	if (ipct->links == NULL)
-		ipct->links = Inter::Packages::by_name(ipct->migrant, I"links");
-	if (ipct->links == NULL) {
-		inter_symbol *linkage = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_linkage");
-		if (linkage == NULL) internal_error("no linkage ptype");
-		Inter::Package::new_package(ipct->linkage_point, I"links", linkage, (inter_t) Inter::Packages::baseline(ipct->migrant) + 1, NULL, &(ipct->links));
-	}
-	if (ipct->links == NULL) internal_error("couldn't create links");
-	Inter::Packages::make_linklike(ipct->links);
-	equivalent = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(ipct->links), target->symbol_name);
-	Inter::SymbolsTables::link(equivalent, URL);
+	equivalent = Inter::Connectors::plug(ipct->linkage_point, target->symbol_name, URL, &(ipct->links));
 
 @<Correct any references from the origin to the migrant@> =
 	ipct_cache_count++;
@@ -208,17 +198,7 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 	symb->equated_to = equivalent;
 
 @<Create a link symbol in the origin@> =
-	if (ipct->links == NULL)
-		ipct->links = Inter::Packages::by_name(Inter::Bookmarks::package(ipct->linkage_point), I"links");
-	if (ipct->links == NULL) {
-		inter_symbol *linkage = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_linkage");
-		if (linkage == NULL) internal_error("no linkage ptype");
-		Inter::Package::new_package(ipct->linkage_point, I"links", linkage, (inter_t) Inter::Bookmarks::baseline(ipct->linkage_point)+1, NULL, &(ipct->links));
-	}
-	if (ipct->links == NULL) internal_error("couldn't create links");
-	Inter::Packages::make_linklike(ipct->links);
-	equivalent = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(ipct->links), target->symbol_name);
 	TEMPORARY_TEXT(URL);
 	Inter::SymbolsTables::symbol_to_url_name(URL, target);
-	Inter::SymbolsTables::link(equivalent, URL);
+	equivalent = Inter::Connectors::plug(ipct->linkage_point, target->symbol_name, URL, &(ipct->links));
 	DISCARD_TEXT(URL);

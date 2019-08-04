@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>2/ann</title>
+		<title>2/cnn</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -261,17 +261,7 @@
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;migrant</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"links"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">linkage</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::url_name_to_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/_linkage"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">linkage</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no linkage ptype"</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Package::new_package</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"links"</span><span class="plain">, </span><span class="identifier">linkage</span><span class="plain">, (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="functiontext">Inter::Packages::baseline</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;migrant</span><span class="plain">) + 1, </span><span class="identifier">NULL</span><span class="plain">, &amp;(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">));</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"couldn't create links"</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Packages::make_linklike</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">);</span>
-        <span class="identifier">equivalent</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">), </span><span class="identifier">target</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">);</span>
-        <span class="functiontext">Inter::SymbolsTables::link</span><span class="plain">(</span><span class="identifier">equivalent</span><span class="plain">, </span><span class="identifier">URL</span><span class="plain">);</span>
+        <span class="identifier">equivalent</span><span class="plain"> = </span><span class="functiontext">Inter::Connectors::plug</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">, </span><span class="identifier">URL</span><span class="plain">, &amp;(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -358,19 +348,9 @@
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::by_name</span><span class="plain">(</span><span class="functiontext">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"links"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">linkage</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::url_name_to_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/_linkage"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">linkage</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no linkage ptype"</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Package::new_package</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"links"</span><span class="plain">, </span><span class="identifier">linkage</span><span class="plain">, (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="functiontext">Inter::Bookmarks::baseline</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">)+1, </span><span class="identifier">NULL</span><span class="plain">, &amp;(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">));</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"couldn't create links"</span><span class="plain">);</span>
-        <span class="functiontext">Inter::Packages::make_linklike</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">);</span>
-        <span class="identifier">equivalent</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">), </span><span class="identifier">target</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">URL</span><span class="plain">);</span>
         <span class="functiontext">Inter::SymbolsTables::symbol_to_url_name</span><span class="plain">(</span><span class="identifier">URL</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">);</span>
-        <span class="functiontext">Inter::SymbolsTables::link</span><span class="plain">(</span><span class="identifier">equivalent</span><span class="plain">, </span><span class="identifier">URL</span><span class="plain">);</span>
+        <span class="identifier">equivalent</span><span class="plain"> = </span><span class="functiontext">Inter::Connectors::plug</span><span class="plain">(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;linkage_point</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">-</span><span class="element">&gt;symbol_name</span><span class="plain">, </span><span class="identifier">URL</span><span class="plain">, &amp;(</span><span class="identifier">ipct</span><span class="plain">-</span><span class="element">&gt;links</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">URL</span><span class="plain">);</span>
 </pre>
 
@@ -379,7 +359,7 @@
 <p class="endnote">This code is used in <a href="#SP3_1">&#167;3.1</a>.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-ann.html">Back to 'Annotations'</a></li><li><i>(This section ends Chapter 2: Interoperability.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-cnn.html">Back to 'Connectors'</a></li><li><i>(This section ends Chapter 2: Interoperability.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>
