@@ -8,6 +8,7 @@ inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *plug_name, tex
 	inter_symbol *plug = Inter::SymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), plug_name);
 	Inter::SymbolsTables::make_plug(plug, wanted);
+	LOG("Plug I%d: %S\n", I->allocation_id, plug_name);
 	return plug;
 }
 
@@ -16,6 +17,7 @@ inter_symbol *Inter::Connectors::socket(inter_tree *I, text_stream *socket_name,
 	inter_symbol *socket = Inter::SymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), socket_name);
 	Inter::SymbolsTables::make_socket(socket, wired_from);
+	LOG("Socket I%d: %S (== $3)\n", I->allocation_id, socket_name, socket);
 	return socket;
 }
 

@@ -513,6 +513,8 @@ inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbo
 	}
 	inter_symbol *I = Veneer::find(Packaging::incarnate(Hierarchy::veneer()), Hierarchy::veneer_booknark(), S, Emit::kind_to_symbol(NULL));
 	if (I) return I;
+	I = Emit::seek_symbol(Emit::connectors_scope(), S);
+	if (I) return I;
 	I = Emit::seek_symbol(Emit::main_scope(), S);
 	if (I) return I;
 	I = InterNames::to_symbol(Hierarchy::find_by_name(S));

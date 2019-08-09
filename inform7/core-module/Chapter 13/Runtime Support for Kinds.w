@@ -251,6 +251,18 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 		return;
 	}
 
+	if (Kinds::Compare::eq(K, K_table)) {
+		inter_name *empty = Hierarchy::find(EMPTY_TABLE_HL);
+		Emit::to_ival(v1, v2, empty);
+		return;
+	}
+	
+	if (Kinds::get_construct(K) == CON_rule) {
+		inter_name *empty = Hierarchy::find(LITTLE_USED_DO_NOTHING_R_HL);
+		Emit::to_ival(v1, v2, empty);
+		return;
+	}
+
 	text_stream *name = K->construct->default_value;
 
 	if (Str::len(name) == 0) return;
@@ -1054,8 +1066,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 				Str::put(pos, Characters::toupper(Str::get(pos)));
 				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 			}
-			Emit::main_render_unique(Emit::main_scope(), ICN);
-			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, ICN, Kinds::Behaviour::package(K));
+			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, Emit::main_render_unique(Emit::main_scope(), ICN), Kinds::Behaviour::package(K));
 			DISCARD_TEXT(ICN);
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
 		}

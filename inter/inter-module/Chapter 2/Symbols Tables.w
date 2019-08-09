@@ -185,10 +185,14 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main_or_basics(inter_tre
 @h Creation by unique name.
 
 =
-void Inter::SymbolsTables::render_identifier_unique(inter_symbols_table *T, text_stream *name) {
+text_stream *Inter::SymbolsTables::render_identifier_unique(inter_symbols_table *T, text_stream *name) {
 	inter_symbol *ST;
-	int N = 1, A = 0;
+	int N = 1, A = 0, still_unduplicated = TRUE;
 	while ((ST = Inter::SymbolsTables::symbol_from_name(T, name)) != NULL) {
+		if (still_unduplicated) {
+			name = Str::duplicate(name);
+			still_unduplicated = FALSE;
+		}
 		TEMPORARY_TEXT(TAIL);
 		WRITE_TO(TAIL, "_%d", N++);
 		if (A > 0) Str::truncate(name, Str::len(name) - A);
@@ -197,11 +201,12 @@ void Inter::SymbolsTables::render_identifier_unique(inter_symbols_table *T, text
 		Str::truncate(name, 31);
 		DISCARD_TEXT(TAIL);
 	}
+	return name;
 }
 
 inter_symbol *Inter::SymbolsTables::create_with_unique_name(inter_symbols_table *T, text_stream *name) {
-	Inter::SymbolsTables::render_identifier_unique(T, name);
-	return Inter::SymbolsTables::symbol_from_name_creating(T, name);
+	return Inter::SymbolsTables::symbol_from_name_creating(T,
+		Inter::SymbolsTables::render_identifier_unique(T, name));
 }
 
 @h From symbol to ID.
@@ -297,11 +302,8 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter
 		for (int i=0; i<T->size; i++)
 			if ((T->symbol_array[i]) && (T->symbol_array[i]->equated_to == S))
 				return (inter_t) T->symbol_array[i]->symbol_ID;
-		TEMPORARY_TEXT(N);
-		WRITE_TO(N, "%S", S->symbol_name);
-		Inter::SymbolsTables::render_identifier_unique(T, N);
+		text_stream *N = Inter::SymbolsTables::render_identifier_unique(T, S->symbol_name);
 		inter_symbol *X = Inter::SymbolsTables::search_inner(T, N, TRUE, 0, FALSE);
-		DISCARD_TEXT(N);
 		if (X->equated_to == NULL) {
 			Inter::SymbolsTables::equate(X, S);
 			LOGIF(INTER_SYMBOLS, "Equating $3 to new $3\n", S, X);
@@ -358,6 +360,7 @@ void Inter::SymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) 
 	S_from->equated_to = NULL;
 	S_from->equated_name = Str::duplicate(wanted);
 	Inter::Symbols::set_scope(S_from, PLUG_ISYMS);
+	Inter::Symbols::set_type(S_from, MISC_ISYMT);
 }
 
 void Inter::SymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_from) {

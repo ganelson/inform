@@ -202,6 +202,7 @@ void Packaging::outside_all_packages(void) {
 	package_types_bookmark = Packaging::bubble();
 	PackageTypes::get(I"_plain"); // To ensure this is the first emitted ptype
 	PackageTypes::get(I"_code"); // And this the second
+	PackageTypes::get(I"_linkage"); // And this the third
 
 	Emit::comment(I"Pragmas:");
 	pragmas_bookmark = Packaging::bubble();

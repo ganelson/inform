@@ -49,6 +49,7 @@ void CodeGen::Externals::visitor(inter_tree *I, inter_tree_node *P, void *state)
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *Q = Inter::Package::defined_by_frame(P);
 		if (Inter::Tree::main_package(I) == Q) return;
+		if (Inter::Tree::connectors_package(I) == Q) return;
 		inter_symbols_table *ST = Inter::Packages::scope(Q);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];

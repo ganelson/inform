@@ -1134,6 +1134,7 @@ void Hierarchy::establish(void) {
 @e LIST_OF_TY_INSERTITEM_HL
 @e LIST_OF_TY_SAY_HL
 @e LIST_OF_TY_SETLENGTH_HL
+@e LITTLE_USED_DO_NOTHING_R_HL
 @e LOCALPARKING_HL
 @e LOCATION_HL
 @e LOCATIONOF_HL
@@ -1374,6 +1375,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(LIST_OF_TY_INSERTITEM_HL, I"LIST_OF_TY_InsertItem", Translation::same(), template);
 	HierarchyLocations::con(LIST_OF_TY_SAY_HL, I"LIST_OF_TY_Say", Translation::same(), template);
 	HierarchyLocations::con(LIST_OF_TY_SETLENGTH_HL, I"LIST_OF_TY_SetLength", Translation::same(), template);
+	HierarchyLocations::con(LITTLE_USED_DO_NOTHING_R_HL, I"LITTLE_USED_DO_NOTHING_R", Translation::same(), template);
 	HierarchyLocations::con(LOCALPARKING_HL, I"LocalParking", Translation::same(), template);
 	HierarchyLocations::con(LOCATION_HL, I"location", Translation::same(), template);
 	HierarchyLocations::con(LOCATIONOF_HL, I"LocationOf", Translation::same(), template);
@@ -1568,7 +1570,9 @@ inter_name *Hierarchy::find(int id) {
 void Hierarchy::make_available(inter_name *iname) {
 	text_stream *ma_as = Emit::get_translation(iname);
 	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
-	HierarchyLocations::make_as(-1, ma_as, iname);
+	PackageTypes::get(I"_linkage");
+	inter_symbol *S = InterNames::to_symbol(iname);
+	Inter::Connectors::socket(Emit::tree(), ma_as, S);
 }
 
 inter_name *Hierarchy::find_by_name(text_stream *name) {

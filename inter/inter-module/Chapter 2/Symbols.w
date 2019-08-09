@@ -261,6 +261,7 @@ int Inter::Symbols::is_undefined_private(inter_symbol *S) {
 int Inter::Symbols::is_extern(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (Inter::Symbols::get_scope(S) == EXTERNAL_ISYMS) return TRUE;
+	if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) return TRUE;
 	return FALSE;
 }
 

@@ -13,7 +13,7 @@ int no_assimilated_actions = 0;
 int no_assimilated_commands = 0;
 int no_assimilated_arrays = 0;
 
-int trace_AME = FALSE;
+int trace_AME = TRUE;
 
 int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	inter_tree *I = step->repository;
@@ -97,7 +97,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	@<Parse text of splat for identifier and value@>;
 	if ((proceed) && (unchecked_kind_symbol)) {
 		if (plm == DEFAULT_PLM) {
-			inter_symbol *symbol = CodeGen::MergeTemplate::find_name(I, identifier, TRUE);
+			inter_symbol *symbol = CodeGen::MergeTemplate::find_name(I, identifier);
 			if (symbol == NULL) plm = CONSTANT_PLM;
 		}
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
@@ -483,7 +483,17 @@ void CodeGen::Assimilate::install_alias(inter_symbol *con_name, text_stream *aka
 
 @ =
 inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *identifier, inter_symbols_table *into_scope) {
-	inter_symbol *existing = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(Inter::Tree::main_package(I)), identifier);
+	inter_symbol *existing = NULL;
+	if (Inter::Tree::connectors_package(I))
+		existing = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
+
+	if ((existing == NULL) && (Inter::Tree::main_package(I))) {
+		inter_symbol *hmm = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(Inter::Tree::main_package(I)), identifier);
+		if (hmm) {
+			LOG("Still relying upon $3\n", hmm);
+			existing = hmm;
+		}
+	}
 
 	if (existing == NULL) {
 		inter_symbol *new_symbol = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
@@ -508,7 +518,7 @@ inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *iden
 
 @ =
 void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_stream *value) {
-	if (CodeGen::MergeTemplate::find_name(I, value, TRUE) == NULL) {
+	if (CodeGen::MergeTemplate::find_name(I, value) == NULL) {
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
 		inter_symbol *ptype = action_ptype_symbol;
@@ -522,7 +532,7 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
-		inter_symbol *txsymb = CodeGen::MergeTemplate::find_name(I, unsharped, TRUE);
+		inter_symbol *txsymb = CodeGen::MergeTemplate::find_name(I, unsharped);
 		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
 		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
 		DISCARD_TEXT(unsharped);
@@ -627,7 +637,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		}
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0], TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0]);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
@@ -636,7 +646,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			}
 		}
 		if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0], TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0]);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
@@ -646,7 +656,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		}
 	}
 
-	inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, S, TRUE);
+	inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, S);
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
@@ -714,7 +724,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, t->material, TRUE);
+			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, t->material);
 			if (symb) return symb;
 			LOG("Failed to identify %S\n", t->material);
 			break;

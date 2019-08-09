@@ -24,12 +24,14 @@ int link_search_list_len = 0;
 void CodeGen::MergeTemplate::ensure_search_list(inter_tree *I) {
 	if (link_search_list_len == 0) {
 		if (template_package) {
-			link_search_list[1] = Inter::Packages::scope(Inter::Tree::main_package(I));
+			link_search_list[2] = Inter::Packages::scope(Inter::Tree::main_package(I));
+			link_search_list[1] = Inter::Packages::scope(Inter::Tree::connectors_package(I));
 			link_search_list[0] = Inter::Packages::scope(template_package);
-			link_search_list_len = 2;
+			link_search_list_len = 3;
 		} else {
-			link_search_list[0] = Inter::Packages::scope(Inter::Tree::main_package(I));
-			link_search_list_len = 1;
+			link_search_list[1] = Inter::Packages::scope(Inter::Tree::main_package(I));
+			link_search_list[0] = Inter::Packages::scope(Inter::Tree::connectors_package(I));
+			link_search_list_len = 2;
 		}
 	}
 }
@@ -119,16 +121,14 @@ void CodeGen::MergeTemplate::build_only(inter_package *P) {
 	}
 }
 
-inter_symbol *CodeGen::MergeTemplate::find_name(inter_tree *I, text_stream *S, int deeply) {
+inter_symbol *CodeGen::MergeTemplate::find_name(inter_tree *I, text_stream *S) {
 	for (int i=0; i<link_search_list_len; i++) {
-		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
-		if (symb) return symb;
+		if (link_search_list[i]) {
+			inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
+			if (symb) return symb;
+		}
 	}
-	if (deeply) {
-		inter_symbol *symb = CodeGen::MergeTemplate::find_in_namespace(I, S);
-		if (symb) return symb;
-	}
-	return NULL;
+	return CodeGen::MergeTemplate::find_in_namespace(I, S);
 }
 
 void CodeGen::MergeTemplate::log_search_path(void) {

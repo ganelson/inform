@@ -102,7 +102,7 @@
 
 <p class="endnote">The function Inter::Symbols::get_scope is used in <a href="#SP4">&#167;4</a>, <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>, <a href="3-iibf.html#SP1_1_3_2">&#167;1.1.3.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>), 5/tlc2 (<a href="5-tlc2.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Inter::Symbols::set_type is used in <a href="#SP5">&#167;5</a>, 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Inter::Symbols::set_type is used in <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inter::Symbols::set_scope is used in <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP10">&#167;10</a>), 3/iibf (<a href="3-iibf.html#SP1_4_2">&#167;1.4.2</a>), 4/tsc (<a href="4-tsc.html#SP1">&#167;1</a>).</p>
 
@@ -357,6 +357,7 @@
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inter::Symbols::is_extern</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">EXTERNAL_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">PLUG_ISYMS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 

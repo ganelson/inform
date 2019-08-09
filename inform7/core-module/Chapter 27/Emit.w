@@ -116,8 +116,15 @@ inter_symbol *Emit::extern(text_stream *name, kind *K) {
 	if (extern_symbols == NULL) extern_symbols = Dictionaries::new(1024, FALSE);
 	if (Dictionaries::find(extern_symbols, name))
 		return Dictionaries::read_value(extern_symbols, name);
-	inter_symbol *symb = Emit::new_symbol(Emit::main_scope(), name);
-	Inter::Symbols::extern(symb);
+	inter_package *C = Inter::Tree::connectors_package(Emit::tree());
+	if (C) {
+		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(C), name);
+		if (symb) {
+			LOG("Affected %S\n", name);
+			return symb;
+		}
+	}
+	inter_symbol *symb = Inter::Connectors::plug(Emit::tree(), name, name);
 	Dictionaries::create(extern_symbols, name);
 	Dictionaries::write_value(extern_symbols, name, symb);
 	return symb;
@@ -170,12 +177,16 @@ inter_symbols_table *Emit::main_scope(void) {
 	return Inter::Packages::scope(Inter::Tree::main_package(Emit::tree()));
 }
 
+inter_symbols_table *Emit::connectors_scope(void) {
+	return Inter::Packages::scope(Inter::Tree::connectors_package(Emit::tree()));
+}
+
 inter_symbols_table *Emit::global_scope(void) {
 	return Inter::Tree::global_scope(Emit::tree());
 }
 
-void Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
-	Inter::SymbolsTables::render_identifier_unique(T, name);
+text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
+	return Inter::SymbolsTables::render_identifier_unique(T, name);
 }
 
 inter_symbol *Emit::seek_symbol(inter_symbols_table *T, text_stream *name) {
@@ -195,6 +206,7 @@ inter_symbol *Emit::new_symbol(inter_symbols_table *T, text_stream *name) {
 }
 
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
+LOG("Holding %S\n", name);
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) {
 		symb = Emit::new_symbol(T, name);

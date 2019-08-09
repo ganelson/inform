@@ -451,7 +451,7 @@ void PL::Naming::compile_small_names(void) {
 					Emit::inv_call_iname(porname);
 					Emit::down();
 						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_object, Hierarchy::find(SHORT_NAME_HL));
+						Emit::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
 						Emit::val(K_number, LITERAL_IVAL, 1);
 					Emit::up();
 				Emit::up();
