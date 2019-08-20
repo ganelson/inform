@@ -82,8 +82,7 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 	inter_symbols_table *tab = Inter::Packages::scope(pack);
 	for (int i=0; i<tab->size; i++) {
 		inter_symbol *symb = tab->symbol_array[i];
-		if ((symb) && (symb->equated_to) &&
-			(Inter::Symbols::get_flag(symb, ALIAS_ONLY_BIT) == FALSE)) {
+		if ((symb) && (symb->equated_to)) {
 			inter_symbol *to = symb;
 			while ((to) && (to->equated_to)) to = to->equated_to;
 			inter_package *needed = to->owning_table->owning_package;

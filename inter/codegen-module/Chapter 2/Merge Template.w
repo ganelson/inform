@@ -18,32 +18,12 @@ int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 	return TRUE;
 }
 
-inter_symbols_table *link_search_list[10];
-int link_search_list_len = 0;
-
-void CodeGen::MergeTemplate::ensure_search_list(inter_tree *I) {
-	if (link_search_list_len == 0) {
-		if (template_package) {
-			link_search_list[2] = Inter::Packages::scope(Inter::Tree::main_package(I));
-			link_search_list[1] = Inter::Packages::scope(Inter::Tree::connectors_package(I));
-			link_search_list[0] = Inter::Packages::scope(template_package);
-			link_search_list_len = 3;
-		} else {
-			link_search_list[1] = Inter::Packages::scope(Inter::Tree::main_package(I));
-			link_search_list[0] = Inter::Packages::scope(Inter::Tree::connectors_package(I));
-			link_search_list_len = 2;
-		}
-	}
-}
-
 void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
 	if (template_package == NULL) internal_error("unable to find template");
-
-	CodeGen::MergeTemplate::ensure_search_list(I);
 
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);
@@ -66,74 +46,6 @@ void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *st
 		text_stream *S4 = Inter::Node::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
 		void *ref = Inter::Node::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
-	}
-}
-
-dictionary *linkable_namespace = NULL;
-int linkable_namespace_created = FALSE;
-
-inter_symbol *CodeGen::MergeTemplate::find_in_namespace(inter_tree *I, text_stream *name) {
-	if (linkable_namespace_created == FALSE) {
-		linkable_namespace_created = TRUE;
-		linkable_namespace = Dictionaries::new(512, FALSE);
-		inter_package *main_package = Inter::Tree::main_package(I);
-		if (main_package) {
-			inter_tree_node *D = Inter::Packages::definition(main_package);
-			LOOP_THROUGH_INTER_CHILDREN(C, D) {
-				if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-					inter_package *P = Inter::Package::defined_by_frame(C);
-					if (Str::ne(Inter::Packages::name(P), I"template"))
-						CodeGen::MergeTemplate::build_r(P);
-				}
-			}
-			
-		}
-	}
-	if (Dictionaries::find(linkable_namespace, name))
-		return (inter_symbol *) Dictionaries::read_value(linkable_namespace, name);
-	return NULL;
-}
-
-void CodeGen::MergeTemplate::build_r(inter_package *P) {
-	CodeGen::MergeTemplate::build_only(P);
-	inter_tree_node *D = Inter::Packages::definition(P);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
-			inter_package *Q = Inter::Package::defined_by_frame(C);
-			CodeGen::MergeTemplate::build_r(Q);
-		}
-	}
-}
-
-void CodeGen::MergeTemplate::build_only(inter_package *P) {
-	inter_symbols_table *T = Inter::Packages::scope(P);
-	if (T) {
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *S = T->symbol_array[i];
-			if ((Inter::Symbols::is_defined(S)) && (S->equated_to == NULL) &&
-				(Inter::Symbols::get_flag(S, MAKE_NAME_UNIQUE) == FALSE)) {
-				text_stream *name = S->symbol_name;
-				if (Str::len(S->translate_text) > 0) name = S->translate_text;
-				Dictionaries::create(linkable_namespace, name);
-				Dictionaries::write_value(linkable_namespace, name, (void *) S);
-			}
-		}
-	}
-}
-
-inter_symbol *CodeGen::MergeTemplate::find_name(inter_tree *I, text_stream *S) {
-	for (int i=0; i<link_search_list_len; i++) {
-		if (link_search_list[i]) {
-			inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(link_search_list[i], S);
-			if (symb) return symb;
-		}
-	}
-	return CodeGen::MergeTemplate::find_in_namespace(I, S);
-}
-
-void CodeGen::MergeTemplate::log_search_path(void) {
-	for (int i=0; i<link_search_list_len; i++) {
-		LOG("Search %d: $4\n", i, link_search_list[i]);
 	}
 }
 

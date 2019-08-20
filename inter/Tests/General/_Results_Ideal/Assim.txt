@@ -1,5 +1,6 @@
 packagetype _plain
 packagetype _code
+packagetype _linkage
 packagetype _function
 packagetype _module
 packagetype _submodule
@@ -129,3 +130,23 @@ package main _plain
 				symbol public misc density
 				symbol external misc K_unchecked --> /main/other/K_unchecked
 				property density K_unchecked __assimilated=1
+	package connectors _linkage
+		symbol socket misc Falsity --> /main/template/functions/Falsity_fn/Falsity
+		symbol socket misc Demo --> /main/template/functions/Demo_fn/Demo
+		symbol socket misc Banana --> /main/template/functions/Banana_fn/Banana
+		symbol socket misc Peach --> /main/template/functions/Peach_fn/Peach
+		symbol socket misc marmorial --> /main/template/properties/marmorial_prop/marmorial
+		symbol socket misc P_marmorial --> /main/template/properties/marmorial_prop/marmorial
+		symbol socket misc density --> /main/template/properties/density_prop/density
+		symbol socket misc DEBUG --> /main/template/constants/DEBUG_con/DEBUG
+		symbol socket misc Badger --> /main/template/constants/Badger_con/Badger
+		symbol socket misc XA --> /main/template/arrays/XA_arr/XA
+		symbol socket misc XB --> /main/template/arrays/XB_arr/XB
+		symbol socket misc XC --> /main/template/arrays/XC_arr/XC
+		symbol socket misc XD --> /main/template/arrays/XD_arr/XD
+		symbol socket misc XE --> /main/template/arrays/XE_arr/XE
+		symbol socket misc XF --> /main/template/arrays/XF_arr/XF
+		symbol socket misc Bodger --> /main/template/constants/Bodger_con/Bodger
+		symbol socket misc Budger --> /main/template/constants/Budger_con/Budger
+		symbol socket misc Bydger --> /main/template/constants/Bydger_con/Bydger
+		symbol socket misc nitwit --> /main/template/variables/nitwit_var/nitwit

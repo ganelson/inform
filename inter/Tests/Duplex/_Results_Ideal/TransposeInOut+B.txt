@@ -175,16 +175,16 @@ package main _plain
 			symbol private misc x
 			symbol private label .begin
 			symbol external misc K_number --> /main/K_number
-			symbol external misc troublesome --> /main/connectors/troublesome
+			symbol external misc troublesome --> /main/connectors/plug_00001
 			local x K_number __call_parameter
 			code
 				.begin
 				inv !if
-					val K_number troublesome
+					val K_number plug_00001
 					code
 						inv !goto
 							lab .begin
 		constant R_101 K_func = R_101_B
 		constant secret K_number = 7
 	package connectors _linkage
-		symbol plug misc troublesome --? /main/troublesome
+		symbol plug misc plug_00001 --? /main/troublesome

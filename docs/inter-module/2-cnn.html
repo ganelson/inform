@@ -15,12 +15,16 @@
 
 
 <pre class="display">
-    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Connectors::plug</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">plug_name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">wanted</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_plug_number</span><span class="plain"> = 1;</span>
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Connectors::plug</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">wanted</span><span class="plain">) {</span>
         <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">connectors</span><span class="plain"> = </span><span class="functiontext">Inter::Connectors::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="string">"plug_%05d"</span><span class="plain">, </span><span class="identifier">unique_plug_number</span><span class="plain">++);</span>
         <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">plug</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span>
-            <span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">connectors</span><span class="plain">), </span><span class="identifier">plug_name</span><span class="plain">);</span>
+            <span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">connectors</span><span class="plain">), </span><span class="identifier">PN</span><span class="plain">);</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
         <span class="functiontext">Inter::SymbolsTables::make_plug</span><span class="plain">(</span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">wanted</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Plug I%d: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">plug_name</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Plug I%d: $3 seeking %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">plug</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -29,7 +33,7 @@
         <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">socket</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span>
             <span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">connectors</span><span class="plain">), </span><span class="identifier">socket_name</span><span class="plain">);</span>
         <span class="functiontext">Inter::SymbolsTables::make_socket</span><span class="plain">(</span><span class="identifier">socket</span><span class="plain">, </span><span class="identifier">wired_from</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Socket I%d: %S (== $3)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">socket_name</span><span class="plain">, </span><span class="identifier">socket</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Socket I%d: $3 wired to $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">socket</span><span class="plain">, </span><span class="identifier">wired_from</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">socket</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -53,6 +57,50 @@
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">connectors</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Connectors::find_socket</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">) {</span>
+        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">connectors</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connectors</span><span class="plain">) {</span>
+            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_not_equating</span><span class="plain">(</span>
+                <span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)), </span><span class="identifier">identifier</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">S</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">SOCKET_ISYMS</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="functiontext">Inter::Connectors::find_plug</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">) {</span>
+        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">connectors</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connectors</span><span class="plain">) {</span>
+            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Inter::SymbolsTables::symbol_from_name_not_equating</span><span class="plain">(</span>
+                <span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)), </span><span class="identifier">identifier</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">S</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">PLUG_ISYMS</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Connectors::wire_plug</span><span class="plain">(</span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">plug</span><span class="plain">, </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plug</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no plug"</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Plug $3 wired to $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
+        <span class="functiontext">Inter::SymbolsTables::equate</span><span class="plain">(</span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Connectors::stecker</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
+        <span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">Q</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">ST</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">plug</span><span class="plain"> = </span><span class="identifier">ST</span><span class="plain">-</span><span class="element">&gt;symbol_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">plug</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">plug</span><span class="plain">) == </span><span class="constant">PLUG_ISYMS</span><span class="plain">) &amp;&amp; (</span><span class="identifier">plug</span><span class="plain">-</span><span class="element">&gt;equated_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+                <span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">socket</span><span class="plain"> = </span><span class="functiontext">Inter::Connectors::find_socket</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">socket</span><span class="plain">) {</span>
+                    <span class="functiontext">Inter::Connectors::wire_plug</span><span class="plain">(</span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">socket</span><span class="plain">);</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wired plug $3 to $3\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">socket</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Loose plug: $3 (seeking %S)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">, </span><span class="identifier">plug</span><span class="plain">-</span><span class="element">&gt;equated_name</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -62,6 +110,14 @@
 <p class="endnote">The function Inter::Connectors::socket appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Connectors::connectors_package appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Connectors::find_socket appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Connectors::find_plug appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Connectors::wire_plug appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Connectors::stecker appears nowhere else.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-ann.html">Back to 'Annotations'</a></li><li><a href="2-trn.html">Continue with 'Transmigration'</a></li></ul><hr class="tocbar">

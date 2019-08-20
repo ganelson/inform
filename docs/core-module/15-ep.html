@@ -100,7 +100,7 @@ no existence at the source text level &mdash; and hence have no names.
 </p>
 
 <p class="inwebparagraph">Setting them up as adjectives may seem a little over the top, since they cannot
-be encountered in source text, but the plugins will have to set these properties
+be encountered in source text, but the world model will have to set these properties
 by asserting propositions to be true; and type-checking of those propositions
 relies on adjectival meanings.
 </p>
@@ -109,8 +109,9 @@ relies on adjectival meanings.
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">I6_form</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">I6_form</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="functiontext">Hierarchy::template</span><span class="plain">(), </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::create</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="functiontext">Hierarchy::template</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="constant">PROPERTIES_HAP</span><span class="plain">);</span>
+        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::create</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">I6_form</span><span class="plain">);</span>

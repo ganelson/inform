@@ -1079,6 +1079,7 @@ void Hierarchy::establish(void) {
 @e DEBUG_RULES_HL
 @e DEBUG_SCENES_HL
 @e DECIMALNUMBER_HL
+@e DEFAULTTOPIC_HL
 @e DEFERRED_CALLING_LIST_HL
 @e DETECTPLURALWORD_HL
 @e DIGITTOVALUE_HL
@@ -1320,6 +1321,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(DEBUG_RULES_HL, I"debug_rules", Translation::same(), template);
 	HierarchyLocations::con(DEBUG_SCENES_HL, I"debug_scenes", Translation::same(), template);
 	HierarchyLocations::con(DECIMALNUMBER_HL, I"DecimalNumber", Translation::same(), template);
+	HierarchyLocations::con(DEFAULTTOPIC_HL, I"DefaultTopic", Translation::same(), template);
 	HierarchyLocations::con(DEFERRED_CALLING_LIST_HL, I"deferred_calling_list", Translation::same(), template);
 	HierarchyLocations::con(DETECTPLURALWORD_HL, I"DetectPluralWord", Translation::same(), template);
 	HierarchyLocations::con(DIGITTOVALUE_HL, I"DigitToValue", Translation::same(), template);

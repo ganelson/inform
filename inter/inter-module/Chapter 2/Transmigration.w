@@ -142,7 +142,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = Inter::SymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if (equivalent == NULL)
-			equivalent = Inter::Connectors::plug(ipct->destination_tree, target->symbol_name, URL);
+			equivalent = Inter::Connectors::plug(ipct->destination_tree, URL);
 		DISCARD_TEXT(URL);
 		Inter::Transmigration::cache(target, equivalent);
 	}
@@ -184,7 +184,7 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 	if (equivalent == NULL) {
 		TEMPORARY_TEXT(URL);
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
-		equivalent = Inter::Connectors::plug(ipct->origin_tree, target->symbol_name, URL);
+		equivalent = Inter::Connectors::plug(ipct->origin_tree, URL);
 		DISCARD_TEXT(URL);
 		Inter::Transmigration::cache(target, equivalent);
 	}

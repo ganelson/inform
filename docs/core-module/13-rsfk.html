@@ -327,6 +327,12 @@ absence of rooms would otherwise result in.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_understanding</span><span class="plain">)) {</span>
+            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">empty</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTTOPIC_HL</span><span class="plain">);</span>
+            <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">empty</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
+        <span class="plain">}</span>
+
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_rule</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">empty</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LITTLE_USED_DO_NOTHING_R_HL</span><span class="plain">);</span>
             <span class="functiontext">Emit::to_ival</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">empty</span><span class="plain">);</span>
@@ -1453,6 +1459,7 @@ each such kind, and needed at run-time.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">val</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_instance_counts</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1468,6 +1475,7 @@ each such kind, and needed at run-time.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isalnum</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_specific_name</span><span class="plain">(</span><span class="constant">ICOUNT_HL</span><span class="plain">, </span><span class="functiontext">Emit::main_render_unique</span><span class="plain">(</span><span class="functiontext">Emit::main_scope</span><span class="plain">(), </span><span class="identifier">ICN</span><span class="plain">), </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+                <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">);</span>
                 <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
             <span class="plain">}</span>

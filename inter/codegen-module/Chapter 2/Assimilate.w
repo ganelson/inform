@@ -20,7 +20,6 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
-	CodeGen::MergeTemplate::ensure_search_list(I);
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
 	CodeGen::Assimilate::function_bodies();
@@ -96,10 +95,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	@<Parse text of splat for identifier and value@>;
 	if ((proceed) && (unchecked_kind_symbol)) {
-		if (plm == DEFAULT_PLM) {
-			inter_symbol *symbol = CodeGen::MergeTemplate::find_name(I, identifier);
-			if (symbol == NULL) plm = CONSTANT_PLM;
-		}
+		if ((plm == DEFAULT_PLM) && (Inter::Connectors::find_socket(I, identifier) == NULL))
+			plm = CONSTANT_PLM;
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
 		Inter::Tree::remove_node(P);
 	}
@@ -173,7 +170,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	}
 
-	inter_symbol *con_name = CodeGen::Assimilate::maybe_extern(I, identifier, Inter::Bookmarks::scope(IBM));
+	inter_symbol *con_name = CodeGen::Assimilate::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(con_name, ASSIMILATED_IANN, 1);
 	if (plm == FAKEACTION_PLM)
 		Inter::Symbols::annotate_i(con_name, FAKE_ACTION_IANN, 1);
@@ -197,7 +194,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CodeGen::Assimilate::install_alias(con_name, identifier);
+			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		}
 		case GLOBAL_PLM:
@@ -206,7 +203,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CodeGen::Assimilate::install_alias(con_name, identifier);
+			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		case ATTRIBUTE_PLM: {
 			TEMPORARY_TEXT(A);
@@ -233,10 +230,10 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					Inter::SymbolsTables::equate(alias_symbol, attr_symbol);
 				}
 			}
-			CodeGen::Assimilate::install_alias(attr_symbol, A);
-			CodeGen::Assimilate::install_alias(attr_symbol, con_name->symbol_name);
+			CodeGen::Assimilate::install_socket(I, attr_symbol, A);
+			CodeGen::Assimilate::install_socket(I, attr_symbol, con_name->symbol_name);
 			if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
-				CodeGen::Assimilate::install_alias(attr_symbol, Inter::Symbols::get_translate(attr_symbol));
+				CodeGen::Assimilate::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
 			DISCARD_TEXT(A);
 			break;
 		}
@@ -245,7 +242,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CodeGen::Assimilate::install_alias(con_name, identifier);
+			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		}
 		case VERB_PLM:
@@ -324,7 +321,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			Inter::Bookmarks::insert(IBM, array_in_progress);
 			
 			if (plm == ARRAY_PLM) {
-				CodeGen::Assimilate::install_alias(con_name, identifier);
+				CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			}
 			
 			break;
@@ -429,7 +426,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	*IBM = inner_save;
 
-	inter_symbol *rsymb = CodeGen::Assimilate::maybe_extern(I, identifier, Inter::Bookmarks::scope(IBM));
+	inter_symbol *rsymb = CodeGen::Assimilate::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(rsymb, ASSIMILATED_IANN, 1);
 	CodeGen::MergeTemplate::guard(Inter::Constant::new_function(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, FP, rsymb),
@@ -439,11 +436,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	*IBM = outer_save;
 
-	inter_bookmark T_IBM = Inter::Bookmarks::after_this_node(I, P);
-	inter_symbol *alias_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&T_IBM), identifier);
-	Inter::SymbolsTables::equate(alias_name, rsymb);
-	Inter::Symbols::set_flag(alias_name, ALIAS_ONLY_BIT);
-
+	CodeGen::Assimilate::install_socket(I, rsymb, rsymb->symbol_name);
 	Inter::Tree::remove_node(P);
 
 @ =
@@ -454,71 +447,20 @@ inter_package *CodeGen::Assimilate::new_package_named(inter_bookmark *IBM, text_
 	return P;
 }
 
-void CodeGen::Assimilate::install_alias(inter_symbol *con_name, text_stream *aka_text) {
-	if (template_package) {
-		inter_symbol *existing = Inter::SymbolsTables::symbol_from_name_not_equating(
-			Inter::Packages::scope(template_package), aka_text);
-
-		if (existing) {
-			if (Inter::Symbols::is_defined(existing)) {
-				inter_tree_node *Q = Inter::Symbols::definition(existing);
-				if (Q == NULL) internal_error("undefined");
-				Inter::Symbols::undefine(existing);
-				Inter::Tree::remove_node(Q);
-				if (trace_AME) LOG("AME: removing previous definition of $3\n", existing);
-			}
-			if (trace_AME) LOG("AME extra alias $3 = $3\n", existing, con_name);
-			Inter::SymbolsTables::equate(existing, con_name);
-			Inter::Symbols::set_flag(existing, ALIAS_ONLY_BIT);
-			return;
-		}
-		inter_symbol *alias_name =
-			Inter::SymbolsTables::create_with_unique_name(
-				Inter::Packages::scope(template_package), aka_text);
-		if (trace_AME) LOG("AME extra alias $3 = $3\n", alias_name, con_name);
-		Inter::SymbolsTables::equate(alias_name, con_name);
-		Inter::Symbols::set_flag(alias_name, ALIAS_ONLY_BIT);
-	}
+void CodeGen::Assimilate::install_socket(inter_tree *I, inter_symbol *con_name, text_stream *aka_text) {
+	inter_symbol *socket = Inter::Connectors::find_socket(I, aka_text);
+	if (socket == NULL) Inter::Connectors::socket(I, aka_text, con_name);
 }
 
-@ =
-inter_symbol *CodeGen::Assimilate::maybe_extern(inter_tree *I, text_stream *identifier, inter_symbols_table *into_scope) {
-	inter_symbol *existing = NULL;
-	if (Inter::Tree::connectors_package(I))
-		existing = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
-
-	if ((existing == NULL) && (Inter::Tree::main_package(I))) {
-		inter_symbol *hmm = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(Inter::Tree::main_package(I)), identifier);
-		if (hmm) {
-			LOG("Still relying upon $3\n", hmm);
-			existing = hmm;
-		}
-	}
-
-	if (existing == NULL) {
-		inter_symbol *new_symbol = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
-		if (trace_AME) LOG("AME %S: unknown, so creating $3\n", identifier, new_symbol);
-		return new_symbol;
-	}
-
-	if (existing->owning_table == into_scope) internal_error("already in this scope");
-	if (Inter::Symbols::is_defined(existing)) {
-		inter_tree_node *Q = Inter::Symbols::definition(existing);
-		if (Q == NULL) internal_error("undefined");
-		Inter::Symbols::undefine(existing);
-		Inter::Tree::remove_node(Q);
-		if (trace_AME) LOG("AME %S: removing previous definition of $3\n", identifier, existing);
-	}
-
+inter_symbol *CodeGen::Assimilate::make_socketed_symbol(inter_tree *I, text_stream *identifier, inter_symbols_table *into_scope) {
 	inter_symbol *new_symbol = Inter::SymbolsTables::create_with_unique_name(into_scope, identifier);
-	Inter::SymbolsTables::equate(existing, new_symbol);
-	if (trace_AME) LOG("AME %S: equating $3 to $3\n", identifier, existing, new_symbol);
+	CodeGen::Assimilate::install_socket(I, new_symbol, identifier);
 	return new_symbol;
 }
 
 @ =
 void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_stream *value) {
-	if (CodeGen::MergeTemplate::find_name(I, value) == NULL) {
+	if (Inter::Connectors::find_socket(I, value) == NULL) {
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
 		inter_symbol *ptype = action_ptype_symbol;
@@ -527,12 +469,12 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
 		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
 		DISCARD_TEXT(an);
-		inter_symbol *asymb = CodeGen::Assimilate::maybe_extern(I, value, Inter::Bookmarks::scope(IBM));
+		inter_symbol *asymb = CodeGen::Assimilate::make_socketed_symbol(I, value, Inter::Bookmarks::scope(IBM));
 		TEMPORARY_TEXT(unsharped);
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
-		inter_symbol *txsymb = CodeGen::MergeTemplate::find_name(I, unsharped);
+		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
 		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
 		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
 		DISCARD_TEXT(unsharped);
@@ -541,7 +483,6 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
 			LITERAL_IVAL, 10000, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
-		CodeGen::MergeTemplate::build_r(Inter::Bookmarks::package(IBM));
 	}
 }
 
@@ -637,7 +578,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		}
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0]);
+			inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
@@ -646,7 +587,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			}
 		}
 		if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, mr.exp[0]);
+			inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			if (symb) {
 				if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
@@ -656,7 +597,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		}
 	}
 
-	inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, S);
+	inter_symbol *symb = Inter::Connectors::find_socket(I, S);
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
@@ -724,10 +665,9 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 	inter_t v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
-			inter_symbol *symb = CodeGen::MergeTemplate::find_name(I, t->material);
+			inter_symbol *symb = Inter::Connectors::find_socket(I, t->material);
 			if (symb) return symb;
-			LOG("Failed to identify %S\n", t->material);
-			break;
+			return Inter::Connectors::plug(I, t->material);
 		}
 		case NUMBER_ISTT:
 		case BIN_NUMBER_ISTT:

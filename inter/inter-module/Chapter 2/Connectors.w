@@ -3,12 +3,16 @@
 To manage link symbols.
 
 @ =
-inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *plug_name, text_stream *wanted) {
+int unique_plug_number = 1;
+inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *wanted) {
 	inter_package *connectors = Inter::Connectors::connectors_package(I);
+	TEMPORARY_TEXT(PN)
+	WRITE_TO(PN, "plug_%05d", unique_plug_number++);
 	inter_symbol *plug = Inter::SymbolsTables::create_with_unique_name(
-		Inter::Packages::scope(connectors), plug_name);
+		Inter::Packages::scope(connectors), PN);
+	DISCARD_TEXT(PN);
 	Inter::SymbolsTables::make_plug(plug, wanted);
-	LOG("Plug I%d: %S\n", I->allocation_id, plug_name);
+	LOG("Plug I%d: $3 seeking %S\n", I->allocation_id, plug, plug->equated_name);
 	return plug;
 }
 
@@ -17,7 +21,7 @@ inter_symbol *Inter::Connectors::socket(inter_tree *I, text_stream *socket_name,
 	inter_symbol *socket = Inter::SymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), socket_name);
 	Inter::SymbolsTables::make_socket(socket, wired_from);
-	LOG("Socket I%d: %S (== $3)\n", I->allocation_id, socket_name, socket);
+	LOG("Socket I%d: $3 wired to $3\n", I->allocation_id, socket, wired_from);
 	return socket;
 }
 
@@ -40,4 +44,48 @@ inter_package *Inter::Connectors::connectors_package(inter_tree *I) {
 		Inter::Packages::make_linklike(connectors);
 	}
 	return connectors;
+}
+
+inter_symbol *Inter::Connectors::find_socket(inter_tree *I, text_stream *identifier) {
+	inter_package *connectors = Inter::Tree::connectors_package(I);
+	if (connectors) {
+		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_not_equating(
+			Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
+		if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return S;
+	}
+	return NULL;
+}
+
+inter_symbol *Inter::Connectors::find_plug(inter_tree *I, text_stream *identifier) {
+	inter_package *connectors = Inter::Tree::connectors_package(I);
+	if (connectors) {
+		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_not_equating(
+			Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
+		if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return S;
+	}
+	return NULL;
+}
+
+void Inter::Connectors::wire_plug(inter_symbol *plug, inter_symbol *to) {
+	if (plug == NULL) internal_error("no plug");
+	LOG("Plug $3 wired to $3\n", plug, to);
+	Inter::SymbolsTables::equate(plug, to);
+}
+
+void Inter::Connectors::stecker(inter_tree *I) {
+ 	inter_package *Q = Inter::Tree::connectors_package(I);
+ 	if (Q == NULL) return;
+	inter_symbols_table *ST = Inter::Packages::scope(Q);
+	for (int i=0; i<ST->size; i++) {
+		inter_symbol *plug = ST->symbol_array[i];
+		if ((plug) && (Inter::Symbols::get_scope(plug) == PLUG_ISYMS) && (plug->equated_to == NULL)) {
+			inter_symbol *socket = Inter::Connectors::find_socket(I, plug->equated_name);
+			if (socket) {
+				Inter::Connectors::wire_plug(plug, socket);
+				LOG("Wired plug $3 to $3\n", plug, socket);
+			} else {
+				LOG("Loose plug: $3 (seeking %S)\n", plug, plug->equated_name);
+			}
+		}
+	}
 }

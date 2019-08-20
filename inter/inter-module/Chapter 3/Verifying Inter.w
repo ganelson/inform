@@ -9,8 +9,8 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 	inter_symbol *S = Inter::SymbolsTables::unequated_symbol_from_id(T, P->W.data[index]);
 	if (S == NULL) return Inter::Node::error(P, I"no symbol for ID (case 1)", NULL);
 	if (S->equated_to) {
-		LOG("This is $6 but %S equates to a symbol in $6\n",
-			Inter::Packages::container(P), S->symbol_name, Inter::Packages::container(S->equated_to->definition));
+		LOG("This is $6 but $3 equates to $3 in $6\n",
+			Inter::Packages::container(P), S, S->equated_to, Inter::Packages::container(S->equated_to->definition));
 		return Inter::Node::error(P, I"symbol defined outside its native scope", S->symbol_name);
 	}
 	inter_tree_node *D = Inter::Symbols::definition(S);

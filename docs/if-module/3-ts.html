@@ -80,6 +80,7 @@ score corresponding to successful completion and the highest rank.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INITIAL_MAX_SCORE_HL</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">max_score_VAR</span><span class="plain">)) {</span>
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">max_score_VAR</span><span class="plain">);</span>

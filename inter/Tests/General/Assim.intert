@@ -1,5 +1,6 @@
 packagetype _plain
 packagetype _code
+packagetype _linkage
 packagetype _function
 packagetype _module
 packagetype _submodule

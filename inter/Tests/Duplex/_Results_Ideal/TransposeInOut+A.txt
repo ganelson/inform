@@ -10,11 +10,11 @@ package main _plain
 	symbol public misc K_func
 	symbol public misc awkward
 	symbol public misc troublesome
-	symbol external misc secret --> /main/connectors/secret
+	symbol external misc secret --> /main/connectors/plug_00002
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	# Exported my_fn here
-	constant awkward K_number = secret
+	constant awkward K_number = plug_00002
 	constant troublesome K_number = 12
 	package connectors _linkage
-		symbol plug misc secret --? /main/my_fn/secret
+		symbol plug misc plug_00002 --? /main/my_fn/secret

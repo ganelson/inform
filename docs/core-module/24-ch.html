@@ -917,9 +917,11 @@ times".
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Chronology::chronology_extents_i6_escape</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname1</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_PAST_TENSE_CONDS_HL</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">iname1</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname1</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_tenses</span><span class="plain">);</span>
 
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname2</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_PAST_TENSE_ACTIONS_HL</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">iname2</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname2</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

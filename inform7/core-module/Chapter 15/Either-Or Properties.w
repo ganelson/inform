@@ -79,20 +79,21 @@ which are added to the model by plugins here inside Inform, but which have
 no existence at the source text level -- and hence have no names.
 
 Setting them up as adjectives may seem a little over the top, since they cannot
-be encountered in source text, but the plugins will have to set these properties
+be encountered in source text, but the world model will have to set these properties
 by asserting propositions to be true; and type-checking of those propositions
 relies on adjectival meanings.
 
 =
 property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_text(I6_form);
-	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, Hierarchy::template(), W);
-	property *prn = Properties::create(EMPTY_WORDING, Hierarchy::template(), iname);
+	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
+	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
+	property *prn = Properties::create(EMPTY_WORDING, R, iname);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
 	Properties::set_translation(prn, I6_form);
 	Properties::EitherOr::create_adjective_from_property(prn, EMPTY_WORDING, K_object);
-	prn->run_time_only = TRUE;	
+	prn->run_time_only = TRUE;
 	return prn;
 }
 

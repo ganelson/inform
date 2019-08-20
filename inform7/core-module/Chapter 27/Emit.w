@@ -124,7 +124,7 @@ inter_symbol *Emit::extern(text_stream *name, kind *K) {
 			return symb;
 		}
 	}
-	inter_symbol *symb = Inter::Connectors::plug(Emit::tree(), name, name);
+	inter_symbol *symb = Inter::Connectors::plug(Emit::tree(), name);
 	Dictionaries::create(extern_symbols, name);
 	Dictionaries::write_value(extern_symbols, name, symb);
 	return symb;
