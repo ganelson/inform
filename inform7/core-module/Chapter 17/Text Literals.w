@@ -312,7 +312,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
 
 	packaging_state save = Routines::begin(iname);
-	Emit::inv_primitive(box_interp);
+	Emit::inv_primitive(Emit::opcode(BOX_BIP));
 	Emit::down();
 		TEMPORARY_TEXT(T);
 		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));

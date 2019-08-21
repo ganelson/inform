@@ -573,7 +573,7 @@ feelings of modesty.
                 <span class="plain">(</span><span class="identifier">self_penned</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))) { </span>    <span class="comment">...didn't write this extension</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
                     <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">); </span>    <span class="comment">then we award a credit</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -587,7 +587,7 @@ feelings of modesty.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -598,9 +598,9 @@ feelings of modesty.
         <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWONEEXTENSION_HL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">id_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"id"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">id_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">ef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1));</span>
@@ -609,7 +609,7 @@ feelings of modesty.
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
                     <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>

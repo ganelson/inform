@@ -309,7 +309,7 @@ made above.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">) != </span><span class="identifier">CON_NIL</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">)) {</span>

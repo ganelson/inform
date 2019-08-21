@@ -422,11 +422,11 @@ void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_
 	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
 		bptd.called_name, PK);
 	if (Kinds::Compare::lt(K, K_object)) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(not_interp);
+			Emit::inv_primitive(Emit::opcode(NOT_BIP));
 			Emit::down();
-				Emit::inv_primitive(ofclass_interp);
+				Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, lv_s);
 					Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));

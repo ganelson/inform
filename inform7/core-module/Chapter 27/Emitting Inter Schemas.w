@@ -55,7 +55,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 		
 		text_stream *symbol_to_check = NULL;
 		text_stream *value_to_check = NULL;
-		inter_symbol *operation_to_check = NULL;
+		inter_t operation_to_check = 0;
 		if ((isn->dir_clarifier == IFDEF_I6RW) ||
 			(isn->dir_clarifier == IFNDEF_I6RW)) {
 			symbol_to_check = isn->child_node->expression_tokens->material;
@@ -92,12 +92,12 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 		else {
 			int h = Str::atoi(value_to_check, 0);
 			LOGIF(SCHEMA_COMPILATION, "Want value %d\n", h);
-			if (operation_to_check == eq_interp) decision = (val == h)?TRUE:FALSE;
-			if (operation_to_check == ne_interp) decision = (val != h)?TRUE:FALSE;
-			if (operation_to_check == ge_interp) decision = (val >= h)?TRUE:FALSE;
-			if (operation_to_check == gt_interp) decision = (val > h)?TRUE:FALSE;
-			if (operation_to_check == le_interp) decision = (val <= h)?TRUE:FALSE;
-			if (operation_to_check == lt_interp) decision = (val < h)?TRUE:FALSE;
+			if (operation_to_check == EQ_BIP) decision = (val == h)?TRUE:FALSE;
+			if (operation_to_check == NE_BIP) decision = (val != h)?TRUE:FALSE;
+			if (operation_to_check == GE_BIP) decision = (val >= h)?TRUE:FALSE;
+			if (operation_to_check == GT_BIP) decision = (val > h)?TRUE:FALSE;
+			if (operation_to_check == LE_BIP) decision = (val <= h)?TRUE:FALSE;
+			if (operation_to_check == LT_BIP) decision = (val < h)?TRUE:FALSE;
 		}
 		
 		if (isn->dir_clarifier == IFNDEF_I6RW) decision = decision?FALSE:TRUE;
@@ -228,11 +228,11 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				argc++;
 			}
 			switch (argc) {
-				case 1: Emit::inv_primitive(indirect0_interp); break;
-				case 2: Emit::inv_primitive(indirect1_interp); break;
-				case 3: Emit::inv_primitive(indirect2_interp); break;
-				case 4: Emit::inv_primitive(indirect3_interp); break;
-				case 5: Emit::inv_primitive(indirect4_interp); break;
+				case 1: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
+				case 2: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
+				case 3: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
+				case 4: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
+				case 5: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
 				default: internal_error("too many args for indirect call"); break;
 			}
 		}
@@ -250,10 +250,10 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 2: Emit::inv_primitive(message0_interp); break;
-			case 3: Emit::inv_primitive(message1_interp); break;
-			case 4: Emit::inv_primitive(message2_interp); break;
-			case 5: Emit::inv_primitive(message3_interp); break;
+			case 2: Emit::inv_primitive(Emit::opcode(MESSAGE0_BIP)); break;
+			case 3: Emit::inv_primitive(Emit::opcode(MESSAGE1_BIP)); break;
+			case 4: Emit::inv_primitive(Emit::opcode(MESSAGE2_BIP)); break;
+			case 5: Emit::inv_primitive(Emit::opcode(MESSAGE3_BIP)); break;
 			default: internal_error("too many args for message"); break;
 		}
 		Emit::down();
@@ -270,10 +270,10 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 1: Emit::inv_primitive(callmessage0_interp); break;
-			case 2: Emit::inv_primitive(callmessage1_interp); break;
-			case 3: Emit::inv_primitive(callmessage2_interp); break;
-			case 4: Emit::inv_primitive(callmessage3_interp); break;
+			case 1: Emit::inv_primitive(Emit::opcode(CALLMESSAGE0_BIP)); break;
+			case 2: Emit::inv_primitive(Emit::opcode(CALLMESSAGE1_BIP)); break;
+			case 3: Emit::inv_primitive(Emit::opcode(CALLMESSAGE2_BIP)); break;
+			case 4: Emit::inv_primitive(Emit::opcode(CALLMESSAGE3_BIP)); break;
 			default: internal_error("too many args for call-message"); break;
 		}
 		Emit::down();
@@ -293,7 +293,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 			if (at->next_node) {
 				d++;
-				Emit::inv_primitive(sequential_interp);
+				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 				Emit::down();
 			}
 			EmitInterSchemas::emit_inner(at,
@@ -306,7 +306,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 @<Operation@> =
 	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
 
-	Emit::inv_primitive(isn->isn_clarifier);
+	Emit::inv_primitive(Emit::opcode(isn->isn_clarifier));
 	Emit::down();
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
@@ -327,7 +327,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 		if (at->next_node) {
 			d++;
-			Emit::inv_primitive(sequential_interp);
+			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 			Emit::down();
 		}
 		EmitInterSchemas::emit_inner(at,
@@ -338,12 +338,12 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
-	if (isn->isn_clarifier == case_interp) Emit::to_last_level(2);
-	Emit::inv_primitive(isn->isn_clarifier);
+	if (isn->isn_clarifier == CASE_BIP) Emit::to_last_level(2);
+	Emit::inv_primitive(Emit::opcode(isn->isn_clarifier));
 	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
 	if (arity > 0) {
 		Emit::down();
-		if (isn->isn_clarifier == objectloop_interp)
+		if (isn->isn_clarifier == OBJECTLOOP_BIP)
 			@<Add the objectloop range tokens@>;
 		inter_schema_node *at = isn->child_node;
 		inter_schema_node *last = NULL;
@@ -365,7 +365,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	inter_schema_node *oc_node = isn->child_node;
 	while ((oc_node) &&
 		((oc_node->isn_type != OPERATION_ISNT) ||
-		(oc_node->isn_clarifier != ofclass_interp)))
+		(oc_node->isn_clarifier != OFCLASS_BIP)))
 		oc_node = oc_node->child_node;
 	if (oc_node) {
 		inter_schema_node *var_node = oc_node->child_node;
@@ -454,7 +454,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				break;
 			case DQUOTED_ISTT:
 				if (print_ret_me) {
-					Emit::inv_primitive(printret_interp);
+					Emit::inv_primitive(Emit::opcode(PRINTRET_BIP));
 					Emit::down();
 				}
 				Emit::val_text(t->material);

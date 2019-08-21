@@ -1029,8 +1029,8 @@ void Kinds::Dimensions::kind_rescale_multiplication_emit_op(kind *kindx, kind *k
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_X*k_Y > k_O) { Emit::inv_primitive(divide_interp); Emit::down(); }
-	if (k_X*k_Y < k_O) { Emit::inv_primitive(times_interp); Emit::down(); }
+	if (k_X*k_Y > k_O) { Emit::inv_primitive(Emit::opcode(DIVIDE_BIP)); Emit::down(); }
+	if (k_X*k_Y < k_O) { Emit::inv_primitive(Emit::opcode(TIMES_BIP)); Emit::down(); }
 }
 
 void Kinds::Dimensions::kind_rescale_multiplication_emit_factor(kind *kindx, kind *kindy) {
@@ -1070,8 +1070,8 @@ void Kinds::Dimensions::kind_rescale_division_emit_op(kind *kindx, kind *kindy) 
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_O*k_Y > k_X) { Emit::inv_primitive(times_interp); Emit::down(); }
-	if (k_O*k_Y < k_X) { Emit::inv_primitive(divide_interp); Emit::down(); }
+	if (k_O*k_Y > k_X) { Emit::inv_primitive(Emit::opcode(TIMES_BIP)); Emit::down(); }
+	if (k_O*k_Y < k_X) { Emit::inv_primitive(Emit::opcode(DIVIDE_BIP)); Emit::down(); }
 }
 
 void Kinds::Dimensions::kind_rescale_division_emit_factor(kind *kindx, kind *kindy) {
@@ -1156,8 +1156,8 @@ Therefore this scaling operating is to be performed inside the root
 function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit a scaling correction for square roots@> =
-	if (k_O*k_O > k_X) { Emit::inv_primitive(times_interp); Emit::down(); }
-	if (k_O*k_O < k_X) { Emit::inv_primitive(divide_interp); Emit::down(); }
+	if (k_O*k_O > k_X) { Emit::inv_primitive(Emit::opcode(TIMES_BIP)); Emit::down(); }
+	if (k_O*k_O < k_X) { Emit::inv_primitive(Emit::opcode(DIVIDE_BIP)); Emit::down(); }
 
 @ For cube roots,
 $$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot
@@ -1167,8 +1167,8 @@ and the overestimate is $k = {}^3\sqrt{k_X}/k_O$. Scaling once again within
 the rooting function, we scale by $k^3$:
 
 @<Emit a scaling correction for cube roots@> =
-	if (k_O*k_O*k_O > k_X) { Emit::inv_primitive(times_interp); Emit::down(); }
-	if (k_O*k_O*k_O < k_X) { Emit::inv_primitive(divide_interp); Emit::down(); }
+	if (k_O*k_O*k_O > k_X) { Emit::inv_primitive(Emit::opcode(TIMES_BIP)); Emit::down(); }
+	if (k_O*k_O*k_O < k_X) { Emit::inv_primitive(Emit::opcode(DIVIDE_BIP)); Emit::down(); }
 
 @ =
 #ifdef CORE_MODULE

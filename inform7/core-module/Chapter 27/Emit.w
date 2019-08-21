@@ -14,6 +14,10 @@ inter_tree *Emit::tree(void) {
 	return Inter::Bookmarks::tree(Packaging::at());
 }
 
+inter_symbol *Emit::opcode(inter_t bip) {
+	return Primitives::get(Emit::tree(), bip);
+}
+
 inter_t Emit::baseline(inter_bookmark *IBM) {
 	if (IBM == NULL) return 0;
 	if (Inter::Bookmarks::package(IBM) == NULL) return 0;
@@ -770,7 +774,7 @@ inter_package *Emit::block(packaging_state *save, inter_name *iname) {
 		block_iname = Hierarchy::make_block_iname(InterNames::location(iname));
 	else internal_error("routine outside function package");
 	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at());
-	current_inter_routine = Emit::package(block_iname, code_packagetype);
+	current_inter_routine = Emit::package(block_iname, PackageTypes::get(I"_code"));
 
 	current_inter_bookmark = Emit::bookmark();
 
@@ -852,13 +856,14 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 
 void Emit::inv_primitive(inter_symbol *prim_symb) {
 	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	if ((prim_symb == switch_interp) ||
-		(prim_symb == if_interp) ||
-		(prim_symb == ifelse_interp) ||
-		(prim_symb == for_interp) ||
-		(prim_symb == while_interp) ||
-		(prim_symb == do_interp) ||
-		(prim_symb == objectloop_interp)) Emit::note_level(prim_symb);
+	inter_t bip = Primitives::to_bip(Emit::tree(), prim_symb);
+	if ((bip == SWITCH_BIP) ||
+		(bip == IF_BIP) ||
+		(bip == IFELSE_BIP) ||
+		(bip == FOR_BIP) ||
+		(bip == WHILE_BIP) ||
+		(bip == DO_BIP) ||
+		(bip == OBJECTLOOP_BIP)) Emit::note_level(prim_symb);
 
 	Emit::guard(Inter::Inv::new_primitive(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
 }
@@ -876,11 +881,11 @@ void Emit::inv_call_iname(inter_name *iname) {
 
 void Emit::inv_indirect_call(int arity) {
 	switch (arity) {
-		case 0: Emit::inv_primitive(indirect0_interp); break;
-		case 1: Emit::inv_primitive(indirect1_interp); break;
-		case 2: Emit::inv_primitive(indirect2_interp); break;
-		case 3: Emit::inv_primitive(indirect3_interp); break;
-		case 4: Emit::inv_primitive(indirect4_interp); break;
+		case 0: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
+		case 1: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
+		case 2: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
+		case 3: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
+		case 4: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
 }
@@ -894,35 +899,35 @@ void Emit::inv_assembly(text_stream *opcode) {
 }
 
 void Emit::return(kind *K, inter_name *iname) {
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 	Emit::val_iname(K, iname);
 	Emit::up();
 }
 
 void Emit::rtrue(void) {
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 1); /* that is, return "true" */
 	Emit::up();
 }
 
 void Emit::rfalse(void) {
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 0); /* that is, return "false" */
 	Emit::up();
 }
 
 void Emit::push(kind *K, inter_name *iname) {
-	Emit::inv_primitive(push_interp);
+	Emit::inv_primitive(Emit::opcode(PUSH_BIP));
 	Emit::down();
 	Emit::val_iname(K, iname);
 	Emit::up();
 }
 
 void Emit::pull(kind *K, inter_name *iname) {
-	Emit::inv_primitive(pull_interp);
+	Emit::inv_primitive(Emit::opcode(PULL_BIP));
 	Emit::down();
 	Emit::ref_iname(K, iname);
 	Emit::up();

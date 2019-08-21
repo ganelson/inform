@@ -649,9 +649,9 @@ capitalising and fixing "your" as needed.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;capped</span><span class="plain">) {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">porname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINTORRUN_HL</span><span class="plain">);</span>
 
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyaddress_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PROPERTYADDRESS_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CAPSHORTNAME_HL</span><span class="plain">));</span>
@@ -676,12 +676,12 @@ capitalising and fixing "your" as needed.
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printname_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTNAME_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"'s "</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -690,7 +690,7 @@ capitalising and fixing "your" as needed.
                 <span class="identifier">CompiledText::from_wide_string</span><span class="plain">(</span><span class="identifier">SNAMES</span><span class="plain">, </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">), 0);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">NA</span><span class="plain">)) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SNAMES</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">SNAMES</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

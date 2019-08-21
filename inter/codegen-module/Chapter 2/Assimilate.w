@@ -135,7 +135,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	text_stream *submodule_name = NULL;
 	text_stream *suffix = NULL;
-	inter_symbol *subpackage_type = plain_packagetype;
+	inter_symbol *subpackage_type = plain_ptype_symbol;
 
 	switch (plm) {
 		case VERB_PLM:
@@ -383,7 +383,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_bookmark *IBM = &IBM_d;
 
 	inter_symbol *fnt = function_ptype_symbol;
-	if (fnt == NULL) fnt = plain_packagetype;
+	if (fnt == NULL) fnt = plain_ptype_symbol;
 
 	TEMPORARY_TEXT(fname);
 	WRITE_TO(fname, "%S_fn", identifier);
@@ -395,7 +395,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	TEMPORARY_TEXT(bname);
 	WRITE_TO(bname, "%S_B", identifier);
-	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, code_packagetype);
+	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, code_ptype_symbol);
 	DISCARD_TEXT(bname);
 
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
@@ -464,7 +464,7 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
 		inter_symbol *ptype = action_ptype_symbol;
-		if (ptype == NULL) ptype = plain_packagetype;
+		if (ptype == NULL) ptype = plain_ptype_symbol;
 		TEMPORARY_TEXT(an);
 		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
 		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
@@ -635,11 +635,11 @@ inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, inter_packa
 		return CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node);
 	if (isn->isn_type == OPERATION_ISNT) {
 		inter_t op = 0;
-		if (isn->isn_clarifier == plus_interp) op = CONSTANT_SUM_LIST;
-		else if (isn->isn_clarifier == times_interp) op = CONSTANT_PRODUCT_LIST;
-		else if (isn->isn_clarifier == minus_interp) op = CONSTANT_DIFFERENCE_LIST;
-		else if (isn->isn_clarifier == divide_interp) op = CONSTANT_QUOTIENT_LIST;
-		else if (isn->isn_clarifier == unaryminus_interp)
+		if (isn->isn_clarifier == PLUS_BIP) op = CONSTANT_SUM_LIST;
+		else if (isn->isn_clarifier == TIMES_BIP) op = CONSTANT_PRODUCT_LIST;
+		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
+		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONSTANT_QUOTIENT_LIST;
+		else if (isn->isn_clarifier == UNARYMINUS_BIP)
 			return CodeGen::Assimilate::compute_constant_unary_operation(I, pack, IBM, isn->child_node);
 		else return NULL;
 		inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node);

@@ -46,10 +46,6 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	return IC;
 }
 
-inter_symbol *plain_packagetype = NULL;
-inter_symbol *code_packagetype = NULL;
-inter_symbol *linkage_packagetype = NULL;
-
 @
 
 @e CONSTRUCT_READ_MTID

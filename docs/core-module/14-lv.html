@@ -575,7 +575,7 @@ object as produced the original text containing the substitution.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">record_as_self_ANNOT</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">);</span>

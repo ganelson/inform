@@ -361,16 +361,16 @@ the following.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Emit::emit_has_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::implemented_as_attribute</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::stored_in_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">HAS_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">has_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">HAS_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
@@ -378,9 +378,9 @@ the following.
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::stored_in_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PROPERTYVALUE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)));</span>
@@ -388,9 +388,9 @@ the following.
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PROPERTYVALUE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>

@@ -582,16 +582,16 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 }
 
 @<Add the scene-change tail@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(gt_interp);
+		Emit::inv_primitive(Emit::opcode(GT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, chs_s);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) MAX_SCENE_CHANGE_ITERATION);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(I">--> The scene change machinery is stuck.\n");
 			Emit::up();
@@ -599,9 +599,9 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(gt_interp);
+		Emit::inv_primitive(Emit::opcode(GT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, ch_s);
 			Emit::val(K_number, LITERAL_IVAL, 0);
@@ -610,7 +610,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 		Emit::down();
 			Emit::inv_call_iname(iname);
 			Emit::down();
-				Emit::inv_primitive(preincrement_interp);
+				Emit::inv_primitive(Emit::opcode(PREINCREMENT_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, chs_s);
 				Emit::up();
@@ -626,11 +626,11 @@ beginning, checked only if it isn't. We give priority to the higher end
 numbers so that more abstruse ways to end take precedence over less.
 
 @<Compile code detecting the ends of a specific scene@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -644,11 +644,11 @@ numbers so that more abstruse ways to end take precedence over less.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -670,13 +670,13 @@ below.
 =
 void PL::Scenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_symbol *CScene_l) {
 	if ((end == 0) && (sc->start_of_play)) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(bitwiseand_interp);
+				Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 				Emit::down();
-					Emit::inv_primitive(lookup_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 					Emit::down();
 						Emit::val_iname(K_object, Hierarchy::find(SCENE_ENDINGS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -721,19 +721,19 @@ through scenes by jumping past the run of tests. (We can't compile a break
 instruction because we're not compiling a loop.)
 
 @<Compile code to test the scene end condition@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		current_sentence = sc->anchor_condition_set[end];
 		Specifications::Compiler::emit_as_val(K_truth_state, S);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, ch_s);
 				Emit::val(K_number, LITERAL_IVAL, 1);
 			Emit::up();
 			PL::Scenes::compile_scene_end(sc, end);
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(CScene_l);
 			Emit::up();
@@ -795,9 +795,9 @@ end actually occurred.)
 
 @<Compile code to update the scene status@> =
 	if (end == 0) {
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookupref_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -805,7 +805,7 @@ end actually occurred.)
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(ifelse_interp);
+		Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 		Emit::down();
 			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 			Emit::inv_call_iname(iname);
@@ -816,9 +816,9 @@ end actually occurred.)
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
-					Emit::inv_primitive(lookupref_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -828,9 +828,9 @@ end actually occurred.)
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
-					Emit::inv_primitive(lookupref_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -864,9 +864,9 @@ end actually occurred.)
 @<Compile code to update the arrays recording most recent scene ending@> =
 	inter_name *sarr = Hierarchy::find(SCENE_ENDED_HL);
 	if (end == 0) sarr = Hierarchy::find(SCENE_STARTED_HL);
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
-		Emit::inv_primitive(lookupref_interp);
+		Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, sarr);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -874,16 +874,16 @@ end actually occurred.)
 		Emit::val_iname(K_number, Hierarchy::find(THE_TIME_HL));
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
-		Emit::inv_primitive(lookupref_interp);
+		Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
 		Emit::up();
-		Emit::inv_primitive(bitwiseor_interp);
+		Emit::inv_primitive(Emit::opcode(BITWISEOR_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(SCENE_ENDINGS_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -892,9 +892,9 @@ end actually occurred.)
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
-		Emit::inv_primitive(lookupref_interp);
+		Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -903,7 +903,7 @@ end actually occurred.)
 	Emit::up();
 
 @<Compile code to print text in response to the SCENES command@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(DEBUG_SCENES_HL));
 		Emit::code();
@@ -915,7 +915,7 @@ end actually occurred.)
 			if (end == 0) WRITE("begins"); else WRITE("ends");
 			if (end >= 2) WRITE(" %+W", sc->end_names[end]);
 			WRITE("]\n");
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(OUT);
 			Emit::up();
@@ -945,11 +945,11 @@ This is allowed; it's a case where the "tolerance" below is raised.
 				scene_connector *scon;
 				for (scon = other_scene->anchor_scene[other_end]; scon; scon = scon->next) {
 					if ((scon->connect_to == sc) && (scon->end == end)) {
-						Emit::inv_primitive(if_interp);
+						Emit::inv_primitive(Emit::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(eq_interp);
+							Emit::inv_primitive(Emit::opcode(EQ_BIP));
 							Emit::down();
-								Emit::inv_primitive(lookup_interp);
+								Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 								Emit::down();
 									Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 									Emit::val(K_number, LITERAL_IVAL, (inter_t) other_scene->allocation_id);
@@ -979,7 +979,7 @@ what handles this.
 =
 void PL::Scenes::ShowSceneStatus_routine(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(SHOWSCENESTATUS_HL));
-	Emit::inv_primitive(ifdebug_interp);
+	Emit::inv_primitive(Emit::opcode(IFDEBUG_BIP));
 	Emit::down();
 		Emit::code();
 		Emit::down();
@@ -987,11 +987,11 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			LOOP_OVER(sc, scene) {
 				wording NW = Instances::get_name(sc->as_instance, FALSE);
 
-				Emit::inv_primitive(ifelse_interp);
+				Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 				Emit::down();
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
-						Emit::inv_primitive(lookup_interp);
+						Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 						Emit::down();
 							Emit::val_iname(K_object, Hierarchy::find(SCENE_STATUS_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -1016,18 +1016,18 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 @<Show status of this running scene@> =
 	TEMPORARY_TEXT(T);
 	WRITE_TO(T, "Scene '%+W' playing (for ", NW);
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(T);
 	Emit::up();
 	DISCARD_TEXT(T);
 
-	Emit::inv_primitive(printnumber_interp);
+	Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 	Emit::down();
-		Emit::inv_primitive(minus_interp);
+		Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 		Emit::down();
 			Emit::val_iname(K_number, Hierarchy::find(THE_TIME_HL));
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SCENE_STARTED_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -1035,17 +1035,17 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(I" mins now)\n");
 	Emit::up();
 
 @<Show status of this non-running scene@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(gt_interp);
+		Emit::inv_primitive(Emit::opcode(GT_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -1061,16 +1061,16 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 @<Show status of this recently ended scene@> =
 	TEMPORARY_TEXT(T);
 	WRITE_TO(T, "Scene '%+W' ended", NW);
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(T);
 	Emit::up();
 	DISCARD_TEXT(T);
 
 	if (sc->no_ends > 2) {
-		Emit::inv_primitive(switch_interp);
+		Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
@@ -1078,14 +1078,14 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			Emit::code();
 			Emit::down();
 				for (int end=2; end<sc->no_ends; end++) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) end);
 						Emit::code();
 						Emit::down();
 							TEMPORARY_TEXT(T);
 							WRITE_TO(T, " %+W", sc->end_names[end]);
-							Emit::inv_primitive(print_interp);
+							Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 							Emit::down();
 								Emit::val_text(T);
 							Emit::up();
@@ -1097,7 +1097,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 		Emit::up();
 	}
 
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(I"\n");
 	Emit::up();
@@ -1136,9 +1136,9 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 		instance *I = Rvalues::to_instance(spec);
 		if (Instances::of_kind(I, K_scene)) {
 			scene *sc = PL::Scenes::from_named_constant(I);
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(SCENE_STATUS_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);

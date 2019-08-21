@@ -357,7 +357,7 @@ object as produced the original text containing the substitution.
 
 @<Emit the property's owner@> =
 	if (ParseTree::int_annotation(spec_found, record_as_self_ANNOT)) {
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 			Specifications::Compiler::emit_as_val(K_value, owner);

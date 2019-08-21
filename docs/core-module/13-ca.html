@@ -125,7 +125,7 @@ and the other operand is promoted from integer to real if necessary.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
@@ -154,7 +154,7 @@ and the other operand is promoted from integer to real if necessary.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">minus_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">MINUS_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
@@ -184,7 +184,7 @@ and the other operand is promoted from integer to real if necessary.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">times_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
@@ -342,7 +342,7 @@ and the other operand is promoted from integer to real if necessary.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::reference</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -370,7 +370,7 @@ and the other operand is promoted from integer to real if necessary.
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">unaryminus_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">UNARYMINUS_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -411,7 +411,7 @@ always be small, partly because of the need for scaling to come out right.
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                     <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KX</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">times_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
@@ -435,7 +435,7 @@ always be small, partly because of the need for scaling to come out right.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
@@ -443,7 +443,7 @@ always be small, partly because of the need for scaling to come out right.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>

@@ -79,9 +79,9 @@ storage: the following simple structures are used for this.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">too_late_for_past_tenses</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too late for a PAP"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">op</span><span class="plain"> = </span><span class="string">"=="</span><span class="plain">;</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect0_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT0_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pta_routine</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -89,29 +89,29 @@ storage: the following simple structures are used for this.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">length</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> &lt; 0) </span><span class="identifier">L</span><span class="plain"> = 0;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">until</span><span class="plain"> &gt;= 0) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">units</span><span class="plain"> == </span><span class="identifier">TIMES_UNIT</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">le_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">L</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TIMESACTIONHASHAPPENED_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">until</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TIMESACTIONHASHAPPENED_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUPBYTE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ACTIONCURRENTLYHAPPENINGFLAG_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
@@ -119,21 +119,21 @@ storage: the following simple structures are used for this.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">le_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">L</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TURNSACTIONHASBEENHAPPENING_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">until</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TURNSACTIONHASBEENHAPPENING_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
@@ -143,18 +143,18 @@ storage: the following simple structures are used for this.
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">units</span><span class="plain"> == </span><span class="identifier">TIMES_UNIT</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Emit the op</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TIMESACTIONHASHAPPENED_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">L</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupbyte_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUPBYTE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ACTIONCURRENTLYHAPPENINGFLAG_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
@@ -163,7 +163,7 @@ storage: the following simple structures are used for this.
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 &lt;<span class="cwebmacro">Emit the op</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TURNSACTIONHASBEENHAPPENING_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">no_past_actions</span><span class="plain">);</span>
@@ -195,12 +195,12 @@ storage: the following simple structures are used for this.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"~="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;"</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lt_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">le_interp</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"~="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GE_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;"</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LT_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;="</span><span class="plain">) == 0) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LE_BIP</span><span class="plain">));</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't find operator"</span><span class="plain">);</span>
 </pre>
 
@@ -366,7 +366,7 @@ ever tampered with.
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;where_pta_tested</span><span class="plain">; </span>    <span class="comment">ensure problems reported correctly</span>
             <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;pta_iname</span><span class="plain">);</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Chronology::ap_compile_forced_to_present</span><span class="plain">(</span><span class="identifier">pta</span><span class="plain">-</span><span class="element">&gt;historic_action</span><span class="plain">);</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -427,7 +427,7 @@ ever tampered with.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">consecutives_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"consecutives"</span><span class="plain">);</span>
         <span class="functiontext">Frames::determines_the_past</span><span class="plain">();</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">past_flag_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -459,12 +459,12 @@ ever tampered with.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PAST_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -472,14 +472,14 @@ ever tampered with.
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">divide_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DIVIDE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PAST_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -489,14 +489,14 @@ ever tampered with.
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">divide_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DIVIDE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PAST_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -518,12 +518,12 @@ ever tampered with.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">old_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRESENT_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -531,14 +531,14 @@ ever tampered with.
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">divide_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DIVIDE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRESENT_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -548,14 +548,14 @@ ever tampered with.
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">divide_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DIVIDE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">bitwiseand_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRESENT_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
@@ -577,24 +577,24 @@ ever tampered with.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupref_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRESENT_CHRONOLOGICAL_RECORD_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">times_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0</span><span class="identifier">x02</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">times_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0</span><span class="identifier">x100</span><span class="plain">);</span>
@@ -614,14 +614,14 @@ ever tampered with.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ptc</span><span class="plain">, </span><span class="reserved">past_tense_condition_record</span><span class="plain">) {</span>
                     <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ptc</span><span class="plain">-</span><span class="element">&gt;where_ptc_tested</span><span class="plain">; </span>    <span class="comment">ensure problems reported correctly</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">ptc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -644,15 +644,15 @@ ever tampered with.
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"*** No such past tense condition ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -662,34 +662,34 @@ ever tampered with.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">old_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 127);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 127);</span>
@@ -699,25 +699,25 @@ ever tampered with.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">turn_end_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 127);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 127);</span>
@@ -730,7 +730,7 @@ ever tampered with.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -767,7 +767,7 @@ a file stream, thus allowing rewinding:
                     <span class="string">"quantity in question, but at a different time from when "</span>
                     <span class="string">"it would be needed."</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
@@ -776,7 +776,7 @@ a file stream, thus allowing rewinding:
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Picked up past $A\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ptc</span><span class="plain">-</span><span class="element">&gt;ap_to_test</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                 <span class="identifier">PL::Actions::Patterns::emit_past_tense</span><span class="plain">(</span><span class="identifier">ptc</span><span class="plain">-</span><span class="element">&gt;ap_to_test</span><span class="plain">);</span>
@@ -795,22 +795,22 @@ a file stream, thus allowing rewinding:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">wanted_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -818,17 +818,17 @@ a file stream, thus allowing rewinding:
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -836,19 +836,19 @@ a file stream, thus allowing rewinding:
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">plus_interp</span><span class="plain">); </span>    <span class="comment">Plus one because we count the current turn</span>
+                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">)); </span>    <span class="comment">Plus one because we count the current turn</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -858,34 +858,34 @@ a file stream, thus allowing rewinding:
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 4);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">new_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 5);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">trips_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 6);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">consecutives_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -894,7 +894,7 @@ a file stream, thus allowing rewinding:
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>

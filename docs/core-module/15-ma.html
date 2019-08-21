@@ -644,7 +644,7 @@ can't normally be unravelled at compile time.
                     <span class="functiontext">Calculus::Propositions::Checker::tc_problem_reporting</span><span class="plain">(</span>
                         <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">,</span>
                         <span class="string">"be giving the boundary of the definition"</span><span class="plain">)) == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Calculus::Deferrals::emit_test_of_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>

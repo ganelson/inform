@@ -1474,22 +1474,22 @@ why we don't need to compile <code class="display"><span class="extract">door_to
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_LOCATION_HL</span><span class="plain">));</span>
@@ -1497,16 +1497,16 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">,</span>
                             <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D1</span><span class="plain">)));</span>
@@ -1514,7 +1514,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">,</span>
                     <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D2</span><span class="plain">)));</span>
@@ -1530,22 +1530,22 @@ why we don't need to compile <code class="display"><span class="extract">door_to
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">THEDARK_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_LOCATION_HL</span><span class="plain">));</span>
@@ -1553,23 +1553,23 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R2</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

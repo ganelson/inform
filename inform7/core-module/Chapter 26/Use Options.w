@@ -518,9 +518,9 @@ void UseOptions::TestUseOption_routine(void) {
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, UO_s);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
@@ -538,19 +538,19 @@ void UseOptions::TestUseOption_routine(void) {
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, UO_s);
 		Emit::code();
 		Emit::down();
 			use_option *uo;
 			LOOP_OVER(uo, use_option) {
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(print_interp);
+						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 						Emit::down();
 							TEMPORARY_TEXT(N);
 							WRITE_TO(N, "%W option", uo->name);

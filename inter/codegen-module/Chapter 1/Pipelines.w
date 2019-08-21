@@ -250,8 +250,9 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 				S->repositories[step->repository_argument] = Inter::Tree::new();
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
-			CodeGen::Pipeline::lint(I);
 			CodeGen::Pipeline::prepare_to_run(I);
+LOG("So sra is %d\n", step->repository_argument);
+			CodeGen::Pipeline::lint(I);
 
 			CodeGen::Pipeline::clean_step(step);
 			step->the_N = N;
@@ -344,6 +345,8 @@ inter_symbol *verb_directive_creature_symbol = NULL;
 inter_symbol *verb_directive_topic_symbol = NULL;
 inter_symbol *verb_directive_multiexcept_symbol = NULL;
 
+inter_symbol *code_ptype_symbol = NULL;
+inter_symbol *plain_ptype_symbol = NULL;
 inter_symbol *submodule_ptype_symbol = NULL;
 inter_symbol *function_ptype_symbol = NULL;
 inter_symbol *action_ptype_symbol = NULL;
@@ -355,6 +358,8 @@ inter_package *template_package = NULL;
 
 void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 
+	code_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_code");
+	plain_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_plain");
 	submodule_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
 	function_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
 	action_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
@@ -390,6 +395,7 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_tree *I) {
+LOG("LINT I%d\n", I->allocation_id);
 	Inter::Tree::traverse(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 

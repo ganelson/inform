@@ -334,7 +334,7 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test head@>;
 
 	if ((tests > 0) || (ph->compile_with_run_time_debugging)) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
 			Emit::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
 			Emit::code();
@@ -377,7 +377,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Scene test.
 
 @<Compile a scene test head@> =
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		PL::Scenes::emit_during_clause(phrcd->during_scene);
 		Emit::code();
@@ -392,7 +392,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Action test.
 
 @<Compile an action test head@> =
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		if (phrcd->never_test_actor)
 			PL::Actions::Patterns::emit_pattern_match(phrcd->ap, TRUE);
@@ -403,7 +403,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 
 	tests++;
 	if (PL::Actions::Patterns::object_based(&(phrcd->ap))) {
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_object, Hierarchy::find(SELF_HL));
 				Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
@@ -417,9 +417,9 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Actor-is-player test.
 
 @<Compile an actor-is-player test head@> =
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 			Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
@@ -436,7 +436,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Activity-or-condition test.
 
 @<Compile an activity or explicit condition test head@> =
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		activity_list *avl = phrcd->avl;
 		if (avl) {
@@ -461,9 +461,9 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(gt_interp);
+				Emit::inv_primitive(Emit::opcode(GT_BIP));
 				Emit::down();
 					Emit::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
 					Emit::val(K_number, LITERAL_IVAL, 1);

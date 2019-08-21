@@ -264,10 +264,10 @@ int Rules::compile_constraint(applicability_condition *acl) {
 	for (; acl; acl = acl->next_applicability_condition) {
 		current_sentence = acl->where_imposed;
 		if (Wordings::nonempty(acl->text_of_condition)) {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 			if (acl->sense_of_applicability) {
-				Emit::inv_primitive(not_interp);
+				Emit::inv_primitive(Emit::opcode(NOT_BIP));
 				Emit::down();
 			}
 			@<Compile the constraint condition@>;
@@ -312,7 +312,7 @@ int Rules::compile_constraint(applicability_condition *acl) {
 failing; so it doesn't terminate the following of its rulebook.
 
 @<Compile the rule termination code used if the constraint was violated@> =
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 	if (acl->substituted_rule) {
 		inter_name *subbed = Rules::iname(acl->substituted_rule);
@@ -538,16 +538,16 @@ inter_name *Rules::RulePrintingRule(void) {
 void Rules::RulePrintingRule_routine(void) {
 	packaging_state save = Routines::begin(Rules::RulePrintingRule());
 	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(ge_interp);
+			Emit::inv_primitive(Emit::opcode(GE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Emit::inv_primitive(lt_interp);
+			Emit::inv_primitive(Emit::opcode(LT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
 				Emit::val_iname(K_value, Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL));
@@ -567,22 +567,22 @@ void Rules::RulePrintingRule_routine(void) {
 
 @<Print a rulebook name@> =
 	if (memory_economy_in_force) {
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I"(rulebook ");
 		Emit::up();
-		Emit::inv_primitive(printnumber_interp);
+		Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, R_s);
 		Emit::up();
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I")");
 		Emit::up();
 	} else {
-		Emit::inv_primitive(printstring_interp);
+		Emit::inv_primitive(Emit::opcode(PRINTSTRING_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(RULEBOOKNAMES_HL));
 				Emit::val_symbol(K_value, R_s);
@@ -592,15 +592,15 @@ void Rules::RulePrintingRule_routine(void) {
 
 @<Print a rule name@> =
 	if (memory_economy_in_force) {
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I"(rule at address ");
 		Emit::up();
-		Emit::inv_primitive(printnumber_interp);
+		Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, R_s);
 		Emit::up();
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I")");
 		Emit::up();
@@ -612,9 +612,9 @@ void Rules::RulePrintingRule_routine(void) {
 					(R->defn_as_phrase->declaration_node == NULL) ||
 					(R->defn_as_phrase->declaration_node->down == NULL)))
 					continue;
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, R_s);
 					Emit::val_iname(K_value, Rules::iname(R));
@@ -623,7 +623,7 @@ void Rules::RulePrintingRule_routine(void) {
 				Emit::down();
 					TEMPORARY_TEXT(OUT);
 					@<Print a textual name for this rule@>;
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(OUT);
 					Emit::up();
@@ -631,15 +631,15 @@ void Rules::RulePrintingRule_routine(void) {
 				Emit::up();
 			Emit::up();
 		}
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I"(nameless rule at address ");
 		Emit::up();
-		Emit::inv_primitive(printnumber_interp);
+		Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, R_s);
 		Emit::up();
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I")");
 		Emit::up();
@@ -706,7 +706,7 @@ as the definition of the rule in future.
 	inter_name *shell_iname = Rules::shell_iname(R);
 	packaging_state save = Routines::begin(shell_iname);
 	if (Rules::compile_constraint(R->first_applicability_condition) == FALSE) {
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 		Emit::inv_call_iname(R->rule_extern_iname);
 		Emit::up();

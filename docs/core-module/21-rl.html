@@ -392,10 +392,10 @@ conditions have not been met.
         <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">acl</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">) {</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;sense_of_applicability</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 &lt;<span class="cwebmacro">Compile the constraint condition</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
@@ -462,7 +462,7 @@ failing; so it doesn't terminate the following of its rulebook.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">subbed</span><span class="plain"> = </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">);</span>
@@ -760,16 +760,16 @@ do.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">());</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ge_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lt_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_RULEBOOKS_CREATED_HL</span><span class="plain">));</span>
@@ -801,22 +801,22 @@ do.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(rulebook "</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printnumber_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTNUMBER_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">")"</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printstring_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTSTRING_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKNAMES_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
@@ -836,15 +836,15 @@ do.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(rule at address "</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printnumber_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTNUMBER_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">")"</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -856,9 +856,9 @@ do.
                         <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
                         <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)))</span>
                         <span class="reserved">continue</span><span class="plain">;</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
@@ -867,7 +867,7 @@ do.
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                         &lt;<span class="cwebmacro">Print a textual name for this rule</span> <span class="cwebmacronumber">20.2.1</span>&gt;<span class="plain">;</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -875,15 +875,15 @@ do.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(nameless rule at address "</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">printnumber_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTNUMBER_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">")"</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -992,7 +992,7 @@ as the definition of the rule in future.
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">shell_iname</span><span class="plain"> = </span><span class="functiontext">Rules::shell_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">shell_iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>

@@ -458,17 +458,17 @@ table values and prints the (title-cased) name of the one which matches.
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">T_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"T"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">T_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">THEEMPTYTABLE_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(the empty table)"</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -478,12 +478,12 @@ table values and prints the (title-cased) name of the one which matches.
 
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">, </span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
                             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;headline_fragment</span><span class="plain">));</span>
@@ -495,11 +495,11 @@ table values and prints the (title-cased) name of the one which matches.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
 
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"** No such table **"</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>

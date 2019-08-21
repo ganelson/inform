@@ -821,14 +821,14 @@ than once for each rule.
 				p_s = LocalVariables::add_internal_local_c_as_symbol(I"p", "rulebook parameter");
 
 			if (countup > 1) {
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, original_deadflag_s);
 					Emit::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
 				Emit::up();
 			}
 			if (parameter_based) {
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, p_s);
 					Emit::val_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
@@ -851,9 +851,9 @@ than once for each rule.
 		case ROUTINE_RBF:
 			#ifdef IF_MODULE
 			if (an) {
-				Emit::inv_primitive(ifelse_interp);
+				Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 				Emit::down();
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(ACTION_HL));
 						Emit::val_iname(K_value, PL::Actions::double_sharp(an));
@@ -875,16 +875,16 @@ than once for each rule.
 			break;
 		case ROUTINE_RBF:
 			if (entry_count > 0) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(ne_interp);
+					Emit::inv_primitive(Emit::opcode(NE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, original_deadflag_s);
 						Emit::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(return_interp);
+						Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 						Emit::down();
 							Emit::val(K_number, LITERAL_IVAL, 0);
 						Emit::up();
@@ -893,52 +893,52 @@ than once for each rule.
 			}
 			@<Compile an optional mid-rulebook paragraph break@>;
 			if (parameter_based) {
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
 					Emit::val_symbol(K_value, p_s);
 				Emit::up();
 			}
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, rv_s);
-				Emit::inv_primitive(indirect0_interp);
+				Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP));
 				Emit::down();
 					Specifications::Compiler::emit_as_val(K_value, spec);
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, rv_s);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(eq_interp);
+						Emit::inv_primitive(Emit::opcode(EQ_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, rv_s);
 							Emit::val(K_number, LITERAL_IVAL, 2);
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(return_interp);
+							Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 							Emit::down();
 								Emit::val_iname(K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
 							Emit::up();
 						Emit::up();
 					Emit::up();
 
-					Emit::inv_primitive(return_interp);
+					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 					Emit::down();
 						Specifications::Compiler::emit_as_val(K_value, spec);
 					Emit::up();
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookupref_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
 					Emit::val(K_number, LITERAL_IVAL, 0);
@@ -971,7 +971,7 @@ than once for each rule.
 			Emit::array_end(save_array);
 			break;
 		case ROUTINE_RBF:
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
@@ -981,7 +981,7 @@ than once for each rule.
 
 @<Compile an optional mid-rulebook paragraph break@> =
 	if (entry_count > 0) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
 			Emit::val_iname(K_number, Hierarchy::find(SAY__P_HL));
 			Emit::code();

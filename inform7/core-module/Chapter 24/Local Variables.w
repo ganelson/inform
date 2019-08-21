@@ -650,11 +650,11 @@ int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 	inter_t j = 0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
 		NC++;
-		Emit::inv_primitive(sequential_interp);
+		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookupref_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(LOCALPARKING_HL));
 					Emit::val(K_number, LITERAL_IVAL, j++);
@@ -674,10 +674,10 @@ void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
 	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
 	inter_t j=0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, LocalVariables::declare_this(lvar, FALSE, 1));
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, LP);
 				Emit::val(K_number, LITERAL_IVAL, j++);
@@ -1008,7 +1008,7 @@ void LocalVariables::add_calling_to_condition(local_variable *lvar) {
 
 void LocalVariables::begin_condition_emit(void) {
 	current_session_number++;
-	Emit::inv_primitive(or_interp);
+	Emit::inv_primitive(Emit::opcode(OR_BIP));
 	Emit::down();
 }
 
@@ -1025,15 +1025,15 @@ void LocalVariables::end_condition_emit(void) {
 	if (NC == 0) {
 		Emit::val(K_truth_state, LITERAL_IVAL, 0);
 	} else {
-		Emit::inv_primitive(sequential_interp);
+		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 		Emit::down(); downs++;
 		int NM = 0, inner_downs = 0;;
 		while ((callings_in_condition_sp > 0) &&
 			(callings_session_number[callings_in_condition_sp-1] == current_session_number)) {
 			NM++;
 			local_variable *lvar = callings_in_condition[callings_in_condition_sp-1];
-			if (NM < NC) { Emit::inv_primitive(sequential_interp); Emit::down(); inner_downs++; }
-			Emit::inv_primitive(store_interp);
+			if (NM < NC) { Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP)); Emit::down(); inner_downs++; }
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Emit::ref_symbol(K_value, lvar_s);

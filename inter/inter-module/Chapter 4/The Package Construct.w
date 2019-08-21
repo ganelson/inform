@@ -81,8 +81,9 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_strea
 	Inter::Bookmarks::insert(IBM, P);
 
 	Inter::Packages::set_name(Inter::Bookmarks::package(IBM), pack, name_text);
-	if (ptype_name == code_packagetype) Inter::Packages::make_codelike(pack);
-	if ((linkage_packagetype) && (ptype_name == linkage_packagetype))
+	if (Str::eq(ptype_name->symbol_name, I"_code"))
+		Inter::Packages::make_codelike(pack);
+	if (Str::eq(ptype_name->symbol_name, I"_linkage"))
 		Inter::Packages::make_linklike(pack);
 
 	if (created) *created = pack;
@@ -163,7 +164,7 @@ inter_symbols_table *Inter::Package::local_symbols(inter_symbol *package_name) {
 
 void Inter::Package::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *ptype_name = Inter::SymbolsTables::global_symbol_from_frame_data(P, PTYPE_PACKAGE_IFLD);
-	if (ptype_name == code_packagetype) {
+	if (Str::eq(ptype_name->symbol_name, I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C->W.data[0] != LABEL_IST) && (C->W.data[0] != LOCAL_IST) && (C->W.data[0] != SYMBOL_IST)) {
 				*E = Inter::Node::error(C, I"only a local or a symbol can be at the top level", NULL);

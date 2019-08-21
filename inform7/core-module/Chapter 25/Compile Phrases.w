@@ -101,7 +101,7 @@ routine is a property value, |true| otherwise. That convention is unhelpful
 to us, so we end our routine with code which certainly performs a return.
 
 @<Compile a terminal return statement@> =
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 	kind *K = Frames::get_kind_returned();
 	if (K) {
@@ -199,7 +199,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 			}
 		}
 	}
-	Emit::inv_primitive(store_interp); /* warn the paragraph breaker: this will print */
+	Emit::inv_primitive(Emit::opcode(STORE_BIP)); /* warn the paragraph breaker: this will print */
 	Emit::down();
 		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
@@ -331,8 +331,8 @@ henceforth to be true, so we simply compile empty code in that case.
 	Rulebooks::Outcomes::compile_outcome(nrbo);
 
 @<Compile an if midriff@> =
-	if (p->down->next->next) Emit::inv_primitive(ifelse_interp);
-	else Emit::inv_primitive(if_interp);
+	if (p->down->next->next) Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+	else Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		current_sentence = to_compile;
 		Routines::Compile::line(to_compile, FALSE, INTER_VAL_VHMODE);
@@ -374,13 +374,13 @@ henceforth to be true, so we simply compile empty code in that case.
 	if (pointery) {
 		lvar = LocalVariables::add_switch_value(K_value);
 		sw_v = LocalVariables::declare_this(lvar, FALSE, 7);
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, sw_v);
 			Specifications::Compiler::emit_as_val(switch_kind, val);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(switch_interp);
+		Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(switch_kind, val);
 			Emit::code();
@@ -462,7 +462,7 @@ henceforth to be true, so we simply compile empty code in that case.
 		}
 
 @<Handle a non-pointery case@> =
-	Emit::inv_primitive(case_interp);
+	Emit::inv_primitive(Emit::opcode(CASE_BIP));
 	Emit::down();
 		Specifications::Compiler::emit_as_val(switch_kind, case_spec);
 		Emit::code();
@@ -472,7 +472,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	Emit::up();
 
 @<Handle a non-pointery default@> =
-	Emit::inv_primitive(default_interp);
+	Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
 	Emit::down();
 		Emit::code();
 		Emit::down();
@@ -484,8 +484,8 @@ henceforth to be true, so we simply compile empty code in that case.
 	int final_flag = FALSE;
 	if (ow_node->next == NULL) final_flag = TRUE;
 
-	if (final_flag) Emit::inv_primitive(if_interp);
-	else Emit::inv_primitive(ifelse_interp);
+	if (final_flag) Emit::inv_primitive(Emit::opcode(IF_BIP));
+	else Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		LocalVariables::set_kind(lvar, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);

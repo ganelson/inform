@@ -499,7 +499,7 @@ much.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;activity_context</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Compile an activity or explicit condition test head</span> <span class="cwebmacronumber">10.5</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tests</span><span class="plain"> &gt; 0) || (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;compile_with_run_time_debugging</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEBUG_RULES_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -560,7 +560,7 @@ with the default outcome return (see above).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="identifier">PL::Scenes::emit_during_clause</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;during_scene</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -596,7 +596,7 @@ with the default outcome return (see above).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;never_test_actor</span><span class="plain">)</span>
                 <span class="identifier">PL::Actions::Patterns::emit_pattern_match</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;ap</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -607,7 +607,7 @@ with the default outcome return (see above).
 
         <span class="identifier">tests</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::Patterns::object_based</span><span class="plain">(&amp;(</span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;ap</span><span class="plain">))) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOUN_HL</span><span class="plain">));</span>
@@ -642,9 +642,9 @@ with the default outcome return (see above).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ACTOR_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PLAYER_HL</span><span class="plain">));</span>
@@ -682,7 +682,7 @@ with the default outcome return (see above).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">activity_list</span><span class="plain"> *</span><span class="identifier">avl</span><span class="plain"> = </span><span class="identifier">phrcd</span><span class="plain">-</span><span class="element">&gt;avl</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">avl</span><span class="plain">) {</span>
@@ -727,9 +727,9 @@ with the default outcome return (see above).
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">gt_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEBUG_RULES_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>

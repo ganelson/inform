@@ -252,7 +252,7 @@ void Frames::Blocks::emit_break(void) {
 			if (current_block_stack.pb_stack[i].label_following == -1)
 				current_block_stack.pb_stack[i].label_following =
 					unique_breakage_count++;
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				TEMPORARY_TEXT(TL);
 				WRITE_TO(TL, ".loop_break_%d", current_block_stack.pb_stack[i].label_following);

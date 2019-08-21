@@ -670,17 +670,17 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	int tc, ec;
 	LiteralPatterns::comment_use_of_lp(lp);
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->wpos_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->mid_word_s);
 		Emit::val(K_truth_state, LITERAL_IVAL, 0);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->matched_number_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
@@ -699,21 +699,21 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		int lookahead = -1;
 		if ((tc+1<lp->no_lp_tokens) && (lp->lp_tokens[tc+1].lpt_type == CHARACTER_LPT))
 			lookahead = lp->lp_tokens[tc+1].token_char;
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->mid_word_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->cur_word_s);
 					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 				Emit::up();
-				Emit::inv_primitive(postdecrement_interp);
+				Emit::inv_primitive(Emit::opcode(POSTDECREMENT_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();
@@ -724,16 +724,16 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					to_label = succeeded_label;
 				else
 					to_label = failed_label;
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->cur_word_s);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(jump_interp);
+						Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 						Emit::down();
 							Emit::lab(to_label);
 						Emit::up();
@@ -752,38 +752,38 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 
 	Emit::place_label(succeeded_label);
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, gprk->mid_word_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(lt_interp);
+		Emit::inv_primitive(Emit::opcode(LT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->sgn_s);
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->matched_number_s);
 				if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified)) {
-					Emit::inv_primitive(bitwiseor_interp);
+					Emit::inv_primitive(Emit::opcode(BITWISEOR_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->matched_number_s);
 						Emit::val(K_number, LITERAL_IVAL, 0x80000000);
 					Emit::up();
 				} else {
-					Emit::inv_primitive(times_interp);
+					Emit::inv_primitive(Emit::opcode(TIMES_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
 						Emit::val_symbol(K_value, gprk->matched_number_s);
@@ -793,7 +793,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::val_symbol(K_value, gprk->matched_number_s);
@@ -802,28 +802,28 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Kinds::Scalings::compile_quanta_to_value(lp->scaling,
 		Hierarchy::find(PARSED_NUMBER_HL), gprk->sgn_s, gprk->x_s, failed_label);
 
-	Emit::inv_primitive(ifdebug_interp);
+	Emit::inv_primitive(Emit::opcode(IFDEBUG_BIP));
 	Emit::down();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(ge_interp);
+				Emit::inv_primitive(Emit::opcode(GE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(PARSER_TRACE_HL));
 					Emit::val(K_number, LITERAL_IVAL, 3);
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(I"  [parsed value ");
 					Emit::up();
-					Emit::inv_primitive(printnumber_interp);
+					Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 					Emit::down();
 						Emit::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 					Emit::up();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						TEMPORARY_TEXT(EXP);
 						WRITE_TO(EXP, " by: %W]\n", lp->prototype_text);
@@ -835,7 +835,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 	Emit::up();
@@ -843,21 +843,21 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 }
 
 @<Compile I6 code to match a fixed word token within a literal pattern@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, gprk->mid_word_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(ne_interp);
+		Emit::inv_primitive(Emit::opcode(NE_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->cur_word_s);
 			TEMPORARY_TEXT(N);
@@ -867,14 +867,14 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(postincrement_interp);
+	Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 	Emit::down();
 		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 	Emit::up();
@@ -884,15 +884,15 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	wchar_t lower_form = Characters::tolower(lp->lp_tokens[tc].token_char);
 	wchar_t upper_form = Characters::toupper(lp->lp_tokens[tc].token_char);
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		if (upper_form != lower_form) { Emit::inv_primitive(and_interp); Emit::down(); }
-		Emit::inv_primitive(ne_interp);
+		if (upper_form != lower_form) { Emit::inv_primitive(Emit::opcode(AND_BIP)); Emit::down(); }
+		Emit::inv_primitive(Emit::opcode(NE_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookupbyte_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->cur_addr_s);
-				Emit::inv_primitive(postincrement_interp);
+				Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->wpos_s);
 				Emit::up();
@@ -900,12 +900,12 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) lower_form);
 		Emit::up();
 		if (upper_form != lower_form) {
-			Emit::inv_primitive(ne_interp);
+			Emit::inv_primitive(Emit::opcode(NE_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookupbyte_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->cur_addr_s);
-					Emit::inv_primitive(minus_interp);
+					Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->wpos_s);
 						Emit::val(K_number, LITERAL_IVAL, 1);
@@ -917,7 +917,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		if (upper_form != lower_form) { Emit::up(); }
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
@@ -930,17 +930,17 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	@<Compile I6 code to enter mid-word parsing if not already in it@>;
 	literal_pattern_element *lpe = &(lp->lp_elements[ec++]);
 	if (ec == 1) {
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->sgn_s);
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 	}
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookupbyte_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->cur_addr_s);
 				Emit::val_symbol(K_value, gprk->wpos_s);
@@ -950,17 +950,17 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::code();
 		Emit::down();
 		if ((lp->number_signed) && (ec == 1)) {
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->sgn_s);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
 			Emit::up();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->wpos_s);
 			Emit::up();
 		} else {
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
@@ -975,92 +975,92 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	@<Compile I6 code to exit mid-word parsing if at end of a word@>;
 
 @<Compile I6 code to match a real number here@> =
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->f_s);
 		Emit::val(K_truth_state, LITERAL_IVAL, 0);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->x_s);
-		Emit::inv_primitive(plus_interp);
+		Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->cur_addr_s);
 			Emit::val_symbol(K_value, gprk->wpos_s);
 		Emit::up();
 	Emit::up();
 	@<March forwards through decimal digits@>;
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->f_s);
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->wpos_s);
 			Emit::val_symbol(K_value, gprk->cur_len_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_word_s);
 				Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-				Emit::inv_primitive(minus_interp);
+				Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val(K_number, LITERAL_IVAL, 2);
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->cur_word_s);
 					Emit::val_iname(K_value, Hierarchy::find(THEN1__WD_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-						Emit::inv_primitive(plus_interp);
+						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val(K_number, LITERAL_IVAL, 2);
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(postincrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->f_s);
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->mid_word_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 0);
 					Emit::up();
-					Emit::inv_primitive(postincrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->wpos_s);
 					Emit::up();
@@ -1071,31 +1071,31 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->tot_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->wpos_s);
 			Emit::val_symbol(K_value, gprk->cur_len_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->tot_s);
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_word_s);
 				Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->mid_word_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
@@ -1104,18 +1104,18 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(lt_interp);
+			Emit::inv_primitive(Emit::opcode(LT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->wpos_s);
 				Emit::val_symbol(K_value, gprk->cur_len_s);
 			Emit::up();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookupbyte_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->cur_addr_s);
 					Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1125,12 +1125,12 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->f_s);
-				Emit::inv_primitive(plus_interp);
+				Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 				Emit::down();
-					Emit::inv_primitive(plus_interp);
+					Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->f_s);
 						Emit::val_symbol(K_value, gprk->tot_s);
@@ -1138,30 +1138,30 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Emit::val(K_number, LITERAL_IVAL, 1);
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->wpos_s);
 			Emit::up();
 
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->wpos_s);
 					Emit::val_symbol(K_value, gprk->cur_len_s);
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(postincrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->f_s);
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->cur_word_s);
 						Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->mid_word_s);
 						Emit::val(K_truth_state, LITERAL_IVAL, 0);
@@ -1170,38 +1170,38 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_primitive(ifelse_interp);
+			Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 			Emit::down();
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down();
-					Emit::inv_primitive(lt_interp);
+					Emit::inv_primitive(Emit::opcode(LT_BIP));
 					Emit::down();
-						Emit::inv_primitive(plus_interp);
+						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->wpos_s);
 							Emit::val(K_number, LITERAL_IVAL, 3);
 						Emit::up();
 						Emit::val_symbol(K_value, gprk->cur_len_s);
 					Emit::up();
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
-						Emit::inv_primitive(eq_interp);
+						Emit::inv_primitive(Emit::opcode(EQ_BIP));
 						Emit::down();
-							Emit::inv_primitive(lookupbyte_interp);
+							Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->cur_addr_s);
 								Emit::val_symbol(K_value, gprk->wpos_s);
 							Emit::up();
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) '1');
 						Emit::up();
-						Emit::inv_primitive(and_interp);
+						Emit::inv_primitive(Emit::opcode(AND_BIP));
 						Emit::down();
-							Emit::inv_primitive(eq_interp);
+							Emit::inv_primitive(Emit::opcode(EQ_BIP));
 							Emit::down();
-								Emit::inv_primitive(lookupbyte_interp);
+								Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->cur_addr_s);
-									Emit::inv_primitive(plus_interp);
+									Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->wpos_s);
 										Emit::val(K_number, LITERAL_IVAL, 1);
@@ -1209,12 +1209,12 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 								Emit::up();
 								Emit::val(K_number, LITERAL_IVAL, (inter_t) '0');
 							Emit::up();
-							Emit::inv_primitive(eq_interp);
+							Emit::inv_primitive(Emit::opcode(EQ_BIP));
 							Emit::down();
-								Emit::inv_primitive(lookupbyte_interp);
+								Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->cur_addr_s);
-									Emit::inv_primitive(plus_interp);
+									Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->wpos_s);
 										Emit::val(K_number, LITERAL_IVAL, 2);
@@ -1227,47 +1227,47 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->f_s);
-						Emit::inv_primitive(plus_interp);
+						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->f_s);
 							Emit::val(K_number, LITERAL_IVAL, 3);
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->wpos_s);
-						Emit::inv_primitive(plus_interp);
+						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->wpos_s);
 							Emit::val(K_number, LITERAL_IVAL, 3);
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(and_interp);
+						Emit::inv_primitive(Emit::opcode(AND_BIP));
 						Emit::down();
-							Emit::inv_primitive(lt_interp);
+							Emit::inv_primitive(Emit::opcode(LT_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->wpos_s);
 								Emit::val_symbol(K_value, gprk->cur_len_s);
 							Emit::up();
-							Emit::inv_primitive(or_interp);
+							Emit::inv_primitive(Emit::opcode(OR_BIP));
 							Emit::down();
-								Emit::inv_primitive(eq_interp);
+								Emit::inv_primitive(Emit::opcode(EQ_BIP));
 								Emit::down();
-									Emit::inv_primitive(lookupbyte_interp);
+									Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->cur_addr_s);
 										Emit::val_symbol(K_value, gprk->wpos_s);
 									Emit::up();
 									Emit::val(K_number, LITERAL_IVAL, (inter_t) '+');
 								Emit::up();
-								Emit::inv_primitive(eq_interp);
+								Emit::inv_primitive(Emit::opcode(EQ_BIP));
 								Emit::down();
-									Emit::inv_primitive(lookupbyte_interp);
+									Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->cur_addr_s);
 										Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1278,11 +1278,11 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(postincrement_interp);
+							Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->f_s);
 							Emit::up();
-							Emit::inv_primitive(postincrement_interp);
+							Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->wpos_s);
 							Emit::up();
@@ -1292,7 +1292,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(postdecrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTDECREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->f_s);
 					Emit::up();
@@ -1301,7 +1301,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->x_s);
 		Emit::inv_call_iname(Hierarchy::find(FLOATPARSE_HL));
@@ -1312,32 +1312,32 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->x_s);
 			Emit::val_symbol(K_value, Hierarchy::veneer_symbol(FLOAT_NAN_VSYMB));
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->wpos_s);
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->mid_word_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
@@ -1345,27 +1345,27 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->matched_number_s);
 		Emit::val_symbol(K_value, gprk->x_s);
 	Emit::up();
 
 @<March forwards through decimal digits@> =
-	Emit::inv_primitive(while_interp);
+	Emit::inv_primitive(Emit::opcode(WHILE_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(lt_interp);
+			Emit::inv_primitive(Emit::opcode(LT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->wpos_s);
 				Emit::val_symbol(K_value, gprk->cur_len_s);
 			Emit::up();
-			Emit::inv_primitive(ge_interp);
+			Emit::inv_primitive(Emit::opcode(GE_BIP));
 			Emit::down();
 				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
-					Emit::inv_primitive(lookupbyte_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->cur_addr_s);
 						Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1376,11 +1376,11 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->f_s);
 			Emit::up();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->wpos_s);
 			Emit::up();
@@ -1388,31 +1388,31 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::up();
 
 @<Compile I6 code to match an integer here@> =
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->tot_s);
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->f_s);
 		Emit::val(K_truth_state, LITERAL_IVAL, 0);
 	Emit::up();
 
-	Emit::inv_primitive(while_interp);
+	Emit::inv_primitive(Emit::opcode(WHILE_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(lt_interp);
+			Emit::inv_primitive(Emit::opcode(LT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->wpos_s);
 				Emit::val_symbol(K_value, gprk->cur_len_s);
 			Emit::up();
-			Emit::inv_primitive(ge_interp);
+			Emit::inv_primitive(Emit::opcode(GE_BIP));
 			Emit::down();
 				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
-					Emit::inv_primitive(lookupbyte_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->cur_addr_s);
 						Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1423,12 +1423,12 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->f_s);
 				Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 				Emit::down();
-					Emit::inv_primitive(lookupbyte_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->cur_addr_s);
 						Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1436,28 +1436,28 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Emit::up();
 			Emit::up();
 			Kinds::Scalings::compile_scale_and_add(gprk->tot_s, gprk->sgn_s, 10, 0, gprk->f_s, failed_label);
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->f_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 1);
 			Emit::up();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->wpos_s);
 			Emit::up();
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->f_s);
 			Emit::val(K_truth_state, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(failed_label);
 			Emit::up();
@@ -1465,16 +1465,16 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::up();
 
 	if (lpe->element_index > 0) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(ge_interp);
+			Emit::inv_primitive(Emit::opcode(GE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->tot_s);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) lpe->element_range);
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(jump_interp);
+				Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 				Emit::down();
 					Emit::lab(failed_label);
 				Emit::up();
@@ -1483,7 +1483,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	}
 
 	Kinds::Scalings::compile_scale_and_add(gprk->tot_s, gprk->sgn_s, lpe->element_multiplier, 0, gprk->matched_number_s, failed_label);
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, gprk->matched_number_s);
 		Emit::val_symbol(K_value, gprk->tot_s);
@@ -1491,92 +1491,92 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 
 	int M = Kinds::Scalings::get_integer_multiplier(lp->scaling);
 	if (M > 1) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->wpos_s);
 				Emit::val_symbol(K_value, gprk->cur_len_s);
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(postincrement_interp);
+				Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->cur_word_s);
 					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 				Emit::up();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-					Emit::inv_primitive(minus_interp);
+					Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::val(K_number, LITERAL_IVAL, 2);
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->cur_word_s);
 						Emit::val_iname(K_value, Hierarchy::find(THEN1__WD_HL));
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-							Emit::inv_primitive(plus_interp);
+							Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 							Emit::down();
 								Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 								Emit::val(K_number, LITERAL_IVAL, 2);
 							Emit::up();
 						Emit::up();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->mid_word_s);
 							Emit::val(K_truth_state, LITERAL_IVAL, 0);
 						Emit::up();
 						@<Compile I6 code to enter mid-word parsing if not already in it@>;
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->x_s);
 							Emit::val(K_number, LITERAL_IVAL, 0);
 						Emit::up();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->f_s);
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) M);
 						Emit::up();
-						Emit::inv_primitive(while_interp);
+						Emit::inv_primitive(Emit::opcode(WHILE_BIP));
 						Emit::down();
-							Emit::inv_primitive(and_interp);
+							Emit::inv_primitive(Emit::opcode(AND_BIP));
 							Emit::down();
-								Emit::inv_primitive(gt_interp);
+								Emit::inv_primitive(Emit::opcode(GT_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->f_s);
 									Emit::val(K_number, LITERAL_IVAL, 1);
 								Emit::up();
-								Emit::inv_primitive(and_interp);
+								Emit::inv_primitive(Emit::opcode(AND_BIP));
 								Emit::down();
-									Emit::inv_primitive(eq_interp);
+									Emit::inv_primitive(Emit::opcode(EQ_BIP));
 									Emit::down();
-										Emit::inv_primitive(modulo_interp);
+										Emit::inv_primitive(Emit::opcode(MODULO_BIP));
 										Emit::down();
 											Emit::val_symbol(K_value, gprk->f_s);
 											Emit::val(K_number, LITERAL_IVAL, 10);
 										Emit::up();
 										Emit::val(K_number, LITERAL_IVAL, 0);
 									Emit::up();
-									Emit::inv_primitive(ge_interp);
+									Emit::inv_primitive(Emit::opcode(GE_BIP));
 									Emit::down();
 										Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 										Emit::down();
-											Emit::inv_primitive(lookupbyte_interp);
+											Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 											Emit::down();
 												Emit::val_symbol(K_value, gprk->cur_addr_s);
 												Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1588,16 +1588,16 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_symbol(K_value, gprk->w_s);
-									Emit::inv_primitive(divide_interp);
+									Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 									Emit::down();
-										Emit::inv_primitive(times_interp);
+										Emit::inv_primitive(Emit::opcode(TIMES_BIP));
 										Emit::down();
 											Emit::inv_call_iname(Hierarchy::find(DIGITTOVALUE_HL));
 											Emit::down();
-												Emit::inv_primitive(lookupbyte_interp);
+												Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 												Emit::down();
 													Emit::val_symbol(K_value, gprk->cur_addr_s);
 													Emit::val_symbol(K_value, gprk->wpos_s);
@@ -1610,14 +1610,14 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 								Emit::up();
 								Kinds::Scalings::compile_scale_and_add(gprk->x_s, gprk->sgn_s,
 									1, 0, gprk->w_s, failed_label);
-								Emit::inv_primitive(postincrement_interp);
+								Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 								Emit::down();
 									Emit::ref_symbol(K_value, gprk->wpos_s);
 								Emit::up();
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_symbol(K_value, gprk->f_s);
-									Emit::inv_primitive(divide_interp);
+									Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->f_s);
 										Emit::val(K_number, LITERAL_IVAL, 10);
@@ -1632,26 +1632,26 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	}
 
 @<Compile I6 code to enter mid-word parsing if not already in it@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->mid_word_s);
 			Emit::val(K_truth_state, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->mid_word_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 1);
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->wpos_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_addr_s);
 				Emit::inv_call_iname(Hierarchy::find(WORDADDRESS_HL));
@@ -1659,7 +1659,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->cur_len_s);
 				Emit::inv_call_iname(Hierarchy::find(WORDLENGTH_HL));
@@ -1671,20 +1671,20 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	Emit::up();
 
 @<Compile I6 code to exit mid-word parsing if at end of a word@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gprk->wpos_s);
 			Emit::val_symbol(K_value, gprk->cur_len_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->mid_word_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
@@ -1978,9 +1978,9 @@ void LiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_li
 				WRITE_TO(C, "The named notation: %W", lpn->notation_name);
 				Emit::code_comment(C);
 				DISCARD_TEXT(C);
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, which_s);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) (lpn->allocation_id + 1));
@@ -2025,16 +2025,16 @@ the sorting measure.
 				lpb = lp;
 
 	if ((lpb) && (lpb->singular_form_only == FALSE)) {
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, value_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(jump_interp);
+				Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 				Emit::down();
 					Emit::lab(LiteralPatterns::jump_label(lpb));
 				Emit::up();
@@ -2046,16 +2046,16 @@ the sorting measure.
 
 	for (lp = lp_list; lp; lp = lp->next_for_this_kind) {
 		if (lp->marked_for_printing) {
-			inter_symbol *op = ge_interp; last_lp = lp;
+			inter_symbol *op = Emit::opcode(GE_BIP); last_lp = lp;
 			if (lp->primary_alternative) { last_primary = lp; }
-			if (lp->singular_form_only) { last_singular = lp; op = eq_interp; }
-			if (lp->plural_form_only) { last_plural = lp; op = gt_interp; }
-			Emit::inv_primitive(if_interp);
+			if (lp->singular_form_only) { last_singular = lp; op = Emit::opcode(EQ_BIP); }
+			if (lp->plural_form_only) { last_plural = lp; op = Emit::opcode(GT_BIP); }
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 				Kinds::Scalings::compile_threshold_test(lp->scaling, value_s, op);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(jump_interp);
+					Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 					Emit::down();
 						Emit::lab(LiteralPatterns::jump_label(lp));
 					Emit::up();
@@ -2069,12 +2069,12 @@ the sorting measure.
 		if ((last_lp->singular_form_only) &&
 			(last_plural) &&
 			(Kinds::Scalings::compare(last_plural->scaling, last_lp->scaling) == 0)) {
-			Emit::inv_primitive(jump_interp);
+			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(LiteralPatterns::jump_label(last_plural));
 			Emit::up();
 		}
-		Emit::inv_primitive(jump_interp);
+		Emit::inv_primitive(Emit::opcode(JUMP_BIP));
 		Emit::down();
 			Emit::lab(LiteralPatterns::jump_label(last_lp));
 		Emit::up();
@@ -2090,7 +2090,7 @@ the sorting measure.
 		if (lp->lp_elements[ec].preamble_optional)
 			@<Truncate the printed form here if subsequent numerical parts are zero@>;
 		if ((tc>0) && (lp->lp_tokens[tc].new_word_at)) {
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(I" ");
 			Emit::up();
@@ -2106,7 +2106,7 @@ the sorting measure.
 @<Compile I6 code to print a fixed word token within a literal pattern@> =
 	TEMPORARY_TEXT(T);
 	CompiledText::from_wide_string(T, Lexer::word_raw_text(lp->lp_tokens[tc].token_wn), CT_RAW);
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(T);
 	Emit::up();
@@ -2118,7 +2118,7 @@ the sorting measure.
 	PUT_TO(tiny_string, lp->lp_tokens[tc].token_char);
 	CompiledText::from_stream(T, tiny_string, CT_RAW);
 	DISCARD_TEXT(tiny_string);
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(T);
 	Emit::up();
@@ -2134,18 +2134,18 @@ the sorting measure.
 	} else {
 		if (ec == 0) {
 			if (lp->number_signed) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
-						Emit::inv_primitive(lt_interp);
+						Emit::inv_primitive(Emit::opcode(LT_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, value_s);
 							Emit::val(K_number, LITERAL_IVAL, 0);
 						Emit::up();
-						Emit::inv_primitive(eq_interp);
+						Emit::inv_primitive(Emit::opcode(EQ_BIP));
 						Emit::down();
-							Emit::inv_primitive(divide_interp);
+							Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, value_s);
 								Emit::val(K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
@@ -2155,35 +2155,35 @@ the sorting measure.
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(print_interp);
+						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 						Emit::down();
 							Emit::val_text(I"-");
 						Emit::up();
 					Emit::up();
 				Emit::up();
 			}
-			Emit::inv_primitive(printnumber_interp);
+			Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 			Emit::down();
-				Emit::inv_primitive(divide_interp);
+				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, value_s);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
 				Emit::up();
 			Emit::up();
 			if (lp->number_signed) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(lt_interp);
+					Emit::inv_primitive(Emit::opcode(LT_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, value_s);
 						Emit::val(K_number, LITERAL_IVAL, 0);
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, value_s);
-							Emit::inv_primitive(minus_interp);
+							Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 							Emit::down();
 								Emit::val(K_number, LITERAL_IVAL, 0);
 								Emit::val_symbol(K_value, value_s);
@@ -2198,13 +2198,13 @@ the sorting measure.
 				int pow = 1;
 				for (pow = 1000000000; pow>1; pow = pow/10)
 					if (lpe->element_range > pow) {
-						Emit::inv_primitive(if_interp);
+						Emit::inv_primitive(Emit::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(lt_interp);
+							Emit::inv_primitive(Emit::opcode(LT_BIP));
 							Emit::down();
-								Emit::inv_primitive(modulo_interp);
+								Emit::inv_primitive(Emit::opcode(MODULO_BIP));
 								Emit::down();
-									Emit::inv_primitive(divide_interp);
+									Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, value_s);
 										Emit::val(K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
@@ -2215,7 +2215,7 @@ the sorting measure.
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(print_interp);
+								Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 								Emit::down();
 									Emit::val_text(I"0");
 								Emit::up();
@@ -2224,11 +2224,11 @@ the sorting measure.
 
 					}
 			}
-			Emit::inv_primitive(printnumber_interp);
+			Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
 			Emit::down();
-				Emit::inv_primitive(modulo_interp);
+				Emit::inv_primitive(Emit::opcode(MODULO_BIP));
 				Emit::down();
-					Emit::inv_primitive(divide_interp);
+					Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, value_s);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
@@ -2243,11 +2243,11 @@ the sorting measure.
 @<Truncate the printed form here if subsequent numerical parts are zero@> =
 	if (oc == ec) {
 		if (ec == 0) {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
-					Emit::inv_primitive(divide_interp);
+					Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, value_s);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) (lp->lp_elements[ec].element_multiplier));
@@ -2260,13 +2260,13 @@ the sorting measure.
 				Emit::up();
 			Emit::up();
 		} else {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
-					Emit::inv_primitive(modulo_interp);
+					Emit::inv_primitive(Emit::opcode(MODULO_BIP));
 					Emit::down();
-						Emit::inv_primitive(divide_interp);
+						Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, value_s);
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (lp->lp_elements[ec].element_multiplier));

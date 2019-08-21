@@ -66,33 +66,33 @@ int ListTogether::compilation_coroutine(void) {
 
 @<Compile the actual LTR@> =
 	packaging_state save = Routines::begin(ltr->ltr_routine_iname);
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(INVENTORY_STAGE_HL));
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(setbit_interp);
+			Emit::inv_primitive(Emit::opcode(SETBIT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
 				Emit::val_iname(K_value, Hierarchy::find(ENGLISH_BIT_HL));
 			Emit::up();
 			if (!(ltr->articles_bit)) {
-			Emit::inv_primitive(setbit_interp);
+			Emit::inv_primitive(Emit::opcode(SETBIT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
 				Emit::val_iname(K_value, Hierarchy::find(NOARTICLE_BIT_HL));
 			Emit::up();
 			}
-			Emit::inv_primitive(clearbit_interp);
+			Emit::inv_primitive(Emit::opcode(CLEARBIT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
 				Emit::val_iname(K_value, Hierarchy::find(NEWLINE_BIT_HL));
 			Emit::up();
-			Emit::inv_primitive(clearbit_interp);
+			Emit::inv_primitive(Emit::opcode(CLEARBIT_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(C_STYLE_HL));
 				Emit::val_iname(K_value, Hierarchy::find(INDENT_BIT_HL));

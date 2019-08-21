@@ -41,7 +41,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		source_location sl = Lexer::word_location(wn);
 
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
-			Emit::inv_primitive(push_interp);
+			Emit::inv_primitive(Emit::opcode(PUSH_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 			Emit::up();
@@ -53,7 +53,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		}
 
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
-			Emit::inv_primitive(pull_interp);
+			Emit::inv_primitive(Emit::opcode(PULL_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 			Emit::up();
@@ -231,7 +231,7 @@ the context of a value.
 		@<Compile code to set the formal parameters in void mode@>;
 		@<Compile code to apply the first invocation which is applicable@>;
 	} else {
-		Emit::inv_primitive(ternarysequential_interp);
+		Emit::inv_primitive(Emit::opcode(TERNARYSEQUENTIAL_BIP));
 		Emit::down();
 			int no_conditions_tested = 0;
 			int L = Emit::level();
@@ -240,7 +240,7 @@ the context of a value.
 			int NC = 0, unprov = FALSE, prov = FALSE;
 			@<Count the applicability conditions@>;
 			TEMPORARY_TEXT(C); WRITE_TO(C, "Think %d unprov %d prov %d", NC, unprov, prov); Emit::code_comment(C); DISCARD_TEXT(C);
-			if (unprov) { Emit::inv_primitive(or_interp); Emit::down(); }
+			if (unprov) { Emit::inv_primitive(Emit::opcode(OR_BIP)); Emit::down(); }
 			@<Compile code to apply the first invocation which is applicable, as expression@>;
 			for (int i = 0; i<NC-1; i++) Emit::up();
 			if (prov) Emit::up();
@@ -275,7 +275,7 @@ right to left: we want T1 to evaluate first, then T2, and so on.
 
 @<Emit code to set the formal parameters in expression mode@> =
 	for (int i=N-1; i>=0; i--) {
-		if (i > 0) { Emit::inv_primitive(plus_interp); Emit::down(); }
+		if (i > 0) { Emit::inv_primitive(Emit::opcode(PLUS_BIP)); Emit::down(); }
 		@<Compile the actual assignment@>;
 	}
 	for (int i=N-1; i>0; i--) Emit::up();
@@ -285,7 +285,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 
 @<Compile the actual assignment@> =
 	NonlocalVariables::temporary_formal(i);
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_value, NonlocalVariables::formal_par(i));
 		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
@@ -440,14 +440,14 @@ no subsequent lines are looked at.
 
 	if (check_needed > 0) {
 		if (void_mode) {
-			Emit::inv_primitive(ifelse_interp);
+			Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 			Emit::down();
 			@<Put the condition check here, emission version@>;
 			Emit::code();
 			Emit::down();
 			if_depth++;
 		} else {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
 			@<Put the condition check here, emission version@>;
 		}
@@ -465,13 +465,13 @@ no subsequent lines are looked at.
 	if (check_needed > 0) {
 		no_conditions_tested++;
 		if ((no_conditions_tested < NC) || (prov)) {
-			Emit::inv_primitive(or_interp);
+			Emit::inv_primitive(Emit::opcode(OR_BIP));
 			Emit::down(); or_made = TRUE;
 		}
 		for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
 			parse_node *check_against = Invocations::get_token_check_to_do(inv, i);
 			if (check_against) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down(); ands_made++;
 				BEGIN_COMPILATION_MODE;
 				COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
@@ -496,7 +496,7 @@ a list divided by logical-and |&&| operators.
 		if (check_against != NULL) {
 			check_count++;
 			if (check_count < check_needed) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down();
 				and_depth++;
 			}
@@ -549,9 +549,9 @@ evaluate to "true" with a minimum of branches in the compiled code.
 
 @<Compile the invocation part, emission version@> =
 	if (!void_mode) {
-		Emit::inv_primitive(bitwiseor_interp);
+		Emit::inv_primitive(Emit::opcode(BITWISEOR_BIP));
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
 	}
@@ -615,7 +615,7 @@ stop automatically generates a newline:
 		(tokens->tokens_count > 0) &&
 		(Rvalues::is_CONSTANT_of_kind(tokens->args[0], K_text)) &&
 		(Word::text_ending_sentence(Wordings::first_wn(ParseTree::get_text(tokens->args[0]))))) {
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I"\n");
 		Emit::up();

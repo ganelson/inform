@@ -1939,9 +1939,9 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="identifier">LocalVariables::ensure_called_local</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">,</span>
                     <span class="identifier">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
             <span class="identifier">LocalVariables::add_calling_to_condition</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
@@ -1965,12 +1965,12 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_0_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_0_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
                 <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">ct_1_lv</span><span class="plain"> = </span><span class="identifier">LocalVariables::by_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ct_1"</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_1_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_1_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ct_1_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">EXISTSTABLEROWCORR_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ct_0_s</span><span class="plain">);</span>
                             <span class="identifier">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
@@ -1992,9 +1992,9 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="plain">(&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONSULT_FROM_HL</span><span class="plain">));</span>
@@ -2349,22 +2349,22 @@ and in this case we therefore ignore <code class="display"><span class="extract"
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Actions::Lists::negated</span><span class="plain">(</span><span class="identifier">ap</span><span class="element">.action</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[0] &gt; 0) {</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">range_to_compile</span><span class="plain"> = 0;</span>
                         &lt;<span class="cwebmacro">Emit CPM range</span> <span class="cwebmacronumber">34.1.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[3] &gt; 0) {</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ranges_count</span><span class="plain">[1] == 0) &amp;&amp; (</span><span class="identifier">ranges_count</span><span class="plain">[2] == 0))</span>
                     <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ranges_count</span><span class="plain">[1] &gt; 0) &amp;&amp; (</span><span class="identifier">ranges_count</span><span class="plain">[2] &gt; 0)) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[1] &gt; 0) {</span>
@@ -2388,7 +2388,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[1] &gt; 0) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[0]+</span><span class="identifier">ranges_count</span><span class="plain">[2]+</span><span class="identifier">ranges_count</span><span class="plain">[3] &gt; 0) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++;</span>
                     <span class="plain">}</span>
                     <span class="identifier">range_to_compile</span><span class="plain"> = 1;</span>
@@ -2396,7 +2396,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[0] &gt; 0) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[2]+</span><span class="identifier">ranges_count</span><span class="plain">[3] &gt; 0) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++;</span>
                     <span class="plain">}</span>
                     <span class="identifier">range_to_compile</span><span class="plain"> = 0;</span>
@@ -2404,7 +2404,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[2] &gt; 0) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranges_count</span><span class="plain">[3] &gt; 0) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++;</span>
                     <span class="plain">}</span>
                     <span class="identifier">range_to_compile</span><span class="plain"> = 2;</span>
@@ -2444,7 +2444,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cpmc</span><span class="plain"> &gt;= </span><span class="identifier">ranges_from</span><span class="plain">[</span><span class="identifier">range_to_compile</span><span class="plain">]) &amp;&amp; (</span><span class="identifier">cpmc</span><span class="plain"> &lt;= </span><span class="identifier">ranges_to</span><span class="plain">[</span><span class="identifier">range_to_compile</span><span class="plain">])) {</span>
                     <span class="identifier">done</span><span class="plain">++;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">done</span><span class="plain"> &lt; </span><span class="identifier">ranges_count</span><span class="plain">[</span><span class="identifier">range_to_compile</span><span class="plain">]) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++;</span>
                     <span class="plain">}</span>
                     <span class="reserved">ap_optional_clause</span><span class="plain"> *</span><span class="identifier">apoc</span><span class="plain"> = </span><span class="identifier">needed_apoc</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
@@ -2470,14 +2470,14 @@ and in this case we therefore ignore <code class="display"><span class="extract"
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">cpmc</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">ACTOR_IS_PLAYER_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PLAYER_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">ACTOR_ISNT_PLAYER_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PLAYER_HL</span><span class="plain">));</span>
@@ -2487,7 +2487,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACT_REQUESTER_HL</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">REQUESTER_DOESNT_EXIST_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACT_REQUESTER_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -2503,7 +2503,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOUN_IS_INP1_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INP1_HL</span><span class="plain">));</span>
@@ -2513,7 +2513,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SECOND_HL</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">SECOND_IS_INP1_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SECOND_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INP2_HL</span><span class="plain">));</span>
@@ -2541,7 +2541,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="functiontext">PL::Actions::Patterns::compile_pattern_match_clause</span><span class="plain">(</span><span class="identifier">f</span><span class="plain">, </span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">real_location_VAR</span><span class="plain">, </span><span class="identifier">ap</span><span class="element">.room_spec</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">ACTOR_IN_RIGHT_PLACE_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_LOCATION_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOCATIONOF_HL</span><span class="plain">));</span>
@@ -2570,9 +2570,9 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOWHERE_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MSTACK_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MSTVON_HL</span><span class="plain">));</span>
@@ -2593,9 +2593,9 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOT_NOWHERE_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MSTACK_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MSTVON_HL</span><span class="plain">));</span>
@@ -2631,21 +2631,21 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">LocalVariables::ensure_called_local</span><span class="plain">(</span><span class="identifier">PC</span><span class="plain">,</span>
                         <span class="identifier">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ap</span><span class="element">.presence_spec</span><span class="plain">));</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOS_RV_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOOPOVERSCOPE_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">los</span><span class="plain">-</span><span class="element">&gt;los_iname</span><span class="plain">);</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOS_RV_HL</span><span class="plain">));</span>
@@ -2656,14 +2656,14 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC</span><span class="plain">: {</span>
                     <span class="reserved">loop_over_scope</span><span class="plain"> *</span><span class="identifier">los</span><span class="plain"> = </span><span class="functiontext">PL::Actions::ScopeLoops::new</span><span class="plain">(</span><span class="identifier">ap</span><span class="element">.presence_spec</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOS_RV_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOOPOVERSCOPE_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
@@ -2676,9 +2676,9 @@ and in this case we therefore ignore <code class="display"><span class="extract"
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">SET_SELF_TO_ACTOR_CPMC</span><span class="plain">:</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SELF_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_HL</span><span class="plain">));</span>

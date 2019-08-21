@@ -27,7 +27,7 @@ void PL::Showme::compile_SHOWME_details(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_HL));
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
-	Emit::inv_primitive(ifdebug_interp);
+	Emit::inv_primitive(Emit::opcode(IFDEBUG_BIP));
 	Emit::down();
 		Emit::code();
 		Emit::down();
@@ -51,7 +51,7 @@ void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol 
 void PL::Showme::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
 	@<Skip if this object's definition has nothing to offer SHOWME@>;
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		InferenceSubjects::emit_element_of_condition(subj, t_0_s);
 		Emit::code();
@@ -87,21 +87,21 @@ second of just one from "person".
 @<Divide up the sublists of either/or properties in a SHOWME@> =
 	text_stream *divider = I"; ";
 	if (val) divider = I"\n";
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(gt_interp);
+		Emit::inv_primitive(Emit::opcode(GT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, na_s);
 			Emit::val(K_number, LITERAL_IVAL, 0);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, na_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(divider);
 			Emit::up();
@@ -174,7 +174,7 @@ routine for colours; and the best thing is to print nothing at all.
 			(Kinds::Compare::le(K, K_object)))
 			require_nonzero = TRUE;
 		if (require_nonzero) {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 				Emit::inv_call_iname(iname);
@@ -196,16 +196,16 @@ routine for colours; and the best thing is to print nothing at all.
 @<Compile the SHOWME printing of the value of a value property@> =
 	TEMPORARY_TEXT(T);
 	WRITE_TO(T, "%+W: ", prn->name);
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(T);
 	Emit::up();
 	DISCARD_TEXT(T);
 
 	if (Kinds::Compare::eq(K, K_text)) {
-		Emit::inv_primitive(ifelse_interp);
+		Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::inv_call_iname(Hierarchy::find(TEXT_TY_COMPARE_HL));
 				Emit::down();
@@ -221,19 +221,19 @@ routine for colours; and the best thing is to print nothing at all.
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(print_interp);
+				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(I"none");
 				Emit::up();
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(printchar_interp);
+				Emit::inv_primitive(Emit::opcode(PRINTCHAR_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, '\"');
 				Emit::up();
 				@<Compile the SHOWME of the actual value@>;
-				Emit::inv_primitive(printchar_interp);
+				Emit::inv_primitive(Emit::opcode(PRINTCHAR_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, '\"');
 				Emit::up();
@@ -243,13 +243,13 @@ routine for colours; and the best thing is to print nothing at all.
 		@<Compile the SHOWME of the actual value@>;
 	}
 
-	Emit::inv_primitive(print_interp);
+	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(I"\n");
 	Emit::up();
 
 @<Compile the SHOWME of the actual value@> =
-	Emit::inv_primitive(indirect1v_interp);
+	Emit::inv_primitive(Emit::opcode(INDIRECT1V_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_iname(K));
 		Emit::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
@@ -270,9 +270,9 @@ turn by turn.
 	if (Properties::EitherOr::stored_in_negation(prn))
 		allow = Properties::EitherOr::get_negation(prn);
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
 			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
 				Emit::inv_call_iname(Hierarchy::find(ALLOWINSHOWME_HL));
@@ -289,7 +289,7 @@ turn by turn.
 			@<Compile the comma as needed@>;
 			TEMPORARY_TEXT(T);
 			WRITE_TO(T, "%+W", prn->name);
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(T);
 			Emit::up();
@@ -298,11 +298,11 @@ turn by turn.
 	Emit::up();
 
 @<Compile the comma as needed@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(gt_interp);
+		Emit::inv_primitive(Emit::opcode(GT_BIP));
 		Emit::down();
-			Emit::inv_primitive(postincrement_interp);
+			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, na_s);
 			Emit::up();
@@ -310,7 +310,7 @@ turn by turn.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(print_interp);
+			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(I", ");
 			Emit::up();

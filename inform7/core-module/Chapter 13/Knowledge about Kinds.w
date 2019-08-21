@@ -45,7 +45,7 @@ void Kinds::Knowledge::check_model(inference_subject *infs) { }
 int Kinds::Knowledge::emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
 	kind *K = InferenceSubjects::as_kind(infs);
 	if (Kinds::Compare::lt(K, K_object)) {
-		Emit::inv_primitive(ofclass_interp);
+		Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, t0_s);
 			Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));

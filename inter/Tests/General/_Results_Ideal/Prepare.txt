@@ -1,0 +1,115 @@
+packagetype _plain
+packagetype _code
+packagetype _linkage
+packagetype _module
+primitive !font val -> void
+primitive !stylebold void -> void
+primitive !styleunderline void -> void
+primitive !stylereverse void -> void
+primitive !styleroman void -> void
+primitive !print val -> void
+primitive !printret val -> void
+primitive !printchar val -> void
+primitive !printname val -> void
+primitive !printobj val -> void
+primitive !printproperty val -> void
+primitive !printnumber val -> void
+primitive !printaddress val -> void
+primitive !printstring val -> void
+primitive !printnlnumber val -> void
+primitive !printdef val -> void
+primitive !printcdef val -> void
+primitive !printindef val -> void
+primitive !printcindef val -> void
+primitive !box val -> void
+primitive !push val -> void
+primitive !pull ref -> void
+primitive !postincrement ref -> val
+primitive !preincrement ref -> val
+primitive !postdecrement ref -> val
+primitive !predecrement ref -> val
+primitive !return val -> void
+primitive !quit void -> void
+primitive !restore lab -> void
+primitive !spaces val -> void
+primitive !break void -> void
+primitive !continue void -> void
+primitive !jump lab -> void
+primitive !move val val -> void
+primitive !remove val -> void
+primitive !give val val -> void
+primitive !take val val -> void
+primitive !store ref val -> val
+primitive !setbit ref val -> void
+primitive !clearbit ref val -> void
+primitive !modulo val val -> val
+primitive !random val -> val
+primitive !lookup val val -> val
+primitive !lookupbyte val val -> val
+primitive !lookupref val val -> ref
+primitive !not val -> val
+primitive !and val val -> val
+primitive !or val val -> val
+primitive !alternative val val -> val
+primitive !alternativecase val val -> val
+primitive !bitwiseand val val -> val
+primitive !bitwiseor val val -> val
+primitive !bitwisenot val -> val
+primitive !eq val val -> val
+primitive !ne val val -> val
+primitive !gt val val -> val
+primitive !ge val val -> val
+primitive !lt val val -> val
+primitive !le val val -> val
+primitive !has val val -> val
+primitive !hasnt val val -> val
+primitive !in val val -> val
+primitive !ofclass val val -> val
+primitive !sequential val val -> val
+primitive !ternarysequential val val val -> val
+primitive !plus val val -> val
+primitive !minus val val -> val
+primitive !unaryminus val -> val
+primitive !times val val -> val
+primitive !divide val val -> val
+primitive !if val code -> void
+primitive !ifdebug code -> void
+primitive !ifstrict code -> void
+primitive !ifelse val code code -> void
+primitive !while val code -> void
+primitive !do val code -> void
+primitive !for val val val code -> void
+primitive !objectloop ref val val code -> void
+primitive !objectloopx ref val code -> void
+primitive !switch val code -> void
+primitive !case val code -> void
+primitive !default code -> void
+primitive !indirect0v val -> void
+primitive !indirect1v val val -> void
+primitive !indirect2v val val val -> void
+primitive !indirect3v val val val val -> void
+primitive !indirect4v val val val val val -> void
+primitive !indirect5v val val val val val val -> void
+primitive !indirect0 val -> val
+primitive !indirect1 val val -> val
+primitive !indirect2 val val val -> val
+primitive !indirect3 val val val val -> val
+primitive !indirect4 val val val val val -> val
+primitive !indirect5 val val val val val val -> val
+primitive !message0 val val -> val
+primitive !message1 val val val -> val
+primitive !message2 val val val val -> val
+primitive !message3 val val val val val -> val
+primitive !callmessage0 val -> val
+primitive !callmessage1 val val -> val
+primitive !callmessage2 val val val -> val
+primitive !callmessage3 val val val val -> val
+primitive !propertyaddress val val -> val
+primitive !propertylength val val -> val
+primitive !provides val val -> val
+primitive !propertyvalue val val -> val
+primitive !notin val val -> val
+primitive !read val val -> void
+primitive !inversion void -> void
+package main _plain
+	package template _module

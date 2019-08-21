@@ -975,18 +975,18 @@ next priority, and so on up the hierarchy.
                 <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_line_iname</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_standard_set</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.original_wn_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">PL::Parsing::Verbs::gv_compile_lines</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1000,23 +1000,23 @@ next priority, and so on up the hierarchy.
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_range_calls</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_standard_set</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.range_from_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.original_wn_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">PL::Parsing::Verbs::gv_compile_lines</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1042,18 +1042,18 @@ next priority, and so on up the hierarchy.
                 <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_prn_iname</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_original</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 <span class="functiontext">PL::Parsing::Tokens::Values::add_standard_set</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.original_wn_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">PL::Parsing::Verbs::gv_compile_lines</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>

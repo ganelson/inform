@@ -969,7 +969,7 @@ foreign verbs (4).
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1044,12 +1044,12 @@ foreign verbs (4).
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"t"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">modal_to_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"modal_to"</span><span class="plain">);</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">fn_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1057,7 +1057,7 @@ foreign verbs (4).
                         <span class="functiontext">NewVerbs::conj_from_wa</span><span class="plain">(&amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">), </span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">modal_to_s</span><span class="plain">, 0);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1065,7 +1065,7 @@ foreign verbs (4).
                         <span class="functiontext">NewVerbs::conj_from_wa</span><span class="plain">(&amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">past_participle</span><span class="plain">), </span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">modal_to_s</span><span class="plain">, 0);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1086,7 +1086,7 @@ foreign verbs (4).
             <span class="identifier">rel_iname</span><span class="plain"> = </span><span class="identifier">meaning</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MODAL_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1095,12 +1095,12 @@ foreign verbs (4).
                         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MEANING_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rel_iname</span><span class="plain">);</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1110,12 +1110,12 @@ foreign verbs (4).
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = 0; </span><span class="identifier">sense</span><span class="plain"> &lt; 2; </span><span class="identifier">sense</span><span class="plain">++) {</span>
             <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_POS_HL</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == 1) </span><span class="identifier">sense_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_NEG_HL</span><span class="plain">);</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sense_iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1154,7 +1154,7 @@ foreign verbs (4).
         <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Conjugation::conj_iname</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">));</span>
@@ -1166,16 +1166,16 @@ foreign verbs (4).
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">fn_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MODAL_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1191,16 +1191,16 @@ foreign verbs (4).
         <span class="plain">}</span>
 
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">fn_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CV_MEANING_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rel_iname</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1210,7 +1210,7 @@ foreign verbs (4).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">preposition</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" %A"</span><span class="plain">, &amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">preposition</span><span class="plain">-&gt;</span><span class="identifier">prep_text</span><span class="plain">));</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1273,7 +1273,7 @@ foreign verbs (4).
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">some_dont_exist</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">some_exist</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">tense</span><span class="plain">+1));</span>
                     <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1302,7 +1302,7 @@ foreign verbs (4).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">vp_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1310,7 +1310,7 @@ foreign verbs (4).
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">part</span><span class="plain">=1; </span><span class="identifier">part</span><span class="plain">&lt;=6; </span><span class="identifier">part</span><span class="plain">++) {</span>
                     <span class="identifier">word_assemblage</span><span class="plain"> *</span><span class="identifier">wa</span><span class="plain"> = &amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">tense</span><span class="plain">][</span><span class="identifier">sense</span><span class="plain">][</span><span class="identifier">part</span><span class="plain">-1]);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::nonempty</span><span class="plain">(*</span><span class="identifier">wa</span><span class="plain">)) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">part</span><span class="plain">);</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1335,9 +1335,9 @@ foreign verbs (4).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">vp_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
@@ -1378,7 +1378,7 @@ foreign verbs (4).
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::conj_from_wa</span><span class="plain">(</span><span class="identifier">word_assemblage</span><span class="plain"> *</span><span class="identifier">wa</span><span class="plain">, </span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">modal_to_s</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mau</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">NewVerbs::takes_contraction_form</span><span class="plain">(</span><span class="identifier">wa</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">NewVerbs::takes_contraction_form</span><span class="plain">(&amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">))))</span>
@@ -1411,16 +1411,16 @@ foreign verbs (4).
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mau</span><span class="plain"> != 0) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">modal_to_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">" "</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1v_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">modal_to_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">mau</span><span class="plain">);</span>

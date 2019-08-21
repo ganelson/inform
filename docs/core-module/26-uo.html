@@ -770,9 +770,9 @@ one to test them, one to print them.
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">UO_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
@@ -800,19 +800,19 @@ one to test them, one to print them.
         <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K_use_option</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">UO_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"UO"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">UO_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">"%W option"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>

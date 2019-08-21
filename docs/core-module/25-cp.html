@@ -164,7 +164,7 @@ to us, so we end our routine with code which certainly performs a return.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Frames::get_kind_returned</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -313,7 +313,7 @@ phrase to be different from the number version, and so on.
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">)); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -529,8 +529,8 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
             <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">INTER_VAL_VHMODE</span><span class="plain">);</span>
@@ -582,13 +582,13 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
             <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_switch_value</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 7);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sw_v</span><span class="plain">);</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -680,7 +680,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">case_spec</span><span class="plain">);</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -700,7 +700,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::code</span><span class="plain">();</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -722,8 +722,8 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ow_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">LocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">);</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">lvar</span><span class="plain">);</span>

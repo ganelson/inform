@@ -217,16 +217,16 @@ void Properties::Emit::emit_iname_has_property(kind *K, inter_name *N, property 
 void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn) {
 	if (Properties::EitherOr::implemented_as_attribute(prn)) {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Emit::inv_primitive(not_interp);
+			Emit::inv_primitive(Emit::opcode(NOT_BIP));
 			Emit::down();
-				Emit::inv_primitive(has_interp);
+				Emit::inv_primitive(Emit::opcode(HAS_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
 				Emit::up();
 			Emit::up();
 		} else {
-			Emit::inv_primitive(has_interp);
+			Emit::inv_primitive(Emit::opcode(HAS_BIP));
 			Emit::down();
 				Emit::val_symbol(K, S);
 				Emit::val_iname(K_value, Properties::iname(prn));
@@ -234,9 +234,9 @@ void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn
 		}
 	} else {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(propertyvalue_interp);
+				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
@@ -244,9 +244,9 @@ void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
 			Emit::up();
 		} else {
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(propertyvalue_interp);
+				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(prn));

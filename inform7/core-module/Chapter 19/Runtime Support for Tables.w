@@ -269,17 +269,17 @@ void Tables::Support::compile_print_table_names(void) {
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *T_s = LocalVariables::add_named_call_as_symbol(I"T");
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, T_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val_iname(K_table, Hierarchy::find(THEEMPTYTABLE_HL));
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(I"(the empty table)");
 					Emit::up();
@@ -289,12 +289,12 @@ void Tables::Support::compile_print_table_names(void) {
 
 		LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val_iname(K_table, Tables::identifier(t));
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						TEMPORARY_TEXT(S);
 						WRITE_TO(S, "%+W", ParseTree::get_text(t->headline_fragment));
@@ -306,11 +306,11 @@ void Tables::Support::compile_print_table_names(void) {
 			Emit::up();
 		}
 
-			Emit::inv_primitive(default_interp);
+			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(I"** No such table **");
 					Emit::up();

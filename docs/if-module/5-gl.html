@@ -325,10 +325,10 @@ a command grammar, we might have:
             <span class="identifier">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;understand_when_prop</span><span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec</span><span class="plain">) || (</span><span class="identifier">prop</span><span class="plain">)) {</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prop</span><span class="plain">)) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain">) </span><span class="identifier">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
@@ -338,14 +338,14 @@ a command grammar, we might have:
                     <span class="plain">}</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="plain">}</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -361,16 +361,16 @@ a command grammar, we might have:
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv_is</span><span class="plain"> == </span><span class="constant">GV_IS_COMMAND</span><span class="plain">) {</span>
                 <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;cond_token_iname</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">jump_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">JUMP_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::lab</span><span class="plain">(</span><span class="identifier">current_label</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -431,29 +431,29 @@ the mistake.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistaken</span><span class="plain">) {</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_iname</span><span class="plain">);</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ne_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ACTOR_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PLAYER_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">UNDERSTAND_AS_MISTAKE_NUMBER_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (100 + </span><span class="identifier">gl</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -487,7 +487,7 @@ the mistake.
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">MAP</span><span class="plain"> = </span><span class="identifier">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="identifier">SACTIONS_HAP</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">MISTAKEACTIONSUB_HL</span><span class="plain">, </span><span class="identifier">MAP</span><span class="plain">));</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">UNDERSTAND_AS_MISTAKE_NUMBER_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -501,7 +501,7 @@ the mistake.
                             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_response_text</span><span class="plain">))</span>
                                 <span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;mistake_response_text</span><span class="plain">);</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (100+</span><span class="identifier">gl</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -515,11 +515,11 @@ the mistake.
                         <span class="plain">}</span>
                     <span class="plain">}</span>
 
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"I didn't understand that sentence.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -529,7 +529,7 @@ the mistake.
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SAY__P_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1264,9 +1264,9 @@ command GVs) have not yet been type-checked, whereas all others have.
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">gv_is</span><span class="plain"> == </span><span class="constant">GV_IS_VALUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">GV_IS_VALUE_instance_mode</span><span class="plain">)) {</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;instance_s</span><span class="plain">);</span>
                     <span class="functiontext">PL::Parsing::Tokens::Types::compile_to_string</span><span class="plain">(&amp;(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;gl_type</span><span class="plain">));</span>
@@ -1305,35 +1305,35 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GV_IS_PROPERTY_NAME</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GV_IS_TOKEN</span><span class="plain">:</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;original_wn_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GV_IS_CONSULT</span><span class="plain">:</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">or_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">OR_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;range_words_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">minus_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">MINUS_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;range_from_s</span><span class="plain">);</span>
@@ -1343,7 +1343,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::code</span><span class="plain">();</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1351,12 +1351,12 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
 
                 <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;rv_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;original_wn_s</span><span class="plain">);</span>
@@ -1366,17 +1366,17 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="functiontext">PL::Parsing::Tokens::General::after_gl_failed</span><span class="plain">(</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">fail_label</span><span class="plain">, </span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;pluralised</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GV_IS_VALUE</span><span class="plain">:</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSED_NUMBER_HL</span><span class="plain">));</span>
                     <span class="functiontext">PL::Parsing::Tokens::Types::compile_to_string</span><span class="plain">(&amp;(</span><span class="identifier">gl</span><span class="plain">-</span><span class="element">&gt;gl_type</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">fail_label</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;original_wn_s</span><span class="plain">);</span>
@@ -1446,7 +1446,7 @@ command GVs) have not yet been type-checked, whereas all others have.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexeme_equivalence_class</span><span class="plain"> &gt; 0) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">code_mode</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_token_in_lexeme</span><span class="plain">) {</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;group_wn_s</span><span class="plain">);</span>
                             <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
@@ -1458,7 +1458,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                     <span class="identifier">next_reserved_label</span><span class="plain"> = </span><span class="identifier">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
                     <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
 
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;group_wn_s</span><span class="plain">);</span>
@@ -1505,7 +1505,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_reserved_label</span><span class="plain">)</span>
                                 <span class="identifier">Emit::place_label</span><span class="plain">(</span><span class="identifier">next_reserved_label</span><span class="plain">);</span>
                             <span class="identifier">next_reserved_label</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-</span><span class="element">&gt;group_wn_s</span><span class="plain">);</span>
@@ -1544,7 +1544,7 @@ command GVs) have not yet been type-checked, whereas all others have.
                 <span class="identifier">current_grammar_block</span><span class="plain">, </span><span class="identifier">lexeme_equivalence_class</span><span class="plain">);</span>
             <span class="identifier">eog_reserved_label</span><span class="plain"> = </span><span class="identifier">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">jump_interp</span><span class="plain">);</span>
+        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">JUMP_BIP</span><span class="plain">));</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">Emit::lab</span><span class="plain">(</span><span class="identifier">eog_reserved_label</span><span class="plain">);</span>
         <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -1567,7 +1567,7 @@ command GVs) have not yet been type-checked, whereas all others have.
             <span class="functiontext">PL::Parsing::Tokens::Values::add_standard_set</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
 
             <span class="functiontext">PL::Parsing::Lines::compile_token_line</span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;first_choice</span><span class="plain">, </span><span class="identifier">sgpr</span><span class="plain">-</span><span class="element">&gt;last_choice</span><span class="plain">, </span><span class="constant">GV_IS_TOKEN</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">gprk</span><span class="element">.group_wn_s</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_PREPOSITION_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>

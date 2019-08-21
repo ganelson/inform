@@ -968,7 +968,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 					break;
 			}
-			Emit::inv_primitive(indirect0v_interp);
+			Emit::inv_primitive(Emit::opcode(INDIRECT0V_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, bp->initialiser_iname);
 			Emit::up();
@@ -1108,12 +1108,12 @@ void Relations::compile_relation_records(void) {
 
 	annotated_i6_schema asch; i6_schema *i6s = NULL;
 
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, task_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(RELS_TEST_HL));
 				Emit::code();
@@ -1122,7 +1122,7 @@ void Relations::compile_relation_records(void) {
 				Emit::up();
 			Emit::up();
 			if (minimal) {
-				Emit::inv_primitive(default_interp);
+				Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
 				Emit::down();
 					Emit::code();
 					Emit::down();
@@ -1130,7 +1130,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 				Emit::up();
 			} else {
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ANY_HL));
 					Emit::code();
@@ -1138,7 +1138,7 @@ void Relations::compile_relation_records(void) {
 						@<The LOOKUP ANY task@>;
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
 					Emit::code();
@@ -1146,7 +1146,7 @@ void Relations::compile_relation_records(void) {
 						@<The LOOKUP ALL X task@>;
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(RELS_LOOKUP_ALL_Y_HL));
 					Emit::code();
@@ -1154,7 +1154,7 @@ void Relations::compile_relation_records(void) {
 						@<The LOOKUP ALL Y task@>;
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(RELS_LIST_HL));
 					Emit::code();
@@ -1163,7 +1163,7 @@ void Relations::compile_relation_records(void) {
 					Emit::up();
 				Emit::up();
 				if (BinaryPredicates::can_be_made_true_at_runtime(bp)) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 						Emit::code();
@@ -1171,7 +1171,7 @@ void Relations::compile_relation_records(void) {
 							@<The ASSERT TRUE task@>;
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_FALSE_HL));
 						Emit::code();
@@ -1192,7 +1192,7 @@ void Relations::compile_relation_records(void) {
 					case Relation_Sym_VtoV: shower = Hierarchy::find(RELATION_SHOWVTOV_HL); par = 1; break;
 				}
 				if (shower) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_SHOW_HL));
 						Emit::code();
@@ -1213,7 +1213,7 @@ void Relations::compile_relation_records(void) {
 					case Relation_Sym_VtoV: emptier = Hierarchy::find(RELATION_EMPTYVTOV_HL); par = 1; break;
 				}
 				if (emptier) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_EMPTY_HL));
 						Emit::code();
@@ -1236,7 +1236,7 @@ void Relations::compile_relation_records(void) {
 						break;
 				}
 				if (router) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_HL));
 						Emit::code();
@@ -1244,7 +1244,7 @@ void Relations::compile_relation_records(void) {
 							@<The ROUTE FIND task@>;
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(RELS_ROUTE_FIND_COUNT_HL));
 						Emit::code();
@@ -1288,7 +1288,7 @@ void Relations::compile_relation_records(void) {
 	}
 
 @<The TEST task@> =
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
 		asch = Calculus::Atoms::Compile::blank_asch();
 		i6s = BinaryPredicates::get_i6_schema(TEST_ATOM_TASK, dbp, &asch);
@@ -1297,14 +1297,14 @@ void Relations::compile_relation_records(void) {
 			i6_schema *fnsc = BinaryPredicates::get_term_as_function_of_other(bp, j);
 			if (fnsc) {
 				if (j == 0) {
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, X_s);
 						Calculus::Schemas::emit_val_expand_from_locals(fnsc, Y_lv, Y_lv);
 					Emit::up();
 					adapted = TRUE;
 				} else {
-					Emit::inv_primitive(eq_interp);
+					Emit::inv_primitive(Emit::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, Y_s);
 						Calculus::Schemas::emit_val_expand_from_locals(fnsc, X_lv, X_lv);
@@ -1325,9 +1325,9 @@ void Relations::compile_relation_records(void) {
 	Emit::rfalse();
 
 @<The ROUTE FIND task@> =
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
-		Emit::inv_primitive(indirect3_interp);
+		Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, router);
 			@<Expand the ID operand@>;
@@ -1348,12 +1348,12 @@ void Relations::compile_relation_records(void) {
 	}
 
 @<The ROUTE FIND COUNT task@> =
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 	if (follow) {
 		Emit::inv_call_iname(Hierarchy::find(RELFOLLOWVECTOR_HL));
 		Emit::down();
-			Emit::inv_primitive(indirect3_interp);
+			Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, router);
 				@<Expand the ID operand@>;
@@ -1364,7 +1364,7 @@ void Relations::compile_relation_records(void) {
 			Emit::val_symbol(K_value, Y_s);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(indirect4_interp);
+		Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, router);
 			@<Expand the ID operand@>;
@@ -1376,7 +1376,7 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The SHOW task@> =
-	Emit::inv_primitive(indirect2v_interp);
+	Emit::inv_primitive(Emit::opcode(INDIRECT2V_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, shower);
 		Emit::val_symbol(K_value, rr_s);
@@ -1385,14 +1385,14 @@ void Relations::compile_relation_records(void) {
 	Emit::rtrue();
 
 @<The EMPTY task@> =
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
-		Emit::inv_primitive(indirect3_interp);
+		Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, emptier);
 			Emit::val_symbol(K_value, rr_s);
 			Emit::val(K_truth_state, LITERAL_IVAL, (inter_t) par);
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, X_s);
 				Emit::val(K_number, LITERAL_IVAL, 1);
@@ -1401,16 +1401,16 @@ void Relations::compile_relation_records(void) {
 	Emit::up();
 
 @<The LOOKUP ANY task@> =
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
-		Emit::inv_primitive(or_interp);
+		Emit::inv_primitive(Emit::opcode(OR_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, Y_s);
 				Emit::val_iname(K_value, Hierarchy::find(RLANY_GET_X_HL));
 			Emit::up();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, Y_s);
 				Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
@@ -1438,7 +1438,7 @@ void Relations::compile_relation_records(void) {
 	int t = 0;
 	@<Write rels lookup list@>;
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 	Emit::up();
@@ -1453,7 +1453,7 @@ void Relations::compile_relation_records(void) {
 	int t = 1;
 	@<Write rels lookup list@>;
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, Y_s);
 	Emit::up();
@@ -1465,9 +1465,9 @@ void Relations::compile_relation_records(void) {
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
 
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
 			Emit::val_iname(K_value, Hierarchy::find(RLIST_ALL_X_HL));
@@ -1479,9 +1479,9 @@ void Relations::compile_relation_records(void) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, Y_s);
 					Emit::val_iname(K_value, Hierarchy::find(RLIST_ALL_Y_HL));
@@ -1495,7 +1495,7 @@ void Relations::compile_relation_records(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, X_s);
 	Emit::up();
@@ -1509,9 +1509,9 @@ void Relations::compile_relation_records(void) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(indirect4_interp);
+						Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
@@ -1526,9 +1526,9 @@ void Relations::compile_relation_records(void) {
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(if_interp);
+							Emit::inv_primitive(Emit::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(eq_interp);
+								Emit::inv_primitive(Emit::opcode(EQ_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, Y_s);
 									Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
@@ -1539,9 +1539,9 @@ void Relations::compile_relation_records(void) {
 								Emit::up();
 							Emit::up();
 
-							Emit::inv_primitive(if_interp);
+							Emit::inv_primitive(Emit::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(eq_interp);
+								Emit::inv_primitive(Emit::opcode(EQ_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, Y_s);
 									Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
@@ -1552,7 +1552,7 @@ void Relations::compile_relation_records(void) {
 								Emit::up();
 							Emit::up();
 
-							Emit::inv_primitive(return_interp);
+							Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, Z1_s);
 							Emit::up();
@@ -1563,9 +1563,9 @@ void Relations::compile_relation_records(void) {
 		}
 	}
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
 			Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_X_HL));
@@ -1576,9 +1576,9 @@ void Relations::compile_relation_records(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(eq_interp);
+		Emit::inv_primitive(Emit::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, Y_s);
 			Emit::val_iname(K_value, Hierarchy::find(RLANY_CAN_GET_Y_HL));
@@ -1591,7 +1591,7 @@ void Relations::compile_relation_records(void) {
 
 	if (K == NULL) Emit::rfalse();
 	else {
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::inv_call_iname(Hierarchy::find(DEFAULTVALUEOFKOV_HL));
 			Emit::down();
@@ -1609,9 +1609,9 @@ void Relations::compile_relation_records(void) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(indirect4_interp);
+						Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 							Emit::val_symbol(K_value, rr_s);
@@ -1652,9 +1652,9 @@ void Relations::compile_relation_records(void) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema_L, Z1_lv, Z2_lv, TRUE);
 					Calculus::Schemas::emit_expand_from_locals(&loop_schema_R, Z3_lv, Z4_lv, TRUE);
 
-							Emit::inv_primitive(if_interp);
+							Emit::inv_primitive(Emit::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(indirect4_interp);
+								Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP));
 								Emit::down();
 									Emit::val_iname(K_value, BinaryPredicates::handler_iname(dbp));
 									Emit::val_symbol(K_value, rr_s);
@@ -1744,7 +1744,7 @@ void Relations::IterateRelations(void) {
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
 		if (bp->record_needed) {
-			Emit::inv_primitive(indirect1v_interp);
+			Emit::inv_primitive(Emit::opcode(INDIRECT1V_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, callback_s);
 				Emit::val_iname(K_value, BinaryPredicates::iname(bp));
@@ -2332,18 +2332,18 @@ void Relations::compile_defined_relations(void) {
 	inter_symbol *cl_s = LocalVariables::add_named_call_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::add_named_call_as_symbol(I"pr");
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(ofclass_interp);
+		Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, obj_s);
 			Emit::val_symbol(K_value, cl_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
-				Emit::inv_primitive(propertyvalue_interp);
+				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, obj_s);
 					Emit::val_symbol(K_value, pr_s);
@@ -2351,7 +2351,7 @@ void Relations::compile_defined_relations(void) {
 			Emit::up();
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_nothing();
 	Emit::up();
@@ -2364,9 +2364,9 @@ void Relations::compile_defined_relations(void) {
 		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
 		if (rg->f0) {
 			if (rg->check_R) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, X_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_R));
@@ -2374,20 +2374,20 @@ void Relations::compile_defined_relations(void) {
 					Emit::code();
 					Emit::down();
 			}
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
 			Calculus::Schemas::emit_val_expand_from_locals(rg->f0, X_lv, X_lv);
 			Emit::up();
 			if (rg->check_R) {
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(return_interp);
+				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_nothing();
 				Emit::up();
 			}
 		} else {
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val_nothing();
 			Emit::up();
@@ -2402,9 +2402,9 @@ void Relations::compile_defined_relations(void) {
 		inter_symbol *X_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"X", "which is related to at most one object", &X_lv);
 		if (rg->f1) {
 			if (rg->check_L) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, X_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_L));
@@ -2412,20 +2412,20 @@ void Relations::compile_defined_relations(void) {
 					Emit::code();
 					Emit::down();
 			}
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
 			Calculus::Schemas::emit_val_expand_from_locals(rg->f1, X_lv, X_lv);
 			Emit::up();
 			if (rg->check_L) {
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(return_interp);
+				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_nothing();
 				Emit::up();
 			}
 		} else {
-			Emit::inv_primitive(return_interp);
+			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val_nothing();
 			Emit::up();
@@ -2440,14 +2440,14 @@ void Relations::compile_defined_relations(void) {
 		inter_symbol *L_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"L", "left member of pair", &L_lv);
 		inter_symbol *R_s = LocalVariables::add_internal_local_c_as_symbol_noting(I"R", "right member of pair", &R_lv);
 		if (rg->inner_test) {
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 
 				int downs = 0;
 				if (rg->check_L) {
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
-						Emit::inv_primitive(ofclass_interp);
+						Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, L_s);
 							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_L));
@@ -2455,9 +2455,9 @@ void Relations::compile_defined_relations(void) {
 					downs++;
 				}
 				if (rg->check_R) {
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
-						Emit::inv_primitive(ofclass_interp);
+						Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, R_s);
 							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_R));
@@ -2489,24 +2489,24 @@ void Relations::compile_defined_relations(void) {
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
 
 			if (downs > 0) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
 
 				if ((rg->check_L) && (rg->check_R)) {
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
 					downs = 2;
 				}
 
 				if (rg->check_L) {
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, L_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_L));
 					Emit::up();
 				}
 				if (rg->check_R) {
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, R_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_R));
@@ -2544,24 +2544,24 @@ void Relations::compile_defined_relations(void) {
 			if ((rg->check_L == NULL) && (rg->check_R == NULL)) downs = 0;
 
 			if (downs > 0) {
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
 
 				if ((rg->check_L) && (rg->check_R)) {
-					Emit::inv_primitive(and_interp);
+					Emit::inv_primitive(Emit::opcode(AND_BIP));
 					Emit::down();
 					downs = 2;
 				}
 
 				if (rg->check_L) {
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, L_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_L));
 					Emit::up();
 				}
 				if (rg->check_R) {
-					Emit::inv_primitive(ofclass_interp);
+					Emit::inv_primitive(Emit::opcode(OFCLASS_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, R_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(rg->check_R));
@@ -2608,7 +2608,7 @@ void Relations::compile_routine_to_decide(inter_name *rname,
 			"although the definition was properly formed - it is only "
 			"the part after 'when' which I can't follow.");
 	} else {
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 		Emit::up();

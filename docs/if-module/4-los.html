@@ -79,7 +79,7 @@
         <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">it_lv</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_pronoun</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">it_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">it_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
         <span class="identifier">Emit::down</span><span class="plain">();</span>
             <span class="identifier">LocalVariables::begin_condition_emit</span><span class="plain">();</span>
             <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">);</span>
@@ -92,7 +92,7 @@
             <span class="identifier">LocalVariables::end_condition_emit</span><span class="plain">();</span>
             <span class="identifier">Emit::code</span><span class="plain">();</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">LOS_RV_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">it_s</span><span class="plain">);</span>

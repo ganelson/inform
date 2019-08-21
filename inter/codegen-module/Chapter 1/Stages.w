@@ -45,6 +45,7 @@ void CodeGen::Stage::make_stages(void) {
 		stages_made = TRUE;
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG, FALSE);
 
+		CodeGen::Stage::new(I"prepare", CodeGen::Stage::run_prepare_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"read", CodeGen::Stage::run_read_stage, FILE_STAGE_ARG, TRUE);
 		CodeGen::Stage::new(I"move", CodeGen::Stage::run_move_stage, GENERAL_STAGE_ARG, TRUE);
 
@@ -67,6 +68,28 @@ the pipeline:
 =
 int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 	return FALSE;
+}
+
+int CodeGen::Stage::run_prepare_stage(pipeline_step *step) {
+	inter_tree *I = step->repository;
+	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
+	inter_error_message *E = NULL;
+	inter_symbol *plain_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_plain", &E);
+	Inter::PackageType::new_packagetype(&IBM, plain_name, 0, NULL);
+	inter_symbol *code_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_code", &E);
+	Inter::PackageType::new_packagetype(&IBM, code_name, 0, NULL);
+	inter_symbol *linkage_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_linkage", &E);
+	Inter::PackageType::new_packagetype(&IBM, linkage_name, 0, NULL);
+	inter_symbol *module_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_module", &E);
+	Inter::PackageType::new_packagetype(&IBM, module_name, 0, NULL);
+	Primitives::emit(I, &IBM);
+	inter_bookmark at_tail = Inter::Bookmarks::at_start_of_this_repository(I);
+	inter_package *main_p = NULL;
+	Inter::Package::new_package_named(&at_tail, I"main", FALSE, plain_name, 0, NULL, &main_p);
+	inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_p);
+	inter_package *template_p = NULL;
+	Inter::Package::new_package_named(&in_main, I"template", FALSE, module_name, 1, NULL, &template_p);
+	return TRUE;
 }
 
 int CodeGen::Stage::run_read_stage(pipeline_step *step) {

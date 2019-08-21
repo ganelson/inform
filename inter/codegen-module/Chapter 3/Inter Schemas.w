@@ -78,7 +78,7 @@ typedef struct inter_schema_node {
 	int node_marked;								/* used fleetingly during traverses */
 
 	int isn_type;									/* one of the |*_ISNT| values */
-	struct inter_symbol *isn_clarifier;				/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
+	inter_t isn_clarifier;							/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
 	int dir_clarifier;								/* for |DIRECTIVE_ISNT| only */
 	struct inter_schema_token *expression_tokens;	/* for |EXPRESSION_ISNT| only */
 
@@ -104,7 +104,7 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
 	isn->isn_type = isnt;
 
 	isn->expression_tokens = NULL;
-	isn->isn_clarifier = NULL;
+	isn->isn_clarifier = 0;
 	isn->dir_clarifier = -1;
 
 	isn->semicolon_terminated = FALSE;
@@ -232,7 +232,7 @@ typedef struct inter_schema_token {
 	int ist_type;								/* one of the |*_ISTT| values above */
 	struct text_stream *material;				/* textual form of token */
 
-	struct inter_symbol *operation_primitive;	/* |OPERATOR_ISTT| only: e.g. |plus_interp| for |+| */
+	inter_t operation_primitive;				/* |OPERATOR_ISTT| only: e.g. |PLUS_BIP| for |+| */
 	int reserved_word;							/* |RESERVED_ISTT| only: which one */
 	int constant_number;						/* |NUMBER_ISTT| only: if non-negative, value of number */
 	#ifdef CORE_MODULE
@@ -257,7 +257,7 @@ typedef struct inter_schema_token {
 } inter_schema_token;
 
 @ =
-inter_schema_token *InterSchemas::new_token(int type, text_stream *material, inter_symbol *operation_primitive, int reserved_word, int n) {
+inter_schema_token *InterSchemas::new_token(int type, text_stream *material, inter_t operation_primitive, int reserved_word, int n) {
 	inter_schema_token *t = CREATE(inter_schema_token);
 	t->ist_type = type;
 	t->material = Str::duplicate(material);
@@ -441,10 +441,10 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 	for (int d = 0; d < depth; d++) LOG("    ");
 	switch (isn->isn_type) {
 		case STATEMENT_ISNT:
-			LOG("* (statement) %S\n", (isn->isn_clarifier)?(isn->isn_clarifier->symbol_name):(I"<none>"));
+			LOG("* (statement) %S\n", Primitives::name(isn->isn_clarifier));
 			break;
 		case OPERATION_ISNT:
-			LOG("* (operation) %S\n", (isn->isn_clarifier)?(isn->isn_clarifier->symbol_name):(I"<none>"));
+			LOG("* (operation) %S\n", Primitives::name(isn->isn_clarifier));
 			break;
 		case CODE_ISNT:
 			LOG("* (code)");
@@ -814,14 +814,14 @@ out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolat
 	if (Str::len(current_raw)) {
 		switch (tokeniser_state) {
 			case WHITE_TOKSTATE:
-				InterSchemas::add_token(sch, InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", NULL, 0, -1));
+				InterSchemas::add_token(sch, InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
 				break;
 			case DQUOTED_TOKSTATE:
 				InterSchemas::de_escape_text(current_raw);
-				InterSchemas::add_token(sch, InterSchemas::new_token(DQUOTED_ISTT, current_raw, NULL, 0, -1));
+				InterSchemas::add_token(sch, InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
 				break;
 			case SQUOTED_TOKSTATE:
-				InterSchemas::add_token(sch, InterSchemas::new_token(SQUOTED_ISTT, current_raw, NULL, 0, -1));
+				InterSchemas::add_token(sch, InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
 				break;
 			default:
 				@<Look for individual tokens@>;
@@ -854,7 +854,7 @@ out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolat
 
 @<Expand a fragment of Inform 7 text@> =
 	if (Str::len(source_text_fragment) > 0) {
-		InterSchemas::add_token(sch, InterSchemas::new_token(I7_ISTT, source_text_fragment, NULL, 0, -1));
+		InterSchemas::add_token(sch, InterSchemas::new_token(I7_ISTT, source_text_fragment, 0, 0, -1));
 	}
 
 @ Material in braces sometimes indicates an inline command, but not always,
@@ -884,7 +884,7 @@ a "bracing".
 a bracing.
 
 @<Parse a bracing into an inline command@> =
-	inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, bracing, NULL, 0, -1);
+	inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, bracing, 0, 0, -1);
 	t->bracing = Str::duplicate(bracing);
 	t->command = Str::new();
 	t->operand = Str::new();
@@ -1041,7 +1041,7 @@ optional, operand in |operand2|.
 		@<Absorb raw material, if any@>;
 		TEMPORARY_TEXT(T);
 		for (int i=pos; i<=at; i++) PUT_TO(T, Str::get_at(from, i));
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, T, NULL, 0, -1);
+		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, T, 0, 0, -1);
 		t->bracing = Str::duplicate(T);
 		t->inline_command = substitute_ISINC;
 		t->inline_modifiers = iss_bitmap;
@@ -1051,7 +1051,7 @@ optional, operand in |operand2|.
 		DISCARD_TEXT(T);
 		pos = at;
 	} else if (c == '?') {
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*?", NULL, 0, -1);
+		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*?", 0, 0, -1);
 		t->bracing = I"*?";
 		t->inline_command = current_sentence_ISINC;
 		t->inline_modifiers = iss_bitmap;
@@ -1059,7 +1059,7 @@ optional, operand in |operand2|.
 		preceding_token = t;
 		pos = at;
 	} else if (c == '&') {
-		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*&", NULL, 0, -1);
+		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*&", 0, 0, -1);
 		t->bracing = I"*&";
 		t->inline_command = combine_ISINC;
 		t->inline_modifiers = iss_bitmap;
@@ -1253,7 +1253,7 @@ inclusive; we ignore an empty token.
 		for (int i = x; i <= y; i++) PUT_TO(T, Str::get_at(current_raw, i));
 
 		int is = RAW_ISTT;
-		inter_symbol *which = NULL;
+		inter_t which = 0;
 		int which_rw = 0, which_number = -1, which_quote = -1;
 		@<Identify this new token@>;
 
@@ -1373,46 +1373,46 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"}")) is = CLOSE_BRACE_ISTT;
 	if (Str::eq(T, I";")) is = DIVIDER_ISTT;
 
-	if (Str::eq(T, I".")) { is = OPERATOR_ISTT; which = propertyvalue_interp; }
-	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = propertyaddress_interp; }
-	if (Str::eq(T, I".#")) { is = OPERATOR_ISTT; which = propertylength_interp; }
+	if (Str::eq(T, I".")) { is = OPERATOR_ISTT; which = PROPERTYVALUE_BIP; }
+	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = PROPERTYADDRESS_BIP; }
+	if (Str::eq(T, I".#")) { is = OPERATOR_ISTT; which = PROPERTYLENGTH_BIP; }
 
-	if (Str::eq(T, I"=")) { is = OPERATOR_ISTT; which = store_interp; }
+	if (Str::eq(T, I"=")) { is = OPERATOR_ISTT; which = STORE_BIP; }
 
-	if (Str::eq(T, I"+")) { is = OPERATOR_ISTT; which = plus_interp; }
-	if (Str::eq(T, I"-")) { is = OPERATOR_ISTT; which = minus_interp; }
-	if (Str::eq(T, I"*")) { is = OPERATOR_ISTT; which = times_interp; }
-	if (Str::eq(T, I"/")) { is = OPERATOR_ISTT; which = divide_interp; }
-	if (Str::eq(T, I"%")) { is = OPERATOR_ISTT; which = modulo_interp; }
+	if (Str::eq(T, I"+")) { is = OPERATOR_ISTT; which = PLUS_BIP; }
+	if (Str::eq(T, I"-")) { is = OPERATOR_ISTT; which = MINUS_BIP; }
+	if (Str::eq(T, I"*")) { is = OPERATOR_ISTT; which = TIMES_BIP; }
+	if (Str::eq(T, I"/")) { is = OPERATOR_ISTT; which = DIVIDE_BIP; }
+	if (Str::eq(T, I"%")) { is = OPERATOR_ISTT; which = MODULO_BIP; }
 
-	if (Str::eq(T, I">")) { is = OPERATOR_ISTT; which = gt_interp; }
-	if (Str::eq(T, I">=")) { is = OPERATOR_ISTT; which = ge_interp; }
-	if (Str::eq(T, I"<")) { is = OPERATOR_ISTT; which = lt_interp; }
-	if (Str::eq(T, I"<=")) { is = OPERATOR_ISTT; which = le_interp; }
-	if (Str::eq(T, I"==")) { is = OPERATOR_ISTT; which = eq_interp; }
-	if (Str::eq(T, I"~=")) { is = OPERATOR_ISTT; which = ne_interp; }
+	if (Str::eq(T, I">")) { is = OPERATOR_ISTT; which = GT_BIP; }
+	if (Str::eq(T, I">=")) { is = OPERATOR_ISTT; which = GE_BIP; }
+	if (Str::eq(T, I"<")) { is = OPERATOR_ISTT; which = LT_BIP; }
+	if (Str::eq(T, I"<=")) { is = OPERATOR_ISTT; which = LE_BIP; }
+	if (Str::eq(T, I"==")) { is = OPERATOR_ISTT; which = EQ_BIP; }
+	if (Str::eq(T, I"~=")) { is = OPERATOR_ISTT; which = NE_BIP; }
 
-	if (Str::eq(T, I"~~")) { is = OPERATOR_ISTT; which = not_interp; }
-	if (Str::eq(T, I"&&")) { is = OPERATOR_ISTT; which = and_interp; }
-	if (Str::eq(T, I"||")) { is = OPERATOR_ISTT; which = or_interp; }
-	if (Str::eq(T, I"or")) { is = OPERATOR_ISTT; which = alternative_interp; }
+	if (Str::eq(T, I"~~")) { is = OPERATOR_ISTT; which = NOT_BIP; }
+	if (Str::eq(T, I"&&")) { is = OPERATOR_ISTT; which = AND_BIP; }
+	if (Str::eq(T, I"||")) { is = OPERATOR_ISTT; which = OR_BIP; }
+	if (Str::eq(T, I"or")) { is = OPERATOR_ISTT; which = ALTERNATIVE_BIP; }
 
-	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = ofclass_interp; }
-	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = has_interp; }
-	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = hasnt_interp; }
-	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = provides_interp; }
-	if (Str::eq(T, I"in")) { is = OPERATOR_ISTT; which = in_interp; }
-	if (Str::eq(T, I"notin")) { is = OPERATOR_ISTT; which = notin_interp; }
+	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = OFCLASS_BIP; }
+	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = HAS_BIP; }
+	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = HASNT_BIP; }
+	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = PROVIDES_BIP; }
+	if (Str::eq(T, I"in")) { is = OPERATOR_ISTT; which = IN_BIP; }
+	if (Str::eq(T, I"notin")) { is = OPERATOR_ISTT; which = NOTIN_BIP; }
 
-	if (Str::eq(T, I"|")) { is = OPERATOR_ISTT; which = bitwiseor_interp; }
-	if (Str::eq(T, I"&")) { is = OPERATOR_ISTT; which = bitwiseand_interp; }
-	if (Str::eq(T, I"~")) { is = OPERATOR_ISTT; which = bitwisenot_interp; }
+	if (Str::eq(T, I"|")) { is = OPERATOR_ISTT; which = BITWISEOR_BIP; }
+	if (Str::eq(T, I"&")) { is = OPERATOR_ISTT; which = BITWISEAND_BIP; }
+	if (Str::eq(T, I"~")) { is = OPERATOR_ISTT; which = BITWISENOT_BIP; }
 
-	if (Str::eq(T, I"++")) { is = OPERATOR_ISTT; which = postincrement_interp; }
-	if (Str::eq(T, I"--")) { is = OPERATOR_ISTT; which = postdecrement_interp; }
+	if (Str::eq(T, I"++")) { is = OPERATOR_ISTT; which = POSTINCREMENT_BIP; }
+	if (Str::eq(T, I"--")) { is = OPERATOR_ISTT; which = POSTDECREMENT_BIP; }
 
-	if (Str::eq(T, I"->")) { is = OPERATOR_ISTT; which = lookupbyte_interp; }
-	if (Str::eq(T, I"-->")) { is = OPERATOR_ISTT; which = lookup_interp; }
+	if (Str::eq(T, I"->")) { is = OPERATOR_ISTT; which = LOOKUPBYTE_BIP; }
+	if (Str::eq(T, I"-->")) { is = OPERATOR_ISTT; which = LOOKUP_BIP; }
 
 @h Stage 2.
 In the second half of the process, we apply a series of transformations to
@@ -1518,14 +1518,14 @@ int InterSchemas::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 				if ((prev) && (t->preinsert > 0)) {
 					t->preinsert--;
 					inter_schema_token *open_b =
-						InterSchemas::new_token(OPEN_BRACE_ISTT, I"{", NULL, 0, -1);
+						InterSchemas::new_token(OPEN_BRACE_ISTT, I"{", 0, 0, -1);
 					InterSchemas::add_token_after(open_b, prev);
 					changed = TRUE;
 				}
 				if (t->postinsert > 0) {
 					t->postinsert--;
 					inter_schema_token *close_b =
-						InterSchemas::new_token(CLOSE_BRACE_ISTT, I"}", NULL, 0, -1);
+						InterSchemas::new_token(CLOSE_BRACE_ISTT, I"}", 0, 0, -1);
 					InterSchemas::add_token_after(close_b, t);
 					changed = TRUE;
 				}
@@ -1889,9 +1889,9 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 					isn->expression_tokens = NULL;
 					isn->isn_type = STATEMENT_ISNT;
 					if (defaulter)
-						isn->isn_clarifier = default_interp;
+						isn->isn_clarifier = DEFAULT_BIP;
 					else
-						isn->isn_clarifier = case_interp;
+						isn->isn_clarifier = CASE_BIP;
 
 					inter_schema_node *sw_code_exp = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					sw_code_exp->expression_tokens = n->next;
@@ -1932,12 +1932,12 @@ int InterSchemas::splitcases(inter_schema_node *par, inter_schema_node *isn) {
 @ =
 int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
-		if ((isn->isn_clarifier == case_interp) && (isn->child_node)) {
+		if ((isn->isn_clarifier == CASE_BIP) && (isn->child_node)) {
 			inter_schema_node *A = isn->child_node;
 			inter_schema_node *B = isn->child_node->next_node;
 			if ((A) && (B) && (B->next_node)) {
 				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
-				C->isn_clarifier = alternativecase_interp;
+				C->isn_clarifier = ALTERNATIVECASE_BIP;
 				C->child_node = A;
 				A->parent_node = C; B->parent_node = C;
 				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
@@ -1954,7 +1954,7 @@ int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn)
 int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
-			inter_symbol *subordinate_to = NULL;
+			inter_t subordinate_to = 0;
 			inter_schema_token *operand1 = NULL, *operand2 = NULL;
 			inter_schema_node *operand2_node = NULL;
 			int dangle = NOT_APPLICABLE;
@@ -1963,7 +1963,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				switch (isn->expression_tokens->reserved_word) {
 					case PRINT_I6RW:
 					case PRINTRET_I6RW:
-						subordinate_to = printnumber_interp;
+						subordinate_to = PRINTNUMBER_BIP;
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
@@ -1977,60 +1977,60 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 									n = n->next;
 									while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 									if (Str::eq(pr->material, I"address")) {
-										subordinate_to = printaddress_interp;
+										subordinate_to = PRINTADDRESS_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"number")) {
-										subordinate_to = printnlnumber_interp;
+										subordinate_to = PRINTNLNUMBER_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"char")) {
-										subordinate_to = printchar_interp;
+										subordinate_to = PRINTCHAR_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"string")) {
-										subordinate_to = printstring_interp;
+										subordinate_to = PRINTSTRING_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"name")) {
-										subordinate_to = printname_interp;
+										subordinate_to = PRINTNAME_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"object")) {
-										subordinate_to = printobj_interp;
+										subordinate_to = PRINTOBJ_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"property")) {
-										subordinate_to = printproperty_interp;
+										subordinate_to = PRINTPROPERTY_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"the")) {
-										subordinate_to = printdef_interp;
+										subordinate_to = PRINTDEF_BIP;
 										operand1 = n;
 									} else if (Str::eq(pr->material, I"The")) {
-										subordinate_to = printcdef_interp;
+										subordinate_to = PRINTCDEF_BIP;
 										operand1 = n;
 									} else if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) {
-										subordinate_to = printindef_interp;
+										subordinate_to = PRINTINDEF_BIP;
 										operand1 = n;
 									} else if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) {
-										subordinate_to = printcindef_interp;
+										subordinate_to = PRINTCINDEF_BIP;
 										operand1 = n;
 									} else {
 										isn->expression_tokens = pr;
 										inter_schema_token *open_b =
-											InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", NULL, 0, -1);
+											InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
 										InterSchemas::add_token_after(open_b, isn->expression_tokens);
 										open_b->next = n;
 										n = open_b;
 										while ((n) && (n->next)) n = n->next;
 										inter_schema_token *close_b =
-											InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", NULL, 0, -1);
+											InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
 										InterSchemas::add_token_after(close_b, n);
-										subordinate_to = NULL;
+										subordinate_to = 0;
 										operand1 = NULL;
 									}
 								}
 							}
 						}
-						if (subordinate_to == printnumber_interp) {
+						if (subordinate_to == PRINTNUMBER_BIP) {
 							inter_schema_token *n = isn->expression_tokens->next;
 							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 							if ((n) && (n->ist_type == DQUOTED_ISTT)) {
-								subordinate_to = print_interp;
+								subordinate_to = PRINT_BIP;
 								InterSchemas::de_escape_text(n->material);
 							}
 						}
@@ -2038,31 +2038,31 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							inter_schema_node *save_next = isn->next_node;
 							isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
 							isn->next_node->parent_node = isn->parent_node;
-							isn->next_node->isn_clarifier = print_interp;
+							isn->next_node->isn_clarifier = PRINT_BIP;
 							isn->next_node->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 							isn->next_node->child_node->parent_node = isn->next_node;
-							InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", NULL, 0, -1));
+							InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
 							isn->next_node->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
 							isn->next_node->next_node->parent_node = isn->parent_node;
-							isn->next_node->next_node->isn_clarifier = return_interp;
+							isn->next_node->next_node->isn_clarifier = RETURN_BIP;
 							isn->next_node->next_node->next_node = save_next;
 						}
 						break;
 					case STYLE_I6RW: {
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (Str::eq(n->material, I"roman"))) subordinate_to = styleroman_interp;
-						if ((n) && (Str::eq(n->material, I"bold"))) subordinate_to = stylebold_interp;
-						if ((n) && (Str::eq(n->material, I"underline"))) subordinate_to = styleunderline_interp;
-						if ((n) && (Str::eq(n->material, I"reverse"))) subordinate_to = stylereverse_interp;
+						if ((n) && (Str::eq(n->material, I"roman"))) subordinate_to = STYLEROMAN_BIP;
+						if ((n) && (Str::eq(n->material, I"bold"))) subordinate_to = STYLEBOLD_BIP;
+						if ((n) && (Str::eq(n->material, I"underline"))) subordinate_to = STYLEUNDERLINE_BIP;
+						if ((n) && (Str::eq(n->material, I"reverse"))) subordinate_to = STYLEREVERSE_BIP;
 						if (subordinate_to) isn->expression_tokens->next = NULL;
 						break;
 					}
 					case INVERSION_I6RW:
-						subordinate_to = inversion_interp;
+						subordinate_to = INVERSION_BIP;
 						break;
 					case FONT_I6RW: {
-						subordinate_to = font_interp;
+						subordinate_to = FONT_BIP;
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						if ((n) && (Str::eq(n->material, I"on"))) dangle = 1;
@@ -2070,13 +2070,13 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						break;
 					}
 					case OBJECTLOOP_I6RW:
-						subordinate_to = objectloop_interp;
+						subordinate_to = OBJECTLOOP_BIP;
 						break;
 					case SWITCH_I6RW:
-						subordinate_to = switch_interp;
+						subordinate_to = SWITCH_BIP;
 						break;
 					case IF_I6RW: {
-						subordinate_to = if_interp;
+						subordinate_to = IF_BIP;
 						inter_schema_token *n = isn->expression_tokens->next;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						operand1 = n;
@@ -2089,7 +2089,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 							operand2 = n;
 							if (n) {
-								subordinate_to = ifelse_interp;
+								subordinate_to = IFELSE_BIP;
 								operand2_node = next_isn->child_node;
 							}
 							isn->next_node = next_isn->next_node;
@@ -2097,13 +2097,13 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						break;
 					}
 					case FOR_I6RW:
-						subordinate_to = for_interp;
+						subordinate_to = FOR_BIP;
 						break;
 					case WHILE_I6RW:
-						subordinate_to = while_interp;
+						subordinate_to = WHILE_BIP;
 						break;
 					case DO_I6RW:
-						subordinate_to = do_interp;
+						subordinate_to = DO_BIP;
 						inter_schema_node *next_isn = isn->next_node;
 						if ((next_isn) && (next_isn->expression_tokens) &&
 							(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
@@ -2117,36 +2117,36 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						}
 						break;
 					case JUMP_I6RW:
-						subordinate_to = jump_interp;
+						subordinate_to = JUMP_BIP;
 						break;
 					case RETURN_I6RW:
-						subordinate_to = return_interp;
+						subordinate_to = RETURN_BIP;
 						break;
 					case RTRUE_I6RW:
-						subordinate_to = return_interp;
+						subordinate_to = RETURN_BIP;
 						dangle = TRUE;
 						break;
 					case RFALSE_I6RW:
-						subordinate_to = return_interp;
+						subordinate_to = RETURN_BIP;
 						dangle = FALSE;
 						break;
 					case BREAK_I6RW:
-						subordinate_to = break_interp;
+						subordinate_to = BREAK_BIP;
 						break;
 					case CONTINUE_I6RW:
-						subordinate_to = continue_interp;
+						subordinate_to = CONTINUE_BIP;
 						break;
 					case QUIT_I6RW:
-						subordinate_to = quit_interp;
+						subordinate_to = QUIT_BIP;
 						break;
 					case RESTORE_I6RW:
-						subordinate_to = restore_interp;
+						subordinate_to = RESTORE_BIP;
 						break;
 					case SPACES_I6RW:
-						subordinate_to = spaces_interp;
+						subordinate_to = SPACES_BIP;
 						break;
 					case NEWLINE_I6RW:
-						subordinate_to = print_interp;
+						subordinate_to = PRINT_BIP;
 						dangle_text = I"\n";
 						break;
 					case MOVE_I6RW: {
@@ -2164,7 +2164,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							}
 							n = n->next;
 						}
-						if ((operand1) && (operand2)) subordinate_to = move_interp;
+						if ((operand1) && (operand2)) subordinate_to = MOVE_BIP;
 						break;
 					}
 					case READ_I6RW: {
@@ -2176,11 +2176,11 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						operand2 = n;
 						operand1->next = NULL;
 						operand2->next = NULL;
-						if ((operand1) && (operand2)) subordinate_to = read_interp;
+						if ((operand1) && (operand2)) subordinate_to = READ_BIP;
 						break;
 					}
 					case REMOVE_I6RW:
-						subordinate_to = remove_interp;
+						subordinate_to = REMOVE_BIP;
 						break;
 					case GIVE_I6RW: {
 						inter_schema_token *n = isn->expression_tokens->next;
@@ -2189,11 +2189,11 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						n = n->next;
 						operand1->next = NULL;
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (n->ist_type == OPERATOR_ISTT) && (n->operation_primitive == bitwisenot_interp)) {
-							subordinate_to = take_interp;
+						if ((n) && (n->ist_type == OPERATOR_ISTT) && (n->operation_primitive == BITWISENOT_BIP)) {
+							subordinate_to = TAKE_BIP;
 							n = n->next;
 						} else {
-							subordinate_to = give_interp;
+							subordinate_to = GIVE_BIP;
 						}
 						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
 						operand2 = n;
@@ -2213,11 +2213,11 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 						n->owner = new_isn;
 				}
 				isn->expression_tokens = NULL;
-				subordinate_to = NULL;
+				subordinate_to = 0;
 			}
 			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == OPCODE_ISTT)) {
-				if (Str::eq(isn->expression_tokens->material, I"@push")) subordinate_to = push_interp;
-				else if (Str::eq(isn->expression_tokens->material, I"@pull")) subordinate_to = pull_interp;
+				if (Str::eq(isn->expression_tokens->material, I"@push")) subordinate_to = PUSH_BIP;
+				else if (Str::eq(isn->expression_tokens->material, I"@pull")) subordinate_to = PULL_BIP;
 				else {
 					isn->isn_type = ASSEMBLY_ISNT;
 					inter_schema_node *prev_node = NULL;
@@ -2227,7 +2227,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 							new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
 							if (l->operation_primitive) {
 								l->ist_type = IDENTIFIER_ISTT;
-								l->operation_primitive = NULL;
+								l->operation_primitive = 0;
 							}
 							if ((n) && (Str::eq(l->material, I"-"))) {
 								l->material = Str::new();
@@ -2273,17 +2273,17 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 				if (dangle != NOT_APPLICABLE) {
 					text_stream *T = Str::new();
 					WRITE_TO(T, "%d", dangle);
-					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, NULL, 0, -1);
+					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
 					new_isn->expression_tokens->owner = new_isn;
 				}
 				if (dangle_text) {
-					new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, NULL, 0, -1);
+					new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
 					new_isn->expression_tokens->owner = new_isn;
 					InterSchemas::de_escape_text(new_isn->expression_tokens->material);
 				}
 				if (operand2) {
 					inter_schema_node *new_new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					if (subordinate_to == ifelse_interp) {
+					if (subordinate_to == IFELSE_BIP) {
 						new_new_isn->semicolon_terminated = TRUE;
 						new_new_isn->next_node = new_isn->next_node->next_node;
 						new_isn->next_node->next_node = new_new_isn;
@@ -2320,7 +2320,7 @@ int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node 
 int InterSchemas::treat_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if ((isn->isn_type == STATEMENT_ISNT) &&
-			(isn->isn_clarifier == for_interp) &&
+			(isn->isn_clarifier == FOR_BIP) &&
 			(isn->node_marked == FALSE)) {
 			inter_schema_node *predicates = isn->child_node;
 			if ((predicates == NULL) || (predicates->isn_type != EXPRESSION_ISNT))
@@ -2390,11 +2390,11 @@ int InterSchemas::treat_constructs(inter_schema_node *par, inter_schema_node *is
 int InterSchemas::add_missing_bodies(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		int req = 0;
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == if_interp)) req = 2;
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == ifelse_interp)) req = 3;
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == for_interp)) req = 4;
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == while_interp)) req = 2;
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == objectloop_interp)) req = 2;
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == IF_BIP)) req = 2;
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == IFELSE_BIP)) req = 3;
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == FOR_BIP)) req = 4;
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == WHILE_BIP)) req = 2;
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == OBJECTLOOP_BIP)) req = 2;
 		if ((req > 0) && (isn->node_marked == FALSE)) {
 			int actual = 0;
 			for (inter_schema_node *ch = isn->child_node; ch; ch=ch->next_node) actual++;
@@ -2511,8 +2511,8 @@ int InterSchemas::outer_subexpressions(inter_schema_node *par, inter_schema_node
 	return FALSE;
 }
 
-int InterSchemas::prefer_over(inter_symbol *p, inter_symbol *existing) {
-	if (existing == NULL) return TRUE;
+int InterSchemas::prefer_over(inter_t p, inter_t existing) {
+	if (existing == 0) return TRUE;
 	if (InterSchemas::precedence(p) < InterSchemas::precedence(existing)) return TRUE;
 	if ((InterSchemas::precedence(p) == InterSchemas::precedence(existing)) &&
 		(InterSchemas::right_associative(p)) &&
@@ -2527,13 +2527,13 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 			isn->node_marked = TRUE;
 			inter_schema_token *n = isn->expression_tokens;
 			int bl = 0;
-			inter_symbol *best_operator = NULL;
+			inter_t best_operator = 0;
 			inter_schema_token *break_at = NULL;
 			while (n) {
 				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
 				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
 				if ((bl == 0) && (n->ist_type == OPERATOR_ISTT)) {
-					inter_symbol *this_operator = n->operation_primitive;
+					inter_t this_operator = n->operation_primitive;
 					if (InterSchemas::prefer_over(this_operator, best_operator)) {
 						break_at = n; best_operator = this_operator;
 					}
@@ -2560,9 +2560,9 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 					new_isn->parent_node = isn;
 					has_operand_before = TRUE;
 				} else {
-					if (best_operator == in_interp) {
+					if (best_operator == IN_BIP) {
 						break_at->ist_type = IDENTIFIER_ISTT;
-						break_at->operation_primitive = NULL;
+						break_at->operation_primitive = 0;
 						break_at = NULL;
 					}
 				}
@@ -2589,21 +2589,21 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 					isn->isn_type = OPERATION_ISNT;
 					isn->expression_tokens = NULL;
 					isn->isn_clarifier = break_at->operation_primitive;
-					if ((break_at->operation_primitive == minus_interp) && (has_operand_before == FALSE))
-						isn->isn_clarifier = unaryminus_interp;
-					if ((break_at->operation_primitive == postincrement_interp) && (has_operand_before == FALSE))
-						isn->isn_clarifier = preincrement_interp;
-					if ((break_at->operation_primitive == postdecrement_interp) && (has_operand_before == FALSE))
-						isn->isn_clarifier = predecrement_interp;
-					if ((break_at->operation_primitive == propertyvalue_interp) && (has_operand_before == FALSE)) {
+					if ((break_at->operation_primitive == MINUS_BIP) && (has_operand_before == FALSE))
+						isn->isn_clarifier = UNARYMINUS_BIP;
+					if ((break_at->operation_primitive == POSTINCREMENT_BIP) && (has_operand_before == FALSE))
+						isn->isn_clarifier = PREINCREMENT_BIP;
+					if ((break_at->operation_primitive == POSTDECREMENT_BIP) && (has_operand_before == FALSE))
+						isn->isn_clarifier = PREDECREMENT_BIP;
+					if ((break_at->operation_primitive == PROPERTYVALUE_BIP) && (has_operand_before == FALSE)) {
 						isn->isn_type = LABEL_ISNT;
-						isn->isn_clarifier = NULL;
+						isn->isn_clarifier = 0;
 					} else {
 						int a = 0;
 						if (has_operand_before) a++;
 						if (has_operand_after) a++;
 						if (a != InterSchemas::arity(isn->isn_clarifier)) {
-							LOG("Seem to have arity %d with isn %S\n", a, isn->isn_clarifier->symbol_name);
+							LOG("Seem to have arity %d with isn %S\n", a, Primitives::name(isn->isn_clarifier));
 							LOG("$1\n", isn->parent_schema);
 							internal_error("bad arity");
 						}
@@ -2708,10 +2708,10 @@ int InterSchemas::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 @ =
 int InterSchemas::implied_return_values(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == return_interp) && (isn->child_node == FALSE)) {
+		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == RETURN_BIP) && (isn->child_node == FALSE)) {
 			isn->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 			isn->child_node->parent_node = isn;
-			isn->child_node->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", NULL, 0, -1);
+			isn->child_node->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", 0, 0, -1);
 			isn->child_node->expression_tokens->owner = isn->child_node;
 			return TRUE;
 		}
@@ -2723,12 +2723,12 @@ int InterSchemas::implied_return_values(inter_schema_node *par, inter_schema_nod
 @ =
 int InterSchemas::message_calls(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
-		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == propertyvalue_interp) &&
+		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == PROPERTYVALUE_BIP) &&
 			(isn->child_node) && (isn->child_node->next_node) && (isn->child_node->next_node->isn_type == CALL_ISNT)) {
 			inter_schema_node *obj = isn->child_node;
 			inter_schema_node *message = isn->child_node->next_node->child_node;
 			inter_schema_node *args = isn->child_node->next_node->child_node->next_node;
-			isn->isn_type = MESSAGE_ISNT; isn->isn_clarifier = NULL;
+			isn->isn_type = MESSAGE_ISNT; isn->isn_clarifier = 0;
 			obj->next_node = message; message->parent_node = isn; message->next_node = args;
 			if (message->isn_type == EXPRESSION_ISNT) {
 				inter_schema_token *n = message->expression_tokens;
@@ -2786,233 +2786,233 @@ The superclass operator |::| is not allowed in schemas, but nor is it needed.
 @d UNPRECEDENTED_OPERATOR 10000
 
 =
-int InterSchemas::precedence(inter_symbol *O) {
-	if (O == store_interp) return 1;
+int InterSchemas::precedence(inter_t O) {
+	if (O == STORE_BIP) return 1;
 
-	if (O == and_interp) return 2;
-	if (O == or_interp) return 2;
-	if (O == not_interp) return 2;
+	if (O == AND_BIP) return 2;
+	if (O == OR_BIP) return 2;
+	if (O == NOT_BIP) return 2;
 
-	if (O == eq_interp) return 3;
-	if (O == gt_interp) return 3;
-	if (O == ge_interp) return 3;
-	if (O == lt_interp) return 3;
-	if (O == le_interp) return 3;
-	if (O == ne_interp) return 3;
-	if (O == has_interp) return 3;
-	if (O == hasnt_interp) return 3;
-	if (O == ofclass_interp) return 3;
-	if (O == provides_interp) return 3;
-	if (O == in_interp) return 3;
-	if (O == notin_interp) return 3;
+	if (O == EQ_BIP) return 3;
+	if (O == GT_BIP) return 3;
+	if (O == GE_BIP) return 3;
+	if (O == LT_BIP) return 3;
+	if (O == LE_BIP) return 3;
+	if (O == NE_BIP) return 3;
+	if (O == HAS_BIP) return 3;
+	if (O == HASNT_BIP) return 3;
+	if (O == OFCLASS_BIP) return 3;
+	if (O == PROVIDES_BIP) return 3;
+	if (O == IN_BIP) return 3;
+	if (O == NOTIN_BIP) return 3;
 
-	if (O == alternative_interp) return 4;
-	if (O == alternativecase_interp) return 4;
+	if (O == ALTERNATIVE_BIP) return 4;
+	if (O == ALTERNATIVECASE_BIP) return 4;
 
-	if (O == plus_interp) return 5;
-	if (O == minus_interp) return 5;
+	if (O == PLUS_BIP) return 5;
+	if (O == MINUS_BIP) return 5;
 
-	if (O == times_interp) return 6;
-	if (O == divide_interp) return 6;
-	if (O == modulo_interp) return 6;
-	if (O == bitwiseand_interp) return 6;
-	if (O == bitwiseor_interp) return 6;
-	if (O == bitwisenot_interp) return 6;
+	if (O == TIMES_BIP) return 6;
+	if (O == DIVIDE_BIP) return 6;
+	if (O == MODULO_BIP) return 6;
+	if (O == BITWISEAND_BIP) return 6;
+	if (O == BITWISEOR_BIP) return 6;
+	if (O == BITWISENOT_BIP) return 6;
 
-	if (O == lookup_interp) return 7;
-	if (O == lookupbyte_interp) return 7;
+	if (O == LOOKUP_BIP) return 7;
+	if (O == LOOKUPBYTE_BIP) return 7;
 
-	if (O == unaryminus_interp) return 8;
+	if (O == UNARYMINUS_BIP) return 8;
 
-	if (O == preincrement_interp) return 9;
-	if (O == predecrement_interp) return 9;
-	if (O == postincrement_interp) return 9;
-	if (O == postdecrement_interp) return 9;
+	if (O == PREINCREMENT_BIP) return 9;
+	if (O == PREDECREMENT_BIP) return 9;
+	if (O == POSTINCREMENT_BIP) return 9;
+	if (O == POSTDECREMENT_BIP) return 9;
 
-	if (O == propertyaddress_interp) return 10;
-	if (O == propertylength_interp) return 10;
+	if (O == PROPERTYADDRESS_BIP) return 10;
+	if (O == PROPERTYLENGTH_BIP) return 10;
 
-	if (O == propertyvalue_interp) return 12;
+	if (O == PROPERTYVALUE_BIP) return 12;
 
 	return UNPRECEDENTED_OPERATOR;
 }
 
-int InterSchemas::first_operand_ref(inter_symbol *O) {
-	if (O == store_interp) return TRUE;
-	if (O == preincrement_interp) return TRUE;
-	if (O == predecrement_interp) return TRUE;
-	if (O == postincrement_interp) return TRUE;
-	if (O == postdecrement_interp) return TRUE;
+int InterSchemas::first_operand_ref(inter_t O) {
+	if (O == STORE_BIP) return TRUE;
+	if (O == PREINCREMENT_BIP) return TRUE;
+	if (O == PREDECREMENT_BIP) return TRUE;
+	if (O == POSTINCREMENT_BIP) return TRUE;
+	if (O == POSTDECREMENT_BIP) return TRUE;
 	return FALSE;
 }
 
-text_stream *InterSchemas::text_form(inter_symbol *O) {
-	if (O == store_interp) return I"=";
+text_stream *InterSchemas::text_form(inter_t O) {
+	if (O == STORE_BIP) return I"=";
 
-	if (O == and_interp) return I"&&";
-	if (O == or_interp) return I"||";
-	if (O == not_interp) return I"~~";
+	if (O == AND_BIP) return I"&&";
+	if (O == OR_BIP) return I"||";
+	if (O == NOT_BIP) return I"~~";
 
-	if (O == eq_interp) return I"==";
-	if (O == gt_interp) return I">";
-	if (O == ge_interp) return I">=";
-	if (O == lt_interp) return I"<";
-	if (O == le_interp) return I"<=";
-	if (O == ne_interp) return I"~=";
-	if (O == has_interp) return I"has";
-	if (O == hasnt_interp) return I"hasnt";
-	if (O == ofclass_interp) return I"ofclass";
-	if (O == provides_interp) return I"provides";
-	if (O == in_interp) return I"in";
-	if (O == notin_interp) return I"notin";
+	if (O == EQ_BIP) return I"==";
+	if (O == GT_BIP) return I">";
+	if (O == GE_BIP) return I">=";
+	if (O == LT_BIP) return I"<";
+	if (O == LE_BIP) return I"<=";
+	if (O == NE_BIP) return I"~=";
+	if (O == HAS_BIP) return I"has";
+	if (O == HASNT_BIP) return I"hasnt";
+	if (O == OFCLASS_BIP) return I"ofclass";
+	if (O == PROVIDES_BIP) return I"provides";
+	if (O == IN_BIP) return I"in";
+	if (O == NOTIN_BIP) return I"notin";
 
-	if (O == alternative_interp) return I"or";
+	if (O == ALTERNATIVE_BIP) return I"or";
 
-	if (O == plus_interp) return I"+";
-	if (O == minus_interp) return I"-";
+	if (O == PLUS_BIP) return I"+";
+	if (O == MINUS_BIP) return I"-";
 
-	if (O == times_interp) return I"*";
-	if (O == divide_interp) return I"/";
-	if (O == modulo_interp) return I"%";
-	if (O == bitwiseand_interp) return I"&";
-	if (O == bitwiseor_interp) return I"|";
-	if (O == bitwisenot_interp) return I"~";
+	if (O == TIMES_BIP) return I"*";
+	if (O == DIVIDE_BIP) return I"/";
+	if (O == MODULO_BIP) return I"%";
+	if (O == BITWISEAND_BIP) return I"&";
+	if (O == BITWISEOR_BIP) return I"|";
+	if (O == BITWISENOT_BIP) return I"~";
 
-	if (O == lookup_interp) return I"-->";
-	if (O == lookupbyte_interp) return I"->";
+	if (O == LOOKUP_BIP) return I"-->";
+	if (O == LOOKUPBYTE_BIP) return I"->";
 
-	if (O == unaryminus_interp) return I"-";
+	if (O == UNARYMINUS_BIP) return I"-";
 
-	if (O == preincrement_interp) return I"++";
-	if (O == predecrement_interp) return I"--";
-	if (O == postincrement_interp) return I"++";
-	if (O == postdecrement_interp) return I"--";
+	if (O == PREINCREMENT_BIP) return I"++";
+	if (O == PREDECREMENT_BIP) return I"--";
+	if (O == POSTINCREMENT_BIP) return I"++";
+	if (O == POSTDECREMENT_BIP) return I"--";
 
-	if (O == propertyaddress_interp) return I".&";
-	if (O == propertylength_interp) return I".#";
+	if (O == PROPERTYADDRESS_BIP) return I".&";
+	if (O == PROPERTYLENGTH_BIP) return I".#";
 
-	if (O == propertyvalue_interp) return I".";
+	if (O == PROPERTYVALUE_BIP) return I".";
 
 	return I"???";
 }
 
-int InterSchemas::arity(inter_symbol *O) {
-	if (O == store_interp) return 2;
+int InterSchemas::arity(inter_t O) {
+	if (O == STORE_BIP) return 2;
 
-	if (O == and_interp) return 2;
-	if (O == or_interp) return 2;
-	if (O == not_interp) return 1;
+	if (O == AND_BIP) return 2;
+	if (O == OR_BIP) return 2;
+	if (O == NOT_BIP) return 1;
 
-	if (O == alternative_interp) return 2;
-	if (O == alternativecase_interp) return 2;
+	if (O == ALTERNATIVE_BIP) return 2;
+	if (O == ALTERNATIVECASE_BIP) return 2;
 
-	if (O == eq_interp) return 2;
-	if (O == gt_interp) return 2;
-	if (O == ge_interp) return 2;
-	if (O == lt_interp) return 2;
-	if (O == le_interp) return 2;
-	if (O == ne_interp) return 2;
-	if (O == has_interp) return 2;
-	if (O == hasnt_interp) return 2;
-	if (O == ofclass_interp) return 2;
-	if (O == provides_interp) return 2;
-	if (O == in_interp) return 2;
-	if (O == notin_interp) return 2;
+	if (O == EQ_BIP) return 2;
+	if (O == GT_BIP) return 2;
+	if (O == GE_BIP) return 2;
+	if (O == LT_BIP) return 2;
+	if (O == LE_BIP) return 2;
+	if (O == NE_BIP) return 2;
+	if (O == HAS_BIP) return 2;
+	if (O == HASNT_BIP) return 2;
+	if (O == OFCLASS_BIP) return 2;
+	if (O == PROVIDES_BIP) return 2;
+	if (O == IN_BIP) return 2;
+	if (O == NOTIN_BIP) return 2;
 
-	if (O == plus_interp) return 2;
-	if (O == minus_interp) return 2;
+	if (O == PLUS_BIP) return 2;
+	if (O == MINUS_BIP) return 2;
 
-	if (O == times_interp) return 2;
-	if (O == divide_interp) return 2;
-	if (O == modulo_interp) return 2;
-	if (O == bitwiseand_interp) return 2;
-	if (O == bitwiseor_interp) return 2;
-	if (O == bitwisenot_interp) return 1;
+	if (O == TIMES_BIP) return 2;
+	if (O == DIVIDE_BIP) return 2;
+	if (O == MODULO_BIP) return 2;
+	if (O == BITWISEAND_BIP) return 2;
+	if (O == BITWISEOR_BIP) return 2;
+	if (O == BITWISENOT_BIP) return 1;
 
-	if (O == lookup_interp) return 2;
-	if (O == lookupbyte_interp) return 2;
+	if (O == LOOKUP_BIP) return 2;
+	if (O == LOOKUPBYTE_BIP) return 2;
 
-	if (O == unaryminus_interp) return 1;
+	if (O == UNARYMINUS_BIP) return 1;
 
-	if (O == preincrement_interp) return 1;
-	if (O == predecrement_interp) return 1;
-	if (O == postincrement_interp) return 1;
-	if (O == postdecrement_interp) return 1;
+	if (O == PREINCREMENT_BIP) return 1;
+	if (O == PREDECREMENT_BIP) return 1;
+	if (O == POSTINCREMENT_BIP) return 1;
+	if (O == POSTDECREMENT_BIP) return 1;
 
-	if (O == propertyaddress_interp) return 2;
-	if (O == propertylength_interp) return 2;
-	if (O == propertyvalue_interp) return 2;
+	if (O == PROPERTYADDRESS_BIP) return 2;
+	if (O == PROPERTYLENGTH_BIP) return 2;
+	if (O == PROPERTYVALUE_BIP) return 2;
 
 	return 0;
 }
 
-int InterSchemas::prefix(inter_symbol *O) {
-	if (O == not_interp) return TRUE;
-	if (O == bitwisenot_interp) return TRUE;
-	if (O == unaryminus_interp) return TRUE;
+int InterSchemas::prefix(inter_t O) {
+	if (O == NOT_BIP) return TRUE;
+	if (O == BITWISENOT_BIP) return TRUE;
+	if (O == UNARYMINUS_BIP) return TRUE;
 
-	if (O == preincrement_interp) return TRUE;
-	if (O == predecrement_interp) return TRUE;
-	if (O == postincrement_interp) return FALSE;
-	if (O == postdecrement_interp) return FALSE;
+	if (O == PREINCREMENT_BIP) return TRUE;
+	if (O == PREDECREMENT_BIP) return TRUE;
+	if (O == POSTINCREMENT_BIP) return FALSE;
+	if (O == POSTDECREMENT_BIP) return FALSE;
 
 	return NOT_APPLICABLE;
 }
 
-int InterSchemas::right_associative(inter_symbol *O) {
-	if (O == store_interp) return FALSE;
+int InterSchemas::right_associative(inter_t O) {
+	if (O == STORE_BIP) return FALSE;
 	return TRUE;
 }
 
 @h Metadata on inter primitives.
 
 =
-int InterSchemas::ip_arity(inter_symbol *O) {
+int InterSchemas::ip_arity(inter_t O) {
 	int arity = 1;
-	if ((O == styleroman_interp) ||
-		(O == stylebold_interp) ||
-		(O == styleunderline_interp) ||
-		(O == stylereverse_interp) ||
-		(O == inversion_interp)) arity = 0;
-	if (O == break_interp) arity = 0;
-	if (O == continue_interp) arity = 0;
-	if (O == quit_interp) arity = 0;
-	if (O == move_interp) arity = 2;
-	if (O == give_interp) arity = 2;
-	if (O == take_interp) arity = 2;
-	if (O == default_interp) arity = 1;
-	if (O == case_interp) arity = 2;
-	if (O == switch_interp) arity = 2;
-	if (O == objectloop_interp) arity = 2;
-	if (O == if_interp) arity = 2;
-	if (O == ifelse_interp) arity = 3;
-	if (O == for_interp) arity = 4;
-	if (O == while_interp) arity = 2;
-	if (O == do_interp) arity = 2;
-	if (O == read_interp) arity = 2;
+	if ((O == STYLEROMAN_BIP) ||
+		(O == STYLEBOLD_BIP) ||
+		(O == STYLEUNDERLINE_BIP) ||
+		(O == STYLEREVERSE_BIP) ||
+		(O == INVERSION_BIP)) arity = 0;
+	if (O == BREAK_BIP) arity = 0;
+	if (O == CONTINUE_BIP) arity = 0;
+	if (O == QUIT_BIP) arity = 0;
+	if (O == MOVE_BIP) arity = 2;
+	if (O == GIVE_BIP) arity = 2;
+	if (O == TAKE_BIP) arity = 2;
+	if (O == DEFAULT_BIP) arity = 1;
+	if (O == CASE_BIP) arity = 2;
+	if (O == SWITCH_BIP) arity = 2;
+	if (O == OBJECTLOOP_BIP) arity = 2;
+	if (O == IF_BIP) arity = 2;
+	if (O == IFELSE_BIP) arity = 3;
+	if (O == FOR_BIP) arity = 4;
+	if (O == WHILE_BIP) arity = 2;
+	if (O == DO_BIP) arity = 2;
+	if (O == READ_BIP) arity = 2;
 	return arity;
 }
 
-int InterSchemas::ip_loopy(inter_symbol *O) {
+int InterSchemas::ip_loopy(inter_t O) {
 	int loopy = FALSE;
-	if (O == objectloop_interp) loopy = TRUE;
-	if (O == for_interp) loopy = TRUE;
-	if (O == while_interp) loopy = TRUE;
-	if (O == do_interp) loopy = TRUE;
+	if (O == OBJECTLOOP_BIP) loopy = TRUE;
+	if (O == FOR_BIP) loopy = TRUE;
+	if (O == WHILE_BIP) loopy = TRUE;
+	if (O == DO_BIP) loopy = TRUE;
 	return loopy;
 }
 
-int InterSchemas::ip_prim_cat(inter_symbol *O, int i) {
+int InterSchemas::ip_prim_cat(inter_t O, int i) {
 	int ok = VAL_PRIM_CAT;
-	if (O == jump_interp) ok = LAB_PRIM_CAT;
-	if (O == restore_interp) ok = LAB_PRIM_CAT;
-	if (O == pull_interp) ok = REF_PRIM_CAT;
+	if (O == JUMP_BIP) ok = LAB_PRIM_CAT;
+	if (O == RESTORE_BIP) ok = LAB_PRIM_CAT;
+	if (O == PULL_BIP) ok = REF_PRIM_CAT;
 
-	if ((O == if_interp) && (i == 1)) ok = CODE_PRIM_CAT;
-	if ((O == switch_interp) && (i == 1)) ok = CODE_PRIM_CAT;
-	if ((O == case_interp) && (i == 1)) ok = CODE_PRIM_CAT;
-	if ((O == default_interp) && (i == 0)) ok = CODE_PRIM_CAT;
-	if ((O == ifelse_interp) && (i >= 1)) ok = CODE_PRIM_CAT;
+	if ((O == IF_BIP) && (i == 1)) ok = CODE_PRIM_CAT;
+	if ((O == SWITCH_BIP) && (i == 1)) ok = CODE_PRIM_CAT;
+	if ((O == CASE_BIP) && (i == 1)) ok = CODE_PRIM_CAT;
+	if ((O == DEFAULT_BIP) && (i == 0)) ok = CODE_PRIM_CAT;
+	if ((O == IFELSE_BIP) && (i >= 1)) ok = CODE_PRIM_CAT;
 	if ((InterSchemas::ip_loopy(O)) && (i == InterSchemas::ip_arity(O) - 1)) ok = CODE_PRIM_CAT;
 	return ok;
 }

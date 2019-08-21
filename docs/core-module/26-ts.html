@@ -468,19 +468,19 @@ without notice.
         <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) == 0) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"&gt;--&gt; No test scripts exist for this game.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SPECIAL_WORD_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">;</span>
                     <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="reserved">test_scenario</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
@@ -502,11 +502,11 @@ without notice.
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"&gt;--&gt; The following tests are available:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -514,13 +514,13 @@ without notice.
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"'test %w'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                                     <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                             <span class="plain">}</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -566,20 +566,20 @@ without notice.
             <span class="identifier">n</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_code</span><span class="plain"> == </span><span class="constant">HEADLINE_INTT</span><span class="plain">) {</span>
                 <span class="identifier">n</span><span class="plain"> = 0;</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">stylebold_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STYLEBOLD_BIP</span><span class="plain">));</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">%+W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">styleroman_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STYLEROMAN_BIP</span><span class="plain">));</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"%d. %+W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -612,12 +612,12 @@ without notice.
                         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">" scaled at k=%d"</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">Prints as: "</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1v_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
@@ -670,7 +670,7 @@ without notice.
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -775,7 +775,7 @@ without notice.
         <span class="identifier">Kinds::Textual::log</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">": "</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -796,7 +796,7 @@ without notice.
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">print_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="functiontext">Emit::up</span><span class="plain">();</span>

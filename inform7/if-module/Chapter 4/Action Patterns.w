@@ -1502,9 +1502,9 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			LocalVariables::ensure_called_local(C,
 				Specifications::to_kind(spec));
 		LocalVariables::add_calling_to_condition(lvar);
-		Emit::inv_primitive(sequential_interp);
+		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Emit::ref_symbol(K_value, lvar_s);
@@ -1528,12 +1528,12 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			inter_symbol *ct_0_s = LocalVariables::declare_this(ct_0_lv, FALSE, 8);
 			local_variable *ct_1_lv = LocalVariables::by_name(I"ct_1");
 			inter_symbol *ct_1_s = LocalVariables::declare_this(ct_1_lv, FALSE, 8);
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, ct_1_s);
 				Emit::inv_call_iname(Hierarchy::find(EXISTSTABLEROWCORR_HL));
 				Emit::down();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, ct_0_s);
 						Specifications::Compiler::emit_as_val(K_value, spec->down->next);
@@ -1555,9 +1555,9 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 				(<<r>> == TRUE)) {
 				Emit::val(K_truth_state, LITERAL_IVAL, 1);
 			} else {
-				Emit::inv_primitive(ne_interp);
+				Emit::inv_primitive(Emit::opcode(NE_BIP));
 				Emit::down();
-					Emit::inv_primitive(indirect2_interp);
+					Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP));
 					Emit::down();
 						Specifications::Compiler::emit_as_val(K_value, spec);
 						Emit::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));
@@ -1882,22 +1882,22 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 
 	if (PL::Actions::Lists::negated(ap.action)) {
 		if (ranges_count[0] > 0) {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
 				range_to_compile = 0;
 				@<Emit CPM range@>;
 		}
 		if (ranges_count[3] > 0) {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
 		}
-		Emit::inv_primitive(not_interp);
+		Emit::inv_primitive(Emit::opcode(NOT_BIP));
 		Emit::down();
 		if ((ranges_count[1] == 0) && (ranges_count[2] == 0))
 			Emit::val(K_truth_state, LITERAL_IVAL, 0);
 		else {
 			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down();
 			}
 			if (ranges_count[1] > 0) {
@@ -1921,7 +1921,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		int downs = 0;
 		if (ranges_count[1] > 0) {
 			if (ranges_count[0]+ranges_count[2]+ranges_count[3] > 0) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down(); downs++;
 			}
 			range_to_compile = 1;
@@ -1929,7 +1929,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		}
 		if (ranges_count[0] > 0) {
 			if (ranges_count[2]+ranges_count[3] > 0) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down(); downs++;
 			}
 			range_to_compile = 0;
@@ -1937,7 +1937,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		}
 		if (ranges_count[2] > 0) {
 			if (ranges_count[3] > 0) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down(); downs++;
 			}
 			range_to_compile = 2;
@@ -1967,7 +1967,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		if ((cpmc >= ranges_from[range_to_compile]) && (cpmc <= ranges_to[range_to_compile])) {
 			done++;
 			if (done < ranges_count[range_to_compile]) {
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down(); downs++;
 			}
 			ap_optional_clause *apoc = needed_apoc[i];
@@ -1983,14 +1983,14 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	DISCARD_TEXT(C);
 	switch (cpmc) {
 		case ACTOR_IS_PLAYER_CPMC:
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
 			Emit::up();
 			break;
 		case ACTOR_ISNT_PLAYER_CPMC:
-			Emit::inv_primitive(ne_interp);
+			Emit::inv_primitive(Emit::opcode(NE_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
@@ -2000,7 +2000,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Emit::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
 			break;
 		case REQUESTER_DOESNT_EXIST_CPMC:
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -2016,7 +2016,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 			break;
 		case NOUN_IS_INP1_CPMC:
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 				Emit::val_iname(K_object, Hierarchy::find(INP1_HL));
@@ -2026,7 +2026,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Emit::val_iname(K_object, Hierarchy::find(SECOND_HL));
 			break;
 		case SECOND_IS_INP1_CPMC:
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(SECOND_HL));
 				Emit::val_iname(K_object, Hierarchy::find(INP2_HL));
@@ -2054,7 +2054,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, real_location_VAR, ap.room_spec, K_object, TRUE);
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_object, Hierarchy::find(ACTOR_LOCATION_HL));
 				Emit::inv_call_iname(Hierarchy::find(LOCATIONOF_HL));
@@ -2083,9 +2083,9 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case NOWHERE_CPMC:
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
@@ -2106,9 +2106,9 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case NOT_NOWHERE_CPMC:
-			Emit::inv_primitive(ne_interp);
+			Emit::inv_primitive(Emit::opcode(NE_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
@@ -2144,21 +2144,21 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
 				Specifications::to_kind(ap.presence_spec));
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-			Emit::inv_primitive(sequential_interp);
+			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
 					Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::up();
-				Emit::inv_primitive(sequential_interp);
+				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 				Emit::down();
 					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
 					Emit::down();
 						Emit::val_iname(K_value, los->los_iname);
 						Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, lvar_s);
 						Emit::val_iname(K_value, Hierarchy::find(LOS_RV_HL));
@@ -2169,14 +2169,14 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
 			loop_over_scope *los = PL::Actions::ScopeLoops::new(ap.presence_spec);
-			Emit::inv_primitive(sequential_interp);
+			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
 					Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::up();
-				Emit::inv_primitive(sequential_interp);
+				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 				Emit::down();
 					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
 					Emit::down();
@@ -2189,9 +2189,9 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case SET_SELF_TO_ACTOR_CPMC:
-			Emit::inv_primitive(sequential_interp);
+			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
 					Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));

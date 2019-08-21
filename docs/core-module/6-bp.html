@@ -588,11 +588,11 @@ matches the specific necessary kind of object if there is one.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_call_parameter_as_symbol</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">,</span>
             <span class="identifier">bptd</span><span class="element">.called_name</span><span class="plain">, </span><span class="identifier">PK</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lv_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>

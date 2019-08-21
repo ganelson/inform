@@ -155,16 +155,16 @@ essence here.
 	inter_symbol *str_s = LocalVariables::add_internal_local_as_symbol(I"str");
 	inter_symbol *f_s = LocalVariables::add_internal_local_as_symbol(I"f");
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(ge_interp);
+			Emit::inv_primitive(Emit::opcode(GE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, code_s);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) 'a');
 			Emit::up();
-			Emit::inv_primitive(le_interp);
+			Emit::inv_primitive(Emit::opcode(LE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, code_s);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) 'z');
@@ -172,15 +172,15 @@ essence here.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, f_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 1);
 			Emit::up();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, code_s);
-				Emit::inv_primitive(minus_interp);
+				Emit::inv_primitive(Emit::opcode(MINUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, code_s);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) ('a'-'A'));
@@ -189,38 +189,38 @@ essence here.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, s_s);
 		Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, s2_s);
 		Emit::val_iname(K_value, Hierarchy::find(SECOND_HL));
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, s3_s);
 		Emit::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::val_symbol(K_value, val_s);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(SECOND_HL));
 		Emit::val_symbol(K_value, val2_s);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::val_symbol(K_value, val_s);
 	Emit::up();
 
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, code_s);
 		Emit::code();
@@ -228,12 +228,12 @@ essence here.
 			response_message *r2;
 			LOOP_OVER(r2, response_message) {
 				if (r2->responding_rule == resp->responding_rule) {
-					Emit::inv_primitive(case_interp);
+					Emit::inv_primitive(Emit::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) ('A' + r2->response_marker));
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(store_interp);
+							Emit::inv_primitive(Emit::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, str_s);
 								Emit::val_iname(K_value, r2->resp_iname);
@@ -246,12 +246,12 @@ essence here.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(if_interp);
+	Emit::inv_primitive(Emit::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(and_interp);
+		Emit::inv_primitive(Emit::opcode(AND_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, str_s);
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, f_s);
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
@@ -266,23 +266,23 @@ essence here.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::val_symbol(K_value, s_s);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(SECOND_HL));
 		Emit::val_symbol(K_value, s2_s);
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 		Emit::val_symbol(K_value, s3_s);
 	Emit::up();
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, str_s);
 	Emit::up();
@@ -338,9 +338,9 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 	LOOP_OVER(resp, response_message) {
 		inter_name *iname = Strings::response_constant_iname(resp->responding_rule,
 			resp->response_marker);
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_s);
 				Emit::val_iname(K_value, iname);
@@ -351,15 +351,15 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 				Emit::down();
 					Emit::val_iname(K_value, Rules::iname(resp->responding_rule));
 				Emit::up();
-				Emit::inv_primitive(print_interp);
+				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(I" response (");
 				Emit::up();
-				Emit::inv_primitive(printchar_interp);
+				Emit::inv_primitive(Emit::opcode(PRINTCHAR_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) ('A' + resp->response_marker));
 				Emit::up();
-				Emit::inv_primitive(print_interp);
+				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(I")");
 				Emit::up();

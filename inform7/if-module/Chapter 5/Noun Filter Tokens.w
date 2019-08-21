@@ -67,7 +67,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		inter_symbol *v_s = LocalVariables::add_internal_local_c_as_symbol(I"v", "value parsed");
 		inter_symbol *n_s = LocalVariables::add_internal_local_c_as_symbol(I"n", "saved value of noun");
 
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, v_s);
 			inter_name *gpr_to_ask = Kinds::Behaviour::get_explicit_I6_GPR_iname(R);
@@ -75,35 +75,35 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 			Emit::inv_call_iname(gpr_to_ask);
 		Emit::up();
 
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(eq_interp);
+			Emit::inv_primitive(Emit::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, v_s);
 				Emit::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, n_s);
 					Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 				Emit::up();
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 					Emit::val_iname(K_object, Hierarchy::find(PARSED_NUMBER_HL));
 				Emit::up();
 
-				Emit::inv_primitive(if_interp);
+				Emit::inv_primitive(Emit::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(not_interp);
+					Emit::inv_primitive(Emit::opcode(NOT_BIP));
 					Emit::down();
 						Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, v_s);
 							Emit::val_iname(K_object, Hierarchy::find(GPR_FAIL_HL));
@@ -111,7 +111,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 					Emit::up();
 				Emit::up();
 
-				Emit::inv_primitive(store_interp);
+				Emit::inv_primitive(Emit::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 					Emit::val_symbol(K_value, n_s);
@@ -119,7 +119,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, v_s);
 		Emit::up();
@@ -127,12 +127,12 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		inter_symbol *obj_s = LocalVariables::add_internal_local_c_as_symbol(I"obj", "object loop variable");
 		inter_symbol *o2_s = LocalVariables::add_internal_local_c_as_symbol(I"o2", "saved value of noun");
 
-		Emit::inv_primitive(switch_interp);
+		Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 		Emit::down();
 			Emit::val_iname(K_object, Hierarchy::find(SCOPE_STAGE_HL));
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 1);
 					Emit::code();
@@ -141,18 +141,18 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						else Emit::rfalse();
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 2);
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, obj_s);
 							Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 						Emit::up();
 
-						Emit::inv_primitive(objectloop_interp);
+						Emit::inv_primitive(Emit::opcode(OBJECTLOOP_BIP));
 						Emit::down();
 							Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
@@ -160,18 +160,18 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_symbol(K_value, o2_s);
 									Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 								Emit::up();
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 									Emit::val_symbol(K_value, obj_s);
 								Emit::up();
 
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_iname(K_object, Hierarchy::find(SUPPRESS_SCOPE_LOOPS_HL));
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -183,13 +183,13 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 									Emit::val(K_truth_state, LITERAL_IVAL, 1);
 								Emit::up();
 
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_iname(K_object, Hierarchy::find(SUPPRESS_SCOPE_LOOPS_HL));
 									Emit::val(K_truth_state, LITERAL_IVAL, 0);
 								Emit::up();
 
-								Emit::inv_primitive(store_interp);
+								Emit::inv_primitive(Emit::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 									Emit::val_symbol(K_value, o2_s);
@@ -197,7 +197,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 							Emit::up();
 						Emit::up();
 
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_object, Hierarchy::find(NOUN_HL));
 							Emit::val_symbol(K_value, obj_s);
@@ -205,17 +205,17 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 3);
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(store_interp);
+						Emit::inv_primitive(Emit::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_object, Hierarchy::find(NEXTBEST_ETYPE_HL));
 							Emit::val_iname(K_object, Hierarchy::find(NOTINCONTEXTPE_HL));
 						Emit::up();
-						Emit::inv_primitive(return_interp);
+						Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 						Emit::down();
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (-1));
 						Emit::up();
@@ -225,13 +225,13 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Emit::up();
 	} else {
 		inter_symbol *x_s = LocalVariables::add_internal_local_c_as_symbol(I"x", "saved value of noun");
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, x_s);
 			Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
 		Emit::up();
 
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 			if (Specifications::to_proposition(nft->the_filter)) {
 				Calculus::Propositions::Checker::type_check(Specifications::to_proposition(nft->the_filter), Calculus::Propositions::Checker::tc_no_problem_reporting());

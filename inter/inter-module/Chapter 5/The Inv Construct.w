@@ -129,12 +129,13 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 	#ifdef CORE_MODULE
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
+		inter_tree *I = P->tree;
 		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (Primitives::is_indirect_interp(invokee)) {
-			inter_symbol *better = Primitives::indirect_interp(arity_as_invoked - 1);
+		if (Primitives::is_indirect_interp(Primitives::to_bip(I, invokee))) {
+			inter_symbol *better = Primitives::get(I, Primitives::indirect_interp(arity_as_invoked - 1));
 			P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
-		} else if (Primitives::is_indirectv_interp(invokee)) {
-			inter_symbol *better = Primitives::indirectv_interp(arity_as_invoked - 1);
+		} else if (Primitives::is_indirectv_interp(Primitives::to_bip(I, invokee))) {
+			inter_symbol *better = Primitives::get(I, Primitives::indirectv_interp(arity_as_invoked - 1));
 			P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
 		}
 	}

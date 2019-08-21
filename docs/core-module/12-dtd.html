@@ -207,7 +207,7 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
         &lt;<span class="cwebmacro">If the proposition is a negation, take care of that now</span> <span class="cwebmacronumber">7.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NC</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::count_callings_in_condition</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NC</span><span class="plain"> &gt; 0) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="identifier">pdef</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::new_deferred_proposition</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="constant">CONDITION_DEFER</span><span class="plain">);</span>
@@ -235,7 +235,7 @@ then we defer ψ instead, negating the result of testing it.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::is_a_group</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="constant">NEGATION_OPEN_ATOM</span><span class="plain">)) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::remove_topmost_group</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">); </span><span class="functiontext">Emit::down</span><span class="plain">(); </span><span class="identifier">go_up</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">)); </span><span class="functiontext">Emit::down</span><span class="plain">(); </span><span class="identifier">go_up</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -314,7 +314,7 @@ substitution of x=v.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">active</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bl</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain"> != </span><span class="identifier">from_pl</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="functiontext">Calculus::Propositions::implied_conjunction_between</span><span class="plain">(</span><span class="identifier">pl_prev</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">))) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">); </span><span class="functiontext">Emit::down</span><span class="plain">();</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">)); </span><span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Calculus::Deferrals::ctop_recurse</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">from_pl</span><span class="plain">, </span><span class="identifier">pl_prev</span><span class="plain">);</span>
                     <span class="functiontext">Calculus::Deferrals::ctop_recurse</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">to_pl</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -327,7 +327,7 @@ substitution of x=v.
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from_pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">NEGATION_OPEN_ATOM</span><span class="plain">) &amp;&amp; (</span><span class="identifier">to_pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">NEGATION_CLOSE_ATOM</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_pl</span><span class="plain"> == </span><span class="identifier">penultimate_pl</span><span class="plain">) {</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -417,7 +417,7 @@ get to the setting of <code class="display"><span class="extract">t_2</span></co
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_retrieve_callings_in_condition</span><span class="plain">(</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">NC</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">calling_count</span><span class="plain"> = 0, </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
             <span class="identifier">TRAVERSE_VARIABLE</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
@@ -427,12 +427,12 @@ get to the setting of <code class="display"><span class="extract">t_2</span></co
                         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">local</span><span class="plain">;</span>
                         &lt;<span class="cwebmacro">Find which local variable in R needs the value, creating it if necessary</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
                         <span class="identifier">calling_count</span><span class="plain">++;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">calling_count</span><span class="plain"> &lt; </span><span class="identifier">NC</span><span class="plain">) { </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">); </span><span class="functiontext">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++; }</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">calling_count</span><span class="plain"> &lt; </span><span class="identifier">NC</span><span class="plain">) { </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">)); </span><span class="functiontext">Emit::down</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">++; }</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">local_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">local</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">local_s</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFERRED_CALLING_LIST_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">calling_count</span><span class="plain"> - 1));</span>
@@ -457,13 +457,13 @@ get to the setting of <code class="display"><span class="extract">t_2</span></co
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">CALLED_ATOM</span><span class="plain">: {</span>
                     <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">local</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Find which local variable in R needs the value, creating it if necessary</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">local_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">local</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">local_s</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFERRED_CALLING_LIST_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">calling_count</span><span class="plain">++);</span>
@@ -474,7 +474,7 @@ get to the setting of <code class="display"><span class="extract">t_2</span></co
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">calling_count</span><span class="plain"> &gt; 0) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookup_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFERRED_CALLING_LIST_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 26);</span>
@@ -504,9 +504,9 @@ get to the setting of <code class="display"><span class="extract">t_2</span></co
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_prepare_to_retrieve_callings</span><span class="plain">(</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">condition_context</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">condition_context</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Calculus::Propositions::contains_callings</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">))) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">lookupref_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFERRED_CALLING_LIST_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 26);</span>
@@ -831,7 +831,7 @@ defer it to a proposition with reason <code class="display"><span class="extract
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_number_of_S</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::spec_is_variable_of_kind_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">NUMBER_OF_DUSAGE</span><span class="plain">);</span>
@@ -866,7 +866,7 @@ defer it to a proposition with reason <code class="display"><span class="extract
         <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;defn_ref</span><span class="plain"> = </span><span class="identifier">data</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">with_callings</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::contains_callings</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">with_callings</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Emit::level</span><span class="plain">();</span>
@@ -875,11 +875,11 @@ defer it to a proposition with reason <code class="display"><span class="extract
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::Cinders::find_count</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="identifier">arity</span><span class="plain"> = </span><span class="identifier">arity</span><span class="plain"> + 2;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 0: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect0_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 0: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT0_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT3_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"indirect function call with too many arguments"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -942,7 +942,7 @@ defer it to a proposition with reason <code class="display"><span class="extract
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Descriptions::to_instance</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == 0)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect0_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT0_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_ranger_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -950,7 +950,7 @@ defer it to a proposition with reason <code class="display"><span class="extract
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::spec_is_variable_of_kind_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">RANDOM_OF_DUSAGE</span><span class="plain">);</span>
@@ -997,14 +997,14 @@ defer it to a proposition with reason <code class="display"><span class="extract
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_total_of_S</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"total of on non-property"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::spec_is_variable_of_kind_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_TO_BE_TOTALLED_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">TOTAL_DUSAGE</span><span class="plain">);</span>
@@ -1033,7 +1033,7 @@ the "substitution variable") is within the domain.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_substitution_test</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">in</span><span class="plain">,</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::spec_is_variable_of_kind_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">CONDITION_DUSAGE</span><span class="plain">);</span>
@@ -1090,21 +1090,21 @@ over identifying which superlative is meant. We get here from code like
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"extremal of on non-property"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::spec_is_variable_of_kind_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_TO_BE_TOTALLED_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_LOOP_SIGN_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sign</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">EXTREMAL_DUSAGE</span><span class="plain">);</span>
@@ -1195,17 +1195,17 @@ until it returns 0, when the domain is exhausted.
                     &lt;<span class="cwebmacro">Issue called in repeat problem</span> <span class="cwebmacronumber">23.1</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">for_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">FOR_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_as_is</span><span class="plain">) </span><span class="functiontext">Calculus::Deferrals::emit_repeat_call</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_repeat_domain</span><span class="plain">(</span><span class="identifier">domain_prop</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">aux_var_s</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_as_is</span><span class="plain">) </span><span class="functiontext">Calculus::Deferrals::emit_repeat_call</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">);</span>
@@ -1215,14 +1215,14 @@ until it returns 0, when the domain is exhausted.
 
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
 
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">aux_var_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">aux_var_s</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_as_is</span><span class="plain">) </span><span class="functiontext">Calculus::Deferrals::emit_repeat_call</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
@@ -1240,7 +1240,7 @@ until it returns 0, when the domain is exhausted.
                 <span class="functiontext">Calculus::Schemas::emit_expand_from_locals</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_lvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Calculus::Deferrals::emit_test_of_proposition</span><span class="plain">(</span>
                                 <span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">),</span>
@@ -1249,9 +1249,9 @@ until it returns 0, when the domain is exhausted.
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">CONDITION_DUSAGE</span><span class="plain">);</span>
@@ -1380,7 +1380,7 @@ deferred description routine, and we simply call that routine with the
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Deferrals::emit_repeat_call</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">fromv</span><span class="plain">) {</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="constant">LOOP_DOMAIN_DUSAGE</span><span class="plain">);</span>
@@ -1409,11 +1409,11 @@ will never be needed for anything else.
         <span class="reserved">pcalc_prop_deferral</span><span class="plain"> *</span><span class="identifier">pdef</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::defer_loop_domain</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::Cinders::find_count</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">) + 1;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 0: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect0_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 0: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT0_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT3_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"indirect function call with too many arguments"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1460,26 +1460,26 @@ will never be needed for anything else.
 
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">for_interp</span><span class="plain">);</span>
+        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">FOR_BIP</span><span class="plain">));</span>
         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">copy_var_s</span><span class="plain">);</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">index_var_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">));</span>
@@ -1499,7 +1499,7 @@ will never be needed for anything else.
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_GETITEM_HL</span><span class="plain">));</span>
@@ -1513,7 +1513,7 @@ will never be needed for anything else.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">le_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">LE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">index_var_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_GETLENGTH_HL</span><span class="plain">));</span>
@@ -1522,9 +1522,9 @@ will never be needed for anything else.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">sequential_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SEQUENTIAL_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">postincrement_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">index_var_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1540,7 +1540,7 @@ will never be needed for anything else.
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">val_var_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_GETITEM_HL</span><span class="plain">));</span>

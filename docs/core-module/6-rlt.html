@@ -1326,7 +1326,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect0v_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT0V_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -1558,12 +1558,12 @@ logical properties of the two terms of the BP being defined.
 
             <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">; </span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">i6s</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">task_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_TEST_HL</span><span class="plain">));</span>
                         <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1572,7 +1572,7 @@ logical properties of the two terms of the BP being defined.
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">minimal</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">default_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -1580,7 +1580,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_LOOKUP_ANY_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1588,7 +1588,7 @@ logical properties of the two terms of the BP being defined.
                                 &lt;<span class="cwebmacro">The LOOKUP ANY task</span> <span class="cwebmacronumber">15.2.9</span>&gt;<span class="plain">;</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_LOOKUP_ALL_X_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1596,7 +1596,7 @@ logical properties of the two terms of the BP being defined.
                                 &lt;<span class="cwebmacro">The LOOKUP ALL X task</span> <span class="cwebmacronumber">15.2.10</span>&gt;<span class="plain">;</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_LOOKUP_ALL_Y_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1604,7 +1604,7 @@ logical properties of the two terms of the BP being defined.
                                 &lt;<span class="cwebmacro">The LOOKUP ALL Y task</span> <span class="cwebmacronumber">15.2.11</span>&gt;<span class="plain">;</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_LIST_HL</span><span class="plain">));</span>
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1613,7 +1613,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">BinaryPredicates::can_be_made_true_at_runtime</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">)) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ASSERT_TRUE_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1621,7 +1621,7 @@ logical properties of the two terms of the BP being defined.
                                     &lt;<span class="cwebmacro">The ASSERT TRUE task</span> <span class="cwebmacronumber">15.2.2</span>&gt;<span class="plain">;</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ASSERT_FALSE_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1642,7 +1642,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_Sym_VtoV</span><span class="plain">: </span><span class="identifier">shower</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_SHOWVTOV_HL</span><span class="plain">); </span><span class="identifier">par</span><span class="plain"> = 1; </span><span class="reserved">break</span><span class="plain">;</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shower</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_SHOW_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1663,7 +1663,7 @@ logical properties of the two terms of the BP being defined.
                             <span class="reserved">case</span><span class="plain"> </span><span class="constant">Relation_Sym_VtoV</span><span class="plain">: </span><span class="identifier">emptier</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATION_EMPTYVTOV_HL</span><span class="plain">); </span><span class="identifier">par</span><span class="plain"> = 1; </span><span class="reserved">break</span><span class="plain">;</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">emptier</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_EMPTY_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1686,7 +1686,7 @@ logical properties of the two terms of the BP being defined.
                                 <span class="reserved">break</span><span class="plain">;</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">router</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ROUTE_FIND_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1694,7 +1694,7 @@ logical properties of the two terms of the BP being defined.
                                     &lt;<span class="cwebmacro">The ROUTE FIND task</span> <span class="cwebmacronumber">15.2.5</span>&gt;<span class="plain">;</span>
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ROUTE_FIND_COUNT_HL</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
@@ -1778,7 +1778,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">asch</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::Compile::blank_asch</span><span class="plain">();</span>
                 <span class="identifier">i6s</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_i6_schema</span><span class="plain">(</span><span class="constant">TEST_ATOM_TASK</span><span class="plain">, </span><span class="identifier">dbp</span><span class="plain">, &amp;</span><span class="identifier">asch</span><span class="plain">);</span>
@@ -1787,14 +1787,14 @@ logical properties of the two terms of the BP being defined.
                     <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">fnsc</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fnsc</span><span class="plain">) {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> == 0) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
                                 <span class="functiontext">Calculus::Schemas::emit_val_expand_from_locals</span><span class="plain">(</span><span class="identifier">fnsc</span><span class="plain">, </span><span class="identifier">Y_lv</span><span class="plain">, </span><span class="identifier">Y_lv</span><span class="plain">);</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">adapted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                                 <span class="functiontext">Calculus::Schemas::emit_val_expand_from_locals</span><span class="plain">(</span><span class="identifier">fnsc</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">);</span>
@@ -1825,9 +1825,9 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT3_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">router</span><span class="plain">);</span>
                     &lt;<span class="cwebmacro">Expand the ID operand</span> <span class="cwebmacronumber">15.2.5.1</span>&gt;<span class="plain">;</span>
@@ -1868,12 +1868,12 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">follow</span><span class="plain">) {</span>
                 <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELFOLLOWVECTOR_HL</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT3_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">router</span><span class="plain">);</span>
                         &lt;<span class="cwebmacro">Expand the ID operand</span> <span class="cwebmacronumber">15.2.5.1</span>&gt;<span class="plain">;</span>
@@ -1884,7 +1884,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">router</span><span class="plain">);</span>
                     &lt;<span class="cwebmacro">Expand the ID operand</span> <span class="cwebmacronumber">15.2.5.1</span>&gt;<span class="plain">;</span>
@@ -1906,7 +1906,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect2v_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT2V_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">shower</span><span class="plain">);</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
@@ -1925,14 +1925,14 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect3_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT3_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">emptier</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">par</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -1951,16 +1951,16 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">or_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OR_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_GET_X_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_CAN_GET_X_HL</span><span class="plain">));</span>
@@ -1998,7 +1998,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = 0;</span>
             &lt;<span class="cwebmacro">Write rels lookup list</span> <span class="cwebmacronumber">15.2.10.1</span>&gt;<span class="plain">;</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2023,7 +2023,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = 1;</span>
             &lt;<span class="cwebmacro">Write rels lookup list</span> <span class="cwebmacronumber">15.2.10.1</span>&gt;<span class="plain">;</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2045,9 +2045,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ifelse_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLIST_ALL_X_HL</span><span class="plain">));</span>
@@ -2059,9 +2059,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLIST_ALL_Y_HL</span><span class="plain">));</span>
@@ -2075,7 +2075,7 @@ logical properties of the two terms of the BP being defined.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2099,9 +2099,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="reserved">i6_schema</span><span class="plain"> </span><span class="identifier">loop_schema</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::write_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) {</span>
                     <span class="functiontext">Calculus::Schemas::emit_expand_from_locals</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">Z1_lv</span><span class="plain">, </span><span class="identifier">Z2_lv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
@@ -2116,9 +2116,9 @@ logical properties of the two terms of the BP being defined.
                                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_CAN_GET_X_HL</span><span class="plain">));</span>
@@ -2129,9 +2129,9 @@ logical properties of the two terms of the BP being defined.
                                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_CAN_GET_Y_HL</span><span class="plain">));</span>
@@ -2142,7 +2142,7 @@ logical properties of the two terms of the BP being defined.
                                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Z1_s</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -2153,9 +2153,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="plain">}</span>
             <span class="plain">}</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_CAN_GET_X_HL</span><span class="plain">));</span>
@@ -2166,9 +2166,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Y_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RLANY_CAN_GET_Y_HL</span><span class="plain">));</span>
@@ -2181,7 +2181,7 @@ logical properties of the two terms of the BP being defined.
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_HL</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
@@ -2209,9 +2209,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="reserved">i6_schema</span><span class="plain"> </span><span class="identifier">loop_schema</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::write_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) {</span>
                     <span class="functiontext">Calculus::Schemas::emit_expand_from_locals</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">Z1_lv</span><span class="plain">, </span><span class="identifier">Z2_lv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
@@ -2262,9 +2262,9 @@ logical properties of the two terms of the BP being defined.
                     <span class="functiontext">Calculus::Schemas::emit_expand_from_locals</span><span class="plain">(&amp;</span><span class="identifier">loop_schema_L</span><span class="plain">, </span><span class="identifier">Z1_lv</span><span class="plain">, </span><span class="identifier">Z2_lv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                             <span class="functiontext">Calculus::Schemas::emit_expand_from_locals</span><span class="plain">(&amp;</span><span class="identifier">loop_schema_R</span><span class="plain">, </span><span class="identifier">Z3_lv</span><span class="plain">, </span><span class="identifier">Z4_lv</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
-                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect4_interp</span><span class="plain">);</span>
+                                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT4_BIP</span><span class="plain">));</span>
                                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                             <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="identifier">dbp</span><span class="plain">));</span>
                                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rr_s</span><span class="plain">);</span>
@@ -2369,7 +2369,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;record_needed</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">indirect1v_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">callback_s</span><span class="plain">);</span>
                         <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
@@ -3155,18 +3155,18 @@ logical properties of the two terms of the BP being defined.
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">cl_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"cl"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pr_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pr"</span><span class="plain">);</span>
 
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">obj_s</span><span class="plain">);</span>
                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">cl_s</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::code</span><span class="plain">();</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">propertyvalue_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PROPERTYVALUE_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">obj_s</span><span class="plain">);</span>
                             <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pr_s</span><span class="plain">);</span>
@@ -3174,7 +3174,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                 <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
             <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -3197,9 +3197,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">X_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"X"</span><span class="plain">, </span><span class="string">"which is related to at most one object"</span><span class="plain">, &amp;</span><span class="identifier">X_lv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f0</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">));</span>
@@ -3207,20 +3207,20 @@ logical properties of the two terms of the BP being defined.
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Calculus::Schemas::emit_val_expand_from_locals</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f0</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">) {</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -3245,9 +3245,9 @@ logical properties of the two terms of the BP being defined.
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">X_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"X"</span><span class="plain">, </span><span class="string">"which is related to at most one object"</span><span class="plain">, &amp;</span><span class="identifier">X_lv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f1</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">X_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">));</span>
@@ -3255,20 +3255,20 @@ logical properties of the two terms of the BP being defined.
                             <span class="functiontext">Emit::code</span><span class="plain">();</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Calculus::Schemas::emit_val_expand_from_locals</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;f1</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">, </span><span class="identifier">X_lv</span><span class="plain">);</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) {</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                         <span class="functiontext">Emit::up</span><span class="plain">();</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
                         <span class="functiontext">Emit::val_nothing</span><span class="plain">();</span>
                     <span class="functiontext">Emit::up</span><span class="plain">();</span>
@@ -3293,14 +3293,14 @@ logical properties of the two terms of the BP being defined.
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">L_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"L"</span><span class="plain">, </span><span class="string">"left member of pair"</span><span class="plain">, &amp;</span><span class="identifier">L_lv</span><span class="plain">);</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol_noting</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">, </span><span class="string">"right member of pair"</span><span class="plain">, &amp;</span><span class="identifier">R_lv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;inner_test</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                     <span class="functiontext">Emit::down</span><span class="plain">();</span>
 
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">L_s</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">));</span>
@@ -3308,9 +3308,9 @@ logical properties of the two terms of the BP being defined.
                             <span class="identifier">downs</span><span class="plain">++;</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                     <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                                     <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">));</span>
@@ -3352,24 +3352,24 @@ logical properties of the two terms of the BP being defined.
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
 
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
 
                         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) &amp;&amp; (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">)) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">downs</span><span class="plain"> = 2;</span>
                         <span class="plain">}</span>
 
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">L_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">));</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">));</span>
@@ -3417,24 +3417,24 @@ logical properties of the two terms of the BP being defined.
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
 
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) {</span>
-                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                         <span class="functiontext">Emit::down</span><span class="plain">();</span>
 
                         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) &amp;&amp; (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">)) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">and_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">downs</span><span class="plain"> = 2;</span>
                         <span class="plain">}</span>
 
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">L_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_L</span><span class="plain">));</span>
                             <span class="functiontext">Emit::up</span><span class="plain">();</span>
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">) {</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">ofclass_interp</span><span class="plain">);</span>
+                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
                             <span class="functiontext">Emit::down</span><span class="plain">();</span>
                                 <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
                                 <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">rg</span><span class="plain">-</span><span class="element">&gt;check_R</span><span class="plain">));</span>
@@ -3489,7 +3489,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="string">"although the definition was properly formed - it is only "</span>
                     <span class="string">"the part after 'when' which I can't follow."</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                 <span class="functiontext">Emit::down</span><span class="plain">();</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Emit::up</span><span class="plain">();</span>

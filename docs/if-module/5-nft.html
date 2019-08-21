@@ -83,7 +83,7 @@ their names (used as I6 tokens), and compile their routines.
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">v_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"v"</span><span class="plain">, </span><span class="string">"value parsed"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">n_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"n"</span><span class="plain">, </span><span class="string">"saved value of noun"</span><span class="plain">);</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">gpr_to_ask</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_explicit_I6_GPR_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
@@ -91,35 +91,35 @@ their names (used as I6 tokens), and compile their routines.
                 <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">gpr_to_ask</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">eq_interp</span><span class="plain">);</span>
+                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
                     <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
                     <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_NUMBER_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">n_s</span><span class="plain">);</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSED_NUMBER_HL</span><span class="plain">));</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">if_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">not_interp</span><span class="plain">);</span>
+                        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
                             <span class="identifier">Calculus::Deferrals::emit_test_if_var_matches_description</span><span class="plain">(</span><span class="identifier">noun_var</span><span class="plain">, </span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;the_filter</span><span class="plain">);</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                         <span class="identifier">Emit::code</span><span class="plain">();</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPR_FAIL_HL</span><span class="plain">));</span>
@@ -127,7 +127,7 @@ their names (used as I6 tokens), and compile their routines.
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">n_s</span><span class="plain">);</span>
@@ -135,7 +135,7 @@ their names (used as I6 tokens), and compile their routines.
                 <span class="identifier">Emit::up</span><span class="plain">();</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">v_s</span><span class="plain">);</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -143,12 +143,12 @@ their names (used as I6 tokens), and compile their routines.
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">obj_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"obj"</span><span class="plain">, </span><span class="string">"object loop variable"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">o2_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"o2"</span><span class="plain">, </span><span class="string">"saved value of noun"</span><span class="plain">);</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">switch_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCOPE_STAGE_HL</span><span class="plain">));</span>
                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                         <span class="identifier">Emit::code</span><span class="plain">();</span>
@@ -157,18 +157,18 @@ their names (used as I6 tokens), and compile their routines.
                             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::rfalse</span><span class="plain">();</span>
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
                         <span class="identifier">Emit::code</span><span class="plain">();</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">obj_s</span><span class="plain">);</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">objectloop_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">OBJECTLOOP_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">));</span>
@@ -176,18 +176,18 @@ their names (used as I6 tokens), and compile their routines.
 
                                 <span class="identifier">Emit::code</span><span class="plain">();</span>
                                 <span class="identifier">Emit::down</span><span class="plain">();</span>
-                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">o2_s</span><span class="plain">);</span>
                                         <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
-                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">obj_s</span><span class="plain">);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SUPPRESS_SCOPE_LOOPS_HL</span><span class="plain">));</span>
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
@@ -199,13 +199,13 @@ their names (used as I6 tokens), and compile their routines.
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SUPPRESS_SCOPE_LOOPS_HL</span><span class="plain">));</span>
                                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                                     <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                                         <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                                         <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">o2_s</span><span class="plain">);</span>
@@ -213,7 +213,7 @@ their names (used as I6 tokens), and compile their routines.
                                 <span class="identifier">Emit::up</span><span class="plain">();</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">obj_s</span><span class="plain">);</span>
@@ -221,17 +221,17 @@ their names (used as I6 tokens), and compile their routines.
 
                         <span class="identifier">Emit::up</span><span class="plain">();</span>
                     <span class="identifier">Emit::up</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">case_interp</span><span class="plain">);</span>
+                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
                     <span class="identifier">Emit::down</span><span class="plain">();</span>
                         <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
                         <span class="identifier">Emit::code</span><span class="plain">();</span>
                         <span class="identifier">Emit::down</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NEXTBEST_ETYPE_HL</span><span class="plain">));</span>
                                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOTINCONTEXTPE_HL</span><span class="plain">));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
-                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+                            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
                             <span class="identifier">Emit::down</span><span class="plain">();</span>
                                 <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (-1));</span>
                             <span class="identifier">Emit::up</span><span class="plain">();</span>
@@ -241,13 +241,13 @@ their names (used as I6 tokens), and compile their routines.
             <span class="identifier">Emit::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">x_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"x"</span><span class="plain">, </span><span class="string">"saved value of noun"</span><span class="plain">);</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">store_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">x_s</span><span class="plain">);</span>
                 <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NOUN_HL</span><span class="plain">));</span>
             <span class="identifier">Emit::up</span><span class="plain">();</span>
 
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">return_interp</span><span class="plain">);</span>
+            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
             <span class="identifier">Emit::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;the_filter</span><span class="plain">)) {</span>
                     <span class="identifier">Calculus::Propositions::Checker::type_check</span><span class="plain">(</span><span class="identifier">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">nft</span><span class="plain">-</span><span class="element">&gt;the_filter</span><span class="plain">), </span><span class="identifier">Calculus::Propositions::Checker::tc_no_problem_reporting</span><span class="plain">());</span>

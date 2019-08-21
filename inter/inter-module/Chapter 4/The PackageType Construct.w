@@ -38,11 +38,6 @@ void Inter::PackageType::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 }
 
 inter_error_message *Inter::PackageType::new_packagetype(inter_bookmark *IBM, inter_symbol *ptype, inter_t level, inter_error_location *eloc) {
-	text_stream *name = ptype->symbol_name;
-	if (Str::eq(name, I"_plain")) plain_packagetype = ptype;
-	if (Str::eq(name, I"_code")) code_packagetype = ptype;
-	if (Str::eq(name, I"_linkage")) linkage_packagetype = ptype;
-
 	inter_tree_node *P = Inter::Node::fill_1(IBM, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;

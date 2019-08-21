@@ -35,7 +35,8 @@
         <span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">Inter::Bookmarks::tree</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">);</span>
         <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">CodeGen::MergeTemplate::visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to find template"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">template_package</span><span class="plain"> = </span><span class="functiontext">CodeGen::Assimilate::new_package_named</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"template"</span><span class="plain">, </span><span class="identifier">plain_ptype_symbol</span><span class="plain">);</span>
 
         <span class="identifier">inter_bookmark</span><span class="plain"> </span><span class="identifier">link_bookmark</span><span class="plain"> =</span>
             <span class="identifier">Inter::Bookmarks::at_end_of_this_package</span><span class="plain">(</span><span class="identifier">template_package</span><span class="plain">);</span>
@@ -61,8 +62,6 @@
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">link_pie_count</span><span class="plain"> = 0;</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::MergeTemplate::guard</span><span class="plain">(</span><span class="identifier">inter_error_message</span><span class="plain"> *</span><span class="identifier">ERR</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ERR</span><span class="plain">) { </span><span class="identifier">Inter::Errors::issue</span><span class="plain">(</span><span class="identifier">ERR</span><span class="plain">); </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inter error"</span><span class="plain">); }</span>
     <span class="plain">}</span>
@@ -85,7 +84,7 @@
 
 <p class="endnote">The function CodeGen::MergeTemplate::visitor appears nowhere else.</p>
 
-<p class="endnote">The function CodeGen::MergeTemplate::guard is used in 1/ppl (<a href="1-ppl.html#SP5">&#167;5</a>), 2/alm (<a href="2-alm.html#SP2_1_2">&#167;2.1.2</a>, <a href="2-alm.html#SP2_2_2">&#167;2.2.2</a>, <a href="2-alm.html#SP3">&#167;3</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>), 3/ip (<a href="3-ip.html#SP2">&#167;2</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::MergeTemplate::guard is used in 1/ppl (<a href="1-ppl.html#SP5">&#167;5</a>), 2/alm (<a href="2-alm.html#SP2_1_2">&#167;2.1.2</a>, <a href="2-alm.html#SP2_2_2">&#167;2.2.2</a>, <a href="2-alm.html#SP3">&#167;3</a>, <a href="2-alm.html#SP4">&#167;4</a>, <a href="2-alm.html#SP5">&#167;5</a>), 3/ip (<a href="3-ip.html#SP1">&#167;1</a>), 3/tv (<a href="3-tv.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function CodeGen::MergeTemplate::entire_splat is used in <a href="#SP2">&#167;2</a>, 2/alm (<a href="2-alm.html#SP5">&#167;5</a>).</p>
 

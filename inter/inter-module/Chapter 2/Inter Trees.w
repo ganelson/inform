@@ -12,6 +12,7 @@ typedef struct inter_tree {
 	struct inter_package *root_package;
 	struct inter_package *main_package;
 	struct inter_package *connectors_package;
+	struct inter_symbol *opcodes_set[MAX_BIPS];
 	MEMORY_MANAGEMENT
 } inter_tree;
 
@@ -21,6 +22,7 @@ inter_tree *Inter::Tree::new(void) {
 	I->main_package = NULL;
 	I->connectors_package = NULL;
 	I->housed = Inter::Warehouse::new();
+	for (int i=0; i<MAX_BIPS; i++) I->opcodes_set[i] = NULL;
 	inter_t N = Inter::Warehouse::create_symbols_table(I->housed);
 	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
 	inter_t root_package_ID = Inter::Warehouse::create_package(I->housed, I);

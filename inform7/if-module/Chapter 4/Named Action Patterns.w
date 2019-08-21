@@ -97,7 +97,7 @@ void PL::Actions::Patterns::Named::compile(void) {
 		ap = nap->first;
 		while (ap != NULL) {
 			current_sentence = ap->entered_into_NAP_here;
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 				PL::Actions::Patterns::emit_pattern_match(*ap, TRUE);
 				Emit::code();

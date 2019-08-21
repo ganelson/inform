@@ -525,7 +525,7 @@ void Rulebooks::rulebook_var_creators(void) {
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
 
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, rb_s);
 		Emit::code();
@@ -534,12 +534,12 @@ void Rulebooks::rulebook_var_creators(void) {
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook)
 			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_value, LITERAL_IVAL, (inter_t) (rb->allocation_id));
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(return_interp);
+						Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Rulebooks::get_stv_creator_iname(rb));
 						Emit::up();
@@ -549,7 +549,7 @@ void Rulebooks::rulebook_var_creators(void) {
 
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();

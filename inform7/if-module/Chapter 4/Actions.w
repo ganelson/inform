@@ -1147,7 +1147,7 @@ void PL::Actions::compile_action_routines(void) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		inter_name *iname = PL::Actions::Sub(an);
 		packaging_state save = Routines::begin(iname);
-		Emit::inv_primitive(return_interp);
+		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 		Emit::down();
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			Emit::inv_call_iname(generic_iname);
@@ -1207,7 +1207,7 @@ void PL::Actions::ActionData(void) {
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
 	inter_symbol *for_say_s = LocalVariables::add_named_call_as_symbol(I"for_say");
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, act_s);
 		Emit::code();
@@ -1215,7 +1215,7 @@ void PL::Actions::ActionData(void) {
 
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, PL::Actions::double_sharp(an));
 				Emit::code();
@@ -1229,7 +1229,7 @@ void PL::Actions::ActionData(void) {
 
 							TEMPORARY_TEXT(AT);
 							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-							Emit::inv_primitive(print_interp);
+							Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 							Emit::down();
 								Emit::val_text(AT);
 							Emit::up();
@@ -1238,16 +1238,16 @@ void PL::Actions::ActionData(void) {
 							j0 = -1;
 						}
 						@<Insert a space here if needed to break up the action name@>;
-						Emit::inv_primitive(ifelse_interp);
+						Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 						Emit::down();
-							Emit::inv_primitive(eq_interp);
+							Emit::inv_primitive(Emit::opcode(EQ_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, for_say_s);
 								Emit::val(K_number, LITERAL_IVAL, 2);
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(print_interp);
+								Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 								Emit::down();
 									Emit::val_text(I"it");
 								Emit::up();
@@ -1266,16 +1266,16 @@ void PL::Actions::ActionData(void) {
 					@<Insert a space here if needed to break up the action name@>;
 					TEMPORARY_TEXT(AT);
 					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(AT);
 					Emit::up();
 					DISCARD_TEXT(AT);
 				}
 				if (somethings < an->max_parameters) {
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(ne_interp);
+						Emit::inv_primitive(Emit::opcode(NE_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, for_say_s);
 							Emit::val(K_number, LITERAL_IVAL, 2);
@@ -1299,7 +1299,7 @@ void PL::Actions::ActionData(void) {
 
 @<Insert a space here if needed to break up the action name@> =
 	if (clc++ > 0) {
-		Emit::inv_primitive(print_interp);
+		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I" ");
 		Emit::up();
@@ -1314,13 +1314,13 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	}
 	if (Kinds::Compare::le(K, K_object) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
-	Emit::inv_primitive(indirect1v_interp);
+	Emit::inv_primitive(Emit::opcode(INDIRECT1V_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
 		if (Kinds::Compare::eq(K, K_understanding)) {
-			Emit::inv_primitive(plus_interp);
+			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(times_interp);
+				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 100);
 					Emit::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));

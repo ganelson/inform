@@ -23,7 +23,8 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
-	if (template_package == NULL) internal_error("unable to find template");
+	if (template_package == NULL)
+		template_package = CodeGen::Assimilate::new_package_named(IBM, I"template", plain_ptype_symbol);
 
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);
@@ -48,8 +49,6 @@ void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *st
 		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 	}
 }
-
-int link_pie_count = 0;
 
 void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
 	if (ERR) { Inter::Errors::issue(ERR); internal_error("inter error"); }

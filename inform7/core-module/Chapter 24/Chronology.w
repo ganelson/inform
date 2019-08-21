@@ -59,9 +59,9 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 	if (too_late_for_past_tenses) internal_error("too late for a PAP");
 	if (op == NULL) op = "==";
 
-	Emit::inv_primitive(and_interp);
+	Emit::inv_primitive(Emit::opcode(AND_BIP));
 	Emit::down();
-		Emit::inv_primitive(indirect0_interp);
+		Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, pta_routine);
 		Emit::up();
@@ -69,29 +69,29 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 	int L = duration.length; if (L < 0) L = 0;
 	if (duration.until >= 0) {
 		if (duration.units == TIMES_UNIT) {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
-				Emit::inv_primitive(le_interp);
+				Emit::inv_primitive(Emit::opcode(LE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
-					Emit::inv_primitive(lookup_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(and_interp);
+				Emit::inv_primitive(Emit::opcode(AND_BIP));
 				Emit::down();
-					Emit::inv_primitive(ge_interp);
+					Emit::inv_primitive(Emit::opcode(GE_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) duration.until);
-						Emit::inv_primitive(lookup_interp);
+						Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(lookupbyte_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
@@ -99,21 +99,21 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 				Emit::up();
 			Emit::up();
 		} else {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
-				Emit::inv_primitive(le_interp);
+				Emit::inv_primitive(Emit::opcode(LE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
-					Emit::inv_primitive(lookup_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(ge_interp);
+				Emit::inv_primitive(Emit::opcode(GE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) duration.until);
-					Emit::inv_primitive(lookup_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
@@ -123,18 +123,18 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 		}
 	} else {
 		if (duration.units == TIMES_UNIT) {
-			Emit::inv_primitive(and_interp);
+			Emit::inv_primitive(Emit::opcode(AND_BIP));
 			Emit::down();
 				@<Emit the op@>;
 				Emit::down();
-					Emit::inv_primitive(lookup_interp);
+					Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
 					Emit::up();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) L);
 				Emit::up();
-				Emit::inv_primitive(lookupbyte_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUPBYTE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
@@ -143,7 +143,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 		} else {
 			@<Emit the op@>;
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) no_past_actions);
@@ -163,12 +163,12 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 #endif
 
 @<Emit the op@> =
-	if (strcmp(op, "==") == 0) Emit::inv_primitive(eq_interp);
-	else if (strcmp(op, "~=") == 0) Emit::inv_primitive(ne_interp);
-	else if (strcmp(op, ">") == 0) Emit::inv_primitive(gt_interp);
-	else if (strcmp(op, ">=") == 0) Emit::inv_primitive(ge_interp);
-	else if (strcmp(op, "<") == 0) Emit::inv_primitive(lt_interp);
-	else if (strcmp(op, "<=") == 0) Emit::inv_primitive(le_interp);
+	if (strcmp(op, "==") == 0) Emit::inv_primitive(Emit::opcode(EQ_BIP));
+	else if (strcmp(op, "~=") == 0) Emit::inv_primitive(Emit::opcode(NE_BIP));
+	else if (strcmp(op, ">") == 0) Emit::inv_primitive(Emit::opcode(GT_BIP));
+	else if (strcmp(op, ">=") == 0) Emit::inv_primitive(Emit::opcode(GE_BIP));
+	else if (strcmp(op, "<") == 0) Emit::inv_primitive(Emit::opcode(LT_BIP));
+	else if (strcmp(op, "<=") == 0) Emit::inv_primitive(Emit::opcode(LE_BIP));
 	else internal_error("can't find operator");
 
 @ =
@@ -310,7 +310,7 @@ void Chronology::past_actions_i6_routines(void) {
 		current_sentence = pta->where_pta_tested; /* ensure problems reported correctly */
 		packaging_state save = Routines::begin(pta->pta_iname);
 
-		Emit::inv_primitive(if_interp);
+		Emit::inv_primitive(Emit::opcode(IF_BIP));
 		Emit::down();
 			Chronology::ap_compile_forced_to_present(pta->historic_action);
 			Emit::code();
@@ -363,7 +363,7 @@ void Chronology::past_tenses_i6_escape(void) {
 	inter_symbol *consecutives_s = LocalVariables::add_internal_local_as_symbol(I"consecutives");
 	Frames::determines_the_past();
 
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, past_flag_s);
 		Emit::code();
@@ -385,12 +385,12 @@ void Chronology::past_tenses_i6_escape(void) {
 }
 
 @<Unpack the past@> =
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, new_s);
-		Emit::inv_primitive(bitwiseand_interp);
+		Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 				Emit::val_symbol(K_value, pt_s);
@@ -398,14 +398,14 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, trips_s);
-		Emit::inv_primitive(divide_interp);
+		Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 		Emit::down();
-			Emit::inv_primitive(bitwiseand_interp);
+			Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
@@ -415,14 +415,14 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::val(K_number, LITERAL_IVAL, 2);
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, consecutives_s);
-		Emit::inv_primitive(divide_interp);
+		Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 		Emit::down();
-			Emit::inv_primitive(bitwiseand_interp);
+			Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_object, Hierarchy::find(PAST_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
@@ -434,12 +434,12 @@ void Chronology::past_tenses_i6_escape(void) {
 	Emit::up();
 
 @<Unpack the present@> =
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, old_s);
-		Emit::inv_primitive(bitwiseand_interp);
+		Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 		Emit::down();
-			Emit::inv_primitive(lookup_interp);
+			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 				Emit::val_symbol(K_value, pt_s);
@@ -447,14 +447,14 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, trips_s);
-		Emit::inv_primitive(divide_interp);
+		Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 		Emit::down();
-			Emit::inv_primitive(bitwiseand_interp);
+			Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
@@ -464,14 +464,14 @@ void Chronology::past_tenses_i6_escape(void) {
 			Emit::val(K_number, LITERAL_IVAL, 2);
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, consecutives_s);
-		Emit::inv_primitive(divide_interp);
+		Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
 		Emit::down();
-			Emit::inv_primitive(bitwiseand_interp);
+			Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
 			Emit::down();
-				Emit::inv_primitive(lookup_interp);
+				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 					Emit::val_symbol(K_value, pt_s);
@@ -483,24 +483,24 @@ void Chronology::past_tenses_i6_escape(void) {
 	Emit::up();
 
 @<Repack the present@> =
-	Emit::inv_primitive(store_interp);
+	Emit::inv_primitive(Emit::opcode(STORE_BIP));
 	Emit::down();
-		Emit::inv_primitive(lookupref_interp);
+		Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
 		Emit::down();
 			Emit::val_iname(K_object, Hierarchy::find(PRESENT_CHRONOLOGICAL_RECORD_HL));
 			Emit::val_symbol(K_value, pt_s);
 		Emit::up();
-		Emit::inv_primitive(plus_interp);
+		Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, new_s);
-			Emit::inv_primitive(plus_interp);
+			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(times_interp);
+				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, trips_s);
 					Emit::val(K_number, LITERAL_IVAL, 0x02);
 				Emit::up();
-				Emit::inv_primitive(times_interp);
+				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, consecutives_s);
 					Emit::val(K_number, LITERAL_IVAL, 0x100);
@@ -510,14 +510,14 @@ void Chronology::past_tenses_i6_escape(void) {
 	Emit::up();
 
 @<Swizzle@> =
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, pt_s);
 		Emit::code();
 		Emit::down();
 			LOOP_OVER(ptc, past_tense_condition_record) {
 				current_sentence = ptc->where_ptc_tested; /* ensure problems reported correctly */
-				Emit::inv_primitive(case_interp);
+				Emit::inv_primitive(Emit::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) (ptc->allocation_id));
 					Emit::code();
@@ -540,15 +540,15 @@ void Chronology::past_tenses_i6_escape(void) {
 					Emit::up();
 				Emit::up();
 			}
-			Emit::inv_primitive(default_interp);
+			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(print_interp);
+					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(I"*** No such past tense condition ***\n");
 					Emit::up();
-					Emit::inv_primitive(store_interp);
+					Emit::inv_primitive(Emit::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, new_s);
 						Emit::val(K_number, LITERAL_IVAL, 0);
@@ -558,34 +558,34 @@ void Chronology::past_tenses_i6_escape(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(ifelse_interp);
+	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, new_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(eq_interp);
+				Emit::inv_primitive(Emit::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, old_s);
 					Emit::val(K_truth_state, LITERAL_IVAL, 0);
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(postincrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, trips_s);
 					Emit::up();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(gt_interp);
+						Emit::inv_primitive(Emit::opcode(GT_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, trips_s);
 							Emit::val(K_number, LITERAL_IVAL, 127);
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(store_interp);
+							Emit::inv_primitive(Emit::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, trips_s);
 								Emit::val(K_number, LITERAL_IVAL, 127);
@@ -595,25 +595,25 @@ void Chronology::past_tenses_i6_escape(void) {
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_primitive(if_interp);
+			Emit::inv_primitive(Emit::opcode(IF_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, turn_end_s);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(postincrement_interp);
+					Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, consecutives_s);
 					Emit::up();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(gt_interp);
+						Emit::inv_primitive(Emit::opcode(GT_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, consecutives_s);
 							Emit::val(K_number, LITERAL_IVAL, 127);
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(store_interp);
+							Emit::inv_primitive(Emit::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, consecutives_s);
 								Emit::val(K_number, LITERAL_IVAL, 127);
@@ -626,7 +626,7 @@ void Chronology::past_tenses_i6_escape(void) {
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, consecutives_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -651,7 +651,7 @@ a file stream, thus allowing rewinding:
 				"quantity in question, but at a different time from when "
 				"it would be needed.");
 		} else {
-			Emit::inv_primitive(store_interp);
+			Emit::inv_primitive(Emit::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, new_s);
 				Specifications::Compiler::emit_as_val(K_value, spec);
@@ -660,7 +660,7 @@ a file stream, thus allowing rewinding:
 	} else {
 		#ifdef IF_MODULE
 		LOG("Picked up past $A\n", ptc->ap_to_test);
-		Emit::inv_primitive(store_interp);
+		Emit::inv_primitive(Emit::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, new_s);
 			PL::Actions::Patterns::emit_past_tense(ptc->ap_to_test);
@@ -669,22 +669,22 @@ a file stream, thus allowing rewinding:
 	}
 
 @<Answer the question posed@> =
-	Emit::inv_primitive(switch_interp);
+	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, wanted_s);
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, new_s);
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(return_interp);
+							Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, new_s);
 							Emit::up();
@@ -692,17 +692,17 @@ a file stream, thus allowing rewinding:
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 1);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, new_s);
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(return_interp);
+							Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, trips_s);
 							Emit::up();
@@ -710,19 +710,19 @@ a file stream, thus allowing rewinding:
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 2);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(if_interp);
+					Emit::inv_primitive(Emit::opcode(IF_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, new_s);
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(return_interp);
+							Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 							Emit::down();
-								Emit::inv_primitive(plus_interp); /* Plus one because we count the current turn */
+								Emit::inv_primitive(Emit::opcode(PLUS_BIP)); /* Plus one because we count the current turn */
 								Emit::down();
 									Emit::val_symbol(K_value, consecutives_s);
 									Emit::val(K_number, LITERAL_IVAL, 1);
@@ -732,34 +732,34 @@ a file stream, thus allowing rewinding:
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 4);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(return_interp);
+					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, new_s);
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 5);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(return_interp);
+					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, trips_s);
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(case_interp);
+			Emit::inv_primitive(Emit::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, 6);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(return_interp);
+					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, consecutives_s);
 					Emit::up();
@@ -768,7 +768,7 @@ a file stream, thus allowing rewinding:
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(return_interp);
+	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
