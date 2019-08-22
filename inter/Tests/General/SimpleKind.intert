@@ -1,5 +1,6 @@
 packagetype _plain
 packagetype _code
+packagetype _linkage
 
 package main _plain
 	kind K_colour enum

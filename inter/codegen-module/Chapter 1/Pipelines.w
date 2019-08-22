@@ -251,7 +251,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::prepare_to_run(I);
-LOG("So sra is %d\n", step->repository_argument);
 			CodeGen::Pipeline::lint(I);
 
 			CodeGen::Pipeline::clean_step(step);
@@ -395,7 +394,6 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::lint(inter_tree *I) {
-LOG("LINT I%d\n", I->allocation_id);
 	Inter::Tree::traverse(I, CodeGen::Pipeline::visitor, NULL, NULL, -PACKAGE_IST);
 }
 

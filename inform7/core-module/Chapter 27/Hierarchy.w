@@ -1278,7 +1278,7 @@ void Hierarchy::establish(void) {
 @e WORDLENGTH_HL
 
 @<Establish template resources@> =
-	location_requirement template = HierarchyLocations::this_package(Hierarchy::template());
+	location_requirement template = HierarchyLocations::plug();
 	HierarchyLocations::con(THESAME_HL, I"##TheSame", Translation::same(), template);
 	HierarchyLocations::con(PLURALFOUND_HL, I"##PluralFound", Translation::same(), template);
 	HierarchyLocations::con(THEDARK_HL, I"thedark", Translation::same(), template);
@@ -1581,7 +1581,7 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty extern");
 	inter_name *try = HierarchyLocations::find_by_name(name);
 	if (try == NULL) {
-		HierarchyLocations::con(-1, name, Translation::same(), HierarchyLocations::this_package(Hierarchy::template()));
+		HierarchyLocations::con(-1, name, Translation::same(), HierarchyLocations::plug());
 		try = HierarchyLocations::find_by_name(name);
 	}
 	return try;
@@ -1595,13 +1595,13 @@ package_request *Hierarchy::main(void) {
 	return main_pr;
 }
 
-package_request *template_pr = NULL;
-package_request *Hierarchy::template(void) {
-	if (template_pr == NULL) {
-		module_package *T = Packaging::get_module(I"template");
-		template_pr = T->the_package;
+package_request *connectors_pr = NULL;
+package_request *Hierarchy::connectors(void) {
+	if (connectors_pr == NULL) {
+		module_package *T = Packaging::get_module(I"connectors");
+		connectors_pr = T->the_package;
 	}
-	return template_pr;
+	return connectors_pr;
 }
 
 package_request *veneer_pr = NULL;

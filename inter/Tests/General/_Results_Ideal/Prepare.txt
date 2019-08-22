@@ -2,6 +2,12 @@ packagetype _plain
 packagetype _code
 packagetype _linkage
 packagetype _module
+packagetype _submodule
+packagetype _function
+packagetype _action
+packagetype _command
+packagetype _property
+packagetype _to_phrase
 primitive !font val -> void
 primitive !stylebold void -> void
 primitive !styleunderline void -> void
@@ -112,4 +118,23 @@ primitive !notin val val -> val
 primitive !read val val -> void
 primitive !inversion void -> void
 package main _plain
+	package veneer _module
+		symbol external misc K_unchecked --> /main/generic/K_unchecked
+		symbol public misc WORDSIZE
+		symbol public misc TARGET_ZCODE
+		symbol public misc DEBUG
+		constant WORDSIZE K_unchecked = 2
+		constant TARGET_ZCODE K_unchecked = 1
+		constant DEBUG K_unchecked = 1
+	package generic _module
+		symbol public misc K_unchecked
+		symbol public misc K_typeless_int
+		symbol public misc K_truth_state
+		symbol public misc K_unchecked_function
+		symbol public misc K_list_of_values
+		kind K_unchecked unchecked
+		kind K_typeless_int int32
+		kind K_truth_state int2
+		kind K_unchecked_function function K_unchecked -> K_unchecked
+		kind K_list_of_values list of K_unchecked
 	package template _module

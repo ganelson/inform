@@ -15,6 +15,7 @@ typedef struct location_requirement {
 	int this_exact_package_not_yet_created;
 	struct inter_symbol *any_package_of_this_type;
 	int any_enclosure;
+	int must_be_plug;
 } location_requirement;
 
 location_requirement HierarchyLocations::blank(void) {
@@ -24,6 +25,7 @@ location_requirement HierarchyLocations::blank(void) {
 	req.this_exact_package_not_yet_created = -1;
 	req.any_package_of_this_type = NULL;
 	req.any_enclosure = FALSE;
+	req.must_be_plug = FALSE;
 	return req;
 }
 
@@ -69,6 +71,12 @@ location_requirement HierarchyLocations::this_package(package_request *P) {
 location_requirement HierarchyLocations::this_exotic_package(int N) {
 	location_requirement req = HierarchyLocations::blank();
 	req.this_exact_package_not_yet_created = N;
+	return req;
+}
+
+location_requirement HierarchyLocations::plug(void) {
+	location_requirement req = HierarchyLocations::blank();
+	req.must_be_plug = TRUE;
 	return req;
 }
 
@@ -198,23 +206,25 @@ inter_name *HierarchyLocations::function(package_request *R, text_stream *name, 
 inter_name *HierarchyLocations::hl_to_iname(hierarchy_location *hl) {
 	if (hl->requirements.any_package_of_this_type) internal_error("NRL accessed inappropriately");
 	if (hl->equates_to_iname == NULL) {
-		if (hl->requirements.this_exact_package == NULL) {
-			if (hl->requirements.this_exact_package_not_yet_created >= 0)
-				hl->requirements.this_exact_package = Hierarchy::exotic_package(hl->requirements.this_exact_package_not_yet_created);
-			else internal_error("package can't be found'");
-		}
-		if (hl->requirements.this_exact_package == Hierarchy::template()) {
+		if (hl->requirements.must_be_plug) {
 			hl->equates_to_iname = InterNames::explicitly_named_in_template(hl->access_name);
-		} else if (Str::len(hl->function_package_name) > 0) {
-			hl->equates_to_iname = Packaging::function_text(
-				InterNames::explicitly_named(hl->function_package_name, hl->requirements.this_exact_package),
-				hl->access_name);
-		} else if (Str::len(hl->datum_package_name) > 0) {
-			hl->equates_to_iname = Packaging::datum_text(
-				InterNames::explicitly_named(hl->datum_package_name, hl->requirements.this_exact_package),
-				hl->access_name);
-		} else if ((hl->requirements.this_exact_package) && (hl->equates_to_iname == NULL)) {
-			hl->equates_to_iname = InterNames::explicitly_named(hl->access_name, hl->requirements.this_exact_package);
+		} else {
+			if (hl->requirements.this_exact_package == NULL) {
+				if (hl->requirements.this_exact_package_not_yet_created >= 0)
+					hl->requirements.this_exact_package = Hierarchy::exotic_package(hl->requirements.this_exact_package_not_yet_created);
+				else internal_error("package can't be found");
+			}
+			if (Str::len(hl->function_package_name) > 0) {
+				hl->equates_to_iname = Packaging::function_text(
+					InterNames::explicitly_named(hl->function_package_name, hl->requirements.this_exact_package),
+					hl->access_name);
+			} else if (Str::len(hl->datum_package_name) > 0) {
+				hl->equates_to_iname = Packaging::datum_text(
+					InterNames::explicitly_named(hl->datum_package_name, hl->requirements.this_exact_package),
+					hl->access_name);
+			} else if ((hl->requirements.this_exact_package) && (hl->equates_to_iname == NULL)) {
+				hl->equates_to_iname = InterNames::explicitly_named(hl->access_name, hl->requirements.this_exact_package);
+			}
 		}
 
 		hl->equates_to_iname = Hierarchy::post_process(hl->access_number, hl->equates_to_iname);
@@ -236,11 +246,9 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
 	} else if ((P == NULL) || (P->eventual_type != hl->requirements.any_package_of_this_type)) {
-		if (P != Hierarchy::template()) {
-			LOG("AN: %S, FPN: %S\n", hl->access_name, hl->function_package_name);
-			LOG("Have type: $3, required: $3\n", P->eventual_type, hl->requirements.any_package_of_this_type);
-			internal_error("constant in wrong superpackage");
-		}
+		LOG("AN: %S, FPN: %S\n", hl->access_name, hl->function_package_name);
+		LOG("Have type: $3, required: $3\n", P->eventual_type, hl->requirements.any_package_of_this_type);
+		internal_error("constant in wrong superpackage");
 	}
 	
 	inter_name *iname = NULL;
@@ -348,9 +356,8 @@ package_request *HierarchyLocations::attach_new_package(compilation_module *C, p
 	else if (hap->requirements.this_exact_package_not_yet_created >= 0)
 		R = Hierarchy::exotic_package(hap->requirements.this_exact_package_not_yet_created);
 	else if (hap->requirements.any_package_of_this_type) {
-		if (R != Hierarchy::template())
-			if ((R == NULL) || (R->eventual_type != hap->requirements.any_package_of_this_type))
-				internal_error("subpackage in wrong superpackage");
+		if ((R == NULL) || (R->eventual_type != hap->requirements.any_package_of_this_type))
+			internal_error("subpackage in wrong superpackage");
 	}
 	
 	return Packaging::request(Packaging::make_iname_within(R, hap->name_stem), hap->type);

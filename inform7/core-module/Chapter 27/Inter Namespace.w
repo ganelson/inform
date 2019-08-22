@@ -149,10 +149,10 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 }
 
 inter_name *InterNames::explicitly_named_in_template(text_stream *name) {
-	inter_name *iname = InterNames::explicitly_named(name, Hierarchy::template());
-	packaging_state save = Packaging::enter_home_of(iname);		
-	iname->symbol = Emit::extern(name, K_value);
-	Packaging::exit(save);
+	inter_name *iname = InterNames::explicitly_named(name, Hierarchy::connectors());
+	inter_symbol *plug = Inter::Connectors::find_plug(Emit::tree(), name);
+	if (plug == NULL) plug = Inter::Connectors::plug(Emit::tree(), name);
+	iname->symbol = plug;
 	return iname;
 }
 

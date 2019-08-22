@@ -131,6 +131,18 @@ package main _plain
 				symbol external misc K_unchecked --> /main/other/K_unchecked
 				property density K_unchecked __assimilated=1
 	package connectors _linkage
+		symbol plug misc plug_00001 --? VERB_DIRECTIVE_REVERSE
+		symbol plug misc plug_00002 --? VERB_DIRECTIVE_SLASH
+		symbol plug misc plug_00003 --? VERB_DIRECTIVE_SPECIAL
+		symbol plug misc plug_00004 --? VERB_DIRECTIVE_NUMBER
+		symbol plug misc plug_00005 --? VERB_DIRECTIVE_NOUN
+		symbol plug misc plug_00006 --? VERB_DIRECTIVE_MULTI
+		symbol plug misc plug_00007 --? VERB_DIRECTIVE_MULTIINSIDE
+		symbol plug misc plug_00008 --? VERB_DIRECTIVE_MULTIHELD
+		symbol plug misc plug_00009 --? VERB_DIRECTIVE_HELD
+		symbol plug misc plug_00010 --? VERB_DIRECTIVE_CREATURE
+		symbol plug misc plug_00011 --? VERB_DIRECTIVE_TOPIC
+		symbol plug misc plug_00012 --? VERB_DIRECTIVE_MULTIEXCEPT
 		symbol socket misc Falsity --> /main/template/functions/Falsity_fn/Falsity
 		symbol socket misc Demo --> /main/template/functions/Demo_fn/Demo
 		symbol socket misc Banana --> /main/template/functions/Banana_fn/Banana

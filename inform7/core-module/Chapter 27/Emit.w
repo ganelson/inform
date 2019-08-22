@@ -45,8 +45,6 @@ void Emit::nop_at(inter_bookmark *IBM) {
 	Emit::guard(Inter::Nop::new(IBM, Emit::baseline(IBM) + 2, NULL));
 }
 
-dictionary *extern_symbols = NULL;
-
 int glob_count = 0;
 
 void Emit::begin(void) {
@@ -58,7 +56,6 @@ void Emit::begin(void) {
 	Packaging::incarnate(Packaging::get_module(I"generic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"synoptic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"standard_rules")->the_package);	
-	Packaging::incarnate(Hierarchy::template());
 
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);
@@ -114,24 +111,6 @@ inter_symbol *Emit::kind_to_symbol(kind *K) {
 	if (K == NULL) return unchecked_interk;
 	if (K == K_value) return unchecked_interk; /* for error recovery */
 	return InterNames::to_symbol(Kinds::RunTime::iname(K));
-}
-
-inter_symbol *Emit::extern(text_stream *name, kind *K) {
-	if (extern_symbols == NULL) extern_symbols = Dictionaries::new(1024, FALSE);
-	if (Dictionaries::find(extern_symbols, name))
-		return Dictionaries::read_value(extern_symbols, name);
-	inter_package *C = Inter::Tree::connectors_package(Emit::tree());
-	if (C) {
-		inter_symbol *symb = Inter::SymbolsTables::symbol_from_name_not_equating(Inter::Packages::scope(C), name);
-		if (symb) {
-			LOG("Affected %S\n", name);
-			return symb;
-		}
-	}
-	inter_symbol *symb = Inter::Connectors::plug(Emit::tree(), name);
-	Dictionaries::create(extern_symbols, name);
-	Dictionaries::write_value(extern_symbols, name, symb);
-	return symb;
 }
 
 inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name *val_iname) {

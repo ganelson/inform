@@ -2603,7 +2603,9 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 						if (has_operand_before) a++;
 						if (has_operand_after) a++;
 						if (a != InterSchemas::arity(isn->isn_clarifier)) {
-							LOG("Seem to have arity %d with isn %S\n", a, Primitives::name(isn->isn_clarifier));
+							LOG("Seem to have arity %d with isn %S which needs %d\n",
+								a, Primitives::name(isn->isn_clarifier),
+								InterSchemas::arity(isn->isn_clarifier));
 							LOG("$1\n", isn->parent_schema);
 							internal_error("bad arity");
 						}

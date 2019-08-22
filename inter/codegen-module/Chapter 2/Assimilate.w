@@ -20,11 +20,31 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
+	
+	CodeGen::Assimilate::ensure(I, &verb_directive_reverse_symbol, I"VERB_DIRECTIVE_REVERSE");
+	CodeGen::Assimilate::ensure(I, &verb_directive_slash_symbol, I"VERB_DIRECTIVE_SLASH");
+	CodeGen::Assimilate::ensure(I, &verb_directive_divider_symbol, I"VERB_DIRECTIVE_DIVIDER");
+	CodeGen::Assimilate::ensure(I, &verb_directive_result_symbol, I"VERB_DIRECTIVE_RESULT");
+	CodeGen::Assimilate::ensure(I, &verb_directive_special_symbol, I"VERB_DIRECTIVE_SPECIAL");
+	CodeGen::Assimilate::ensure(I, &verb_directive_number_symbol, I"VERB_DIRECTIVE_NUMBER");
+	CodeGen::Assimilate::ensure(I, &verb_directive_noun_symbol, I"VERB_DIRECTIVE_NOUN");
+	CodeGen::Assimilate::ensure(I, &verb_directive_multi_symbol, I"VERB_DIRECTIVE_MULTI");
+	CodeGen::Assimilate::ensure(I, &verb_directive_multiinside_symbol, I"VERB_DIRECTIVE_MULTIINSIDE");
+	CodeGen::Assimilate::ensure(I, &verb_directive_multiheld_symbol, I"VERB_DIRECTIVE_MULTIHELD");
+	CodeGen::Assimilate::ensure(I, &verb_directive_held_symbol, I"VERB_DIRECTIVE_HELD");
+	CodeGen::Assimilate::ensure(I, &verb_directive_creature_symbol, I"VERB_DIRECTIVE_CREATURE");
+	CodeGen::Assimilate::ensure(I, &verb_directive_topic_symbol, I"VERB_DIRECTIVE_TOPIC");
+	CodeGen::Assimilate::ensure(I, &verb_directive_multiexcept_symbol, I"VERB_DIRECTIVE_MULTIEXCEPT");
+
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
 	CodeGen::Assimilate::function_bodies();
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor3, NULL, NULL, SPLAT_IST);
 	return TRUE;
+}
+
+void CodeGen::Assimilate::ensure(inter_tree *I, inter_symbol **S, text_stream *identifier) {
+	if (*S == NULL) *S = Inter::Connectors::plug(I, identifier);
 }
 
 @h Parsing.
@@ -777,7 +797,7 @@ void CodeGen::Assimilate::function_bodies(void) {
 		Emit::push_code_position(Emit::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
 		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 		inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
-		inter_symbols_table *scope2 = Inter::Packages::scope(Packaging::incarnate(Hierarchy::template()));
+		inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 		Emit::pop_code_position();
 		current_inter_routine = NULL;

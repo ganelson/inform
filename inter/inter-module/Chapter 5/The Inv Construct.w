@@ -126,7 +126,6 @@ inter_symbol *Inter::Inv::invokee(inter_tree_node *P) {
 void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	int arity_as_invoked=0;
 	LOOP_THROUGH_INTER_CHILDREN(C, P) arity_as_invoked++;
-	#ifdef CORE_MODULE
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_tree *I = P->tree;
@@ -139,7 +138,6 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 			P->W.data[INVOKEE_INV_IFLD] = Inter::SymbolsTables::id_from_symbol_F(P, NULL, better);
 		}
 	}
-	#endif
 	if ((Inter::Inv::arity(P) != -1) &&
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
