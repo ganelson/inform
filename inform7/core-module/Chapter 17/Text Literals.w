@@ -107,7 +107,7 @@ literal_text *Strings::TextLiterals::lt_new(int w1, int colour) {
 	x->lt_sba_iname = NULL;
 	package_request *PR = Hierarchy::package_in_enclosure(LITERALS_HAP);
 	x->lt_iname = Hierarchy::make_iname_in(TEXT_LITERAL_HL, PR);
-	Emit::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
+	Produce::annotate_i(x->lt_iname, TEXT_LITERAL_IANN, 1);
 	if ((wn_quote_suppressed >= 0) && (w1 == wn_quote_suppressed)) x->unexpanded = TRUE;
 	return x;
 }
@@ -312,7 +312,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
 
 	packaging_state save = Routines::begin(iname);
-	Emit::inv_primitive(Emit::opcode(BOX_BIP));
+	Emit::inv_primitive(Produce::opcode(BOX_BIP));
 	Emit::down();
 		TEMPORARY_TEXT(T);
 		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));

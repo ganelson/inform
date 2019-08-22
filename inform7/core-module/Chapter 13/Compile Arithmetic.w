@@ -87,7 +87,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+		Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
@@ -106,7 +106,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(Emit::opcode(MINUS_BIP));
+		Emit::inv_primitive(Produce::opcode(MINUS_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
@@ -126,7 +126,7 @@ and the other operand is promoted from integer to real if necessary.
 		Emit::up();
 	} else {
 		Kinds::Dimensions::kind_rescale_multiplication_emit_op(KX, KY);
-		Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+		Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
@@ -224,7 +224,7 @@ and the other operand is promoted from integer to real if necessary.
 	}
 
 @<Emit set-equals@> =
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::reference();
 		Emit::down();
@@ -242,7 +242,7 @@ and the other operand is promoted from integer to real if necessary.
 			@<Emit the X-operand@>;
 		Emit::up();
 	} else {
-		Emit::inv_primitive(Emit::opcode(UNARYMINUS_BIP));
+		Emit::inv_primitive(Produce::opcode(UNARYMINUS_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 		Emit::up();
@@ -271,7 +271,7 @@ always be small, partly because of the need for scaling to come out right.
 		else {
 			for (int i=1; i<p; i++) {
 				Kinds::Dimensions::kind_rescale_multiplication_emit_op(KX, KX);
-				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 				Emit::down();
 					@<Emit the X-operand@>;
 			}
@@ -285,7 +285,7 @@ always be small, partly because of the need for scaling to come out right.
 
 @<Emit function application@> =
 	if (use_fp) {
-		Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 			if (promote_Y) Kinds::FloatingPoint::begin_flotation_emit(KY);
@@ -293,7 +293,7 @@ always be small, partly because of the need for scaling to come out right.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Emit::up();
 	} else {
-		Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 		Emit::down();
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;

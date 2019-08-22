@@ -96,7 +96,7 @@ checker has already done all of the work to decide what kind it has.)
 		Lvalues::new_LOCAL_VARIABLE(ParseTree::get_text(val), lvar);
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, lvar_s);
 			Frames::emit_allocation(K);
@@ -789,20 +789,20 @@ the problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action-silently"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
-		Emit::inv_primitive(Emit::opcode(PUSH_BIP));
+		Emit::inv_primitive(Produce::opcode(PUSH_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 		Emit::up();
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 			Emit::val(K_number, LITERAL_IVAL, 1);
 		Emit::up();
-		Emit::inv_primitive(Emit::opcode(PUSH_BIP));
+		Emit::inv_primitive(Produce::opcode(PUSH_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(SAY__P_HL));
 		Emit::up();
-		Emit::inv_primitive(Emit::opcode(PUSH_BIP));
+		Emit::inv_primitive(Produce::opcode(PUSH_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(SAY__PC_HL));
 		Emit::up();
@@ -812,16 +812,16 @@ the problem messages are phrased differently if something goes wrong.
 		Emit::up();
 		PL::Actions::Patterns::emit_try(ap, FALSE);
 		Emit::inv_call_iname(Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
-		Emit::inv_primitive(Emit::opcode(PULL_BIP));
+		Emit::inv_primitive(Produce::opcode(PULL_BIP));
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(SAY__PC_HL));
 		Emit::up();
-		Emit::inv_primitive(Emit::opcode(PULL_BIP));
+		Emit::inv_primitive(Produce::opcode(PULL_BIP));
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(SAY__P_HL));
 		Emit::up();
 		Emit::inv_call_iname(Hierarchy::find(ADJUSTPARAGRAPHPOINT_HL));
-		Emit::inv_primitive(Emit::opcode(PULL_BIP));
+		Emit::inv_primitive(Produce::opcode(PULL_BIP));
 		Emit::down();
 			Emit::ref_iname(K_value, Hierarchy::find(KEEP_SILENT_HL));
 		Emit::up();
@@ -1064,7 +1064,7 @@ default values when created, so they are always typesafe anyway.
 		}
 	} else {
 		int rv = FALSE;
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Emit::ref_symbol(K_value, lvar_s);
@@ -1309,7 +1309,7 @@ result would be the same without the optimisation.
 	if ((Rvalues::is_CONSTANT_of_kind(to_say, K_text)) &&
 		(Wordings::length(SW) == 1) &&
 		(Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC) == FALSE)) {
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			TEMPORARY_TEXT(T);
 			CompiledText::from_wide_string_for_emission(T, Lexer::word_text(Wordings::first_wn(SW)));
@@ -1331,9 +1331,9 @@ result would be the same without the optimisation.
 @ Numbers are also handled directly...
 
 @<Inline say number@> =
-	Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINTNUMBER_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_iname(K_number, Hierarchy::find(SAY__N_HL));
 			Specifications::Compiler::emit_to_kind(to_say, K);
@@ -1349,7 +1349,7 @@ to Glulx; we have to handle this within I6 conditional compilation blocks
 because neither syntax will compile when I6 is compiling for the other VM.
 
 @<Inline say unicode character@> =
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		Specifications::Compiler::emit_to_kind(to_say, K);
@@ -1379,7 +1379,7 @@ phrase applied to the named variable.
 	}
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	Emit::inv_primitive(Emit::opcode(IFDEBUG_BIP));
+	Emit::inv_primitive(Produce::opcode(IFDEBUG_BIP));
 	Emit::down();
 		Emit::code();
 		Emit::down();

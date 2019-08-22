@@ -277,11 +277,6 @@ Chapter 26: Compilation Utilities
 Chapter 27: Bridge to Inter Module
 "Emitting Inter code ready for the code-generator."
 	Hierarchy
-	Hierarchy Locations
-	Translation
 	Compilation Modules
-	Packaging
-	Package Types
-	Inter Namespace
 	Emitting Inter Schemas
 	Emit

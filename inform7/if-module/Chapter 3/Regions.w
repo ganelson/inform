@@ -341,7 +341,7 @@ void PL::Regions::write_regional_found_in_routines(void) {
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
 			packaging_state save = Routines::begin(iname);
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
 					Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Emit::down();

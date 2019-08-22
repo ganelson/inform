@@ -148,7 +148,7 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
 	@<If the proposition is a negation, take care of that now@>;
 	int NC = Calculus::Deferrals::count_callings_in_condition(prop);
 	if (NC > 0) {
-		Emit::inv_primitive(Emit::opcode(AND_BIP));
+		Emit::inv_primitive(Produce::opcode(AND_BIP));
 		Emit::down();
 	}
 	pdef = Calculus::Deferrals::new_deferred_proposition(prop, CONDITION_DEFER);
@@ -164,7 +164,7 @@ then we defer $\psi$ instead, negating the result of testing it.
 @<If the proposition is a negation, take care of that now@> =
 	if (Calculus::Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
 		prop = Calculus::Propositions::remove_topmost_group(prop);
-		Emit::inv_primitive(Emit::opcode(NOT_BIP)); Emit::down(); go_up = TRUE;
+		Emit::inv_primitive(Produce::opcode(NOT_BIP)); Emit::down(); go_up = TRUE;
 	}
 
 @ All of the subtlety here is to do with the fact that |R| and |Prop_19|
@@ -208,7 +208,7 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 		if (active) {
 			if ((bl == 0) && (pl != from_pl) &&
 				(Calculus::Propositions::implied_conjunction_between(pl_prev, pl))) {
-				Emit::inv_primitive(Emit::opcode(AND_BIP)); Emit::down();
+				Emit::inv_primitive(Produce::opcode(AND_BIP)); Emit::down();
 				Calculus::Deferrals::ctop_recurse(VH, prop, from_pl, pl_prev);
 				Calculus::Deferrals::ctop_recurse(VH, prop, pl, to_pl);
 				Emit::up();
@@ -221,7 +221,7 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 	}
 
 	if ((from_pl->element == NEGATION_OPEN_ATOM) && (to_pl->element == NEGATION_CLOSE_ATOM)) {
-		Emit::inv_primitive(Emit::opcode(NOT_BIP));
+		Emit::inv_primitive(Produce::opcode(NOT_BIP));
 		Emit::down();
 		if (from_pl == penultimate_pl) {
 			Emit::val(K_truth_state, LITERAL_IVAL, 1);
@@ -292,7 +292,7 @@ int Calculus::Deferrals::count_callings_in_condition(pcalc_prop *prop) {
 }
 
 void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, int NC) {
-	Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+	Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 	Emit::down();
 		int calling_count = 0, downs = 0;
 		TRAVERSE_VARIABLE(pl);
@@ -302,12 +302,12 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 					local_variable *local;
 					@<Find which local variable in R needs the value, creating it if necessary@>;
 					calling_count++;
-					if (calling_count < NC) { Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP)); Emit::down(); downs++; }
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					if (calling_count < NC) { Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP)); Emit::down(); downs++; }
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
 						Emit::ref_symbol(K_value, local_s);
-						Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+						Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (calling_count - 1));
@@ -332,13 +332,13 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 			case CALLED_ATOM: {
 				local_variable *local;
 				@<Find which local variable in R needs the value, creating it if necessary@>;
-				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
 						Emit::ref_symbol(K_value, local_s);
-						Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+						Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) calling_count++);
@@ -349,7 +349,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 		}
 	}
 	if (calling_count > 0) {
-		Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+		Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Emit::val(K_number, LITERAL_IVAL, 26);
@@ -368,9 +368,9 @@ void Calculus::Deferrals::prepare_to_retrieve_callings(OUTPUT_STREAM, pcalc_prop
 
 int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int condition_context) {
 	if ((condition_context == FALSE) && (Calculus::Propositions::contains_callings(prop))) {
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
+			Emit::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 				Emit::val(K_number, LITERAL_IVAL, 26);
@@ -608,7 +608,7 @@ $\phi(x)$ because it only occurs in this one context.
 =
 void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) NUMBER_OF_DUSAGE);
@@ -636,7 +636,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	pdef->defn_ref = data;
 	int with_callings = Calculus::Propositions::contains_callings(prop);
 	if (with_callings) {
-		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 		Emit::down();
 	}
 	int L = Emit::level();
@@ -645,11 +645,11 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	int arity = Calculus::Deferrals::Cinders::find_count(prop, pdef);
 	if (K) arity = arity + 2;
 	switch (arity) {
-		case 0: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
-		case 1: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
-		case 2: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
-		case 3: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
-		case 4: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
+		case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+		case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+		case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+		case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+		case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
 	Emit::down();
@@ -696,7 +696,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 			(Kinds::Compare::lt(Specifications::to_kind(spec), K_object) == FALSE) &&
 			(Descriptions::to_instance(spec) == NULL) &&
 			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-			Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP));
+			Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
 			Emit::up();
@@ -704,7 +704,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 		}
 	}
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) RANDOM_OF_DUSAGE);
@@ -734,14 +734,14 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 	if (prn == NULL) internal_error("total of on non-property");
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Emit::val_iname(K_value, Properties::iname(prn));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+			Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 			Emit::down();
 				Specifications::Compiler::emit_as_val(K_value, spec);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) TOTAL_DUSAGE);
@@ -763,7 +763,7 @@ the "substitution variable") is within the domain.
 void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 	parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP));
+		Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
 		Emit::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
@@ -802,21 +802,21 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 	property *prn, int sign) {
 	if (prn == NULL) internal_error("extremal of on non-property");
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				Emit::val_iname(K_value, Properties::iname(prn));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sign);
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP));
+				Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
 				Emit::down();
 					Specifications::Compiler::emit_as_val(K_value, spec);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) EXTREMAL_DUSAGE);
@@ -888,17 +888,17 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 				@<Issue called in repeat problem@>;
 		}
 
-		Emit::inv_primitive(Emit::opcode(FOR_BIP));
+		Emit::inv_primitive(Produce::opcode(FOR_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, val_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, NULL);
 					else Calculus::Deferrals::emit_repeat_domain(domain_prop, NULL);
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, aux_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, v1);
@@ -908,14 +908,14 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 
 			Emit::val_symbol(K_value, val_var_s);
 
-			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, val_var_s);
 					Emit::val_symbol(K_value, aux_var_s);
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, aux_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, v2);
@@ -933,7 +933,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, v1, v2, TRUE);
 			if (ParseTreeUsage::is_lvalue(spec) == FALSE) {
 				if (Specifications::to_proposition(spec)) {
-					Emit::inv_primitive(Emit::opcode(IF_BIP));
+					Emit::inv_primitive(Produce::opcode(IF_BIP));
 					Emit::down();
 						Calculus::Deferrals::emit_test_of_proposition(
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1),
@@ -942,9 +942,9 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 						Emit::down();
 				}
 			} else {
-				Emit::inv_primitive(Emit::opcode(IF_BIP));
+				Emit::inv_primitive(Produce::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP));
+					Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
 					Emit::down();
 						Specifications::Compiler::emit_as_val(K_value, spec);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
@@ -1033,7 +1033,7 @@ deferred description routine, and we simply call that routine with the
 
 =
 void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fromv) {
-	Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP));
+	Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
 	Emit::down();
 		Specifications::Compiler::emit_as_val(K_value, spec);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) LOOP_DOMAIN_DUSAGE);
@@ -1055,11 +1055,11 @@ void Calculus::Deferrals::emit_repeat_domain(pcalc_prop *prop, local_variable *f
 	pcalc_prop_deferral *pdef = Calculus::Deferrals::defer_loop_domain(prop);
 	int arity = Calculus::Deferrals::Cinders::find_count(prop, pdef) + 1;
 	switch (arity) {
-		case 0: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
-		case 1: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
-		case 2: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
-		case 3: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
-		case 4: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
+		case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+		case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+		case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+		case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+		case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
 	Emit::down();
@@ -1099,26 +1099,26 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	Emit::inv_primitive(Emit::opcode(FOR_BIP));
+	Emit::inv_primitive(Produce::opcode(FOR_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, copy_var_s);
 				Specifications::Compiler::emit_as_val(K_value, spec);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, index_var_s);
 					Emit::val(K_number, LITERAL_IVAL, 1);
 				Emit::up();
 				if (pointery) {
-					Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+					Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, val_var_s);
 							Emit::inv_call_iname(Hierarchy::find(BLKVALUECREATE_HL));
@@ -1138,7 +1138,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 						Emit::up();
 					Emit::up();
 				} else {
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, val_var_s);
 						Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
@@ -1152,7 +1152,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(LE_BIP));
+		Emit::inv_primitive(Produce::opcode(LE_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, index_var_s);
 			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
@@ -1161,9 +1161,9 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
+			Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, index_var_s);
 			Emit::up();
@@ -1179,7 +1179,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 					Emit::up();
 				Emit::up();
 			} else {
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, val_var_s);
 					Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));

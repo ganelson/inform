@@ -238,10 +238,10 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 		pcalc_prop *prop = gl->understand_when_prop;
 
 		if ((spec) || (prop)) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
 				if ((spec) && (prop)) {
-					Emit::inv_primitive(Emit::opcode(AND_BIP));
+					Emit::inv_primitive(Produce::opcode(AND_BIP));
 					Emit::down();
 				}
 				if (spec) Specifications::Compiler::emit_as_val(K_truth_state, spec);
@@ -251,14 +251,14 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 				}
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 					Emit::up();
 				Emit::up();
 			Emit::up();
 		}
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 		Emit::up();
@@ -274,16 +274,16 @@ void PL::Parsing::Lines::gl_compile_extra_token_for_condition(gpr_kit *gprk, gra
 		if (gv_is == GV_IS_COMMAND) {
 			Emit::array_iname_entry(gl->cond_token_iname);
 		} else {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::inv_call_iname(gl->cond_token_iname);
 					Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+					Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 					Emit::down();
 						Emit::lab(current_label);
 					Emit::up();
@@ -328,29 +328,29 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 	if (gl->mistaken) {
 		packaging_state save = Routines::begin(gl->mistake_iname);
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(NE_BIP));
+			Emit::inv_primitive(Produce::opcode(NE_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
 				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 				Emit::up();
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_iname(K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
 			Emit::val(K_number, LITERAL_IVAL, (inter_t) (100 + gl->allocation_id));
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Emit::up();
@@ -384,7 +384,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
 	packaging_state save = Routines::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
 		Emit::code();
@@ -398,7 +398,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 						if (<s-value>(gl->mistake_response_text))
 							spec = <<rp>>;
 						else spec = Specifications::new_UNKNOWN(gl->mistake_response_text);
-						Emit::inv_primitive(Emit::opcode(CASE_BIP));
+						Emit::inv_primitive(Produce::opcode(CASE_BIP));
 						Emit::down();
 							Emit::val(K_number, LITERAL_IVAL, (inter_t) (100+gl->allocation_id));
 							Emit::code();
@@ -412,11 +412,11 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 					}
 				}
 
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(I"I didn't understand that sentence.\n");
 					Emit::up();
@@ -426,7 +426,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);
@@ -436,7 +436,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	
 	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
-	Emit::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
+	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
 	Hierarchy::make_available(MistakeAction_iname);
 }
 
@@ -1056,9 +1056,9 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	}
 
 	if ((gv_is == GV_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->instance_s);
 				PL::Parsing::Tokens::Types::compile_to_string(&(gl->gl_type));
@@ -1097,35 +1097,35 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			break;
 		case GV_IS_PROPERTY_NAME:
 		case GV_IS_TOKEN:
-			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->rv_s);
 			Emit::up();
 			Emit::place_label(fail_label);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
 			Emit::up();
 			break;
 		case GV_IS_CONSULT:
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(OR_BIP));
+				Emit::inv_primitive(Produce::opcode(OR_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(EQ_BIP));
+					Emit::inv_primitive(Produce::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->range_words_s);
 						Emit::val(K_number, LITERAL_IVAL, 0);
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(EQ_BIP));
+					Emit::inv_primitive(Produce::opcode(EQ_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(MINUS_BIP));
+						Emit::inv_primitive(Produce::opcode(MINUS_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->range_from_s);
@@ -1135,7 +1135,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->rv_s);
 					Emit::up();
@@ -1143,12 +1143,12 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			Emit::up();
 
 			Emit::place_label(fail_label);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
@@ -1158,17 +1158,17 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			PL::Parsing::Tokens::General::after_gl_failed(gprk, fail_label, gl->pluralised);
 			break;
 		case GV_IS_VALUE:
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
 				PL::Parsing::Tokens::Types::compile_to_string(&(gl->gl_type));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(GPR_NUMBER_HL));
 			Emit::up();
 			Emit::place_label(fail_label);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->original_wn_s);
@@ -1238,7 +1238,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 		if (lexeme_equivalence_class > 0) {
 			if (code_mode) {
 				if (first_token_in_lexeme) {
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->group_wn_s);
 						Emit::val_iname(K_value, Hierarchy::find(WN_HL));
@@ -1250,7 +1250,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 				next_reserved_label = Emit::reserve_label(L);
 				DISCARD_TEXT(L);
 
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->group_wn_s);
@@ -1297,7 +1297,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 						if (next_reserved_label)
 							Emit::place_label(next_reserved_label);
 						next_reserved_label = NULL;
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->group_wn_s);
@@ -1324,7 +1324,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 			current_grammar_block, lexeme_equivalence_class);
 		eog_reserved_label = Emit::reserve_label(L);
 	}
-	Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+	Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 	Emit::down();
 		Emit::lab(eog_reserved_label);
 	Emit::up();
@@ -1339,7 +1339,7 @@ void PL::Parsing::Lines::compile_slash_gprs(void) {
 		PL::Parsing::Tokens::Values::add_standard_set(&gprk);
 
 		PL::Parsing::Lines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, GV_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Emit::up();

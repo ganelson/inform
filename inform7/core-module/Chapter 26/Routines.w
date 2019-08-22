@@ -137,7 +137,7 @@ after the call parameters, and is used only as a scratch variable.
 	}
 
 @<Compile a call to the kernel@> =
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 	Emit::ref_symbol(K_value, I7RBLK_symbol);
 	if (returns_block_value) {
@@ -176,7 +176,7 @@ after the call parameters, and is used only as a scratch variable.
 	Emit::pull(K_value, Hierarchy::find(I7SFRAME_HL));
 
 @<Compile a return from the outer shell@> =
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, I7RBLK_symbol);
 	Emit::up();

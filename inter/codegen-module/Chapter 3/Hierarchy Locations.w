@@ -160,15 +160,27 @@ hierarchy_location *HierarchyLocations::datum(int id, text_stream *name, name_tr
 	return hl;
 }
 
-hierarchy_location *hls_indexed_by_id[MAX_HL];
+#ifndef NO_DEFINED_HL_VALUES
+#define NO_DEFINED_HL_VALUES 1
+#endif
+#ifndef NO_DEFINED_HAP_VALUES
+#define NO_DEFINED_HAP_VALUES 1
+#endif
+#ifndef NO_DEFINED_HMD_VALUES
+#define NO_DEFINED_HMD_VALUES 1
+#endif
+
+hierarchy_location *hls_indexed_by_id[NO_DEFINED_HL_VALUES];
 dictionary *hls_indexed_by_name = NULL;
 
 int hls_created = FALSE;
 void HierarchyLocations::create_hls(void) {
 	hls_created = TRUE;
-	for (int i=0; i<MAX_HL; i++) hls_indexed_by_id[i] = NULL;
+	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) hls_indexed_by_id[i] = NULL;
 	hls_indexed_by_name = Dictionaries::new(512, FALSE);
+	#ifdef CORE_MODULE
 	Hierarchy::establish();
+	#endif
 }
 
 void HierarchyLocations::index(hierarchy_location *hl) {
@@ -182,7 +194,7 @@ void HierarchyLocations::index(hierarchy_location *hl) {
 
 inter_name *HierarchyLocations::find(int id) {
 	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= MAX_HL) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
 	return HierarchyLocations::hl_to_iname(hls_indexed_by_id[id]);
 }
@@ -199,7 +211,7 @@ inter_name *HierarchyLocations::find_by_name(text_stream *name) {
 
 inter_name *HierarchyLocations::function(package_request *R, text_stream *name, text_stream *trans) {
 	inter_name *iname = Packaging::function(InterNames::explicitly_named(name, R), NULL);
-	if (trans) Emit::change_translation(iname, trans);
+	if (trans) Produce::change_translation(iname, trans);
 	return iname;
 }
 
@@ -210,9 +222,14 @@ inter_name *HierarchyLocations::hl_to_iname(hierarchy_location *hl) {
 			hl->equates_to_iname = InterNames::explicitly_named_in_template(hl->access_name);
 		} else {
 			if (hl->requirements.this_exact_package == NULL) {
-				if (hl->requirements.this_exact_package_not_yet_created >= 0)
+				if (hl->requirements.this_exact_package_not_yet_created >= 0) {
+					#ifdef CORE_MODULE
 					hl->requirements.this_exact_package = Hierarchy::exotic_package(hl->requirements.this_exact_package_not_yet_created);
-				else internal_error("package can't be found");
+					#endif
+					#ifndef CORE_MODULE
+					internal_error("feature not available in inter");
+					#endif
+				} else internal_error("package can't be found");
 			}
 			if (Str::len(hl->function_package_name) > 0) {
 				hl->equates_to_iname = Packaging::function_text(
@@ -226,18 +243,19 @@ inter_name *HierarchyLocations::hl_to_iname(hierarchy_location *hl) {
 				hl->equates_to_iname = InterNames::explicitly_named(hl->access_name, hl->requirements.this_exact_package);
 			}
 		}
-
+		#ifdef CORE_MODULE
 		hl->equates_to_iname = Hierarchy::post_process(hl->access_number, hl->equates_to_iname);
+		#endif
 		hl->requirements.this_exact_package = InterNames::location(hl->equates_to_iname);
 		
-		if (hl->trans.translate_to) Emit::change_translation(hl->equates_to_iname, hl->trans.translate_to);
+		if (hl->trans.translate_to) Produce::change_translation(hl->equates_to_iname, hl->trans.translate_to);
 	}
 	return hl->equates_to_iname;
 }
 
-inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, compilation_module *C, inter_name *derive_from, int fix, text_stream *imposed_name) {
+inter_name *HierarchyLocations::find_in_package(int id, package_request *P, wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
 	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= MAX_HL) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
 	hierarchy_location *hl = hls_indexed_by_id[id];
 	if ((hl->requirements.any_package_of_this_type == NULL) &&
@@ -275,7 +293,7 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		@<Make the actual iname@>;
 	}
 	
-	if (hl->trans.then_make_unique) Emit::set_flag(iname, MAKE_NAME_UNIQUE);
+	if (hl->trans.then_make_unique) Produce::set_flag(iname, MAKE_NAME_UNIQUE);
 	return iname;
 }
 
@@ -288,12 +306,12 @@ inter_name *HierarchyLocations::find_in_package(int id, package_request *P, word
 		else if (Str::len(hl->access_name) == 0) iname = InterNames::explicitly_named_with_memo(T, P, W);
 		else iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W);
 	}
-	if ((Str::len(T) > 0) && (hl->access_name)) Emit::change_translation(iname, T);
+	if ((Str::len(T) > 0) && (hl->access_name)) Produce::change_translation(iname, T);
 
 @ =
 package_request *HierarchyLocations::package_in_package(int id, package_request *P) {
 	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= MAX_HL) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
 	hierarchy_location *hl = hls_indexed_by_id[id];
 
@@ -321,12 +339,12 @@ typedef struct hierarchy_attachment_point {
 	MEMORY_MANAGEMENT
 } hierarchy_attachment_point;
 
-hierarchy_attachment_point *haps_indexed_by_id[MAX_HAP];
+hierarchy_attachment_point *haps_indexed_by_id[NO_DEFINED_HAP_VALUES];
 
 int haps_created = FALSE;
 void HierarchyLocations::create_haps(void) {
 	haps_created = TRUE;
-	for (int i=0; i<MAX_HAP; i++) haps_indexed_by_id[i] = NULL;
+	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) haps_indexed_by_id[i] = NULL;
 }
 
 void HierarchyLocations::index_ap(hierarchy_attachment_point *hap) {
@@ -345,17 +363,27 @@ hierarchy_attachment_point *HierarchyLocations::ap(int hap_id, location_requirem
 }
 
 package_request *HierarchyLocations::attach_new_package(compilation_module *C, package_request *R, int hap_id) {
-	if ((hap_id < 0) || (hap_id >= MAX_HAP) || (haps_created == FALSE) || (haps_indexed_by_id[hap_id] == NULL))
+	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (haps_created == FALSE) || (haps_indexed_by_id[hap_id] == NULL))
 		internal_error("invalid HAP request");
 	hierarchy_attachment_point *hap = haps_indexed_by_id[hap_id];
 
-	if (hap->requirements.any_submodule_package_of_this_identity)
+	if (hap->requirements.any_submodule_package_of_this_identity) {
+		#ifdef CORE_MODULE
 		R = Packaging::request_submodule(C, hap->requirements.any_submodule_package_of_this_identity);
-	else if (hap->requirements.this_exact_package)
+		#endif
+		#ifndef CORE_MODULE
+		internal_error("feature available only within inform7 compiler");
+		#endif
+	} else if (hap->requirements.this_exact_package)
 		R = hap->requirements.this_exact_package;
-	else if (hap->requirements.this_exact_package_not_yet_created >= 0)
+	else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
+		#ifdef CORE_MODULE
 		R = Hierarchy::exotic_package(hap->requirements.this_exact_package_not_yet_created);
-	else if (hap->requirements.any_package_of_this_type) {
+		#endif
+		#ifndef CORE_MODULE
+		internal_error("feature available only within inform7 compiler");
+		#endif
+	} else if (hap->requirements.any_package_of_this_type) {
 		if ((R == NULL) || (R->eventual_type != hap->requirements.any_package_of_this_type))
 			internal_error("subpackage in wrong superpackage");
 	}
@@ -373,12 +401,12 @@ typedef struct hierarchy_metadatum {
 	MEMORY_MANAGEMENT
 } hierarchy_metadatum;
 
-hierarchy_metadatum *hmds_indexed_by_id[MAX_HMD];
+hierarchy_metadatum *hmds_indexed_by_id[NO_DEFINED_HMD_VALUES];
 
 int hmds_created = FALSE;
 void HierarchyLocations::create_hmds(void) {
 	hmds_created = TRUE;
-	for (int i=0; i<MAX_HMD; i++) hmds_indexed_by_id[i] = NULL;
+	for (int i=0; i<NO_DEFINED_HMD_VALUES; i++) hmds_indexed_by_id[i] = NULL;
 }
 
 void HierarchyLocations::index_md(hierarchy_metadatum *hmd) {
@@ -396,7 +424,7 @@ hierarchy_metadatum *HierarchyLocations::metadata(int hm_id, location_requiremen
 }
 
 void HierarchyLocations::markup(package_request *R, int hm_id, text_stream *value) {
-	if ((hm_id < 0) || (hm_id >= MAX_HAP) || (hmds_created == FALSE) || (hmds_indexed_by_id[hm_id] == NULL))
+	if ((hm_id < 0) || (hm_id >= NO_DEFINED_HAP_VALUES) || (hmds_created == FALSE) || (hmds_indexed_by_id[hm_id] == NULL))
 		internal_error("invalid HMD request");
 	hierarchy_metadatum *hmd = hmds_indexed_by_id[hm_id];
 
@@ -407,13 +435,18 @@ void HierarchyLocations::markup(package_request *R, int hm_id, text_stream *valu
 		if (R != hmd->requirements.this_exact_package)
 			wrong = TRUE;
 	} else if (hmd->requirements.this_exact_package_not_yet_created >= 0) {
+		#ifdef CORE_MODULE
 		if (R != Hierarchy::exotic_package(hmd->requirements.this_exact_package_not_yet_created))
 			wrong = TRUE;
+		#endif
+		#ifndef CORE_MODULE
+		internal_error("feature available only within inform7 compiler");
+		#endif
 	} else if (hmd->requirements.any_package_of_this_type) {
 		if ((R == NULL) || (R->eventual_type != hmd->requirements.any_package_of_this_type))
 			wrong = TRUE;
 	}
 	if (wrong) internal_error("misapplied metadata");
 	
-	Emit::metadata(R, hmd->key, value);
+	Produce::metadata(R, hmd->key, value);
 }

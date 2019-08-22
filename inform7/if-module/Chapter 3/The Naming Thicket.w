@@ -430,9 +430,9 @@ void PL::Naming::compile_small_names(void) {
 		if (notice->capped) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
-			Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+			Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(PROPERTYADDRESS_BIP));
+				Emit::inv_primitive(Produce::opcode(PROPERTYADDRESS_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Instances::iname(owner));
 					Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
@@ -457,12 +457,12 @@ void PL::Naming::compile_small_names(void) {
 				Emit::up();
 			Emit::up();
 		} else {
-			Emit::inv_primitive(Emit::opcode(PRINTNAME_BIP));
+			Emit::inv_primitive(Produce::opcode(PRINTNAME_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Instances::iname(owner));
 			Emit::up();
 		}
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I"'s ");
 		Emit::up();
@@ -471,7 +471,7 @@ void PL::Naming::compile_small_names(void) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(SNAMES);
 		Emit::up();

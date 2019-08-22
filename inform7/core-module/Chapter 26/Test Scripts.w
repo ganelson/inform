@@ -309,19 +309,19 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 	Hierarchy::make_available(iname);
 	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I">--> No test scripts exist for this game.\n");
 		Emit::up();
 	} else {
-		Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 		Emit::down();
 			Emit::val_iname(K_object, Hierarchy::find(SPECIAL_WORD_HL));
 			Emit::code();
 			Emit::down();
 				test_scenario *test;
 				LOOP_OVER(test, test_scenario) {
-					Emit::inv_primitive(Emit::opcode(CASE_BIP));
+					Emit::inv_primitive(Produce::opcode(CASE_BIP));
 					Emit::down();
 						TEMPORARY_TEXT(W);
 						WRITE_TO(W, "%w", Lexer::word_raw_text(Wordings::first_wn(test->name)));
@@ -343,11 +343,11 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 						Emit::up();
 					Emit::up();
 				}
-				Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+				Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 				Emit::down();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 						Emit::down();
 							Emit::val_text(I">--> The following tests are available:\n");
 						Emit::up();
@@ -355,13 +355,13 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 							TEMPORARY_TEXT(T);
 							WRITE_TO(T, "'test %w'\n",
 								Lexer::word_raw_text(Wordings::first_wn(test->name)));
-							Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+							Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 							Emit::down();
 								Emit::val_text(T);
 							Emit::up();
 							DISCARD_TEXT(T);
 						}
-						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 						Emit::down();
 							Emit::val_text(I"\n");
 						Emit::up();
@@ -391,20 +391,20 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		n++;
 		if (itc->itc_code == HEADLINE_INTT) {
 			n = 0;
-			Emit::inv_primitive(Emit::opcode(STYLEBOLD_BIP));
+			Emit::inv_primitive(Produce::opcode(STYLEBOLD_BIP));
 			TEMPORARY_TEXT(T);
 			WRITE_TO(T, "\n%+W\n", itc->text_supplying_the_case);
-			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+			Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(T);
 			Emit::up();
 			DISCARD_TEXT(T);
-			Emit::inv_primitive(Emit::opcode(STYLEROMAN_BIP));
+			Emit::inv_primitive(Produce::opcode(STYLEROMAN_BIP));
 			continue;
 		}
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "%d. %+W\n", n, itc->text_supplying_the_case);
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(C);
 		Emit::up();
@@ -437,12 +437,12 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 					LOG(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
 				@<End reporting on the internal test case@>;
 				WRITE("\nPrints as: ");
-				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+				Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(OUT);
 				Emit::up();
 
-				Emit::inv_primitive(Emit::opcode(INDIRECT1V_BIP));
+				Emit::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Kinds::Behaviour::get_iname(K));
 					Specifications::Compiler::emit_as_val(K_value, spec);
@@ -495,7 +495,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 				break;
 		}
 		WRITE("\n");
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(OUT);
 		Emit::up();
@@ -556,7 +556,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	Kinds::Textual::log(K);
 	@<End reporting on the internal test case@>;
 	WRITE(": ");
-	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(OUT);
 	Emit::up();
@@ -577,7 +577,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 		Emit::up();
 		END_COMPILATION_MODE;
 	}
-	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(I"\n");
 	Emit::up();

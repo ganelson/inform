@@ -147,7 +147,7 @@ int Tables::Columns::get_id(table_column *tc) {
 void Tables::Columns::compile_run_time_support(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_HL));
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, tcv_s);
 		Emit::code();
@@ -155,12 +155,12 @@ void Tables::Columns::compile_run_time_support(void) {
 
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
-		Emit::inv_primitive(Emit::opcode(CASE_BIP));
+		Emit::inv_primitive(Produce::opcode(CASE_BIP));
 		Emit::down();
 			Emit::val(K_value, LITERAL_IVAL, (inter_t) Tables::Columns::get_id(tc));
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 				Emit::down();
 					Kinds::RunTime::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
 				Emit::up();
@@ -170,7 +170,7 @@ void Tables::Columns::compile_run_time_support(void) {
 
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Constructors::UNKNOWN_iname());
 	Emit::up();

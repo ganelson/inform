@@ -438,7 +438,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
 		Hierarchy::make_available(an->an_iname);
-		Emit::annotate_i(an->an_iname, ACTION_IANN, 1);
+		Produce::annotate_i(an->an_iname, ACTION_IANN, 1);
 	}
 	return an->an_iname;
 }
@@ -1002,7 +1002,7 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 	packaging_state save = Emit::named_array_begin(N, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) Emit::array_numeric_entry(0);
 	Emit::array_end(save);
-	Emit::annotate_i(N, INLINE_ARRAY_IANN, 1);
+	Produce::annotate_i(N, INLINE_ARRAY_IANN, 1);
 	return N;
 }
 
@@ -1147,7 +1147,7 @@ void PL::Actions::compile_action_routines(void) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		inter_name *iname = PL::Actions::Sub(an);
 		packaging_state save = Routines::begin(iname);
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			Emit::inv_call_iname(generic_iname);
@@ -1207,7 +1207,7 @@ void PL::Actions::ActionData(void) {
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
 	inter_symbol *for_say_s = LocalVariables::add_named_call_as_symbol(I"for_say");
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, act_s);
 		Emit::code();
@@ -1215,7 +1215,7 @@ void PL::Actions::ActionData(void) {
 
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, PL::Actions::double_sharp(an));
 				Emit::code();
@@ -1229,7 +1229,7 @@ void PL::Actions::ActionData(void) {
 
 							TEMPORARY_TEXT(AT);
 							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-							Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+							Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 							Emit::down();
 								Emit::val_text(AT);
 							Emit::up();
@@ -1238,16 +1238,16 @@ void PL::Actions::ActionData(void) {
 							j0 = -1;
 						}
 						@<Insert a space here if needed to break up the action name@>;
-						Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+						Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(EQ_BIP));
+							Emit::inv_primitive(Produce::opcode(EQ_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, for_say_s);
 								Emit::val(K_number, LITERAL_IVAL, 2);
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+								Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 								Emit::down();
 									Emit::val_text(I"it");
 								Emit::up();
@@ -1266,16 +1266,16 @@ void PL::Actions::ActionData(void) {
 					@<Insert a space here if needed to break up the action name@>;
 					TEMPORARY_TEXT(AT);
 					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_text(AT);
 					Emit::up();
 					DISCARD_TEXT(AT);
 				}
 				if (somethings < an->max_parameters) {
-					Emit::inv_primitive(Emit::opcode(IF_BIP));
+					Emit::inv_primitive(Produce::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(NE_BIP));
+						Emit::inv_primitive(Produce::opcode(NE_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, for_say_s);
 							Emit::val(K_number, LITERAL_IVAL, 2);
@@ -1299,7 +1299,7 @@ void PL::Actions::ActionData(void) {
 
 @<Insert a space here if needed to break up the action name@> =
 	if (clc++ > 0) {
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(I" ");
 		Emit::up();
@@ -1314,13 +1314,13 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	}
 	if (Kinds::Compare::le(K, K_object) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
-	Emit::inv_primitive(Emit::opcode(INDIRECT1V_BIP));
+	Emit::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
 	Emit::down();
 		Emit::val_iname(K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
 		if (Kinds::Compare::eq(K, K_understanding)) {
-			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, 100);
 					Emit::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));

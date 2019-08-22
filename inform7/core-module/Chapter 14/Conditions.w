@@ -306,7 +306,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 @<Compile a logical negation@> =
 	if (ParseTree::no_children(spec_found) != 1)
 		internal_error("Compiled malformed LOGICAL_NOT_NT");
-	Emit::inv_primitive(Emit::opcode(NOT_BIP));
+	Emit::inv_primitive(Produce::opcode(NOT_BIP));
 	Emit::down();
 		Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 	Emit::up();
@@ -321,8 +321,8 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 	if ((left_operand == NULL) || (right_operand == NULL))
 		internal_error("Compiled CONDITION/AND with LHS operands");
 
-	if (ParseTree::is(spec_found, LOGICAL_AND_NT)) Emit::inv_primitive(Emit::opcode(AND_BIP));
-	if (ParseTree::is(spec_found, LOGICAL_OR_NT)) Emit::inv_primitive(Emit::opcode(OR_BIP));
+	if (ParseTree::is(spec_found, LOGICAL_AND_NT)) Emit::inv_primitive(Produce::opcode(AND_BIP));
+	if (ParseTree::is(spec_found, LOGICAL_OR_NT)) Emit::inv_primitive(Produce::opcode(OR_BIP));
 	Emit::down();
 		Specifications::Compiler::emit_as_val(K_value, left_operand);
 		Specifications::Compiler::emit_as_val(K_value, right_operand);
@@ -335,7 +335,7 @@ exists if and only if the enclosing I6 routine takes phrase options. The
 type-checker won't allow these specifications to be compiled anywhere else.
 
 @<Compile a phrase option test@> =
-	Emit::inv_primitive(Emit::opcode(BITWISEAND_BIP));
+	Emit::inv_primitive(Produce::opcode(BITWISEAND_BIP));
 	Emit::down();
 		local_variable *po = LocalVariables::phrase_options();
 		if (po == NULL) internal_error("no phrase options exist in this frame");

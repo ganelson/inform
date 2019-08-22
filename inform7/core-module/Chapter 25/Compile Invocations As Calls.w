@@ -46,16 +46,16 @@ void Invocations::AsCalls::emit_function_call(
 		int arity = tokens->tokens_count;
 		if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;
 		switch (arity) {
-			case 0: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
-			case 1: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
-			case 2: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
-			case 3: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
-			case 4: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
+			case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+			case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+			case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+			case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+			case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 			default: internal_error("indirect function call with too many arguments");
 		}
 		Emit::down();
 		if (lookup_flag) {
-			Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+			Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 			Emit::down();
 				Specifications::Compiler::emit_as_val(K_value, indirect_spec);
 				Emit::val(K_number, LITERAL_IVAL, 1);

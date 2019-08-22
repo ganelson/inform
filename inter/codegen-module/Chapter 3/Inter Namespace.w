@@ -149,9 +149,9 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 }
 
 inter_name *InterNames::explicitly_named_in_template(text_stream *name) {
-	inter_name *iname = InterNames::explicitly_named(name, Hierarchy::connectors());
-	inter_symbol *plug = Inter::Connectors::find_plug(Emit::tree(), name);
-	if (plug == NULL) plug = Inter::Connectors::plug(Emit::tree(), name);
+	inter_name *iname = InterNames::explicitly_named(name, Packaging::connectors());
+	inter_symbol *plug = Inter::Connectors::find_plug(Produce::tree(), name);
+	if (plug == NULL) plug = Inter::Connectors::plug(Produce::tree(), name);
 	iname->symbol = plug;
 	return iname;
 }
@@ -195,7 +195,7 @@ package_request *InterNames::location(inter_name *iname) {
 inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
-	if (P == NULL) return Inter::Tree::global_scope(Emit::tree());
+	if (P == NULL) return Inter::Tree::global_scope(Produce::tree());
 	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 
@@ -217,7 +217,7 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 		TEMPORARY_TEXT(NBUFF);
 		WRITE_TO(NBUFF, "%n", iname);
 		inter_symbols_table *T = InterNames::scope(iname);
-		iname->symbol = Emit::new_symbol(T, NBUFF);
+		iname->symbol = Produce::new_symbol(T, NBUFF);
 		DISCARD_TEXT(NBUFF);
 	}
 	return iname->symbol;

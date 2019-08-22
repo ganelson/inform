@@ -373,7 +373,7 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 			InterNames::to_symbol(V_var), sgn_var, sc.int_M, sc.int_O, x_var, label);
 	} else {
 		if (sc.real_M != 1.0) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, V_var);
 				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
@@ -384,7 +384,7 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 			Emit::up();
 		}
 		if (sc.real_O != 0.0) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, V_var);
 				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
@@ -394,7 +394,7 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 				Emit::up();
 			Emit::up();
 		}
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
 			Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_NAN_HL));
 			Emit::down();
@@ -402,7 +402,7 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+				Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 				Emit::down();
 					Emit::lab(label);
 				Emit::up();
@@ -434,9 +434,9 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 	if (scale_factor > 1) {
 		long long int max = 2147483647LL;
 		if (VirtualMachines::is_16_bit()) max = 32767LL;
-		Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+		Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, sgn_var);
 				Emit::val(K_object, LITERAL_IVAL, 1);
@@ -452,17 +452,17 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 			Emit::up();
 		Emit::up();
 	}
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, var);
-		Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+		Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+			Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) scale_factor);
 				Emit::val_symbol(K_value, var);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 			Emit::down();
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) to_add);
 				Emit::val_symbol(K_value, var_to_add);
@@ -473,25 +473,25 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 #endif
 
 @<Compile the overflow check@> =
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(OR_BIP));
+		Emit::inv_primitive(Produce::opcode(OR_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(GT_BIP));
+			Emit::inv_primitive(Produce::opcode(GT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, var);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) (max/scale_factor));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(AND_BIP));
+			Emit::inv_primitive(Produce::opcode(AND_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, var);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) (max/scale_factor));
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(GT_BIP));
+				Emit::inv_primitive(Produce::opcode(GT_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+					Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) to_add);
 						Emit::val_symbol(K_value, var_to_add);
@@ -502,7 +502,7 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+			Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 			Emit::down();
 				Emit::lab(label);
 			Emit::up();
@@ -542,10 +542,10 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 	inter_symbol *V_var, inter_symbol *R_var) {
 	if (sc.use_integer_scaling) {
 		if (sc.int_O != 0) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_primitive(Emit::opcode(MINUS_BIP));
+				Emit::inv_primitive(Produce::opcode(MINUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, V_var);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sc.int_O);
@@ -554,20 +554,20 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 		}
 		if (sc.int_M != 1) {
 			if (R_var) {
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, R_var);
-					Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+					Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, V_var);
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) sc.int_M);
 					Emit::up();
 				Emit::up();
 			}
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
-				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, V_var);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) sc.int_M);
@@ -576,7 +576,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 		}
 	} else {
 		if (sc.int_M != 0.0) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
 				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_MINUS_HL));
@@ -587,7 +587,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 			Emit::up();
 		}
 		if (sc.real_M != 1.0) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, V_var);
 				Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
@@ -646,14 +646,14 @@ void Kinds::Scalings::compile_print_in_quanta(scaling_transformation sc,
 	Kinds::Scalings::compile_value_to_quanta(sc, V_var, R_var);
 
 	if (sc.use_integer_scaling) {
-		Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINTNUMBER_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, V_var);
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(GT_BIP));
+			Emit::inv_primitive(Produce::opcode(GT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_var);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -682,7 +682,7 @@ that means the decimal expansion can be printed exactly: there are no
 recurring decimals. If it can't, then we must approximate.
 
 @<Print a decimal expansion for the remainder@> =
-	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_text(I".");
 	Emit::up();
@@ -714,10 +714,10 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 @<Use an exact method, since the multiplier divides a power of 10@> =
 	int t = cl10M/M;
 	if (t != 1) {
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, R_var);
-			Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+			Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_var);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) t);
@@ -725,26 +725,26 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 		Emit::up();
 	}
 
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, S_var);
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) cl10M);
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(WHILE_BIP));
+	Emit::inv_primitive(Produce::opcode(WHILE_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(AND_BIP));
+		Emit::inv_primitive(Produce::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+				Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, R_var);
 					Emit::val(K_number, LITERAL_IVAL, 10);
 				Emit::up();
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(GT_BIP));
+			Emit::inv_primitive(Produce::opcode(GT_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, R_var);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -752,19 +752,19 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, R_var);
-				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, R_var);
 					Emit::val(K_number, LITERAL_IVAL, 10);
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, S_var);
-				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, S_var);
 					Emit::val(K_number, LITERAL_IVAL, 10);
@@ -773,12 +773,12 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(WHILE_BIP));
+	Emit::inv_primitive(Produce::opcode(WHILE_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(LT_BIP));
+		Emit::inv_primitive(Produce::opcode(LT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, R_var);
-			Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+			Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, S_var);
 				Emit::val(K_number, LITERAL_IVAL, 10);
@@ -786,14 +786,14 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+			Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 			Emit::down();
 				Emit::val_text(I"0");
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, S_var);
-				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, S_var);
 					Emit::val(K_number, LITERAL_IVAL, 10);
@@ -802,7 +802,7 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINTNUMBER_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, R_var);
 	Emit::up();
@@ -816,17 +816,17 @@ digit after the decimal point should be |R_var| times |10/M|, the second
 	while (R<=M) {
 		R = R*10;
 		int g = Kinds::Dimensions::gcd(R, M);
-		Emit::inv_primitive(Emit::opcode(PRINTNUMBER_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINTNUMBER_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+			Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+				Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+					Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+						Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+							Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, R_var);
 								Emit::val(K_number, LITERAL_IVAL, (inter_t) (R/g));

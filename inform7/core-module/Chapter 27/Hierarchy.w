@@ -1570,11 +1570,11 @@ inter_name *Hierarchy::find(int id) {
 }
 
 void Hierarchy::make_available(inter_name *iname) {
-	text_stream *ma_as = Emit::get_translation(iname);
+	text_stream *ma_as = Produce::get_translation(iname);
 	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
 	PackageTypes::get(I"_linkage");
 	inter_symbol *S = InterNames::to_symbol(iname);
-	Inter::Connectors::socket(Emit::tree(), ma_as, S);
+	Inter::Connectors::socket(Produce::tree(), ma_as, S);
 }
 
 inter_name *Hierarchy::find_by_name(text_stream *name) {
@@ -1585,23 +1585,6 @@ inter_name *Hierarchy::find_by_name(text_stream *name) {
 		try = HierarchyLocations::find_by_name(name);
 	}
 	return try;
-}
-
-package_request *main_pr = NULL;
-package_request *Hierarchy::main(void) {
-	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL),
-			PackageTypes::get(I"_plain"));
-	return main_pr;
-}
-
-package_request *connectors_pr = NULL;
-package_request *Hierarchy::connectors(void) {
-	if (connectors_pr == NULL) {
-		module_package *T = Packaging::get_module(I"connectors");
-		connectors_pr = T->the_package;
-	}
-	return connectors_pr;
 }
 
 package_request *veneer_pr = NULL;
@@ -1646,19 +1629,19 @@ package_request *Hierarchy::package_within(int hap_id, package_request *super) {
 }
 
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_iname_with_specific_name(int id, text_stream *name, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, NULL, -1, name);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, name);
 }
 
 inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, derive_from, -1, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, derive_from, -1, NULL);
 }
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, C, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_block_iname(package_request *P) {
@@ -1667,16 +1650,16 @@ inter_name *Hierarchy::make_block_iname(package_request *P) {
 
 inter_name *Hierarchy::make_kernel_iname(package_request *P) {
 	inter_name *kernel_name = Packaging::make_iname_within(P, I"kernel");
-	Emit::set_flag(kernel_name, MAKE_NAME_UNIQUE);
+	Produce::set_flag(kernel_name, MAKE_NAME_UNIQUE);
 	return kernel_name;
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
-	return HierarchyLocations::find_in_package(id, P, W, NULL, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(id, P, W, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P, wording W, int x) {
-	inter_name *iname = HierarchyLocations::find_in_package(id, P, W, NULL, NULL, x, NULL);
+	inter_name *iname = HierarchyLocations::find_in_package(id, P, W, NULL, x, NULL);
 	Hierarchy::make_available(iname);
 	return iname;
 }

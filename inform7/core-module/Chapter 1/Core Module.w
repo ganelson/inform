@@ -98,17 +98,7 @@ We need to itemise the structures we'll want to allocate:
 @e dval_written_MT
 @e nascent_array_MT
 @e value_holster_array_MT
-@e inter_name_array_MT
-@e inter_name_generator_array_MT
 @e adjective_iname_holder_MT
-@e compilation_module_MT
-@e package_request_MT
-@e hierarchy_location_MT
-@e hierarchy_attachment_point_MT
-@e submodule_identity_MT
-@e submodule_request_MT
-@e module_package_MT
-@e hierarchy_metadatum_MT
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -119,7 +109,6 @@ ALLOCATE_INDIVIDUALLY(adjective_meaning_block)
 ALLOCATE_INDIVIDUALLY(applicability_condition)
 ALLOCATE_INDIVIDUALLY(binary_predicate)
 ALLOCATE_INDIVIDUALLY(booking)
-ALLOCATE_INDIVIDUALLY(compilation_module)
 ALLOCATE_INDIVIDUALLY(constant_phrase)
 ALLOCATE_INDIVIDUALLY(contents_entry)
 ALLOCATE_INDIVIDUALLY(control_structure_phrase)
@@ -181,13 +170,6 @@ ALLOCATE_INDIVIDUALLY(use_option)
 ALLOCATE_INDIVIDUALLY(VM_usage_note)
 ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
 ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
-ALLOCATE_INDIVIDUALLY(package_request)
-ALLOCATE_INDIVIDUALLY(hierarchy_location)
-ALLOCATE_INDIVIDUALLY(hierarchy_attachment_point)
-ALLOCATE_INDIVIDUALLY(submodule_identity)
-ALLOCATE_INDIVIDUALLY(submodule_request)
-ALLOCATE_INDIVIDUALLY(module_package)
-ALLOCATE_INDIVIDUALLY(hierarchy_metadatum)
 
 @ So much for the managed structures: now for the unmanaged structures.
 
@@ -199,8 +181,6 @@ ALLOCATE_IN_ARRAYS(extension_identifier_database_entry, 100)
 ALLOCATE_IN_ARRAYS(i6_schema, 100)
 ALLOCATE_IN_ARRAYS(inference, 100)
 ALLOCATE_IN_ARRAYS(instance_usage, 200)
-ALLOCATE_IN_ARRAYS(inter_name, 1000)
-ALLOCATE_IN_ARRAYS(inter_name_generator, 1000)
 ALLOCATE_IN_ARRAYS(invocation_options, 100)
 ALLOCATE_IN_ARRAYS(local_variable, 100)
 ALLOCATE_IN_ARRAYS(pcalc_func, 1000)
@@ -338,7 +318,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e OBJECT_COMPILATION_DA
 @e OBJECT_CREATIONS_DA
 @e OBJECT_TREE_DA
-@e PACKAGING_DA
 @e PHRASE_COMPARISONS_DA
 @e PHRASE_COMPILATION_DA
 @e PHRASE_CREATIONS_DA
@@ -385,7 +364,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(OBJECT_COMPILATION_DA, L"object compilation", FALSE, FALSE);
 	Log::declare_aspect(OBJECT_CREATIONS_DA, L"object creations", FALSE, FALSE);
 	Log::declare_aspect(OBJECT_TREE_DA, L"object tree", FALSE, FALSE);
-	Log::declare_aspect(PACKAGING_DA, L"packaging", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_COMPARISONS_DA, L"phrase comparisons", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_COMPILATION_DA, L"phrase compilation", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_CREATIONS_DA, L"phrase creations", FALSE, FALSE);

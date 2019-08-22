@@ -23,7 +23,7 @@ void Properties::Emit::emit_subject(inference_subject *subj) {
 	else if (I) iname = Instances::emitted_iname(I);
 	else internal_error("bad subject for emission");
 
-	Emit::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
+	Produce::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
 
 	@<Compile the actual object@>;
 	if (K) {
@@ -60,7 +60,7 @@ each one is marked when visited.
 	#ifdef IF_MODULE
 	if ((I) && (Kinds::Compare::le(Instances::to_kind(I), K_object))) {
 		int AC = PL::Spatial::get_definition_depth(I);
-		if (AC > 0) Emit::annotate_i(iname, ARROW_COUNT_IANN, (inter_t) AC);
+		if (AC > 0) Produce::annotate_i(iname, ARROW_COUNT_IANN, (inter_t) AC);
 	}
 	#endif
 
@@ -217,16 +217,16 @@ void Properties::Emit::emit_iname_has_property(kind *K, inter_name *N, property 
 void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn) {
 	if (Properties::EitherOr::implemented_as_attribute(prn)) {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Emit::inv_primitive(Emit::opcode(NOT_BIP));
+			Emit::inv_primitive(Produce::opcode(NOT_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(HAS_BIP));
+				Emit::inv_primitive(Produce::opcode(HAS_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
 				Emit::up();
 			Emit::up();
 		} else {
-			Emit::inv_primitive(Emit::opcode(HAS_BIP));
+			Emit::inv_primitive(Produce::opcode(HAS_BIP));
 			Emit::down();
 				Emit::val_symbol(K, S);
 				Emit::val_iname(K_value, Properties::iname(prn));
@@ -234,9 +234,9 @@ void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn
 		}
 	} else {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+				Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
@@ -244,9 +244,9 @@ void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn
 				Emit::val(K_truth_state, LITERAL_IVAL, 0);
 			Emit::up();
 		} else {
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+				Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_symbol(K, S);
 					Emit::val_iname(K_value, Properties::iname(prn));

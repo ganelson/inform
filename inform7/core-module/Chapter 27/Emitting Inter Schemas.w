@@ -228,11 +228,11 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				argc++;
 			}
 			switch (argc) {
-				case 1: Emit::inv_primitive(Emit::opcode(INDIRECT0_BIP)); break;
-				case 2: Emit::inv_primitive(Emit::opcode(INDIRECT1_BIP)); break;
-				case 3: Emit::inv_primitive(Emit::opcode(INDIRECT2_BIP)); break;
-				case 4: Emit::inv_primitive(Emit::opcode(INDIRECT3_BIP)); break;
-				case 5: Emit::inv_primitive(Emit::opcode(INDIRECT4_BIP)); break;
+				case 1: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+				case 2: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+				case 3: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+				case 4: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+				case 5: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 				default: internal_error("too many args for indirect call"); break;
 			}
 		}
@@ -250,10 +250,10 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 2: Emit::inv_primitive(Emit::opcode(MESSAGE0_BIP)); break;
-			case 3: Emit::inv_primitive(Emit::opcode(MESSAGE1_BIP)); break;
-			case 4: Emit::inv_primitive(Emit::opcode(MESSAGE2_BIP)); break;
-			case 5: Emit::inv_primitive(Emit::opcode(MESSAGE3_BIP)); break;
+			case 2: Emit::inv_primitive(Produce::opcode(MESSAGE0_BIP)); break;
+			case 3: Emit::inv_primitive(Produce::opcode(MESSAGE1_BIP)); break;
+			case 4: Emit::inv_primitive(Produce::opcode(MESSAGE2_BIP)); break;
+			case 5: Emit::inv_primitive(Produce::opcode(MESSAGE3_BIP)); break;
 			default: internal_error("too many args for message"); break;
 		}
 		Emit::down();
@@ -270,10 +270,10 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 1: Emit::inv_primitive(Emit::opcode(CALLMESSAGE0_BIP)); break;
-			case 2: Emit::inv_primitive(Emit::opcode(CALLMESSAGE1_BIP)); break;
-			case 3: Emit::inv_primitive(Emit::opcode(CALLMESSAGE2_BIP)); break;
-			case 4: Emit::inv_primitive(Emit::opcode(CALLMESSAGE3_BIP)); break;
+			case 1: Emit::inv_primitive(Produce::opcode(CALLMESSAGE0_BIP)); break;
+			case 2: Emit::inv_primitive(Produce::opcode(CALLMESSAGE1_BIP)); break;
+			case 3: Emit::inv_primitive(Produce::opcode(CALLMESSAGE2_BIP)); break;
+			case 4: Emit::inv_primitive(Produce::opcode(CALLMESSAGE3_BIP)); break;
 			default: internal_error("too many args for call-message"); break;
 		}
 		Emit::down();
@@ -293,7 +293,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 			if (at->next_node) {
 				d++;
-				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 				Emit::down();
 			}
 			EmitInterSchemas::emit_inner(at,
@@ -306,7 +306,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 @<Operation@> =
 	if (prim_cat == REF_PRIM_CAT) { Emit::reference(); Emit::down(); }
 
-	Emit::inv_primitive(Emit::opcode(isn->isn_clarifier));
+	Emit::inv_primitive(Produce::opcode(isn->isn_clarifier));
 	Emit::down();
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
@@ -327,7 +327,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 		if (at->next_node) {
 			d++;
-			Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 			Emit::down();
 		}
 		EmitInterSchemas::emit_inner(at,
@@ -339,7 +339,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
 	if (isn->isn_clarifier == CASE_BIP) Emit::to_last_level(2);
-	Emit::inv_primitive(Emit::opcode(isn->isn_clarifier));
+	Emit::inv_primitive(Produce::opcode(isn->isn_clarifier));
 	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
 	if (arity > 0) {
 		Emit::down();
@@ -454,7 +454,7 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				break;
 			case DQUOTED_ISTT:
 				if (print_ret_me) {
-					Emit::inv_primitive(Emit::opcode(PRINTRET_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINTRET_BIP));
 					Emit::down();
 				}
 				Emit::val_text(t->material);
@@ -499,7 +499,7 @@ inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbo
 		Str::copy(SR, S);
 		Str::delete_first_character(SR);
 		Str::delete_last_character(SR);
-		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Emit::tree(), NULL, SR);
+		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Produce::tree(), NULL, SR);
 		DISCARD_TEXT(SR);
 		if (I) return I;
 	}

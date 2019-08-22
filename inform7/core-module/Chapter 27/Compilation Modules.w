@@ -18,12 +18,6 @@ in (a) or (b) above. This section of code determines to which module any new
 definition (of, say, a property or kind) belongs.
 
 =
-typedef struct compilation_module {
-	struct module_package *inter_presence;
-	struct parse_node *hanging_from;
-	MEMORY_MANAGEMENT
-} compilation_module;
-
 compilation_module *source_text_module = NULL; /* the one for the main text */
 compilation_module *SR_module = NULL; /* the one for the Standard Rules */
 
@@ -53,7 +47,7 @@ compilation_module *Modules::new(parse_node *from) {
 	else owner = SourceFiles::get_extension_corresponding(
 		Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
 
-	compilation_module *C = CREATE(compilation_module);
+	compilation_module *C = Packaging::new_cm();
 	C->hanging_from = from;
 	ParseTree::set_module(from, C);
 	Modules::propagate_downwards(from->down, C);

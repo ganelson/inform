@@ -465,9 +465,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 	if (ParseTree::int_annotation(pn, grammar_token_literal_ANNOT)) {
 		if (code_mode) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(NE_BIP));
+				Emit::inv_primitive(Produce::opcode(NE_BIP));
 				Emit::down();
 					Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 					TEMPORARY_TEXT(N);
@@ -489,17 +489,17 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	bp = ParseTree::get_grammar_token_relation(pn);
 	if (bp) {
 		Emit::inv_call_iname(Hierarchy::find(ARTICLEDESCRIPTORS_HL));
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, gprk->w_s);
 			Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 		Emit::up();
 		if (bp == R_containment) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(NOT_BIP));
+				Emit::inv_primitive(Produce::opcode(NOT_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(HAS_BIP));
+					Emit::inv_primitive(Produce::opcode(HAS_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 						Emit::val_iname(K_value, Hierarchy::find(CONTAINER_HL));
@@ -509,11 +509,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Emit::up();
 		}
 		if (bp == R_support) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(NOT_BIP));
+				Emit::inv_primitive(Produce::opcode(NOT_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(HAS_BIP));
+					Emit::inv_primitive(Produce::opcode(HAS_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 						Emit::val_iname(K_value, Hierarchy::find(SUPPORTER_HL));
@@ -524,11 +524,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		}
 		if ((bp == a_has_b_predicate) || (bp == R_wearing) ||
 			(bp == R_carrying)) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(NOT_BIP));
+				Emit::inv_primitive(Produce::opcode(NOT_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(HAS_BIP));
+					Emit::inv_primitive(Produce::opcode(HAS_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 						Emit::val_iname(K_value, Hierarchy::find(ANIMATE_HL));
@@ -547,11 +547,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			inter_symbol *exit_label = Emit::reserve_label(L);
 			DISCARD_TEXT(L);
 
-			Emit::inv_primitive(Emit::opcode(OBJECTLOOP_BIP));
+			Emit::inv_primitive(Produce::opcode(OBJECTLOOP_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
-				Emit::inv_primitive(Emit::opcode(IN_BIP));
+				Emit::inv_primitive(Produce::opcode(IN_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->rv_s);
 					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
@@ -559,25 +559,25 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::code();
 				Emit::down();
 					if (bp == R_carrying) {
-						Emit::inv_primitive(Emit::opcode(IF_BIP));
+						Emit::inv_primitive(Produce::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(HAS_BIP));
+							Emit::inv_primitive(Produce::opcode(HAS_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->rv_s);
 								Emit::val_iname(K_value, Properties::iname(P_worn));
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(CONTINUE_BIP));
+								Emit::inv_primitive(Produce::opcode(CONTINUE_BIP));
 							Emit::up();
 						Emit::up();
 					}
 					if (bp == R_wearing) {
-						Emit::inv_primitive(Emit::opcode(IF_BIP));
+						Emit::inv_primitive(Produce::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(NOT_BIP));
+							Emit::inv_primitive(Produce::opcode(NOT_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(HAS_BIP));
+								Emit::inv_primitive(Produce::opcode(HAS_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->rv_s);
 									Emit::val_iname(K_value, Properties::iname(P_worn));
@@ -585,19 +585,19 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(CONTINUE_BIP));
+								Emit::inv_primitive(Produce::opcode(CONTINUE_BIP));
 							Emit::up();
 						Emit::up();
 					}
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::val_symbol(K_value, gprk->w_s);
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+						Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
 							Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
@@ -607,16 +607,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::up();
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(IF_BIP));
+					Emit::inv_primitive(Produce::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(GT_BIP));
+						Emit::inv_primitive(Produce::opcode(GT_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+							Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 							Emit::down();
 								Emit::lab(exit_label);
 							Emit::up();
@@ -624,14 +624,14 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			@<Jump to our doom@>;
 			Emit::place_label(exit_label);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -641,29 +641,29 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
 			inter_symbol *exit_label = Emit::reserve_label(L);
 			DISCARD_TEXT(L);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+				Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 					Emit::val_iname(K_value, Hierarchy::find(COMPONENT_CHILD_HL));
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(WHILE_BIP));
+			Emit::inv_primitive(Produce::opcode(WHILE_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gprk->rv_s);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 						Emit::val_symbol(K_value, gprk->w_s);
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-						Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+						Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
 							Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
@@ -673,25 +673,25 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::up();
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(IF_BIP));
+					Emit::inv_primitive(Produce::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(GT_BIP));
+						Emit::inv_primitive(Produce::opcode(GT_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+							Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 							Emit::down();
 								Emit::lab(exit_label);
 							Emit::up();
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->rv_s);
-						Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+						Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->rv_s);
 							Emit::val_iname(K_value, Hierarchy::find(COMPONENT_SIBLING_HL));
@@ -699,14 +699,14 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
 			@<Jump to our doom@>;
 			Emit::place_label(exit_label);
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -727,9 +727,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			(BinaryPredicates::get_reversal(bp) == R_wearing) ||
 			(BinaryPredicates::get_reversal(bp) == R_carrying)) {
 			if (BinaryPredicates::get_reversal(bp) == R_carrying) {
-				Emit::inv_primitive(Emit::opcode(IF_BIP));
+				Emit::inv_primitive(Produce::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(HAS_BIP));
+					Emit::inv_primitive(Produce::opcode(HAS_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 						Emit::val_iname(K_value, Properties::iname(P_worn));
@@ -738,11 +738,11 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::up();
 			}
 			if (BinaryPredicates::get_reversal(bp) == R_wearing) {
-				Emit::inv_primitive(Emit::opcode(IF_BIP));
+				Emit::inv_primitive(Produce::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(NOT_BIP));
+					Emit::inv_primitive(Produce::opcode(NOT_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(HAS_BIP));
+						Emit::inv_primitive(Produce::opcode(HAS_BIP));
 						Emit::down();
 							Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 							Emit::val_iname(K_value, Properties::iname(P_worn));
@@ -751,7 +751,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					@<Then jump to our doom@>;
 				Emit::up();
 			}
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
 				Emit::inv_call(Hierarchy::veneer_symbol(PARENT_VSYMB));
@@ -760,15 +760,15 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Emit::up();
 			Emit::up();
 
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->w_s);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-				Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+				Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
 					Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
@@ -778,9 +778,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->w_s);
@@ -788,24 +788,24 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				@<Then jump to our doom@>;
 			Emit::up();
 		} else if (BinaryPredicates::get_reversal(bp) == R_incorporation) {
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_symbol(K_value, gprk->rv_s);
-				Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+				Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 					Emit::val_iname(K_value, Hierarchy::find(COMPONENT_PARENT_HL));
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 				Emit::val_symbol(K_value, gprk->w_s);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-				Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+				Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, gprk->w_s);
 					Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
@@ -815,9 +815,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Emit::up();
 				Emit::up();
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 					Emit::val_symbol(K_value, gprk->w_s);
@@ -841,15 +841,15 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				kind *K = BinaryPredicates::term_kind(bp, 1);
 				if (Kinds::Compare::lt(K, K_object)) {
 					LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is $u\n", K);
-					Emit::inv_primitive(Emit::opcode(OBJECTLOOPX_BIP));
+					Emit::inv_primitive(Produce::opcode(OBJECTLOOPX_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->rv_s);
 						Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(EQ_BIP));
+								Emit::inv_primitive(Produce::opcode(EQ_BIP));
 								Emit::down();
 									pcalc_term rv_term = Calculus::Terms::new_constant(
 										Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, gprk->rv_lv));
@@ -881,9 +881,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				}
 				if (prn) {
 					if (reverse) {
-						Emit::inv_primitive(Emit::opcode(IF_BIP));
+						Emit::inv_primitive(Produce::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(PROVIDES_BIP));
+							Emit::inv_primitive(Produce::opcode(PROVIDES_BIP));
 							Emit::down();
 								Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 								Emit::val_iname(K_value, Properties::iname(prn));
@@ -891,18 +891,18 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Emit::code();
 							Emit::down();
 
-								Emit::inv_primitive(Emit::opcode(STORE_BIP));
+								Emit::inv_primitive(Produce::opcode(STORE_BIP));
 								Emit::down();
 									Emit::ref_symbol(K_value, gprk->rv_s);
-									Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+									Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 									Emit::down();
 										Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
 										Emit::val_iname(K_value, Properties::iname(prn));
 									Emit::up();
 								Emit::up();
-								Emit::inv_primitive(Emit::opcode(IF_BIP));
+								Emit::inv_primitive(Produce::opcode(IF_BIP));
 								Emit::down();
-									Emit::inv_primitive(Emit::opcode(EQ_BIP));
+									Emit::inv_primitive(Produce::opcode(EQ_BIP));
 									Emit::down();
 										Emit::val_symbol(K_value, gprk->rv_s);
 
@@ -924,26 +924,26 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Problems::issue_problem_end();
 							return K_object;
 						}
-						Emit::inv_primitive(Emit::opcode(OBJECTLOOPX_BIP));
+						Emit::inv_primitive(Produce::opcode(OBJECTLOOPX_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->rv_s);
 							Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(IF_BIP));
+								Emit::inv_primitive(Produce::opcode(IF_BIP));
 								Emit::down();
-									Emit::inv_primitive(Emit::opcode(EQ_BIP));
+									Emit::inv_primitive(Produce::opcode(EQ_BIP));
 									Emit::down();
-										Emit::inv_primitive(Emit::opcode(AND_BIP));
+										Emit::inv_primitive(Produce::opcode(AND_BIP));
 										Emit::down();
-											Emit::inv_primitive(Emit::opcode(PROVIDES_BIP));
+											Emit::inv_primitive(Produce::opcode(PROVIDES_BIP));
 											Emit::down();
 												Emit::val_symbol(K_value, gprk->rv_s);
 												Emit::val_iname(K_value, Properties::iname(prn));
 											Emit::up();
-											Emit::inv_primitive(Emit::opcode(EQ_BIP));
+											Emit::inv_primitive(Produce::opcode(EQ_BIP));
 											Emit::down();
-												Emit::inv_primitive(Emit::opcode(PROPERTYVALUE_BIP));
+												Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
 												Emit::down();
 													Emit::val_symbol(K_value, gprk->rv_s);
 													Emit::val_iname(K_value, Properties::iname(prn));
@@ -974,20 +974,20 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								if (continue_loop_on_fail == FALSE) {
 									@<Jump to our doom@>;
 								} else {
-									Emit::inv_primitive(Emit::opcode(CONTINUE_BIP));
+									Emit::inv_primitive(Produce::opcode(CONTINUE_BIP));
 								}
 							Emit::up();
 						Emit::up();
 
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
 							Emit::val_symbol(K_value, gprk->w_s);
 						Emit::up();
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-							Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+							Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->w_s);
 								Emit::inv_call_iname(Hierarchy::find(TRYGIVENOBJECT_HL));
@@ -1003,16 +1003,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						inter_symbol *exit_label = Emit::reserve_label(L);
 						DISCARD_TEXT(L);
 
-						Emit::inv_primitive(Emit::opcode(IF_BIP));
+						Emit::inv_primitive(Produce::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(GT_BIP));
+							Emit::inv_primitive(Produce::opcode(GT_BIP));
 							Emit::down();
 								Emit::val_iname(K_value, Hierarchy::find(WN_HL));
 								Emit::val_symbol(K_value, gprk->w_s);
 							Emit::up();
 							Emit::code();
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+								Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 								Emit::down();
 									Emit::lab(exit_label);
 								Emit::up();
@@ -1021,14 +1021,14 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->rv_s);
 					Emit::val(K_number, LITERAL_IVAL, 0);
 				Emit::up();
 				@<Jump to our doom@>;
 				Emit::place_label(exit_label);
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->rv_s);
 					Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1052,7 +1052,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
 				if (code_mode) {
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->w_s);
 						Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1064,16 +1064,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 						Emit::up();
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(IF_BIP));
+					Emit::inv_primitive(Produce::opcode(IF_BIP));
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(NE_BIP));
+						Emit::inv_primitive(Produce::opcode(NE_BIP));
 						Emit::down();
 							Emit::val_symbol(K_value, gprk->w_s);
 							Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 						Emit::up();
 						@<Then jump to our doom@>;
 					Emit::up();
-					Emit::inv_primitive(Emit::opcode(STORE_BIP));
+					Emit::inv_primitive(Produce::opcode(STORE_BIP));
 					Emit::down();
 						Emit::ref_symbol(K_value, gprk->rv_s);
 						Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
@@ -1117,7 +1117,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						"the player's command, but here we already have "
 						"a snippet, and don't want to snip it further.");
 				}
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->w_s);
 					Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1126,16 +1126,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Emit::val_iname(K_value, i6_token_iname);
 					Emit::up();
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(IF_BIP));
+				Emit::inv_primitive(Produce::opcode(IF_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(EQ_BIP));
+					Emit::inv_primitive(Produce::opcode(EQ_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, gprk->w_s);
 						Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 					Emit::up();
 					@<Then jump to our doom@>;
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gprk->rv_s);
 					Emit::val_symbol(K_value, gprk->w_s);
@@ -1148,7 +1148,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				K = Specifications::to_kind(spec);
 				if (Descriptions::is_qualified(spec)) {
  					if (code_mode) {
-		 				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		 				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->w_s);
 							Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1156,16 +1156,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								PL::Parsing::Tokens::Filters::compile_id(gtc);
 							Emit::up();
 						Emit::up();
-						Emit::inv_primitive(Emit::opcode(IF_BIP));
+						Emit::inv_primitive(Produce::opcode(IF_BIP));
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(EQ_BIP));
+							Emit::inv_primitive(Produce::opcode(EQ_BIP));
 							Emit::down();
 								Emit::val_symbol(K_value, gprk->w_s);
 								Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 							Emit::up();
 							@<Then jump to our doom@>;
 						Emit::up();
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gprk->rv_s);
 							Emit::val_symbol(K_value, gprk->w_s);
@@ -1177,7 +1177,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					if (Kinds::Behaviour::offers_I6_GPR(K)) {
 						text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
 						if (code_mode) {
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
 								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1189,16 +1189,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 										Emit::val_iname(K_value, Kinds::RunTime::get_kind_GPR_iname(K));
 								Emit::up();
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(NE_BIP));
+								Emit::inv_primitive(Produce::opcode(NE_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
 									Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->rv_s);
 								Emit::val_iname(K_number, Hierarchy::find(GPR_NUMBER_HL));
@@ -1211,7 +1211,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						}
 					} else if (Kinds::Compare::le(K, K_object)) {
 						if (code_mode) {
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
 								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1219,16 +1219,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(EQ_BIP));
+								Emit::inv_primitive(Produce::opcode(EQ_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
 									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->rv_s);
 								Emit::val_symbol(K_value, gprk->w_s);
@@ -1244,7 +1244,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					if (Rvalues::is_CONSTANT_of_kind(spec, K_understanding)) {
 						gv = Rvalues::to_grammar_verb(spec);
 						if (code_mode) {
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
 								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1253,9 +1253,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									Emit::val_iname(K_value, PL::Parsing::Verbs::i6_token_as_iname(gv));
 								Emit::up();
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(EQ_BIP));
+								Emit::inv_primitive(Produce::opcode(EQ_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
 									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
@@ -1263,16 +1263,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								@<Then jump to our doom@>;
 							Emit::up();
 
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(NE_BIP));
+								Emit::inv_primitive(Produce::opcode(NE_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
 									Emit::val_iname(K_number, Hierarchy::find(GPR_PREPOSITION_HL));
 								Emit::up();
 								Emit::code();
 								Emit::down();
-									Emit::inv_primitive(Emit::opcode(STORE_BIP));
+									Emit::inv_primitive(Produce::opcode(STORE_BIP));
 									Emit::down();
 										Emit::ref_symbol(K_value, gprk->rv_s);
 										Emit::val_symbol(K_value, gprk->w_s);
@@ -1286,7 +1286,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					}
 					if (Rvalues::is_object(spec)) {
 						if (code_mode) {
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->w_s);
 								Emit::inv_call_iname(Hierarchy::find(PARSETOKENSTOPPED_HL));
@@ -1294,16 +1294,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									PL::Parsing::Tokens::Filters::compile_id(gtc);
 								Emit::up();
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(IF_BIP));
+							Emit::inv_primitive(Produce::opcode(IF_BIP));
 							Emit::down();
-								Emit::inv_primitive(Emit::opcode(EQ_BIP));
+								Emit::inv_primitive(Produce::opcode(EQ_BIP));
 								Emit::down();
 									Emit::val_symbol(K_value, gprk->w_s);
 									Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
 								Emit::up();
 								@<Then jump to our doom@>;
 							Emit::up();
-							Emit::inv_primitive(Emit::opcode(STORE_BIP));
+							Emit::inv_primitive(Produce::opcode(STORE_BIP));
 							Emit::down();
 								Emit::ref_symbol(K_value, gprk->rv_s);
 								Emit::val_symbol(K_value, gprk->w_s);
@@ -1327,7 +1327,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	Emit::up();
 
 @<Jump to our doom@> =
-	Emit::inv_primitive(Emit::opcode(JUMP_BIP));
+	Emit::inv_primitive(Produce::opcode(JUMP_BIP));
 	Emit::down();
 		Emit::lab(failure_label);
 	Emit::up();

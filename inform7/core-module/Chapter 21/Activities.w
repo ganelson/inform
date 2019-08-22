@@ -572,14 +572,14 @@ activity_list *Activities::parse_list_inner(wording W, int state) {
 void Activities::emit_activity_list(activity_list *al) {
 	int negate_me = FALSE, downs = 0;
 	if (al->ACL_parity == FALSE) negate_me = TRUE;
-	if (negate_me) { Emit::inv_primitive(Emit::opcode(NOT_BIP)); Emit::down(); downs++; }
+	if (negate_me) { Emit::inv_primitive(Produce::opcode(NOT_BIP)); Emit::down(); downs++; }
 
 	int cl = 0;
 	for (activity_list *k = al; k; k = k->next) cl++;
 
 	int ncl = 0;
 	while (al != NULL) {
-		if (++ncl < cl) { Emit::inv_primitive(Emit::opcode(OR_BIP)); Emit::down(); downs++; }
+		if (++ncl < cl) { Emit::inv_primitive(Produce::opcode(OR_BIP)); Emit::down(); downs++; }
 		if (al->activity != NULL) {
 			Emit::inv_call_iname(Hierarchy::find(TESTACTIVITY_HL));
 			Emit::down();

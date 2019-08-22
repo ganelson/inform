@@ -292,7 +292,7 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 	if (nlv->lvalue_nve.iname_form) {
 		Emit::val_iname(K_value, nlv->lvalue_nve.iname_form);
 	} else if (nlv->lvalue_nve.stv_ID >= 0) {
-		Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+		Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
@@ -447,7 +447,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
 				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_HL));
-				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_iname(K_text, iname);
 				Emit::up();

@@ -29,7 +29,7 @@ package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
 	R->eventual_type = pt;
 	R->actual_package = NULL;
 	R->parent_request = InterNames::location(name);
-	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Emit::tree());
+	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Produce::tree());
 	R->iname_generators = NULL;
 	return R;
 }
@@ -81,8 +81,8 @@ is summarised by the following state:
 
 =
 typedef struct packaging_state {
-	inter_bookmark *saved_IRS;
-	package_request *saved_enclosure;
+	struct inter_bookmark *saved_IRS;
+	struct package_request *saved_enclosure;
 } packaging_state;
 
 @ It is not legal to write to the following state, which exists only to
@@ -172,16 +172,16 @@ material will be placed between them.
 
 =
 inter_bookmark Packaging::bubble(void) {
-	Emit::nop();
-	inter_bookmark b = Emit::bookmark();
-	Emit::nop();
+	Produce::nop();
+	inter_bookmark b = Produce::bookmark();
+	Produce::nop();
 	return b;
 }
 
 inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
-	Emit::nop_at(IBM);
-	inter_bookmark b = Emit::bookmark_at(IBM);
-	Emit::nop_at(IBM);
+	Produce::nop_at(IBM);
+	inter_bookmark b = Produce::bookmark_at(IBM);
+	Produce::nop_at(IBM);
 	return b;
 }
 
@@ -195,22 +195,32 @@ inter_bookmark pragmas_bookmark;
 inter_bookmark package_types_bookmark;
 inter_bookmark holdings_bookmark;
 
-void Packaging::outside_all_packages(void) {
-	Emit::version(1);
+inter_bookmark *Packaging::pragmas(void) {
+	return &pragmas_bookmark;
+}
+inter_bookmark *Packaging::package_types(void) {
+	return &package_types_bookmark;
+}
+inter_bookmark *Packaging::holdings(void) {
+	return &holdings_bookmark;
+}
 
-	Emit::comment(I"Package types:");
+void Packaging::outside_all_packages(void) {
+	Produce::version(1);
+
+	Produce::comment(I"Package types:");
 	package_types_bookmark = Packaging::bubble();
 	PackageTypes::get(I"_plain"); // To ensure this is the first emitted ptype
 	PackageTypes::get(I"_code"); // And this the second
 	PackageTypes::get(I"_linkage"); // And this the third
 
-	Emit::comment(I"Pragmas:");
+	Produce::comment(I"Pragmas:");
 	pragmas_bookmark = Packaging::bubble();
 
-	Emit::comment(I"Primitives:");
-	Primitives::emit(Emit::tree(), Packaging::at());
+	Produce::comment(I"Primitives:");
+	Primitives::emit(Produce::tree(), Packaging::at());
 
-	Packaging::enter(Hierarchy::main()); // Which we never exit
+	Packaging::enter(Packaging::main()); // Which we never exit
 	holdings_bookmark = Packaging::bubble();
 }
 
@@ -267,7 +277,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			Packaging::set_state(&(R->parent_request->write_position), E);
 			inter_bookmark package_bubble = Packaging::bubble();
 			Packaging::set_state(&package_bubble, E);
-			R->actual_package = Emit::package(R->eventual_name, R->eventual_type);
+			R->actual_package = Produce::package(R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble();
 			Packaging::set_state(save_IRS, E);
 		} else {
@@ -275,13 +285,26 @@ inter_package *Packaging::incarnate(package_request *R) {
 			package_bubble = Packaging::bubble();
 			inter_bookmark *save_IRS = Packaging::at();
 			Packaging::set_state(&package_bubble, E);
-			R->actual_package = Emit::package(R->eventual_name, R->eventual_type);
+			R->actual_package = Produce::package(R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble();
 			Packaging::set_state(save_IRS, E);
 		}
 		LOGIF(PACKAGING, "Made incarnate $X bookmark $5\n", R, &(R->write_position));
 	}
 	return R->actual_package;
+}
+
+@h Compilation modules.
+
+=
+typedef struct compilation_module {
+	struct module_package *inter_presence;
+	struct parse_node *hanging_from;
+	MEMORY_MANAGEMENT
+} compilation_module;
+
+compilation_module *Packaging::new_cm(void) {
+	return CREATE(compilation_module);
 }
 
 @h Modules.
@@ -314,7 +337,7 @@ module_package *Packaging::get_module(text_stream *name) {
 	module_package *new_module = CREATE(module_package);
 	new_module->the_package =
 		Packaging::request(
-			InterNames::explicitly_named(name, Hierarchy::main()),
+			InterNames::explicitly_named(name, Packaging::main()),
 			PackageTypes::get(I"_module"));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
 	Dictionaries::create(modules_indexed_by_name, name);
@@ -348,6 +371,7 @@ submodule_identity *Packaging::register_submodule(text_stream *name) {
 module to have this submodule. It should call one of the following four functions:
 
 =
+#ifdef CORE_MODULE
 package_request *Packaging::request_submodule(compilation_module *C, submodule_identity *sid) {
 	if (C == NULL) return Packaging::generic_submodule(sid);
 	return Packaging::new_submodule_inner(Modules::inter_presence(C), sid);
@@ -356,6 +380,7 @@ package_request *Packaging::request_submodule(compilation_module *C, submodule_i
 package_request *Packaging::local_submodule(submodule_identity *sid) {
 	return Packaging::request_submodule(Modules::find(current_sentence), sid);
 }
+#endif
 
 package_request *Packaging::generic_submodule(submodule_identity *sid) {
 	return Packaging::new_submodule_inner(Packaging::get_module(I"generic"), sid);
@@ -403,7 +428,7 @@ inter_name *Packaging::function(inter_name *function_iname, inter_name *temp_ina
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
 		WRITE_TO(T, "%n", temp_iname);
-		Emit::change_translation(iname, T);
+		Produce::change_translation(iname, T);
 		DISCARD_TEXT(T);
 	}
 	return iname;
@@ -413,7 +438,7 @@ inter_name *Packaging::function_text(inter_name *function_iname, text_stream *tr
 	package_request *P = Packaging::request(function_iname, PackageTypes::function());
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (translation)
-		Emit::change_translation(iname, translation);
+		Produce::change_translation(iname, translation);
 	return iname;
 }
 
@@ -432,4 +457,22 @@ inter_name *Packaging::datum_text(inter_name *function_iname, text_stream *trans
 	package_request *P = Packaging::request(function_iname, PackageTypes::get(I"_data"));
 	inter_name *iname = InterNames::explicitly_named(translation, P);
 	return iname;
+}
+
+
+package_request *main_pr = NULL;
+package_request *Packaging::main(void) {
+	if (main_pr == NULL)
+		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL),
+			PackageTypes::get(I"_plain"));
+	return main_pr;
+}
+
+package_request *connectors_pr = NULL;
+package_request *Packaging::connectors(void) {
+	if (connectors_pr == NULL) {
+		module_package *T = Packaging::get_module(I"connectors");
+		connectors_pr = T->the_package;
+	}
+	return connectors_pr;
 }

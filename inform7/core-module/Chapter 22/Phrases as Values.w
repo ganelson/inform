@@ -199,7 +199,7 @@ made above.
 	kind *result = NULL;
 	Kinds::binary_construction_material(K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 
 		if (Kinds::Behaviour::uses_pointer_values(result)) {

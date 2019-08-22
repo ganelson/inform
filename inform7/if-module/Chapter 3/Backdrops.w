@@ -280,7 +280,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF)
 		Emit::array_iname_entry(Instances::iname(World::Inferences::get_reference_as_object(inf)));
 	Emit::array_end(save);
-	Emit::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
+	Produce::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
 
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
@@ -322,7 +322,7 @@ void PL::Backdrops::write_found_in_routines(void) {
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF) {
 		instance *loc = World::Inferences::get_reference_as_object(inf);
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {
 			Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
@@ -331,7 +331,7 @@ void PL::Backdrops::write_found_in_routines(void) {
 				Emit::val_iname(K_object, Instances::iname(loc));
 			Emit::up();
 		} else {
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
 				Emit::val_iname(K_object, Instances::iname(loc));

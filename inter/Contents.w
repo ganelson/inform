@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Axion
 
 Import: foundation
+Import: inform7/words
 Import: inter
 Import: codegen
 

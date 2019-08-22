@@ -238,7 +238,7 @@ for the kinds we inherit from.
 		}
 
 		Emit::array_end(save);
-		Emit::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
+		Produce::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
 		Properties::Valued::assert(P_name, Instances::as_subject(I),
 			Rvalues::from_iname(name_array), CERTAIN_CE);
 	}

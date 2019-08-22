@@ -45,8 +45,8 @@ void UseNouns::noun_set_I6_representation(noun *t, text_stream *new) {
 		Str::delete_first_character(t->nt_I6_identifier);
 	if (Str::get_last_char(t->nt_I6_identifier) == '"')
 		Str::delete_last_character(t->nt_I6_identifier);
-	Emit::change_translation(t->nt_iname, t->nt_I6_identifier);
-	Emit::clear_flag(t->nt_iname, MAKE_NAME_UNIQUE);
+	Produce::change_translation(t->nt_iname, t->nt_I6_identifier);
+	Produce::clear_flag(t->nt_iname, MAKE_NAME_UNIQUE);
 	Hierarchy::make_available(t->nt_iname);
 }
 

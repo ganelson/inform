@@ -311,11 +311,11 @@ Inform 6 source file:
 =
 void Extensions::Files::write_I6_comment_describing(extension_file *ef) {
 	if (ef == standard_rules_extension) {
-		Emit::comment(I"From the Standard Rules");
+		Produce::comment(I"From the Standard Rules");
 	} else {
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "From \"%~W\" by %~W", ef->title_text, ef->author_text);
-		Emit::comment(C);
+		Produce::comment(C);
 		DISCARD_TEXT(C);
 	}
 }
@@ -401,7 +401,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			(self_penned == FALSE))) { /* ...didn't write this extension */
 				TEMPORARY_TEXT(C);
 				Extensions::Files::credit_ef(C, ef, TRUE); /* then we award a credit */
-				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+				Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(C);
 				Emit::up();
@@ -415,7 +415,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(C);
 		Extensions::Files::credit_ef(C, ef, TRUE);
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_text(C);
 		Emit::up();
@@ -426,9 +426,9 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	save = Routines::begin(Hierarchy::find(SHOWONEEXTENSION_HL));
 	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
 	LOOP_OVER(ef, extension_file) {
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, id_s);
 				Emit::val(K_number, LITERAL_IVAL, (inter_t) (ef->allocation_id + 1));
@@ -437,7 +437,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			Emit::down();
 				TEMPORARY_TEXT(C);
 				Extensions::Files::credit_ef(C, ef, FALSE);
-				Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+				Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 				Emit::down();
 					Emit::val_text(C);
 				Emit::up();

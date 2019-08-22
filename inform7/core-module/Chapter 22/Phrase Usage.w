@@ -625,7 +625,7 @@ void Phrases::Usage::log_rule_name(ph_usage_data *phud) {
 void Phrases::Usage::write_I6_comment_describing(ph_usage_data *phud) {
 	TEMPORARY_TEXT(C);
 	WRITE_TO(C, "%~W:", phud->full_preamble);
-	Emit::comment(C);
+	Produce::comment(C);
 	DISCARD_TEXT(C);
 }
 

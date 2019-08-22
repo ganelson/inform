@@ -269,12 +269,12 @@ to write a comment about this:
 
 =
 void Routines::ToPhrases::comment_on_request(to_phrase_request *req) {
-	if (req == NULL) Emit::comment(I"No specific request");
+	if (req == NULL) Produce::comment(I"No specific request");
 	else {
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "Request %d: ", req->allocation_id);
 		Kinds::Textual::write(C, req->requested_exact_kind);
-		Emit::comment(C);
+		Produce::comment(C);
 		DISCARD_TEXT(C);
 	}
 }

@@ -289,16 +289,16 @@ a request for a new text substitution to be compiled later...
 	COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
 
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-		Emit::inv_primitive(Emit::opcode(IFDEBUG_BIP));
+		Emit::inv_primitive(Produce::opcode(IFDEBUG_BIP));
 		Emit::down();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(IF_BIP));
+				Emit::inv_primitive(Produce::opcode(IF_BIP));
 				Emit::down();
 					Emit::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 						Emit::down();
 							TEMPORARY_TEXT(S);
 							WRITE_TO(S, "%W", ts->unsubstituted_text);

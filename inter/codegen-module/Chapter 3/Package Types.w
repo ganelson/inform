@@ -29,7 +29,7 @@ inter_symbol *PackageTypes::get(text_stream *name) {
 	int enclose = TRUE;
 	@<Decide if this package type is to be enclosing@>;
 	
-	inter_symbol *new_ptype = Emit::packagetype(name, enclose);
+	inter_symbol *new_ptype = Produce::packagetype(name, enclose);
 	Dictionaries::create(ptypes_indexed_by_name, name);
 	Dictionaries::write_value(ptypes_indexed_by_name, name, (void *) new_ptype);
 	return new_ptype;

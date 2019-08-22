@@ -500,7 +500,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 		else
 			PUT_TO(T, '_');
 	}
-	Emit::change_translation(prn->prop_iname, T);
+	Produce::change_translation(prn->prop_iname, T);
 	Hierarchy::make_available(prn->prop_iname);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
@@ -522,7 +522,7 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 			PUT_TO(T, '_');
 	}
 	Str::truncate(T, 31);
-	Emit::change_translation(prn->prop_iname, T);
+	Produce::change_translation(prn->prop_iname, T);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }
@@ -559,7 +559,7 @@ void Properties::translates(wording W, parse_node *p2) {
 		return;
 	}
 	if ((prn->translated) &&
-		(Str::eq_wide_string(Emit::get_translation(Properties::iname(prn)), text) == FALSE)) {
+		(Str::eq_wide_string(Produce::get_translation(Properties::iname(prn)), text) == FALSE)) {
 		Problems::Issue::sentence_problem(_p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
@@ -715,8 +715,8 @@ void Properties::emit_single(property *prn) {
 
 		Emit::property(iname, K);
 		if (prn->run_time_only) Emit::permission(prn, K_object, NULL);
-		if (prn->translated) Emit::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		Emit::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
+		if (prn->translated) Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
+		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
 	}
 }
 
@@ -757,15 +757,15 @@ void Properties::annotate_attributes(void) {
 	LOOP_OVER(prn, property) {
 		if (Properties::is_either_or(prn)) {
 			if (prn->stored_in_negation) continue;
-			Emit::annotate_i(Properties::iname(prn), EITHER_OR_IANN, 0);
+			Produce::annotate_i(Properties::iname(prn), EITHER_OR_IANN, 0);
 			if (Properties::EitherOr::implemented_as_attribute(prn)) {
-				Emit::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
+				Produce::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
 			}
 		}
 		if (Wordings::nonempty(prn->name))
-			Emit::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
+			Produce::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 		if (prn->run_time_only)
-			Emit::annotate_i(Properties::iname(prn), RTO_IANN, 0);
+			Produce::annotate_i(Properties::iname(prn), RTO_IANN, 0);
 	}
 	Properties::emit_default_values();
 }

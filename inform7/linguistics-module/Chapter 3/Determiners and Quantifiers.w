@@ -108,12 +108,12 @@ quantifier *Quantifiers::quant_new(char *op, int T, int is_comp, char *text) {
 	quant->operator = op;
 	#ifdef CORE_MODULE
 	quant->operator_prim = NULL;
-	if (strcmp(op, "==") == 0) quant->operator_prim = Emit::opcode(EQ_BIP);
-	if (strcmp(op, "~=") == 0) quant->operator_prim = Emit::opcode(NE_BIP);
-	if (strcmp(op, ">=") == 0) quant->operator_prim = Emit::opcode(GE_BIP);
-	if (strcmp(op, ">") == 0) quant->operator_prim = Emit::opcode(GT_BIP);
-	if (strcmp(op, "<=") == 0) quant->operator_prim = Emit::opcode(LE_BIP);
-	if (strcmp(op, "<") == 0) quant->operator_prim = Emit::opcode(LT_BIP);
+	if (strcmp(op, "==") == 0) quant->operator_prim = Produce::opcode(EQ_BIP);
+	if (strcmp(op, "~=") == 0) quant->operator_prim = Produce::opcode(NE_BIP);
+	if (strcmp(op, ">=") == 0) quant->operator_prim = Produce::opcode(GE_BIP);
+	if (strcmp(op, ">") == 0) quant->operator_prim = Produce::opcode(GT_BIP);
+	if (strcmp(op, "<=") == 0) quant->operator_prim = Produce::opcode(LE_BIP);
+	if (strcmp(op, "<") == 0) quant->operator_prim = Produce::opcode(LT_BIP);
 	if (quant->operator_prim == NULL) internal_error("unfamiliar operator");
 	#endif
 
@@ -246,7 +246,7 @@ void Quantifiers::emit_test(quantifier *quant,
 		case -1:
 			if (quant->is_complementary) {
 				Emit::val_symbol(K_value, qcy);
-				Emit::inv_primitive(Emit::opcode(MINUS_BIP));
+				Emit::inv_primitive(Produce::opcode(MINUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, qcn);
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
@@ -265,22 +265,22 @@ void Quantifiers::emit_test(quantifier *quant,
 			Emit::val(K_number, LITERAL_IVAL, 0);
 			break;
 		default:
-			if (quant->operator_prim != Emit::opcode(EQ_BIP)) {
-				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+			if (quant->operator_prim != Produce::opcode(EQ_BIP)) {
+				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, qcy);
 					Emit::val(K_number, LITERAL_IVAL, 10);
 				Emit::up();
-				Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 				Emit::down();
 					Emit::val(K_number, LITERAL_IVAL, (inter_t) TC);
 					Emit::val_symbol(K_value, qcn);
 				Emit::up();
 			} else {
 				Emit::val_symbol(K_value, qcy);
-				Emit::inv_primitive(Emit::opcode(DIVIDE_BIP));
+				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(TIMES_BIP));
+					Emit::inv_primitive(Produce::opcode(TIMES_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) TC);
 						Emit::val_symbol(K_value, qcn);

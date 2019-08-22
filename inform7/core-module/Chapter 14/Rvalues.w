@@ -649,7 +649,7 @@ kinds of value:
 		for (parse_node *term = spec_found->down; term; term = term->next) {
 			NT++;
 			if (NT < NC) {
-				Emit::inv_primitive(Emit::opcode(SEQUENTIAL_BIP));
+				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
 				Emit::down(); downs++;
 			}
 			Specifications::Compiler::emit_as_val(K_value, term);

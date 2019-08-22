@@ -22,6 +22,16 @@ We need to itemise the structures we'll want to allocate:
 @e code_generation_target_MT
 @e code_generation_MT
 @e generated_segment_MT
+@e inter_name_array_MT
+@e inter_name_generator_array_MT
+@e package_request_MT
+@e hierarchy_location_MT
+@e hierarchy_attachment_point_MT
+@e hierarchy_metadatum_MT
+@e module_package_MT
+@e submodule_identity_MT
+@e submodule_request_MT
+@e compilation_module_MT
 
 @ With allocation functions:
 
@@ -39,6 +49,21 @@ ALLOCATE_INDIVIDUALLY(pipeline_stage)
 ALLOCATE_INDIVIDUALLY(code_generation_target)
 ALLOCATE_INDIVIDUALLY(code_generation)
 ALLOCATE_INDIVIDUALLY(generated_segment)
+ALLOCATE_INDIVIDUALLY(hierarchy_location)
+ALLOCATE_INDIVIDUALLY(hierarchy_attachment_point)
+ALLOCATE_INDIVIDUALLY(hierarchy_metadatum)
+ALLOCATE_INDIVIDUALLY(package_request)
+ALLOCATE_INDIVIDUALLY(module_package)
+ALLOCATE_INDIVIDUALLY(submodule_identity)
+ALLOCATE_INDIVIDUALLY(submodule_request)
+ALLOCATE_INDIVIDUALLY(compilation_module)
+ALLOCATE_IN_ARRAYS(inter_name, 1000)
+ALLOCATE_IN_ARRAYS(inter_name_generator, 1000)
+
+#ifdef CORE_MODULE
+MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
+MAKE_ANNOTATION_FUNCTIONS(module, compilation_module)
+#endif
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the
@@ -71,6 +96,7 @@ void CodegenModule::start(void) {
 @e SCHEMA_COMPILATION_DA
 @e SCHEMA_COMPILATION_DETAILS_DA
 @e ELIMINATION_DA
+@e PACKAGING_DA
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(TEMPLATE_READING_DA, L"template reading", FALSE, FALSE);
@@ -79,6 +105,7 @@ void CodegenModule::start(void) {
 	Log::declare_aspect(SCHEMA_COMPILATION_DA, L"schema compilation", FALSE, FALSE);
 	Log::declare_aspect(SCHEMA_COMPILATION_DETAILS_DA, L"schema compilation details", FALSE, FALSE);
 	Log::declare_aspect(ELIMINATION_DA, L"code elimination", FALSE, FALSE);
+	Log::declare_aspect(PACKAGING_DA, L"packaging", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('1', InterSchemas::log);

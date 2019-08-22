@@ -1052,15 +1052,15 @@ void Adjectives::Meanings::list_compile(adjective_meaning *list_head,
 		if ((Adjectives::Meanings::compilation_possible(am, T)) &&
 			(Adjectives::Meanings::domain_weak_match(K, Adjectives::Meanings::get_domain(am)))) {
 			current_sentence = am->defined_at;
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
 				InferenceSubjects::emit_element_of_condition(am->domain_infs, t0_s);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
-							Emit::inv_primitive(Emit::opcode(NOT_BIP));
+							Emit::inv_primitive(Produce::opcode(NOT_BIP));
 							Emit::down();
 						}
 						Adjectives::Meanings::emit_meaning(am, T, phsf);
@@ -1311,16 +1311,16 @@ void Adjectives::Meanings::agreements(void) {
 		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
 
-		Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+		Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, o_s);
 				Emit::val_nothing();
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gna_s);
 					Emit::val(K_number, LITERAL_IVAL, 6);
@@ -1328,7 +1328,7 @@ void Adjectives::Meanings::agreements(void) {
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, gna_s);
 					inter_name *iname = Hierarchy::find(GETGNAOFOBJECT_HL);
@@ -1340,24 +1340,24 @@ void Adjectives::Meanings::agreements(void) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, force_plural_s);
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+				Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(NE_BIP));
+					Emit::inv_primitive(Produce::opcode(NE_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gna_s);
-							Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+							Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 							Emit::down();
 								Emit::val(K_number, LITERAL_IVAL, 3);
 								Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
@@ -1366,7 +1366,7 @@ void Adjectives::Meanings::agreements(void) {
 					Emit::up();
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(STORE_BIP));
+						Emit::inv_primitive(Produce::opcode(STORE_BIP));
 						Emit::down();
 							Emit::ref_symbol(K_value, gna_s);
 							Emit::val(K_number, LITERAL_IVAL, 3);
@@ -1376,28 +1376,28 @@ void Adjectives::Meanings::agreements(void) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, gna_s);
-			Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+			Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, gna_s);
 				Emit::val(K_number, LITERAL_IVAL, 6);
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, gna_s);
 			Emit::code();
 			Emit::down();
 				for (int gna=0; gna<6; gna++) {
-					Emit::inv_primitive(Emit::opcode(CASE_BIP));
+					Emit::inv_primitive(Produce::opcode(CASE_BIP));
 					Emit::down();
 						Emit::val(K_number, LITERAL_IVAL, (inter_t) gna);
 						Emit::code();
 						Emit::down();
-							Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+							Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 							Emit::down();
 								TEMPORARY_TEXT(T);
 								int number_sought = 1, gender_sought = NEUTER_GENDER;
@@ -1425,13 +1425,13 @@ void Adjectives::Meanings::emit(adjectival_phrase *aph) {
 	Emit::inv_call_iname(aph->aph_iname);
 	Emit::down();
 		Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
-		Emit::inv_primitive(Emit::opcode(GE_BIP));
+		Emit::inv_primitive(Produce::opcode(GE_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_HL));
 			Emit::val(K_number, LITERAL_IVAL, 2);
 		Emit::up();
 	Emit::up();
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
 		Emit::val(K_number, LITERAL_IVAL, 1);

@@ -211,9 +211,9 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
 
-	Emit::inv_primitive(Emit::opcode(IFELSE_BIP));
+	Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(EQ_BIP));
+		Emit::inv_primitive(Produce::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, state_s);
 			Emit::val(K_number, LITERAL_IVAL, 1);
@@ -231,7 +231,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	int count = 0;
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) count++;
 
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, (inter_t) count);
 	Emit::up();
@@ -245,9 +245,9 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(LOOKUPREF_BIP));
+			Emit::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 				Emit::val_symbol(K_value, pos_s);
@@ -258,7 +258,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 				NonlocalVariables::emit_initial_value_as_val(q);
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
+		Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, pos_s);
 		Emit::up();
@@ -271,14 +271,14 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Emit::inv_call_iname(Hierarchy::find(BLKVALUEFREE_HL));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(LOOKUP_BIP));
+				Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
 					Emit::val_symbol(K_value, pos_s);
 				Emit::up();
 			Emit::up();
 		}
-		Emit::inv_primitive(Emit::opcode(POSTINCREMENT_BIP));
+		Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, pos_s);
 		Emit::up();

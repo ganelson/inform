@@ -951,7 +951,7 @@ trust that there is nothing surprising here.
 	Emit::array_iname_entry(Instances::iname(R1));
 	Emit::array_iname_entry(Instances::iname(R2));
 	Emit::array_end(save);
-	Emit::annotate_i(S, INLINE_ARRAY_IANN, 1);
+	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	PL::Map::set_found_in(I, S);
 
 @ Here |door_dir| is a routine looking at the current location and returning
@@ -1005,22 +1005,22 @@ void PL::Map::write_door_dir_routines(void) {
 		packaging_state save = Routines::begin(notice->ddn_iname);
 		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
 		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, loc_s);
 			Emit::val_iname(K_value, Hierarchy::find(LOCATION_HL));
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
 				Emit::val_iname(K_value, Hierarchy::find(THEDARK_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, loc_s);
 					Emit::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
@@ -1028,16 +1028,16 @@ void PL::Map::write_door_dir_routines(void) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
 				Emit::val_iname(K_value, Instances::iname(notice->R1));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_iname(K_value,
 						Instances::iname(PL::Map::get_value_of_opposite_property(notice->D1)));
@@ -1045,7 +1045,7 @@ void PL::Map::write_door_dir_routines(void) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_iname(K_value,
 				Instances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
@@ -1061,22 +1061,22 @@ void PL::Map::write_door_to_routines(void) {
 		packaging_state save = Routines::begin(notice->dtn_iname);
 		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
 		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
-		Emit::inv_primitive(Emit::opcode(STORE_BIP));
+		Emit::inv_primitive(Produce::opcode(STORE_BIP));
 		Emit::down();
 			Emit::ref_symbol(K_value, loc_s);
 			Emit::val_iname(K_value, Hierarchy::find(LOCATION_HL));
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
 				Emit::val_iname(K_value, Hierarchy::find(THEDARK_HL));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(STORE_BIP));
+				Emit::inv_primitive(Produce::opcode(STORE_BIP));
 				Emit::down();
 					Emit::ref_symbol(K_value, loc_s);
 					Emit::val_iname(K_value, Hierarchy::find(REAL_LOCATION_HL));
@@ -1084,23 +1084,23 @@ void PL::Map::write_door_to_routines(void) {
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(IF_BIP));
+		Emit::inv_primitive(Produce::opcode(IF_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, loc_s);
 				Emit::val_iname(K_value, Instances::iname(notice->R1));
 			Emit::up();
 			Emit::code();
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Instances::iname(notice->R2));
 				Emit::up();
 			Emit::up();
 		Emit::up();
 
-		Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 		Emit::down();
 			Emit::val_iname(K_value, Instances::iname(notice->R1));
 		Emit::up();

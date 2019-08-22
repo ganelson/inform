@@ -49,7 +49,7 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
 	inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
 
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
 		LocalVariables::begin_condition_emit();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
@@ -62,7 +62,7 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 		LocalVariables::end_condition_emit();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(STORE_BIP));
+			Emit::inv_primitive(Produce::opcode(STORE_BIP));
 			Emit::down();
 				Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
 				Emit::val_symbol(K_value, it_s);

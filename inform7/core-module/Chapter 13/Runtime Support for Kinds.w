@@ -742,16 +742,16 @@ void Kinds::RunTime::compile_structures(void) {
 	LOOP_OVER(rks, runtime_kind_structure) {
 		kind *K = rks->kind_described;
 		if (rks->make_default) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, k_s);
 					Kinds::RunTime::emit_strong_id_as_val(K);
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val_iname(K_value, rks->rks_dv_iname);
 					Emit::up();
@@ -759,7 +759,7 @@ void Kinds::RunTime::compile_structures(void) {
 			Emit::up();
 		}
 	}
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 		Emit::val(K_number, LITERAL_IVAL, 0);
 	Emit::up();
@@ -1040,7 +1040,7 @@ void Kinds::RunTime::emit(kind *K) {
 	}
 	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
 	if (K == K_object) {
-		Emit::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
+		Produce::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
 		Hierarchy::make_available(Kinds::RunTime::iname(K));
 	}
 }
@@ -1051,8 +1051,8 @@ void Kinds::RunTime::kind_declarations(void) {
 		if (Kinds::RunTime::base_represented_in_inter(K)) {
 			Kinds::RunTime::emit(K);
 			inter_name *iname = Kinds::RunTime::iname(K);
-			Emit::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
-			Emit::annotate_i(iname, SOURCE_ORDER_IANN, c++);
+			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
+			Produce::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
 
@@ -1133,7 +1133,7 @@ compilation errors.
 	WRITE_TO(C, "! weak kind ID: %d\n", Kinds::RunTime::weak_id(K));
 	Emit::code_comment(C);
 	DISCARD_TEXT(C);
-	Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, value_s);
 	Emit::up();
@@ -1150,7 +1150,7 @@ but at present this can't happen.
 	else {
 		packaging_state save = Routines::begin(printing_rule_name);
 		inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
-		Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, value_s);
 		Emit::up();
@@ -1161,19 +1161,19 @@ but at present this can't happen.
 	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, value_s);
 		Emit::code();
 		Emit::down();
 			instance *I;
 			LOOP_OVER_INSTANCES(I, K) {
-				Emit::inv_primitive(Emit::opcode(CASE_BIP));
+				Emit::inv_primitive(Produce::opcode(CASE_BIP));
 				Emit::down();
 					Emit::val_iname(K_value, Instances::iname(I));
 					Emit::code();
 					Emit::down();
-						Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 						Emit::down();
 							TEMPORARY_TEXT(CT);
 							wording NW = Instances::get_name_in_play(I, FALSE);
@@ -1187,11 +1187,11 @@ but at present this can't happen.
 					Emit::up();
 				Emit::up();
 			}
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP)); /* this default case should never be needed, unless the user has blundered at the I6 level: */
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP)); /* this default case should never be needed, unless the user has blundered at the I6 level: */
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 					Emit::down();
 						TEMPORARY_TEXT(DT);
 						wording W = Kinds::Behaviour::get_name(K, FALSE);
@@ -1241,7 +1241,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 @<Implement the A routine@> =
 	inter_symbol *x = LocalVariables::create_and_declare(I"x", K);
 
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 
 	if (instance_count <= 1) {
@@ -1249,9 +1249,9 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 	} else {
 		Emit::cast(K_number, K);
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+				Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 				Emit::down();
 					Emit::cast(K, K_number);
 					Emit::down();
@@ -1271,7 +1271,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 @<Implement the B routine@> =
 	inter_symbol *x = LocalVariables::create_and_declare(I"x", K);
 
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 
 	if (instance_count <= 1) {
@@ -1279,13 +1279,13 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 	} else {
 		Emit::cast(K_number, K);
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+				Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 				Emit::down();
 
 				if (instance_count > 2) {
-					Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+					Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 					Emit::down();
 						Emit::cast(K, K_number);
 						Emit::down();
@@ -1323,16 +1323,16 @@ and |b| inclusive.
 	inter_symbol *a_s = LocalVariables::add_named_call_as_symbol(I"a");
 	inter_symbol *b_s = LocalVariables::add_named_call_as_symbol(I"b");
 
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(AND_BIP));
+		Emit::inv_primitive(Produce::opcode(AND_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, a_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(EQ_BIP));
+			Emit::inv_primitive(Produce::opcode(EQ_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, b_s);
 				Emit::val(K_number, LITERAL_IVAL, 0);
@@ -1340,9 +1340,9 @@ and |b| inclusive.
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(RANDOM_BIP));
+				Emit::inv_primitive(Produce::opcode(RANDOM_BIP));
 				Emit::down();
 					if (Kinds::Behaviour::is_quasinumerical(K))
 						Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
@@ -1353,16 +1353,16 @@ and |b| inclusive.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(EQ_BIP));
+		Emit::inv_primitive(Produce::opcode(EQ_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, a_s);
 			Emit::val_symbol(K_value, b_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 			Emit::down();
 				Emit::val_symbol(K_value, b_s);
 			Emit::up();
@@ -1371,16 +1371,16 @@ and |b| inclusive.
 
 	inter_symbol *smaller = NULL, *larger = NULL;
 
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
-		Emit::inv_primitive(Emit::opcode(GT_BIP));
+		Emit::inv_primitive(Produce::opcode(GT_BIP));
 		Emit::down();
 			Emit::val_symbol(K_value, a_s);
 			Emit::val_symbol(K_value, b_s);
 		Emit::up();
 		Emit::code();
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 			Emit::down();
 				smaller = b_s; larger = a_s;
 				@<Formula for range@>;
@@ -1388,7 +1388,7 @@ and |b| inclusive.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 	Emit::down();
 		smaller = a_s; larger = b_s;
 		@<Formula for range@>;
@@ -1397,18 +1397,18 @@ and |b| inclusive.
 	Routines::end(save);
 
 @<Formula for range@> =
-	Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+	Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, smaller);
-		Emit::inv_primitive(Emit::opcode(MODULO_BIP));
+		Emit::inv_primitive(Produce::opcode(MODULO_BIP));
 		Emit::down();
-			Emit::inv_primitive(Emit::opcode(RANDOM_BIP));
+			Emit::inv_primitive(Produce::opcode(RANDOM_BIP));
 			Emit::down();
 				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 			Emit::up();
-			Emit::inv_primitive(Emit::opcode(PLUS_BIP));
+			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(MINUS_BIP));
+				Emit::inv_primitive(Produce::opcode(MINUS_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, larger);
 					Emit::val_symbol(K_value, smaller);
@@ -1438,7 +1438,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 	packaging_state save = Routines::begin(Hierarchy::find(PRINTKINDVALUEPAIR_HL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *v_s = LocalVariables::add_named_call_as_symbol(I"v");
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1448,7 +1448,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1456,7 +1456,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Compare::lt(K, K_object)) continue;
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K);
 				Emit::code();
@@ -1470,11 +1470,11 @@ deduced from its value alone, |K| must explicitly be supplied.)
 			Emit::up();
 	}
 
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 					Emit::down();
 						Emit::val_symbol(K_value, v_s);
 					Emit::up();
@@ -1494,7 +1494,7 @@ which have to be given some type-safe value to start out at.
 	inter_symbol *sk_s = LocalVariables::add_named_call_as_symbol(I"sk");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1504,7 +1504,7 @@ which have to be given some type-safe value to start out at.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1513,12 +1513,12 @@ which have to be given some type-safe value to start out at.
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Compare::lt(K, K_object)) continue;
 		if (Kinds::Behaviour::definite(K)) {
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						if (Kinds::Behaviour::uses_pointer_values(K)) {
 							inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
@@ -1535,11 +1535,11 @@ which have to be given some type-safe value to start out at.
 		}
 	}
 
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val(K_value, LITERAL_IVAL, 0);
 					Emit::up();
@@ -1563,7 +1563,7 @@ unless the two values are genuinely equal.
 	LocalVariables::add_named_call(I"k");
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1573,7 +1573,7 @@ unless the two values are genuinely equal.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1583,12 +1583,12 @@ unless the two values are genuinely equal.
 		if (Kinds::Compare::lt(K, K_object)) continue;
 		if ((Kinds::Behaviour::definite(K)) &&
 			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						inter_name *iname = Kinds::Behaviour::get_comparison_routine_as_iname(K);
 						Emit::val_iname(K_value, iname);
@@ -1598,11 +1598,11 @@ unless the two values are genuinely equal.
 		}
 	}
 
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val(K_value, LITERAL_IVAL, 0);
 					Emit::up();
@@ -1617,7 +1617,7 @@ unless the two values are genuinely equal.
 	packaging_state save = Routines::begin(Hierarchy::find(KOVDOMAINSIZE_HL));
 	local_variable *k = LocalVariables::add_internal_local_c(I"k", "weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare_this(k, FALSE, 8);
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1627,7 +1627,7 @@ unless the two values are genuinely equal.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1636,12 +1636,12 @@ unless the two values are genuinely equal.
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Compare::lt(K, K_object)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val(K_value, LITERAL_IVAL, (inter_t)
 							Kinds::Behaviour::get_highest_valid_value_as_integer(K));
@@ -1651,11 +1651,11 @@ unless the two values are genuinely equal.
 		}
 	}
 
-			Emit::inv_primitive(Emit::opcode(DEFAULT_BIP));
+			Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
 			Emit::down();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						Emit::val(K_value, LITERAL_IVAL, 0);
 					Emit::up();
@@ -1672,7 +1672,7 @@ storing pointers to blocks on the heap.
 @<Compile KOVIsBlockValue@> =
 	packaging_state save = Routines::begin(Hierarchy::find(KOVISBLOCKVALUE_HL));
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1682,7 +1682,7 @@ storing pointers to blocks on the heap.
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1690,7 +1690,7 @@ storing pointers to blocks on the heap.
 		LOOP_OVER_BASE_KINDS(K) {
 			if (Kinds::Compare::lt(K, K_object)) continue;
 			if (Kinds::Behaviour::uses_pointer_values(K)) {
-				Emit::inv_primitive(Emit::opcode(CASE_BIP));
+				Emit::inv_primitive(Produce::opcode(CASE_BIP));
 				Emit::down();
 					Kinds::RunTime::emit_weak_id_as_val(K);
 					Emit::code();
@@ -1714,7 +1714,7 @@ such a function does, see "BlockValues.i6t".
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	inter_symbol *fail_s = LocalVariables::add_named_call_as_symbol(I"fail");
 
-	Emit::inv_primitive(Emit::opcode(STORE_BIP));
+	Emit::inv_primitive(Produce::opcode(STORE_BIP));
 	Emit::down();
 		Emit::ref_symbol(K_value, k_s);
 		inter_name *iname = Hierarchy::find(KINDATOMIC_HL);
@@ -1724,7 +1724,7 @@ such a function does, see "BlockValues.i6t".
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(SWITCH_BIP));
+	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, k_s);
 		Emit::code();
@@ -1732,12 +1732,12 @@ such a function does, see "BlockValues.i6t".
 
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Emit::inv_primitive(Emit::opcode(CASE_BIP));
+			Emit::inv_primitive(Produce::opcode(CASE_BIP));
 			Emit::down();
 				Kinds::RunTime::emit_weak_id_as_val(K);
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(RETURN_BIP));
+					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
 					Emit::down();
 						inter_name *iname = Kinds::Behaviour::get_support_routine_as_iname(K);
 						Emit::val_iname(K_value, iname);
@@ -1749,7 +1749,7 @@ such a function does, see "BlockValues.i6t".
 		Emit::up();
 	Emit::up();
 
-	Emit::inv_primitive(Emit::opcode(IF_BIP));
+	Emit::inv_primitive(Produce::opcode(IF_BIP));
 	Emit::down();
 		Emit::val_symbol(K_value, fail_s);
 		Emit::code();
@@ -1775,16 +1775,16 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {
-			Emit::inv_primitive(Emit::opcode(IF_BIP));
+			Emit::inv_primitive(Produce::opcode(IF_BIP));
 			Emit::down();
-				Emit::inv_primitive(Emit::opcode(EQ_BIP));
+				Emit::inv_primitive(Produce::opcode(EQ_BIP));
 				Emit::down();
 					Emit::val_symbol(K_value, k_s);
 					Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));
 				Emit::up();
 				Emit::code();
 				Emit::down();
-					Emit::inv_primitive(Emit::opcode(PRINT_BIP));
+					Emit::inv_primitive(Produce::opcode(PRINT_BIP));
 					Emit::down();
 						TEMPORARY_TEXT(S);
 						WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
