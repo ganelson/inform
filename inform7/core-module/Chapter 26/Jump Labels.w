@@ -35,10 +35,16 @@ reserves no memory.
 
 =
 label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module *cm) {
-	if (Str::len(name) > MAX_NAMESPACE_PREFIX_LENGTH)
+	if (Str::len(name) > MAX_NAMESPACE_PREFIX_LENGTH) {
+		#ifdef CORE_MODULE
 		Problems::Issue::sentence_problem(_p_(PM_LabelNamespaceTooLong),
 			"a label namespace prefix is too long",
 			"and should be shortened to a few alphabetic characters.");
+		#endif
+		#ifndef CORE_MODULE
+		internal_error("namespace prefix too long");
+		#endif
+	}
 	label_namespace *lns = CREATE(label_namespace);
 	lns->label_prefix = Str::duplicate(name);
 	package_request *PR2 = Hierarchy::synoptic_package(LABEL_STORAGES_HAP);
@@ -115,7 +121,7 @@ void JumpLabels::compile_necessary_storage(void) {
 	label_namespace *lns;
 	LOOP_OVER(lns, label_namespace)
 		if (lns->allocate_storage > 0) {
-			packaging_state save = Emit::named_array_begin(lns->label_storage_iname, K_number);
+			packaging_state save = Emit::named_array_begin(lns->label_storage_iname, K_value);
 			int N = (lns->allocate_storage)*(lns->label_counter) + 2;
 			for (int i=0; i<N; i++) Emit::array_numeric_entry(0);
 			Emit::array_end(save);

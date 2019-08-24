@@ -32,7 +32,7 @@ Also as with tables, each can have a number, a name or both.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">examined_already</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">equation_node</span><span class="plain"> *</span><span class="identifier">parsed_equation</span><span class="plain">; </span>    <span class="comment">and the equation itself (when eventually parsed)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">eqn_iname</span><span class="plain">; </span>    <span class="comment">used at run-time to identify this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">eqn_iname</span><span class="plain">; </span>    <span class="comment">used at run-time to identify this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">equation_symbol</span><span class="plain"> *</span><span class="identifier">symbol_list</span><span class="plain">; </span>    <span class="comment">the symbols used</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">equation</span><span class="plain">;</span>
@@ -70,7 +70,7 @@ instance has its own <code class="display"><span class="extract">equation_symbol
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 8/ed2, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm, 27/eis and here.</p>
+<p class="endnote">The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 8/ed2, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In addition, there are some standing symbols used by all equations: the
 constant "pi", for example. They're stored in this linked list:
@@ -231,7 +231,7 @@ either case, an equation begins here:
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;symbol_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;examined_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">EQUATIONS_HAP</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">EQUATIONS_HAP</span><span class="plain">);</span>
         <span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">SOLVE_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NO</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NA</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
@@ -2188,8 +2188,8 @@ for equations a value; they are never called.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Equations::compile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">, </span><span class="reserved">equation</span><span class="plain">) {</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">);</span>
-            <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">);</span>
+            <span class="identifier">Produce::rfalse</span><span class="plain">();</span>
             <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -2204,7 +2204,7 @@ for equations a value; they are never called.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Equations::identifier</span><span class="plain">(</span><span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Equations::identifier</span><span class="plain">(</span><span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;eqn_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -2499,20 +2499,20 @@ casting between quasinumerical kinds, we'll have to return to this.)
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;var_const</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;local_map</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;promote_local_to_real</span><span class="plain">) {</span>
-                        <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
-                        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
+                        <span class="identifier">Produce::down</span><span class="plain">();</span>
                     <span class="plain">}</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">tok_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;local_map</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-                    <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tok_s</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tok_s</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;promote_local_to_real</span><span class="plain">)</span>
-                        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                        <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;function_notated</span><span class="plain">) {</span>
-                    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">RS</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span>
+                    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">RS</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span>
                         <span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;function_notated</span><span class="plain">,</span>
                         <span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(</span>
                             <span class="plain">&amp;(</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_symbol</span><span class="plain">-</span><span class="element">&gt;function_notated</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">)));</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">RS</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">RS</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"uncompilable equation node"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTANT_EQN</span><span class="plain">:</span>

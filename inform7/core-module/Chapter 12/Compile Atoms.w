@@ -118,12 +118,12 @@ so we terminate with that if making true or false.
 
 @<Stage 2: expand that schema to the output stream@> =
 	if (asch.negate_schema) {
-		Emit::inv_primitive(Produce::opcode(NOT_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(NOT_BIP));
+		Produce::down();
 	}
 	Calculus::Schemas::emit_expand_from_terms(asch.schema, &(asch.pt0), &(asch.pt1), with_semicolon);
 	if (asch.negate_schema) {
-		Emit::up();
+		Produce::up();
 	}
 
 @h Constructing the schema.

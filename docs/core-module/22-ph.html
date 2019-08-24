@@ -69,9 +69,9 @@ code below.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inter_defn_converted</span><span class="plain">; </span>    <span class="comment">has this been tried yet?</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_mor</span><span class="plain">; </span>    <span class="comment">manner of return for inline I6 definition, or <code class="display"><span class="extract">UNKNOWN_NT</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">ph_documentation_symbol</span><span class="plain">; </span>    <span class="comment">cross-reference with documentation</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">owning_module</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">requests_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">rule_package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">owning_module</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">requests_package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">rule_package</span><span class="plain">;</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_type_data</span><span class="plain"> </span><span class="identifier">type_data</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_usage_data</span><span class="plain"> </span><span class="identifier">usage_data</span><span class="plain">;</span>
@@ -81,7 +81,7 @@ code below.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">at_least_one_compiled_form_needed</span><span class="plain">; </span>    <span class="comment">do we still need to compile this?</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compile_with_run_time_debugging</span><span class="plain">; </span>    <span class="comment">in the RULES command</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">ph_iname</span><span class="plain">; </span>    <span class="comment">or NULL for inline phrases</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ph_iname</span><span class="plain">; </span>    <span class="comment">or NULL for inline phrases</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">imported</span><span class="plain">;</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">next_in_logical_order</span><span class="plain">; </span>    <span class="comment">for "to..." phrases only</span>
@@ -565,9 +565,9 @@ what number is...", for instance.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_tail_defn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">, </span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">, </span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">);</span>
             <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFINITION_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain">;</span>

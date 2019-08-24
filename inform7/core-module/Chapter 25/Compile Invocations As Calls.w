@@ -40,32 +40,32 @@ void Invocations::AsCalls::emit_function_call(
 	COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
 
 	if (identifier) {
-		Emit::inv_call_iname(identifier);
-		Emit::down();
+		Produce::inv_call_iname(identifier);
+		Produce::down();
 	} else if (indirect_spec) {
 		int arity = tokens->tokens_count;
 		if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;
 		switch (arity) {
-			case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-			case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-			case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-			case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-			case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
+			case 0: Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+			case 1: Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+			case 2: Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+			case 3: Produce::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+			case 4: Produce::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 			default: internal_error("indirect function call with too many arguments");
 		}
-		Emit::down();
+		Produce::down();
 		if (lookup_flag) {
-			Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+			Produce::down();
 				Specifications::Compiler::emit_as_val(K_value, indirect_spec);
-				Emit::val(K_number, LITERAL_IVAL, 1);
-			Emit::up();
+				Produce::val(K_number, LITERAL_IVAL, 1);
+			Produce::up();
 		} else {
 			Specifications::Compiler::emit_as_val(K_value, indirect_spec);
 		}
 	} else internal_error("emit function call improperly called");
 		@<Emit the comma-separated list of arguments@>;
-	Emit::up();
+	Produce::up();
 
 	END_COMPILATION_MODE;
 }
@@ -81,7 +81,7 @@ then follow, and finally the optional bitmap of phrase options.
 	for (int k=0; k<tokens->tokens_count; k++)
 		Specifications::Compiler::emit_to_kind(tokens->args[k], tokens->kind_required[k]);
 	if (phrase_options != -1)
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) phrase_options);
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) phrase_options);
 
 @<Compute the return kind of the phrase@> =
 	kind *K = tokens->as_requested;

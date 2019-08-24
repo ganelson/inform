@@ -33,7 +33,7 @@ own right, a functional-programming sort of device. For example:
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">phrase_meant</span><span class="plain">; </span>    <span class="comment">if known at this point</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">cphr_kind</span><span class="plain">; </span>    <span class="comment">ditto</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">cphr_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">cphr_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">associated_preamble_text</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">constant_phrase</span><span class="plain">;</span>
@@ -144,7 +144,7 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::compile</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::compile</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"cannot reconstruct phrase from cphr"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
@@ -153,11 +153,11 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"cannot reconstruct phrase from cphr"</span><span class="plain">);</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
             <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">CLOSURE_DATA_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">;</span>
@@ -204,12 +204,12 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain">);</span>
 
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">RS</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">RS</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
             <span class="functiontext">Phrases::Constants::kind</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">RS</span><span class="plain">);</span>
 
@@ -249,9 +249,9 @@ compilation.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::compile_default_closure</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFAULT_CLOSURE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::compile_default_closure</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFAULT_CLOSURE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Compile the default routine</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile the default closure</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
@@ -273,7 +273,7 @@ made above.
 
 
 <pre class="displaydefn">
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">DVT</span><span class="plain">);</span>
@@ -297,7 +297,7 @@ made above.
 
 
 <pre class="displaydefn">
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"c"</span><span class="plain">);</span>
@@ -309,21 +309,21 @@ made above.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">) != </span><span class="identifier">CON_NIL</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">)) {</span>
-                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">);</span>
-                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">);</span>
+                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">);</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">) != </span><span class="identifier">TRUE</span><span class="plain">)</span>
-                    <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="plain">}</span>
 
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>

@@ -39,8 +39,8 @@ generates labels <code class="display"><span class="extract">L_0</span></code>, 
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">label_prefix</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">label_counter</span><span class="plain">; </span>    <span class="comment">next free ID number for this label namespace</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocate_storage</span><span class="plain">; </span>    <span class="comment">number of words of memory to reserve for each label</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">label_storage_iname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">module</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">label_storage_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">module</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">label_namespace</span><span class="plain">;</span>
 </pre>
@@ -55,14 +55,20 @@ reserves no memory.
 
 
 <pre class="display">
-    <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::new_namespace</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) &gt; </span><span class="constant">MAX_NAMESPACE_PREFIX_LENGTH</span><span class="plain">)</span>
+    <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::new_namespace</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) &gt; </span><span class="constant">MAX_NAMESPACE_PREFIX_LENGTH</span><span class="plain">) {</span>
+            <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="constant">CORE_MODULE</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LabelNamespaceTooLong</span><span class="plain">),</span>
                 <span class="string">"a label namespace prefix is too long"</span><span class="plain">,</span>
                 <span class="string">"and should be shortened to a few alphabetic characters."</span><span class="plain">);</span>
+            <span class="plain">#</span><span class="identifier">endif</span>
+            <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">CORE_MODULE</span>
+            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"namespace prefix too long"</span><span class="plain">);</span>
+            <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="plain">}</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">label_namespace</span><span class="plain">);</span>
         <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR2</span><span class="plain"> = </span><span class="functiontext">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="constant">LABEL_STORAGES_HAP</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR2</span><span class="plain"> = </span><span class="functiontext">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="constant">LABEL_STORAGES_HAP</span><span class="plain">);</span>
         <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_storage_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LABEL_ASSOCIATED_STORAGE_HL</span><span class="plain">, </span><span class="identifier">PR2</span><span class="plain">);</span>
 
         <span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_counter</span><span class="plain"> = 0;</span>
@@ -84,7 +90,7 @@ optimising.
 
 
 <pre class="display">
-    <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::namespace_by_prefix</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
+    <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::namespace_by_prefix</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">, </span><span class="reserved">label_namespace</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;module</span><span class="plain"> == </span><span class="identifier">cm</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain">)))</span>
@@ -93,7 +99,7 @@ optimising.
     <span class="plain">}</span>
 
     <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::read_or_create_namespace</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain"> = </span><span class="functiontext">JumpLabels::namespace_by_prefix</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lns</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">lns</span><span class="plain"> = </span><span class="functiontext">JumpLabels::new_namespace</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lns</span><span class="plain">;</span>
@@ -129,7 +135,7 @@ counter value.
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"L_%S%d"</span><span class="plain">, </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_prefix</span><span class="plain">, </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_counter</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">JumpLabels::storage</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">namespace</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">JumpLabels::storage</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">namespace</span><span class="plain">) {</span>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain"> = </span><span class="functiontext">JumpLabels::read_or_create_namespace</span><span class="plain">(</span><span class="identifier">namespace</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_storage_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -139,7 +145,7 @@ counter value.
 
 <p class="endnote">The function JumpLabels::read_counter is used in 25/cii (<a href="25-cii.html#SP3_4_2">&#167;3.4.2</a>, <a href="25-cii.html#SP3_4_4">&#167;3.4.4</a>, <a href="25-cii.html#SP3_4_5">&#167;3.4.5</a>), 25/cp (<a href="25-cp.html#SP5_4_3">&#167;5.4.3</a>), 26/iti (<a href="26-iti.html#SP7_8_3">&#167;7.8.3</a>).</p>
 
-<p class="endnote">The function JumpLabels::write is used in 25/cii (<a href="25-cii.html#SP3_4_1">&#167;3.4.1</a>), 25/cp (<a href="25-cp.html#SP5_4_3">&#167;5.4.3</a>), 27/eis (<a href="27-eis.html#SP3_1">&#167;3.1</a>).</p>
+<p class="endnote">The function JumpLabels::write is used in 25/cii (<a href="25-cii.html#SP3_4_1">&#167;3.4.1</a>), 25/cp (<a href="25-cp.html#SP5_4_3">&#167;5.4.3</a>).</p>
 
 <p class="endnote">The function JumpLabels::storage is used in 25/cii (<a href="25-cii.html#SP3_4_3">&#167;3.4.3</a>).</p>
 
@@ -163,7 +169,7 @@ specification <code class="display"><span class="extract">--&gt; 0</span></code>
         <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="identifier">lns</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">, </span><span class="reserved">label_namespace</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;allocate_storage</span><span class="plain"> &gt; 0) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_storage_iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_storage_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = (</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;allocate_storage</span><span class="plain">)*(</span><span class="identifier">lns</span><span class="plain">-</span><span class="element">&gt;label_counter</span><span class="plain">) + 2;</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
                 <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>

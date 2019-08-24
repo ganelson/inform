@@ -115,17 +115,17 @@
             <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;entered_into_NAP_here</span><span class="plain">;</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
                     <span class="functiontext">PL::Actions::Patterns::emit_pattern_match</span><span class="plain">(*</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                    <span class="identifier">Emit::code</span><span class="plain">();</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::rtrue</span><span class="plain">();</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::code</span><span class="plain">();</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::rtrue</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">Emit::rfalse</span><span class="plain">();</span>
+            <span class="identifier">Produce::rfalse</span><span class="plain">();</span>
             <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

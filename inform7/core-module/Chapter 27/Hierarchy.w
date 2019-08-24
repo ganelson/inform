@@ -89,7 +89,7 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(MAX_FRAME_SIZE_NEEDED_HL, I"MAX_FRAME_SIZE_NEEDED", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(RNG_SEED_AT_START_OF_PLAY_HL, I"RNG_SEED_AT_START_OF_PLAY", Translation::same(), synoptic_basics);
 
-	location_requirement veneer = HierarchyLocations::this_package(Hierarchy::veneer());
+	location_requirement veneer = HierarchyLocations::this_package(Packaging::veneer());
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), veneer);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), veneer);
 	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), veneer);
@@ -1577,37 +1577,6 @@ void Hierarchy::make_available(inter_name *iname) {
 	Inter::Connectors::socket(Produce::tree(), ma_as, S);
 }
 
-inter_name *Hierarchy::find_by_name(text_stream *name) {
-	if (Str::len(name) == 0) internal_error("empty extern");
-	inter_name *try = HierarchyLocations::find_by_name(name);
-	if (try == NULL) {
-		HierarchyLocations::con(-1, name, Translation::same(), HierarchyLocations::plug());
-		try = HierarchyLocations::find_by_name(name);
-	}
-	return try;
-}
-
-package_request *veneer_pr = NULL;
-inter_bookmark veneer_bm;
-package_request *Hierarchy::veneer(void) {
-	if (veneer_pr == NULL) {
-		module_package *T = Packaging::get_module(I"veneer");
-		veneer_pr = T->the_package;
-		packaging_state save = Packaging::enter(veneer_pr);
-		veneer_bm = Packaging::bubble();
-		Packaging::exit(save);
-	}
-	return veneer_pr;
-}
-inter_bookmark *Hierarchy::veneer_booknark(void) {
-	Hierarchy::veneer();
-	return &veneer_bm;
-}
-inter_symbol *Hierarchy::veneer_symbol(int ix) {
-	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Hierarchy::veneer()), Hierarchy::veneer_booknark(), ix, Emit::kind_to_symbol(NULL));
-	return symb;
-}
-
 package_request *Hierarchy::package(compilation_module *C, int hap_id) {
 	return HierarchyLocations::attach_new_package(C, NULL, hap_id);
 }
@@ -1642,16 +1611,6 @@ inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
 	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, NULL);
-}
-
-inter_name *Hierarchy::make_block_iname(package_request *P) {
-	return Packaging::make_iname_within(P, I"block");
-}
-
-inter_name *Hierarchy::make_kernel_iname(package_request *P) {
-	inter_name *kernel_name = Packaging::make_iname_within(P, I"kernel");
-	Produce::set_flag(kernel_name, MAKE_NAME_UNIQUE);
-	return kernel_name;
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {

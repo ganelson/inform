@@ -309,7 +309,7 @@ void Calculus::Schemas::sch_inline(value_holster *VH,
 	if (epar) {
 		Calculus::Schemas::sch_emit_parameter(ems->ops_termwise[1],
 			give_kind_id, give_comparison_routine, dereference_property, NULL, FALSE);
-		Emit::val(K_number, LITERAL_IVAL, 0);
+		Produce::val(K_number, LITERAL_IVAL, 0);
 	}
 
 @ =
@@ -321,7 +321,7 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 	} else if (give_comparison_routine) {
 		inter_name *cr = (pt)?(Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind)):NULL;
 		if (cr == NULL) cr = Hierarchy::find(SIGNEDCOMPARE_HL);
-		Emit::val_iname(K_value, cr);
+		Produce::val_iname(K_value, cr);
 	} else {
 		if (by_reference) {
 			BEGIN_COMPILATION_MODE;
@@ -343,7 +343,7 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 							Rvalues::new_self_object_constant()));
 			}
 			Calculus::Terms::emit(cpt);
-			if (down) Emit::up();
+			if (down) Produce::up();
 		}
 	}
 }

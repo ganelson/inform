@@ -501,14 +501,14 @@ of defined adjectives. So:
 =
 void TemplateFiles::compile_I7_from_I6(value_holster *VH, text_stream *OUT, text_stream *p) {
 	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
-		Emit::evaluation();
-		Emit::down();
+		Produce::evaluation();
+		Produce::down();
 	}
 
 	TemplateFiles::compile_I7_from_I6_inner(VH, OUT, p);
 
 	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
-		Emit::up();
+		Produce::up();
 	}
 }
 
@@ -517,7 +517,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 
 	if (<property-name>(LW)) {
 		if (VH)
-			Emit::val_iname(K_value, Properties::iname(<<rp>>));
+			Produce::val_iname(K_value, Properties::iname(<<rp>>));
 		else
 			WRITE_TO(OUT, "%n", Properties::iname(<<rp>>));
 		return;
@@ -527,7 +527,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 		kind *K = <<rp>>;
 		if (Kinds::Compare::lt(K, K_object)) {
 			if (VH)
-				Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));
+				Produce::val_iname(K_value, Kinds::RunTime::I6_classname(K));
 			else
 				WRITE_TO(OUT, "%n", Kinds::RunTime::I6_classname(K));
 			return;
@@ -537,7 +537,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 	instance *I = Instances::parse_object(LW);
 	if (I) {
 		if (VH)
-			Emit::val_iname(K_value, Instances::iname(<<rp>>));
+			Produce::val_iname(K_value, Instances::iname(<<rp>>));
 		else
 			WRITE_TO(OUT, "%~I", I);
 		return;
@@ -559,7 +559,7 @@ void TemplateFiles::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT
 	if (<s-value>(LW)) spec = <<rp>>;
 	else spec = Specifications::new_UNKNOWN(LW);
 	#ifndef IF_MODULE
-	Emit::val(K_number, LITERAL_IVAL, 0);
+	Produce::val(K_number, LITERAL_IVAL, 0);
 	#endif
 	#ifdef IF_MODULE
 	if (initial_problem_count < problem_count) return;

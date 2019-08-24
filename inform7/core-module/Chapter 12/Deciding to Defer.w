@@ -122,7 +122,7 @@ void Calculus::Deferrals::compile_test_of_proposition_inner(value_holster *VH,
 	prop = Calculus::Propositions::copy(prop);
 
 	if (prop == NULL) {
-		Emit::val(K_truth_state, LITERAL_IVAL, 1);
+		Produce::val(K_truth_state, LITERAL_IVAL, 1);
 	} else if (Calculus::Propositions::contains_quantifier(prop)) {
 		@<Defer test of proposition instead@>;
 	} else {
@@ -148,14 +148,14 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
 	@<If the proposition is a negation, take care of that now@>;
 	int NC = Calculus::Deferrals::count_callings_in_condition(prop);
 	if (NC > 0) {
-		Emit::inv_primitive(Produce::opcode(AND_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(AND_BIP));
+		Produce::down();
 	}
 	pdef = Calculus::Deferrals::new_deferred_proposition(prop, CONDITION_DEFER);
 	@<Compile the call to the test-proposition routine@>;
 	if (NC > 0) Calculus::Deferrals::emit_retrieve_callings_in_condition(prop, NC);
-	if (NC > 0) Emit::up();
-	if (go_up) Emit::up();
+	if (NC > 0) Produce::up();
+	if (go_up) Produce::up();
 	LocalVariables::end_condition_emit();
 
 @ This is done purely for the sake of compiling tidier code: if $\phi = \lnot(\psi)$
@@ -164,7 +164,7 @@ then we defer $\psi$ instead, negating the result of testing it.
 @<If the proposition is a negation, take care of that now@> =
 	if (Calculus::Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
 		prop = Calculus::Propositions::remove_topmost_group(prop);
-		Emit::inv_primitive(Produce::opcode(NOT_BIP)); Emit::down(); go_up = TRUE;
+		Produce::inv_primitive(Produce::opcode(NOT_BIP)); Produce::down(); go_up = TRUE;
 	}
 
 @ All of the subtlety here is to do with the fact that |R| and |Prop_19|
@@ -192,11 +192,11 @@ and the function header of |Prop_19| might then look like so:
 The value of |cinder_count| would then be 2.
 
 @<Compile the call to the test-proposition routine@> =
-	Emit::inv_call_iname(pdef->ppd_iname);
-	Emit::down();
+	Produce::inv_call_iname(pdef->ppd_iname);
+	Produce::down();
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 		if (substitution) Specifications::Compiler::emit_as_val(K_value, substitution);
-	Emit::up();
+	Produce::up();
 
 @ =
 void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcalc_prop *from_pl, pcalc_prop *to_pl) {
@@ -208,10 +208,10 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 		if (active) {
 			if ((bl == 0) && (pl != from_pl) &&
 				(Calculus::Propositions::implied_conjunction_between(pl_prev, pl))) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP)); Emit::down();
+				Produce::inv_primitive(Produce::opcode(AND_BIP)); Produce::down();
 				Calculus::Deferrals::ctop_recurse(VH, prop, from_pl, pl_prev);
 				Calculus::Deferrals::ctop_recurse(VH, prop, pl, to_pl);
-				Emit::up();
+				Produce::up();
 				return;
 			}
 			if (pl->element == NEGATION_CLOSE_ATOM) bl--;
@@ -221,14 +221,14 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 	}
 
 	if ((from_pl->element == NEGATION_OPEN_ATOM) && (to_pl->element == NEGATION_CLOSE_ATOM)) {
-		Emit::inv_primitive(Produce::opcode(NOT_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(NOT_BIP));
+		Produce::down();
 		if (from_pl == penultimate_pl) {
-			Emit::val(K_truth_state, LITERAL_IVAL, 1);
+			Produce::val(K_truth_state, LITERAL_IVAL, 1);
 		} else {
 			Calculus::Deferrals::ctop_recurse(VH, prop, from_pl->next, penultimate_pl);
 		}
-		Emit::up();
+		Produce::up();
 		return;
 	}
 
@@ -292,8 +292,8 @@ int Calculus::Deferrals::count_callings_in_condition(pcalc_prop *prop) {
 }
 
 void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, int NC) {
-	Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+	Produce::down();
 		int calling_count = 0, downs = 0;
 		TRAVERSE_VARIABLE(pl);
 		TRAVERSE_PROPOSITION(pl, prop) {
@@ -302,26 +302,26 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 					local_variable *local;
 					@<Find which local variable in R needs the value, creating it if necessary@>;
 					calling_count++;
-					if (calling_count < NC) { Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP)); Emit::down(); downs++; }
-					Emit::inv_primitive(Produce::opcode(STORE_BIP));
-					Emit::down();
+					if (calling_count < NC) { Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP)); Produce::down(); downs++; }
+					Produce::inv_primitive(Produce::opcode(STORE_BIP));
+					Produce::down();
 						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
-						Emit::ref_symbol(K_value, local_s);
-						Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-						Emit::down();
-							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Emit::val(K_number, LITERAL_IVAL, (inter_t) (calling_count - 1));
-						Emit::up();
-					Emit::up();
+						Produce::ref_symbol(K_value, local_s);
+						Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+						Produce::down();
+							Produce::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+							Produce::val(K_number, LITERAL_IVAL, (inter_t) (calling_count - 1));
+						Produce::up();
+					Produce::up();
 					LocalVariables::add_calling_to_condition(local);
 					break;
 				}
 			}
 		}
-		while (downs > 0) { Emit::up(); downs--; }
+		while (downs > 0) { Produce::up(); downs--; }
 		if (calling_count == 0) internal_error("called improperly");
-		Emit::val(K_truth_state, LITERAL_IVAL, 1);
-	Emit::up();
+		Produce::val(K_truth_state, LITERAL_IVAL, 1);
+	Produce::up();
 }
 
 void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
@@ -332,28 +332,28 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 			case CALLED_ATOM: {
 				local_variable *local;
 				@<Find which local variable in R needs the value, creating it if necessary@>;
-				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(STORE_BIP));
-					Emit::down();
+				Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(STORE_BIP));
+					Produce::down();
 						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
-						Emit::ref_symbol(K_value, local_s);
-						Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-						Emit::down();
-							Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Emit::val(K_number, LITERAL_IVAL, (inter_t) calling_count++);
-						Emit::up();
-					Emit::up();
+						Produce::ref_symbol(K_value, local_s);
+						Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+						Produce::down();
+							Produce::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+							Produce::val(K_number, LITERAL_IVAL, (inter_t) calling_count++);
+						Produce::up();
+					Produce::up();
 				break;
 			}
 		}
 	}
 	if (calling_count > 0) {
-		Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-		Emit::down();
-			Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-			Emit::val(K_number, LITERAL_IVAL, 26);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+		Produce::down();
+			Produce::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+			Produce::val(K_number, LITERAL_IVAL, 26);
+		Produce::up();
 	}
 }
 
@@ -368,13 +368,13 @@ void Calculus::Deferrals::prepare_to_retrieve_callings(OUTPUT_STREAM, pcalc_prop
 
 int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int condition_context) {
 	if ((condition_context == FALSE) && (Calculus::Propositions::contains_callings(prop))) {
-		Emit::inv_primitive(Produce::opcode(STORE_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-				Emit::val(K_number, LITERAL_IVAL, 26);
-			Emit::up();
+		Produce::inv_primitive(Produce::opcode(STORE_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+				Produce::val(K_number, LITERAL_IVAL, 26);
+			Produce::up();
 		return TRUE;
 	}
 	return FALSE;
@@ -406,7 +406,7 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P ($u) matches $D]\n", var, K, prop);
 	if (Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
-		Emit::val(K_truth_state, LITERAL_IVAL, 0);
+		Produce::val(K_truth_state, LITERAL_IVAL, 0);
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(var, prop);
 	}
@@ -444,10 +444,10 @@ void Calculus::Deferrals::emit_now_proposition(pcalc_prop *prop) {
 
 	if (quantifier_count > 0) {
 		pcalc_prop_deferral *pdef = Calculus::Deferrals::new_deferred_proposition(prop, NOW_ASSERTION_DEFER);
-		Emit::inv_call_iname(pdef->ppd_iname);
-		Emit::down();
+		Produce::inv_call_iname(pdef->ppd_iname);
+		Produce::down();
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
-		Emit::up();
+		Produce::up();
 	} else {
 		int parity = TRUE;
 		TRAVERSE_VARIABLE(pl);
@@ -577,7 +577,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 		Problems::issue_problem_end();
 	} else {
 		pcalc_prop_deferral *pdef = Calculus::Deferrals::new_deferred_proposition(prop, MULTIPURPOSE_DEFER);
-		Emit::val_iname(K_value, pdef->ppd_iname);
+		Produce::val_iname(K_value, pdef->ppd_iname);
 	}
 }
 
@@ -608,11 +608,11 @@ $\phi(x)$ because it only occurs in this one context.
 =
 void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) NUMBER_OF_DUSAGE);
-		Emit::up();
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) NUMBER_OF_DUSAGE);
+		Produce::up();
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a number of things matching a description", spec);
@@ -636,33 +636,33 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	pdef->defn_ref = data;
 	int with_callings = Calculus::Propositions::contains_callings(prop);
 	if (with_callings) {
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
 	}
-	int L = Emit::level();
+	int L = Produce::level();
 	Calculus::Deferrals::emit_prepare_to_retrieve_callings(prop, FALSE);
 
 	int arity = Calculus::Deferrals::Cinders::find_count(prop, pdef);
 	if (K) arity = arity + 2;
 	switch (arity) {
-		case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-		case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-		case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-		case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-		case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
+		case 0: Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+		case 1: Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+		case 2: Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+		case 3: Produce::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+		case 4: Produce::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
-	Emit::down();
-	Emit::val_iname(K_value, pdef->ppd_iname);
+	Produce::down();
+	Produce::val_iname(K_value, pdef->ppd_iname);
 	Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 	if (K) {
 		Frames::emit_allocation(K);
 		Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 	}
-	Emit::up();
-	while (Emit::level() > L) Emit::up();
+	Produce::up();
+	while (Produce::level() > L) Produce::up();
 	Calculus::Deferrals::emit_retrieve_callings(prop);
-	if (with_callings) { Emit::up(); Emit::up(); }
+	if (with_callings) { Produce::up(); Produce::up(); }
 
 }
 
@@ -671,12 +671,12 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 =
 void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_DESC_HL));
-		Emit::down();
+		Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_DESC_HL));
+		Produce::down();
 			Frames::emit_allocation(K);
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
-		Emit::up();
+		Produce::up();
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a list of things matching a description", spec);
@@ -696,19 +696,19 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 			(Kinds::Compare::lt(Specifications::to_kind(spec), K_object) == FALSE) &&
 			(Descriptions::to_instance(spec) == NULL) &&
 			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-			Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Kinds::Behaviour::get_ranger_iname(K));
+			Produce::up();
 			return;
 		}
 	}
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) RANDOM_OF_DUSAGE);
-		Emit::up();
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) RANDOM_OF_DUSAGE);
+		Produce::up();
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a random thing matching a description", spec);
@@ -734,19 +734,19 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 	if (prn == NULL) internal_error("total of on non-property");
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Emit::val_iname(K_value, Properties::iname(prn));
-			Emit::up();
-			Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				Produce::val_iname(K_value, Properties::iname(prn));
+			Produce::up();
+			Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP));
+			Produce::down();
 				Specifications::Compiler::emit_as_val(K_value, spec);
-				Emit::val(K_number, LITERAL_IVAL, (inter_t) TOTAL_DUSAGE);
-			Emit::up();
-		Emit::up();
+				Produce::val(K_number, LITERAL_IVAL, (inter_t) TOTAL_DUSAGE);
+			Produce::up();
+		Produce::up();
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop,
@@ -763,12 +763,12 @@ the "substitution variable") is within the domain.
 void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 	parse_node *spec) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
 			Specifications::Compiler::emit_as_val(K_value, in);
-		Emit::up();
+		Produce::up();
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(
 			in, Calculus::Propositions::from_spec(spec));
@@ -802,27 +802,27 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 	property *prn, int sign) {
 	if (prn == NULL) internal_error("extremal of on non-property");
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Emit::val_iname(K_value, Properties::iname(prn));
-			Emit::up();
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) sign);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP));
-				Emit::down();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				Produce::val_iname(K_value, Properties::iname(prn));
+			Produce::up();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) sign);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP));
+				Produce::down();
 					Specifications::Compiler::emit_as_val(K_value, spec);
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) EXTREMAL_DUSAGE);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) EXTREMAL_DUSAGE);
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	} else {
 		measurement_definition *mdef_found = Properties::Measurement::retrieve(prn, sign);
 		if (mdef_found) {
@@ -888,43 +888,43 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 				@<Issue called in repeat problem@>;
 		}
 
-		Emit::inv_primitive(Produce::opcode(FOR_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, val_var_s);
+		Produce::inv_primitive(Produce::opcode(FOR_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, val_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, NULL);
 					else Calculus::Deferrals::emit_repeat_domain(domain_prop, NULL);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, aux_var_s);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, aux_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, v1);
 					else Calculus::Deferrals::emit_repeat_domain(domain_prop, v1);
-				Emit::up();
-			Emit::up();
+				Produce::up();
+			Produce::up();
 
-			Emit::val_symbol(K_value, val_var_s);
+			Produce::val_symbol(K_value, val_var_s);
 
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, val_var_s);
-					Emit::val_symbol(K_value, aux_var_s);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, aux_var_s);
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, val_var_s);
+					Produce::val_symbol(K_value, aux_var_s);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, aux_var_s);
 					if (use_as_is) Calculus::Deferrals::emit_repeat_call(spec, v2);
 					else Calculus::Deferrals::emit_repeat_domain(domain_prop, v2);
-				Emit::up();
-			Emit::up();
+				Produce::up();
+			Produce::up();
 
-			Emit::code();
-			Emit::down();
+			Produce::code();
+			Produce::down();
 	} else {
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
@@ -933,26 +933,26 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, v1, v2, TRUE);
 			if (ParseTreeUsage::is_lvalue(spec) == FALSE) {
 				if (Specifications::to_proposition(spec)) {
-					Emit::inv_primitive(Produce::opcode(IF_BIP));
-					Emit::down();
+					Produce::inv_primitive(Produce::opcode(IF_BIP));
+					Produce::down();
 						Calculus::Deferrals::emit_test_of_proposition(
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1),
 							Specifications::to_proposition(spec));
-						Emit::code();
-						Emit::down();
+						Produce::code();
+						Produce::down();
 				}
 			} else {
-				Emit::inv_primitive(Produce::opcode(IF_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
-					Emit::down();
+				Produce::inv_primitive(Produce::opcode(IF_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP));
+					Produce::down();
 						Specifications::Compiler::emit_as_val(K_value, spec);
-						Emit::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+						Produce::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
 						Specifications::Compiler::emit_as_val(K_value,
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
-					Emit::up();
-					Emit::code();
-					Emit::down();
+					Produce::up();
+					Produce::code();
+					Produce::down();
 			}
 		} else @<Issue bad repeat domain problem@>;
 		END_COMPILATION_MODE;
@@ -1033,17 +1033,17 @@ deferred description routine, and we simply call that routine with the
 
 =
 void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fromv) {
-	Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP));
+	Produce::down();
 		Specifications::Compiler::emit_as_val(K_value, spec);
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) LOOP_DOMAIN_DUSAGE);
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) LOOP_DOMAIN_DUSAGE);
 		if (fromv) {
 			inter_symbol *fromv_s = LocalVariables::declare_this(fromv, FALSE, 8);
-			Emit::val_symbol(K_value, fromv_s);
+			Produce::val_symbol(K_value, fromv_s);
 		} else {
-			Emit::val(K_number, LITERAL_IVAL, 0);
+			Produce::val(K_number, LITERAL_IVAL, 0);
 		}
-	Emit::up();
+	Produce::up();
 }
 
 @ But if the description $D=\phi(x)$ is an explicitly known proposition,
@@ -1055,23 +1055,23 @@ void Calculus::Deferrals::emit_repeat_domain(pcalc_prop *prop, local_variable *f
 	pcalc_prop_deferral *pdef = Calculus::Deferrals::defer_loop_domain(prop);
 	int arity = Calculus::Deferrals::Cinders::find_count(prop, pdef) + 1;
 	switch (arity) {
-		case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-		case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-		case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-		case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-		case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
+		case 0: Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
+		case 1: Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
+		case 2: Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
+		case 3: Produce::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
+		case 4: Produce::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
 		default: internal_error("indirect function call with too many arguments");
 	}
-	Emit::down();
-		Emit::val_iname(K_value, pdef->ppd_iname);
+	Produce::down();
+		Produce::val_iname(K_value, pdef->ppd_iname);
 		Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 		if (fromv) {
 			inter_symbol *fromv_s = LocalVariables::declare_this(fromv, FALSE, 8);
-			Emit::val_symbol(K_value, fromv_s);
+			Produce::val_symbol(K_value, fromv_s);
 		} else {
-			Emit::val(K_number, LITERAL_IVAL, 0);
+			Produce::val(K_number, LITERAL_IVAL, 0);
 		}
-	Emit::up();
+	Produce::up();
 }
 
 @ And for looping over lists:
@@ -1099,101 +1099,101 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	Emit::inv_primitive(Produce::opcode(FOR_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, copy_var_s);
+	Produce::inv_primitive(Produce::opcode(FOR_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, copy_var_s);
 				Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::up();
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, index_var_s);
-					Emit::val(K_number, LITERAL_IVAL, 1);
-				Emit::up();
+			Produce::up();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, index_var_s);
+					Produce::val(K_number, LITERAL_IVAL, 1);
+				Produce::up();
 				if (pointery) {
-					Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, val_var_s);
-							Emit::inv_call_iname(Hierarchy::find(BLKVALUECREATE_HL));
-							Emit::down();
+					Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, val_var_s);
+							Produce::inv_call_iname(Hierarchy::find(BLKVALUECREATE_HL));
+							Produce::down();
 								Kinds::RunTime::emit_strong_id_as_val(CK);
-							Emit::up();
-						Emit::up();
-						Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
-						Emit::down();
-							Emit::val_symbol(K_value, val_var_s);
-							Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-							Emit::down();
-								Emit::val_symbol(K_value, copy_var_s);
-								Emit::val_symbol(K_value, index_var_s);
-								Emit::val(K_truth_state, LITERAL_IVAL, 1);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+							Produce::up();
+						Produce::up();
+						Produce::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
+						Produce::down();
+							Produce::val_symbol(K_value, val_var_s);
+							Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+							Produce::down();
+								Produce::val_symbol(K_value, copy_var_s);
+								Produce::val_symbol(K_value, index_var_s);
+								Produce::val(K_truth_state, LITERAL_IVAL, 1);
+							Produce::up();
+						Produce::up();
+					Produce::up();
 				} else {
-					Emit::inv_primitive(Produce::opcode(STORE_BIP));
-					Emit::down();
-						Emit::ref_symbol(K_value, val_var_s);
-						Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-						Emit::down();
-							Emit::val_symbol(K_value, copy_var_s);
-							Emit::val_symbol(K_value, index_var_s);
-							Emit::val(K_truth_state, LITERAL_IVAL, 1);
-						Emit::up();
-					Emit::up();
+					Produce::inv_primitive(Produce::opcode(STORE_BIP));
+					Produce::down();
+						Produce::ref_symbol(K_value, val_var_s);
+						Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+						Produce::down();
+							Produce::val_symbol(K_value, copy_var_s);
+							Produce::val_symbol(K_value, index_var_s);
+							Produce::val(K_truth_state, LITERAL_IVAL, 1);
+						Produce::up();
+					Produce::up();
 				}
-			Emit::up();
-		Emit::up();
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(LE_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, index_var_s);
-			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
-			Emit::down();
-				Emit::val_symbol(K_value, copy_var_s);
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(LE_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, index_var_s);
+			Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
+			Produce::down();
+				Produce::val_symbol(K_value, copy_var_s);
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, index_var_s);
-			Emit::up();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, index_var_s);
+			Produce::up();
 			if (pointery) {
-				Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
-				Emit::down();
-					Emit::val_symbol(K_value, val_var_s);
-					Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Emit::down();
-						Emit::val_symbol(K_value, copy_var_s);
-						Emit::val_symbol(K_value, index_var_s);
-						Emit::val(K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
+				Produce::inv_call_iname(Hierarchy::find(BLKVALUECOPYAZ_HL));
+				Produce::down();
+					Produce::val_symbol(K_value, val_var_s);
+					Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+					Produce::down();
+						Produce::val_symbol(K_value, copy_var_s);
+						Produce::val_symbol(K_value, index_var_s);
+						Produce::val(K_truth_state, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
 			} else {
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, val_var_s);
-					Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-					Emit::down();
-						Emit::val_symbol(K_value, copy_var_s);
-						Emit::val_symbol(K_value, index_var_s);
-						Emit::val(K_truth_state, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, val_var_s);
+					Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+					Produce::down();
+						Produce::val_symbol(K_value, copy_var_s);
+						Produce::val_symbol(K_value, index_var_s);
+						Produce::val(K_truth_state, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
 			}
-		Emit::up();
+		Produce::up();
 
-		Emit::code();
-			Emit::down();
+		Produce::code();
+			Produce::down();
 
 	END_COMPILATION_MODE;
 }

@@ -34,8 +34,8 @@ routine. The code here manages that.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">list_together_routine</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_array_iname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_routine_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_array_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_routine_iname</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">articles_bit</span><span class="plain">; </span>    <span class="comment">if false, add <code class="display"><span class="extract">NOARTICLE_BIT</span></code> to the I6 listing style</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">list_together_routine</span><span class="plain">;</span>
@@ -51,9 +51,9 @@ prints the name of a routine to be compiled later.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">ListTogether::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_articles</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">ListTogether::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_articles</span><span class="plain">) {</span>
         <span class="reserved">list_together_routine</span><span class="plain"> *</span><span class="identifier">ltr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">list_together_routine</span><span class="plain">);</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">LISTS_TOGETHER_HAP</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">LISTS_TOGETHER_HAP</span><span class="plain">);</span>
         <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ARRAY_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 
@@ -106,43 +106,43 @@ is significant to the run-time list-printing code.
 
 
 <pre class="displaydefn">
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INVENTORY_STAGE_HL</span><span class="plain">));</span>
-                <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SETBIT_BIP</span><span class="plain">));</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ENGLISH_BIT_HL</span><span class="plain">));</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INVENTORY_STAGE_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SETBIT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ENGLISH_BIT_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;articles_bit</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SETBIT_BIP</span><span class="plain">));</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOARTICLE_BIT_HL</span><span class="plain">));</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SETBIT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NOARTICLE_BIT_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CLEARBIT_BIP</span><span class="plain">));</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEWLINE_BIT_HL</span><span class="plain">));</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CLEARBIT_BIP</span><span class="plain">));</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INDENT_BIT_HL</span><span class="plain">));</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CLEARBIT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NEWLINE_BIT_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CLEARBIT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INDENT_BIT_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
 
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 
-        <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
+        <span class="identifier">Produce::rfalse</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
         <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>

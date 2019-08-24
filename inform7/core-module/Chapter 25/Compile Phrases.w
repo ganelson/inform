@@ -101,8 +101,8 @@ routine is a property value, |true| otherwise. That convention is unhelpful
 to us, so we end our routine with code which certainly performs a return.
 
 @<Compile a terminal return statement@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
 	kind *K = Frames::get_kind_returned();
 	if (K) {
 		if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING,
@@ -110,12 +110,12 @@ to us, so we end our routine with code which certainly performs a return.
 			Problems::Issue::sentence_problem(_p_(PM_DefaultDecideFails),
 				"it's not possible to decide such a value",
 				"so this can't be allowed.");
-			Emit::val(K_number, LITERAL_IVAL, 0);
+			Produce::val(K_number, LITERAL_IVAL, 0);
 		}
 	} else {
-		Emit::val(K_number, LITERAL_IVAL, 0); /* that is, return "false" */
+		Produce::val(K_number, LITERAL_IVAL, 0); /* that is, return "false" */
 	}
-	Emit::up();
+	Produce::up();
 
 @ The name of our I6 routine depends not only on the phrase but also on the
 request made for its compilation -- this enables the text version of a
@@ -162,7 +162,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	}
 	statement_count++;
 	@<Compile a comment about this line@>;
-	int L = Emit::level();
+	int L = Produce::level();
 	@<Compile the head@>;
 	@<Compile the midriff@>;
 	@<Compile the tail@>;
@@ -199,11 +199,11 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 			}
 		}
 	}
-	Emit::inv_primitive(Produce::opcode(STORE_BIP)); /* warn the paragraph breaker: this will print */
-	Emit::down();
-		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
-		Emit::val(K_number, LITERAL_IVAL, 1);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP)); /* warn the paragraph breaker: this will print */
+	Produce::down();
+		Produce::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
+		Produce::val(K_number, LITERAL_IVAL, 1);
+	Produce::up();
 	Routines::Compile::verify_say_node_list(p->down);
 
 @<Compile the midriff@> =
@@ -331,26 +331,26 @@ henceforth to be true, so we simply compile empty code in that case.
 	Rulebooks::Outcomes::compile_outcome(nrbo);
 
 @<Compile an if midriff@> =
-	if (p->down->next->next) Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-	else Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
+	if (p->down->next->next) Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+	else Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
 		current_sentence = to_compile;
 		Routines::Compile::line(to_compile, FALSE, INTER_VAL_VHMODE);
 
-		Emit::code();
-		Emit::down();
+		Produce::code();
+		Produce::down();
 			Frames::Blocks::open_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
 		if (p->down->next->next) {
-		Emit::up();
-		Emit::code();
-		Emit::down();
+		Produce::up();
+		Produce::code();
+		Produce::down();
 			Frames::Blocks::divide_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next->next, FALSE);
 		}
 			Frames::Blocks::close_code_block();
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
 @<Compile a switch midriff@> =
 	current_sentence = to_compile;
@@ -374,17 +374,17 @@ henceforth to be true, so we simply compile empty code in that case.
 	if (pointery) {
 		lvar = LocalVariables::add_switch_value(K_value);
 		sw_v = LocalVariables::declare_this(lvar, FALSE, 7);
-		Emit::inv_primitive(Produce::opcode(STORE_BIP));
-		Emit::down();
-			Emit::ref_symbol(K_value, sw_v);
+		Produce::inv_primitive(Produce::opcode(STORE_BIP));
+		Produce::down();
+			Produce::ref_symbol(K_value, sw_v);
 			Specifications::Compiler::emit_as_val(switch_kind, val);
-		Emit::up();
+		Produce::up();
 	} else {
-		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(switch_kind, val);
-			Emit::code();
-			Emit::down();
+			Produce::code();
+			Produce::down();
 	}
 
 			int c = 0;
@@ -435,12 +435,12 @@ henceforth to be true, so we simply compile empty code in that case.
 			}
 
 	if (pointery) {
-		while (downs-- > 0) Emit::up();
+		while (downs-- > 0) Produce::up();
 		Frames::Blocks::close_code_block();
 	} else {
-		Emit::up();
+		Produce::up();
 		Frames::Blocks::close_code_block();
-	Emit::up();
+	Produce::up();
 	}
 
 	if (problem_count == 0)
@@ -462,44 +462,44 @@ henceforth to be true, so we simply compile empty code in that case.
 		}
 
 @<Handle a non-pointery case@> =
-	Emit::inv_primitive(Produce::opcode(CASE_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(CASE_BIP));
+	Produce::down();
 		Specifications::Compiler::emit_as_val(switch_kind, case_spec);
-		Emit::code();
-		Emit::down();
+		Produce::code();
+		Produce::down();
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
 @<Handle a non-pointery default@> =
-	Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
-	Emit::down();
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(DEFAULT_BIP));
+	Produce::down();
+		Produce::code();
+		Produce::down();
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
 @<Handle a pointery case@> =
 	int final_flag = FALSE;
 	if (ow_node->next == NULL) final_flag = TRUE;
 
-	if (final_flag) Emit::inv_primitive(Produce::opcode(IF_BIP));
-	else Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Emit::down();
+	if (final_flag) Produce::inv_primitive(Produce::opcode(IF_BIP));
+	else Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+	Produce::down();
 		LocalVariables::set_kind(lvar, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);
 		pcalc_prop *prop = Calculus::Propositions::Abstract::to_set_relation(
 			R_equality, NULL, sw_v, NULL, case_spec);
 		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
-		Emit::code();
-		Emit::down();
+		Produce::code();
+		Produce::down();
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
 		if (final_flag == FALSE) {
-			Emit::up();
-			Emit::code();
-			Emit::down();
+			Produce::up();
+			Produce::code();
+			Produce::down();
 		}
 	downs += 2;
 
@@ -543,7 +543,7 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYL);
 	WRITE_TO(SAYL, ".");
 	JumpLabels::write(SAYL, I"Say");
-	Emit::place_label(Emit::reserve_label(SAYL));
+	Produce::place_label(Produce::reserve_label(SAYL));
 	DISCARD_TEXT(SAYL);
 
 	JumpLabels::read_counter(I"Say", TRUE);
@@ -551,18 +551,18 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYXL);
 	WRITE_TO(SAYXL, ".");
 	JumpLabels::write(SAYXL, I"SayX");
-	Emit::place_label(Emit::reserve_label(SAYXL));
+	Produce::place_label(Produce::reserve_label(SAYXL));
 	DISCARD_TEXT(SAYXL);
 
 	JumpLabels::read_counter(I"SayX", TRUE);
 
 @<Compile an instead tail@> =
-	Emit::rtrue();
+	Produce::rtrue();
 
 @<Compile a loop tail@> =
 	Frames::Blocks::open_code_block();
 	statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
-	while (Emit::level() > L) Emit::up();
+	while (Produce::level() > L) Produce::up();
 	Frames::Blocks::close_code_block();
 
 @ This routine takes the text of a line from a phrase definition, parses it,
@@ -583,7 +583,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 			(ParseTree::get_phrase_invoked(inv)) &&
 			(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
 			(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
-			Emit::inv_call_iname(Hierarchy::find(PARACONTENT_HL));
+			Produce::inv_call_iname(Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
 		ExParser::parse_void_phrase(p);

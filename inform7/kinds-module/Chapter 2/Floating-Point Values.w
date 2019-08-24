@@ -97,42 +97,42 @@ void Kinds::FloatingPoint::end_deflotation(OUTPUT_STREAM, kind *K) {
 #ifdef CORE_MODULE
 void Kinds::FloatingPoint::begin_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-		Emit::down();
+		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
+		Produce::down();
 	}
-	Emit::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-	Emit::down();
+	Produce::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
+	Produce::down();
 }
 
 void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
-	Emit::up();
+	Produce::up();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-		Emit::down();
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
-		Emit::up();
-		Emit::up();
+		Produce::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
+		Produce::down();
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
+		Produce::up();
+		Produce::up();
 	}
 }
 
 void Kinds::FloatingPoint::begin_deflotation_emit(kind *K) {
-	Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-	Emit::down();
+	Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
+	Produce::down();
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-		Emit::down();
+		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
+		Produce::down();
 	}
 }
 
 void Kinds::FloatingPoint::end_deflotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Emit::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-		Emit::down();
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
-		Emit::up();
-		Emit::up();
+		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
+		Produce::down();
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
+		Produce::up();
+		Produce::up();
 	}
-	Emit::up();
+	Produce::up();
 }
 #endif
 

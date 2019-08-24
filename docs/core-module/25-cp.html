@@ -62,7 +62,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
         &lt;<span class="cwebmacro">Compile some commentary about the routine to follow</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
 
         &lt;<span class="cwebmacro">Compile the body of the routine</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
 
@@ -164,8 +164,8 @@ to us, so we end our routine with code which certainly performs a return.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Frames::get_kind_returned</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
@@ -173,12 +173,12 @@ to us, so we end our routine with code which certainly performs a return.
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultDecideFails</span><span class="plain">),</span>
                     <span class="string">"it's not possible to decide such a value"</span><span class="plain">,</span>
                     <span class="string">"so this can't be allowed."</span><span class="plain">);</span>
-                <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0); </span>    <span class="comment">that is, return "false"</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0); </span>    <span class="comment">that is, return "false"</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -192,7 +192,7 @@ phrase to be different from the number version, and so on.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -240,7 +240,7 @@ phrase to be different from the number version, and so on.
         <span class="plain">}</span>
         <span class="identifier">statement_count</span><span class="plain">++;</span>
         &lt;<span class="cwebmacro">Compile a comment about this line</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Emit::level</span><span class="plain">();</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Compile the head</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile the midriff</span> <span class="cwebmacronumber">5.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile the tail</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
@@ -313,11 +313,11 @@ phrase to be different from the number version, and so on.
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">)); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">)); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="functiontext">Routines::Compile::verify_say_node_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
 </pre>
 
@@ -355,7 +355,7 @@ phrase to be different from the number version, and so on.
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="constant">suppress_newlines_ANNOT</span><span class="plain">))</span>
             <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">);</span>
-        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">INTER_VOID_VHMODE</span><span class="plain">);</span>
+        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">);</span>
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
 </pre>
 
@@ -529,26 +529,26 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
-            <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">INTER_VAL_VHMODE</span><span class="plain">);</span>
+            <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">);</span>
 
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">();</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="functiontext">Frames::Blocks::divide_code_block</span><span class="plain">();</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="plain">}</span>
                 <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -562,7 +562,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 <pre class="displaydefn">
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
-        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">INTER_VOID_VHMODE</span><span class="plain">);</span>
+        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">);</span>
 
         <span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">();</span>
 
@@ -582,17 +582,17 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
             <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_switch_value</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 7);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sw_v</span><span class="plain">);</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sw_v</span><span class="plain">);</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
-                <span class="functiontext">Emit::code</span><span class="plain">();</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="plain">}</span>
 
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
@@ -643,12 +643,12 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain">-- &gt; 0) </span><span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain">-- &gt; 0) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
@@ -680,14 +680,14 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">case_spec</span><span class="plain">);</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">ow_node</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -700,13 +700,13 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">DEFAULT_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">ow_node</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -722,22 +722,22 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ow_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain">) </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="functiontext">LocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">);</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">lvar</span><span class="plain">);</span>
             <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Abstract::to_set_relation</span><span class="plain">(</span>
                 <span class="identifier">R_equality</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">sw_v</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">case_spec</span><span class="plain">);</span>
             <span class="functiontext">Calculus::Propositions::Checker::type_check</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="functiontext">Calculus::Propositions::Checker::tc_no_problem_reporting</span><span class="plain">());</span>
             <span class="functiontext">Calculus::Deferrals::emit_test_of_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">ow_node</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::code</span><span class="plain">();</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="identifier">downs</span><span class="plain"> += 2;</span>
 </pre>
@@ -766,7 +766,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 <pre class="displaydefn">
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
-        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">INTER_VOID_VHMODE</span><span class="plain">);</span>
+        <span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -865,7 +865,7 @@ inline definitions for "say if" and similar.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">, </span><span class="string">"."</span><span class="plain">);</span>
         <span class="functiontext">JumpLabels::write</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Say"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">));</span>
+        <span class="identifier">Produce::place_label</span><span class="plain">(</span><span class="identifier">Produce::reserve_label</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SAYL</span><span class="plain">);</span>
 
         <span class="functiontext">JumpLabels::read_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Say"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -873,7 +873,7 @@ inline definitions for "say if" and similar.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">, </span><span class="string">"."</span><span class="plain">);</span>
         <span class="functiontext">JumpLabels::write</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"SayX"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::place_label</span><span class="plain">(</span><span class="functiontext">Emit::reserve_label</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">));</span>
+        <span class="identifier">Produce::place_label</span><span class="plain">(</span><span class="identifier">Produce::reserve_label</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SAYXL</span><span class="plain">);</span>
 
         <span class="functiontext">JumpLabels::read_counter</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SayX"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -889,7 +889,7 @@ inline definitions for "say if" and similar.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::rtrue</span><span class="plain">();</span>
+        <span class="identifier">Produce::rtrue</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -904,7 +904,7 @@ inline definitions for "say if" and similar.
 <pre class="displaydefn">
         <span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">();</span>
         <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Emit::level</span><span class="plain">() &gt; </span><span class="identifier">L</span><span class="plain">) </span><span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Produce::level</span><span class="plain">() &gt; </span><span class="identifier">L</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
 </pre>
 
@@ -932,7 +932,7 @@ type-checks it, and finally, all being well, compiles it.
                 <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">))) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-</span><span class="element">&gt;type_data.as_say.say_control_structure</span><span class="plain"> == </span><span class="constant">NO_SAY_CS</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARACONTENT_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARACONTENT_HL</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">ExParser::parse_void_phrase</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -945,7 +945,7 @@ type-checks it, and finally, all being well, compiles it.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">initial_problem_count</span><span class="plain"> == </span><span class="identifier">problem_count</span><span class="plain">) {</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(c) Compilation:\</span><span class="plain">n</span><span class="string">$E"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="reserved">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="functiontext">Holsters::new</span><span class="plain">(</span><span class="identifier">vhm</span><span class="plain">);</span>
+            <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">vhm</span><span class="plain">);</span>
             <span class="functiontext">Invocations::Compiler::compile_invocation_list</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">,</span>
                 <span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
         <span class="plain">}</span>

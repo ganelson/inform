@@ -235,9 +235,7 @@ typedef struct inter_schema_token {
 	inter_t operation_primitive;				/* |OPERATOR_ISTT| only: e.g. |PLUS_BIP| for |+| */
 	int reserved_word;							/* |RESERVED_ISTT| only: which one */
 	int constant_number;						/* |NUMBER_ISTT| only: if non-negative, value of number */
-	#ifdef CORE_MODULE
 	struct inter_name *as_quoted;				/* |IDENTIFIER_ISTT| only: the identified symbol if known */
-	#endif
 	int inline_command;							/* |INLINE_ISTT| only: one of the |*_ISINC| values */
 	int inline_modifiers;
 	int inline_subcommand;						/* |INLINE_ISTT| only: one of the |*_ISINSC| values */
@@ -274,9 +272,7 @@ inter_schema_token *InterSchemas::new_token(int type, text_stream *material, int
 	t->next = NULL;
 	t->owner = NULL;
 	t->operation_primitive = operation_primitive;
-	#ifdef CORE_MODULE
 	t->as_quoted = NULL;
-	#endif
 	t->reserved_word = reserved_word;
 	t->constant_number = n;
 	t->preinsert = FALSE;

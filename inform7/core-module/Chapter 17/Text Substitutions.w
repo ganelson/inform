@@ -136,8 +136,8 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				if (phsf == NULL) phsf = Frames::current_stack_frame();
 				downs = LocalVariables::emit_storage(phsf);
 				phsf = Frames::boxed_frame(phsf);
-				Emit::inv_call_iname(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
-				Emit::down();
+				Produce::inv_call_iname(Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
+				Produce::down();
 					Frames::emit_allocation(K_text);
 			}
 			text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
@@ -146,10 +146,10 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 			if (VH->vhmode_wanted == INTER_DATA_VHMODE)
 				Emit::holster(VH, tin);
 			else
-				Emit::val_iname(K_value, tin);
+				Produce::val_iname(K_value, tin);
 			if (TEST_COMPILATION_MODE(PERMIT_LOCALS_IN_TEXT_CMODE)) {
-				Emit::up();
-				while (downs > 0) { Emit::up(); downs--; }
+				Produce::up();
+				while (downs > 0) { Produce::up(); downs--; }
 			}
 		}
 	}
@@ -262,9 +262,9 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 	int makes_local_references =
 		LocalVariables::local_parsed_recently(Frames::current_stack_frame());
 	if (makes_local_references) {
-		Emit::push_code_position(Emit::begin_position(), Inter::Bookmarks::snapshot(Packaging::at()));
+		Produce::push_code_position(Produce::begin_position(), Inter::Bookmarks::snapshot(Packaging::at()));
 		LocalVariables::compile_retrieval(phsf);
-		Emit::pop_code_position();
+		Produce::pop_code_position();
 	}
 	Routines::end(save);
 
@@ -289,27 +289,27 @@ a request for a new text substitution to be compiled later...
 	COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
 
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-		Emit::inv_primitive(Produce::opcode(IFDEBUG_BIP));
-		Emit::down();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(IF_BIP));
-				Emit::down();
-					Emit::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-						Emit::down();
+		Produce::inv_primitive(Produce::opcode(IFDEBUG_BIP));
+		Produce::down();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(IF_BIP));
+				Produce::down();
+					Produce::val_iname(K_number, Hierarchy::find(SUPPRESS_TEXT_SUBSTITUTION_HL));
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+						Produce::down();
 							TEMPORARY_TEXT(S);
 							WRITE_TO(S, "%W", ts->unsubstituted_text);
-							Emit::val_text(S);
+							Produce::val_text(S);
 							DISCARD_TEXT(S);
-						Emit::up();
-						Emit::rtrue();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+						Produce::up();
+						Produce::rtrue();
+					Produce::up();
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	}
 
 	parse_node *ts_code_block = ParseTree::new(ROUTINE_NT);
@@ -323,7 +323,7 @@ a request for a new text substitution to be compiled later...
 
 	Routines::Compile::code_block_outer(0, ts_code_block->down);
 
-	Emit::rtrue();
+	Produce::rtrue();
 
 	END_COMPILATION_MODE;
 	Modules::set_current_to(cm);

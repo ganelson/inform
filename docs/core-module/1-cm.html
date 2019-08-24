@@ -60,7 +60,6 @@
     <span class="definitionkeyword">enum</span> <span class="constant">past_tense_condition_record_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">past_tense_action_record_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">named_rulebook_outcome_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">label_namespace_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">stacked_variable_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">stacked_variable_list_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">stacked_variable_owner_array_MT</span>
@@ -113,17 +112,8 @@
     <span class="definitionkeyword">enum</span> <span class="constant">dval_written_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">nascent_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">value_holster_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inter_name_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inter_name_generator_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">adjective_iname_holder_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">compilation_module_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">package_request_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_location_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_attachment_point_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">submodule_identity_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">submodule_request_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">module_package_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_metadatum_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">label_namespace_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Deep breath, then: the following macros define several hundred functions.
 </p>
@@ -136,7 +126,6 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">applicability_condition</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">contents_entry</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
@@ -160,7 +149,6 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inv_token_problem_token</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">kind_interaction</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">known_extension_clash</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">label_namespace</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">list_together_routine</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">literal_list</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">literal_pattern_name</span><span class="plain">)</span>
@@ -198,13 +186,7 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">VM_usage_note</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">runtime_kind_structure</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">adjective_iname_holder</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_location</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_attachment_point</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module_package</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_metadatum</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">label_namespace</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -221,8 +203,6 @@
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inference</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">instance_usage</span><span class="plain">, 200)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain">, 1000)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain">, 1000)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">invocation_options</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">local_variable</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">pcalc_func</span><span class="plain">, 1000)</span>
@@ -236,7 +216,7 @@
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">stacked_variable_owner</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">stacked_variable</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">table_contribution</span><span class="plain">, 100)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">value_holster</span><span class="plain">, 100)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain">, 100)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -288,7 +268,7 @@ foundation module does that automatically.)
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *, </span><span class="identifier">Kinds::Textual::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER_I</span><span class="plain">(</span><span class="reserved">int</span><span class="plain">, </span><span class="functiontext">Sentences::VPs::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">extension_file</span><span class="plain"> *, </span><span class="functiontext">Extensions::Files::log</span><span class="plain">)</span>
-    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain"> *, </span><span class="functiontext">Packaging::log</span><span class="plain">)</span>
+    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">package_request</span><span class="plain"> *, </span><span class="identifier">Packaging::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *, </span><span class="functiontext">Properties::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *, </span><span class="functiontext">NonlocalVariables::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain"> *, </span><span class="identifier">Nouns::log</span><span class="plain">)</span>
@@ -365,7 +345,7 @@ we need to use the equivalent of traditional <code class="display"><span class="
         <span class="identifier">Writers::register_writer_I</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, &amp;</span><span class="functiontext">CoreModule::writer</span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'I'</span><span class="plain">, &amp;</span><span class="functiontext">Instances::writer</span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'L'</span><span class="plain">, &amp;</span><span class="functiontext">LocalVariables::writer</span><span class="plain">);</span>
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'n'</span><span class="plain">, &amp;</span><span class="functiontext">InterNames::writer</span><span class="plain">);</span>
+        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'n'</span><span class="plain">, &amp;</span><span class="identifier">InterNames::writer</span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'X'</span><span class="plain">, &amp;</span><span class="functiontext">Extensions::IDs::writer</span><span class="plain">);</span>
 </pre>
 
@@ -399,7 +379,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
     <span class="definitionkeyword">enum</span> <span class="constant">OBJECT_COMPILATION_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OBJECT_CREATIONS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OBJECT_TREE_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">PACKAGING_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PHRASE_COMPARISONS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PHRASE_COMPILATION_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PHRASE_CREATIONS_DA</span>
@@ -451,7 +430,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">OBJECT_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"object compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">OBJECT_CREATIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"object creations"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">OBJECT_TREE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"object tree"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">PACKAGING_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"packaging"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">PHRASE_COMPARISONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"phrase comparisons"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">PHRASE_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"phrase compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">PHRASE_CREATIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"phrase creations"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -513,7 +491,7 @@ we need to use the equivalent of traditional <code class="display"><span class="
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'U'</span><span class="plain">, </span><span class="functiontext">Phrases::Usage::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'u'</span><span class="plain">, </span><span class="identifier">Kinds::Textual::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER_I</span><span class="plain">(</span><span class="character">'V'</span><span class="plain">, </span><span class="functiontext">Sentences::VPs::log</span><span class="plain">)</span>
-        <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'X'</span><span class="plain">, </span><span class="functiontext">Packaging::log</span><span class="plain">);</span>
+        <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'X'</span><span class="plain">, </span><span class="identifier">Packaging::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'x'</span><span class="plain">, </span><span class="functiontext">Extensions::Files::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'Y'</span><span class="plain">, </span><span class="functiontext">Properties::log</span><span class="plain">);</span>
         <span class="identifier">REGISTER_WRITER</span><span class="plain">(</span><span class="character">'Z'</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::log</span><span class="plain">);</span>

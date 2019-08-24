@@ -792,15 +792,15 @@ void CodeGen::Assimilate::function_bodies(void) {
 		}
 		
 		#ifdef CORE_MODULE
-		current_inter_routine = req->block_package;
+		Produce::set_cir(req->block_package);
 		Packaging::set_state(&(req->position), req->enclosure);
-		Emit::push_code_position(Emit::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
+		Produce::push_code_position(Produce::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
 		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 		inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
 		inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
-		Emit::pop_code_position();
-		current_inter_routine = NULL;
+		Produce::pop_code_position();
+		Produce::set_cir(NULL);
 		#endif
 	}
 }

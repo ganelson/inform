@@ -70,10 +70,10 @@ language such as Haskell.
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner</span><span class="plain"> *</span><span class="identifier">owned_by_rb</span><span class="plain">; </span>    <span class="comment">rulebook variables owned here</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">accessible_from_rb</span><span class="plain">; </span>    <span class="comment">and which can be named here</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">stv_creator_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">stv_creator_iname</span><span class="plain">;</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">rb_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rb_iname</span><span class="plain">; </span>    <span class="comment">run-time storage/routine holding contents</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">rb_package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rb_iname</span><span class="plain">; </span>    <span class="comment">run-time storage/routine holding contents</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">rulebook</span><span class="plain">;</span>
 </pre>
@@ -120,7 +120,7 @@ have affected it in this way:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure placement_affecting is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm, 27/eis and here.</p>
+<p class="endnote">The structure placement_affecting is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>As rulebooks are declared, the first few are quietly copied into
 a small array: that way, we can always obtain a pointer to, say, the
@@ -283,7 +283,7 @@ built (for instance, scene endings).
 
 
 <pre class="display">
-    <span class="reserved">rulebook</span><span class="plain"> *</span><span class="functiontext">Rulebooks::new</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">create_as</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
+    <span class="reserved">rulebook</span><span class="plain"> *</span><span class="functiontext">Rulebooks::new</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">create_as</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">RULEBOOK_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain">);</span>
@@ -365,7 +365,7 @@ built (for instance, scene endings).
     <span class="plain">}</span>
 
     <span class="reserved">rulebook</span><span class="plain"> *</span><span class="functiontext">Rulebooks::new_automatic</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">basis</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">oc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ata</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ubfaa</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rda</span><span class="plain">, </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">oc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ata</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ubfaa</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rda</span><span class="plain">, </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain"> = </span><span class="functiontext">Rulebooks::new</span><span class="plain">(</span>
             <span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rulebook</span><span class="plain">, </span><span class="identifier">basis</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="functiontext">Rulebooks::Outcomes::set_default_outcome</span><span class="plain">(&amp;(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;my_outcomes</span><span class="plain">), </span><span class="identifier">oc</span><span class="plain">);</span>
@@ -638,7 +638,7 @@ built (for instance, scene endings).
         <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;accessible_from_rb</span><span class="plain"> = </span><span class="functiontext">StackedVariables::add_owner_to_list</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;accessible_from_rb</span><span class="plain">, </span><span class="identifier">stvo</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;stv_creator_iname</span><span class="plain"> =</span>
                 <span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RULEBOOK_STV_CREATOR_FN_HL</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_package</span><span class="plain">);</span>
@@ -653,8 +653,8 @@ built (for instance, scene endings).
                     <span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">));</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOK_VAR_CREATORS_HL</span><span class="plain">);</span>
-            <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOK_VAR_CREATORS_HL</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">StackedVariables::owner_empty</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;owned_by_rb</span><span class="plain">)) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">StackedVariables::frame_creator</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;owned_by_rb</span><span class="plain">));</span>
@@ -681,38 +681,38 @@ built (for instance, scene endings).
 
 
 <pre class="displaydefn">
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SLOW_LOOKUP_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SLOW_LOOKUP_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">rb_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rb"</span><span class="plain">);</span>
 
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rb_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rb_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
 
             <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">StackedVariables::owner_empty</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;owned_by_rb</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">rb</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
-                        <span class="functiontext">Emit::code</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-                            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                                <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">));</span>
-                            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">rb</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
+                        <span class="identifier">Produce::code</span><span class="plain">();</span>
+                        <span class="identifier">Produce::down</span><span class="plain">();</span>
+                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+                            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rulebooks::get_stv_creator_iname</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">));</span>
+                            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                        <span class="identifier">Produce::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
 
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
@@ -1087,8 +1087,8 @@ code are the real outcome of the code in this section.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::rulebooks_array_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKS_ARRAY_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKS_ARRAY_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">)</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;rb_iname</span><span class="plain">);</span>
@@ -1113,8 +1113,8 @@ code are the real outcome of the code in this section.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::RulebookNames_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKNAMES_HL</span><span class="plain">);</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKNAMES_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">memory_economy_in_force</span><span class="plain">) {</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>

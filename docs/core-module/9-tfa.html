@@ -216,7 +216,7 @@ artificially to run through those sentences.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Traverse::visit</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> **</span><span class="identifier">last</span><span class="plain">) {</span>
         <span class="identifier">assembly_position</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
         <span class="functiontext">Modules::set_current</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Take a sceptical look at WITH nodes in the light of subsequent knowledge</span> <span class="cwebmacronumber">7.2.1</span>&gt;<span class="plain">;</span>
         <span class="plain">*</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>

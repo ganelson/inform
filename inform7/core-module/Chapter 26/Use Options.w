@@ -518,50 +518,50 @@ void UseOptions::TestUseOption_routine(void) {
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
-			Emit::inv_primitive(Produce::opcode(IF_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(EQ_BIP));
-				Emit::down();
-					Emit::val_symbol(K_value, UO_s);
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
-				Emit::up();
-				Emit::code();
-				Emit::down();
-					Emit::rtrue();
-				Emit::up();
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(IF_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(EQ_BIP));
+				Produce::down();
+					Produce::val_symbol(K_value, UO_s);
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+				Produce::up();
+				Produce::code();
+				Produce::down();
+					Produce::rtrue();
+				Produce::up();
+			Produce::up();
 		}
-	Emit::rfalse();
+	Produce::rfalse();
 	Routines::end(save);
 
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
-	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, UO_s);
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, UO_s);
+		Produce::code();
+		Produce::down();
 			use_option *uo;
 			LOOP_OVER(uo, use_option) {
-				Emit::inv_primitive(Produce::opcode(CASE_BIP));
-				Emit::down();
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-						Emit::down();
+				Produce::inv_primitive(Produce::opcode(CASE_BIP));
+				Produce::down();
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+						Produce::down();
 							TEMPORARY_TEXT(N);
 							WRITE_TO(N, "%W option", uo->name);
 							if (uo->minimum_setting_value > 0)
 								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
-							Emit::val_text(N);
+							Produce::val_text(N);
 							DISCARD_TEXT(N);
-						Emit::up();
-					Emit::up();
-				Emit::up();
+						Produce::up();
+					Produce::up();
+				Produce::up();
 			}
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 	Routines::end(save);

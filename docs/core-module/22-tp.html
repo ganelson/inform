@@ -26,7 +26,7 @@ we use the following chits to keep track of what's outstanding:
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">requested_phrase</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">requested_exact_kind</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_variables_interpretation</span><span class="plain">[27];</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">req_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">req_iname</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">to_phrase_request</span><span class="plain">;</span>
 </pre>
@@ -224,10 +224,10 @@ values in force, so that there is no possible ambiguity in how we read K.
         <span class="identifier">req</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain">);</span>
         <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_phrase</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) </span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
 
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
         <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_localised_iname_in</span><span class="plain">(</span><span class="constant">PHRASE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">);</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;27; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;kind_variables_interpretation</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -282,7 +282,7 @@ I6 routine.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">req_kind</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">req_kind</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::TypeData::invoked_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
@@ -309,7 +309,7 @@ I6 routine.
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">"ErrorRecoverySymbol"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find_by_name</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -358,12 +358,12 @@ to write a comment about this:
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::comment_on_request</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"No specific request"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"No specific request"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Request %d: "</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain">);</span>
-            <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

@@ -291,7 +291,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 				PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
 				#endif
 			} else if (Specifications::is_description(spec_found)) {
-				Emit::val(K_number, LITERAL_IVAL, 1); /* purely for problem recovery */
+				Produce::val(K_number, LITERAL_IVAL, 1); /* purely for problem recovery */
 			} else {
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 			}
@@ -306,10 +306,10 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 @<Compile a logical negation@> =
 	if (ParseTree::no_children(spec_found) != 1)
 		internal_error("Compiled malformed LOGICAL_NOT_NT");
-	Emit::inv_primitive(Produce::opcode(NOT_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(NOT_BIP));
+	Produce::down();
 		Specifications::Compiler::emit_as_val(K_value, spec_found->down);
-	Emit::up();
+	Produce::up();
 
 @ An easy case, running straight out to I6 operators:
 
@@ -321,12 +321,12 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 	if ((left_operand == NULL) || (right_operand == NULL))
 		internal_error("Compiled CONDITION/AND with LHS operands");
 
-	if (ParseTree::is(spec_found, LOGICAL_AND_NT)) Emit::inv_primitive(Produce::opcode(AND_BIP));
-	if (ParseTree::is(spec_found, LOGICAL_OR_NT)) Emit::inv_primitive(Produce::opcode(OR_BIP));
-	Emit::down();
+	if (ParseTree::is(spec_found, LOGICAL_AND_NT)) Produce::inv_primitive(Produce::opcode(AND_BIP));
+	if (ParseTree::is(spec_found, LOGICAL_OR_NT)) Produce::inv_primitive(Produce::opcode(OR_BIP));
+	Produce::down();
 		Specifications::Compiler::emit_as_val(K_value, left_operand);
 		Specifications::Compiler::emit_as_val(K_value, right_operand);
-	Emit::up();
+	Produce::up();
 
 @ Phrase options are stored as bits in a 16-bit map, so that each individual
 option is a power of two from $2^0$ to $2^15$. We test if this is valid by
@@ -335,11 +335,11 @@ exists if and only if the enclosing I6 routine takes phrase options. The
 type-checker won't allow these specifications to be compiled anywhere else.
 
 @<Compile a phrase option test@> =
-	Emit::inv_primitive(Produce::opcode(BITWISEAND_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(BITWISEAND_BIP));
+	Produce::down();
 		local_variable *po = LocalVariables::phrase_options();
 		if (po == NULL) internal_error("no phrase options exist in this frame");
 		inter_symbol *po_s = LocalVariables::declare_this(po, FALSE, 8);
-		Emit::val_symbol(K_value, po_s);
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) ParseTree::int_annotation(spec_found, phrase_option_ANNOT));
-	Emit::up();
+		Produce::val_symbol(K_value, po_s);
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) ParseTree::int_annotation(spec_found, phrase_option_ANNOT));
+	Produce::up();

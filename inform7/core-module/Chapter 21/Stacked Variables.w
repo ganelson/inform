@@ -211,30 +211,30 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
 
-	Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(EQ_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, state_s);
-			Emit::val(K_number, LITERAL_IVAL, 1);
-		Emit::up();
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(EQ_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, state_s);
+			Produce::val(K_number, LITERAL_IVAL, 1);
+		Produce::up();
+		Produce::code();
+		Produce::down();
 			@<Compile frame creator if state is set@>;
-		Emit::up();
-		Emit::code();
-		Emit::down();
+		Produce::up();
+		Produce::code();
+		Produce::down();
 			@<Compile frame creator if state is clear@>;
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
 	int count = 0;
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) count++;
 
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) count);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) count);
+	Produce::up();
 
 	Routines::end(save);
 	stvo->stvo_iname = iname;
@@ -245,23 +245,23 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
-		Emit::inv_primitive(Produce::opcode(STORE_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-				Emit::val_symbol(K_value, pos_s);
-			Emit::up();
+		Produce::inv_primitive(Produce::opcode(STORE_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+				Produce::val_symbol(K_value, pos_s);
+			Produce::up();
 			if (Kinds::Behaviour::uses_pointer_values(K))
 				Kinds::RunTime::emit_heap_allocation(Kinds::RunTime::make_heap_allocation(K, 1, -1));
 			else
 				NonlocalVariables::emit_initial_value_as_val(q);
-		Emit::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-		Emit::down();
-			Emit::ref_symbol(K_value, pos_s);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+		Produce::down();
+			Produce::ref_symbol(K_value, pos_s);
+		Produce::up();
 	}
 
 @<Compile frame creator if state is clear@> =
@@ -269,19 +269,19 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Emit::inv_call_iname(Hierarchy::find(BLKVALUEFREE_HL));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Emit::val_symbol(K_value, pos_s);
-				Emit::up();
-			Emit::up();
+			Produce::inv_call_iname(Hierarchy::find(BLKVALUEFREE_HL));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					Produce::val_symbol(K_value, pos_s);
+				Produce::up();
+			Produce::up();
 		}
-		Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-		Emit::down();
-			Emit::ref_symbol(K_value, pos_s);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+		Produce::down();
+			Produce::ref_symbol(K_value, pos_s);
+		Produce::up();
 	}
 
 @ =

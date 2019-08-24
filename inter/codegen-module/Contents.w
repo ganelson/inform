@@ -26,12 +26,14 @@ Chapter 3: Inform 6 to Inter
 	Inter Primitives
 	The Veneer
 	Inter Schemas
+	Emitting Inter Schemas
 	Hierarchy Locations
 	Translation
 	Packaging
 	Package Types
 	Inter Namespace
 	Produce
+	Value Holsters
 
 Chapter 4: Inter to Final Code
 	Code Generation

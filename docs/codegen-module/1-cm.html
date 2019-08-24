@@ -37,6 +37,16 @@
     <span class="definitionkeyword">enum</span> <span class="constant">code_generation_target_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">code_generation_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">generated_segment_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inter_name_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inter_name_generator_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">package_request_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_location_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_attachment_point_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">hierarchy_metadatum_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">module_package_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">submodule_identity_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">submodule_request_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">compilation_module_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>With allocation functions:
 </p>
@@ -56,6 +66,21 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">generated_segment</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_location</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_attachment_point</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_metadatum</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">package_request</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module_package</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">submodule_identity</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">submodule_request</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain">, 1000)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain">, 1000)</span>
+
+    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">explicit_iname</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">module</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain">)</span>
+    <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -121,6 +146,7 @@ foundation module does that automatically.)
     <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ELIMINATION_DA</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PACKAGING_DA</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register this module's debugging log aspects</span> <span class="cwebmacronumber">4.5</span>&gt; =
@@ -134,6 +160,7 @@ foundation module does that automatically.)
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SCHEMA_COMPILATION_DETAILS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"schema compilation details"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">ELIMINATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"code elimination"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">PACKAGING_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"packaging"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

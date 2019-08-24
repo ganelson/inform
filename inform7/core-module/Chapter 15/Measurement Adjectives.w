@@ -422,16 +422,16 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 				Calculus::Propositions::Checker::tc_problem_reporting(
 					mdef->region_threshold_text,
 					"be giving the boundary of the definition")) == ALWAYS_MATCH) {
-				Emit::inv_primitive(Produce::opcode(IF_BIP));
-				Emit::down();
+				Produce::inv_primitive(Produce::opcode(IF_BIP));
+				Produce::down();
 					Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
-					Emit::code();
-					Emit::down();
-						Emit::rtrue();
-					Emit::up();
-				Emit::up();
+					Produce::code();
+					Produce::down();
+						Produce::rtrue();
+					Produce::up();
+				Produce::up();
 			}
-			Emit::rfalse();
+			Produce::rfalse();
 			Routines::end(save);
 		}
 }

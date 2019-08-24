@@ -45,9 +45,9 @@ int Phrases::Condition::ADJ_compile(definition *def, int T,
 							"although the preamble to the definition was properly "
 							"written. There must be something wrong after 'if'.");
 					} else {
-						if (def->format == -1) { Emit::inv_primitive(Produce::opcode(NOT_BIP)); Emit::down(); }
+						if (def->format == -1) { Produce::inv_primitive(Produce::opcode(NOT_BIP)); Produce::down(); }
 						Specifications::Compiler::emit_as_val(K_number, spec);
-						if (def->format == -1) Emit::up();
+						if (def->format == -1) Produce::up();
 					}
 				}
 

@@ -341,19 +341,19 @@ void PL::Regions::write_regional_found_in_routines(void) {
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
 			packaging_state save = Routines::begin(iname);
-			Emit::inv_primitive(Produce::opcode(IF_BIP));
-			Emit::down();
-					Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Emit::down();
-						Emit::val_iname(K_object, Hierarchy::find(LOCATION_HL));
-						Emit::val_iname(K_object, Instances::iname(I));
-					Emit::up();
-				Emit::code();
-				Emit::down();
-					Emit::rtrue();
-				Emit::up();
-			Emit::up();
-			Emit::rfalse();
+			Produce::inv_primitive(Produce::opcode(IF_BIP));
+			Produce::down();
+					Produce::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
+					Produce::down();
+						Produce::val_iname(K_object, Hierarchy::find(LOCATION_HL));
+						Produce::val_iname(K_object, Instances::iname(I));
+					Produce::up();
+				Produce::code();
+				Produce::down();
+					Produce::rtrue();
+				Produce::up();
+			Produce::up();
+			Produce::rfalse();
 			Routines::end(save);
 		}
 }

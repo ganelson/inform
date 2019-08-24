@@ -199,20 +199,20 @@ made above.
 	kind *result = NULL;
 	Kinds::binary_construction_material(K, NULL, &result);
 	if (Kinds::get_construct(result) != CON_NIL) {
-		Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+		Produce::down();
 
 		if (Kinds::Behaviour::uses_pointer_values(result)) {
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
-			Emit::inv_call_iname(iname);
-			Emit::down();
+			Produce::inv_call_iname(iname);
+			Produce::down();
 			Kinds::RunTime::emit_strong_id_as_val(result);
-			Emit::up();
+			Produce::up();
 		} else {
 			if (Kinds::RunTime::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
-				Emit::val(K_number, LITERAL_IVAL, 0);
+				Produce::val(K_number, LITERAL_IVAL, 0);
 		}
 
-		Emit::up();
+		Produce::up();
 	}
 	Routines::end(save);

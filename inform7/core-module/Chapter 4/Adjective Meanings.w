@@ -893,7 +893,7 @@ int Adjectives::Meanings::write_adjective_test_routine(value_holster *VH,
 		if (am_kind == NULL) return FALSE;
 		weak_id = Kinds::RunTime::weak_id(am_kind);
 	}
-	Emit::val_iname(K_value, Adjectives::Meanings::iname(aph, TEST_ADJECTIVE_TASK, weak_id));
+	Produce::val_iname(K_value, Adjectives::Meanings::iname(aph, TEST_ADJECTIVE_TASK, weak_id));
 	return TRUE;
 }
 
@@ -998,7 +998,7 @@ known in order to sort.
 		inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
 		Adjectives::Meanings::list_compile(aph->meanings->sorted_meanings, Frames::current_stack_frame(), K, T, it_s);
 	}
-	Emit::rfalse();
+	Produce::rfalse();
 
 	Routines::end(save);
 
@@ -1052,25 +1052,25 @@ void Adjectives::Meanings::list_compile(adjective_meaning *list_head,
 		if ((Adjectives::Meanings::compilation_possible(am, T)) &&
 			(Adjectives::Meanings::domain_weak_match(K, Adjectives::Meanings::get_domain(am)))) {
 			current_sentence = am->defined_at;
-			Emit::inv_primitive(Produce::opcode(IF_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(IF_BIP));
+			Produce::down();
 				InferenceSubjects::emit_element_of_condition(am->domain_infs, t0_s);
-				Emit::code();
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-					Emit::down();
+				Produce::code();
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+					Produce::down();
 						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
-							Emit::inv_primitive(Produce::opcode(NOT_BIP));
-							Emit::down();
+							Produce::inv_primitive(Produce::opcode(NOT_BIP));
+							Produce::down();
 						}
 						Adjectives::Meanings::emit_meaning(am, T, phsf);
 						am->defined_already = TRUE;
 						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
-							Emit::up();
+							Produce::up();
 						}
-					Emit::up();
-				Emit::up();
-			Emit::up();
+					Produce::up();
+				Produce::up();
+			Produce::up();
 		}
 }
 
@@ -1311,94 +1311,94 @@ void Adjectives::Meanings::agreements(void) {
 		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
 
-		Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, o_s);
-				Emit::val_nothing();
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, gna_s);
-					Emit::val(K_number, LITERAL_IVAL, 6);
-				Emit::up();
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, gna_s);
+		Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, o_s);
+				Produce::val_nothing();
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, gna_s);
+					Produce::val(K_number, LITERAL_IVAL, 6);
+				Produce::up();
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, gna_s);
 					inter_name *iname = Hierarchy::find(GETGNAOFOBJECT_HL);
-					Emit::inv_call_iname(iname);
-					Emit::down();
-						Emit::val_symbol(K_value, o_s);
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+					Produce::inv_call_iname(iname);
+					Produce::down();
+						Produce::val_symbol(K_value, o_s);
+					Produce::up();
+				Produce::up();
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(IF_BIP));
-		Emit::down();
-			Emit::ref_symbol(K_value, force_plural_s);
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(NE_BIP));
-					Emit::down();
-						Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
-						Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
-					Emit::up();
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, gna_s);
-							Emit::inv_primitive(Produce::opcode(PLUS_BIP));
-							Emit::down();
-								Emit::val(K_number, LITERAL_IVAL, 3);
-								Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
-							Emit::up();
-						Emit::up();
-					Emit::up();
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, gna_s);
-							Emit::val(K_number, LITERAL_IVAL, 3);
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(IF_BIP));
+		Produce::down();
+			Produce::ref_symbol(K_value, force_plural_s);
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(NE_BIP));
+					Produce::down();
+						Produce::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
+						Produce::val(K_number, LITERAL_IVAL, (inter_t) -1);
+					Produce::up();
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, gna_s);
+							Produce::inv_primitive(Produce::opcode(PLUS_BIP));
+							Produce::down();
+								Produce::val(K_number, LITERAL_IVAL, 3);
+								Produce::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
+							Produce::up();
+						Produce::up();
+					Produce::up();
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, gna_s);
+							Produce::val(K_number, LITERAL_IVAL, 3);
+						Produce::up();
+					Produce::up();
+				Produce::up();
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(STORE_BIP));
-		Emit::down();
-			Emit::ref_symbol(K_value, gna_s);
-			Emit::inv_primitive(Produce::opcode(MODULO_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, gna_s);
-				Emit::val(K_number, LITERAL_IVAL, 6);
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(STORE_BIP));
+		Produce::down();
+			Produce::ref_symbol(K_value, gna_s);
+			Produce::inv_primitive(Produce::opcode(MODULO_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, gna_s);
+				Produce::val(K_number, LITERAL_IVAL, 6);
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, gna_s);
-			Emit::code();
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, gna_s);
+			Produce::code();
+			Produce::down();
 				for (int gna=0; gna<6; gna++) {
-					Emit::inv_primitive(Produce::opcode(CASE_BIP));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, (inter_t) gna);
-						Emit::code();
-						Emit::down();
-							Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-							Emit::down();
+					Produce::inv_primitive(Produce::opcode(CASE_BIP));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, (inter_t) gna);
+						Produce::code();
+						Produce::down();
+							Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+							Produce::down();
 								TEMPORARY_TEXT(T);
 								int number_sought = 1, gender_sought = NEUTER_GENDER;
 								if (gna%3 == 0) gender_sought = MASCULINE_GENDER;
@@ -1408,32 +1408,32 @@ void Adjectives::Meanings::agreements(void) {
 									language_of_play, number_sought, gender_sought);
 								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
 								else WRITE_TO(T, "%W", PW);
-								Emit::val_text(T);
+								Produce::val_text(T);
 								DISCARD_TEXT(T);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+							Produce::up();
+						Produce::up();
+					Produce::up();
 				}
-			Emit::up();
-		Emit::up();
+			Produce::up();
+		Produce::up();
 
 		Routines::end(save);
 	}
 }
 
 void Adjectives::Meanings::emit(adjectival_phrase *aph) {
-	Emit::inv_call_iname(aph->aph_iname);
-	Emit::down();
-		Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
-		Emit::inv_primitive(Produce::opcode(GE_BIP));
-		Emit::down();
-			Emit::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_HL));
-			Emit::val(K_number, LITERAL_IVAL, 2);
-		Emit::up();
-	Emit::up();
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
-		Emit::val(K_number, LITERAL_IVAL, 1);
-	Emit::up();
+	Produce::inv_call_iname(aph->aph_iname);
+	Produce::down();
+		Produce::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
+		Produce::inv_primitive(Produce::opcode(GE_BIP));
+		Produce::down();
+			Produce::val_iname(K_value, Hierarchy::find(PRIOR_NAMED_LIST_HL));
+			Produce::val(K_number, LITERAL_IVAL, 2);
+		Produce::up();
+	Produce::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
+		Produce::val(K_number, LITERAL_IVAL, 1);
+	Produce::up();
 }

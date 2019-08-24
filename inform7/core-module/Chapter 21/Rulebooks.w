@@ -525,34 +525,34 @@ void Rulebooks::rulebook_var_creators(void) {
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
 
-	Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, rb_s);
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, rb_s);
+		Produce::code();
+		Produce::down();
 
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook)
 			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
-				Emit::inv_primitive(Produce::opcode(CASE_BIP));
-				Emit::down();
-					Emit::val(K_value, LITERAL_IVAL, (inter_t) (rb->allocation_id));
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-						Emit::down();
-							Emit::val_iname(K_value, Rulebooks::get_stv_creator_iname(rb));
-						Emit::up();
-					Emit::up();
-				Emit::up();
+				Produce::inv_primitive(Produce::opcode(CASE_BIP));
+				Produce::down();
+					Produce::val(K_value, LITERAL_IVAL, (inter_t) (rb->allocation_id));
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+						Produce::down();
+							Produce::val_iname(K_value, Rulebooks::get_stv_creator_iname(rb));
+						Produce::up();
+					Produce::up();
+				Produce::up();
 			}
 
-		Emit::up();
-	Emit::up();
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, 0);
-	Emit::up();
+		Produce::up();
+	Produce::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val(K_number, LITERAL_IVAL, 0);
+	Produce::up();
 
 	Routines::end(save);
 

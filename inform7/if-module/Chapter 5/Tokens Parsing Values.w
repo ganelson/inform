@@ -122,10 +122,10 @@ void PL::Parsing::Tokens::Values::number(void) {
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
 	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+	Produce::up();
 	Routines::end(save);
 }
 
@@ -138,10 +138,10 @@ void PL::Parsing::Tokens::Values::time(void) {
 		grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K);
 		if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
 	}
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+	Produce::up();
 	Routines::end(save);
 }
 
@@ -151,10 +151,10 @@ void PL::Parsing::Tokens::Values::truth_state(void) {
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);
 	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+	Produce::up();
 	Routines::end(save);
 }
 
@@ -220,76 +220,76 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 			wording NW = Instances::get_name_in_play(q, FALSE);
 			if (Wordings::length(NW) - 1 == longest) {
 				if (GV_IS_VALUE_instance_mode) {
-					Emit::inv_primitive(Produce::opcode(IF_BIP));
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(EQ_BIP));
-						Emit::down();
-							Emit::val_symbol(K_value, gprk.instance_s);
-							Emit::val_iname(K_value, Instances::iname(q));
-						Emit::up();
-						Emit::code();
-						Emit::down();
+					Produce::inv_primitive(Produce::opcode(IF_BIP));
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(EQ_BIP));
+						Produce::down();
+							Produce::val_symbol(K_value, gprk.instance_s);
+							Produce::val_iname(K_value, Instances::iname(q));
+						Produce::up();
+						Produce::code();
+						Produce::down();
 				}
 				@<Reset word number@>;
 
 				TEMPORARY_TEXT(L);
 				WRITE_TO(L, ".Failed_%d", next_label++);
-				inter_symbol *flab = Emit::reserve_label(L);
+				inter_symbol *flab = Produce::reserve_label(L);
 				DISCARD_TEXT(L);
 
 				LOOP_THROUGH_WORDING(k, NW) {
-					Emit::inv_primitive(Produce::opcode(IF_BIP));
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(NE_BIP));
-						Emit::down();
-							Emit::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
+					Produce::inv_primitive(Produce::opcode(IF_BIP));
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(NE_BIP));
+						Produce::down();
+							Produce::inv_call_iname(Hierarchy::find(NEXTWORDSTOPPED_HL));
 							TEMPORARY_TEXT(W);
 							WRITE_TO(W, "%N", k);
-							Emit::val_dword(W);
+							Produce::val_dword(W);
 							DISCARD_TEXT(W);
-						Emit::up();
-						Emit::code();
-						Emit::down();
-							Emit::inv_primitive(Produce::opcode(JUMP_BIP));
-							Emit::down();
-								Emit::lab(flab);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+						Produce::up();
+						Produce::code();
+						Produce::down();
+							Produce::inv_primitive(Produce::opcode(JUMP_BIP));
+							Produce::down();
+								Produce::lab(flab);
+							Produce::up();
+						Produce::up();
+					Produce::up();
 				}
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
-					Emit::val_iname(K_value, Instances::iname(q));
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
-				Emit::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_iname(K_value, Hierarchy::find(PARSED_NUMBER_HL));
+					Produce::val_iname(K_value, Instances::iname(q));
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
+				Produce::up();
 
 				if (GV_IS_VALUE_instance_mode) {
-						Emit::up();
-					Emit::up();
+						Produce::up();
+					Produce::up();
 				}
-				Emit::place_label(flab);
+				Produce::place_label(flab);
 			}
 		}
 	}
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
+	Produce::up();
 
 @<Save word number@> =
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, gprk.original_wn_s);
-		Emit::val_iname(K_value, Hierarchy::find(WN_HL));
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, gprk.original_wn_s);
+		Produce::val_iname(K_value, Hierarchy::find(WN_HL));
+	Produce::up();
 
 @<Reset word number@> =
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_iname(K_value, Hierarchy::find(WN_HL));
-		Emit::val_symbol(K_value, gprk.original_wn_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_iname(K_value, Hierarchy::find(WN_HL));
+		Produce::val_symbol(K_value, gprk.original_wn_s);
+	Produce::up();

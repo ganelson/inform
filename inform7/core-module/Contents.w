@@ -143,7 +143,6 @@ Chapter 14: Specifications
 "In which the meanings of excerpts are systematically catalogued according to
 what they specify; a categorisation much broader than working out kinds of
 value, since it applies to a much broader range of excerpts than values."
-	Value Holsters
 	Specifications
 	Rvalues
 	Lvalues
@@ -278,5 +277,4 @@ Chapter 27: Bridge to Inter Module
 "Emitting Inter code ready for the code-generator."
 	Hierarchy
 	Compilation Modules
-	Emitting Inter Schemas
 	Emit

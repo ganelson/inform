@@ -246,7 +246,7 @@ text_stream *Kinds::Behaviour::get_comparison_routine(kind *K) {
 
 #ifdef CORE_MODULE
 inter_name *Kinds::Behaviour::get_comparison_routine_as_iname(kind *K) {
-	return Hierarchy::find_by_name(Kinds::Behaviour::get_comparison_routine(K));
+	return Produce::find_by_name(Kinds::Behaviour::get_comparison_routine(K));
 }
 #endif
 
@@ -320,7 +320,7 @@ void Kinds::Behaviour::write_support_routine_name(OUTPUT_STREAM, kind *K) {
 inter_name *Kinds::Behaviour::get_support_routine_as_iname(kind *K) {
 	TEMPORARY_TEXT(N);
 	Kinds::Behaviour::write_support_routine_name(N, K);
-	inter_name *iname = Hierarchy::find_by_name(N);
+	inter_name *iname = Produce::find_by_name(N);
 	DISCARD_TEXT(N);
 	return iname;
 }
@@ -397,7 +397,7 @@ text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 inter_name *Kinds::Behaviour::get_distinguisher_as_iname(kind *K) {
 	text_stream *N = Kinds::Behaviour::get_distinguisher(K);
 	if (N == NULL) return NULL;
-	return Hierarchy::find_by_name(N);
+	return Produce::find_by_name(N);
 }
 #endif
 
@@ -501,11 +501,11 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (R) {
 		if (external) {
 			K->construct->pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
-			inter_name *actual_iname = Hierarchy::find_by_name(X);
+			inter_name *actual_iname = Produce::find_by_name(X);
 			Emit::named_iname_constant(K->construct->pr_iname, K_value, actual_iname);
 		} else internal_error("internal but unknown kind printing routine");
 	} else {
-		if (external) K->construct->pr_iname = Hierarchy::find_by_name(X);
+		if (external) K->construct->pr_iname = Produce::find_by_name(X);
 		else internal_error("internal but unpackaged kind printing routine");
 	}
 	return K->construct->pr_iname;
@@ -538,9 +538,9 @@ inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;
 	if (K->construct->trace_iname) return K->construct->trace_iname;
 	if (Str::len(K->construct->name_of_printing_rule_ACTIONS) > 0)
-		K->construct->trace_iname = Hierarchy::find_by_name(K->construct->name_of_printing_rule_ACTIONS);
+		K->construct->trace_iname = Produce::find_by_name(K->construct->name_of_printing_rule_ACTIONS);
 	else
-		K->construct->trace_iname = Hierarchy::find_by_name(I"DA_Name");
+		K->construct->trace_iname = Produce::find_by_name(I"DA_Name");
 	return K->construct->trace_iname;
 }
 #endif
@@ -565,7 +565,7 @@ inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
 	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
 	if (Str::len(K->construct->explicit_i6_GPR) > 0)
-		return Hierarchy::find_by_name(K->construct->explicit_i6_GPR);
+		return Produce::find_by_name(K->construct->explicit_i6_GPR);
 	return NULL;
 }
 #endif
@@ -612,7 +612,7 @@ text_stream *Kinds::Behaviour::get_recognition_only_GPR(kind *K) {
 inter_name *Kinds::Behaviour::get_recognition_only_GPR_as_iname(kind *K) {
 	text_stream *N = Kinds::Behaviour::get_recognition_only_GPR(K);
 	if (N == NULL) return NULL;
-	return Hierarchy::find_by_name(N);
+	return Produce::find_by_name(N);
 }
 #endif
 

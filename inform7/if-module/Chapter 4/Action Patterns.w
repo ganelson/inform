@@ -1384,23 +1384,23 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 
 	if (ap->request) flag_bits += 1;
 
-	Emit::inv_call_iname(Hierarchy::find(TRYACTION_HL));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) flag_bits);
+	Produce::inv_call_iname(Hierarchy::find(TRYACTION_HL));
+	Produce::down();
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) flag_bits);
 		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
-		else Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
-		Emit::val_iname(K_action_name, PL::Actions::double_sharp(an));
+		else Produce::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+		Produce::val_iname(K_action_name, PL::Actions::double_sharp(an));
 		if (spec0) PL::Actions::Patterns::emit_try_action_parameter(spec0, PL::Actions::get_data_type_of_noun(an));
-		else Emit::val(K_number, LITERAL_IVAL, 0);
+		else Produce::val(K_number, LITERAL_IVAL, 0);
 		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, PL::Actions::get_data_type_of_second_noun(an));
-		else Emit::val(K_number, LITERAL_IVAL, 0);
+		else Produce::val(K_number, LITERAL_IVAL, 0);
 		if (store_instead) {
-			Emit::inv_call_iname(Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
-			Emit::down();
+			Produce::inv_call_iname(Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
+			Produce::down();
 				Frames::emit_allocation(K_stored_action);
-			Emit::up();
+			Produce::up();
 		}
-	Emit::up();
+	Produce::up();
 }
 
 @ Which requires the following. As ever, there have to be hacks to ensure that
@@ -1502,14 +1502,14 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			LocalVariables::ensure_called_local(C,
 				Specifications::to_kind(spec));
 		LocalVariables::add_calling_to_condition(lvar);
-		Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-				Emit::ref_symbol(K_value, lvar_s);
+				Produce::ref_symbol(K_value, lvar_s);
 				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
-			Emit::up();
+			Produce::up();
 	}
 
 	force_proposition = TRUE;
@@ -1528,20 +1528,20 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			inter_symbol *ct_0_s = LocalVariables::declare_this(ct_0_lv, FALSE, 8);
 			local_variable *ct_1_lv = LocalVariables::by_name(I"ct_1");
 			inter_symbol *ct_1_s = LocalVariables::declare_this(ct_1_lv, FALSE, 8);
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, ct_1_s);
-				Emit::inv_call_iname(Hierarchy::find(EXISTSTABLEROWCORR_HL));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(STORE_BIP));
-					Emit::down();
-						Emit::ref_symbol(K_value, ct_0_s);
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, ct_1_s);
+				Produce::inv_call_iname(Hierarchy::find(EXISTSTABLEROWCORR_HL));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(STORE_BIP));
+					Produce::down();
+						Produce::ref_symbol(K_value, ct_0_s);
 						Specifications::Compiler::emit_as_val(K_value, spec->down->next);
-					Emit::up();
+					Produce::up();
 					Specifications::Compiler::emit_as_val(K_value, spec->down);
 					Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
-				Emit::up();
-			Emit::up();
+				Produce::up();
+			Produce::up();
 			force_proposition = FALSE;
 		}
 	}
@@ -1553,18 +1553,18 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		if (Rvalues::is_CONSTANT_of_kind(spec, K_understanding)) {
 			if ((<understanding-action-irregular-operand>(ParseTree::get_text(spec))) &&
 				(<<r>> == TRUE)) {
-				Emit::val(K_truth_state, LITERAL_IVAL, 1);
+				Produce::val(K_truth_state, LITERAL_IVAL, 1);
 			} else {
-				Emit::inv_primitive(Produce::opcode(NE_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP));
-					Emit::down();
+				Produce::inv_primitive(Produce::opcode(NE_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP));
+					Produce::down();
 						Specifications::Compiler::emit_as_val(K_value, spec);
-						Emit::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));
-						Emit::val_iname(K_number, Hierarchy::find(CONSULT_WORDS_HL));
-					Emit::up();
-					Emit::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
-				Emit::up();
+						Produce::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));
+						Produce::val_iname(K_number, Hierarchy::find(CONSULT_WORDS_HL));
+					Produce::up();
+					Produce::val_iname(K_number, Hierarchy::find(GPR_FAIL_HL));
+				Produce::up();
 			}
 			force_proposition = FALSE;
 		}
@@ -1575,11 +1575,11 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 				LOGIF(ACTION_PATTERN_PARSING,
 					"$P on $u : $T\n", spec, verify_as_kind, current_sentence);
 				if (adapt_region) {
-					Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Emit::down();
+					Produce::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
+					Produce::down();
 						Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
 						Specifications::Compiler::emit_as_val(K_value, spec);
-					Emit::up();
+					Produce::up();
 					force_proposition = FALSE;
 				}
 			}
@@ -1590,11 +1590,11 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			((Descriptions::to_instance(spec)) &&
 			(adapt_region) &&
 			(Instances::of_kind(Descriptions::to_instance(spec), K_region)))) {
-			Emit::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-			Emit::down();
+			Produce::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
+			Produce::down();
 				Specifications::Compiler::emit_as_val(K_value, I6_var_TS);
 				Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::up();
+			Produce::up();
 		}
 		force_proposition = FALSE;
 	}
@@ -1627,7 +1627,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 	}
 
 	if (Wordings::nonempty(C)) {
-		Emit::up();
+		Produce::up();
 	}
 	return TRUE;
 }
@@ -1882,23 +1882,23 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 
 	if (PL::Actions::Lists::negated(ap.action)) {
 		if (ranges_count[0] > 0) {
-			Emit::inv_primitive(Produce::opcode(AND_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(AND_BIP));
+			Produce::down();
 				range_to_compile = 0;
 				@<Emit CPM range@>;
 		}
 		if (ranges_count[3] > 0) {
-			Emit::inv_primitive(Produce::opcode(AND_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(AND_BIP));
+			Produce::down();
 		}
-		Emit::inv_primitive(Produce::opcode(NOT_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(NOT_BIP));
+		Produce::down();
 		if ((ranges_count[1] == 0) && (ranges_count[2] == 0))
-			Emit::val(K_truth_state, LITERAL_IVAL, 0);
+			Produce::val(K_truth_state, LITERAL_IVAL, 0);
 		else {
 			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down();
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down();
 			}
 			if (ranges_count[1] > 0) {
 				range_to_compile = 1;
@@ -1908,37 +1908,37 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				range_to_compile = 2;
 				@<Emit CPM range@>;
 			}
-			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) Emit::up();
+			if ((ranges_count[1] > 0) && (ranges_count[2] > 0)) Produce::up();
 		}
-		Emit::up();
+		Produce::up();
 		if (ranges_count[3] > 0) {
 			range_to_compile = 3;
 			@<Emit CPM range@>;
 		}
-		if (ranges_count[3] > 0) Emit::up();
-		if (ranges_count[0] > 0) Emit::up();
+		if (ranges_count[3] > 0) Produce::up();
+		if (ranges_count[0] > 0) Produce::up();
 	} else {
 		int downs = 0;
 		if (ranges_count[1] > 0) {
 			if (ranges_count[0]+ranges_count[2]+ranges_count[3] > 0) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down(); downs++;
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down(); downs++;
 			}
 			range_to_compile = 1;
 			@<Emit CPM range@>;
 		}
 		if (ranges_count[0] > 0) {
 			if (ranges_count[2]+ranges_count[3] > 0) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down(); downs++;
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down(); downs++;
 			}
 			range_to_compile = 0;
 			@<Emit CPM range@>;
 		}
 		if (ranges_count[2] > 0) {
 			if (ranges_count[3] > 0) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down(); downs++;
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down(); downs++;
 			}
 			range_to_compile = 2;
 			@<Emit CPM range@>;
@@ -1947,12 +1947,12 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			range_to_compile = 3;
 			@<Emit CPM range@>;
 		}
-		while (downs > 0) { Emit::up(); downs--; }
+		while (downs > 0) { Produce::up(); downs--; }
 	}
 
 	if ((ranges_count[0] + ranges_count[1] + ranges_count[2] + ranges_count[3] == 0) &&
 		(PL::Actions::Lists::negated(ap.action) == FALSE)) {
-		Emit::val(K_truth_state, LITERAL_IVAL, 1);
+		Produce::val(K_truth_state, LITERAL_IVAL, 1);
 	}
 	LocalVariables::end_condition_emit();
 
@@ -1967,14 +1967,14 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		if ((cpmc >= ranges_from[range_to_compile]) && (cpmc <= ranges_to[range_to_compile])) {
 			done++;
 			if (done < ranges_count[range_to_compile]) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down(); downs++;
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down(); downs++;
 			}
 			ap_optional_clause *apoc = needed_apoc[i];
 			@<Emit CPM condition piece@>;
 		}
 	}
-	while (downs > 0) { Emit::up(); downs--; }
+	while (downs > 0) { Produce::up(); downs--; }
 
 @<Emit CPM condition piece@> =
 	TEMPORARY_TEXT(C);
@@ -1983,28 +1983,28 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	DISCARD_TEXT(C);
 	switch (cpmc) {
 		case ACTOR_IS_PLAYER_CPMC:
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				Produce::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+			Produce::up();
 			break;
 		case ACTOR_ISNT_PLAYER_CPMC:
-			Emit::inv_primitive(Produce::opcode(NE_BIP));
-			Emit::down();
-				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-				Emit::val_iname(K_object, Hierarchy::find(PLAYER_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(NE_BIP));
+			Produce::down();
+				Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				Produce::val_iname(K_object, Hierarchy::find(PLAYER_HL));
+			Produce::up();
 			break;
 		case REQUESTER_EXISTS_CPMC:
-			Emit::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
+			Produce::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
 			break;
 		case REQUESTER_DOESNT_EXIST_CPMC:
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_iname(K_object, Hierarchy::find(ACT_REQUESTER_HL));
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
 			break;
 		case ACTOR_MATCHES_CPMC:
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, ap.actor_spec, K_object, FALSE);
@@ -2013,24 +2013,24 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			PL::Actions::Lists::emit(ap.action);
 			break;
 		case NOUN_EXISTS_CPMC:
-			Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
+			Produce::val_iname(K_object, Hierarchy::find(NOUN_HL));
 			break;
 		case NOUN_IS_INP1_CPMC:
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_iname(K_object, Hierarchy::find(NOUN_HL));
-				Emit::val_iname(K_object, Hierarchy::find(INP1_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_iname(K_object, Hierarchy::find(NOUN_HL));
+				Produce::val_iname(K_object, Hierarchy::find(INP1_HL));
+			Produce::up();
 			break;
 		case SECOND_EXISTS_CPMC:
-			Emit::val_iname(K_object, Hierarchy::find(SECOND_HL));
+			Produce::val_iname(K_object, Hierarchy::find(SECOND_HL));
 			break;
 		case SECOND_IS_INP1_CPMC:
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_iname(K_object, Hierarchy::find(SECOND_HL));
-				Emit::val_iname(K_object, Hierarchy::find(INP2_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_iname(K_object, Hierarchy::find(SECOND_HL));
+				Produce::val_iname(K_object, Hierarchy::find(INP2_HL));
+			Produce::up();
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, ap.noun_spec,
@@ -2054,14 +2054,14 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, real_location_VAR, ap.room_spec, K_object, TRUE);
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_iname(K_object, Hierarchy::find(ACTOR_LOCATION_HL));
-				Emit::inv_call_iname(Hierarchy::find(LOCATIONOF_HL));
-				Emit::down();
-					Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-				Emit::up();
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_iname(K_object, Hierarchy::find(ACTOR_LOCATION_HL));
+				Produce::inv_call_iname(Hierarchy::find(LOCATIONOF_HL));
+				Produce::down();
+					Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				Produce::up();
+			Produce::up();
 			break;
 		case ACTOR_LOCATION_MATCHES_CPMC:
 			PL::Actions::Patterns::compile_pattern_match_clause(f,
@@ -2083,19 +2083,19 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case NOWHERE_CPMC:
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, 20007);
-						Emit::val(K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					Produce::inv_call_iname(Hierarchy::find(MSTVON_HL));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, 20007);
+						Produce::val(K_number, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
 			break;
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
@@ -2106,19 +2106,19 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case NOT_NOWHERE_CPMC:
-			Emit::inv_primitive(Produce::opcode(NE_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(LOOKUP_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Emit::inv_call_iname(Hierarchy::find(MSTVON_HL));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, 20007);
-						Emit::val(K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(NE_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+					Produce::inv_call_iname(Hierarchy::find(MSTVON_HL));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, 20007);
+						Produce::val(K_number, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
 			break;
 		case PRESENCE_OF_MATCHES_CPMC: {
 			instance *to_be_present =
@@ -2131,11 +2131,11 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		case PRESENCE_OF_IN_SCOPE_CPMC: {
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
-			Emit::inv_call_iname(Hierarchy::find(TESTSCOPE_HL));
-			Emit::down();
-				Emit::val_iname(K_value, Instances::iname(to_be_present));
-				Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-			Emit::up();
+			Produce::inv_call_iname(Hierarchy::find(TESTSCOPE_HL));
+			Produce::down();
+				Produce::val_iname(K_value, Instances::iname(to_be_present));
+				Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+			Produce::up();
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
@@ -2144,60 +2144,60 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
 				Specifications::to_kind(ap.presence_spec));
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
-					Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-				Emit::down();
-					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
-					Emit::down();
-						Emit::val_iname(K_value, los->los_iname);
-						Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-					Emit::up();
-					Emit::inv_primitive(Produce::opcode(STORE_BIP));
-					Emit::down();
-						Emit::ref_symbol(K_value, lvar_s);
-						Emit::val_iname(K_value, Hierarchy::find(LOS_RV_HL));
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
+					Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+				Produce::down();
+					Produce::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
+					Produce::down();
+						Produce::val_iname(K_value, los->los_iname);
+						Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+					Produce::up();
+					Produce::inv_primitive(Produce::opcode(STORE_BIP));
+					Produce::down();
+						Produce::ref_symbol(K_value, lvar_s);
+						Produce::val_iname(K_value, Hierarchy::find(LOS_RV_HL));
+					Produce::up();
+				Produce::up();
+			Produce::up();
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
 			loop_over_scope *los = PL::Actions::ScopeLoops::new(ap.presence_spec);
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
-					Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-				Emit::down();
-					Emit::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
-					Emit::down();
-						Emit::val_iname(K_value, los->los_iname);
-						Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-					Emit::up();
-					Emit::val_iname(K_value, Hierarchy::find(LOS_RV_HL));
-				Emit::up();
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
+					Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+				Produce::down();
+					Produce::inv_call_iname(Hierarchy::find(LOOPOVERSCOPE_HL));
+					Produce::down();
+						Produce::val_iname(K_value, los->los_iname);
+						Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+					Produce::up();
+					Produce::val_iname(K_value, Hierarchy::find(LOS_RV_HL));
+				Produce::up();
+			Produce::up();
 			break;
 		}
 		case SET_SELF_TO_ACTOR_CPMC:
-			Emit::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
-					Emit::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-				Emit::up();
-				Emit::val(K_truth_state, LITERAL_IVAL, 1);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_iname(K_value, Hierarchy::find(SELF_HL));
+					Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
+				Produce::up();
+				Produce::val(K_truth_state, LITERAL_IVAL, 1);
+			Produce::up();
 			break;
 		case WHEN_CONDITION_HOLDS_CPMC:
 			Specifications::Compiler::emit_as_val(K_value, ap.when);
@@ -2235,21 +2235,21 @@ int PL::Actions::Patterns::makes_callings(action_pattern *ap) {
 
 void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
-	Emit::inv_call_iname(Hierarchy::find(TESTACTIONBITMAP_HL));
-	Emit::down();
+	Produce::inv_call_iname(Hierarchy::find(TESTACTIONBITMAP_HL));
+	Produce::down();
 	if (ap->noun_spec == NULL)
-		Emit::val(K_number, LITERAL_IVAL, 0);
+		Produce::val(K_number, LITERAL_IVAL, 0);
 	else
 		Specifications::Compiler::emit_as_val(K_value, ap->noun_spec);
 	if (ap->action == NULL)
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) -1);
 	else {
 		if (ap->action->next) bad_form = TRUE;
 		if (PL::Actions::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)
 			bad_form = TRUE;
-		Emit::val_iname(K_value, PL::Actions::double_sharp(ap->action->action_listed));
+		Produce::val_iname(K_value, PL::Actions::double_sharp(ap->action->action_listed));
 	}
-	Emit::up();
+	Produce::up();
 
 	if (PL::Actions::Patterns::pta_acceptable(ap->noun_spec) == FALSE) bad_form = TRUE;
 	if (PL::Actions::Patterns::pta_acceptable(ap->second_spec) == FALSE) bad_form = TRUE;

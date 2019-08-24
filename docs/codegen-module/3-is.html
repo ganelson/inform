@@ -72,7 +72,7 @@ few hundred), so they do not need to be stored compactly or compiled quickly.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_schema is accessed in 2/alm and here.</p>
+<p class="endnote">The structure inter_schema is accessed in 2/alm, 3/eis and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -139,7 +139,7 @@ but the need to do this went away.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_schema_node is accessed in 2/alm and here.</p>
+<p class="endnote">The structure inter_schema_node is accessed in 2/alm, 3/eis and here.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
@@ -346,9 +346,7 @@ compilation process, and never survive into the final schema:
         <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">operation_primitive</span><span class="plain">;				</span>    <span class="comment"><code class="display"><span class="extract">OPERATOR_ISTT</span></code> only: e.g. <code class="display"><span class="extract">PLUS_BIP</span></code> for <code class="display"><span class="extract">+</span></code></span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reserved_word</span><span class="plain">;							</span>    <span class="comment"><code class="display"><span class="extract">RESERVED_ISTT</span></code> only: which one</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">constant_number</span><span class="plain">;						</span>    <span class="comment"><code class="display"><span class="extract">NUMBER_ISTT</span></code> only: if non-negative, value of number</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">as_quoted</span><span class="plain">;				</span>    <span class="comment"><code class="display"><span class="extract">IDENTIFIER_ISTT</span></code> only: the identified symbol if known</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">as_quoted</span><span class="plain">;				</span>    <span class="comment"><code class="display"><span class="extract">IDENTIFIER_ISTT</span></code> only: the identified symbol if known</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_command</span><span class="plain">;							</span>    <span class="comment"><code class="display"><span class="extract">INLINE_ISTT</span></code> only: one of the <code class="display"><span class="extract">*_ISINC</span></code> values</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_modifiers</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_subcommand</span><span class="plain">;						</span>    <span class="comment"><code class="display"><span class="extract">INLINE_ISTT</span></code> only: one of the <code class="display"><span class="extract">*_ISINSC</span></code> values</span>
@@ -370,7 +368,7 @@ compilation process, and never survive into the final schema:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inter_schema_token is accessed in 2/alm and here.</p>
+<p class="endnote">The structure inter_schema_token is accessed in 2/alm, 3/eis and here.</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
@@ -393,9 +391,7 @@ compilation process, and never survive into the final schema:
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;owner</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;operation_primitive</span><span class="plain"> = </span><span class="identifier">operation_primitive</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;as_quoted</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;reserved_word</span><span class="plain"> = </span><span class="identifier">reserved_word</span><span class="plain">;</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;constant_number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;preinsert</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -694,7 +690,7 @@ we go to some trouble here.
 
 <p class="endnote">The function InterSchemas::log_depth appears nowhere else.</p>
 
-<p class="endnote">The function InterSchemas::log_just appears nowhere else.</p>
+<p class="endnote">The function InterSchemas::log_just is used in 3/eis (<a href="3-eis.html#SP2_1">&#167;2.1</a>).</p>
 
 <p class="endnote">The function InterSchemas::log_ist appears nowhere else.</p>
 
@@ -3582,11 +3578,11 @@ which are prefix or postfix, and so on.
 
 <p class="endnote">The function InterSchemas::precedence is used in <a href="#SP28">&#167;28</a>.</p>
 
-<p class="endnote">The function InterSchemas::first_operand_ref appears nowhere else.</p>
+<p class="endnote">The function InterSchemas::first_operand_ref is used in 3/eis (<a href="3-eis.html#SP3_8">&#167;3.8</a>).</p>
 
 <p class="endnote">The function InterSchemas::text_form appears nowhere else.</p>
 
-<p class="endnote">The function InterSchemas::arity is used in <a href="#SP28">&#167;28</a>.</p>
+<p class="endnote">The function InterSchemas::arity is used in <a href="#SP28">&#167;28</a>, 3/eis (<a href="3-eis.html#SP3_8">&#167;3.8</a>).</p>
 
 <p class="endnote">The function InterSchemas::prefix appears nowhere else.</p>
 
@@ -3649,14 +3645,14 @@ which are prefix or postfix, and so on.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function InterSchemas::ip_arity appears nowhere else.</p>
+<p class="endnote">The function InterSchemas::ip_arity is used in 3/eis (<a href="3-eis.html#SP3_10">&#167;3.10</a>).</p>
 
 <p class="endnote">The function InterSchemas::ip_loopy appears nowhere else.</p>
 
-<p class="endnote">The function InterSchemas::ip_prim_cat appears nowhere else.</p>
+<p class="endnote">The function InterSchemas::ip_prim_cat is used in 3/eis (<a href="3-eis.html#SP3_10">&#167;3.10</a>).</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="3-tv.html">Back to 'The Veneer'</a></li><li><i>(This section ends Chapter 3: Inform 6 to Inter.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-tv.html">Back to 'The Veneer'</a></li><li><a href="3-eis.html">Continue with 'Emitting Inter Schemas'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

@@ -31,7 +31,7 @@ column ID numbers used at run-time.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">table_name_text</span><span class="plain">; </span>    <span class="comment">the table name (if any)</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table_contribution</span><span class="plain"> *</span><span class="identifier">table_created_at</span><span class="plain">; </span>    <span class="comment">where created in source</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">headline_fragment</span><span class="plain">; </span>    <span class="comment">a pseudo-sentence formed by the heading line</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">table_package</span><span class="plain">; </span>    <span class="comment">where in the Inter</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">table_package</span><span class="plain">; </span>    <span class="comment">where in the Inter</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blank_rows</span><span class="plain">; </span>    <span class="comment">number of entirely blank rows to be appended (may be 0)</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">blank_rows_for_each_text</span><span class="plain">; </span>    <span class="comment">add one blank for each instance</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">blank_rows_text</span><span class="plain">; </span>    <span class="comment">text of blank rows specification</span>
@@ -43,7 +43,7 @@ column ID numbers used at run-time.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">preserve_row_order_at_run_time</span><span class="plain">; </span>    <span class="comment">if set, don't sort this table</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">amendment_of</span><span class="plain">; </span>    <span class="comment">if amendment of earlier table</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">has_been_amended</span><span class="plain">; </span>    <span class="comment">if there exists an amendment of this</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">table_identifier</span><span class="plain">; </span>    <span class="comment">at run-time</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">table_identifier</span><span class="plain">; </span>    <span class="comment">at run-time</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">approximate_array_space_needed</span><span class="plain">; </span>    <span class="comment">at run-time, in words</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">disable_block_constant_correction</span><span class="plain">; </span>    <span class="comment">if set, don't translate block constant entries</span>
 
@@ -71,7 +71,7 @@ column ID numbers used at run-time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm, 27/eis and here.</p>
+<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>These are convenient during parsing.
 </p>
@@ -309,7 +309,7 @@ some of these fields have been properly filled in.
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Tables::identifier</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_identifier</span><span class="plain">;</span>
     <span class="plain">}</span>
 

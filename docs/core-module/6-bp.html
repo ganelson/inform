@@ -274,10 +274,10 @@ and "inside" the wrong way round.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">relation_name</span><span class="plain">; </span>    <span class="comment">(which might have length 0)</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">bp_created_at</span><span class="plain">; </span>    <span class="comment">where declared in the source text</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">debugging_log_name</span><span class="plain">; </span>    <span class="comment">used when printing propositions to the debug log</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">bp_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">bp_iname</span><span class="plain">; </span>    <span class="comment">when referred to as a constant</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">handler_iname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">v2v_bitmap_iname</span><span class="plain">; </span>    <span class="comment">only relevant for some relations</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">bp_package</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">bp_iname</span><span class="plain">; </span>    <span class="comment">when referred to as a constant</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">handler_iname</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">v2v_bitmap_iname</span><span class="plain">; </span>    <span class="comment">only relevant for some relations</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">bp_term_details</span><span class="plain"> </span><span class="identifier">term_details</span><span class="plain">[2]; </span>    <span class="comment">term 0 is the left term, 1 is the right</span>
 
@@ -285,7 +285,7 @@ and "inside" the wrong way round.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">right_way_round</span><span class="plain">; </span>    <span class="comment">was this BP created directly? or is it a reversal of another?</span>
 
         <span class="comment">how to compile code which tests or forces this BP to be true or false:</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">bp_by_routine_iname</span><span class="plain">; </span>    <span class="comment">for relations by routine</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">bp_by_routine_iname</span><span class="plain">; </span>    <span class="comment">for relations by routine</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">test_function</span><span class="plain">; </span>    <span class="comment">I6 schema for (a) testing B(x, y)...</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">condition_defn_text</span><span class="plain">; </span>    <span class="comment">...unless this I7 condition is used instead</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">make_true_function</span><span class="plain">; </span>    <span class="comment">I6 schema for (b) "now B(x, y)"</span>
@@ -300,7 +300,7 @@ and "inside" the wrong way round.
 
         <span class="comment">for optimisation of run-time code:</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dynamic_memory</span><span class="plain">; </span>    <span class="comment">stored in dynamically allocated memory</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">initialiser_iname</span><span class="plain">; </span>    <span class="comment">and if so, this is the name of its initialiser</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">initialiser_iname</span><span class="plain">; </span>    <span class="comment">and if so, this is the name of its initialiser</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">i6_storage_property</span><span class="plain">; </span>    <span class="comment">provides run-time storage</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">storage_kind</span><span class="plain">; </span>    <span class="comment">kind of property owner</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_function_simplification</span><span class="plain">; </span>    <span class="comment">allow Inform to make use of any f_i functions?</span>
@@ -588,21 +588,21 @@ matches the specific necessary kind of object if there is one.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_call_parameter_as_symbol</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">,</span>
             <span class="identifier">bptd</span><span class="element">.called_name</span><span class="plain">, </span><span class="identifier">PK</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lv_s</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::code</span><span class="plain">();</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::rfalse</span><span class="plain">();</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">OFCLASS_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lv_s</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::rfalse</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -823,7 +823,7 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
 
 
 <pre class="display">
-    <span class="reserved">package_request</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
+    <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null bp"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_created_at</span><span class="plain">), </span><span class="constant">RELATIONS_HAP</span><span class="plain">);</span>
@@ -839,9 +839,9 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::handler_iname</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;handler_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;handler_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">HANDLER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;handler_iname</span><span class="plain">;</span>
@@ -911,20 +911,20 @@ would always be <code class="display"><span class="extract">NULL</span></code> i
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_bp</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">BinaryPredicates::store_dynamically</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">)) {</span>
-                <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">);</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;initialiser_iname</span><span class="plain">);</span>
                 <span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">;</span>
-                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">rtiname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATIONTEST_HL</span><span class="plain">);</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rtiname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELATIONTEST_HL</span><span class="plain">);</span>
                 <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::as_subject</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">), </span><span class="constant">ARBITRARY_RELATION_INF</span><span class="plain">) {</span>
                     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec0</span><span class="plain">, *</span><span class="identifier">spec1</span><span class="plain">;</span>
                     <span class="functiontext">World::Inferences::get_references_spec</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, &amp;</span><span class="identifier">spec0</span><span class="plain">, &amp;</span><span class="identifier">spec1</span><span class="plain">);</span>
                     <span class="functiontext">BinaryPredicates::mark_as_needed</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">rtiname</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
-                        <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ASSERT_TRUE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">rtiname</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RELS_ASSERT_TRUE_HL</span><span class="plain">));</span>
                         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec0</span><span class="plain">);</span>
                         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -1171,20 +1171,20 @@ relation itself.)
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::allows_function_simplification</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;allow_function_simplification</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">default_rr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">default_rr</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::mark_as_needed</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;record_needed</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RELATION_RECORD_HL</span><span class="plain">, </span><span class="functiontext">BinaryPredicates::package</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">default_rr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">default_rr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
-                <span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_HL</span><span class="plain">);</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_HL</span><span class="plain">);</span>
                 <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">default_rr</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;record_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">BinaryPredicates::iname</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
     <span class="plain">}</span>

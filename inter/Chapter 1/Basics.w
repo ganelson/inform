@@ -62,6 +62,12 @@ void Basics::lexer_problem_handler(int err, text_stream *problem_source_descript
 
 @
 
+= (early code)
+typedef void kind;
+kind *K_value = NULL;
+
+@
+
 @d PREFORM_LANGUAGE_TYPE void
 
 @h Setting up the memory manager.

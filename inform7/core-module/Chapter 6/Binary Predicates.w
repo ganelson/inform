@@ -422,21 +422,21 @@ void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_
 	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
 		bptd.called_name, PK);
 	if (Kinds::Compare::lt(K, K_object)) {
-		Emit::inv_primitive(Produce::opcode(IF_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(NOT_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(OFCLASS_BIP));
-				Emit::down();
-					Emit::val_symbol(K_value, lv_s);
-					Emit::val_iname(K_value, Kinds::RunTime::I6_classname(K));
-				Emit::up();
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::rfalse();
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(IF_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(NOT_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(OFCLASS_BIP));
+				Produce::down();
+					Produce::val_symbol(K_value, lv_s);
+					Produce::val_iname(K_value, Kinds::RunTime::I6_classname(K));
+				Produce::up();
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::rfalse();
+			Produce::up();
+		Produce::up();
 	}
 }
 
@@ -699,13 +699,13 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 				parse_node *spec0, *spec1;
 				World::Inferences::get_references_spec(i, &spec0, &spec1);
 				BinaryPredicates::mark_as_needed(bp);
-				Emit::inv_call_iname(rtiname);
-				Emit::down();
-					Emit::val_iname(K_value, bp->bp_iname);
-					Emit::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
+				Produce::inv_call_iname(rtiname);
+				Produce::down();
+					Produce::val_iname(K_value, bp->bp_iname);
+					Produce::val_iname(K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 					Specifications::Compiler::emit_as_val(K_value, spec0);
 					Specifications::Compiler::emit_as_val(K_value, spec1);
-				Emit::up();
+				Produce::up();
 			}
 			Routines::end(save);
 		} else {

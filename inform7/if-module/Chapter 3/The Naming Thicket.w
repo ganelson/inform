@@ -430,54 +430,54 @@ void PL::Naming::compile_small_names(void) {
 		if (notice->capped) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
-			Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(PROPERTYADDRESS_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Instances::iname(owner));
-					Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
-				Emit::up();
-				Emit::code();
-				Emit::down();
-					Emit::inv_call_iname(porname);
-					Emit::down();
-						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
-						Emit::val(K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-				Emit::code();
-				Emit::down();
-					Emit::inv_call_iname(porname);
-					Emit::down();
-						Emit::val_iname(K_value, Instances::iname(owner));
-						Emit::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
-						Emit::val(K_number, LITERAL_IVAL, 1);
-					Emit::up();
-				Emit::up();
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(PROPERTYADDRESS_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Instances::iname(owner));
+					Produce::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
+				Produce::up();
+				Produce::code();
+				Produce::down();
+					Produce::inv_call_iname(porname);
+					Produce::down();
+						Produce::val_iname(K_value, Instances::iname(owner));
+						Produce::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
+						Produce::val(K_number, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
+				Produce::code();
+				Produce::down();
+					Produce::inv_call_iname(porname);
+					Produce::down();
+						Produce::val_iname(K_value, Instances::iname(owner));
+						Produce::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
+						Produce::val(K_number, LITERAL_IVAL, 1);
+					Produce::up();
+				Produce::up();
+			Produce::up();
 		} else {
-			Emit::inv_primitive(Produce::opcode(PRINTNAME_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Instances::iname(owner));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(PRINTNAME_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Instances::iname(owner));
+			Produce::up();
 		}
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(I"'s ");
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(I"'s ");
+		Produce::up();
 		TEMPORARY_TEXT(SNAMES);
 		LOOP_THROUGH_WORDING(j, NA) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(SNAMES);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(SNAMES);
+		Produce::up();
 		DISCARD_TEXT(SNAMES);
 
-		Emit::rtrue();
+		Produce::rtrue();
 		Routines::end(save);
 
 		save = Emit::named_array_begin(notice->snn_iname, NULL);

@@ -10,14 +10,12 @@ inter_symbol *unchecked_function_interk = NULL;
 inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
-int glob_count = 0;
-
 void Emit::begin(void) {
 	inter_tree *repo = Inter::Tree::new();
 	Packaging::initialise_state(repo);
 	Packaging::outside_all_packages();
 	
-	Packaging::incarnate(Hierarchy::veneer());
+	Packaging::incarnate(Packaging::veneer());
 	Packaging::incarnate(Packaging::get_module(I"generic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"synoptic")->the_package);
 	Packaging::incarnate(Packaging::get_module(I"standard_rules")->the_package);	
@@ -53,12 +51,6 @@ void Emit::begin(void) {
 	NewVerbs::ConjugateVerbDefinitions();
 	
 	Hierarchy::find(INFORMLIBRARY_HL);
-}
-
-inter_symbol *Emit::kind_to_symbol(kind *K) {
-	if (K == NULL) return unchecked_interk;
-	if (K == K_value) return unchecked_interk; /* for error recovery */
-	return InterNames::to_symbol(Kinds::RunTime::iname(K));
 }
 
 inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name *val_iname) {
@@ -104,24 +96,8 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	Packaging::exit(save);
 }
 
-inter_symbols_table *Emit::main_scope(void) {
-	return Inter::Packages::scope(Inter::Tree::main_package(Produce::tree()));
-}
-
-inter_symbols_table *Emit::connectors_scope(void) {
-	return Inter::Packages::scope(Inter::Tree::connectors_package(Produce::tree()));
-}
-
-inter_symbols_table *Emit::global_scope(void) {
-	return Inter::Tree::global_scope(Produce::tree());
-}
-
 text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name) {
 	return Inter::SymbolsTables::render_identifier_unique(T, name);
-}
-
-inter_symbol *Emit::seek_symbol(inter_symbols_table *T, text_stream *name) {
-	return Inter::SymbolsTables::symbol_from_name(T, name);
 }
 
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
@@ -133,10 +109,6 @@ LOG("Holding %S\n", name);
 		Produce::annotate_symbol_i(symb, HOLDING_IANN, 1);
 	}
 	return symb;
-}
-
-inter_symbol *Emit::new_local_symbol(inter_package *rpack, text_stream *name) {
-	return Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(rpack), name);
 }
 
 void Emit::kind(inter_name *iname, inter_t TID, inter_name *super,
@@ -153,7 +125,7 @@ void Emit::kind(inter_name *iname, inter_t TID, inter_name *super,
 	for (int i=0; i<arity; i++) {
 		if (operand_kinds[i] == K_nil) operands[i] = 0;
 		else {
-			inter_symbol *S = Emit::kind_to_symbol(operand_kinds[i]);
+			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
 			operands[i] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), S);
 		}
 	}
@@ -170,7 +142,7 @@ void Emit::kind_inner(inter_t SID, inter_t TID, inter_t SUP,
 inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, text_stream *rvalue) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *var_name = Produce::define_symbol(name);
-	inter_symbol *var_kind = Emit::kind_to_symbol(K);
+	inter_symbol *var_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Variable::new(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), var_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), var_kind), v1, v2, Produce::baseline(Packaging::at()), NULL));
 	if (rvalue) Produce::annotate_symbol_i(var_name, EXPLICIT_VARIABLE_IANN, 1);
@@ -181,7 +153,7 @@ inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, 
 void Emit::property(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *prop_name = Produce::define_symbol(name);
-	inter_symbol *prop_kind = Emit::kind_to_symbol(K);
+	inter_symbol *prop_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Property::new(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), prop_kind), Produce::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
@@ -190,7 +162,7 @@ void Emit::property(inter_name *name, kind *K) {
 void Emit::permission(property *prn, kind *K, inter_name *name) {
 	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
 	inter_name *prop_name = Properties::iname(prn);
-	inter_symbol *owner_kind = Emit::kind_to_symbol(K);
+	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	inter_symbol *store = (name)?InterNames::to_symbol(name):NULL;
 	Emit::basic_permission(Packaging::at(), prop_name, owner_kind, store);
 	Packaging::exit(save);
@@ -239,7 +211,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 
 void Emit::defaultvalue(kind *K, inter_t v1, inter_t v2) {
 	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
-	inter_symbol *owner_kind = Emit::kind_to_symbol(K);
+	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::DefaultValue::new(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), owner_kind), v1, v2, Produce::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
@@ -248,7 +220,7 @@ void Emit::defaultvalue(kind *K, inter_t v1, inter_t v2) {
 void Emit::propertyvalue(property *P, kind *K, inter_t v1, inter_t v2) {
 	Properties::emit_single(P);
 	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
-	inter_symbol *owner_kind = Emit::kind_to_symbol(K);
+	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), owner_kind), v1, v2, Produce::baseline(Packaging::at()), NULL));
 }
@@ -273,7 +245,7 @@ void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 void Emit::instance(inter_name *name, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *inst_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
+	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for val");
 	inter_t v1 = LITERAL_IVAL, v2 = (inter_t) v;
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
@@ -311,7 +283,7 @@ void Emit::named_text_constant(inter_name *name, text_stream *content) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_t v1 = 0, v2 = 0;
-	Emit::text_value(&v1, &v2, content);
+	Produce::text_value(&v1, &v2, content);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), int_interk), v1, v2, Produce::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 }
@@ -319,7 +291,7 @@ void Emit::named_text_constant(inter_name *name, text_stream *content) {
 void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
+	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 }
@@ -327,7 +299,7 @@ void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val)
 void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
+	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), val_kind), LITERAL_IVAL, val, Produce::baseline(Packaging::at()), NULL));
 	Packaging::exit(save);
 }
@@ -460,7 +432,7 @@ packaging_state Emit::named_array_begin(inter_name *N, kind *K) {
 void Emit::array_iname_entry(inter_name *iname) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_symbol *alias;
-	if (iname == NULL) alias = Hierarchy::veneer_symbol(NOTHING_VSYMB);
+	if (iname == NULL) alias = Packaging::veneer_symbol(NOTHING_VSYMB);
 	else alias = InterNames::to_symbol(iname);
 	inter_t val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Emit::array_IRS();
@@ -495,21 +467,21 @@ void Emit::array_action_entry(action_name *an) {
 void Emit::array_text_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_t v1 = 0, v2 = 0;
-	Emit::text_value(&v1, &v2, content);
+	Produce::text_value(&v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
 void Emit::array_dword_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_t v1 = 0, v2 = 0;
-	Emit::dword_value(&v1, &v2, content);
+	Produce::dword_value(&v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
 void Emit::array_plural_dword_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_t v1 = 0, v2 = 0;
-	Emit::plural_dword_value(&v1, &v2, content);
+	Produce::plural_dword_value(&v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
@@ -540,9 +512,9 @@ void Emit::array_end(packaging_state save) {
 	if (K) {
 		inter_symbol *con_kind = NULL;
 		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
-			con_kind = Emit::kind_to_symbol(Kinds::unary_construction(CON_list_of, K));
+			con_kind = Produce::kind_to_symbol(Kinds::unary_construction(CON_list_of, K));
 		else
-			con_kind = Emit::kind_to_symbol(K);
+			con_kind = Produce::kind_to_symbol(K);
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind);
 	} else {
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
@@ -565,10 +537,10 @@ void Emit::array_end(packaging_state save) {
 inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *iname) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
+	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
 	if (alias == NULL) {
-		if (Kinds::Compare::le(K, K_object)) alias = Hierarchy::veneer_symbol(NOTHING_VSYMB);
+		if (Kinds::Compare::le(K, K_object)) alias = Packaging::veneer_symbol(NOTHING_VSYMB);
 		else internal_error("can't handle a null alias");
 	}
 	inter_t val1 = 0, val2 = 0;
@@ -605,11 +577,7 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 	return name;
 }
 
-inter_package *current_inter_routine = NULL;
-inter_bookmark current_inter_bookmark;
-inter_bookmark locals_bookmark;
-inter_bookmark begin_bookmark;
-inter_bookmark code_bookmark;
+// inter_bookmark current_inter_bookmark;
 
 void Emit::early_comment(text_stream *text) {
 /*	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
@@ -621,59 +589,14 @@ void Emit::early_comment(text_stream *text) {
 void Emit::code_comment(text_stream *text) {
 /*	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID), text);
-	Produce::guard(Inter::Comment::new(Emit::at(), (inter_t) Emit::level(), NULL, ID));
+	Produce::guard(Inter::Comment::new(Produce::at(), (inter_t) Produce::level(), NULL, ID));
 */
 }
 
-inter_package *Emit::block(packaging_state *save, inter_name *iname) {
-	if (current_inter_routine) internal_error("nested routines");
-	if (Packaging::at() == NULL) internal_error("no inter repository");
-	if (save) {
-		*save = Packaging::enter_home_of(iname);
-		package_request *R = InterNames::location(iname);
-		if ((R == NULL) || (R == Packaging::main())) {
-			LOG("Routine outside of package: %n\n", iname);
-			internal_error("routine outside of package");
-		}
-	}
-
-	inter_name *block_iname = NULL;
-	if (Packaging::housed_in_function(iname))
-		block_iname = Hierarchy::make_block_iname(InterNames::location(iname));
-	else internal_error("routine outside function package");
-	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at());
-	current_inter_routine = Produce::package(block_iname, PackageTypes::get(I"_code"));
-
-	current_inter_bookmark = Produce::bookmark();
-
-	Produce::guard(Inter::Code::new(Packaging::at(),
-		(int) Produce::baseline(Packaging::at()) + 1, NULL));
-
-	begin_bookmark = Produce::bookmark();
-	Inter::Bookmarks::set_placement(&begin_bookmark, IMMEDIATELY_AFTER_ICPLACEMENT);
-
-	locals_bookmark = begin_bookmark;
-	Inter::Bookmarks::set_placement(&locals_bookmark, BEFORE_ICPLACEMENT);
-
-	code_bookmark = Produce::bookmark();
-	code_insertion_point cip = Emit::new_cip(&code_bookmark);
-	Emit::push_code_position(cip, save_ib);
-	return current_inter_routine;
-}
-
-inter_name *Emit::kernel(inter_name *public_name) {
-	if (Packaging::housed_in_function(public_name) == FALSE)
-		internal_error("routine not housed in function");
-	return Hierarchy::make_kernel_iname(InterNames::location(public_name));
-}
-
-void Emit::end_main_block(packaging_state save) {
-	Packaging::exit(save);
-}
 
 void Emit::routine(inter_name *rname, kind *rkind, inter_package *block) {
 	if (Packaging::at() == NULL) internal_error("no inter repository");
-	inter_symbol *AB_symbol = Emit::kind_to_symbol(rkind);
+	inter_symbol *AB_symbol = Produce::kind_to_symbol(rkind);
 	inter_symbol *rsymb = Produce::define_symbol(rname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(), rsymb),
@@ -682,35 +605,11 @@ void Emit::routine(inter_name *rname, kind *rkind, inter_package *block) {
 		Produce::baseline(Packaging::at()), NULL));
 }
 
-inter_symbol *Emit::reserve_label(text_stream *lname) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	if (Str::get_first_char(lname) != '.') {
-		TEMPORARY_TEXT(dotted);
-		WRITE_TO(dotted, ".%S", lname);
-		inter_symbol *lab_name = Emit::reserve_label(dotted);
-		DISCARD_TEXT(dotted);
-		return lab_name;
-	}
-	inter_symbol *lab_name = Emit::local_exists(lname);
-	if (lab_name) return lab_name;
-	lab_name = Emit::new_local_symbol(current_inter_routine, lname);
-	Inter::Symbols::label(lab_name);
-	return lab_name;
-}
-
-void Emit::place_label(inter_symbol *lab_name) {
-	Produce::guard(Inter::Label::new(Emit::at(), lab_name, (inter_t) Emit::level(), NULL));
-}
-
-inter_symbol *Emit::local_exists(text_stream *lname) {
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(current_inter_routine), lname);
-}
-
 inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_stream *comm) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
+	if (Produce::get_cir() == NULL) internal_error("not in an inter routine");
 	if (K == NULL) K = K_number;
-	inter_symbol *loc_name = Emit::new_local_symbol(current_inter_routine, lname);
-	inter_symbol *loc_kind = Emit::kind_to_symbol(K);
+	inter_symbol *loc_name = Produce::new_local_symbol(Produce::get_cir(), lname);
+	inter_symbol *loc_kind = Produce::kind_to_symbol(K);
 	inter_t ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
 		ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
@@ -718,394 +617,14 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 	}
 	if (annot) Produce::annotate_symbol_i(loc_name, annot, 0);
 	Inter::Symbols::local(loc_name);
-	Produce::guard(Inter::Local::new(&locals_bookmark, loc_name, loc_kind, ID, Produce::baseline(&locals_bookmark) + 1, NULL));
+	Produce::guard(Inter::Local::new(Produce::locals_bookmark(), loc_name, loc_kind, ID, Produce::baseline(Produce::locals_bookmark()) + 1, NULL));
 	return loc_name;
 }
 
-void Emit::inv_primitive(inter_symbol *prim_symb) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_t bip = Primitives::to_bip(Produce::tree(), prim_symb);
-	if ((bip == SWITCH_BIP) ||
-		(bip == IF_BIP) ||
-		(bip == IFELSE_BIP) ||
-		(bip == FOR_BIP) ||
-		(bip == WHILE_BIP) ||
-		(bip == DO_BIP) ||
-		(bip == OBJECTLOOP_BIP)) Emit::note_level(prim_symb);
-
-	Produce::guard(Inter::Inv::new_primitive(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::inv_call(inter_symbol *prim_symb) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Produce::guard(Inter::Inv::new_call(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::inv_call_iname(inter_name *iname) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_symbol *prim_symb = InterNames::to_symbol(iname);
-	Produce::guard(Inter::Inv::new_call(Emit::at(), prim_symb, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::inv_indirect_call(int arity) {
-	switch (arity) {
-		case 0: Emit::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-		case 1: Emit::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-		case 2: Emit::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-		case 3: Emit::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-		case 4: Emit::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
-		default: internal_error("indirect function call with too many arguments");
-	}
-}
-
-void Emit::inv_assembly(text_stream *opcode) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_t SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Emit::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), SID);
-	Str::copy(glob_storage, opcode);
-	Produce::guard(Inter::Inv::new_assembly(Emit::at(), SID, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::return(kind *K, inter_name *iname) {
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-	Emit::val_iname(K, iname);
-	Emit::up();
-}
-
-void Emit::rtrue(void) {
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, 1); /* that is, return "true" */
-	Emit::up();
-}
-
-void Emit::rfalse(void) {
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, 0); /* that is, return "false" */
-	Emit::up();
-}
-
-void Emit::push(kind *K, inter_name *iname) {
-	Emit::inv_primitive(Produce::opcode(PUSH_BIP));
-	Emit::down();
-	Emit::val_iname(K, iname);
-	Emit::up();
-}
-
-void Emit::pull(kind *K, inter_name *iname) {
-	Emit::inv_primitive(Produce::opcode(PULL_BIP));
-	Emit::down();
-	Emit::ref_iname(K, iname);
-	Emit::up();
-}
-
-@
-
-@d MAX_NESTED_NOTEWORTHY_LEVELS 256
-@d MAX_CIP_STACK_SIZE 2
-
-=
-typedef struct code_insertion_point {
-	int inter_level;
-	int noted_levels[MAX_NESTED_NOTEWORTHY_LEVELS];
-	int noted_sp;
-	int error_flag;
-	inter_bookmark *insertion_bm;
-	inter_bookmark saved_bm;
-} code_insertion_point;
-
-code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
-int cip_sp = 0;
-
-code_insertion_point Emit::new_cip(inter_bookmark *IBM) {
-	code_insertion_point cip;
-	cip.inter_level = (int) (Produce::baseline(IBM) + 2);
-	cip.noted_sp = 2;
-	cip.error_flag = FALSE;
-	cip.insertion_bm = IBM;
-	cip.saved_bm = Inter::Bookmarks::snapshot(Packaging::at());
-	return cip;
-}
-
-code_insertion_point Emit::begin_position(void) {
-	code_insertion_point cip = Emit::new_cip(&begin_bookmark);
-	return cip;
-}
-
-void Emit::push_code_position(code_insertion_point cip, inter_bookmark save_ib) {
-	if (cip_sp >= MAX_CIP_STACK_SIZE) internal_error("CIP overflow");
-	cip.saved_bm = save_ib;
-	cip_stack[cip_sp++] = cip;
-}
-
-int Emit::level(void) {
-	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &cip_stack[cip_sp-1];
-	return cip->inter_level;
-}
-
-void Emit::set_level(int N) {
-	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &cip_stack[cip_sp-1];
-	if (N < 2) {
-		if (problem_count == 0) cip->error_flag = TRUE;
-		N = 2;
-	}
-	while (cip->noted_sp > 0) {
-		if (cip->noted_levels[cip->noted_sp-1] < N) break;
-		cip->noted_sp--;
-	}
-	cip->inter_level = N;
-}
-
-void Emit::note_level(inter_symbol *from) {
-	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &cip_stack[cip_sp-1];
-	if (cip->noted_sp >= MAX_NESTED_NOTEWORTHY_LEVELS) return;
-	cip->noted_levels[cip->noted_sp++] = Emit::level();
-}
-
-void Emit::to_last_level(int delta) {
-	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &cip_stack[cip_sp-1];
-	if (cip->noted_sp <= 0) {
-		if (problem_count == 0) cip->error_flag = TRUE;
-	} else {
-		Emit::set_level(cip->noted_levels[cip->noted_sp-1] + delta);
-	}
-}
-
-inter_bookmark *Emit::at(void) {
-	if (cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	return cip_stack[cip_sp-1].insertion_bm;
-}
-
-void Emit::down(void) {
-	Emit::set_level(Emit::level() + 1);
-}
-
-void Emit::up(void) {
-	Emit::set_level(Emit::level() - 1);
-}
-
-void Emit::pop_code_position(void) {
-	if (cip_sp <= 0) internal_error("CIP underflow");
-	if (cip_stack[cip_sp-1].error_flag) {
-		internal_error("bad inter hierarchy");
-	}
-	*(Packaging::at()) = cip_stack[cip_sp-1].saved_bm;
-	cip_sp--;
-}
-
-void Emit::code(void) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Produce::guard(Inter::Code::new(Emit::at(), Emit::level(), NULL));
-}
-
-void Emit::evaluation(void) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Produce::guard(Inter::Evaluation::new(Emit::at(), Emit::level(), NULL));
-}
-
-void Emit::reference(void) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Produce::guard(Inter::Reference::new(Emit::at(), Emit::level(), NULL));
-}
-
-void Emit::val(kind *K, inter_t val1, inter_t val2) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
-	if (val_kind == NULL) internal_error("no kind for val");
-	Produce::guard(Inter::Val::new(Emit::at(), val_kind, Emit::level(), val1, val2, NULL));
-}
-
-void Emit::val_nothing(void) {
-	Emit::val(K_number, LITERAL_IVAL, 0);
-}
-
-void Emit::lab(inter_symbol *L) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	Produce::guard(Inter::Lab::new(Emit::at(), L, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::ref(kind *K, inter_t val1, inter_t val2) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	inter_symbol *val_kind = Emit::kind_to_symbol(K);
-	if (val_kind == NULL) internal_error("no kind for ref");
-	Produce::guard(Inter::Ref::new(Emit::at(), val_kind, Emit::level(), val1, val2, NULL));
-}
-
-void Emit::val_iname(kind *K, inter_name *iname) {
-	if (iname == NULL) {
-		if (problem_count == 0) internal_error("no iname");
-		else Emit::val(K_value, LITERAL_IVAL, 0);
-	} else {
-		Emit::val_symbol(K, InterNames::to_symbol(iname));
-	}
-}
-
-void Emit::val_symbol(kind *K, inter_symbol *s) {
-	inter_t val1 = 0, val2 = 0;
-	inter_bookmark *IBM = Packaging::at();
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
-	Emit::val(K, val1, val2);
-}
-
-void Emit::val_text(text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
-	Emit::text_value(&v1, &v2, S);
-	Emit::val(K_value, v1, v2);
-}
-
-void Emit::val_char(wchar_t c) {
-	Emit::val(K_number, LITERAL_IVAL, (inter_t) c);
-}
-
-void Emit::val_real(double g) {
-	inter_t v1 = 0, v2 = 0;
-	Emit::real_value(&v1, &v2, g);
-	Emit::val(K_real_number, v1, v2);
-}
-
-void Emit::val_real_from_text(text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
-	Emit::real_value_from_text(&v1, &v2, S);
-	Emit::val(K_real_number, v1, v2);
-}
-
-void Emit::val_dword(text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
-	Emit::dword_value(&v1, &v2, S);
-	Emit::val(K_value, v1, v2);
-}
-
-void Emit::ref_iname(kind *K, inter_name *iname) {
-	Emit::ref_symbol(K, InterNames::to_symbol(iname));
-}
-
-void Emit::ref_symbol(kind *K, inter_symbol *s) {
-	inter_t val1 = 0, val2 = 0;
-	inter_bookmark *IBM = Packaging::at();
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
-	Emit::ref(K, val1, val2);
-}
-
 void Emit::cast(kind *F, kind *T) {
-	inter_symbol *from_kind = Emit::kind_to_symbol(F);
-	inter_symbol *to_kind = Emit::kind_to_symbol(T);
-	Produce::guard(Inter::Cast::new(Emit::at(), from_kind, to_kind, (inter_t) Emit::level(), NULL));
-}
-
-void Emit::end_block(void) {
-	if (current_inter_routine == NULL) internal_error("not in an inter routine");
-	current_inter_routine = NULL;
-	Emit::pop_code_position();
-}
-
-int Emit::emitting_routine(void) {
-	if (current_inter_routine) return TRUE;
-	return FALSE;
-}
-
-text_stream *current_splat = NULL;
-
-text_stream *Emit::begin_splat(void) {
-	Emit::end_splat();
-	if (current_splat == NULL) current_splat = Str::new();
-	return current_splat;
-}
-
-void Emit::end_splat(void) {
-	if (current_splat) {
-		int L = Str::len(current_splat);
-		if ((L > 1) ||
-			((L == 1) && (Str::get_first_char(current_splat) != '\n'))) {
-			Emit::entire_splat(current_splat, 0);
-		}
-		Str::clear(current_splat);
-	}
-}
-
-void Emit::entire_splat(text_stream *content, inter_t level) {
-	if (Str::len(content) == 0) return;
-	inter_t SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), SID);
-	Str::copy(glob_storage, content);
-
-	if (level > Produce::baseline(Packaging::at())) {
-		Produce::guard(Inter::Splat::new(Emit::at(), SID, 0, level, 0, NULL));
-	} else {
-		Produce::guard(Inter::Splat::new(Packaging::at(), SID, 0, level, 0, NULL));
-	}
-}
-
-void Emit::entire_splat_code(text_stream *content) {
-	Emit::entire_splat(content, (inter_t) Emit::level());
-}
-
-void Emit::write_bytecode(filename *F) {
-	if (Packaging::at() == NULL) internal_error("no inter repository");
-	Inter::Binary::write(F, Produce::tree());
-}
-
-void Emit::glob_value(inter_t *v1, inter_t *v2, text_stream *glob, char *clue) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	Str::copy(glob_storage, glob);
-	*v1 = GLOB_IVAL;
-	*v2 = ID;
-	LOG("Glob (I7/%s): %S\n", clue, glob);
-	glob_count++;
-	internal_error("Reduced to glob in generation");
-}
-
-void Emit::text_value(inter_t *v1, inter_t *v2, text_stream *text) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *text_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	Str::copy(text_storage, text);
-	*v1 = LITERAL_TEXT_IVAL;
-	*v2 = ID;
-}
-
-int Emit::glob_count(void) {
-	return glob_count;
-}
-
-void Emit::real_value(inter_t *v1, inter_t *v2, double g) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	if (g > 0) WRITE_TO(glob_storage, "+");
-	WRITE_TO(glob_storage, "%g", g);
-	*v1 = REAL_IVAL;
-	*v2 = ID;
-}
-
-void Emit::real_value_from_text(inter_t *v1, inter_t *v2, text_stream *S) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	LOOP_THROUGH_TEXT(pos, S)
-		if (Str::get(pos) != '$')
-			PUT_TO(glob_storage, Str::get(pos));
-	*v1 = REAL_IVAL;
-	*v2 = ID;
-}
-
-void Emit::dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	Str::copy(glob_storage, glob);
-	*v1 = DWORD_IVAL;
-	*v2 = ID;
-}
-
-void Emit::plural_dword_value(inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Produce::tree()), Inter::Bookmarks::package(Packaging::at()));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(Produce::tree()), ID);
-	Str::copy(glob_storage, glob);
-	*v1 = PDWORD_IVAL;
-	*v2 = ID;
+	inter_symbol *from_kind = Produce::kind_to_symbol(F);
+	inter_symbol *to_kind = Produce::kind_to_symbol(T);
+	Produce::guard(Inter::Cast::new(Produce::at(), from_kind, to_kind, (inter_t) Produce::level(), NULL));
 }
 
 void Emit::intervention(int stage, text_stream *segment, text_stream *part, text_stream *i6, text_stream *seg) {

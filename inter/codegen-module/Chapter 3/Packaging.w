@@ -476,3 +476,24 @@ package_request *Packaging::connectors(void) {
 	}
 	return connectors_pr;
 }
+
+package_request *veneer_pr = NULL;
+inter_bookmark veneer_bm;
+package_request *Packaging::veneer(void) {
+	if (veneer_pr == NULL) {
+		module_package *T = Packaging::get_module(I"veneer");
+		veneer_pr = T->the_package;
+		packaging_state save = Packaging::enter(veneer_pr);
+		veneer_bm = Packaging::bubble();
+		Packaging::exit(save);
+	}
+	return veneer_pr;
+}
+inter_bookmark *Packaging::veneer_booknark(void) {
+	Packaging::veneer();
+	return &veneer_bm;
+}
+inter_symbol *Packaging::veneer_symbol(int ix) {
+	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Packaging::veneer()), Packaging::veneer_booknark(), ix, Produce::kind_to_symbol(NULL));
+	return symb;
+}

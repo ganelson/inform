@@ -41,10 +41,10 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		source_location sl = Lexer::word_location(wn);
 
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
-			Emit::inv_primitive(Produce::opcode(PUSH_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(SELF_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(PUSH_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Hierarchy::find(SELF_HL));
+			Produce::up();
 		}
 		if (Invocations::is_marked_unproven(Invocations::first_in_list(invl))) {
 			@<Compile using run-time resolution to choose between invocations@>;
@@ -53,10 +53,10 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		}
 
 		if (Invocations::is_marked_to_save_self(Invocations::first_in_list(invl))) {
-			Emit::inv_primitive(Produce::opcode(PULL_BIP));
-			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(SELF_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(PULL_BIP));
+			Produce::down();
+				Produce::ref_iname(K_value, Hierarchy::find(SELF_HL));
+			Produce::up();
 		}
 	}
 }
@@ -231,26 +231,26 @@ the context of a value.
 		@<Compile code to set the formal parameters in void mode@>;
 		@<Compile code to apply the first invocation which is applicable@>;
 	} else {
-		Emit::inv_primitive(Produce::opcode(TERNARYSEQUENTIAL_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(TERNARYSEQUENTIAL_BIP));
+		Produce::down();
 			int no_conditions_tested = 0;
-			int L = Emit::level();
+			int L = Produce::level();
 			@<Emit code to set the formal parameters in expression mode@>;
-			if (L != Emit::level()) internal_error("formal parameter expression error");
+			if (L != Produce::level()) internal_error("formal parameter expression error");
 			int NC = 0, unprov = FALSE, prov = FALSE;
 			@<Count the applicability conditions@>;
 			TEMPORARY_TEXT(C); WRITE_TO(C, "Think %d unprov %d prov %d", NC, unprov, prov); Emit::code_comment(C); DISCARD_TEXT(C);
-			if (unprov) { Emit::inv_primitive(Produce::opcode(OR_BIP)); Emit::down(); }
+			if (unprov) { Produce::inv_primitive(Produce::opcode(OR_BIP)); Produce::down(); }
 			@<Compile code to apply the first invocation which is applicable, as expression@>;
-			for (int i = 0; i<NC-1; i++) Emit::up();
-			if (prov) Emit::up();
+			for (int i = 0; i<NC-1; i++) Produce::up();
+			if (prov) Produce::up();
 			if (unprov) {
 				@<Compile code for the execution path where no invocations were applicable@>;
-				Emit::up();
+				Produce::up();
 			}
-			if (L != Emit::level()) internal_error("applicability expression error");
-			Emit::val_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
-		Emit::up();
+			if (L != Produce::level()) internal_error("applicability expression error");
+			Produce::val_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
+		Produce::up();
 	}
 
 @ In void mode, this code is simple: it just produces a list of assignments:
@@ -275,21 +275,21 @@ right to left: we want T1 to evaluate first, then T2, and so on.
 
 @<Emit code to set the formal parameters in expression mode@> =
 	for (int i=N-1; i>=0; i--) {
-		if (i > 0) { Emit::inv_primitive(Produce::opcode(PLUS_BIP)); Emit::down(); }
+		if (i > 0) { Produce::inv_primitive(Produce::opcode(PLUS_BIP)); Produce::down(); }
 		@<Compile the actual assignment@>;
 	}
-	for (int i=N-1; i>0; i--) Emit::up();
+	for (int i=N-1; i>0; i--) Produce::up();
 
 @ A parameter corresponding to the name of a kind has no meaningful value
 at run-time; we assign 0 to it for the sake of tidiness.
 
 @<Compile the actual assignment@> =
 	NonlocalVariables::temporary_formal(i);
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_iname(K_value, NonlocalVariables::formal_par(i));
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_iname(K_value, NonlocalVariables::formal_par(i));
 		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
-			Emit::val(K_number, LITERAL_IVAL, 0);
+			Produce::val(K_number, LITERAL_IVAL, 0);
 		else {
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
@@ -300,7 +300,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 			Specifications::Compiler::emit_to_kind(value, to_be_used_as);
 			END_COMPILATION_MODE;
 		}
-	Emit::up();
+	Produce::up();
 
 @ So now we come to the part which switches the execution stream. In void mode,
 it will look like so:
@@ -335,9 +335,9 @@ no subsequent lines are looked at.
 		last_inv = inv;
 		if (no_conditions_tested > 0) {
 			if (void_mode) {
-				Emit::up();
-				Emit::code();
-				Emit::down();
+				Produce::up();
+				Produce::code();
+				Produce::down();
 			}
 		}
 		@<Compile code to apply this invocation if it's applicable@>;
@@ -345,7 +345,7 @@ no subsequent lines are looked at.
 	if (Invocations::is_marked_unproven(last_inv)) {
 		@<Compile code for the execution path where no invocations were applicable@>;
 	}
-	while (if_depth > 0) { Emit::up(); Emit::up(); if_depth--; }
+	while (if_depth > 0) { Produce::up(); Produce::up(); if_depth--; }
 
 @<Compile code to apply the first invocation which is applicable, as expression@> =
 	int pos = 0;
@@ -374,16 +374,16 @@ no subsequent lines are looked at.
 @<Compile code for the execution path where no invocations were applicable@> =
 	if (no_conditions_tested == 0) internal_error("condition proof error");
 	if (void_mode) {
-		Emit::up();
-		Emit::code();
-		Emit::down();
+		Produce::up();
+		Produce::code();
+		Produce::down();
 	}
-	Emit::inv_call_iname(Hierarchy::find(ARGUMENTTYPEFAILED_HL));
-	Emit::down();
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) sl.line_number);
+	Produce::inv_call_iname(Hierarchy::find(ARGUMENTTYPEFAILED_HL));
+	Produce::down();
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) sl.line_number);
 		extension_file *ef = SourceFiles::get_extension_corresponding(sl.file_of_origin);
-		if (ef) Emit::val(K_number, LITERAL_IVAL, (inter_t) ef->allocation_id + 1);
-	Emit::up();
+		if (ef) Produce::val(K_number, LITERAL_IVAL, (inter_t) ef->allocation_id + 1);
+	Produce::up();
 
 @<Compile code to apply this invocation if it's applicable@> =
 	if (ParseTree::get_say_verb(inv))
@@ -415,13 +415,13 @@ no subsequent lines are looked at.
 		tokens_packet tokens;
 		@<First construct an arguments packet@>;
 		@<Substitute the formal parameter variables into the tokens@>;
-		int L = Emit::level(), or_made = FALSE, ands_made = 0;
+		int L = Produce::level(), or_made = FALSE, ands_made = 0;
 		@<Compile the check on invocation applicability, expression version@>;
 		@<Compile the invocation part, emission version@>;
-		for (int i=0; i<ands_made; i++) Emit::up();
+		for (int i=0; i<ands_made; i++) Produce::up();
 		int target = L;
 		if (or_made) target++;
-		if (target != Emit::level()) internal_error("levels wrong");
+		if (target != Produce::level()) internal_error("levels wrong");
 	}
 
 @<Substitute the formal parameter variables into the tokens@> =
@@ -440,15 +440,15 @@ no subsequent lines are looked at.
 
 	if (check_needed > 0) {
 		if (void_mode) {
-			Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+			Produce::down();
 			@<Put the condition check here, emission version@>;
-			Emit::code();
-			Emit::down();
+			Produce::code();
+			Produce::down();
 			if_depth++;
 		} else {
-			Emit::inv_primitive(Produce::opcode(AND_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(AND_BIP));
+			Produce::down();
 			@<Put the condition check here, emission version@>;
 		}
 		no_conditions_tested++;
@@ -465,14 +465,14 @@ no subsequent lines are looked at.
 	if (check_needed > 0) {
 		no_conditions_tested++;
 		if ((no_conditions_tested < NC) || (prov)) {
-			Emit::inv_primitive(Produce::opcode(OR_BIP));
-			Emit::down(); or_made = TRUE;
+			Produce::inv_primitive(Produce::opcode(OR_BIP));
+			Produce::down(); or_made = TRUE;
 		}
 		for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
 			parse_node *check_against = Invocations::get_token_check_to_do(inv, i);
 			if (check_against) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down(); ands_made++;
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down(); ands_made++;
 				BEGIN_COMPILATION_MODE;
 				COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 				nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
@@ -496,8 +496,8 @@ a list divided by logical-and |&&| operators.
 		if (check_against != NULL) {
 			check_count++;
 			if (check_count < check_needed) {
-				Emit::inv_primitive(Produce::opcode(AND_BIP));
-				Emit::down();
+				Produce::inv_primitive(Produce::opcode(AND_BIP));
+				Produce::down();
 				and_depth++;
 			}
 
@@ -507,7 +507,7 @@ a list divided by logical-and |&&| operators.
 		}
 	}
 
-	while (and_depth > 0) { Emit::up(); and_depth--; }
+	while (and_depth > 0) { Produce::up(); and_depth--; }
 
 	END_COMPILATION_MODE;
 
@@ -549,11 +549,11 @@ evaluate to "true" with a minimum of branches in the compiled code.
 
 @<Compile the invocation part, emission version@> =
 	if (!void_mode) {
-		Emit::inv_primitive(Produce::opcode(BITWISEOR_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
+		Produce::inv_primitive(Produce::opcode(BITWISEOR_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_iname(K_value, Hierarchy::find(FORMAL_RV_HL));
 	}
 
 	value_holster VH2 = Holsters::new(VH->vhmode_wanted);
@@ -561,9 +561,9 @@ evaluate to "true" with a minimum of branches in the compiled code.
 		Invocations::Compiler::compile_single_invocation(&VH2, inv, &sl, &tokens);
 
 	if (!void_mode) {
-			Emit::up();
-			Emit::val(K_number, LITERAL_IVAL, 1);
-		Emit::up();
+			Produce::up();
+			Produce::val(K_number, LITERAL_IVAL, 1);
+		Produce::up();
 	}
 
 	if (returned_in_manner != DONT_KNOW_MOR)
@@ -615,8 +615,8 @@ stop automatically generates a newline:
 		(tokens->tokens_count > 0) &&
 		(Rvalues::is_CONSTANT_of_kind(tokens->args[0], K_text)) &&
 		(Word::text_ending_sentence(Wordings::first_wn(ParseTree::get_text(tokens->args[0]))))) {
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(I"\n");
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(I"\n");
+		Produce::up();
 	}

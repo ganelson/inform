@@ -22,7 +22,7 @@ which table will store the property values at run-time, or else is left as
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_of_value_storage</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">storage_table_iname</span><span class="plain">; </span>    <span class="comment">for the relevant column array</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">storage_table_iname</span><span class="plain">; </span>    <span class="comment">for the relevant column array</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">property_of_value_storage</span><span class="plain">;</span>
 
@@ -49,7 +49,7 @@ and we mark them down in the most recently created property permission.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">povs</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::OfValues::pp_set_table_storage</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">store</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::OfValues::pp_set_table_storage</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">store</span><span class="plain">) {</span>
     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">store</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"ugh"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_povs</span><span class="plain">) {</span>
             <span class="identifier">latest_povs</span><span class="plain">-</span><span class="element">&gt;storage_table_iname</span><span class="plain"> = </span><span class="identifier">store</span><span class="plain">;</span>
@@ -69,7 +69,7 @@ the property-permission symbol accordingly:
 
 
 <pre class="display">
-    <span class="reserved">inter_name</span><span class="plain"> *</span><span class="functiontext">Properties::OfValues::annotate_table_storage</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Properties::OfValues::annotate_table_storage</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
         <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="identifier">povs</span><span class="plain"> =</span>
             <span class="identifier">RETRIEVE_POINTER_property_of_value_storage</span><span class="plain">(</span><span class="functiontext">World::Permissions::get_storage_data</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">povs</span><span class="plain">-</span><span class="element">&gt;storage_table_iname</span><span class="plain">;</span>

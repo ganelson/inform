@@ -31,8 +31,8 @@
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Choose which form of arithmetic and promotion</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reduce_modulo_1440</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_TY_TO_TIME_TY_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NUMBER_TY_TO_TIME_TY_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EQUALS_OPERATION</span><span class="plain">: </span>&lt;<span class="cwebmacro">Emit set-equals</span> <span class="cwebmacronumber">1.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
@@ -54,7 +54,7 @@
                     <span class="string">"suggesting a problem with some inline definition."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reduce_modulo_1440</span><span class="plain">) </span><span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reduce_modulo_1440</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 
@@ -115,21 +115,21 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -144,21 +144,21 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">MINUS_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">MINUS_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -173,22 +173,22 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_factor</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -204,23 +204,23 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERDIVIDE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERDIVIDE_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_division_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_division_emit_factor</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -235,21 +235,21 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_REMAINDER_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_REMAINDER_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERREMAINDER_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTEGERREMAINDER_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -264,21 +264,21 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_APPROXIMATE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_APPROXIMATE_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ROUNDOFFTIME_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ROUNDOFFTIME_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -293,17 +293,17 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_ROOT_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_ROOT_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SQUAREROOT_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SQUAREROOT_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 2);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_factor</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 2);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -318,17 +318,17 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_CUBE_ROOT_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_CUBE_ROOT_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CUBEROOT_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CUBEROOT_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 3);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Kinds::Dimensions::kind_rescale_root_emit_factor</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, 3);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -342,16 +342,16 @@ and the other operand is promoted from integer to real if necessary.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::reference</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::reference</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -365,15 +365,15 @@ and the other operand is promoted from integer to real if necessary.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_NEGATE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_NEGATE_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">UNARYMINUS_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">UNARYMINUS_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -394,15 +394,15 @@ always be small, partly because of the need for scaling to come out right.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_POW_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">REAL_NUMBER_TY_POW_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_X</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = 0;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_int</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">);</span>
@@ -411,13 +411,13 @@ always be small, partly because of the need for scaling to come out right.
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                     <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_op</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KX</span><span class="plain">);</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
                         &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-                    <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
                     <span class="identifier">Kinds::Dimensions::kind_rescale_multiplication_emit_factor</span><span class="plain">(</span><span class="identifier">KX</span><span class="plain">, </span><span class="identifier">KX</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -435,19 +435,19 @@ always be small, partly because of the need for scaling to come out right.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_fp</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">promote_Y</span><span class="plain">) </span><span class="identifier">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="identifier">KY</span><span class="plain">);</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Emit the X-operand</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Emit the Y-operand</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 

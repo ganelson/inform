@@ -46,14 +46,14 @@ properties.
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SHOWMEDETAILS_HL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t_0_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"t_0"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">na_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"na"</span><span class="plain">);</span>
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFDEBUG_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::code</span><span class="plain">();</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFDEBUG_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="functiontext">PL::Showme::compile_SHOWME_type</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
                 <span class="functiontext">PL::Showme::compile_SHOWME_type</span><span class="plain">(</span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -70,15 +70,15 @@ properties.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Showme::compile_SHOWME_type_subj</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t_0_s</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">na_s</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Skip if this object's definition has nothing to offer SHOWME</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="character">;</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="identifier">InferenceSubjects::emit_element_of_condition</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
-            <span class="identifier">Emit::code</span><span class="plain">();</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Divide up the sublists of either/or properties in a SHOWME</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Compile code which shows properties inherited from this object's definition</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="character">;</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 
@@ -140,26 +140,26 @@ second of just one from "person".
 <pre class="displaydefn">
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">divider</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"; "</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) </span><span class="identifier">divider</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">;</span>
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::code</span><span class="plain">();</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
-                    <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">divider</span><span class="plain">);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">divider</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -267,22 +267,22 @@ routine for colours; and the best thing is to print nothing at all.
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)))</span>
                 <span class="identifier">require_nonzero</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">require_nonzero</span><span class="plain">) {</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">);</span>
-                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
                         <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
-                        <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                    <span class="identifier">Emit::code</span><span class="plain">();</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::code</span><span class="plain">();</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
             <span class="plain">}</span>
             &lt;<span class="cwebmacro">Compile the SHOWME printing of the value of a value property</span> <span class="cwebmacronumber">4.1.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">require_nonzero</span><span class="plain">) {</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -299,57 +299,57 @@ routine for colours; and the best thing is to print nothing at all.
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+W: "</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">)) {</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TEXT_TY_COMPARE_HL</span><span class="plain">));</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
-                        <span class="identifier">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TEXT_TY_COMPARE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
+                        <span class="identifier">Produce::down</span><span class="plain">();</span>
                             <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
-                            <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
-                            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-                        <span class="identifier">Emit::up</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">EMPTY_TEXT_VALUE_HL</span><span class="plain">));</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::code</span><span class="plain">();</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"none"</span><span class="plain">);</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::code</span><span class="plain">();</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTCHAR_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
+                            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
+                            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+                        <span class="identifier">Produce::up</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">EMPTY_TEXT_VALUE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"none"</span><span class="plain">);</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINTCHAR_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">Compile the SHOWME of the actual value</span> <span class="cwebmacronumber">4.1.1.1</span>&gt;<span class="plain">;</span>
-                    <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINTCHAR_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINTCHAR_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">);</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             &lt;<span class="cwebmacro">Compile the SHOWME of the actual value</span> <span class="cwebmacronumber">4.1.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -362,16 +362,16 @@ routine for colours; and the best thing is to print nothing at all.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GPROPERTY_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
-                <span class="identifier">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -395,32 +395,32 @@ turn by turn.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Properties::EitherOr::stored_in_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">))</span>
             <span class="identifier">allow</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
 
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
-                    <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ALLOWINSHOWME_HL</span><span class="plain">));</span>
-                    <span class="identifier">Emit::down</span><span class="plain">();</span>
-                        <span class="identifier">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-                    <span class="identifier">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">ALLOWINSHOWME_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
                 <span class="plain">}</span>
                 <span class="identifier">Properties::Emit::emit_has_property</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">t_0_s</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::code</span><span class="plain">();</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
                 &lt;<span class="cwebmacro">Compile the comma as needed</span> <span class="cwebmacronumber">4.2.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -433,24 +433,24 @@ turn by turn.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
-            <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-                <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::code</span><span class="plain">();</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                <span class="identifier">Emit::down</span><span class="plain">();</span>
-                    <span class="identifier">Emit::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">", "</span><span class="plain">);</span>
-                <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">GT_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">na_s</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">", "</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>

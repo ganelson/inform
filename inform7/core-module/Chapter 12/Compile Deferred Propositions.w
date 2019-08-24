@@ -224,33 +224,33 @@ specific to particular deferral reasons.
 
 @<Compile the code inside this deferral routine@> =
 	if (multipurpose_routine) {
-		Emit::inv_primitive(Produce::opcode(IF_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(GE_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, reason_s);
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, var_s[0]);
-					Emit::val_symbol(K_value, reason_s);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, reason_s);
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(IF_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(GE_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, reason_s);
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, var_s[0]);
+					Produce::val_symbol(K_value, reason_s);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, reason_s);
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+				Produce::up();
+			Produce::up();
+		Produce::up();
 
-		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, reason_s);
-			Emit::code();
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, reason_s);
+			Produce::code();
+			Produce::down();
 				pcalc_prop *safety_copy = Calculus::Propositions::copy(proposition);
 				for (int use = EXTREMAL_DUSAGE; use <= CONDITION_DUSAGE; use++) {
 					if (use > EXTREMAL_DUSAGE) proposition = Calculus::Propositions::copy(safety_copy);
@@ -263,18 +263,18 @@ specific to particular deferral reasons.
 						case TOTAL_DUSAGE: reason = TOTAL_DEFER; break;
 						case EXTREMAL_DUSAGE: reason = EXTREMAL_DEFER; break;
 					}
-					Emit::inv_primitive(Produce::opcode(CASE_BIP));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, (inter_t) use);
-						Emit::code();
-						Emit::down();
+					Produce::inv_primitive(Produce::opcode(CASE_BIP));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, (inter_t) use);
+						Produce::code();
+						Produce::down();
 							Calculus::Propositions::Deferred::compile_comment_about_deferral_reason(reason);
 							@<Compile body of deferred proposition for the given reason@>;
-						Emit::up();
-					Emit::up();
+						Produce::up();
+					Produce::up();
 				}
-			Emit::up();
-		Emit::up();
+			Produce::up();
+		Produce::up();
 	} else {
 		reason = pdef->reason;
 		@<Compile body of deferred proposition for the given reason@>;
@@ -294,7 +294,7 @@ and at the end of the search it performs |return counter|.
 	property *prn = NULL;
 	property *def_prn = NULL;
 	int def_prn_sign = 0;
-	int OL = Emit::level();
+	int OL = Produce::level();
 
 	switch(reason) {
 		case NOW_ASSERTION_DEFER: break;
@@ -310,7 +310,7 @@ and at the end of the search it performs |return counter|.
 
 	if ((reason != NOW_ASSERTION_DEFER) && (reason != CONDITION_DEFER)) {
 		@<Place next outer loop label@>;
-		while (Emit::level() > OL) Emit::up();
+		while (Produce::level() > OL) Produce::up();
 	}
 
 	switch(reason) {
@@ -483,10 +483,10 @@ in the above example. (See below.)
 
 	switch(R_stack_reason[R_sp]) {
 		case FILTER_DEFER:
-			Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, qcn_s[Q_sp-1]);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, qcn_s[Q_sp-1]);
+			Produce::up();
 			break;
 		case NOW_ASSERTION_DEFER: break;
 		case CONDITION_DEFER: @<Act on successful match in CONDITION search@>; break;
@@ -601,24 +601,24 @@ statement properly:
 
 @<Compile code to test the atom@> =
 	if (first_in_run) {
-		Emit::inv_primitive(Produce::opcode(IF_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(IF_BIP));
+		Produce::down();
 
 		if (R_stack_parity[R_sp-1] == FALSE) {
-			Emit::inv_primitive(Produce::opcode(NOT_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(NOT_BIP));
+			Produce::down();
 		}
 	}
 	if (last_in_run == FALSE) {
-		Emit::inv_primitive(Produce::opcode(AND_BIP));
-		Emit::down();
+		Produce::inv_primitive(Produce::opcode(AND_BIP));
+		Produce::down();
 	}
 	Calculus::Atoms::Compile::emit(TEST_ATOM_TASK, pl, TRUE);
 
 @<End a run of predicate-like conditions, if one is under way@> =
 	if (run_of_conditions > 0) {
-		while (run_of_conditions > 1) { Emit::up(); run_of_conditions--; }
-		if (R_stack_parity[R_sp-1] == FALSE) { Emit::up(); }
+		while (run_of_conditions > 1) { Produce::up(); run_of_conditions--; }
+		if (R_stack_parity[R_sp-1] == FALSE) { Produce::up(); }
 		run_of_conditions = 0;
 		@<Open a block in the I6 code compiled to perform the search, if variant@>;
 	}
@@ -654,7 +654,7 @@ possible choice of $v$, as required by the Invariant -- indeed the Invariant
 pretty much requires that this is what we compile.
 
 @<Compile a loop through possible values of the variable quantified@> =
-	int level_back_to = Emit::level();
+	int level_back_to = Produce::level();
 	pl = Calculus::Propositions::Deferred::compile_loop_header(
 		pl->terms[0].variable, var_ix_lv[pl->terms[0].variable],
 		pl,
@@ -711,16 +711,16 @@ because the |DOMAIN_OPEN| atom does it.
 	Q_stack_parameter[Q_sp] = param;
 	Q_stack_block_nesting[Q_sp] = block_nesting;
 	Q_stack_C_stack_level[Q_sp] = C_sp;
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, qcy_s[Q_sp]);
-		Emit::val(K_number, LITERAL_IVAL, 0);
-	Emit::up();
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, qcn_s[Q_sp]);
-		Emit::val(K_number, LITERAL_IVAL, 0);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, qcy_s[Q_sp]);
+		Produce::val(K_number, LITERAL_IVAL, 0);
+	Produce::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, qcn_s[Q_sp]);
+		Produce::val(K_number, LITERAL_IVAL, 0);
+	Produce::up();
 
 	Q_sp++;
 
@@ -774,10 +774,10 @@ thing works, or doesn't, and is more like testing a single |if|.
 
 @<Pop the Q-stack@> =
 	Q_sp--; if (Q_sp < 0) internal_error("Q stack underflow");
-	Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, qcy_s[Q_sp]);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, qcy_s[Q_sp]);
+	Produce::up();
 
 	while (C_sp > Q_stack_C_stack_level[Q_sp])
 		@<Pop the C-stack@>;
@@ -785,8 +785,8 @@ thing works, or doesn't, and is more like testing a single |if|.
 	while (block_nesting > Q_stack_block_nesting[Q_sp])
 		@<Close a block in the I6 code compiled to perform the search@>;
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
 	Quantifiers::emit_test(Q_stack_quantifier[Q_sp], Q_stack_parameter[Q_sp], qcy_s[Q_sp], qcn_s[Q_sp]);
 	@<Open a block in the I6 code compiled to perform the search, if variant@>;
 
@@ -838,15 +838,15 @@ quantifier.
 
 @<Pop the C-stack@> =
 	C_sp--; if (C_sp < 0) internal_error("C stack underflow");
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-		Emit::down();
-			Emit::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-			Emit::val(K_number, LITERAL_IVAL, (inter_t) C_stack_index[C_sp]);
-		Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
+		Produce::down();
+			Produce::val_iname(K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+			Produce::val(K_number, LITERAL_IVAL, (inter_t) C_stack_index[C_sp]);
+		Produce::up();
 		Calculus::Terms::emit(C_stack_term[C_sp]);
-	Emit::up();
+	Produce::up();
 
 @ That just leaves the blocking, which follows the One True Brace Style. Thus:
 
@@ -857,15 +857,15 @@ quantifier.
 @ Not for a loop body:
 
 @<Open a block in the I6 code compiled to perform the search, if variant@> =
-	L_stack_level[block_nesting] = Emit::level()-1;
-	Emit::code();
-	Emit::down();
+	L_stack_level[block_nesting] = Produce::level()-1;
+	Produce::code();
+	Produce::down();
 	block_nesting++;
 
 @ and:
 
 @<Close a block in the I6 code compiled to perform the search@> =
-	while (Emit::level() > L_stack_level[block_nesting-1]) Emit::up();
+	while (Produce::level() > L_stack_level[block_nesting-1]) Produce::up();
 	block_nesting--;
 
 @h Adaptations.
@@ -924,12 +924,12 @@ with all variables bound, and we have to return |true| if it is true and
 @ As soon as we find any valid combination of the variables, we return |true|:
 
 @<Act on successful match in CONDITION search@> =
-	Emit::rtrue();
+	Produce::rtrue();
 
 @ So we only reach winding-up if every case failed, and then we return |false|:
 
 @<Winding-up after CONDITION search@> =
-	Emit::rfalse();
+	Produce::rfalse();
 
 @h Adaptation to NUMBER.
 In the remaining cases, $\phi$ has variable $x$ (only) left free, but the use
@@ -954,10 +954,10 @@ The |jump| to a label is forced on us since I6, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in NUMBER search@> =
-	Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, counter_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, counter_s);
+	Produce::up();
 
 	@<Jump to next outer loop for this reason@>;
 
@@ -965,22 +965,22 @@ syntax to break or continue a loop other than the innermost one.
 	if (NextOuterLoop_labels[reason] == NULL) {
 		TEMPORARY_TEXT(L);
 		WRITE_TO(L, ".NextOuterLoop_%d", reason);
-		NextOuterLoop_labels[reason] = Emit::reserve_label(L);
+		NextOuterLoop_labels[reason] = Produce::reserve_label(L);
 		DISCARD_TEXT(L);
 	}
-	Emit::inv_primitive(Produce::opcode(JUMP_BIP));
-	Emit::down();
-		Emit::lab(NextOuterLoop_labels[reason]);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(JUMP_BIP));
+	Produce::down();
+		Produce::lab(NextOuterLoop_labels[reason]);
+	Produce::up();
 
 @<Place next outer loop label@> =
 	if (NextOuterLoop_labels[reason] == NULL) {
 		TEMPORARY_TEXT(L);
 		WRITE_TO(L, ".NextOuterLoop_%d", reason);
-		NextOuterLoop_labels[reason] = Emit::reserve_label(L);
+		NextOuterLoop_labels[reason] = Produce::reserve_label(L);
 		DISCARD_TEXT(L);
 	}
-	Emit::place_label(NextOuterLoop_labels[reason]);
+	Produce::place_label(NextOuterLoop_labels[reason]);
 
 @ The continue-outer-loop labels are marked with the reason number so that
 if code is compiled for each reason in turn within a single routine -- which
@@ -988,31 +988,31 @@ is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
 @<Winding-up after NUMBER search@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, counter_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, counter_s);
+	Produce::up();
 
 @h Adaptation to LIST.
 In the next case, we want to form the list of all $x$ for which $\phi(x)$
 is true. The local |list| holds the list so far, and already exists.
 
 @<Initialisation before LIST search@> =
-	Emit::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
-	Emit::down();
-		Emit::val_symbol(K_value, list_s);
-		Emit::val_iname(K_value, Hierarchy::find(LIST_ITEM_KOV_F_HL));
-		Emit::val_symbol(K_value, strong_kind_s);
-	Emit::up();
+	Produce::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
+	Produce::down();
+		Produce::val_symbol(K_value, list_s);
+		Produce::val_iname(K_value, Hierarchy::find(LIST_ITEM_KOV_F_HL));
+		Produce::val_symbol(K_value, strong_kind_s);
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, total_s);
-		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
-		Emit::down();
-			Emit::val_symbol(K_value, list_s);
-		Emit::up();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, total_s);
+		Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETLENGTH_HL));
+		Produce::down();
+			Produce::val_symbol(K_value, list_s);
+		Produce::up();
+	Produce::up();
 
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
@@ -1025,60 +1025,60 @@ The |jump| to a label is forced on us since I6, unlike, say, Perl, has no
 syntax to break or continue a loop other than the innermost one.
 
 @<Act on successful match in LIST search@> =
-	Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, counter_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, counter_s);
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(GT_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, counter_s);
-			Emit::val_symbol(K_value, total_s);
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, total_s);
-				Emit::inv_primitive(Produce::opcode(PLUS_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(TIMES_BIP));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, 3);
-						Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
-						Emit::down();
-							Emit::val_symbol(K_value, total_s);
-							Emit::val(K_number, LITERAL_IVAL, 2);
-						Emit::up();
-					Emit::up();
-					Emit::val(K_number, LITERAL_IVAL, 8);
-				Emit::up();
-			Emit::up();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(GT_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, counter_s);
+			Produce::val_symbol(K_value, total_s);
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, total_s);
+				Produce::inv_primitive(Produce::opcode(PLUS_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(TIMES_BIP));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, 3);
+						Produce::inv_primitive(Produce::opcode(DIVIDE_BIP));
+						Produce::down();
+							Produce::val_symbol(K_value, total_s);
+							Produce::val(K_number, LITERAL_IVAL, 2);
+						Produce::up();
+					Produce::up();
+					Produce::val(K_number, LITERAL_IVAL, 8);
+				Produce::up();
+			Produce::up();
 
-			Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
-			Emit::down();
-				Emit::val_symbol(K_value, list_s);
-				Emit::val_symbol(K_value, total_s);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+			Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
+			Produce::down();
+				Produce::val_symbol(K_value, list_s);
+				Produce::val_symbol(K_value, total_s);
+			Produce::up();
+		Produce::up();
+	Produce::up();
 
-	Emit::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
-	Emit::down();
-		Emit::val_symbol(K_value, list_s);
-		Emit::inv_primitive(Produce::opcode(MINUS_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(PLUS_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, counter_s);
-				Emit::val_iname(K_value, Hierarchy::find(LIST_ITEM_BASE_HL));
-			Emit::up();
-			Emit::val(K_number, LITERAL_IVAL, 1);
-		Emit::up();
-		Emit::val_symbol(K_value, var_s[0]);
-	Emit::up();
+	Produce::inv_call_iname(Hierarchy::find(BLKVALUEWRITE_HL));
+	Produce::down();
+		Produce::val_symbol(K_value, list_s);
+		Produce::inv_primitive(Produce::opcode(MINUS_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(PLUS_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, counter_s);
+				Produce::val_iname(K_value, Hierarchy::find(LIST_ITEM_BASE_HL));
+			Produce::up();
+			Produce::val(K_number, LITERAL_IVAL, 1);
+		Produce::up();
+		Produce::val_symbol(K_value, var_s[0]);
+	Produce::up();
 
 	@<Jump to next outer loop for this reason@>;
 
@@ -1088,16 +1088,16 @@ is what we do for multipurpose deferred propositions -- the labels do
 not have clashing names.
 
 @<Winding-up after LIST search@> =
-	Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
-	Emit::down();
-		Emit::val_symbol(K_value, list_s);
-		Emit::val_symbol(K_value, counter_s);
-	Emit::up();
+	Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_SETLENGTH_HL));
+	Produce::down();
+		Produce::val_symbol(K_value, list_s);
+		Produce::val_symbol(K_value, counter_s);
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, list_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, list_s);
+	Produce::up();
 
 @h Adaptation to RANDOM.
 To choose a random $x$ such that $\phi(x)$, we essentially run the same code
@@ -1113,23 +1113,23 @@ This means that, on average, the compiled code takes 50\% longer to find
 its random $x$ than it ideally would, but we accept the trade-off.
 
 @<Initialisation before RANDOM search@> =
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, selection_s);
-		Emit::val(K_number, LITERAL_IVAL, (inter_t) -1);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, selection_s);
+		Produce::val(K_number, LITERAL_IVAL, (inter_t) -1);
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(WHILE_BIP));
-	Emit::down();
-		Emit::val(K_truth_state, LITERAL_IVAL, 1);
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(WHILE_BIP));
+	Produce::down();
+		Produce::val(K_truth_state, LITERAL_IVAL, 1);
+		Produce::code();
+		Produce::down();
 
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, counter_s);
-		Emit::val(K_number, LITERAL_IVAL, 0);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, counter_s);
+		Produce::val(K_number, LITERAL_IVAL, 0);
+	Produce::up();
 
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
@@ -1140,26 +1140,26 @@ Note that we can only return here on the second pass, since |selection| is $-1$
 throughout the first pass, whereas |counter| is non-negative.
 
 @<Act on successful match in RANDOM search@> =
-	Emit::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, counter_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, counter_s);
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(EQ_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, counter_s);
-			Emit::val_symbol(K_value, selection_s);
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, var_s[0]);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(EQ_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, counter_s);
+			Produce::val_symbol(K_value, selection_s);
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, var_s[0]);
+			Produce::up();
+		Produce::up();
+	Produce::up();
 
 	@<Jump to next outer loop for this reason@>;
 
@@ -1171,41 +1171,41 @@ just might do if testing part of the proposition had some side-effect changing
 the state of the objects and thus the size of the set of possibilities.
 
 @<Winding-up after RANDOM search@> =
-	Emit::down();
-	Emit::down();
+	Produce::down();
+	Produce::down();
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(OR_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(EQ_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, counter_s);
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Emit::inv_primitive(Produce::opcode(GE_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, selection_s);
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-			Emit::down();
-				Emit::val_nothing();
-			Emit::up();
-		Emit::up();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(OR_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(EQ_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, counter_s);
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
+			Produce::inv_primitive(Produce::opcode(GE_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, selection_s);
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+			Produce::down();
+				Produce::val_nothing();
+			Produce::up();
+		Produce::up();
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, selection_s);
-		Emit::inv_primitive(Produce::opcode(RANDOM_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, counter_s);
-		Emit::up();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, selection_s);
+		Produce::inv_primitive(Produce::opcode(RANDOM_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, counter_s);
+		Produce::up();
+	Produce::up();
 
 @h Adaptation to TOTAL.
 Here the task is to sum the values of property $P$ attached to each object
@@ -1222,32 +1222,32 @@ which until runtime -- when its identity will be found in the I6 variable
 |property_to_be_totalled|.
 
 @<Act on successful match in TOTAL search@> =
-	Emit::inv_primitive(Produce::opcode(STORE_BIP));
-	Emit::down();
-		Emit::ref_symbol(K_value, total_s);
-		Emit::inv_primitive(Produce::opcode(PLUS_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, total_s);
-			Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, var_s[0]);
+	Produce::inv_primitive(Produce::opcode(STORE_BIP));
+	Produce::down();
+		Produce::ref_symbol(K_value, total_s);
+		Produce::inv_primitive(Produce::opcode(PLUS_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, total_s);
+			Produce::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, var_s[0]);
 				if (multipurpose_routine) {
-					Emit::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+					Produce::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				} else {
 					prn = RETRIEVE_POINTER_property(pdef->defn_ref);
-					Emit::val_iname(K_value, Properties::iname(prn));
+					Produce::val_iname(K_value, Properties::iname(prn));
 				}
-			Emit::up();
-		Emit::up();
-	Emit::up();
+			Produce::up();
+		Produce::up();
+	Produce::up();
 
 	@<Jump to next outer loop for this reason@>;
 
 @<Winding-up after TOTAL search@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, total_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, total_s);
+	Produce::up();
 
 @h Adaptation to EXTREMAL.
 This is rather similar. We find the member of $\lbrace x\mid \phi(x)\rbrace$
@@ -1273,46 +1273,46 @@ we don't, and have to look that up at run-time.
 
 @<Initialisation before EXTREMAL search@> =
 	if (multipurpose_routine) {
-		Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(GT_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
-				Emit::up();
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, best_s);
-					Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-				Emit::up();
-			Emit::up();
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(GT_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, best_s);
+					Produce::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
+				Produce::up();
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, best_s);
+					Produce::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	} else {
 		measurement_definition *mdef =
 			RETRIEVE_POINTER_measurement_definition(pdef->defn_ref);
 		Properties::Measurement::read_property_details(mdef, &def_prn, &def_prn_sign);
 		if (def_prn_sign == 1) {
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, best_s);
+				Produce::val_iname(K_value, Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
+			Produce::up();
 		} else {
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, best_s);
-				Emit::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, best_s);
+				Produce::val_iname(K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+			Produce::up();
 		}
 	}
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
@@ -1327,103 +1327,103 @@ multiplying by $-1$ is order-reversing.
 
 @<Act on successful match in EXTREMAL search@> =
 	if (multipurpose_routine) {
-		Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(GT_BIP));
-			Emit::down();
-				Emit::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
-				Emit::val(K_number, LITERAL_IVAL, 0);
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(IF_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(GE_BIP));
-					Emit::down();
+		Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(GT_BIP));
+			Produce::down();
+				Produce::val_iname(K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
+				Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(IF_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(GE_BIP));
+					Produce::down();
 						@<Emit code for a property lookup@>;
-						Emit::val_symbol(K_value, best_s);
-					Emit::up();
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, best_s);
+						Produce::val_symbol(K_value, best_s);
+					Produce::up();
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, best_s);
 							@<Emit code for a property lookup@>;
-						Emit::up();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, best_with_s);
-							Emit::val_symbol(K_value, var_s[0]);
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(IF_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(LE_BIP));
-					Emit::down();
+						Produce::up();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, best_with_s);
+							Produce::val_symbol(K_value, var_s[0]);
+						Produce::up();
+					Produce::up();
+				Produce::up();
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(IF_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(LE_BIP));
+					Produce::down();
 						@<Emit code for a property lookup@>;
-						Emit::val_symbol(K_value, best_s);
-					Emit::up();
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, best_s);
+						Produce::val_symbol(K_value, best_s);
+					Produce::up();
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, best_s);
 							@<Emit code for a property lookup@>;
-						Emit::up();
-						Emit::inv_primitive(Produce::opcode(STORE_BIP));
-						Emit::down();
-							Emit::ref_symbol(K_value, best_with_s);
-							Emit::val_symbol(K_value, var_s[0]);
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+						Produce::up();
+						Produce::inv_primitive(Produce::opcode(STORE_BIP));
+						Produce::down();
+							Produce::ref_symbol(K_value, best_with_s);
+							Produce::val_symbol(K_value, var_s[0]);
+						Produce::up();
+					Produce::up();
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	} else {
-		Emit::inv_primitive(Produce::opcode(IF_BIP));
-		Emit::down();
-			if (def_prn_sign == 1) Emit::inv_primitive(Produce::opcode(GE_BIP));
-			else Emit::inv_primitive(Produce::opcode(LE_BIP));
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(IF_BIP));
+		Produce::down();
+			if (def_prn_sign == 1) Produce::inv_primitive(Produce::opcode(GE_BIP));
+			else Produce::inv_primitive(Produce::opcode(LE_BIP));
+			Produce::down();
 				@<Emit code for a property lookup@>;
-				Emit::val_symbol(K_value, best_s);
-			Emit::up();
-			Emit::code();
-			Emit::down();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, best_s);
+				Produce::val_symbol(K_value, best_s);
+			Produce::up();
+			Produce::code();
+			Produce::down();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, best_s);
 					@<Emit code for a property lookup@>;
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(STORE_BIP));
-				Emit::down();
-					Emit::ref_symbol(K_value, best_with_s);
-					Emit::val_symbol(K_value, var_s[0]);
-				Emit::up();
-			Emit::up();
-		Emit::up();
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(STORE_BIP));
+				Produce::down();
+					Produce::ref_symbol(K_value, best_with_s);
+					Produce::val_symbol(K_value, var_s[0]);
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	}
 
 @<Emit code for a property lookup@> =
-	Emit::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, var_s[0]);
+	Produce::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, var_s[0]);
 		if (multipurpose_routine) {
-			Emit::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+			Produce::val_iname(K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 		} else {
-			Emit::val_iname(K_value, Properties::iname(def_prn));
+			Produce::val_iname(K_value, Properties::iname(def_prn));
 		}
-	Emit::up();
+	Produce::up();
 
 @<Winding-up after EXTREMAL search@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, best_with_s);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, best_with_s);
+	Produce::up();
 
 @h Adaptation to LOOP.
 Here the proposition is used to iterate through the members of the domain
@@ -1468,45 +1468,45 @@ lesson, though: I7 has no goto or jump instruction, and I7 loops can be
 proved to be entered and exited cleanly.)
 
 @<Initialisation before LOOP search@> =
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(GT_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, var_ix_s[0]);
-			Emit::val(K_number, LITERAL_IVAL, 0);
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(POSTDECREMENT_BIP));
-			Emit::down();
-				Emit::ref_symbol(K_value, var_ix_s[0]);
-			Emit::up();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(GT_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, var_ix_s[0]);
+			Produce::val(K_number, LITERAL_IVAL, 0);
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(POSTDECREMENT_BIP));
+			Produce::down();
+				Produce::ref_symbol(K_value, var_ix_s[0]);
+			Produce::up();
 			@<Jump to next outer loop for this reason@>;
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, var_s[0]);
-		Emit::code();
-		Emit::down();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, var_s[0]);
+		Produce::code();
+		Produce::down();
 			@<Jump to next outer loop for this reason@>;
-		Emit::up();
-	Emit::up();
+		Produce::up();
+	Produce::up();
 
 	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @<Act on successful match in LOOP search@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_symbol(K_value, var_s[0]);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_symbol(K_value, var_s[0]);
+	Produce::up();
 
 @<Winding-up after LOOP search@> =
-	Emit::inv_primitive(Produce::opcode(RETURN_BIP));
-	Emit::down();
-		Emit::val_nothing();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
+	Produce::down();
+		Produce::val_nothing();
+	Produce::up();
 
 @h Compiling loop headers.
 The final task of this entire chapter is to compile an I6 loop header which

@@ -49,8 +49,8 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
 	inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
 
-	Emit::inv_primitive(Produce::opcode(IF_BIP));
-	Emit::down();
+	Produce::inv_primitive(Produce::opcode(IF_BIP));
+	Produce::down();
 		LocalVariables::begin_condition_emit();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
@@ -58,15 +58,15 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 			PL::Actions::Patterns::compile_pattern_match_clause_inner(FALSE, &VH,
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
-			Emit::val(K_truth_state, LITERAL_IVAL, 0);
+			Produce::val(K_truth_state, LITERAL_IVAL, 0);
 		LocalVariables::end_condition_emit();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(STORE_BIP));
-			Emit::down();
-				Emit::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
-				Emit::val_symbol(K_value, it_s);
-			Emit::up();
-		Emit::up();
-	Emit::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(STORE_BIP));
+			Produce::down();
+				Produce::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
+				Produce::val_symbol(K_value, it_s);
+			Produce::up();
+		Produce::up();
+	Produce::up();
 	Routines::end(save);

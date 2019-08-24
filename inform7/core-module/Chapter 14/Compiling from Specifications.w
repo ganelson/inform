@@ -106,8 +106,8 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 	if (TEST_COMPILATION_MODE(DEREFERENCE_POINTERS_CMODE)) {
 		kind *K = Specifications::to_kind(spec);
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
-			Emit::inv_call_iname(Hierarchy::find(BLKVALUECOPY_HL));
-			Emit::down();
+			Produce::inv_call_iname(Hierarchy::find(BLKVALUECOPY_HL));
+			Produce::down();
 				Frames::emit_allocation(K);
 			dereffed = TRUE;
 		}
@@ -123,7 +123,7 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 		Conditions::compile(VH, spec);
 	}
 	if (dereffed) {
-		Emit::up();
+		Produce::up();
 	}
 }
 
@@ -147,7 +147,7 @@ void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
 	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
 	Specifications::Compiler::emit_as_val(K_value, value);
 	END_COMPILATION_MODE;
-	if (down) Emit::up();
+	if (down) Produce::up();
 }
 
 @ And the same in a constant context:

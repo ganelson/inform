@@ -238,59 +238,59 @@ void Quantifiers::compile_test(OUTPUT_STREAM, quantifier *quant, int index,
 void Quantifiers::emit_test(quantifier *quant,
 	int quantification_parameter, inter_symbol *qcy, inter_symbol *qcn) {
 
-	Emit::inv_primitive(quant->operator_prim);
-	Emit::down();
+	Produce::inv_primitive(quant->operator_prim);
+	Produce::down();
 
 	int TC = quant->T_coefficient;
 	switch (TC) {
 		case -1:
 			if (quant->is_complementary) {
-				Emit::val_symbol(K_value, qcy);
-				Emit::inv_primitive(Produce::opcode(MINUS_BIP));
-				Emit::down();
-					Emit::val_symbol(K_value, qcn);
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
-				Emit::up();
+				Produce::val_symbol(K_value, qcy);
+				Produce::inv_primitive(Produce::opcode(MINUS_BIP));
+				Produce::down();
+					Produce::val_symbol(K_value, qcn);
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+				Produce::up();
 			} else {
-				Emit::val_symbol(K_value, qcy);
-				Emit::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+				Produce::val_symbol(K_value, qcy);
+				Produce::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
 			}
 			break;
 		case 10:
-			Emit::val_symbol(K_value, qcy);
-			Emit::val_symbol(K_value, qcn);
+			Produce::val_symbol(K_value, qcy);
+			Produce::val_symbol(K_value, qcn);
 			break;
 		case 0:
-			Emit::val_symbol(K_value, qcy);
-			Emit::val(K_number, LITERAL_IVAL, 0);
+			Produce::val_symbol(K_value, qcy);
+			Produce::val(K_number, LITERAL_IVAL, 0);
 			break;
 		default:
 			if (quant->operator_prim != Produce::opcode(EQ_BIP)) {
-				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
-				Emit::down();
-					Emit::val_symbol(K_value, qcy);
-					Emit::val(K_number, LITERAL_IVAL, 10);
-				Emit::up();
-				Emit::inv_primitive(Produce::opcode(TIMES_BIP));
-				Emit::down();
-					Emit::val(K_number, LITERAL_IVAL, (inter_t) TC);
-					Emit::val_symbol(K_value, qcn);
-				Emit::up();
+				Produce::inv_primitive(Produce::opcode(TIMES_BIP));
+				Produce::down();
+					Produce::val_symbol(K_value, qcy);
+					Produce::val(K_number, LITERAL_IVAL, 10);
+				Produce::up();
+				Produce::inv_primitive(Produce::opcode(TIMES_BIP));
+				Produce::down();
+					Produce::val(K_number, LITERAL_IVAL, (inter_t) TC);
+					Produce::val_symbol(K_value, qcn);
+				Produce::up();
 			} else {
-				Emit::val_symbol(K_value, qcy);
-				Emit::inv_primitive(Produce::opcode(DIVIDE_BIP));
-				Emit::down();
-					Emit::inv_primitive(Produce::opcode(TIMES_BIP));
-					Emit::down();
-						Emit::val(K_number, LITERAL_IVAL, (inter_t) TC);
-						Emit::val_symbol(K_value, qcn);
-					Emit::up();
-					Emit::val(K_number, LITERAL_IVAL, 10);
-				Emit::up();
+				Produce::val_symbol(K_value, qcy);
+				Produce::inv_primitive(Produce::opcode(DIVIDE_BIP));
+				Produce::down();
+					Produce::inv_primitive(Produce::opcode(TIMES_BIP));
+					Produce::down();
+						Produce::val(K_number, LITERAL_IVAL, (inter_t) TC);
+						Produce::val_symbol(K_value, qcn);
+					Produce::up();
+					Produce::val(K_number, LITERAL_IVAL, 10);
+				Produce::up();
 			}
 			break;
 	}
-	Emit::up();
+	Produce::up();
 }
 #endif
 

@@ -136,42 +136,42 @@ versa.
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
-            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
-            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_deflotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
-        <span class="identifier">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
-            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_deflotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
-            <span class="identifier">Emit::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::down</span><span class="plain">();</span>
-                <span class="identifier">Emit::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
-            <span class="identifier">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="identifier">Emit::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 

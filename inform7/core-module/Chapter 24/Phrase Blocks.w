@@ -183,7 +183,7 @@ void Frames::Blocks::close_code_block(void) {
 	if (block_being_compiled->label_following >= 0) {
 		TEMPORARY_TEXT(TL);
 		WRITE_TO(TL, ".loop_break_%d", block_being_compiled->label_following);
-		Emit::place_label(Emit::reserve_label(TL));
+		Produce::place_label(Produce::reserve_label(TL));
 		DISCARD_TEXT(TL);
 	}
 
@@ -252,13 +252,13 @@ void Frames::Blocks::emit_break(void) {
 			if (current_block_stack.pb_stack[i].label_following == -1)
 				current_block_stack.pb_stack[i].label_following =
 					unique_breakage_count++;
-			Emit::inv_primitive(Produce::opcode(JUMP_BIP));
-			Emit::down();
+			Produce::inv_primitive(Produce::opcode(JUMP_BIP));
+			Produce::down();
 				TEMPORARY_TEXT(TL);
 				WRITE_TO(TL, ".loop_break_%d", current_block_stack.pb_stack[i].label_following);
-				Emit::lab(Emit::reserve_label(TL));
+				Produce::lab(Produce::reserve_label(TL));
 				DISCARD_TEXT(TL);
-			Emit::up();
+			Produce::up();
 			return;
 		}
 	internal_error("not inside a loop block");

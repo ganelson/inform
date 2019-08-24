@@ -119,7 +119,7 @@ connect this existing one to the phrase.
             <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">, </span><span class="constant">RULE_NAME_HMD</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">));</span>
 
         <span class="functiontext">Rules::set_I7_definition</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">);</span>
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_localised_iname_in</span><span class="plain">(</span><span class="constant">RULE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Do some tedious business for indexing the rule later on</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
@@ -941,7 +941,7 @@ it was to debug the preamble-parsing code:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(</span><span class="reserved">ph_usage_data</span><span class="plain"> *</span><span class="identifier">phud</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"%~W:"</span><span class="plain">, </span><span class="identifier">phud</span><span class="plain">-</span><span class="element">&gt;full_preamble</span><span class="plain">);</span>
-        <span class="functiontext">Emit::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

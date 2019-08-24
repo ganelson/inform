@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>27/tr</title>
+		<title>27/hr</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -32,16 +32,10 @@ definition (of, say, a property or kind) belongs.
 
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">compilation_module</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module_package</span><span class="plain"> *</span><span class="identifier">inter_presence</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">hanging_from</span><span class="plain">;</span>
-        <span class="identifier">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">compilation_module</span><span class="plain">;</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the main text</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the Standard Rules</span>
 
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the main text</span>
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the Standard Rules</span>
-
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::SR</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::SR</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">SR_module</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -49,8 +43,6 @@ definition (of, say, a property or kind) belongs.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Modules::SR is used in 21/rl (<a href="21-rl.html#SP26">&#167;26</a>).</p>
-
-<p class="endnote">The structure compilation_module is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We find these by performing a traverse of the parse tree, and looking for
 level-0 headings, which are the nodes from which these blocks of source text hang:
@@ -69,29 +61,29 @@ level-0 headings, which are the nodes from which these blocks of source text han
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">Wordings::location</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">standard_rules_extension</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
             <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">))));</span>
 
-        <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain">);</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;hanging_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Packaging::new_cm</span><span class="plain">();</span>
+        <span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">hanging_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
         <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pname</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compose a name for the module package this will lead to</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain"> = </span><span class="functiontext">Packaging::get_module</span><span class="plain">(</span><span class="identifier">pname</span><span class="plain">);</span>
+        <span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">inter_presence</span><span class="plain"> = </span><span class="identifier">Packaging::get_module</span><span class="plain">(</span><span class="identifier">pname</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pname</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain">) {</span>
-            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain">, </span><span class="constant">EXT_AUTHOR_HMD</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;ef_id.raw_author_name</span><span class="plain">);</span>
-            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain">, </span><span class="constant">EXT_TITLE_HMD</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;ef_id.raw_title</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">inter_presence</span><span class="plain">-&gt;</span><span class="identifier">the_package</span><span class="plain">, </span><span class="constant">EXT_AUTHOR_HMD</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;ef_id.raw_author_name</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">inter_presence</span><span class="plain">-&gt;</span><span class="identifier">the_package</span><span class="plain">, </span><span class="constant">EXT_TITLE_HMD</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;ef_id.raw_title</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;version_loaded</span><span class="plain">));</span>
-            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain">-</span><span class="element">&gt;the_package</span><span class="plain">, </span><span class="constant">EXT_VERSION_HMD</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">inter_presence</span><span class="plain">-&gt;</span><span class="identifier">the_package</span><span class="plain">, </span><span class="constant">EXT_VERSION_HMD</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -148,7 +140,7 @@ them. This is done by "propagating downwards", as follows.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
             <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
@@ -167,7 +159,7 @@ but that's now easy, as we just have to read off the annotation made above &mdas
 
 
 <pre class="display">
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ParseTree::get_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -175,7 +167,7 @@ but that's now easy, as we just have to read off the annotation made above &mdas
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Modules::find is used in <a href="#SP6">&#167;6</a>, 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 27/hr (<a href="27-hr.html#SP5">&#167;5</a>), 27/pc (<a href="27-pc.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Modules::find is used in <a href="#SP6">&#167;6</a>, 5/nv (<a href="5-nv.html#SP16">&#167;16</a>), 6/bp (<a href="6-bp.html#SP31">&#167;31</a>), 15/pr (<a href="15-pr.html#SP5_3">&#167;5.3</a>), 19/tb (<a href="19-tb.html#SP9">&#167;9</a>), 21/rl (<a href="21-rl.html#SP26">&#167;26</a>), 22/ph (<a href="22-ph.html#SP6_8">&#167;6.8</a>), 22/tp (<a href="22-tp.html#SP7">&#167;7</a>), 27/hr (<a href="27-hr.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Current module. </b>Inform has a concept of the "current module" it's working on, much as it has
 a concept of "current sentence".
@@ -183,13 +175,13 @@ a concept of "current sentence".
 
 
 <pre class="display">
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-    <span class="reserved">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::current</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::current</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_CM</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">CM</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">CM</span><span class="plain">) {</span>
         <span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">CM</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -213,18 +205,18 @@ Packaging code.
 
 
 <pre class="display">
-    <span class="reserved">module_package</span><span class="plain"> *</span><span class="functiontext">Modules::inter_presence</span><span class="plain">(</span><span class="reserved">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+    <span class="identifier">module_package</span><span class="plain"> *</span><span class="functiontext">Modules::inter_presence</span><span class="plain">(</span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no module"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;inter_presence</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">inter_presence</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Modules::inter_presence is used in 27/pc (<a href="27-pc.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Modules::inter_presence appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="27-tr.html">Back to 'Translation'</a></li><li><a href="27-pc.html">Continue with 'Packaging'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="27-hr.html">Back to 'Hierarchy'</a></li><li><a href="27-ei.html">Continue with 'Emitting Inter'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

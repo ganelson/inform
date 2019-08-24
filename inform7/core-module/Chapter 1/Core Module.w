@@ -45,7 +45,6 @@ We need to itemise the structures we'll want to allocate:
 @e past_tense_condition_record_MT
 @e past_tense_action_record_MT
 @e named_rulebook_outcome_MT
-@e label_namespace_MT
 @e stacked_variable_array_MT
 @e stacked_variable_list_array_MT
 @e stacked_variable_owner_array_MT
@@ -99,6 +98,7 @@ We need to itemise the structures we'll want to allocate:
 @e nascent_array_MT
 @e value_holster_array_MT
 @e adjective_iname_holder_MT
+@e label_namespace_MT
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -132,7 +132,6 @@ ALLOCATE_INDIVIDUALLY(internal_test_case)
 ALLOCATE_INDIVIDUALLY(inv_token_problem_token)
 ALLOCATE_INDIVIDUALLY(kind_interaction)
 ALLOCATE_INDIVIDUALLY(known_extension_clash)
-ALLOCATE_INDIVIDUALLY(label_namespace)
 ALLOCATE_INDIVIDUALLY(list_together_routine)
 ALLOCATE_INDIVIDUALLY(literal_list)
 ALLOCATE_INDIVIDUALLY(literal_pattern_name)
@@ -170,6 +169,7 @@ ALLOCATE_INDIVIDUALLY(use_option)
 ALLOCATE_INDIVIDUALLY(VM_usage_note)
 ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
 ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
+ALLOCATE_INDIVIDUALLY(label_namespace)
 
 @ So much for the managed structures: now for the unmanaged structures.
 

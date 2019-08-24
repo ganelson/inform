@@ -240,21 +240,21 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 		switch(rbo->kind_of_outcome) {
 			case SUCCESS_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
-				Emit::inv_call_iname(iname);
-				Emit::down();
+				Produce::inv_call_iname(iname);
+				Produce::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
-				Emit::val_iname(K_value, rbo->outcome_name->nro_iname);
-				Emit::up();
+				Produce::val_iname(K_value, rbo->outcome_name->nro_iname);
+				Produce::up();
 				rtrue = TRUE;
 				break;
 			}
 			case FAILURE_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
-				Emit::inv_call_iname(iname);
-				Emit::down();
+				Produce::inv_call_iname(iname);
+				Produce::down();
 				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
-				Emit::val_iname(K_value, rbo->outcome_name->nro_iname);
-				Emit::up();
+				Produce::val_iname(K_value, rbo->outcome_name->nro_iname);
+				Produce::up();
 				rtrue = TRUE;
 				break;
 			}
@@ -263,28 +263,28 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 		switch(outs->default_rule_outcome) {
 			case SUCCESS_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
-				Emit::inv_call_iname(iname);
-				Emit::down();
-				Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::up();
+				Produce::inv_call_iname(iname);
+				Produce::down();
+				Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::up();
 				rtrue = TRUE;
 				break;
 			}
 			case FAILURE_OUTCOME: {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
-				Emit::inv_call_iname(iname);
-				Emit::down();
-				Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::val(K_number, LITERAL_IVAL, 0);
-				Emit::up();
+				Produce::inv_call_iname(iname);
+				Produce::down();
+				Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::up();
 				rtrue = TRUE;
 				break;
 			}
 		}
 	}
 
-	if (rtrue) Emit::rtrue();
+	if (rtrue) Produce::rtrue();
 }
 
 rulebook_outcome *Rulebooks::Outcomes::rbo_from_context(named_rulebook_outcome *rbno) {
@@ -342,26 +342,26 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 	switch(rbo->kind_of_outcome) {
 		case SUCCESS_OUTCOME: {
 			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
-			Emit::inv_call_iname(iname);
-			Emit::down();
+			Produce::inv_call_iname(iname);
+			Produce::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
-			Emit::val_iname(K_value, rbno->nro_iname);
-			Emit::up();
-			Emit::rtrue();
+			Produce::val_iname(K_value, rbno->nro_iname);
+			Produce::up();
+			Produce::rtrue();
 			break;
 		}
 		case FAILURE_OUTCOME: {
 			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
-			Emit::inv_call_iname(iname);
-			Emit::down();
+			Produce::inv_call_iname(iname);
+			Produce::down();
 			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
-			Emit::val_iname(K_value, rbno->nro_iname);
-			Emit::up();
-			Emit::rtrue();
+			Produce::val_iname(K_value, rbno->nro_iname);
+			Produce::up();
+			Produce::rtrue();
 			break;
 		}
 		case NO_OUTCOME:
-			Emit::rfalse();
+			Produce::rfalse();
 			break;
 		default:
 			internal_error("bad RBO outcome kind");
@@ -413,29 +413,29 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
 	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *rbnov_s = LocalVariables::add_named_call_as_symbol(I"rbno");
-	Emit::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Emit::down();
-		Emit::inv_primitive(Produce::opcode(EQ_BIP));
-		Emit::down();
-			Emit::val_symbol(K_value, rbnov_s);
-			Emit::val(K_number, LITERAL_IVAL, 0);
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-			Emit::down();
-				Emit::val_text(I"(no outcome)");
-			Emit::up();
-		Emit::up();
-		Emit::code();
-		Emit::down();
-			Emit::inv_primitive(Produce::opcode(PRINTSTRING_BIP));
-			Emit::down();
-				Emit::val_symbol(K_value, rbnov_s);
-			Emit::up();
-			Emit::rfalse();
-		Emit::up();
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
+	Produce::down();
+		Produce::inv_primitive(Produce::opcode(EQ_BIP));
+		Produce::down();
+			Produce::val_symbol(K_value, rbnov_s);
+			Produce::val(K_number, LITERAL_IVAL, 0);
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+			Produce::down();
+				Produce::val_text(I"(no outcome)");
+			Produce::up();
+		Produce::up();
+		Produce::code();
+		Produce::down();
+			Produce::inv_primitive(Produce::opcode(PRINTSTRING_BIP));
+			Produce::down();
+				Produce::val_symbol(K_value, rbnov_s);
+			Produce::up();
+			Produce::rfalse();
+		Produce::up();
+	Produce::up();
 	Routines::end(save);
 }
 

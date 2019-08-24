@@ -30,7 +30,7 @@ inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, in
 	if (S == NULL) return Inter::Node::error(P, I"no symbol for ID (case 2)", NULL);
 	if ((Inter::Symbols::is_defined(S)) &&
 		(Inter::Symbols::is_predeclared_local(S) == FALSE))
-		return Inter::Node::error(P, I"duplicated symbol", S->symbol_name);
+		return Inter::Node::error(P, I"duplicated local symbol", S->symbol_name);
 	Inter::Symbols::define(S, P);
 	return NULL;
 }

@@ -300,7 +300,7 @@ void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(iname);
 	packaging_state save = Routines::begin(iname);
-	Emit::rfalse();
+	Produce::rfalse();
 	Routines::end(save);
 }
 
@@ -309,66 +309,66 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 	Hierarchy::make_available(iname);
 	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(I">--> No test scripts exist for this game.\n");
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(I">--> No test scripts exist for this game.\n");
+		Produce::up();
 	} else {
-		Emit::inv_primitive(Produce::opcode(SWITCH_BIP));
-		Emit::down();
-			Emit::val_iname(K_object, Hierarchy::find(SPECIAL_WORD_HL));
-			Emit::code();
-			Emit::down();
+		Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
+		Produce::down();
+			Produce::val_iname(K_object, Hierarchy::find(SPECIAL_WORD_HL));
+			Produce::code();
+			Produce::down();
 				test_scenario *test;
 				LOOP_OVER(test, test_scenario) {
-					Emit::inv_primitive(Produce::opcode(CASE_BIP));
-					Emit::down();
+					Produce::inv_primitive(Produce::opcode(CASE_BIP));
+					Produce::down();
 						TEMPORARY_TEXT(W);
 						WRITE_TO(W, "%w", Lexer::word_raw_text(Wordings::first_wn(test->name)));
-						Emit::val_dword(W);
+						Produce::val_dword(W);
 						DISCARD_TEXT(W);
-						Emit::code();
-						Emit::down();
-							Emit::inv_call_iname(Hierarchy::find(TESTSTART_HL));
-							Emit::down();
-								Emit::val_iname(K_value, test->text_iname);
-								Emit::val_iname(K_value, test->req_iname);
+						Produce::code();
+						Produce::down();
+							Produce::inv_call_iname(Hierarchy::find(TESTSTART_HL));
+							Produce::down();
+								Produce::val_iname(K_value, test->text_iname);
+								Produce::val_iname(K_value, test->req_iname);
 								int l = 0;
 								text_stream *p = test->text_of_script;
 								for (int i=0, L = Str::len(p); i<L; i++, l++)
 									if (Str::includes_wide_string_at(p, L"[']", i))
 										l -= 2;
-								Emit::val(K_number, LITERAL_IVAL, (inter_t) l);
-							Emit::up();
-						Emit::up();
-					Emit::up();
+								Produce::val(K_number, LITERAL_IVAL, (inter_t) l);
+							Produce::up();
+						Produce::up();
+					Produce::up();
 				}
-				Emit::inv_primitive(Produce::opcode(DEFAULT_BIP));
-				Emit::down();
-					Emit::code();
-					Emit::down();
-						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-						Emit::down();
-							Emit::val_text(I">--> The following tests are available:\n");
-						Emit::up();
+				Produce::inv_primitive(Produce::opcode(DEFAULT_BIP));
+				Produce::down();
+					Produce::code();
+					Produce::down();
+						Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+						Produce::down();
+							Produce::val_text(I">--> The following tests are available:\n");
+						Produce::up();
 						LOOP_OVER(test, test_scenario) {
 							TEMPORARY_TEXT(T);
 							WRITE_TO(T, "'test %w'\n",
 								Lexer::word_raw_text(Wordings::first_wn(test->name)));
-							Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-							Emit::down();
-								Emit::val_text(T);
-							Emit::up();
+							Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+							Produce::down();
+								Produce::val_text(T);
+							Produce::up();
 							DISCARD_TEXT(T);
 						}
-						Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-						Emit::down();
-							Emit::val_text(I"\n");
-						Emit::up();
-					Emit::up();
-				Emit::up();
-			Emit::up();
-		Emit::up();
+						Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+						Produce::down();
+							Produce::val_text(I"\n");
+						Produce::up();
+					Produce::up();
+				Produce::up();
+			Produce::up();
+		Produce::up();
 	}
 
 	Routines::end(save);
@@ -391,23 +391,23 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		n++;
 		if (itc->itc_code == HEADLINE_INTT) {
 			n = 0;
-			Emit::inv_primitive(Produce::opcode(STYLEBOLD_BIP));
+			Produce::inv_primitive(Produce::opcode(STYLEBOLD_BIP));
 			TEMPORARY_TEXT(T);
 			WRITE_TO(T, "\n%+W\n", itc->text_supplying_the_case);
-			Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-			Emit::down();
-				Emit::val_text(T);
-			Emit::up();
+			Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+			Produce::down();
+				Produce::val_text(T);
+			Produce::up();
 			DISCARD_TEXT(T);
-			Emit::inv_primitive(Produce::opcode(STYLEROMAN_BIP));
+			Produce::inv_primitive(Produce::opcode(STYLEROMAN_BIP));
 			continue;
 		}
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "%d. %+W\n", n, itc->text_supplying_the_case);
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(C);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(C);
+		Produce::up();
 		DISCARD_TEXT(C);
 
 		TEMPORARY_TEXT(OUT);
@@ -437,16 +437,16 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 					LOG(" scaled at k=%d", Kinds::Behaviour::scale_factor(K));
 				@<End reporting on the internal test case@>;
 				WRITE("\nPrints as: ");
-				Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-				Emit::down();
-					Emit::val_text(OUT);
-				Emit::up();
+				Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+				Produce::down();
+					Produce::val_text(OUT);
+				Produce::up();
 
-				Emit::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
-				Emit::down();
-					Emit::val_iname(K_value, Kinds::Behaviour::get_iname(K));
+				Produce::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
+				Produce::down();
+					Produce::val_iname(K_value, Kinds::Behaviour::get_iname(K));
 					Specifications::Compiler::emit_as_val(K_value, spec);
-				Emit::up();
+				Produce::up();
 
 				Str::clear(OUT);
 				WRITE("\n");
@@ -495,10 +495,10 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 				break;
 		}
 		WRITE("\n");
-		Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-		Emit::down();
-			Emit::val_text(OUT);
-		Emit::up();
+		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+		Produce::down();
+			Produce::val_text(OUT);
+		Produce::up();
 		DISCARD_TEXT(OUT);
 	}
 	Routines::end(save);
@@ -556,31 +556,31 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	Kinds::Textual::log(K);
 	@<End reporting on the internal test case@>;
 	WRITE(": ");
-	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-	Emit::down();
-		Emit::val_text(OUT);
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+	Produce::down();
+		Produce::val_text(OUT);
+	Produce::up();
 	DISCARD_TEXT(OUT);
 
 	if (Kinds::get_construct(K) == CON_list_of) {
-		Emit::inv_call_iname(Hierarchy::find(LIST_OF_TY_SAY_HL));
-		Emit::down();
+		Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_SAY_HL));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Emit::val(K_number, LITERAL_IVAL, 1);
-		Emit::up();
+			Produce::val(K_number, LITERAL_IVAL, 1);
+		Produce::up();
 	} else {
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Emit::inv_call_iname(Kinds::Behaviour::get_iname(K));
-		Emit::down();
+		Produce::inv_call_iname(Kinds::Behaviour::get_iname(K));
+		Produce::down();
 			Specifications::Compiler::emit_as_val(K_value, spec);
-		Emit::up();
+		Produce::up();
 		END_COMPILATION_MODE;
 	}
-	Emit::inv_primitive(Produce::opcode(PRINT_BIP));
-	Emit::down();
-		Emit::val_text(I"\n");
-	Emit::up();
+	Produce::inv_primitive(Produce::opcode(PRINT_BIP));
+	Produce::down();
+		Produce::val_text(I"\n");
+	Produce::up();
 }
 
 @<Perform an internal test of the sentence converter@> =

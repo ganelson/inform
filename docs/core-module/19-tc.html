@@ -73,7 +73,7 @@ uses of the same TC, so that's something we'll have to check on.)
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_constant_cell</span><span class="plain">; </span>    <span class="comment">first one spotted</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_name_entries</span><span class="plain">; </span>    <span class="comment">how many entries read, say, "a rulebook"</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_kind_cell</span><span class="plain">; </span>    <span class="comment">first one spotted</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_name</span><span class="plain"> *</span><span class="identifier">tcu_iname</span><span class="plain">; </span>    <span class="comment">for the array holding this at run-time</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">tcu_iname</span><span class="plain">; </span>    <span class="comment">for the array holding this at run-time</span>
     <span class="plain">} </span><span class="reserved">table_column_usage</span><span class="plain">;</span>
 </pre>
 
@@ -220,35 +220,35 @@ by index within the current table.)
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::compile_run_time_support</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TC_KOV_HL</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TC_KOV_HL</span><span class="plain">));</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">tcv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tc"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tcv_s</span><span class="plain">);</span>
-            <span class="functiontext">Emit::code</span><span class="plain">();</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tcv_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::code</span><span class="plain">();</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
 
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">table_column</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
-            <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                <span class="functiontext">Emit::val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Tables::Columns::get_id</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
-                <span class="functiontext">Emit::code</span><span class="plain">();</span>
-                <span class="functiontext">Emit::down</span><span class="plain">();</span>
-                    <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
+            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Tables::Columns::get_id</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
+                <span class="identifier">Produce::code</span><span class="plain">();</span>
+                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">();</span>
                         <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
-                    <span class="functiontext">Emit::up</span><span class="plain">();</span>
-                <span class="functiontext">Emit::up</span><span class="plain">();</span>
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="plain">}</span>
 
-            <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
-        <span class="functiontext">Emit::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-        <span class="functiontext">Emit::down</span><span class="plain">();</span>
-            <span class="functiontext">Emit::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">());</span>
-        <span class="functiontext">Emit::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">());</span>
+        <span class="identifier">Produce::up</span><span class="plain">();</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -287,7 +287,7 @@ text is passed to the following routine in turn:
         <span class="identifier">tcu</span><span class="element">.kind_name_entries</span><span class="plain"> = 0;</span>
         <span class="identifier">tcu</span><span class="element">.observed_kind_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="reserved">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_package</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_package</span><span class="plain">);</span>
         <span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COLUMN_DATA_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tcu</span><span class="plain">;</span>
