@@ -60,7 +60,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter -variable '*in=$O' -variable '*out=$A' -pipeline-file $P >$T 2>&1
+	step: inter/Tangled/inter -template inform7/Internal/I6T -variable '*in=$O' -variable '*out=$A' -pipeline-file $P >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
@@ -88,7 +88,7 @@
 	mkdir: $PATH/_Console
 	mkdir: $PATH/_Binaries
 
-	step: inter/Tangled/inter -variable '*inA=$OA' -variable '*inB=$OB' -variable '*binA=$BA' -variable '*binB=$BB' -variable '*outA=$AA' -variable '*outB=$AB' -pipeline-file $P >$T 2>&1
+	step: inter/Tangled/inter -template inform7/Internal/I6T -variable '*inA=$OA' -variable '*inB=$OB' -variable '*binA=$BA' -variable '*binB=$BB' -variable '*outA=$AA' -variable '*outB=$AB' -pipeline-file $P >$T 2>&1
 	or: 'failed to produce output' $T
 
 	show: $A
@@ -111,7 +111,7 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
-	fail step: inter/Tangled/inter -variable '*in=$O' -pipeline-file $P >$A 2>&1
+	fail step: inter/Tangled/inter -template inform7/Internal/I6T -variable '*in=$O' -pipeline-file $P >$A 2>&1
 	or: 'failed to produce errors' $A
 
 	show: $A
@@ -131,7 +131,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/Tangled/inter -test $O >$A 2>&1
+	step: inter/Tangled/inter -template inform7/Internal/I6T -test $O >$A 2>&1
 	or: 'failed to produce output' $A
 
 	show: $A

@@ -7,6 +7,9 @@ packagetype _submodule
 packagetype _command
 packagetype _action
 
+primitive !return val -> void
+primitive !plus val val -> val
+
 package main _plain
 	package other _module
 		symbol public misc K_unchecked
@@ -50,8 +53,10 @@ package main _plain
 				symbol public misc Falsity
 				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
 				package Falsity_B _code
+					symbol external misc K_unchecked --> /main/other/K_unchecked
 					code
-					splat &"return false;"
+						inv !return
+							val K_unchecked 0
 				constant Falsity K_unchecked_function = Falsity_B __assimilated=1
 			package Demo_fn _function
 				symbol public misc Demo
@@ -63,7 +68,10 @@ package main _plain
 					local x K_unchecked
 					local y K_unchecked
 					code
-					splat &"return x+y;"
+						inv !return
+							inv !plus
+								val K_unchecked x
+								val K_unchecked y
 				constant Demo K_unchecked_function = Demo_B __assimilated=1
 			package Banana_fn _function
 				symbol public misc Banana
@@ -75,14 +83,17 @@ package main _plain
 					local x1 K_unchecked
 					local x2 K_unchecked
 					code
-					splat &"rfalse;"
+						inv !return
+							val K_unchecked 0
 				constant Banana K_unchecked_function = Banana_B __assimilated=1
 			package Peach_fn _function
 				symbol public misc Peach
 				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
 				package Peach_B _code
+					symbol external misc K_unchecked --> /main/other/K_unchecked
 					code
-					splat &"rfalse;"
+						inv !return
+							val K_unchecked 0
 				constant Peach K_unchecked_function = Peach_B __assimilated=1
 		package arrays _submodule
 			package XA_arr _plain

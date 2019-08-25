@@ -369,6 +369,7 @@ void Produce::inv_assembly(text_stream *opcode) {
 
 
 void Produce::inv_primitive(inter_symbol *prim_symb) {
+	if (prim_symb == NULL) internal_error("undefined primitive");
 	inter_t bip = Primitives::to_bip(Produce::tree(), prim_symb);
 	if ((bip == SWITCH_BIP) ||
 		(bip == IF_BIP) ||
@@ -645,9 +646,8 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	return InterNames::to_symbol(Kinds::RunTime::iname(K));
 	#endif
 	#ifndef CORE_MODULE
-	inter_symbol *plug = Inter::Connectors::find_plug(Produce::tree(), I"K_unchecked");
-	if (plug == NULL) plug = Inter::Connectors::plug(Produce::tree(), I"K_unchecked");
-	return plug;
+	if (unchecked_kind_symbol == NULL) internal_error("no unchecked kind symbol");
+	return unchecked_kind_symbol;
 	#endif
 }
 

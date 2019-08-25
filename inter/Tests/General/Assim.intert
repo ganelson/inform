@@ -7,6 +7,9 @@ packagetype _submodule
 packagetype _command
 packagetype _action
 
+primitive !return val -> void
+primitive !plus val val -> val
+
 package main _plain
 	package other _module
 		kind K_unchecked unchecked

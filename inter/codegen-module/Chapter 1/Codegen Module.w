@@ -86,7 +86,7 @@ void CodegenModule::start(void) {
 	Memory::reason_name(CODE_GENERATION_MREASON, "code generation workspace for objects");
 
 @<Register this module's stream writers@> =
-	;
+	Writers::register_writer('n', &InterNames::writer);
 
 @
 

@@ -88,6 +88,8 @@ int CodeGen::Stage::run_preparegd_stage(pipeline_step *step) {
 
 int CodeGen::Stage::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 	inter_tree *I = step->repository;
+	Packaging::initialise_state(I);
+	Packaging::outside_all_packages();
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
 	inter_error_message *E = NULL;
 	inter_symbol *plain_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_plain", &E);

@@ -291,7 +291,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Writers::register_writer_I('B', &CoreModule::writer);
 	Writers::register_writer('I', &Instances::writer);
 	Writers::register_writer('L', &LocalVariables::writer);
-	Writers::register_writer('n', &InterNames::writer);
 	Writers::register_writer('X', &Extensions::IDs::writer);
 
 @

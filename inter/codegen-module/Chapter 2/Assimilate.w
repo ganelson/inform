@@ -748,9 +748,7 @@ inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack)
 typedef struct routine_body_request {
 	struct inter_bookmark position;
 	struct inter_bookmark block_bookmark;
-	#ifdef CORE_MODULE
 	struct package_request *enclosure;
-	#endif
 	struct inter_package *block_package;
 	int pass2_offset;
 	struct text_stream *body;
@@ -760,7 +758,6 @@ typedef struct routine_body_request {
 int rb_splat_count = 1;
 int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_package, inter_t offset, text_stream *body, inter_bookmark bb) {
 	if (Str::is_whitespace(body)) return FALSE;
-	#ifdef CORE_MODULE
 	routine_body_request *req = CREATE(routine_body_request);
 	req->block_bookmark = bb;
 	req->enclosure = Packaging::enclosure();
@@ -769,12 +766,6 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_
 	req->pass2_offset = (int) offset - 2;
 	req->body = Str::duplicate(body);
 	return TRUE;
-	#endif
-	#ifndef CORE_MODULE
-	CodeGen::MergeTemplate::entire_splat(IBM, NULL, body, offset);
-	LOG("Splat %d\n", rb_splat_count++);
-	return FALSE;
-	#endif
 }
 
 void CodeGen::Assimilate::function_bodies(void) {
@@ -791,7 +782,6 @@ void CodeGen::Assimilate::function_bodies(void) {
 			} else InterSchemas::log(DL, sch);
 		}
 		
-		#ifdef CORE_MODULE
 		Produce::set_cir(req->block_package);
 		Packaging::set_state(&(req->position), req->enclosure);
 		Produce::push_code_position(Produce::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
@@ -801,6 +791,5 @@ void CodeGen::Assimilate::function_bodies(void) {
 		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 		Produce::pop_code_position();
 		Produce::set_cir(NULL);
-		#endif
 	}
 }

@@ -413,6 +413,16 @@ text_stream *Primitives::name(inter_t bip) {
 	return I"<none>";
 }
 
+void Primitives::scan_tree(inter_tree *I) {
+	Inter::Tree::traverse_root_only(I, Primitives::scan_visitor, NULL, PRIMITIVE_IST);
+}
+
+void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
+	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
+	inter_t bip = Primitives::to_bip(I, prim_name);
+	if (bip) I->opcodes_set[bip] = prim_name;
+}
+
 inter_t Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (symb == NULL) return 0;
 	int B = Inter::Symbols::read_annotation(symb, BIP_CODE_IANN);

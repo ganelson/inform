@@ -31,6 +31,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	@<Read the symbol equations@>;
 	@<Read the bytecode@>;
 	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON, (int) grid_extent, sizeof(inter_t));
+	Primitives::scan_tree(I);
 
 	BinaryFiles::close(fh);
 	default_ptree = NULL;
