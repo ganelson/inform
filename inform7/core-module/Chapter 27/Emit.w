@@ -11,14 +11,14 @@ inter_symbol *int_interk = NULL;
 inter_symbol *string_interk = NULL;
 
 void Emit::begin(void) {
-	inter_tree *repo = Inter::Tree::new();
-	Packaging::initialise_state(repo);
+	inter_tree *I = Inter::Tree::new();
+	Packaging::initialise_state(I);
 	Packaging::outside_all_packages();
 	
-	Packaging::incarnate(Packaging::veneer());
-	Packaging::incarnate(Packaging::get_module(I"generic")->the_package);
-	Packaging::incarnate(Packaging::get_module(I"synoptic")->the_package);
-	Packaging::incarnate(Packaging::get_module(I"standard_rules")->the_package);	
+	Packaging::incarnate(Packaging::veneer(I));
+	Packaging::incarnate(Packaging::get_module(I, I"generic")->the_package);
+	Packaging::incarnate(Packaging::get_module(I, I"synoptic")->the_package);
+	Packaging::incarnate(Packaging::get_module(I, I"standard_rules")->the_package);	
 
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);
@@ -432,7 +432,7 @@ packaging_state Emit::named_array_begin(inter_name *N, kind *K) {
 void Emit::array_iname_entry(inter_name *iname) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_symbol *alias;
-	if (iname == NULL) alias = Packaging::veneer_symbol(NOTHING_VSYMB);
+	if (iname == NULL) alias = Packaging::veneer_symbol(Produce::tree(), NOTHING_VSYMB);
 	else alias = InterNames::to_symbol(iname);
 	inter_t val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Emit::array_IRS();
@@ -540,7 +540,7 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
 	if (alias == NULL) {
-		if (Kinds::Compare::le(K, K_object)) alias = Packaging::veneer_symbol(NOTHING_VSYMB);
+		if (Kinds::Compare::le(K, K_object)) alias = Packaging::veneer_symbol(Produce::tree(), NOTHING_VSYMB);
 		else internal_error("can't handle a null alias");
 	}
 	inter_t val1 = 0, val2 = 0;

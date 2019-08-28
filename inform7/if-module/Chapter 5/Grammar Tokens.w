@@ -754,7 +754,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Produce::inv_primitive(Produce::opcode(STORE_BIP));
 			Produce::down();
 				Produce::ref_symbol(K_value, gprk->rv_s);
-				Produce::inv_call(Packaging::veneer_symbol(PARENT_VSYMB));
+				Produce::inv_call(Packaging::veneer_symbol(Produce::tree(), PARENT_VSYMB));
 				Produce::down();
 					Produce::val_iname(K_value, Hierarchy::find(SELF_HL));
 				Produce::up();

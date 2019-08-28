@@ -18,6 +18,7 @@ Import: linguistics
 Import: kinds
 Import: inter/inter
 Import: core
+Import: inter/building
 Import: inter/codegen
 Import: if
 Import: multimedia

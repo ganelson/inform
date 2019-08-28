@@ -54,7 +54,7 @@ compilation_module *Modules::new(parse_node *from) {
 
 	TEMPORARY_TEXT(pname);
 	@<Compose a name for the module package this will lead to@>;
-	C->inter_presence = Packaging::get_module(pname);
+	C->inter_presence = Packaging::get_module(Produce::tree(), pname);
 	DISCARD_TEXT(pname);
 
 	if (owner) {

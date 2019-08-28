@@ -379,7 +379,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
 		if (Str::len(tn) > 0) {
 			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL, tn, Kinds::Constructors::package(con));
-			Hierarchy::make_available(con->con_iname);
+			Hierarchy::make_available(Produce::tree(), con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
 		}
 	}

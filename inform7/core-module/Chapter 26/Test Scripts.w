@@ -298,7 +298,7 @@ void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
 
 void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
-	Hierarchy::make_available(iname);
+	Hierarchy::make_available(Produce::tree(), iname);
 	packaging_state save = Routines::begin(iname);
 	Produce::rfalse();
 	Routines::end(save);
@@ -306,7 +306,7 @@ void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
 
 void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
-	Hierarchy::make_available(iname);
+	Hierarchy::make_available(Produce::tree(), iname);
 	packaging_state save = Routines::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Produce::inv_primitive(Produce::opcode(PRINT_BIP));

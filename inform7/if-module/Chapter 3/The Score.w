@@ -52,7 +52,7 @@ void PL::Score::compile_max_score(void) {
 		}
 	}
 	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
-	Hierarchy::make_available(iname);
+	Hierarchy::make_available(Produce::tree(), iname);
 	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, max_score_VAR);

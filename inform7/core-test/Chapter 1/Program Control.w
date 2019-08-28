@@ -36,6 +36,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	CoreModule::start();
 	IndexModule::start();
 	InterModule::start();
+	BuildingModule::start();
 	CodegenModule::start();
 
 	int rv = CoreMain::main(argc, argv);
@@ -49,6 +50,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	CoreModule::end();
 	IndexModule::end();
 	InterModule::end();
+	BuildingModule::end();
 	CodegenModule::end();
 	Foundation::end();
 	return rv;

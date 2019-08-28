@@ -1,11 +1,10 @@
 Title: codegen
 Author: Graham Nelson
-Purpose: An embryonic code generator for I6 code.
+Purpose: The code generation pipeline.
 Language: InC
 Licence: Artistic License 2.0
 
 Chapter 1: Setting Up
-"Loading this module."
 	Codegen Module
 	Stages
 	Pipelines
@@ -22,27 +21,14 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
 
-Chapter 3: Inform 6 to Inter
-	Inter Primitives
-	The Veneer
-	Inter Schemas
-	Emitting Inter Schemas
-	Hierarchy Locations
-	Translation
-	Packaging
-	Package Types
-	Inter Namespace
-	Produce
-	Value Holsters
-
-Chapter 4: Inter to Final Code
+Chapter 3: Inter to Final Code
 	Code Generation
 	Frame Control
 	Constants and Literals
 	Instances and Properties
 	Variables
 
-Chapter 5: Final Code
+Chapter 4: Final Code
 	Final Targets
 	Final Textual Inter
 	Final Binary Inter

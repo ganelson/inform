@@ -58,7 +58,7 @@ it's convenient to associate them with nametags.
             <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">);</span>
         <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">);</span>
         <span class="identifier">Produce::clear_flag</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
-        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Produce::tree</span><span class="plain">(), </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

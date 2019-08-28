@@ -851,7 +851,7 @@ inter_name *TTF_iname = NULL;
 
 inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
 	inter_name *iname = Hierarchy::find(id);
-	Hierarchy::make_available(iname);
+	Hierarchy::make_available(Produce::tree(), iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	return iname;
 }

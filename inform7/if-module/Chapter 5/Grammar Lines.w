@@ -437,7 +437,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
 	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
-	Hierarchy::make_available(MistakeAction_iname);
+	Hierarchy::make_available(Produce::tree(), MistakeAction_iname);
 }
 
 @h Single word optimisation.

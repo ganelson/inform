@@ -57,6 +57,7 @@ INWEBX = ../inweb/Tangled/inweb
 {module} INDEX index inform7/index-module
 {module} MULTIMEDIA multimedia inform7/multimedia-module
 {module} INTER inter inter/inter-module
+{module} BUILDING building inter/building-module
 {module} CODEGEN codegen inter/codegen-module
 
 # First, the tools we need to make, using the same declaration notation.
@@ -84,6 +85,7 @@ INWEBX = ../inweb/Tangled/inweb
 {dep} INFORM7 on MULTIMEDIA
 {dep} INFORM7 on INDEX
 {dep} INFORM7 on INTER
+{dep} INFORM7 on BUILDING
 {dep} INFORM7 on CODEGEN
 
 {tool} INPOLICY inpolicy inpolicy
@@ -95,6 +97,7 @@ INWEBX = ../inweb/Tangled/inweb
 {tool} INTERTOOL inter inter
 {dep} INTERTOOL on FOUNDATION
 {dep} INTERTOOL on INTER
+{dep} INTERTOOL on BUILDING
 {dep} INTERTOOL on CODEGEN
 
 # Inform 6 is not a web, so we have to give it special treatment:
@@ -114,6 +117,7 @@ INFORM6X = inform6/Tangled/inform6
 #{dep} CORETEST on CORE
 #{dep} CORETEST on INDEX
 #{dep} CORETEST on INTER
+#{dep} CORETEST on BUILDING
 #{dep} CORETEST on CODEGEN
 
 {tool} INFLECTIONSTEST inflections-test inform7/inflections-test
@@ -371,6 +375,7 @@ pages:
 	$(INWEBX) inter -weave-docs -weave-into docs/inter
 	$(INWEBX) inter/inter-module -weave-docs -weave-into docs/inter-module
 	$(INWEBX) inter/codegen-module -weave-docs -weave-into docs/codegen-module
+	$(INWEBX) inter/building-module -weave-docs -weave-into docs/building-module
 	$(INWEBX) srules -weave-docs -weave-into docs/srules
 
 # -----------------------------------------------------------------------------

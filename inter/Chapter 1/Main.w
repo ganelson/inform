@@ -27,6 +27,7 @@ text_stream *pipeline_as_text = NULL;
 int main(int argc, char **argv) {
 	Foundation::start();
 	InterModule::start();
+	BuildingModule::start();
 	CodegenModule::start();
 
 	CommandLine::declare_heading(
@@ -57,6 +58,7 @@ int main(int argc, char **argv) {
 	Main::act();
 
 	InterModule::end();
+	BuildingModule::end();
 	CodegenModule::end();
 	Foundation::end();
 

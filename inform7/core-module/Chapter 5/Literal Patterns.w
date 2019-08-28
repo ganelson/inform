@@ -1317,7 +1317,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Produce::inv_primitive(Produce::opcode(EQ_BIP));
 		Produce::down();
 			Produce::val_symbol(K_value, gprk->x_s);
-			Produce::val_symbol(K_value, Packaging::veneer_symbol(FLOAT_NAN_VSYMB));
+			Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), FLOAT_NAN_VSYMB));
 		Produce::up();
 		Produce::code();
 		Produce::down();

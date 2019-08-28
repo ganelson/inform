@@ -501,7 +501,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 			PUT_TO(T, '_');
 	}
 	Produce::change_translation(prn->prop_iname, T);
-	Hierarchy::make_available(prn->prop_iname);
+	Hierarchy::make_available(Produce::tree(), prn->prop_iname);
 	DISCARD_TEXT(T);
 	prn->translated = TRUE;
 }

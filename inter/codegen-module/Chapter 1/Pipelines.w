@@ -412,3 +412,8 @@ void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) 
 
 	CodeGen::MergeTemplate::guard(Inter::Defn::verify_children_inner(P));
 }
+
+inter_symbol *CodeGen::Pipeline::uks(void) {
+	if (unchecked_kind_symbol == NULL) internal_error("no unchecked kind symbol");
+	return unchecked_kind_symbol;
+}

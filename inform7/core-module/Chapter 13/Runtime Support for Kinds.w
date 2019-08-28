@@ -1041,7 +1041,7 @@ void Kinds::RunTime::emit(kind *K) {
 	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
 	if (K == K_object) {
 		Produce::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
-		Hierarchy::make_available(Kinds::RunTime::iname(K));
+		Hierarchy::make_available(Produce::tree(), Kinds::RunTime::iname(K));
 	}
 }
 
@@ -1058,7 +1058,7 @@ void Kinds::RunTime::kind_declarations(void) {
 
 void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
 	Emit::named_numeric_constant(name, (inter_t) val);
-	Hierarchy::make_available(name);
+	Hierarchy::make_available(Produce::tree(), name);
 }
 
 void Kinds::RunTime::compile_instance_counts(void) {
@@ -1074,7 +1074,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 			}
 			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, Emit::main_render_unique(Produce::main_scope(), ICN), Kinds::Behaviour::package(K));
-			Hierarchy::make_available(iname);
+			Hierarchy::make_available(Produce::tree(), iname);
 			DISCARD_TEXT(ICN);
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
 		}

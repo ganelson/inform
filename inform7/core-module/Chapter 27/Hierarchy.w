@@ -5,7 +5,7 @@
 @e BOGUS_HAP from 0
 
 =
-void Hierarchy::establish(void) {
+void Hierarchy::establish(inter_tree *I) {
 	@<Establish basics@>;
 	@<Establish modules@>;
 	@<Establish actions@>;
@@ -67,7 +67,7 @@ void Hierarchy::establish(void) {
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
 
-	location_requirement generic_basics = HierarchyLocations::generic_submodule(basics);
+	location_requirement generic_basics = HierarchyLocations::generic_submodule(I, basics);
 	HierarchyLocations::con(NULL_HL, I"NULL", Translation::same(), generic_basics);
 	HierarchyLocations::con(WORD_HIGHBIT_HL, I"WORD_HIGHBIT", Translation::same(), generic_basics);
 	HierarchyLocations::con(WORD_NEXTTOHIGHBIT_HL, I"WORD_NEXTTOHIGHBIT", Translation::same(), generic_basics);
@@ -84,12 +84,12 @@ void Hierarchy::establish(void) {
 	HierarchyLocations::con(NO_TEST_SCENARIOS_HL, I"NO_TEST_SCENARIOS", Translation::same(), generic_basics);
 	HierarchyLocations::con(MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 
-	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(basics);
+	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(I, basics);
 	HierarchyLocations::con(CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(MAX_FRAME_SIZE_NEEDED_HL, I"MAX_FRAME_SIZE_NEEDED", Translation::same(), synoptic_basics);
 	HierarchyLocations::con(RNG_SEED_AT_START_OF_PLAY_HL, I"RNG_SEED_AT_START_OF_PLAY", Translation::same(), synoptic_basics);
 
-	location_requirement veneer = HierarchyLocations::this_package(Packaging::veneer());
+	location_requirement veneer = HierarchyLocations::this_package(Packaging::veneer(I));
 	HierarchyLocations::con(SELF_HL, I"self", Translation::same(), veneer);
 	HierarchyLocations::con(DEBUG_HL, I"DEBUG", Translation::same(), veneer);
 	HierarchyLocations::con(TARGET_ZCODE_HL, I"TARGET_ZCODE", Translation::same(), veneer);
@@ -152,7 +152,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::package(REPORT_RB_HL, I"report_rb", I"_rulebook", in_action);
 		HierarchyLocations::func(ACTION_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_action);
 
-	location_requirement synoptic_actions = HierarchyLocations::synoptic_submodule(actions);
+	location_requirement synoptic_actions = HierarchyLocations::synoptic_submodule(I, actions);
 	HierarchyLocations::con(ACTIONCODING_HL, I"ActionCoding", Translation::same(), synoptic_actions);
 	HierarchyLocations::con(ACTIONDATA_HL, I"ActionData", Translation::same(), synoptic_actions);
 	HierarchyLocations::con(ACTIONHAPPENED_HL, I"ActionHappened", Translation::same(), synoptic_actions);
@@ -193,7 +193,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::package(AFTER_RB_HL, I"after_rb", I"_rulebook", in_activity);
 		HierarchyLocations::func(ACTIVITY_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_activity);
 
-	location_requirement synoptic_activities = HierarchyLocations::synoptic_submodule(activities);
+	location_requirement synoptic_activities = HierarchyLocations::synoptic_submodule(I, activities);
 	HierarchyLocations::con(ACTIVITY_AFTER_RULEBOOKS_HL, I"Activity_after_rulebooks", Translation::same(), synoptic_activities);
 	HierarchyLocations::con(ACTIVITY_ATB_RULEBOOKS_HL, I"Activity_atb_rulebooks", Translation::same(), synoptic_activities);
 	HierarchyLocations::con(ACTIVITY_BEFORE_RULEBOOKS_HL, I"Activity_before_rulebooks", Translation::same(), synoptic_activities);
@@ -240,7 +240,7 @@ void Hierarchy::establish(void) {
 @<Establish bibliographic@> =
 	submodule_identity *bibliographic = Packaging::register_submodule(I"bibliographic");
 
-	location_requirement synoptic_biblio = HierarchyLocations::synoptic_submodule(bibliographic);
+	location_requirement synoptic_biblio = HierarchyLocations::synoptic_submodule(I, bibliographic);
 	HierarchyLocations::con(UUID_ARRAY_HL, I"UUID_ARRAY", Translation::same(), synoptic_biblio);
 	HierarchyLocations::datum(STORY_HL, I"Story_datum", Translation::to(I"Story"), synoptic_biblio);
 	HierarchyLocations::datum(HEADLINE_HL, I"Headline_datum", Translation::to(I"Headline"), synoptic_biblio);
@@ -268,7 +268,7 @@ void Hierarchy::establish(void) {
 		location_requirement in_past_action_pattern = HierarchyLocations::any_package_of_type(I"_past_action_pattern");
 		HierarchyLocations::func(PAP_FN_HL, I"pap_fn", Translation::generate(I"PAPR"), in_past_action_pattern);
 
-	location_requirement synoptic_chronology = HierarchyLocations::synoptic_submodule(chronology);
+	location_requirement synoptic_chronology = HierarchyLocations::synoptic_submodule(I, chronology);
 	HierarchyLocations::con(TIMEDEVENTSTABLE_HL, I"TimedEventsTable", Translation::same(), synoptic_chronology);
 	HierarchyLocations::con(TIMEDEVENTTIMESTABLE_HL, I"TimedEventTimesTable", Translation::same(), synoptic_chronology);
 	HierarchyLocations::con(PASTACTIONSI6ROUTINES_HL, I"PastActionsI6Routines", Translation::same(), synoptic_chronology);
@@ -296,7 +296,7 @@ void Hierarchy::establish(void) {
 @<Establish conjugations@> =
 	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
 
-	location_requirement generic_conjugations = HierarchyLocations::generic_submodule(conjugations);
+	location_requirement generic_conjugations = HierarchyLocations::generic_submodule(I, conjugations);
 	HierarchyLocations::con(CV_MEANING_HL, I"CV_MEANING", Translation::same(), generic_conjugations);
 	HierarchyLocations::con(CV_MODAL_HL, I"CV_MODAL", Translation::same(), generic_conjugations);
 	HierarchyLocations::con(CV_NEG_HL, I"CV_NEG", Translation::same(), generic_conjugations);
@@ -337,7 +337,7 @@ void Hierarchy::establish(void) {
 @<Establish extensions@> =
 	submodule_identity *extensions = Packaging::register_submodule(I"extensions");
 
-	location_requirement synoptic_extensions = HierarchyLocations::synoptic_submodule(extensions);
+	location_requirement synoptic_extensions = HierarchyLocations::synoptic_submodule(I, extensions);
 	HierarchyLocations::func(SHOWEXTENSIONVERSIONS_HL, I"showextensionversions_fn", Translation::to(I"ShowExtensionVersions"), synoptic_extensions);
 	HierarchyLocations::func(SHOWFULLEXTENSIONVERSIONS_HL, I"showfullextensionversions_fn", Translation::to(I"ShowFullExtensionVersions"), synoptic_extensions);
 	HierarchyLocations::func(SHOWONEEXTENSION_HL, I"showoneextension_fn", Translation::to(I"ShowOneExtension"), synoptic_extensions);
@@ -443,7 +443,7 @@ void Hierarchy::establish(void) {
 		location_requirement in_slash_token = HierarchyLocations::any_package_of_type(I"_slash_token");
 		HierarchyLocations::func(SLASH_FN_HL, I"slash_fn", Translation::generate(I"SlashGPR"), in_slash_token);
 
-	location_requirement synoptic_grammar = HierarchyLocations::synoptic_submodule(grammar);
+	location_requirement synoptic_grammar = HierarchyLocations::synoptic_submodule(I, grammar);
 	HierarchyLocations::con(VERB_DIRECTIVE_CREATURE_HL, I"VERB_DIRECTIVE_CREATURE", Translation::same(), synoptic_grammar);
 	HierarchyLocations::con(VERB_DIRECTIVE_DIVIDER_HL, I"VERB_DIRECTIVE_DIVIDER", Translation::same(), synoptic_grammar);
 	HierarchyLocations::con(VERB_DIRECTIVE_HELD_HL, I"VERB_DIRECTIVE_HELD", Translation::same(), synoptic_grammar);
@@ -516,7 +516,7 @@ void Hierarchy::establish(void) {
 @<Establish int-fiction@> =
 	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
 
-	location_requirement synoptic_IF = HierarchyLocations::synoptic_submodule(interactive_fiction);
+	location_requirement synoptic_IF = HierarchyLocations::synoptic_submodule(I, interactive_fiction);
 	HierarchyLocations::con(DEFAULT_SCORING_SETTING_HL, I"DEFAULT_SCORING_SETTING", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(INITIAL_MAX_SCORE_HL, I"INITIAL_MAX_SCORE", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(NO_DIRECTIONS_HL, I"No_Directions", Translation::same(), synoptic_IF);
@@ -586,7 +586,7 @@ void Hierarchy::establish(void) {
 @<Establish kinds@> =
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
 
-	location_requirement generic_kinds = HierarchyLocations::generic_submodule(kinds);
+	location_requirement generic_kinds = HierarchyLocations::generic_submodule(I, kinds);
 	HierarchyLocations::con(UNKNOWN_TY_HL, I"UNKNOWN_TY", Translation::same(), generic_kinds);
 	HierarchyLocations::con(K_UNCHECKED_HL, I"K_unchecked", Translation::same(), generic_kinds);
 	HierarchyLocations::con(K_UNCHECKED_FUNCTION_HL, I"K_unchecked_function", Translation::same(), generic_kinds);
@@ -627,7 +627,7 @@ void Hierarchy::establish(void) {
 			location_requirement in_kind_inline_property = HierarchyLocations::any_package_of_type(I"_inline_property");
 			HierarchyLocations::con(KIND_INLINE_PROPERTY_HL, I"inline", Translation::uniqued(), in_kind_inline_property);
 
-	location_requirement synoptic_kinds = HierarchyLocations::synoptic_submodule(kinds);
+	location_requirement synoptic_kinds = HierarchyLocations::synoptic_submodule(I, kinds);
 	HierarchyLocations::con(BASE_KIND_HWM_HL, I"BASE_KIND_HWM", Translation::same(), synoptic_kinds);
 	HierarchyLocations::func(DEFAULTVALUEOFKOV_HL, I"defaultvalue_fn", Translation::to(I"DefaultValueOfKOV"), synoptic_kinds);
 	HierarchyLocations::func(DEFAULTVALUEFINDER_HL, I"defaultvaluefinder_fn", Translation::to(I"DefaultValueFinder"), synoptic_kinds);
@@ -677,7 +677,7 @@ void Hierarchy::establish(void) {
 			location_requirement in_request = HierarchyLocations::any_package_of_type(I"_request");
 			HierarchyLocations::func(PHRASE_FN_HL, I"phrase_fn", Translation::uniqued(), in_request);
 
-	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(phrases);
+	location_requirement synoptic_phrases = HierarchyLocations::synoptic_submodule(I, phrases);
 	HierarchyLocations::ap(LABEL_STORAGES_HAP, synoptic_phrases, I"label_storage", I"_label_storage");
 		location_requirement in_label_storage = HierarchyLocations::any_package_of_type(I"_label_storage");
 		HierarchyLocations::con(LABEL_ASSOCIATED_STORAGE_HL, I"label_associated_storage", Translation::uniqued(), in_label_storage);
@@ -701,7 +701,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::con(PROPERTY_HL, I"P", Translation::same(), in_property);
 		HierarchyLocations::func(EITHER_OR_GPR_FN_HL, I"either_or_GPR_fn", Translation::generate(I"PRN_PN"), in_property);
 
-	location_requirement synoptic_props = HierarchyLocations::synoptic_submodule(properties);
+	location_requirement synoptic_props = HierarchyLocations::synoptic_submodule(I, properties);
 	HierarchyLocations::con(CCOUNT_PROPERTY_HL, I"CCOUNT_PROPERTY", Translation::same(), synoptic_props);
 
 @h Relations.
@@ -746,7 +746,7 @@ void Hierarchy::establish(void) {
 @<Establish relations@> =
 	submodule_identity *relations = Packaging::register_submodule(I"relations");
 
-	location_requirement generic_rels = HierarchyLocations::generic_submodule(relations);
+	location_requirement generic_rels = HierarchyLocations::generic_submodule(I, relations);
 	HierarchyLocations::con(RELS_ASSERT_FALSE_HL, I"RELS_ASSERT_FALSE", Translation::same(), generic_rels);
 	HierarchyLocations::con(RELS_ASSERT_TRUE_HL, I"RELS_ASSERT_TRUE", Translation::same(), generic_rels);
 	HierarchyLocations::con(RELS_EQUIVALENCE_HL, I"RELS_EQUIVALENCE", Translation::same(), generic_rels);
@@ -781,7 +781,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(GUARD_MAKE_FALSE_INAME_HL, I"guard_make_false_iname", Translation::uniqued(), in_relation);
 		HierarchyLocations::func(RELATION_FN_HL, I"relation_fn", Translation::uniqued(), in_relation);
 
-	location_requirement synoptic_rels = HierarchyLocations::synoptic_submodule(relations);
+	location_requirement synoptic_rels = HierarchyLocations::synoptic_submodule(I, relations);
 	HierarchyLocations::func(CREATEDYNAMICRELATIONS_HL, I"creator_fn", Translation::to(I"CreateDynamicRelations"), synoptic_rels);
 	HierarchyLocations::con(CCOUNT_BINARY_PREDICATE_HL, I"CCOUNT_BINARY_PREDICATE", Translation::same(), synoptic_rels);
 	HierarchyLocations::func(ITERATERELATIONS_HL, I"iterator_fn", Translation::to(I"IterateRelations"), synoptic_rels);
@@ -808,7 +808,7 @@ void Hierarchy::establish(void) {
 @<Establish rulebooks@> =
 	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
 
-	location_requirement generic_rulebooks = HierarchyLocations::generic_submodule(rulebooks);
+	location_requirement generic_rulebooks = HierarchyLocations::generic_submodule(I, rulebooks);
 	HierarchyLocations::func(EMPTY_RULEBOOK_INAME_HL, I"empty_fn", Translation::to(I"EMPTY_RULEBOOK"), generic_rulebooks);
 
 	location_requirement local_rulebooks = HierarchyLocations::local_submodule(rulebooks);
@@ -822,7 +822,7 @@ void Hierarchy::establish(void) {
 		HierarchyLocations::func(RUN_FN_HL, I"run_fn", Translation::uniqued(), in_rulebook);
 		HierarchyLocations::func(RULEBOOK_STV_CREATOR_FN_HL, I"stv_creator_fn", Translation::uniqued(), in_rulebook);
 
-	location_requirement synoptic_rulebooks = HierarchyLocations::synoptic_submodule(rulebooks);
+	location_requirement synoptic_rulebooks = HierarchyLocations::synoptic_submodule(I, rulebooks);
 	HierarchyLocations::con(NUMBER_RULEBOOKS_CREATED_HL, I"NUMBER_RULEBOOKS_CREATED", Translation::same(), synoptic_rulebooks);
 	HierarchyLocations::con(RULEBOOK_VAR_CREATORS_HL, I"rulebook_var_creators", Translation::same(), synoptic_rulebooks);
 	HierarchyLocations::func(SLOW_LOOKUP_HL, I"slow_lookup_fn", Translation::to(I"MStack_GetRBVarCreator"), synoptic_rulebooks);
@@ -862,7 +862,7 @@ void Hierarchy::establish(void) {
 			HierarchyLocations::con(AS_BLOCK_CONSTANT_HL, I"as_block_constant", Translation::uniqued(), in_response);
 			HierarchyLocations::func(LAUNCHER_HL, I"launcher", Translation::uniqued(), in_response);
 
-	location_requirement synoptic_rules = HierarchyLocations::synoptic_submodule(rules);
+	location_requirement synoptic_rules = HierarchyLocations::synoptic_submodule(I, rules);
 	HierarchyLocations::con(RESPONSEDIVISIONS_HL, I"ResponseDivisions", Translation::same(), synoptic_rules);
 	HierarchyLocations::func(RULEPRINTINGRULE_HL, I"print_fn", Translation::to(I"RulePrintingRule"), synoptic_rules);
 
@@ -889,7 +889,7 @@ void Hierarchy::establish(void) {
 			location_requirement in_table_column = HierarchyLocations::any_package_of_type(I"_table_column");
 			HierarchyLocations::con(COLUMN_DATA_HL, I"column_data", Translation::uniqued(), in_table_column);
 
-	location_requirement synoptic_tables = HierarchyLocations::synoptic_submodule(tables);
+	location_requirement synoptic_tables = HierarchyLocations::synoptic_submodule(I, tables);
 	HierarchyLocations::con(TB_BLANKS_HL, I"TB_Blanks", Translation::same(), synoptic_tables);
 	HierarchyLocations::func(TC_KOV_HL, I"weak_kind_ID_of_column_entry_fn", Translation::to(I"TC_KOV"), synoptic_tables);
 
@@ -1566,69 +1566,69 @@ inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
 
 =
 inter_name *Hierarchy::find(int id) {
-	return HierarchyLocations::find(id);
+	return HierarchyLocations::find(Produce::tree(), id);
 }
 
-void Hierarchy::make_available(inter_name *iname) {
+void Hierarchy::make_available(inter_tree *I, inter_name *iname) {
 	text_stream *ma_as = Produce::get_translation(iname);
 	if (Str::len(ma_as) == 0) ma_as = Emit::to_text(iname);
-	PackageTypes::get(I"_linkage");
+	PackageTypes::get(I, I"_linkage");
 	inter_symbol *S = InterNames::to_symbol(iname);
 	Inter::Connectors::socket(Produce::tree(), ma_as, S);
 }
 
 package_request *Hierarchy::package(compilation_module *C, int hap_id) {
-	return HierarchyLocations::attach_new_package(C, NULL, hap_id);
+	return HierarchyLocations::attach_new_package(Produce::tree(), C, NULL, hap_id);
 }
 
 package_request *Hierarchy::synoptic_package(int hap_id) {
-	return HierarchyLocations::attach_new_package(NULL, NULL, hap_id);
+	return HierarchyLocations::attach_new_package(Produce::tree(), NULL, NULL, hap_id);
 }
 
 package_request *Hierarchy::local_package(int hap_id) {
-	return HierarchyLocations::attach_new_package(Modules::find(current_sentence), NULL, hap_id);
+	return HierarchyLocations::attach_new_package(Produce::tree(), Modules::find(current_sentence), NULL, hap_id);
 }
 
 package_request *Hierarchy::package_in_enclosure(int hap_id) {
-	return HierarchyLocations::attach_new_package(NULL, Packaging::enclosure(), hap_id);
+	return HierarchyLocations::attach_new_package(Produce::tree(), NULL, Packaging::enclosure(), hap_id);
 }
 
 package_request *Hierarchy::package_within(int hap_id, package_request *super) {
-	return HierarchyLocations::attach_new_package(NULL, super, hap_id);
+	return HierarchyLocations::attach_new_package(Produce::tree(), NULL, super, hap_id);
 }
 
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(Produce::tree(), id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_iname_with_specific_name(int id, text_stream *name, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, name);
+	return HierarchyLocations::find_in_package(Produce::tree(), id, P, EMPTY_WORDING, NULL, -1, name);
 }
 
 inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_request *P) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, derive_from, -1, NULL);
+	return HierarchyLocations::find_in_package(Produce::tree(), id, P, EMPTY_WORDING, derive_from, -1, NULL);
 }
 
 inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
-	return HierarchyLocations::find_in_package(id, P, EMPTY_WORDING, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(Produce::tree(), id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
-	return HierarchyLocations::find_in_package(id, P, W, NULL, -1, NULL);
+	return HierarchyLocations::find_in_package(Produce::tree(), id, P, W, NULL, -1, NULL);
 }
 
 inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P, wording W, int x) {
-	inter_name *iname = HierarchyLocations::find_in_package(id, P, W, NULL, x, NULL);
-	Hierarchy::make_available(iname);
+	inter_name *iname = HierarchyLocations::find_in_package(Produce::tree(), id, P, W, NULL, x, NULL);
+	Hierarchy::make_available(Produce::tree(), iname);
 	return iname;
 }
 
 package_request *Hierarchy::make_package_in(int id, package_request *P) {
-	return HierarchyLocations::package_in_package(id, P);
+	return HierarchyLocations::package_in_package(Produce::tree(), id, P);
 }
 
 void Hierarchy::markup(package_request *R, int hm_id, text_stream *value) {
-	HierarchyLocations::markup(R, hm_id, value);
+	HierarchyLocations::markup(Produce::tree(), R, hm_id, value);
 }
 
 void Hierarchy::markup_wording(package_request *R, int hm_id, wording W) {

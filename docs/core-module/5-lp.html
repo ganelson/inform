@@ -1667,7 +1667,7 @@ if we fail to make a match.
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">();</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">gprk</span><span class="plain">-&gt;</span><span class="identifier">x_s</span><span class="plain">);</span>
-                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Packaging::veneer_symbol</span><span class="plain">(</span><span class="identifier">FLOAT_NAN_VSYMB</span><span class="plain">));</span>
+                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Packaging::veneer_symbol</span><span class="plain">(</span><span class="identifier">Produce::tree</span><span class="plain">(), </span><span class="identifier">FLOAT_NAN_VSYMB</span><span class="plain">));</span>
             <span class="identifier">Produce::up</span><span class="plain">();</span>
             <span class="identifier">Produce::code</span><span class="plain">();</span>
             <span class="identifier">Produce::down</span><span class="plain">();</span>

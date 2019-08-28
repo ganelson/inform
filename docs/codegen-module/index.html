@@ -8,12 +8,12 @@
 
 	<body>
 		<ul class="crumbs"><li><a href="../webs.html">&#9733;</a></li><li><b>codegen  </b></li></ul>
-		<p class="purpose">An embryonic code generator for I6 code.</p>
+		<p class="purpose">The code generation pipeline.</p>
 		<hr>
 		<ul class="chapterlist">
 			<li>
 				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Setting Up</span></p>
-				<p><span class="purpose">Loading this module.</span></p>
+				<p><span class="purpose"></span></p>
 				<ul class="sectionlist">
 					<li>
 						<p><a href="1-cm.html"><spon class="sectiontitle">Codegen Module</span></a> -
@@ -76,103 +76,53 @@
 				</ul>
 			</li>
 			<li>
-				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Inform 6 to Inter</span></p>
+				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Inter to Final Code</span></p>
 				<p><span class="purpose"></span></p>
 				<ul class="sectionlist">
 					<li>
-						<p><a href="3-ip.html"><spon class="sectiontitle">Inter Primitives</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-tv.html"><spon class="sectiontitle">The Veneer</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-is.html"><spon class="sectiontitle">Inter Schemas</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-eis.html"><spon class="sectiontitle">Emitting Inter Schemas</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-hl.html"><spon class="sectiontitle">Hierarchy Locations</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-trn.html"><spon class="sectiontitle">Translation</span></a> -
-						<span class="purpose">A way to express rules for how to translate names from the Inter namespace into the target language's namespace.</span></p>
-					</li>
-					<li>
-						<p><a href="3-pck.html"><spon class="sectiontitle">Packaging</span></a> -
-						<span class="purpose">To manage requests to build Inter packages, and then to generate inames within them; and to create modules and submodules.</span></p>
-					</li>
-					<li>
-						<p><a href="3-pt.html"><spon class="sectiontitle">Package Types</span></a> -
-						<span class="purpose">To manage the different types of packages emitted by Inform.</span></p>
-					</li>
-					<li>
-						<p><a href="3-in.html"><spon class="sectiontitle">Inter Namespace</span></a> -
-						<span class="purpose">To manage identifiers, which have names and positions in the Inter hierarchy.</span></p>
-					</li>
-					<li>
-						<p><a href="3-pi.html"><spon class="sectiontitle">Producing Inter</span></a> -
-						<span class="purpose"></span></p>
-					</li>
-					<li>
-						<p><a href="3-vh.html"><spon class="sectiontitle">Value Holsters</span></a> -
-						<span class="purpose">To manage requests for compilation to Inter.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Inter to Final Code</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="4-cg.html"><spon class="sectiontitle">Code Generation</span></a> -
+						<p><a href="3-cg.html"><spon class="sectiontitle">Code Generation</span></a> -
 						<span class="purpose">To generate final code from intermediate code.</span></p>
 					</li>
 					<li>
-						<p><a href="4-fc.html"><spon class="sectiontitle">Frame Control</span></a> -
+						<p><a href="3-fc.html"><spon class="sectiontitle">Frame Control</span></a> -
 						<span class="purpose">To manage the final-code process, at the frame level.</span></p>
 					</li>
 					<li>
-						<p><a href="4-cal.html"><spon class="sectiontitle">Constants and Literals</span></a> -
+						<p><a href="3-cal.html"><spon class="sectiontitle">Constants and Literals</span></a> -
 						<span class="purpose">To generate final code for constants, including arrays.</span></p>
 					</li>
 					<li>
-						<p><a href="4-iap.html"><spon class="sectiontitle">Instances and Properties</span></a> -
+						<p><a href="3-iap.html"><spon class="sectiontitle">Instances and Properties</span></a> -
 						<span class="purpose">To generate the initial state of storage for instances and their properties, and all associated metadata.</span></p>
 					</li>
 					<li>
-						<p><a href="4-vrb.html"><spon class="sectiontitle">Variables</span></a> -
+						<p><a href="3-vrb.html"><spon class="sectiontitle">Variables</span></a> -
 						<span class="purpose">To generate the initial state of storage for variables.</span></p>
 					</li>
 				</ul>
 			</li>
 			<li>
-				<p><a name="5"></a><spon class="chaptertitle">Chapter 5: Final Code</span></p>
+				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Final Code</span></p>
 				<p><span class="purpose"></span></p>
 				<ul class="sectionlist">
 					<li>
-						<p><a href="5-ft.html"><spon class="sectiontitle">Final Targets</span></a> -
+						<p><a href="4-ft.html"><spon class="sectiontitle">Final Targets</span></a> -
 						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
 					</li>
 					<li>
-						<p><a href="5-fti.html"><spon class="sectiontitle">Final Textual Inter</span></a> -
+						<p><a href="4-fti.html"><spon class="sectiontitle">Final Textual Inter</span></a> -
 						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
 					</li>
 					<li>
-						<p><a href="5-fbi.html"><spon class="sectiontitle">Final Binary Inter</span></a> -
+						<p><a href="4-fbi.html"><spon class="sectiontitle">Final Binary Inter</span></a> -
 						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
 					</li>
 					<li>
-						<p><a href="5-fi.html"><spon class="sectiontitle">Final Inventory</span></a> -
+						<p><a href="4-fi.html"><spon class="sectiontitle">Final Inventory</span></a> -
 						<span class="purpose">To print a summary of the contents of a repository.</span></p>
 					</li>
 					<li>
-						<p><a href="5-gi6.html"><spon class="sectiontitle">Generating Inform 6</span></a> -
+						<p><a href="4-gi6.html"><spon class="sectiontitle">Generating Inform 6</span></a> -
 						<span class="purpose">To generate I6 code from intermediate code.</span></p>
 					</li>
 				</ul>

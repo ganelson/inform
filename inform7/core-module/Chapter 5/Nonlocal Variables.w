@@ -306,7 +306,7 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 	}  else if (nlv->lvalue_nve.use_own_iname) {
 		Produce::val_iname(K_value, NonlocalVariables::iname(nlv));
 	} else if (nlv->lvalue_nve.nothing_form) {
-		Produce::val_symbol(K_value, Packaging::veneer_symbol(NOTHING_VSYMB));
+		Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), NOTHING_VSYMB));
 	} else {
 		internal_error("improperly formed nve");
 	}

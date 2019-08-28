@@ -437,7 +437,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
 		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
-		Hierarchy::make_available(an->an_iname);
+		Hierarchy::make_available(Produce::tree(), an->an_iname);
 		Produce::annotate_i(an->an_iname, ACTION_IANN, 1);
 	}
 	return an->an_iname;
@@ -446,7 +446,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 inter_name *PL::Actions::Sub(action_name *an) {
 	if (an->an_routine_iname == NULL) {
 		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, PL::Actions::base_iname(an), an->an_package);
-		Hierarchy::make_available(an->an_routine_iname);
+		Hierarchy::make_available(Produce::tree(), an->an_routine_iname);
 	}
 	return an->an_routine_iname;
 }
