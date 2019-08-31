@@ -191,12 +191,12 @@ so we terminate with that if making true or false.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain">) {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NOT_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">asch</span><span class="element">.schema</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="element">.pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="element">.pt1</span><span class="plain">), </span><span class="identifier">with_semicolon</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain">) {</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 

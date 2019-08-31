@@ -404,7 +404,7 @@ of brackets never does any harm; so we always compile one.
                     <span class="identifier">PL::Actions::Patterns::compile_pattern_match</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, *</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1); </span>    <span class="comment">purely for problem recovery</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1); </span>    <span class="comment">purely for problem recovery</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
                 <span class="plain">}</span>
@@ -431,10 +431,10 @@ of brackets never does any harm; so we always compile one.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != 1)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled malformed LOGICAL_NOT_NT"</span><span class="plain">);</span>
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">NOT_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NOT_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -458,12 +458,12 @@ of brackets never does any harm; so we always compile one.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_operand</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">right_operand</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled CONDITION/AND with LHS operands"</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">LOGICAL_AND_NT</span><span class="plain">)) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">LOGICAL_OR_NT</span><span class="plain">)) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">OR_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">LOGICAL_AND_NT</span><span class="plain">)) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">AND_BIP</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">LOGICAL_OR_NT</span><span class="plain">)) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OR_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">left_operand</span><span class="plain">);</span>
             <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">right_operand</span><span class="plain">);</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -484,14 +484,14 @@ type-checker won't allow these specifications to be compiled anywhere else.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">BITWISEAND_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">BITWISEAND_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">po</span><span class="plain"> = </span><span class="functiontext">LocalVariables::phrase_options</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">po</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no phrase options exist in this frame"</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">po_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">po</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
-            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">po_s</span><span class="plain">);</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">phrase_option_ANNOT</span><span class="plain">));</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">po_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">phrase_option_ANNOT</span><span class="plain">));</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>

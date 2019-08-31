@@ -101,8 +101,8 @@ routine is a property value, |true| otherwise. That convention is unhelpful
 to us, so we end our routine with code which certainly performs a return.
 
 @<Compile a terminal return statement@> =
-	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
 	kind *K = Frames::get_kind_returned();
 	if (K) {
 		if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING,
@@ -110,12 +110,12 @@ to us, so we end our routine with code which certainly performs a return.
 			Problems::Issue::sentence_problem(_p_(PM_DefaultDecideFails),
 				"it's not possible to decide such a value",
 				"so this can't be allowed.");
-			Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		}
 	} else {
-		Produce::val(K_number, LITERAL_IVAL, 0); /* that is, return "false" */
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0); /* that is, return "false" */
 	}
-	Produce::up();
+	Produce::up(Emit::tree());
 
 @ The name of our I6 routine depends not only on the phrase but also on the
 request made for its compilation -- this enables the text version of a
@@ -162,7 +162,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	}
 	statement_count++;
 	@<Compile a comment about this line@>;
-	int L = Produce::level();
+	int L = Produce::level(Emit::tree());
 	@<Compile the head@>;
 	@<Compile the midriff@>;
 	@<Compile the tail@>;
@@ -199,11 +199,11 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 			}
 		}
 	}
-	Produce::inv_primitive(Produce::opcode(STORE_BIP)); /* warn the paragraph breaker: this will print */
-	Produce::down();
-		Produce::ref_iname(K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(K_number, LITERAL_IVAL, 1);
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), STORE_BIP); /* warn the paragraph breaker: this will print */
+	Produce::down(Emit::tree());
+		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+	Produce::up(Emit::tree());
 	Routines::Compile::verify_say_node_list(p->down);
 
 @<Compile the midriff@> =
@@ -331,26 +331,26 @@ henceforth to be true, so we simply compile empty code in that case.
 	Rulebooks::Outcomes::compile_outcome(nrbo);
 
 @<Compile an if midriff@> =
-	if (p->down->next->next) Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	else Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
+	if (p->down->next->next) Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	else Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
 		current_sentence = to_compile;
 		Routines::Compile::line(to_compile, FALSE, INTER_VAL_VHMODE);
 
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			Frames::Blocks::open_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
 		if (p->down->next->next) {
-		Produce::up();
-		Produce::code();
-		Produce::down();
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			Frames::Blocks::divide_code_block();
 			statement_count = Routines::Compile::code_block(statement_count, p->down->next->next, FALSE);
 		}
 			Frames::Blocks::close_code_block();
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @<Compile a switch midriff@> =
 	current_sentence = to_compile;
@@ -374,17 +374,17 @@ henceforth to be true, so we simply compile empty code in that case.
 	if (pointery) {
 		lvar = LocalVariables::add_switch_value(K_value);
 		sw_v = LocalVariables::declare_this(lvar, FALSE, 7);
-		Produce::inv_primitive(Produce::opcode(STORE_BIP));
-		Produce::down();
-			Produce::ref_symbol(K_value, sw_v);
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, sw_v);
 			Specifications::Compiler::emit_as_val(switch_kind, val);
-		Produce::up();
+		Produce::up(Emit::tree());
 	} else {
-		Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
-		Produce::down();
+		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_as_val(switch_kind, val);
-			Produce::code();
-			Produce::down();
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
 	}
 
 			int c = 0;
@@ -435,12 +435,12 @@ henceforth to be true, so we simply compile empty code in that case.
 			}
 
 	if (pointery) {
-		while (downs-- > 0) Produce::up();
+		while (downs-- > 0) Produce::up(Emit::tree());
 		Frames::Blocks::close_code_block();
 	} else {
-		Produce::up();
+		Produce::up(Emit::tree());
 		Frames::Blocks::close_code_block();
-	Produce::up();
+	Produce::up(Emit::tree());
 	}
 
 	if (problem_count == 0)
@@ -462,44 +462,44 @@ henceforth to be true, so we simply compile empty code in that case.
 		}
 
 @<Handle a non-pointery case@> =
-	Produce::inv_primitive(Produce::opcode(CASE_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), CASE_BIP);
+	Produce::down(Emit::tree());
 		Specifications::Compiler::emit_as_val(switch_kind, case_spec);
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @<Handle a non-pointery default@> =
-	Produce::inv_primitive(Produce::opcode(DEFAULT_BIP));
-	Produce::down();
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
+	Produce::down(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @<Handle a pointery case@> =
 	int final_flag = FALSE;
 	if (ow_node->next == NULL) final_flag = TRUE;
 
-	if (final_flag) Produce::inv_primitive(Produce::opcode(IF_BIP));
-	else Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
+	if (final_flag) Produce::inv_primitive(Emit::tree(), IF_BIP);
+	else Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
 		LocalVariables::set_kind(lvar, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);
 		pcalc_prop *prop = Calculus::Propositions::Abstract::to_set_relation(
 			R_equality, NULL, sw_v, NULL, case_spec);
 		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			statement_count = Routines::Compile::code_block(statement_count, ow_node, FALSE);
 		if (final_flag == FALSE) {
-			Produce::up();
-			Produce::code();
-			Produce::down();
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
 		}
 	downs += 2;
 
@@ -543,7 +543,7 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYL);
 	WRITE_TO(SAYL, ".");
 	JumpLabels::write(SAYL, I"Say");
-	Produce::place_label(Produce::reserve_label(SAYL));
+	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYL));
 	DISCARD_TEXT(SAYL);
 
 	JumpLabels::read_counter(I"Say", TRUE);
@@ -551,18 +551,18 @@ inline definitions for "say if" and similar.
 	TEMPORARY_TEXT(SAYXL);
 	WRITE_TO(SAYXL, ".");
 	JumpLabels::write(SAYXL, I"SayX");
-	Produce::place_label(Produce::reserve_label(SAYXL));
+	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYXL));
 	DISCARD_TEXT(SAYXL);
 
 	JumpLabels::read_counter(I"SayX", TRUE);
 
 @<Compile an instead tail@> =
-	Produce::rtrue();
+	Produce::rtrue(Emit::tree());
 
 @<Compile a loop tail@> =
 	Frames::Blocks::open_code_block();
 	statement_count = Routines::Compile::code_block(statement_count, p->down->next, FALSE);
-	while (Produce::level() > L) Produce::up();
+	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
 	Frames::Blocks::close_code_block();
 
 @ This routine takes the text of a line from a phrase definition, parses it,
@@ -583,7 +583,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 			(ParseTree::get_phrase_invoked(inv)) &&
 			(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
 			(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
-			Produce::inv_call_iname(Hierarchy::find(PARACONTENT_HL));
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
 		ExParser::parse_void_phrase(p);

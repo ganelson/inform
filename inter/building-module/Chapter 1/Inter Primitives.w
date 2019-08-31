@@ -118,7 +118,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 inter_symbol *Primitives::get(inter_tree *I, inter_t bip) {
 	if (I == NULL) internal_error("no tree");
 	if ((bip < 1) || (bip >= MAX_BIPS)) internal_error("bip out of range");
-	return I->opcodes_set[bip];
+	return Site::get_opcode(I, bip);
 }
 
 void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim, text_stream *category) {
@@ -130,7 +130,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	inter_t bip = Primitives::to_bip(I, S);
 	if (bip == 0) internal_error("missing bip");
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
-	I->opcodes_set[bip] = S;
+	Site::set_opcode(I, bip, S);
 	CodeGen::MergeTemplate::guard(E);
 	DISCARD_TEXT(prim_command);
 }
@@ -420,7 +420,7 @@ void Primitives::scan_tree(inter_tree *I) {
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	inter_t bip = Primitives::to_bip(I, prim_name);
-	if (bip) I->opcodes_set[bip] = prim_name;
+	if (bip) Site::set_opcode(I, bip, prim_name);
 }
 
 inter_t Primitives::to_bip(inter_tree *I, inter_symbol *symb) {

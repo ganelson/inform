@@ -115,7 +115,7 @@ void Inter::Packages::set_name(inter_package *Q, inter_package *P, text_stream *
 	if (N == NULL) internal_error("null package name");
 	P->package_name_t = Str::duplicate(N);
 	if ((N) && (Str::eq(P->package_name_t, I"main")))
-		Inter::Tree::set_main_package(Inter::Packages::tree(P), P);
+		Site::set_main_package(Inter::Packages::tree(P), P);
 
 	if (Str::len(N) > 0) Inter::Packages::add_subpackage_name(Q, P);
 }
@@ -170,11 +170,11 @@ inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream
 }
 
 inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stream *S) {
-	return Inter::Packages::search_exhaustively(Inter::Tree::main_package(I), S);
+	return Inter::Packages::search_exhaustively(Site::main_package(I), S);
 }
 
 inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
-	inter_package *main_package = Inter::Tree::main_package(I);
+	inter_package *main_package = Site::main_package_if_it_exists(I);
 	if (main_package) {
 		inter_tree_node *D = Inter::Packages::definition(main_package);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {

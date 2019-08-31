@@ -43,7 +43,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) == 1) break;
 			inter_tree *I = gen->from;
-			if (Inter::Packages::container(P) == Inter::Tree::main_package(I)) {
+			if (Inter::Packages::container(P) == Site::main_package_if_it_exists(I)) {
 				WRITE_TO(STDERR, "Bad constant: %S\n", con_name->symbol_name);
 				internal_error("constant defined in main");
 			}

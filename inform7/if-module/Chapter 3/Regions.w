@@ -341,19 +341,19 @@ void PL::Regions::write_regional_found_in_routines(void) {
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
 			packaging_state save = Routines::begin(iname);
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
-					Produce::inv_call_iname(Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Produce::down();
-						Produce::val_iname(K_object, Hierarchy::find(LOCATION_HL));
-						Produce::val_iname(K_object, Instances::iname(I));
-					Produce::up();
-				Produce::code();
-				Produce::down();
-					Produce::rtrue();
-				Produce::up();
-			Produce::up();
-			Produce::rfalse();
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
+					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
+						Produce::val_iname(Emit::tree(), K_object, Instances::iname(I));
+					Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::rtrue(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+			Produce::rfalse(Emit::tree());
 			Routines::end(save);
 		}
 }

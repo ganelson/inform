@@ -60,10 +60,10 @@ earlier invocation list (in what may be another setting entirely).
             <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">Lexer::word_location</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PUSH_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PUSH_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_unproven</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
                 &lt;<span class="cwebmacro">Compile using run-time resolution to choose between invocations</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
@@ -72,10 +72,10 @@ earlier invocation list (in what may be another setting entirely).
             <span class="plain">}</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PULL_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PULL_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SELF_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -342,26 +342,26 @@ the context of a value.
             &lt;<span class="cwebmacro">Compile code to set the formal parameters in void mode</span> <span class="cwebmacronumber">3.2.3.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to apply the first invocation which is applicable</span> <span class="cwebmacronumber">3.2.3.3</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">TERNARYSEQUENTIAL_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">TERNARYSEQUENTIAL_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditions_tested</span><span class="plain"> = 0;</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">();</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Emit code to set the formal parameters in expression mode</span> <span class="cwebmacronumber">3.2.3.2</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">()) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"formal parameter expression error"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">())) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"formal parameter expression error"</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NC</span><span class="plain"> = 0, </span><span class="identifier">unprov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">prov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Count the applicability conditions</span> <span class="cwebmacronumber">3.2.3.5</span>&gt;<span class="plain">;</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">); </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Think %d unprov %d prov %d"</span><span class="plain">, </span><span class="identifier">NC</span><span class="plain">, </span><span class="identifier">unprov</span><span class="plain">, </span><span class="identifier">prov</span><span class="plain">); </span><span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">); </span><span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unprov</span><span class="plain">) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">OR_BIP</span><span class="plain">)); </span><span class="identifier">Produce::down</span><span class="plain">(); }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unprov</span><span class="plain">) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OR_BIP</span><span class="plain">); </span><span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
                 &lt;<span class="cwebmacro">Compile code to apply the first invocation which is applicable, as expression</span> <span class="cwebmacronumber">3.2.3.4</span>&gt;<span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NC</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prov</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NC</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prov</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unprov</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Compile code for the execution path where no invocations were applicable</span> <span class="cwebmacronumber">3.2.3.6</span>&gt;<span class="plain">;</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">()) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"applicability expression error"</span><span class="plain">);</span>
-                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">())) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"applicability expression error"</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 
@@ -414,10 +414,10 @@ right to left: we want T1 to evaluate first, then T2, and so on.
 
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">N</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;=0; </span><span class="identifier">i</span><span class="plain">--) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">)); </span><span class="identifier">Produce::down</span><span class="plain">(); }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PLUS_BIP</span><span class="plain">); </span><span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
             &lt;<span class="cwebmacro">Compile the actual assignment</span> <span class="cwebmacronumber">3.2.3.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">N</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;0; </span><span class="identifier">i</span><span class="plain">--) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">N</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;0; </span><span class="identifier">i</span><span class="plain">--) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -436,11 +436,11 @@ at run-time; we assign 0 to it for the sake of tidiness.
 
 <pre class="displaydefn">
         <span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::formal_par</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::formal_par</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
                 <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
@@ -451,7 +451,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
                 <span class="functiontext">Specifications::Compiler::emit_to_kind</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">to_be_used_as</span><span class="plain">);</span>
                 <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -510,9 +510,9 @@ no subsequent lines are looked at.
             <span class="identifier">last_inv</span><span class="plain"> = </span><span class="identifier">inv</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> &gt; 0) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                    <span class="identifier">Produce::code</span><span class="plain">();</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             &lt;<span class="cwebmacro">Compile code to apply this invocation if it's applicable</span> <span class="cwebmacronumber">3.2.3.3.1</span>&gt;<span class="character">;</span>
@@ -520,7 +520,7 @@ no subsequent lines are looked at.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_unproven</span><span class="plain">(</span><span class="identifier">last_inv</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Compile code for the execution path where no invocations were applicable</span> <span class="cwebmacronumber">3.2.3.6</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">if_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(); </span><span class="identifier">Produce::up</span><span class="plain">(); </span><span class="identifier">if_depth</span><span class="plain">--; }</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">if_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">if_depth</span><span class="plain">--; }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -579,16 +579,16 @@ no subsequent lines are looked at.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"condition proof error"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
-            <span class="identifier">Produce::code</span><span class="plain">();</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
-        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_HL</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
+        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ARGUMENTTYPEFAILED_HL</span><span class="plain">));</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
             <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain">) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1);</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain">) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1);</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -640,13 +640,13 @@ no subsequent lines are looked at.
             <span class="reserved">tokens_packet</span><span class="plain"> </span><span class="identifier">tokens</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">First construct an arguments packet</span> <span class="cwebmacronumber">3.1.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Substitute the formal parameter variables into the tokens</span> <span class="cwebmacronumber">3.2.3.3.1.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(), </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">ands_made</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()), </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">ands_made</span><span class="plain"> = 0;</span>
             &lt;<span class="cwebmacro">Compile the check on invocation applicability, expression version</span> <span class="cwebmacronumber">3.2.3.4.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile the invocation part, emission version</span> <span class="cwebmacronumber">3.2.3.3.1.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ands_made</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ands_made</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">target</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">or_made</span><span class="plain">) </span><span class="identifier">target</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">()) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"levels wrong"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">())) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"levels wrong"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -685,15 +685,15 @@ no subsequent lines are looked at.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; 0) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Put the condition check here, emission version</span> <span class="cwebmacronumber">3.2.3.3.1.2.1</span>&gt;<span class="plain">;</span>
-                <span class="identifier">Produce::code</span><span class="plain">();</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">if_depth</span><span class="plain">++;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">AND_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Put the condition check here, emission version</span> <span class="cwebmacronumber">3.2.3.3.1.2.1</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">no_conditions_tested</span><span class="plain">++;</span>
@@ -720,14 +720,14 @@ no subsequent lines are looked at.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; 0) {</span>
             <span class="identifier">no_conditions_tested</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_conditions_tested</span><span class="plain"> &lt; </span><span class="identifier">NC</span><span class="plain">) || (</span><span class="identifier">prov</span><span class="plain">)) {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">OR_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">(); </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OR_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">check_against</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_check_to_do</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_against</span><span class="plain">) {</span>
-                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">(); </span><span class="identifier">ands_made</span><span class="plain">++;</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">AND_BIP</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">ands_made</span><span class="plain">++;</span>
                     <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
                     <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
                     <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
@@ -763,8 +763,8 @@ a list divided by logical-and <code class="display"><span class="extract">&amp;&
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_against</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">check_count</span><span class="plain">++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_count</span><span class="plain"> &lt; </span><span class="identifier">check_needed</span><span class="plain">) {</span>
-                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">AND_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">AND_BIP</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">and_depth</span><span class="plain">++;</span>
                 <span class="plain">}</span>
 
@@ -774,7 +774,7 @@ a list divided by logical-and <code class="display"><span class="extract">&amp;&
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">and_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(); </span><span class="identifier">and_depth</span><span class="plain">--; }</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">and_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">and_depth</span><span class="plain">--; }</span>
 
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
 </pre>
@@ -864,11 +864,11 @@ evaluate to "true" with a minimum of branches in the compiled code.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">void_mode</span><span class="plain">) {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">BITWISEOR_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">BITWISEOR_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">FORMAL_RV_HL</span><span class="plain">));</span>
         <span class="plain">}</span>
 
         <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH2</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_wanted</span><span class="plain">);</span>
@@ -876,9 +876,9 @@ evaluate to "true" with a minimum of branches in the compiled code.
             <span class="functiontext">Invocations::Compiler::compile_single_invocation</span><span class="plain">(&amp;</span><span class="identifier">VH2</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">, &amp;</span><span class="identifier">sl</span><span class="plain">, &amp;</span><span class="identifier">tokens</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">void_mode</span><span class="plain">) {</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returned_in_manner</span><span class="plain"> != </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">)</span>
@@ -961,10 +961,10 @@ stop automatically generates a newline:
             <span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain"> &gt; 0) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0], </span><span class="identifier">K_text</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Word::text_ending_sentence</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]))))) {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 

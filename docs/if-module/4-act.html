@@ -576,7 +576,7 @@ then that's what "listening" will match.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="identifier">DOUBLE_SHARP_NAME_HL</span><span class="plain">, </span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_package</span><span class="plain">);</span>
             <span class="identifier">Emit::ds_named_pseudo_numeric_constant</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Produce::tree</span><span class="plain">(), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">);</span>
             <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">, </span><span class="identifier">ACTION_IANN</span><span class="plain">, 1);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_iname</span><span class="plain">;</span>
@@ -585,7 +585,7 @@ then that's what "listening" will match.)
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Actions::Sub</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_routine_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="identifier">PERFORM_FN_HL</span><span class="plain">, </span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_package</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Produce::tree</span><span class="plain">(), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_routine_iname</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_routine_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;an_routine_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1532,16 +1532,16 @@ infrastructure, and we access it with a single call.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;use_verb_routine_in_I6_library</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">PL::Actions::Sub</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">);</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">generic_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">GENERICVERBSUB_HL</span><span class="plain">);</span>
-                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">generic_iname</span><span class="plain">);</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;check_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;carry_out_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;report_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">generic_iname</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;check_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;carry_out_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;report_rules</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -1598,19 +1598,19 @@ infrastructure, and we access it with a single call.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">n_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"n"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">s_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"s"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">for_say_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"for_say"</span><span class="plain">);</span>
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">SWITCH_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">act_s</span><span class="plain">);</span>
-            <span class="identifier">Produce::code</span><span class="plain">();</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">SWITCH_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">act_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;use_verb_routine_in_I6_library</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">CASE_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
-                    <span class="identifier">Produce::code</span><span class="plain">();</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
+                    <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">), </span><span class="identifier">j0</span><span class="plain"> = -1, </span><span class="identifier">somethings</span><span class="plain"> = 0, </span><span class="identifier">clc</span><span class="plain"> = 0;</span>
                     <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> &lt;= </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">)) {</span>
@@ -1620,34 +1620,34 @@ infrastructure, and we access it with a single call.
 
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
                                 <span class="functiontext">PL::Actions::print_action_text_to</span><span class="plain">(</span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">j0</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">-1), </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">), </span><span class="identifier">AT</span><span class="plain">);</span>
-                                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
-                                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+                                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">AT</span><span class="plain">);</span>
+                                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
 
                                 <span class="identifier">j0</span><span class="plain"> = -1;</span>
                             <span class="plain">}</span>
                             &lt;<span class="cwebmacro">Insert a space here if needed to break up the action name</span> <span class="cwebmacronumber">37.1</span>&gt;<span class="plain">;</span>
-                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-                            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
-                                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                    <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">for_say_s</span><span class="plain">);</span>
-                                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
-                                <span class="identifier">Produce::up</span><span class="plain">();</span>
-                                <span class="identifier">Produce::code</span><span class="plain">();</span>
-                                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                                    <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                        <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"it"</span><span class="plain">);</span>
-                                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                                <span class="identifier">Produce::up</span><span class="plain">();</span>
-                                <span class="identifier">Produce::code</span><span class="plain">();</span>
-                                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
+                            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
+                                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                    <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">for_say_s</span><span class="plain">);</span>
+                                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
+                                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+                                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                        <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"it"</span><span class="plain">);</span>
+                                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                     <span class="functiontext">PL::Actions::cat_something2</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="identifier">somethings</span><span class="plain">++, </span><span class="identifier">n_s</span><span class="plain">, </span><span class="identifier">s_s</span><span class="plain">);</span>
-                                <span class="identifier">Produce::up</span><span class="plain">();</span>
-                            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j0</span><span class="plain">&lt;0) </span><span class="identifier">j0</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">;</span>
                         <span class="plain">}</span>
@@ -1657,34 +1657,34 @@ infrastructure, and we access it with a single call.
                         &lt;<span class="cwebmacro">Insert a space here if needed to break up the action name</span> <span class="cwebmacronumber">37.1</span>&gt;<span class="plain">;</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
                         <span class="functiontext">PL::Actions::print_action_text_to</span><span class="plain">(</span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">j0</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">-1), </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">), </span><span class="identifier">AT</span><span class="plain">);</span>
-                        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                        <span class="identifier">Produce::down</span><span class="plain">();</span>
-                            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
-                        <span class="identifier">Produce::up</span><span class="plain">();</span>
+                        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+                        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">AT</span><span class="plain">);</span>
+                        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">AT</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">somethings</span><span class="plain"> &lt; </span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">max_parameters</span><span class="plain">) {</span>
-                        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-                        <span class="identifier">Produce::down</span><span class="plain">();</span>
-                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">NE_BIP</span><span class="plain">));</span>
-                            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">for_say_s</span><span class="plain">);</span>
-                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
-                            <span class="identifier">Produce::up</span><span class="plain">();</span>
-                            <span class="identifier">Produce::code</span><span class="plain">();</span>
-                            <span class="identifier">Produce::down</span><span class="plain">();</span>
+                        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
+                        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">NE_BIP</span><span class="plain">);</span>
+                            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">for_say_s</span><span class="plain">);</span>
+                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
+                            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 &lt;<span class="cwebmacro">Insert a space here if needed to break up the action name</span> <span class="cwebmacronumber">37.1</span>&gt;<span class="plain">;</span>
                                 <span class="functiontext">PL::Actions::cat_something2</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">, </span><span class="identifier">somethings</span><span class="plain">++, </span><span class="identifier">n_s</span><span class="plain">, </span><span class="identifier">s_s</span><span class="plain">);</span>
-                            <span class="identifier">Produce::up</span><span class="plain">();</span>
-                        <span class="identifier">Produce::up</span><span class="plain">();</span>
+                            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
 
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -1700,10 +1700,10 @@ infrastructure, and we access it with a single call.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">clc</span><span class="plain">++ &gt; 0) {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">" "</span><span class="plain">);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1723,23 +1723,23 @@ infrastructure, and we access it with a single call.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">var</span><span class="plain"> = </span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSED_NUMBER_HL</span><span class="plain">));</span>
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_name_of_printing_rule_ACTIONS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">INDIRECT1V_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_name_of_printing_rule_ACTIONS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_understanding</span><span class="plain">)) {</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PLUS_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">TIMES_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 100);</span>
-                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONSULT_FROM_HL</span><span class="plain">));</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONSULT_WORDS_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PLUS_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">TIMES_BIP</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 100);</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONSULT_FROM_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">CONSULT_WORDS_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">var</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">var</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::print_action_text_to</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">start</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>

@@ -572,27 +572,27 @@ activity_list *Activities::parse_list_inner(wording W, int state) {
 void Activities::emit_activity_list(activity_list *al) {
 	int negate_me = FALSE, downs = 0;
 	if (al->ACL_parity == FALSE) negate_me = TRUE;
-	if (negate_me) { Produce::inv_primitive(Produce::opcode(NOT_BIP)); Produce::down(); downs++; }
+	if (negate_me) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); downs++; }
 
 	int cl = 0;
 	for (activity_list *k = al; k; k = k->next) cl++;
 
 	int ncl = 0;
 	while (al != NULL) {
-		if (++ncl < cl) { Produce::inv_primitive(Produce::opcode(OR_BIP)); Produce::down(); downs++; }
+		if (++ncl < cl) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
 		if (al->activity != NULL) {
-			Produce::inv_call_iname(Hierarchy::find(TESTACTIVITY_HL));
-			Produce::down();
-				Produce::val_iname(K_value, al->activity->av_iname);
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIVITY_HL));
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, al->activity->av_iname);
 				if (al->acting_on) {
 					if (Specifications::is_description(al->acting_on)) {
-						Produce::val_iname(K_value, Calculus::Deferrals::compile_deferred_description_test(al->acting_on));
+						Produce::val_iname(Emit::tree(), K_value, Calculus::Deferrals::compile_deferred_description_test(al->acting_on));
 					} else {
-						Produce::val(K_number, LITERAL_IVAL, 0);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 						Specifications::Compiler::emit_as_val(K_value, al->acting_on);
 					}
 				}
-			Produce::up();
+			Produce::up(Emit::tree());
 		}
 		else {
 			Specifications::Compiler::emit_as_val(K_value, al->only_when);
@@ -600,7 +600,7 @@ void Activities::emit_activity_list(activity_list *al) {
 		al = al->next;
 	}
 
-	while (downs > 0) { Produce::up(); downs--; }
+	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 }
 
 void Activities::compile_activity_constants(void) {

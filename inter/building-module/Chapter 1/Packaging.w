@@ -13,6 +13,7 @@ called "incarnation".
 
 =
 typedef struct package_request {
+	struct inter_tree *for_tree;
 	struct inter_name *eventual_name;
 	struct inter_symbol *eventual_type;
 	struct inter_package *actual_package;
@@ -23,13 +24,14 @@ typedef struct package_request {
 } package_request;
 
 @ =
-package_request *Packaging::request(inter_name *name, inter_symbol *pt) {
+package_request *Packaging::request(inter_tree *I, inter_name *name, inter_symbol *pt) {
 	package_request *R = CREATE(package_request);
+	R->for_tree = I;
 	R->eventual_name = name;
 	R->eventual_type = pt;
 	R->actual_package = NULL;
 	R->parent_request = InterNames::location(name);
-	R->write_position = Inter::Bookmarks::at_start_of_this_repository(Produce::tree());
+	R->write_position = Inter::Bookmarks::at_start_of_this_repository(I);
 	R->iname_generators = NULL;
 	return R;
 }
@@ -40,7 +42,8 @@ and outermost last: to make this more visually clear, backslashes rather
 than forward slashes are used as dividers.
 
 =
-void Packaging::log(package_request *R) {
+void Packaging::log(OUTPUT_STREAM, void *vR) {
+	package_request *R = (package_request *) vR;
 	if (R == NULL) LOG("<null-package>");
 	else {
 		int c = 0;
@@ -98,17 +101,15 @@ packaging_state Packaging::stateless(void) {
 	return PS;
 }
 
-@ We will store the current state at all times in the following:
+@ We will store the current state at all times in the building site:
 
 =
-packaging_state current_state;
-
-inter_bookmark *Packaging::at(void) {
-	return current_state.saved_IRS;
+inter_bookmark *Packaging::at(inter_tree *I) {
+	return I->site.current_state.saved_IRS;
 }
 
-package_request *Packaging::enclosure(void) {
-	return current_state.saved_enclosure;
+package_request *Packaging::enclosure(inter_tree *I) {
+	return I->site.current_state.saved_enclosure;
 }
 
 @ States are intentionally very lightweight, and in particular they contain
@@ -116,26 +117,17 @@ pointers to the IBM structures rather than containing a copy thereof. But
 those pointers have to point somewhere, and this is where: to a stack of
 IBM structures.
 
-The maximum here is beyond plenty: it's not the maximum hierarchical depth
-of the Inter output, it's the maximum number of times that Inform interrupts
-itself during compilation.
-
-@d MAX_PACKAGING_ENTRY_DEPTH 128
-
 =
-int packaging_entry_sp = 0;
-inter_bookmark packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
-
-inter_bookmark *Packaging::push_IRS(inter_bookmark IBM) {
-	if (packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
+inter_bookmark *Packaging::push_IRS(inter_tree *I, inter_bookmark IBM) {
+	if (I->site.packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
 		internal_error("packaging entry too deep");
-	packaging_entry_stack[packaging_entry_sp] = IBM;
-	return &(packaging_entry_stack[packaging_entry_sp++]);
+	I->site.packaging_entry_stack[I->site.packaging_entry_sp] = IBM;
+	return &(I->site.packaging_entry_stack[I->site.packaging_entry_sp++]);
 }
 
-void Packaging::pop_IRS(void) {
-	if (packaging_entry_sp <= 0) internal_error("package stack underflow");
-	packaging_entry_sp--;
+void Packaging::pop_IRS(inter_tree *I) {
+	if (I->site.packaging_entry_sp <= 0) internal_error("package stack underflow");
+	I->site.packaging_entry_sp--;
 }
 
 @ The current state has the following invariant: the IBM part always points to
@@ -146,16 +138,16 @@ very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_tree *I) {
-	current_state.saved_IRS = Packaging::push_IRS(Inter::Bookmarks::at_start_of_this_repository(I));
-	current_state.saved_enclosure = NULL;
+	I->site.current_state.saved_IRS = Packaging::push_IRS(I, Inter::Bookmarks::at_start_of_this_repository(I));
+	I->site.current_state.saved_enclosure = NULL;
 }
 
-void Packaging::set_state(inter_bookmark *to, package_request *PR) {
-	current_state.saved_IRS = to;
+void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR) {
+	I->site.current_state.saved_IRS = to;
 	while ((PR) && (PR->parent_request) &&
 		(Inter::Symbols::read_annotation(PR->eventual_type, ENCLOSING_IANN) != 1))
 		PR = PR->parent_request;
-	current_state.saved_enclosure = PR;
+	I->site.current_state.saved_enclosure = PR;
 }
 
 @h Bubbles.
@@ -171,16 +163,16 @@ A bubble is simply a pair of nops (no operations); any later inserted
 material will be placed between them.
 
 =
-inter_bookmark Packaging::bubble(void) {
-	Produce::nop();
-	inter_bookmark b = Produce::bookmark();
-	Produce::nop();
+inter_bookmark Packaging::bubble(inter_tree *I) {
+	Produce::nop(I);
+	inter_bookmark b = Inter::Bookmarks::snapshot(Packaging::at(I));
+	Produce::nop(I);
 	return b;
 }
 
 inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
 	Produce::nop_at(IBM);
-	inter_bookmark b = Produce::bookmark_at(IBM);
+	inter_bookmark b = Inter::Bookmarks::snapshot(IBM);
 	Produce::nop_at(IBM);
 	return b;
 }
@@ -191,37 +183,24 @@ at the top level, outside even the |main| package. Using bubbles, we leave
 room to insert those resources, then incarnate |main| and enter it.
 
 =
-inter_bookmark pragmas_bookmark;
-inter_bookmark package_types_bookmark;
-inter_bookmark holdings_bookmark;
+void Packaging::outside_all_packages(inter_tree *I) {
+	Produce::version(I, 1);
 
-inter_bookmark *Packaging::pragmas(void) {
-	return &pragmas_bookmark;
-}
-inter_bookmark *Packaging::package_types(void) {
-	return &package_types_bookmark;
-}
-inter_bookmark *Packaging::holdings(void) {
-	return &holdings_bookmark;
-}
+	Produce::comment(I, I"Package types:");
+	Site::set_package_types(I, Packaging::bubble(I));
 
-void Packaging::outside_all_packages(void) {
-	Produce::version(1);
+	Produce::comment(I, I"Pragmas:");
+	Site::set_pragmas(I, Packaging::bubble(I));
 
-	Produce::comment(I"Package types:");
-	package_types_bookmark = Packaging::bubble();
-	PackageTypes::get(Produce::tree(), I"_plain"); // To ensure this is the first emitted ptype
-	PackageTypes::get(Produce::tree(), I"_code"); // And this the second
-	PackageTypes::get(Produce::tree(), I"_linkage"); // And this the third
+	Produce::comment(I, I"Primitives:");
+	Primitives::emit(I, Packaging::at(I));
 
-	Produce::comment(I"Pragmas:");
-	pragmas_bookmark = Packaging::bubble();
+	PackageTypes::get(I, I"_plain"); // To ensure this is the first emitted ptype
+	PackageTypes::get(I, I"_code"); // And this the second
+	PackageTypes::get(I, I"_linkage"); // And this the third
 
-	Produce::comment(I"Primitives:");
-	Primitives::emit(Produce::tree(), Packaging::at());
-
-	Packaging::enter(Packaging::main(Produce::tree())); // Which we never exit
-	holdings_bookmark = Packaging::bubble();
+	Packaging::enter(Site::main_request(I)); // Which we never exit
+	Site::set_holdings(I, Packaging::bubble(I));
 }
 
 @h Entry and exit.
@@ -243,19 +222,19 @@ packaging_state Packaging::enter_home_of(inter_name *N) {
 
 packaging_state Packaging::enter(package_request *R) {
 	LOGIF(PACKAGING, "Entering $X\n", R);
-	packaging_state save = current_state;
+	packaging_state save = R->for_tree->site.current_state;
 	Packaging::incarnate(R);
-	Packaging::set_state(&(R->write_position), Packaging::enclosure());
-	inter_bookmark *bubble = Packaging::push_IRS(Packaging::bubble());
-	Packaging::set_state(bubble, R);
-	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", packaging_entry_sp, Packaging::enclosure());
+	Packaging::set_state(R->for_tree, &(R->write_position), Packaging::enclosure(R->for_tree));
+	inter_bookmark *bubble = Packaging::push_IRS(R->for_tree, Packaging::bubble(R->for_tree));
+	Packaging::set_state(R->for_tree, bubble, R);
+	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", R->for_tree->site.packaging_entry_sp, Packaging::enclosure(R->for_tree));
 	return save;
 }
 
-void Packaging::exit(packaging_state save) {
-	Packaging::set_state(save.saved_IRS, save.saved_enclosure);
-	Packaging::pop_IRS();
-	LOGIF(PACKAGING, "[%d] Back to $X\n", packaging_entry_sp, Packaging::enclosure());
+void Packaging::exit(inter_tree *I, packaging_state save) {
+	Packaging::set_state(I, save.saved_IRS, save.saved_enclosure);
+	Packaging::pop_IRS(I);
+	LOGIF(PACKAGING, "[%d] Back to $X\n", I->site.packaging_entry_sp, Packaging::enclosure(I));
 }
 
 @h Incarnation.
@@ -270,24 +249,25 @@ inter_package *Packaging::incarnate(package_request *R) {
 	if (R == NULL) internal_error("can't incarnate null request");
 	if (R->actual_package == NULL) {
 		LOGIF(PACKAGING, "Request to make incarnate $X\n", R);
-		package_request *E = Packaging::enclosure(); // This will not change
+		inter_tree *I = R->for_tree;
+		package_request *E = Packaging::enclosure(I); // This will not change
 		if (R->parent_request) {
 			Packaging::incarnate(R->parent_request);
-			inter_bookmark *save_IRS = Packaging::at();
-			Packaging::set_state(&(R->parent_request->write_position), E);
-			inter_bookmark package_bubble = Packaging::bubble();
-			Packaging::set_state(&package_bubble, E);
-			R->actual_package = Produce::package(R->eventual_name, R->eventual_type);
-			R->write_position = Packaging::bubble();
-			Packaging::set_state(save_IRS, E);
+			inter_bookmark *save_IRS = Packaging::at(I);
+			Packaging::set_state(I, &(R->parent_request->write_position), E);
+			inter_bookmark package_bubble = Packaging::bubble(I);
+			Packaging::set_state(I, &package_bubble, E);
+			R->actual_package = Produce::package(I, R->eventual_name, R->eventual_type);
+			R->write_position = Packaging::bubble(I);
+			Packaging::set_state(I, save_IRS, E);
 		} else {
-			inter_bookmark package_bubble = Packaging::bubble();
-			package_bubble = Packaging::bubble();
-			inter_bookmark *save_IRS = Packaging::at();
-			Packaging::set_state(&package_bubble, E);
-			R->actual_package = Produce::package(R->eventual_name, R->eventual_type);
-			R->write_position = Packaging::bubble();
-			Packaging::set_state(save_IRS, E);
+			inter_bookmark package_bubble = Packaging::bubble(I);
+			package_bubble = Packaging::bubble(I);
+			inter_bookmark *save_IRS = Packaging::at(I);
+			Packaging::set_state(I, &package_bubble, E);
+			R->actual_package = Produce::package(I, R->eventual_name, R->eventual_type);
+			R->write_position = Packaging::bubble(I);
+			Packaging::set_state(I, save_IRS, E);
 		}
 		LOGIF(PACKAGING, "Made incarnate $X bookmark $5\n", R, &(R->write_position));
 	}
@@ -317,9 +297,6 @@ Modules are identified by name: |generic|, |Standard_Rules|, and so on. The
 following creates modules on demand.
 
 =
-dictionary *modules_indexed_by_name = NULL;
-int modules_created = FALSE;
-
 typedef struct module_package {
 	struct package_request *the_package;
 	struct linked_list *submodules; /* of |submodule_request| */
@@ -327,21 +304,17 @@ typedef struct module_package {
 } module_package;
 
 module_package *Packaging::get_module(inter_tree *I, text_stream *name) {
-	if (modules_created == FALSE) {
-		modules_created = TRUE;
-		modules_indexed_by_name = Dictionaries::new(512, FALSE);
-	}
-	if (Dictionaries::find(modules_indexed_by_name, name))
-		return (module_package *) Dictionaries::read_value(modules_indexed_by_name, name);
+	if (Dictionaries::find(Site::modules_dictionary(I), name))
+		return (module_package *) Dictionaries::read_value(Site::modules_dictionary(I), name);
 	
 	module_package *new_module = CREATE(module_package);
 	new_module->the_package =
-		Packaging::request(
-			InterNames::explicitly_named(name, Packaging::main(I)),
+		Packaging::request(I,
+			InterNames::explicitly_named(name, Site::main_request(I)),
 			PackageTypes::get(I, I"_module"));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
-	Dictionaries::create(modules_indexed_by_name, name);
-	Dictionaries::write_value(modules_indexed_by_name, name, (void *) new_module);
+	Dictionaries::create(Site::modules_dictionary(I), name);
+	Dictionaries::write_value(Site::modules_dictionary(I), name, (void *) new_module);
 	return new_module;
 }
 
@@ -411,7 +384,7 @@ package_request *Packaging::new_submodule_inner(inter_tree *I, module_package *M
 	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, M->the_package);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
-	sr->where_found = Packaging::request(iname, PackageTypes::get(I, I"_submodule"));
+	sr->where_found = Packaging::request(I, iname, PackageTypes::get(I, I"_submodule"));
 	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
 	return sr->where_found;
 }
@@ -423,7 +396,7 @@ functions are produced by the following routines:
 
 =
 inter_name *Packaging::function(inter_tree *I, inter_name *function_iname, inter_name *temp_iname) {
-	package_request *P = Packaging::request(function_iname, PackageTypes::function(I));
+	package_request *P = Packaging::request(I, function_iname, PackageTypes::function(I));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (temp_iname) {
 		TEMPORARY_TEXT(T);
@@ -435,7 +408,7 @@ inter_name *Packaging::function(inter_tree *I, inter_name *function_iname, inter
 }
 
 inter_name *Packaging::function_text(inter_tree *I, inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(function_iname, PackageTypes::function(I));
+	package_request *P = Packaging::request(I, function_iname, PackageTypes::function(I));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (translation)
 		Produce::change_translation(iname, translation);
@@ -454,46 +427,7 @@ int Packaging::housed_in_function(inter_tree *I, inter_name *iname) {
 
 =
 inter_name *Packaging::datum_text(inter_tree *I, inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(function_iname, PackageTypes::get(I, I"_data"));
+	package_request *P = Packaging::request(I, function_iname, PackageTypes::get(I, I"_data"));
 	inter_name *iname = InterNames::explicitly_named(translation, P);
 	return iname;
-}
-
-
-package_request *main_pr = NULL;
-package_request *Packaging::main(inter_tree *I) {
-	if (main_pr == NULL)
-		main_pr = Packaging::request(InterNames::explicitly_named(I"main", NULL),
-			PackageTypes::get(I, I"_plain"));
-	return main_pr;
-}
-
-package_request *connectors_pr = NULL;
-package_request *Packaging::connectors(inter_tree *I) {
-	if (connectors_pr == NULL) {
-		module_package *T = Packaging::get_module(I, I"connectors");
-		connectors_pr = T->the_package;
-	}
-	return connectors_pr;
-}
-
-package_request *veneer_pr = NULL;
-inter_bookmark veneer_bm;
-package_request *Packaging::veneer(inter_tree *I) {
-	if (veneer_pr == NULL) {
-		module_package *T = Packaging::get_module(I, I"veneer");
-		veneer_pr = T->the_package;
-		packaging_state save = Packaging::enter(veneer_pr);
-		veneer_bm = Packaging::bubble();
-		Packaging::exit(save);
-	}
-	return veneer_pr;
-}
-inter_bookmark *Packaging::veneer_booknark(inter_tree *I) {
-	Packaging::veneer(I);
-	return &veneer_bm;
-}
-inter_symbol *Packaging::veneer_symbol(inter_tree *I, int ix) {
-	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Packaging::veneer(I)), Packaging::veneer_booknark(I), ix, Produce::kind_to_symbol(NULL));
-	return symb;
 }

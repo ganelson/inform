@@ -70,7 +70,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
 	gen->from = I;
 	gen->target = target;
 	if (just) gen->just_this_package = just;
-	else gen->just_this_package = Inter::Tree::main_package(I);
+	else gen->just_this_package = Site::main_package(I);
 	gen->current_segment = NULL;
 	gen->temporarily_diverted = FALSE;
 	for (int i=0; i<MAX_CG_SEGMENTS; i++) gen->segments[i] = NULL;

@@ -211,30 +211,30 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
 
-	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
-		Produce::inv_primitive(Produce::opcode(EQ_BIP));
-		Produce::down();
-			Produce::val_symbol(K_value, state_s);
-			Produce::val(K_number, LITERAL_IVAL, 1);
-		Produce::up();
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), EQ_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_symbol(Emit::tree(), K_value, state_s);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			@<Compile frame creator if state is set@>;
-		Produce::up();
-		Produce::code();
-		Produce::down();
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			@<Compile frame creator if state is clear@>;
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 	int count = 0;
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) count++;
 
-	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-	Produce::down();
-		Produce::val(K_number, LITERAL_IVAL, (inter_t) count);
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) count);
+	Produce::up(Emit::tree());
 
 	Routines::end(save);
 	stvo->stvo_iname = iname;
@@ -245,23 +245,23 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
-		Produce::inv_primitive(Produce::opcode(STORE_BIP));
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-				Produce::val_symbol(K_value, pos_s);
-			Produce::up();
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
+				Produce::val_symbol(Emit::tree(), K_value, pos_s);
+			Produce::up(Emit::tree());
 			if (Kinds::Behaviour::uses_pointer_values(K))
 				Kinds::RunTime::emit_heap_allocation(Kinds::RunTime::make_heap_allocation(K, 1, -1));
 			else
 				NonlocalVariables::emit_initial_value_as_val(q);
-		Produce::up();
+		Produce::up(Emit::tree());
 
-		Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-		Produce::down();
-			Produce::ref_symbol(K_value, pos_s);
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
+		Produce::up(Emit::tree());
 	}
 
 @<Compile frame creator if state is clear@> =
@@ -269,19 +269,19 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
-			Produce::inv_call_iname(Hierarchy::find(BLKVALUEFREE_HL));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
-				Produce::down();
-					Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
-					Produce::val_symbol(K_value, pos_s);
-				Produce::up();
-			Produce::up();
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEFREE_HL));
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
+					Produce::val_symbol(Emit::tree(), K_value, pos_s);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 		}
-		Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-		Produce::down();
-			Produce::ref_symbol(K_value, pos_s);
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
+		Produce::up(Emit::tree());
 	}
 
 @ =

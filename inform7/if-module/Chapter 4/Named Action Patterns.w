@@ -97,17 +97,17 @@ void PL::Actions::Patterns::Named::compile(void) {
 		ap = nap->first;
 		while (ap != NULL) {
 			current_sentence = ap->entered_into_NAP_here;
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
 				PL::Actions::Patterns::emit_pattern_match(*ap, TRUE);
-				Produce::code();
-				Produce::down();
-					Produce::rtrue();
-				Produce::up();
-			Produce::up();
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::rtrue(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 			ap = ap->next;
 		}
-		Produce::rfalse();
+		Produce::rfalse(Emit::tree());
 		Routines::end(save);
 	}
 }

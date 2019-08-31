@@ -311,11 +311,11 @@ Inform 6 source file:
 =
 void Extensions::Files::write_I6_comment_describing(extension_file *ef) {
 	if (ef == standard_rules_extension) {
-		Produce::comment(I"From the Standard Rules");
+		Produce::comment(Emit::tree(), I"From the Standard Rules");
 	} else {
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "From \"%~W\" by %~W", ef->title_text, ef->author_text);
-		Produce::comment(C);
+		Produce::comment(Emit::tree(), C);
 		DISCARD_TEXT(C);
 	}
 }
@@ -401,10 +401,10 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			(self_penned == FALSE))) { /* ...didn't write this extension */
 				TEMPORARY_TEXT(C);
 				Extensions::Files::credit_ef(C, ef, TRUE); /* then we award a credit */
-				Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-				Produce::down();
-					Produce::val_text(C);
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_text(Emit::tree(), C);
+				Produce::up(Emit::tree());
 				DISCARD_TEXT(C);
 			}
 		DISCARD_TEXT(the_author_name);
@@ -415,10 +415,10 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(C);
 		Extensions::Files::credit_ef(C, ef, TRUE);
-		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-		Produce::down();
-			Produce::val_text(C);
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_text(Emit::tree(), C);
+		Produce::up(Emit::tree());
 		DISCARD_TEXT(C);
 	}
 	Routines::end(save);
@@ -426,24 +426,24 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	save = Routines::begin(Hierarchy::find(SHOWONEEXTENSION_HL));
 	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
 	LOOP_OVER(ef, extension_file) {
-		Produce::inv_primitive(Produce::opcode(IF_BIP));
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(EQ_BIP));
-			Produce::down();
-				Produce::val_symbol(K_value, id_s);
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) (ef->allocation_id + 1));
-			Produce::up();
-			Produce::code();
-			Produce::down();
+		Produce::inv_primitive(Emit::tree(), IF_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_symbol(Emit::tree(), K_value, id_s);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (ef->allocation_id + 1));
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
 				TEMPORARY_TEXT(C);
 				Extensions::Files::credit_ef(C, ef, FALSE);
-				Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-				Produce::down();
-					Produce::val_text(C);
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_text(Emit::tree(), C);
+				Produce::up(Emit::tree());
 				DISCARD_TEXT(C);
-			Produce::up();
-		Produce::up();
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 	Routines::end(save);
 }

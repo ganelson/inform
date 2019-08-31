@@ -56,6 +56,7 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Assimilate::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
+		CodeGen::Inspection::create_pipeline_stage();
 		CodeGen::Labels::create_pipeline_stage();
 		CodeGen::MergeTemplate::create_pipeline_stage();
 		CodeGen::PLM::create_pipeline_stage();
@@ -89,36 +90,19 @@ int CodeGen::Stage::run_preparegd_stage(pipeline_step *step) {
 int CodeGen::Stage::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 	inter_tree *I = step->repository;
 	Packaging::initialise_state(I);
-	Packaging::outside_all_packages();
-	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(I);
-	inter_error_message *E = NULL;
-	inter_symbol *plain_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_plain", &E);
-	Inter::PackageType::new_packagetype(&IBM, plain_name, 0, NULL);
-	inter_symbol *code_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_code", &E);
-	Inter::PackageType::new_packagetype(&IBM, code_name, 0, NULL);
-	inter_symbol *linkage_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_linkage", &E);
-	Inter::PackageType::new_packagetype(&IBM, linkage_name, 0, NULL);
-	inter_symbol *module_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_module", &E);
-	Inter::PackageType::new_packagetype(&IBM, module_name, 0, NULL);
-	inter_symbol *submodule_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_submodule", &E);
-	Inter::PackageType::new_packagetype(&IBM, submodule_name, 0, NULL);
-	inter_symbol *function_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_function", &E);
-	Inter::PackageType::new_packagetype(&IBM, function_name, 0, NULL);
-	inter_symbol *action_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_action", &E);
-	Inter::PackageType::new_packagetype(&IBM, action_name, 0, NULL);
-	inter_symbol *command_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_command", &E);
-	Inter::PackageType::new_packagetype(&IBM, command_name, 0, NULL);
-	inter_symbol *property_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_property", &E);
-	Inter::PackageType::new_packagetype(&IBM, property_name, 0, NULL);
-	inter_symbol *to_phrase_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(&IBM), I"_to_phrase", &E);
-	Inter::PackageType::new_packagetype(&IBM, to_phrase_name, 0, NULL);
-	Primitives::emit(I, &IBM);
-	inter_bookmark at_tail = Inter::Bookmarks::at_start_of_this_repository(I);
-	inter_package *main_p = NULL;
-	Inter::Package::new_package_named(&at_tail, I"main", FALSE, plain_name, 0, NULL, &main_p);
+	Packaging::outside_all_packages(I);
+	PackageTypes::get(I, I"_plain");
+	PackageTypes::get(I, I"_code");
+	PackageTypes::get(I, I"_linkage");
+	inter_symbol *module_name = PackageTypes::get(I, I"_module");
+	PackageTypes::get(I, I"_submodule");
+	PackageTypes::get(I, I"_function");
+	PackageTypes::get(I, I"_action");
+	PackageTypes::get(I, I"_command");
+	PackageTypes::get(I, I"_property");
+	PackageTypes::get(I, I"_to_phrase");
+	inter_package *main_p = Site::main_package(I);
 	inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_p);
-	inter_package *veneer_p = NULL;
-	Inter::Package::new_package_named(&in_main, I"veneer", FALSE, module_name, 1, NULL, &veneer_p);
 	inter_package *generic_p = NULL;
 	Inter::Package::new_package_named(&in_main, I"generic", FALSE, module_name, 1, NULL, &generic_p);
 	inter_bookmark in_generic = Inter::Bookmarks::at_end_of_this_package(generic_p);
@@ -164,30 +148,31 @@ int CodeGen::Stage::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 	inter_package *template_p = NULL;
 	Inter::Package::new_package_named(&in_main, I"template", FALSE, module_name, 1, NULL, &template_p);
 
-	inter_bookmark in_veneer = Inter::Bookmarks::at_end_of_this_package(veneer_p);
-	inter_symbol *vi_unchecked = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_veneer), I"K_unchecked");
+	inter_bookmark *in_veneer = Site::veneer_booknark(I);
+	inter_package *veneer_p = Inter::Packages::veneer(I);
+	inter_symbol *vi_unchecked = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
 	Inter::SymbolsTables::equate(vi_unchecked, unchecked_kind_symbol);
-	inter_symbol *con_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_veneer), I"WORDSIZE");
-	Inter::Constant::new_numerical(&in_veneer,
+	inter_symbol *con_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");
+	Inter::Constant::new_numerical(in_veneer,
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, con_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, (Z)?2:4,
-		(inter_t) Inter::Bookmarks::baseline(&in_veneer) + 1, NULL);
+		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	inter_symbol *target_name;
-	if (Z) target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_veneer), I"TARGET_ZCODE");
-	else target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_veneer), I"TARGET_GLULX");
-	Inter::Constant::new_numerical(&in_veneer,
+	if (Z) target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_ZCODE");
+	else target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_GLULX");
+	Inter::Constant::new_numerical(in_veneer,
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, target_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, 1,
-		(inter_t) Inter::Bookmarks::baseline(&in_veneer) + 1, NULL);
+		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	if (D) {
-		inter_symbol *D_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_veneer), I"DEBUG");
-		Inter::Constant::new_numerical(&in_veneer,
+		inter_symbol *D_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"DEBUG");
+		Inter::Constant::new_numerical(in_veneer,
 			Inter::SymbolsTables::id_from_symbol(I, veneer_p, D_name),
 			Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 			LITERAL_IVAL, 1,
-			(inter_t) Inter::Bookmarks::baseline(&in_veneer) + 1, NULL);
+			(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	}
 	return TRUE;
 }
@@ -212,7 +197,7 @@ int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 	}
 	Regexp::dispose_of(&mr);
 	if (pack == NULL) internal_error("not a package");
-	Inter::Transmigration::move(pack, Inter::Tree::main_package(step->repository), TRUE);
+	Inter::Transmigration::move(pack, Site::main_package(step->repository), TRUE);
 
 	return TRUE;
 }

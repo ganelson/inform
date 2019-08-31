@@ -49,8 +49,8 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
 	inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
 
-	Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
 		LocalVariables::begin_condition_emit();
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
@@ -58,15 +58,15 @@ int PL::Actions::ScopeLoops::compilation_coroutine(void) {
 			PL::Actions::Patterns::compile_pattern_match_clause_inner(FALSE, &VH,
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
-			Produce::val(K_truth_state, LITERAL_IVAL, 0);
+			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		LocalVariables::end_condition_emit();
-		Produce::code();
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::ref_iname(K_value, Hierarchy::find(LOS_RV_HL));
-				Produce::val_symbol(K_value, it_s);
-			Produce::up();
-		Produce::up();
-	Produce::up();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(LOS_RV_HL));
+				Produce::val_symbol(Emit::tree(), K_value, it_s);
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 	Routines::end(save);

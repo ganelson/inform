@@ -211,7 +211,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_nothing());
 		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_nothing());
 	} else {
-		inter_name *as_iname = Produce::find_by_name(name);
+		inter_name *as_iname = Produce::find_by_name(Emit::tree(), name);
 		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
 		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
 	}
@@ -290,23 +290,23 @@ text_stream *NonlocalVariables::identifier(nonlocal_variable *nlv) {
 
 void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 	if (nlv->lvalue_nve.iname_form) {
-		Produce::val_iname(K_value, nlv->lvalue_nve.iname_form);
+		Produce::val_iname(Emit::tree(), K_value, nlv->lvalue_nve.iname_form);
 	} else if (nlv->lvalue_nve.stv_ID >= 0) {
-		Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
-		Produce::down();
-			Produce::val_iname(K_value, Hierarchy::find(MSTACK_HL));
+		Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 			int ex = MSTVO_HL;
 			if (nlv->lvalue_nve.allow_outside) ex = MSTVON_HL;
-			Produce::inv_call_iname(Hierarchy::find(ex));
-			Produce::down();
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_ID);
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_index);
-			Produce::up();
-		Produce::up();
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ex));
+			Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_ID);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_index);
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}  else if (nlv->lvalue_nve.use_own_iname) {
-		Produce::val_iname(K_value, NonlocalVariables::iname(nlv));
+		Produce::val_iname(Emit::tree(), K_value, NonlocalVariables::iname(nlv));
 	} else if (nlv->lvalue_nve.nothing_form) {
-		Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), NOTHING_VSYMB));
+		Produce::val_symbol(Emit::tree(), K_value, Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB));
 	} else {
 		internal_error("improperly formed nve");
 	}
@@ -447,10 +447,10 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
 				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_HL));
-				Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-				Produce::down();
-					Produce::val_iname(K_text, iname);
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_text, iname);
+				Produce::up(Emit::tree());
 				Routines::end(save);
 			}
 
@@ -709,7 +709,7 @@ void NonlocalVariables::emit_initial_value(nonlocal_variable *nlv) {
 void NonlocalVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	NonlocalVariables::compile_initial_value_vh(&VH, nlv);
-	Holsters::to_val_mode(&VH);
+	Holsters::to_val_mode(Emit::tree(), &VH);
 }
 
 void NonlocalVariables::seek_initial_value(inter_name *iname, inter_t *v1, inter_t *v2, nonlocal_variable *nlv) {

@@ -371,5 +371,5 @@ void CompiledText::from_text(OUTPUT_STREAM, wording W) {
 
 =
 void CompiledText::divider_comment(void) {
-	Produce::comment(I"----------------------------------------------------------------------------------------------------");
+	Produce::comment(Emit::tree(), I"----------------------------------------------------------------------------------------------------");
 }

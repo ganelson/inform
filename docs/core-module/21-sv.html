@@ -240,30 +240,30 @@
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pos_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pos"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">state_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"state"</span><span class="plain">);</span>
 
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFELSE_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">EQ_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">state_s</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
-            <span class="identifier">Produce::code</span><span class="plain">();</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">state_s</span><span class="plain">);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Compile frame creator if state is set</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
-            <span class="identifier">Produce::code</span><span class="plain">();</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Compile frame creator if state is clear</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">stacked_variable_list</span><span class="plain"> *</span><span class="identifier">stvl</span><span class="plain"> = </span><span class="identifier">stvo</span><span class="plain">-</span><span class="element">&gt;list_of_stvs</span><span class="plain">; </span><span class="identifier">stvl</span><span class="plain">; </span><span class="identifier">stvl</span><span class="plain"> = </span><span class="identifier">stvl</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">count</span><span class="plain">++;</span>
 
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">RETURN_BIP</span><span class="plain">));</span>
-        <span class="identifier">Produce::down</span><span class="plain">();</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">count</span><span class="plain">);</span>
-        <span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
+        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">count</span><span class="plain">);</span>
+        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="identifier">stvo</span><span class="plain">-</span><span class="element">&gt;stvo_iname</span><span class="plain"> = </span><span class="identifier">iname</span><span class="plain">;</span>
@@ -322,23 +322,23 @@
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">stacked_variable_list</span><span class="plain"> *</span><span class="identifier">stvl</span><span class="plain"> = </span><span class="identifier">stvo</span><span class="plain">-</span><span class="element">&gt;list_of_stvs</span><span class="plain">; </span><span class="identifier">stvl</span><span class="plain">; </span><span class="identifier">stvl</span><span class="plain"> = </span><span class="identifier">stvl</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
             <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = </span><span class="functiontext">StackedVariables::get_variable</span><span class="plain">(</span><span class="identifier">stvl</span><span class="plain">-</span><span class="element">&gt;the_stv</span><span class="plain">);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::kind</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">);</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">STORE_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MSTACK_HL</span><span class="plain">));</span>
-                    <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">);</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MSTACK_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
                     <span class="functiontext">Kinds::RunTime::emit_heap_allocation</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::make_heap_allocation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, 1, -1));</span>
                 <span class="reserved">else</span>
                     <span class="functiontext">NonlocalVariables::emit_initial_value_as_val</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 
@@ -356,19 +356,19 @@
             <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = </span><span class="functiontext">StackedVariables::get_variable</span><span class="plain">(</span><span class="identifier">stvl</span><span class="plain">-</span><span class="element">&gt;the_stv</span><span class="plain">);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::kind</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUEFREE_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">LOOKUP_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
-                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MSTACK_HL</span><span class="plain">));</span>
-                        <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUEFREE_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUP_BIP</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MSTACK_HL</span><span class="plain">));</span>
+                        <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pos_s</span><span class="plain">);</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
 

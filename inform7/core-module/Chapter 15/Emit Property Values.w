@@ -217,42 +217,42 @@ void Properties::Emit::emit_iname_has_property(kind *K, inter_name *N, property 
 void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn) {
 	if (Properties::EitherOr::implemented_as_attribute(prn)) {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Produce::inv_primitive(Produce::opcode(NOT_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(HAS_BIP));
-				Produce::down();
-					Produce::val_symbol(K, S);
-					Produce::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
-				Produce::up();
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), NOT_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), HAS_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K, S);
+					Produce::val_iname(Emit::tree(), K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 		} else {
-			Produce::inv_primitive(Produce::opcode(HAS_BIP));
-			Produce::down();
-				Produce::val_symbol(K, S);
-				Produce::val_iname(K_value, Properties::iname(prn));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), HAS_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_symbol(Emit::tree(), K, S);
+				Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+			Produce::up(Emit::tree());
 		}
 	} else {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
-			Produce::inv_primitive(Produce::opcode(EQ_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
-				Produce::down();
-					Produce::val_symbol(K, S);
-					Produce::val_iname(K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
-				Produce::up();
-				Produce::val(K_truth_state, LITERAL_IVAL, 0);
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K, S);
+					Produce::val_iname(Emit::tree(), K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
+				Produce::up(Emit::tree());
+				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
 		} else {
-			Produce::inv_primitive(Produce::opcode(EQ_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(PROPERTYVALUE_BIP));
-				Produce::down();
-					Produce::val_symbol(K, S);
-					Produce::val_iname(K_value, Properties::iname(prn));
-				Produce::up();
-				Produce::val(K_truth_state, LITERAL_IVAL, 1);
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K, S);
+					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::up(Emit::tree());
+				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+			Produce::up(Emit::tree());
 		}
 	}
 }

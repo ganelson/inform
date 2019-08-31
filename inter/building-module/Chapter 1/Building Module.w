@@ -80,6 +80,7 @@ void BuildingModule::start(void) {
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('1', InterSchemas::log);
+	Writers::register_logger('X', Packaging::log);
 
 @<Register this module's command line switches@> =
 	;

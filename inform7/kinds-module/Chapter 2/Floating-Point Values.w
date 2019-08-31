@@ -97,42 +97,42 @@ void Kinds::FloatingPoint::end_deflotation(OUTPUT_STREAM, kind *K) {
 #ifdef CORE_MODULE
 void Kinds::FloatingPoint::begin_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
-		Produce::down();
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_DIVIDE_HL));
+		Produce::down(Emit::tree());
 	}
-	Produce::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-	Produce::down();
+	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
+	Produce::down(Emit::tree());
 }
 
 void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
-	Produce::up();
+	Produce::up(Emit::tree());
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Produce::inv_call_iname(Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
-		Produce::down();
-			Produce::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
-		Produce::up();
-		Produce::up();
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
+		Produce::down(Emit::tree());
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
+		Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 }
 
 void Kinds::FloatingPoint::begin_deflotation_emit(kind *K) {
-	Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-	Produce::down();
+	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
+	Produce::down(Emit::tree());
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
-		Produce::down();
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TIMES_HL));
+		Produce::down(Emit::tree());
 	}
 }
 
 void Kinds::FloatingPoint::end_deflotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
-		Produce::inv_call_iname(Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
-		Produce::down();
-			Produce::val(K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
-		Produce::up();
-		Produce::up();
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
+		Produce::down(Emit::tree());
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::scale_factor(K));
+		Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
-	Produce::up();
+	Produce::up(Emit::tree());
 }
 #endif
 

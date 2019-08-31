@@ -135,8 +135,8 @@ we exit unexpectedly, for instance due to a problem.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) {</span>
-                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECOPY_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
+                <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECOPY_HL</span><span class="plain">));</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="functiontext">Frames::emit_allocation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">dereffed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -146,13 +146,13 @@ we exit unexpectedly, for instance due to a problem.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_rvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
             <span class="functiontext">Rvalues::compile</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_provided</span><span class="plain"> == </span><span class="identifier">INTER_DATA_VHMODE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_wanted</span><span class="plain"> == </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">)) {</span>
-                <span class="identifier">Holsters::to_val_mode</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">);</span>
+                <span class="identifier">Holsters::to_val_mode</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">VH</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_condition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
             <span class="functiontext">Conditions::compile</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dereffed</span><span class="plain">) {</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -183,7 +183,7 @@ a value in a context where a particular kind of value is expected:
         <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">);</span>
         <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">down</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">down</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
     <span class="plain">}</span>
 </pre>
 

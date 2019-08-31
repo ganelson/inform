@@ -622,11 +622,11 @@ subject is very simple:
 =
 int Instances::SUBJ_emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
 	instance *I = InferenceSubjects::as_nc(infs);
-	Produce::inv_primitive(Produce::opcode(EQ_BIP));
-	Produce::down();
-		Produce::val_symbol(K_value, t0_s);
-		Produce::val_iname(K_value, Instances::iname(I));
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), EQ_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, t0_s);
+		Produce::val_iname(Emit::tree(), K_value, Instances::iname(I));
+	Produce::up(Emit::tree());
 	return TRUE;
 }
 

@@ -10,29 +10,23 @@ packages of slightly over 50 different types.
 
 At run time, package types are pointers to the inter symbol which defined them,
 but this is not a convenient way to refer to them in the Inform source code.
-Instead we use the following dictionary in order to be able to refer to them
-by name. So, for example, |PackageTypes::get(I"_cake")| returns the package
-type for |_cake|, declaring it if it doesn't already exist.
+Instead we use the following function:
 
 =
-dictionary *ptypes_indexed_by_name = NULL;
-int ptypes_created = FALSE;
-
 inter_symbol *PackageTypes::get(inter_tree *I, text_stream *name) {
-	if (ptypes_created == FALSE) {
-		ptypes_created = TRUE;
-		ptypes_indexed_by_name = Dictionaries::new(512, FALSE);
+	inter_symbols_table *scope = Inter::Tree::global_scope(I);
+
+	inter_symbol *ptype = Inter::SymbolsTables::symbol_from_name(scope, name);
+	if (ptype == NULL) {
+		int enclose = TRUE;
+		@<Decide if this package type is to be enclosing@>;
+		ptype = Produce::new_symbol(scope, name);
+		Produce::guard(Inter::PackageType::new_packagetype(
+			Site::package_types(I), ptype,
+			0, NULL));
+		if (enclose) Produce::annotate_symbol_i(ptype, ENCLOSING_IANN, 1);
 	}
-	if (Dictionaries::find(ptypes_indexed_by_name, name))
-		return (inter_symbol *) Dictionaries::read_value(ptypes_indexed_by_name, name);
-	
-	int enclose = TRUE;
-	@<Decide if this package type is to be enclosing@>;
-	
-	inter_symbol *new_ptype = Produce::packagetype(name, enclose);
-	Dictionaries::create(ptypes_indexed_by_name, name);
-	Dictionaries::write_value(ptypes_indexed_by_name, name, (void *) new_ptype);
-	return new_ptype;
+	return ptype;
 }
 
 @ Most package types are "enclosing". Suppose that Inform is compiling
@@ -52,12 +46,10 @@ therefore arrays) to be defined inside |_code| packages.
 @<Decide if this package type is to be enclosing@> =
 	if (Str::eq(name, I"_code")) enclose = FALSE;
 
-@ Dictionary lookups by name are fast, but not instant, and the one package
-type which we need frequently is |_function|, so we cache that one:
+@ Symbol lookups by name are fast, but not instant, so we might some day
+want to optimise this by cacheing the result:
 
 =
-inter_symbol *function_ptype = NULL;
 inter_symbol *PackageTypes::function(inter_tree *I) {
-	if (function_ptype == NULL) function_ptype = PackageTypes::get(I, I"_function");
-	return function_ptype;
+	return PackageTypes::get(I, I"_function");
 }

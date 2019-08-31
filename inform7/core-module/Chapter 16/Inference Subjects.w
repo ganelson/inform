@@ -577,7 +577,7 @@ void InferenceSubjects::emit_element_of_condition(inference_subject *infs, inter
 		case RELN_SUB: written = BinaryPredicates::SUBJ_emit_element_of_condition(infs, t0_s); break;
 	}
 	if (written == FALSE) {
-		Produce::val(K_truth_state, LITERAL_IVAL, 1);
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 	}
 }
 

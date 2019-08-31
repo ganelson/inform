@@ -19,9 +19,7 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="identifier">housed</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">root_node</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">root_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">main_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">connectors_package</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_symbol</span><span class="plain"> *</span><span class="identifier">opcodes_set</span><span class="plain">[</span><span class="identifier">MAX_BIPS</span><span class="plain">];</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">building_site</span><span class="plain"> </span><span class="identifier">site</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inter_tree</span><span class="plain">;</span>
 </pre>
@@ -36,10 +34,7 @@
 <pre class="display">
     <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connectors_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;housed</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::new</span><span class="plain">();</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">MAX_BIPS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;opcodes_set</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;housed</span><span class="plain">);</span>
         <span class="reserved">inter_symbols_table</span><span class="plain"> *</span><span class="identifier">globals</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::get_symbols_table</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;housed</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="constant">inter_t</span><span class="plain"> </span><span class="identifier">root_package_ID</span><span class="plain"> = </span><span class="functiontext">Inter::Warehouse::create_package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;housed</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
@@ -50,32 +45,13 @@
         <span class="functiontext">Inter::Packages::set_scope</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">, </span><span class="identifier">globals</span><span class="plain">);</span>
         <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_node</span><span class="plain">-</span><span class="element">&gt;package</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">;</span>
         <span class="functiontext">Inter::Warehouse::attribute_resource</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;housed</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">);</span>
+        <span class="identifier">Site::clear</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::root_package</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;root_package</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::main_package</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">inter_package</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::connectors_package</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connectors_package</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_main_package</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no tree"</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;main_package</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::set_connectors_package</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no tree"</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connectors_package</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_warehouse</span><span class="plain"> *</span><span class="functiontext">Inter::Tree::warehouse</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -172,14 +148,6 @@
 <p class="endnote">The function Inter::Tree::new appears nowhere else.</p>
 
 <p class="endnote">The function Inter::Tree::root_package is used in 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 3/iibf (<a href="3-iibf.html#SP1_4">&#167;1.4</a>).</p>
-
-<p class="endnote">The function Inter::Tree::main_package is used in <a href="#SP5">&#167;5</a>, 2/st (<a href="2-st.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/cnn (<a href="2-cnn.html#SP1">&#167;1</a>).</p>
-
-<p class="endnote">The function Inter::Tree::connectors_package is used in 2/cnn (<a href="2-cnn.html#SP1">&#167;1</a>).</p>
-
-<p class="endnote">The function Inter::Tree::set_main_package is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>).</p>
-
-<p class="endnote">The function Inter::Tree::set_connectors_package is used in 2/cnn (<a href="2-cnn.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inter::Tree::warehouse is used in 2/bkm (<a href="2-bkm.html#SP1">&#167;1</a>), 2/in (<a href="2-in.html#SP4">&#167;4</a>), 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/sym (<a href="2-sym.html#SP4">&#167;4</a>), 3/dfn (<a href="3-dfn.html#SP3">&#167;3</a>), 3/iibf (<a href="3-iibf.html#SP1">&#167;1</a>, <a href="3-iibf.html#SP1_1">&#167;1.1</a>), 3/idt (<a href="3-idt.html#SP3">&#167;3</a>).</p>
 
@@ -324,7 +292,8 @@
 
 <pre class="displaydefn">
         <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::parent</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C after R when R is nowhere"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't move C before R when R is nowhere"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;tree</span><span class="plain">-</span><span class="element">&gt;root_node</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wowser!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="functiontext">Inter::Tree::set_parent_UNSAFE</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inter::Tree::last_child</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">R</span><span class="plain">)</span>
             <span class="functiontext">Inter::Tree::set_last_child_UNSAFE</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
@@ -426,7 +395,7 @@
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Tree::traverse</span><span class="plain">(</span><span class="reserved">inter_tree</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">visitor</span><span class="plain">)(</span><span class="reserved">inter_tree</span><span class="plain"> *, </span><span class="reserved">inter_tree_node</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">, </span><span class="reserved">inter_package</span><span class="plain"> *</span><span class="identifier">mp</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">mp</span><span class="plain"> = </span><span class="functiontext">Inter::Tree::main_package</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">mp</span><span class="plain"> = </span><span class="identifier">Site::main_package_if_it_exists</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mp</span><span class="plain">) {</span>
             <span class="reserved">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="functiontext">Inter::Packages::definition</span><span class="plain">(</span><span class="identifier">mp</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == 0) ||</span>

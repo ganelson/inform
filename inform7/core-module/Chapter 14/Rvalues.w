@@ -649,12 +649,12 @@ kinds of value:
 		for (parse_node *term = spec_found->down; term; term = term->next) {
 			NT++;
 			if (NT < NC) {
-				Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-				Produce::down(); downs++;
+				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+				Produce::down(Emit::tree()); downs++;
 			}
 			Specifications::Compiler::emit_as_val(K_value, term);
 		}
-		while (downs > 0) { Produce::up(); downs--; }
+		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_equation)) {

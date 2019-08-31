@@ -154,7 +154,7 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_creating_at_ID(inter_symbol
 }
 
 inter_symbol *Inter::SymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
-	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Inter::Tree::main_package(I)), S);
+	return Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(Site::main_package_if_it_exists(I)), S);
 }
 
 inter_symbol *Inter::SymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
@@ -335,7 +335,8 @@ inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_
 void Inter::SymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
 	if ((S_from == NULL) || (S_to == NULL)) internal_error("bad symbol equation");
 	S_from->equated_to = S_to;
-	if (Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS)
+	if ((Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS) &&
+		(Inter::Symbols::get_scope(S_from) != PLUG_ISYMS))
 		Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
 	LOGIF(INTER_SYMBOLS, "Equate $3 to $3\n", S_from, S_to);
 	int c = 0;

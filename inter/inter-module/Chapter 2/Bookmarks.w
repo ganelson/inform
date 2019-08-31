@@ -138,7 +138,10 @@ void Inter::Bookmarks::insert(inter_bookmark *IBM, inter_tree_node *F) {
 	LOGIF(INTER_FRAMES, "Insert frame %F\n", *F);
 	inter_t F_level = F->W.data[LEVEL_IFLD];
 	if (F_level == 0) {
-		Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_node);
+		if (Inter::Tree::parent(Inter::Bookmarks::get_ref(IBM)) == NULL)
+			Inter::Tree::place(F, AS_LAST_CHILD_OF_ICPLACEMENT, I->root_node);
+		else
+			Inter::Tree::place(F, Inter::Bookmarks::get_placement(IBM), Inter::Bookmarks::get_ref(IBM));
 		if ((Inter::Bookmarks::get_placement(IBM) == AFTER_ICPLACEMENT) ||
 			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_ICPLACEMENT)) {
 			Inter::Bookmarks::set_ref(IBM, F);

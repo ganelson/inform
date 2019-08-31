@@ -108,104 +108,78 @@ hierarchy_location *HierarchyLocations::new(void) {
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::con(int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = HierarchyLocations::new();
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(name);
 	hl->requirements = req;
 	hl->trans = nt;
-	HierarchyLocations::index(hl);
+	HierarchyLocations::index(I, hl);
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::package(int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
+hierarchy_location *HierarchyLocations::package(inter_tree *I, int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
 	hierarchy_location *hl = HierarchyLocations::new();
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(name);
 	hl->requirements = req;
 	hl->package_type = Str::duplicate(ptype_name);
-	HierarchyLocations::index(hl);
+	HierarchyLocations::index(I, hl);
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::make_as(int id, text_stream *name, inter_name *iname) {
+hierarchy_location *HierarchyLocations::make_as(inter_tree *I, int id, text_stream *name, inter_name *iname) {
 	hierarchy_location *hl = HierarchyLocations::new();
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(name);
 	hl->requirements = HierarchyLocations::this_package(InterNames::location(iname));
 	hl->equates_to_iname = iname;
-	HierarchyLocations::index(hl);
+	HierarchyLocations::index(I, hl);
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::func(int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::func(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->function_package_name = Str::duplicate(name);
 	hl->requirements = req;
 	hl->trans = nt;
-	HierarchyLocations::index(hl);
+	HierarchyLocations::index(I, hl);
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::datum(int id, text_stream *name, name_translation nt, location_requirement req) {
+hierarchy_location *HierarchyLocations::datum(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
 	hl->access_number = id;
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->datum_package_name = Str::duplicate(name);
 	hl->requirements = req;
 	hl->trans = nt;
-	HierarchyLocations::index(hl);
+	HierarchyLocations::index(I, hl);
 	return hl;
 }
 
-#ifndef NO_DEFINED_HL_VALUES
-#define NO_DEFINED_HL_VALUES 1
-#endif
-#ifndef NO_DEFINED_HAP_VALUES
-#define NO_DEFINED_HAP_VALUES 1
-#endif
-#ifndef NO_DEFINED_HMD_VALUES
-#define NO_DEFINED_HMD_VALUES 1
-#endif
-
-hierarchy_location *hls_indexed_by_id[NO_DEFINED_HL_VALUES];
-dictionary *hls_indexed_by_name = NULL;
-
-int hls_created = FALSE;
-void HierarchyLocations::create_hls(void) {
-	hls_created = TRUE;
-	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) hls_indexed_by_id[i] = NULL;
-	hls_indexed_by_name = Dictionaries::new(512, FALSE);
-	#ifdef CORE_MODULE
-	Hierarchy::establish(Produce::tree());
-	#endif
-}
-
-void HierarchyLocations::index(hierarchy_location *hl) {
-	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if (hl->access_number >= 0) hls_indexed_by_id[hl->access_number] = hl;
+void HierarchyLocations::index(inter_tree *I, hierarchy_location *hl) {
+	if (hl->access_number >= 0) I->site.hls_indexed_by_id[hl->access_number] = hl;
 	if (hl->requirements.any_package_of_this_type == NULL) {
-		Dictionaries::create(hls_indexed_by_name, hl->access_name);
-		Dictionaries::write_value(hls_indexed_by_name, hl->access_name, (void *) hl);
+		Dictionaries::create(I->site.hls_indexed_by_name, hl->access_name);
+		Dictionaries::write_value(I->site.hls_indexed_by_name, hl->access_name, (void *) hl);
 	}
 }
 
 inter_name *HierarchyLocations::find(inter_tree *I, int id) {
-	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	return HierarchyLocations::hl_to_iname(I, hls_indexed_by_id[id]);
+	return HierarchyLocations::hl_to_iname(I, I->site.hls_indexed_by_id[id]);
 }
 
 inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("bad hl name");
-	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if (Dictionaries::find(hls_indexed_by_name, name))
+	if (Dictionaries::find(I->site.hls_indexed_by_name, name))
 		return HierarchyLocations::hl_to_iname(I, 
 			(hierarchy_location *)
-				Dictionaries::read_value(hls_indexed_by_name, name));
+				Dictionaries::read_value(I->site.hls_indexed_by_name, name));
 	return NULL;
 }
 
@@ -254,10 +228,9 @@ inter_name *HierarchyLocations::hl_to_iname(inter_tree *I, hierarchy_location *h
 }
 
 inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_request *P, wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
-	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	hierarchy_location *hl = hls_indexed_by_id[id];
+	hierarchy_location *hl = I->site.hls_indexed_by_id[id];
 	if ((hl->requirements.any_package_of_this_type == NULL) &&
 		(hl->requirements.any_enclosure == FALSE)) internal_error("NRL accessed inappropriately");
 	if (hl->requirements.any_enclosure) {
@@ -310,10 +283,9 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 
 @ =
 package_request *HierarchyLocations::package_in_package(inter_tree *I, int id, package_request *P) {
-	if (hls_created == FALSE) HierarchyLocations::create_hls();
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	hierarchy_location *hl = hls_indexed_by_id[id];
+	hierarchy_location *hl = I->site.hls_indexed_by_id[id];
 
 	if (P == NULL) internal_error("no superpackage");
 	if (hl->package_type == NULL) internal_error("package_in_package used wrongly");
@@ -325,7 +297,7 @@ package_request *HierarchyLocations::package_in_package(inter_tree *I, int id, p
 			internal_error("subpackage not in enclosing superpackage");
 	} else internal_error("NRL accessed inappropriately");
 
-	return Packaging::request(InterNames::explicitly_named(hl->access_name, P), PackageTypes::get(I, hl->package_type));
+	return Packaging::request(I, InterNames::explicitly_named(hl->access_name, P), PackageTypes::get(I, hl->package_type));
 }
 
 @h Hierarchy locations.
@@ -339,33 +311,24 @@ typedef struct hierarchy_attachment_point {
 	MEMORY_MANAGEMENT
 } hierarchy_attachment_point;
 
-hierarchy_attachment_point *haps_indexed_by_id[NO_DEFINED_HAP_VALUES];
-
-int haps_created = FALSE;
-void HierarchyLocations::create_haps(void) {
-	haps_created = TRUE;
-	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) haps_indexed_by_id[i] = NULL;
+void HierarchyLocations::index_ap(inter_tree *I, hierarchy_attachment_point *hap) {
+	if (hap->hap_id >= 0) I->site.haps_indexed_by_id[hap->hap_id] = hap;
 }
 
-void HierarchyLocations::index_ap(hierarchy_attachment_point *hap) {
-	if (haps_created == FALSE) HierarchyLocations::create_haps();
-	if (hap->hap_id >= 0) haps_indexed_by_id[hap->hap_id] = hap;
-}
-
-hierarchy_attachment_point *HierarchyLocations::ap(int hap_id, location_requirement req, text_stream *iterated_text, text_stream *ptype_name) {
+hierarchy_attachment_point *HierarchyLocations::ap(inter_tree *I, int hap_id, location_requirement req, text_stream *iterated_text, text_stream *ptype_name) {
 	hierarchy_attachment_point *hap = CREATE(hierarchy_attachment_point);
 	hap->hap_id = hap_id;
 	hap->requirements = req;
 	hap->name_stem = Str::duplicate(iterated_text);
 	hap->type = Str::duplicate(ptype_name);
-	HierarchyLocations::index_ap(hap);
+	HierarchyLocations::index_ap(I, hap);
 	return hap;
 }
 
 package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilation_module *C, package_request *R, int hap_id) {
-	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (haps_created == FALSE) || (haps_indexed_by_id[hap_id] == NULL))
+	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.haps_indexed_by_id[hap_id] == NULL))
 		internal_error("invalid HAP request");
-	hierarchy_attachment_point *hap = haps_indexed_by_id[hap_id];
+	hierarchy_attachment_point *hap = I->site.haps_indexed_by_id[hap_id];
 
 	if (hap->requirements.any_submodule_package_of_this_identity) {
 		#ifdef CORE_MODULE
@@ -388,7 +351,7 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 			internal_error("subpackage in wrong superpackage");
 	}
 	
-	return Packaging::request(Packaging::make_iname_within(R, hap->name_stem), PackageTypes::get(I, hap->type));
+	return Packaging::request(I, Packaging::make_iname_within(R, hap->name_stem), PackageTypes::get(I, hap->type));
 }
 
 @h Hierarchy metadata.
@@ -401,32 +364,23 @@ typedef struct hierarchy_metadatum {
 	MEMORY_MANAGEMENT
 } hierarchy_metadatum;
 
-hierarchy_metadatum *hmds_indexed_by_id[NO_DEFINED_HMD_VALUES];
-
-int hmds_created = FALSE;
-void HierarchyLocations::create_hmds(void) {
-	hmds_created = TRUE;
-	for (int i=0; i<NO_DEFINED_HMD_VALUES; i++) hmds_indexed_by_id[i] = NULL;
+void HierarchyLocations::index_md(inter_tree *I, hierarchy_metadatum *hmd) {
+	if (hmd->hm_id >= 0) I->site.hmds_indexed_by_id[hmd->hm_id] = hmd;
 }
 
-void HierarchyLocations::index_md(hierarchy_metadatum *hmd) {
-	if (hmds_created == FALSE) HierarchyLocations::create_hmds();
-	if (hmd->hm_id >= 0) hmds_indexed_by_id[hmd->hm_id] = hmd;
-}
-
-hierarchy_metadatum *HierarchyLocations::metadata(int hm_id, location_requirement req, text_stream *key) {
+hierarchy_metadatum *HierarchyLocations::metadata(inter_tree *I, int hm_id, location_requirement req, text_stream *key) {
 	hierarchy_metadatum *hmd = CREATE(hierarchy_metadatum);
 	hmd->hm_id = hm_id;
 	hmd->requirements = req;
 	hmd->key = Str::duplicate(key);
-	HierarchyLocations::index_md(hmd);
+	HierarchyLocations::index_md(I, hmd);
 	return hmd;
 }
 
 void HierarchyLocations::markup(inter_tree *I, package_request *R, int hm_id, text_stream *value) {
-	if ((hm_id < 0) || (hm_id >= NO_DEFINED_HAP_VALUES) || (hmds_created == FALSE) || (hmds_indexed_by_id[hm_id] == NULL))
+	if ((hm_id < 0) || (hm_id >= NO_DEFINED_HMD_VALUES) || (I->site.hmds_indexed_by_id[hm_id] == NULL))
 		internal_error("invalid HMD request");
-	hierarchy_metadatum *hmd = hmds_indexed_by_id[hm_id];
+	hierarchy_metadatum *hmd = I->site.hmds_indexed_by_id[hm_id];
 
 	int wrong = FALSE;
 	if (hmd->requirements.any_submodule_package_of_this_identity) {
@@ -448,5 +402,5 @@ void HierarchyLocations::markup(inter_tree *I, package_request *R, int hm_id, te
 	}
 	if (wrong) internal_error("misapplied metadata");
 	
-	Produce::metadata(R, hmd->key, value);
+	Produce::metadata(I, R, hmd->key, value);
 }

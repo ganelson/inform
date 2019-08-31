@@ -5,6 +5,7 @@ resolve-conditional-compilation
 assimilate
 make-identifiers-unique
 resolve-external-symbols
+inspect-plugs
 reconcile-verbs
 generate 0:/main/template inventory -> *log
 generate inform6 -> *out

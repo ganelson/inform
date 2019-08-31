@@ -1,3 +1,5 @@
+version 1
+# Package types:
 packagetype _plain
 packagetype _code
 packagetype _linkage
@@ -8,6 +10,8 @@ packagetype _action
 packagetype _command
 packagetype _property
 packagetype _to_phrase
+# Pragmas:
+# Primitives:
 primitive !font val -> void
 primitive !stylebold void -> void
 primitive !styleunderline void -> void

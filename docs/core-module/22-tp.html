@@ -309,7 +309,7 @@ I6 routine.
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">"ErrorRecoverySymbol"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">symb</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -358,12 +358,12 @@ to write a comment about this:
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::comment_on_request</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"No specific request"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"No specific request"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Request %d: "</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain">);</span>
-            <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

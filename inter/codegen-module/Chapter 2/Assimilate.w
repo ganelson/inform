@@ -38,7 +38,7 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
-	CodeGen::Assimilate::function_bodies();
+	CodeGen::Assimilate::function_bodies(I);
 	Inter::Tree::traverse(I, CodeGen::Assimilate::visitor3, NULL, NULL, SPLAT_IST);
 	return TRUE;
 }
@@ -760,7 +760,7 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_
 	if (Str::is_whitespace(body)) return FALSE;
 	routine_body_request *req = CREATE(routine_body_request);
 	req->block_bookmark = bb;
-	req->enclosure = Packaging::enclosure();
+	req->enclosure = Packaging::enclosure(Inter::Bookmarks::tree(IBM));
 	req->position = Packaging::bubble_at(IBM);
 	req->block_package = block_package;
 	req->pass2_offset = (int) offset - 2;
@@ -768,7 +768,7 @@ int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_
 	return TRUE;
 }
 
-void CodeGen::Assimilate::function_bodies(void) {
+void CodeGen::Assimilate::function_bodies(inter_tree *I) {
 	routine_body_request *req;
 	LOOP_OVER(req, routine_body_request) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nRoutine (%S) len %d: '%S'\n\n", Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
@@ -782,14 +782,14 @@ void CodeGen::Assimilate::function_bodies(void) {
 			} else InterSchemas::log(DL, sch);
 		}
 		
-		Produce::set_cir(req->block_package);
-		Packaging::set_state(&(req->position), req->enclosure);
-		Produce::push_code_position(Produce::new_cip(&(req->position)), Inter::Bookmarks::snapshot(Packaging::at()));
+		Site::set_cir(I, req->block_package);
+		Packaging::set_state(I, &(req->position), req->enclosure);
+		Produce::push_code_position(I, Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
 		value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 		inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
 		inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
-		EmitInterSchemas::emit(&VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
-		Produce::pop_code_position();
-		Produce::set_cir(NULL);
+		EmitInterSchemas::emit(I, &VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
+		Produce::pop_code_position(I);
+		Site::set_cir(I, NULL);
 	}
 }

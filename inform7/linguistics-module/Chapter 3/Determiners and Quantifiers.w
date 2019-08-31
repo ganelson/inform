@@ -46,7 +46,7 @@ containers, for instance, where the parameter is 3 or 17 respectively.
 typedef struct quantifier {
 	char *operator;
 	#ifdef CORE_MODULE
-	struct inter_symbol *operator_prim; /* inter operator to compare successes against the threshold */
+	inter_t operator_prim; /* inter opcode to compare successes against the threshold */
 	#endif
 	int T_coefficient; /* see above */
 	int is_complementary; /* tests the complement of the set, not the set of matches */
@@ -107,14 +107,14 @@ quantifier *Quantifiers::quant_new(char *op, int T, int is_comp, char *text) {
 	quantifier *quant = CREATE(quantifier);
 	quant->operator = op;
 	#ifdef CORE_MODULE
-	quant->operator_prim = NULL;
-	if (strcmp(op, "==") == 0) quant->operator_prim = Produce::opcode(EQ_BIP);
-	if (strcmp(op, "~=") == 0) quant->operator_prim = Produce::opcode(NE_BIP);
-	if (strcmp(op, ">=") == 0) quant->operator_prim = Produce::opcode(GE_BIP);
-	if (strcmp(op, ">") == 0) quant->operator_prim = Produce::opcode(GT_BIP);
-	if (strcmp(op, "<=") == 0) quant->operator_prim = Produce::opcode(LE_BIP);
-	if (strcmp(op, "<") == 0) quant->operator_prim = Produce::opcode(LT_BIP);
-	if (quant->operator_prim == NULL) internal_error("unfamiliar operator");
+	quant->operator_prim = 0;
+	if (strcmp(op, "==") == 0) quant->operator_prim = EQ_BIP;
+	if (strcmp(op, "~=") == 0) quant->operator_prim = NE_BIP;
+	if (strcmp(op, ">=") == 0) quant->operator_prim = GE_BIP;
+	if (strcmp(op, ">") == 0) quant->operator_prim = GT_BIP;
+	if (strcmp(op, "<=") == 0) quant->operator_prim = LE_BIP;
+	if (strcmp(op, "<") == 0) quant->operator_prim = LT_BIP;
+	if (quant->operator_prim == 0) internal_error("unfamiliar operator");
 	#endif
 
 	quant->T_coefficient = T; quant->is_complementary = is_comp;
@@ -238,59 +238,59 @@ void Quantifiers::compile_test(OUTPUT_STREAM, quantifier *quant, int index,
 void Quantifiers::emit_test(quantifier *quant,
 	int quantification_parameter, inter_symbol *qcy, inter_symbol *qcn) {
 
-	Produce::inv_primitive(quant->operator_prim);
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), quant->operator_prim);
+	Produce::down(Emit::tree());
 
 	int TC = quant->T_coefficient;
 	switch (TC) {
 		case -1:
 			if (quant->is_complementary) {
-				Produce::val_symbol(K_value, qcy);
-				Produce::inv_primitive(Produce::opcode(MINUS_BIP));
-				Produce::down();
-					Produce::val_symbol(K_value, qcn);
-					Produce::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
-				Produce::up();
+				Produce::val_symbol(Emit::tree(), K_value, qcy);
+				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, qcn);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+				Produce::up(Emit::tree());
 			} else {
-				Produce::val_symbol(K_value, qcy);
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+				Produce::val_symbol(Emit::tree(), K_value, qcy);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
 			}
 			break;
 		case 10:
-			Produce::val_symbol(K_value, qcy);
-			Produce::val_symbol(K_value, qcn);
+			Produce::val_symbol(Emit::tree(), K_value, qcy);
+			Produce::val_symbol(Emit::tree(), K_value, qcn);
 			break;
 		case 0:
-			Produce::val_symbol(K_value, qcy);
-			Produce::val(K_number, LITERAL_IVAL, 0);
+			Produce::val_symbol(Emit::tree(), K_value, qcy);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			break;
 		default:
-			if (quant->operator_prim != Produce::opcode(EQ_BIP)) {
-				Produce::inv_primitive(Produce::opcode(TIMES_BIP));
-				Produce::down();
-					Produce::val_symbol(K_value, qcy);
-					Produce::val(K_number, LITERAL_IVAL, 10);
-				Produce::up();
-				Produce::inv_primitive(Produce::opcode(TIMES_BIP));
-				Produce::down();
-					Produce::val(K_number, LITERAL_IVAL, (inter_t) TC);
-					Produce::val_symbol(K_value, qcn);
-				Produce::up();
+			if (quant->operator_prim != EQ_BIP) {
+				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, qcy);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
+				Produce::up(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) TC);
+					Produce::val_symbol(Emit::tree(), K_value, qcn);
+				Produce::up(Emit::tree());
 			} else {
-				Produce::val_symbol(K_value, qcy);
-				Produce::inv_primitive(Produce::opcode(DIVIDE_BIP));
-				Produce::down();
-					Produce::inv_primitive(Produce::opcode(TIMES_BIP));
-					Produce::down();
-						Produce::val(K_number, LITERAL_IVAL, (inter_t) TC);
-						Produce::val_symbol(K_value, qcn);
-					Produce::up();
-					Produce::val(K_number, LITERAL_IVAL, 10);
-				Produce::up();
+				Produce::val_symbol(Emit::tree(), K_value, qcy);
+				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), TIMES_BIP);
+					Produce::down(Emit::tree());
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) TC);
+						Produce::val_symbol(Emit::tree(), K_value, qcn);
+					Produce::up(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
+				Produce::up(Emit::tree());
 			}
 			break;
 	}
-	Produce::up();
+	Produce::up(Emit::tree());
 }
 #endif
 

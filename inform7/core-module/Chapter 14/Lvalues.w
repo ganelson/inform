@@ -286,7 +286,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 		LOG("Bad: %08x\n", spec_found);
 		internal_error("Compiled never-specified LOCAL VARIABLE SP");
 	}
-	Produce::val_symbol(K_value, lvar_s);
+	Produce::val_symbol(Emit::tree(), K_value, lvar_s);
 	return;
 
 @<Compile a non-local variable specification@> =
@@ -307,17 +307,17 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 	@<Reinterpret the "self" for what are unambiguously conditions of single things@>;
 
 	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-		Produce::val_iname(K_value, Hierarchy::find(GPROPERTY_HL));
+		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPROPERTY_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Produce::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
-			Produce::down();
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
+			Produce::down(Emit::tree());
 		}
 		Kinds::RunTime::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		Specifications::Compiler::emit_as_val(K_value, prop_spec);
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Produce::up();
+			Produce::up(Emit::tree());
 		}
 	}
 	return;
@@ -357,11 +357,11 @@ object as produced the original text containing the substitution.
 
 @<Emit the property's owner@> =
 	if (ParseTree::int_annotation(spec_found, record_as_self_ANNOT)) {
-		Produce::inv_primitive(Produce::opcode(STORE_BIP));
-		Produce::down();
-			Produce::ref_iname(K_value, Hierarchy::find(SELF_HL));
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 			Specifications::Compiler::emit_as_val(K_value, owner);
-		Produce::up();
+		Produce::up(Emit::tree());
 	} else {
 		Specifications::Compiler::emit_as_val(K_value, owner);
 	}
@@ -374,11 +374,11 @@ object as produced the original text containing the substitution.
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
 	if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-		Produce::val_iname(K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LIST_OF_TY_GETITEM_HL));
 	} else {
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Produce::inv_call_iname(Hierarchy::find(LIST_OF_TY_GETITEM_HL));
-			Produce::down();
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_GETITEM_HL));
+			Produce::down(Emit::tree());
 		}
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
@@ -386,7 +386,7 @@ object as produced the original text containing the substitution.
 		END_COMPILATION_MODE;
 		Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-			Produce::up();
+			Produce::up(Emit::tree());
 		}
 	}
 	return;
@@ -404,68 +404,68 @@ object as produced the original text containing the substitution.
 	switch(ParseTree::no_children(spec_found)) {
 		case 1:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Produce::val_iname(K_value, lookup);
+				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
 				LocalVariables::used_stack_selection();
 				LocalVariables::add_table_lookup();
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::inv_call_iname(lookup);
-					Produce::down();
+					Produce::inv_call_iname(Emit::tree(), lookup);
+					Produce::down(Emit::tree());
 				}
 				local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
 				inter_symbol *ct_0_s = LocalVariables::declare_this(ct_0_lv, FALSE, 8);
 				local_variable *ct_1_lv = LocalVariables::by_name(I"ct_1");
 				inter_symbol *ct_1_s = LocalVariables::declare_this(ct_1_lv, FALSE, 8);
-				Produce::val_symbol(K_value, ct_0_s);
+				Produce::val_symbol(Emit::tree(), K_value, ct_0_s);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
-				Produce::val_symbol(K_value, ct_1_s);
+				Produce::val_symbol(Emit::tree(), K_value, ct_1_s);
 				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
-					Produce::val(K_number, LITERAL_IVAL, 4);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::up();
+					Produce::up(Emit::tree());
 				}
 			}
 			break;
 		case 2: /* never here except when printing debugging code */
-			Produce::val(K_truth_state, LITERAL_IVAL, 0);
+			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			break;
 		case 3:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Produce::val_iname(K_value, lookup);
+				Produce::val_iname(Emit::tree(), K_value, lookup);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::inv_call_iname(lookup);
-					Produce::down();
+					Produce::inv_call_iname(Emit::tree(), lookup);
+					Produce::down(Emit::tree());
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
 				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
-					Produce::val(K_number, LITERAL_IVAL, 4);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::up();
+					Produce::up(Emit::tree());
 				}
 			}
 			break;
 		case 4:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
-				Produce::val_iname(K_value, lookup_corr);
+				Produce::val_iname(Emit::tree(), K_value, lookup_corr);
 			} else {
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::inv_call_iname(lookup_corr);
-					Produce::down();
+					Produce::inv_call_iname(Emit::tree(), lookup_corr);
+					Produce::down(Emit::tree());
 				}
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next->next);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next);
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down->next->next);
 				if (TEST_COMPILATION_MODE(BLANK_OUT_CMODE)) {
-					Produce::val(K_number, LITERAL_IVAL, 4);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 4);
 				}
 				if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
-					Produce::up();
+					Produce::up(Emit::tree());
 				}
 			}
 			break;

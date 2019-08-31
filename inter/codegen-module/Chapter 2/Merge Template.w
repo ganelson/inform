@@ -10,7 +10,7 @@ void CodeGen::MergeTemplate::create_pipeline_stage(void) {
 }
 
 int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
-	inter_package *main_package = Inter::Tree::main_package(step->repository);
+	inter_package *main_package = Site::main_package_if_it_exists(step->repository);
 	inter_bookmark IBM;
 	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->repository);

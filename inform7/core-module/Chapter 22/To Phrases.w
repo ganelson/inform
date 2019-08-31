@@ -234,7 +234,7 @@ inter_name *Routines::ToPhrases::make_iname(phrase *ph, kind *req_kind) {
 			Problems::issue_problem_end();
 			WRITE_TO(identifier, "ErrorRecoverySymbol");
 		}
-		inter_name *symb = Produce::find_by_name(identifier);
+		inter_name *symb = Produce::find_by_name(Emit::tree(), identifier);
 		DISCARD_TEXT(identifier);
 		return symb;
 	}
@@ -269,12 +269,12 @@ to write a comment about this:
 
 =
 void Routines::ToPhrases::comment_on_request(to_phrase_request *req) {
-	if (req == NULL) Produce::comment(I"No specific request");
+	if (req == NULL) Produce::comment(Emit::tree(), I"No specific request");
 	else {
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "Request %d: ", req->allocation_id);
 		Kinds::Textual::write(C, req->requested_exact_kind);
-		Produce::comment(C);
+		Produce::comment(Emit::tree(), C);
 		DISCARD_TEXT(C);
 	}
 }

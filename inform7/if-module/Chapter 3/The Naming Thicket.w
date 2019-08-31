@@ -430,54 +430,54 @@ void PL::Naming::compile_small_names(void) {
 		if (notice->capped) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
 
-			Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(PROPERTYADDRESS_BIP));
-				Produce::down();
-					Produce::val_iname(K_value, Instances::iname(owner));
-					Produce::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
-				Produce::up();
-				Produce::code();
-				Produce::down();
-					Produce::inv_call_iname(porname);
-					Produce::down();
-						Produce::val_iname(K_value, Instances::iname(owner));
-						Produce::val_iname(K_value, Hierarchy::find(CAPSHORTNAME_HL));
-						Produce::val(K_number, LITERAL_IVAL, 1);
-					Produce::up();
-				Produce::up();
-				Produce::code();
-				Produce::down();
-					Produce::inv_call_iname(porname);
-					Produce::down();
-						Produce::val_iname(K_value, Instances::iname(owner));
-						Produce::val_iname(K_value, Hierarchy::find(SHORT_NAME_HL));
-						Produce::val(K_number, LITERAL_IVAL, 1);
-					Produce::up();
-				Produce::up();
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), PROPERTYADDRESS_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
+				Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::inv_call_iname(Emit::tree(), porname);
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::inv_call_iname(Emit::tree(), porname);
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SHORT_NAME_HL));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 		} else {
-			Produce::inv_primitive(Produce::opcode(PRINTNAME_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, Instances::iname(owner));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), PRINTNAME_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+			Produce::up(Emit::tree());
 		}
-		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-		Produce::down();
-			Produce::val_text(I"'s ");
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_text(Emit::tree(), I"'s ");
+		Produce::up(Emit::tree());
 		TEMPORARY_TEXT(SNAMES);
 		LOOP_THROUGH_WORDING(j, NA) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
 		}
-		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-		Produce::down();
-			Produce::val_text(SNAMES);
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_text(Emit::tree(), SNAMES);
+		Produce::up(Emit::tree());
 		DISCARD_TEXT(SNAMES);
 
-		Produce::rtrue();
+		Produce::rtrue(Emit::tree());
 		Routines::end(save);
 
 		save = Emit::named_array_begin(notice->snn_iname, NULL);

@@ -447,29 +447,29 @@ void PL::Actions::Lists::emit(action_name_list *anl) {
 	int C = 0;
 	for (action_name_list *L = anl; L; L = L->next) C++;
 
-	if (anl->parity == -1) { Produce::inv_primitive(Produce::opcode(NOT_BIP)); Produce::down(); }
+	if (anl->parity == -1) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
 
 	int N = 0, downs = 0;
 	for (action_name_list *L = anl; L; L = L->next) {
 		if (anl->parity != L->parity) internal_error("mixed parity");
 		N++;
-		if (N < C) { Produce::inv_primitive(Produce::opcode(OR_BIP)); Produce::down(); downs++; }
+		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
 		if (L->nap_listed) {
-			Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, PL::Actions::Patterns::Named::identifier(L->nap_listed));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, PL::Actions::Patterns::Named::identifier(L->nap_listed));
+			Produce::up(Emit::tree());
 		} else {
-			Produce::inv_primitive(Produce::opcode(EQ_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, Hierarchy::find(ACTION_HL));
-				Produce::val_iname(K_value, PL::Actions::double_sharp(L->action_listed));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
+				Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(L->action_listed));
+			Produce::up(Emit::tree());
 		}
 	}
-	while (downs > 0) { Produce::up(); downs--; }
+	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 
-	if (anl->parity == -1) Produce::up();
+	if (anl->parity == -1) Produce::up(Emit::tree());
 
 }
 

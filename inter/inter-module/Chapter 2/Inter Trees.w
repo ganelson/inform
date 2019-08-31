@@ -10,19 +10,14 @@ typedef struct inter_tree {
 	struct inter_warehouse *housed;
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
-	struct inter_package *main_package;
-	struct inter_package *connectors_package;
-	struct inter_symbol *opcodes_set[MAX_BIPS];
+	struct building_site site;
 	MEMORY_MANAGEMENT
 } inter_tree;
 
 @ =
 inter_tree *Inter::Tree::new(void) {
 	inter_tree *I = CREATE(inter_tree);
-	I->main_package = NULL;
-	I->connectors_package = NULL;
 	I->housed = Inter::Warehouse::new();
-	for (int i=0; i<MAX_BIPS; i++) I->opcodes_set[i] = NULL;
 	inter_t N = Inter::Warehouse::create_symbols_table(I->housed);
 	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
 	inter_t root_package_ID = Inter::Warehouse::create_package(I->housed, I);
@@ -33,32 +28,13 @@ inter_tree *Inter::Tree::new(void) {
 	Inter::Packages::set_scope(I->root_package, globals);
 	I->root_node->package = I->root_package;
 	Inter::Warehouse::attribute_resource(I->housed, N, I->root_package);
+	Site::clear(I);
 	return I;
 }
 
 inter_package *Inter::Tree::root_package(inter_tree *I) {
 	if (I) return I->root_package;
 	return NULL;
-}
-
-inter_package *Inter::Tree::main_package(inter_tree *I) {
-	if (I) return I->main_package;
-	return NULL;
-}
-
-inter_package *Inter::Tree::connectors_package(inter_tree *I) {
-	if (I) return I->connectors_package;
-	return NULL;
-}
-
-void Inter::Tree::set_main_package(inter_tree *I, inter_package *M) {
-	if (I == NULL) internal_error("no tree"); 
-	I->main_package = M;
-}
-
-void Inter::Tree::set_connectors_package(inter_tree *I, inter_package *M) {
-	if (I == NULL) internal_error("no tree"); 
-	I->connectors_package = M;
 }
 
 inter_warehouse *Inter::Tree::warehouse(inter_tree *I) {
@@ -225,7 +201,8 @@ void Inter::Tree::place(inter_tree_node *C, int how, inter_tree_node *R) {
 
 @<Insert C after R@> =
 	inter_tree_node *P = Inter::Tree::parent(R);
-	if (P == NULL) internal_error("can't move C after R when R is nowhere");
+	if (P == NULL) internal_error("can't move C before R when R is nowhere");
+	if (P == R->tree->root_node) LOG("Wowser!\n");
 	Inter::Tree::set_parent_UNSAFE(C, P);
 	if (Inter::Tree::last_child(P) == R)
 		Inter::Tree::set_last_child_UNSAFE(P, C);
@@ -296,7 +273,7 @@ void Inter::Tree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tre
 }
 
 void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, inter_package *mp, int filter) {
-	if (mp == NULL) mp = Inter::Tree::main_package(from);
+	if (mp == NULL) mp = Site::main_package_if_it_exists(from);
 	if (mp) {
 		inter_tree_node *D = Inter::Packages::definition(mp);
 		if ((filter == 0) ||

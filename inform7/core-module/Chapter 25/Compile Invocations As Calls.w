@@ -40,32 +40,32 @@ void Invocations::AsCalls::emit_function_call(
 	COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
 
 	if (identifier) {
-		Produce::inv_call_iname(identifier);
-		Produce::down();
+		Produce::inv_call_iname(Emit::tree(), identifier);
+		Produce::down(Emit::tree());
 	} else if (indirect_spec) {
 		int arity = tokens->tokens_count;
 		if (Kinds::Behaviour::uses_pointer_values(return_kind)) arity++;
 		switch (arity) {
-			case 0: Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-			case 1: Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-			case 2: Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-			case 3: Produce::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-			case 4: Produce::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
+			case 0: Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP); break;
+			case 1: Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP); break;
+			case 2: Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP); break;
+			case 3: Produce::inv_primitive(Emit::tree(), INDIRECT3_BIP); break;
+			case 4: Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP); break;
 			default: internal_error("indirect function call with too many arguments");
 		}
-		Produce::down();
+		Produce::down(Emit::tree());
 		if (lookup_flag) {
-			Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
-			Produce::down();
+			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+			Produce::down(Emit::tree());
 				Specifications::Compiler::emit_as_val(K_value, indirect_spec);
-				Produce::val(K_number, LITERAL_IVAL, 1);
-			Produce::up();
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+			Produce::up(Emit::tree());
 		} else {
 			Specifications::Compiler::emit_as_val(K_value, indirect_spec);
 		}
 	} else internal_error("emit function call improperly called");
 		@<Emit the comma-separated list of arguments@>;
-	Produce::up();
+	Produce::up(Emit::tree());
 
 	END_COMPILATION_MODE;
 }
@@ -81,7 +81,7 @@ then follow, and finally the optional bitmap of phrase options.
 	for (int k=0; k<tokens->tokens_count; k++)
 		Specifications::Compiler::emit_to_kind(tokens->args[k], tokens->kind_required[k]);
 	if (phrase_options != -1)
-		Produce::val(K_number, LITERAL_IVAL, (inter_t) phrase_options);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) phrase_options);
 
 @<Compute the return kind of the phrase@> =
 	kind *K = tokens->as_requested;

@@ -518,50 +518,50 @@ void UseOptions::TestUseOption_routine(void) {
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(EQ_BIP));
-				Produce::down();
-					Produce::val_symbol(K_value, UO_s);
-					Produce::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
-				Produce::up();
-				Produce::code();
-				Produce::down();
-					Produce::rtrue();
-				Produce::up();
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), EQ_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, UO_s);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+				Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::rtrue(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 		}
-	Produce::rfalse();
+	Produce::rfalse(Emit::tree());
 	Routines::end(save);
 
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *UO_s = LocalVariables::add_named_call_as_symbol(I"UO");
-	Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
-	Produce::down();
-		Produce::val_symbol(K_value, UO_s);
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, UO_s);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			use_option *uo;
 			LOOP_OVER(uo, use_option) {
-				Produce::inv_primitive(Produce::opcode(CASE_BIP));
-				Produce::down();
-					Produce::val(K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
-					Produce::code();
-					Produce::down();
-						Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-						Produce::down();
+				Produce::inv_primitive(Emit::tree(), CASE_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+						Produce::down(Emit::tree());
 							TEMPORARY_TEXT(N);
 							WRITE_TO(N, "%W option", uo->name);
 							if (uo->minimum_setting_value > 0)
 								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
-							Produce::val_text(N);
+							Produce::val_text(Emit::tree(), N);
 							DISCARD_TEXT(N);
-						Produce::up();
-					Produce::up();
-				Produce::up();
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
 			}
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 	Routines::end(save);

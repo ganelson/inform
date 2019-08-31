@@ -16,6 +16,7 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Resolving Conditional Compilation
 	Assimilate
 	Resolve External Symbols
+	Inspect Plugs
 	Uniqueness
 	Reconcile Verbs
 	Eliminate Redundant Matter

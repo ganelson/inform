@@ -149,9 +149,9 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 }
 
 inter_name *InterNames::explicitly_named_in_template(inter_tree *I, text_stream *name) {
-	inter_name *iname = InterNames::explicitly_named(name, Packaging::connectors(I));
-	inter_symbol *plug = Inter::Connectors::find_plug(Produce::tree(), name);
-	if (plug == NULL) plug = Inter::Connectors::plug(Produce::tree(), name);
+	inter_name *iname = InterNames::explicitly_named(name, Site::connectors_request(I));
+	inter_symbol *plug = Inter::Connectors::find_plug(I, name);
+	if (plug == NULL) plug = Inter::Connectors::plug(I, name);
 	iname->symbol = plug;
 	return iname;
 }
@@ -195,7 +195,8 @@ package_request *InterNames::location(inter_name *iname) {
 inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
-	if (P == NULL) return Inter::Tree::global_scope(Produce::tree());
+	if (P == NULL) internal_error("can't determine scope of unlocated name");
+		// return Inter::Tree::global_scope(InterNames::tree(iname));
 	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 

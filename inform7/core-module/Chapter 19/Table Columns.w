@@ -147,33 +147,33 @@ int Tables::Columns::get_id(table_column *tc) {
 void Tables::Columns::compile_run_time_support(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_HL));
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
-	Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
-	Produce::down();
-		Produce::val_symbol(K_value, tcv_s);
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, tcv_s);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 	table_column *tc;
 	LOOP_OVER(tc, table_column) {
-		Produce::inv_primitive(Produce::opcode(CASE_BIP));
-		Produce::down();
-			Produce::val(K_value, LITERAL_IVAL, (inter_t) Tables::Columns::get_id(tc));
-			Produce::code();
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-				Produce::down();
+		Produce::inv_primitive(Emit::tree(), CASE_BIP);
+		Produce::down(Emit::tree());
+			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) Tables::Columns::get_id(tc));
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+				Produce::down(Emit::tree());
 					Kinds::RunTime::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
-				Produce::up();
-			Produce::up();
-		Produce::up();
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 
-		Produce::up();
-	Produce::up();
-	Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-	Produce::down();
-		Produce::val_iname(K_value, Kinds::Constructors::UNKNOWN_iname());
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
+	Produce::up(Emit::tree());
 	Routines::end(save);
 }
 

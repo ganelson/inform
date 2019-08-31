@@ -241,7 +241,7 @@ local_variable *LocalVariables::new(wording W, kind *K) {
 	if (phsf == NULL) internal_error("tried to add let value without stack frame");
 	local_variable *lvar = LocalVariables::add_to_locals_slate(&(phsf->local_value_variables),
 		LET_VALUE_LV, W, K, NULL, -1);
-	if (Produce::emitting_routine())
+	if (Produce::emitting_routine(Emit::tree()))
 		LocalVariables::declare_this(lvar, FALSE, 6);
 	LOGIF(LOCAL_VARIABLES, "Let value $k allocated\n", lvar);
 	return lvar;
@@ -650,18 +650,18 @@ int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 	inter_t j = 0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
 		NC++;
-		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-				Produce::down();
-					Produce::val_iname(K_value, Hierarchy::find(LOCALPARKING_HL));
-					Produce::val(K_number, LITERAL_IVAL, j++);
-				Produce::up();
+		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCALPARKING_HL));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
+				Produce::up(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-				Produce::val_symbol(K_value, lvar_s);
-			Produce::up();
+				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
+			Produce::up(Emit::tree());
 	}
 	return NC;
 }
@@ -674,15 +674,15 @@ void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
 	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
 	inter_t j=0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
-		Produce::inv_primitive(Produce::opcode(STORE_BIP));
-		Produce::down();
-			Produce::ref_symbol(K_value, LocalVariables::declare_this(lvar, FALSE, 1));
-			Produce::inv_primitive(Produce::opcode(LOOKUP_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, LP);
-				Produce::val(K_number, LITERAL_IVAL, j++);
-			Produce::up();
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, LocalVariables::declare_this(lvar, FALSE, 1));
+			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, LP);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, j++);
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 }
 
@@ -948,10 +948,10 @@ void LocalVariables::end_scope(int s) {
 			if (lvar->free_at_end_of_scope) {
 				inter_name *iname = Hierarchy::find(BLKVALUEFREE_HL);
 				inter_symbol *LN = LocalVariables::declare_this(lvar, FALSE, 2);
-				Produce::inv_call_iname(iname);
-				Produce::down();
-					Produce::val_symbol(K_value, LN);
-				Produce::up();
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, LN);
+				Produce::up(Emit::tree());
 			}
 			LocalVariables::deallocate(lvar);
 		}
@@ -1008,8 +1008,8 @@ void LocalVariables::add_calling_to_condition(local_variable *lvar) {
 
 void LocalVariables::begin_condition_emit(void) {
 	current_session_number++;
-	Produce::inv_primitive(Produce::opcode(OR_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), OR_BIP);
+	Produce::down(Emit::tree());
 }
 
 void LocalVariables::end_condition_emit(void) {
@@ -1023,34 +1023,34 @@ void LocalVariables::end_condition_emit(void) {
 	}
 
 	if (NC == 0) {
-		Produce::val(K_truth_state, LITERAL_IVAL, 0);
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 	} else {
-		Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-		Produce::down(); downs++;
+		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+		Produce::down(Emit::tree()); downs++;
 		int NM = 0, inner_downs = 0;;
 		while ((callings_in_condition_sp > 0) &&
 			(callings_session_number[callings_in_condition_sp-1] == current_session_number)) {
 			NM++;
 			local_variable *lvar = callings_in_condition[callings_in_condition_sp-1];
-			if (NM < NC) { Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP)); Produce::down(); inner_downs++; }
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
+			if (NM < NC) { Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); Produce::down(Emit::tree()); inner_downs++; }
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-				Produce::ref_symbol(K_value, lvar_s);
+				Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 				kind *K = LocalVariables::kind(lvar);
 				if ((K == NULL) ||
 					(Kinds::Compare::le(K, K_object)) ||
 					(Kinds::Behaviour::definite(K) == FALSE) ||
 					(Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, "'called' value") != TRUE))
-					Produce::val(K_truth_state, LITERAL_IVAL, 0);
-			Produce::up();
+					Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
 			callings_in_condition_sp--;
 		}
-		while (inner_downs > 0) { inner_downs--; Produce::up(); }
-		Produce::val(K_truth_state, LITERAL_IVAL, 0);
+		while (inner_downs > 0) { inner_downs--; Produce::up(Emit::tree()); }
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 	}
 	current_session_number--;
-	while (downs > 0) { downs--; Produce::up(); }
+	while (downs > 0) { downs--; Produce::up(Emit::tree()); }
 }
 
 @h Writer.
@@ -1091,7 +1091,7 @@ void LocalVariables::emit_parameter_list(ph_stack_frame *phsf) {
 		for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
 			if (lvar->lv_purpose == purpose) {
 				inter_symbol *vs = LocalVariables::declare_this(lvar, TRUE, 3);
-				Produce::val_symbol(K_value, vs);
+				Produce::val_symbol(Emit::tree(), K_value, vs);
 			}
 	}
 }
@@ -1131,10 +1131,8 @@ void LocalVariables::declare(ph_stack_frame *phsf, int shell_mode) {
 }
 
 inter_symbol *LocalVariables::declare_this(local_variable *lvar, int shell_mode, int reason) {
-	inter_symbol *S = Produce::local_exists(lvar->lv_lvalue);
-	if (S) {
-		return S;
-	}
+	inter_symbol *S = Produce::local_exists(Emit::tree(), lvar->lv_lvalue);
+	if (S) return S;
 
 	inter_t annot = 0;
 	switch (lvar->lv_purpose) {

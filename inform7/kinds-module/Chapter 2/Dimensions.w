@@ -1029,8 +1029,8 @@ void Kinds::Dimensions::kind_rescale_multiplication_emit_op(kind *kindx, kind *k
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_X*k_Y > k_O) { Produce::inv_primitive(Produce::opcode(DIVIDE_BIP)); Produce::down(); }
-	if (k_X*k_Y < k_O) { Produce::inv_primitive(Produce::opcode(TIMES_BIP)); Produce::down(); }
+	if (k_X*k_Y > k_O) { Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree()); }
+	if (k_X*k_Y < k_O) { Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree()); }
 }
 
 void Kinds::Dimensions::kind_rescale_multiplication_emit_factor(kind *kindx, kind *kindy) {
@@ -1040,8 +1040,8 @@ void Kinds::Dimensions::kind_rescale_multiplication_emit_factor(kind *kindx, kin
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_X*k_Y > k_O) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_X*k_Y/k_O)); Produce::up(); }
-	if (k_X*k_Y < k_O) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_O/k_X/k_Y)); Produce::up(); }
+	if (k_X*k_Y > k_O) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_X*k_Y/k_O)); Produce::up(Emit::tree()); }
+	if (k_X*k_Y < k_O) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_O/k_X/k_Y)); Produce::up(Emit::tree()); }
 }
 #endif
 
@@ -1070,8 +1070,8 @@ void Kinds::Dimensions::kind_rescale_division_emit_op(kind *kindx, kind *kindy) 
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_O*k_Y > k_X) { Produce::inv_primitive(Produce::opcode(TIMES_BIP)); Produce::down(); }
-	if (k_O*k_Y < k_X) { Produce::inv_primitive(Produce::opcode(DIVIDE_BIP)); Produce::down(); }
+	if (k_O*k_Y > k_X) { Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree()); }
+	if (k_O*k_Y < k_X) { Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree()); }
 }
 
 void Kinds::Dimensions::kind_rescale_division_emit_factor(kind *kindx, kind *kindy) {
@@ -1081,8 +1081,8 @@ void Kinds::Dimensions::kind_rescale_division_emit_factor(kind *kindx, kind *kin
 	int k_X = Kinds::Behaviour::scale_factor(kindx);
 	int k_Y = Kinds::Behaviour::scale_factor(kindy);
 	int k_O = Kinds::Behaviour::scale_factor(kindo);
-	if (k_O*k_Y > k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_O*k_Y/k_X)); Produce::up(); }
-	if (k_O*k_Y < k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_Y)); Produce::up(); }
+	if (k_O*k_Y > k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_O*k_Y/k_X)); Produce::up(Emit::tree()); }
+	if (k_O*k_Y < k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_Y)); Produce::up(Emit::tree()); }
 }
 #endif
 
@@ -1156,8 +1156,8 @@ Therefore this scaling operating is to be performed inside the root
 function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit a scaling correction for square roots@> =
-	if (k_O*k_O > k_X) { Produce::inv_primitive(Produce::opcode(TIMES_BIP)); Produce::down(); }
-	if (k_O*k_O < k_X) { Produce::inv_primitive(Produce::opcode(DIVIDE_BIP)); Produce::down(); }
+	if (k_O*k_O > k_X) { Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree()); }
+	if (k_O*k_O < k_X) { Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree()); }
 
 @ For cube roots,
 $$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot
@@ -1167,8 +1167,8 @@ and the overestimate is $k = {}^3\sqrt{k_X}/k_O$. Scaling once again within
 the rooting function, we scale by $k^3$:
 
 @<Emit a scaling correction for cube roots@> =
-	if (k_O*k_O*k_O > k_X) { Produce::inv_primitive(Produce::opcode(TIMES_BIP)); Produce::down(); }
-	if (k_O*k_O*k_O < k_X) { Produce::inv_primitive(Produce::opcode(DIVIDE_BIP)); Produce::down(); }
+	if (k_O*k_O*k_O > k_X) { Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree()); }
+	if (k_O*k_O*k_O < k_X) { Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree()); }
 
 @ =
 #ifdef CORE_MODULE
@@ -1198,8 +1198,8 @@ Therefore this scaling operating is to be performed inside the root
 function, not outside, and it scales by $k^2$ not $k$:
 
 @<Emit factor for a scaling correction for square roots@> =
-	if (k_O*k_O > k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_O*k_O/k_X)); Produce::up(); }
-	if (k_O*k_O < k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_O)); Produce::up(); }
+	if (k_O*k_O > k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_O*k_O/k_X)); Produce::up(Emit::tree()); }
+	if (k_O*k_O < k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_O)); Produce::up(Emit::tree()); }
 
 @ For cube roots,
 $$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot
@@ -1209,8 +1209,8 @@ and the overestimate is $k = {}^3\sqrt{k_X}/k_O$. Scaling once again within
 the rooting function, we scale by $k^3$:
 
 @<Emit factor for a scaling correction for cube roots@> =
-	if (k_O*k_O*k_O > k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_O*k_O*k_O/k_X)); Produce::up(); }
-	if (k_O*k_O*k_O < k_X) { Produce::val(K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_O/k_O)); Produce::up(); }
+	if (k_O*k_O*k_O > k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_O*k_O*k_O/k_X)); Produce::up(Emit::tree()); }
+	if (k_O*k_O*k_O < k_X) { Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (k_X/k_O/k_O/k_O)); Produce::up(Emit::tree()); }
 
 @h Arithmetic on kinds.
 We are finally able to provide our central routine, the one providing a service

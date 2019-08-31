@@ -138,10 +138,10 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 	if (stage == 5) {
 		instance *I;
 		P_name = Properties::Valued::new_nameless(I"name", K_text);
-		Hierarchy::make_available(Produce::tree(), PL::Parsing::Visibility::name_name());
+		Hierarchy::make_available(Emit::tree(), PL::Parsing::Visibility::name_name());
 		P_parse_name = Properties::Valued::new_nameless(I"parse_name", K_value);
 		P_action_bitmap = Properties::Valued::new_nameless(I"action_bitmap", K_value);
-		Hierarchy::make_available(Produce::tree(), Properties::iname(P_action_bitmap));
+		Hierarchy::make_available(Emit::tree(), Properties::iname(P_action_bitmap));
 
 		LOOP_OVER_OBJECT_INSTANCES(I) {
 			inference_subject *subj = Instances::as_subject(I);

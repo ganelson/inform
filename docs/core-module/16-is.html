@@ -800,7 +800,7 @@ condition blank.)
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

@@ -704,13 +704,13 @@ void Rules::Bookings::list_compile_rule_phrases(booking *list_head,
 					case LAST_PLACEMENT: WRITE_TO(C, "last-placed rules"); break;
 				}
 				WRITE_TO(C, " ---");
-				Produce::comment(C);
+				Produce::comment(Emit::tree(), C);
 			} else {
 				char *law = br->next_rule_specificity_lawname;
 				switch(br->next_rule_specificity) {
-					case -1: WRITE_TO(C, "  <<< %s <<<", law); Produce::comment(C); break;
-					case 0: WRITE_TO(C, "  === equally specific with ==="); Produce::comment(C); break;
-					case 1: WRITE_TO(C, "  >>> %s >>>", law); Produce::comment(C); break;
+					case -1: WRITE_TO(C, "  <<< %s <<<", law); Produce::comment(Emit::tree(), C); break;
+					case 0: WRITE_TO(C, "  === equally specific with ==="); Produce::comment(Emit::tree(), C); break;
+					case 1: WRITE_TO(C, "  >>> %s >>>", law); Produce::comment(Emit::tree(), C); break;
 				}
 			}
 			DISCARD_TEXT(C);
@@ -727,7 +727,7 @@ which were introduced in December 2010.
 void Rules::Bookings::start_list_compilation(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
 	LocalVariables::add_named_call(I"forbid_breaks");
-	Produce::rfalse();
+	Produce::rfalse(Emit::tree());
 	Routines::end(save);
 }
 
@@ -821,18 +821,18 @@ than once for each rule.
 				p_s = LocalVariables::add_internal_local_c_as_symbol(I"p", "rulebook parameter");
 
 			if (countup > 1) {
-				Produce::inv_primitive(Produce::opcode(STORE_BIP));
-				Produce::down();
-					Produce::ref_symbol(K_value, original_deadflag_s);
-					Produce::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_symbol(Emit::tree(), K_value, original_deadflag_s);
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
+				Produce::up(Emit::tree());
 			}
 			if (parameter_based) {
-				Produce::inv_primitive(Produce::opcode(STORE_BIP));
-				Produce::down();
-					Produce::ref_symbol(K_value, p_s);
-					Produce::val_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_symbol(Emit::tree(), K_value, p_s);
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
+				Produce::up(Emit::tree());
 			}
 			break;
 		}
@@ -851,15 +851,15 @@ than once for each rule.
 		case ROUTINE_RBF:
 			#ifdef IF_MODULE
 			if (an) {
-				Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-				Produce::down();
-					Produce::inv_primitive(Produce::opcode(EQ_BIP));
-					Produce::down();
-						Produce::val_iname(K_value, Hierarchy::find(ACTION_HL));
-						Produce::val_iname(K_value, PL::Actions::double_sharp(an));
-					Produce::up();
-					Produce::code();
-					Produce::down();
+				Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), EQ_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
+						Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(an));
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
 
 				action_group_open = TRUE;
 			}
@@ -875,76 +875,76 @@ than once for each rule.
 			break;
 		case ROUTINE_RBF:
 			if (entry_count > 0) {
-				Produce::inv_primitive(Produce::opcode(IF_BIP));
-				Produce::down();
-					Produce::inv_primitive(Produce::opcode(NE_BIP));
-					Produce::down();
-						Produce::val_symbol(K_value, original_deadflag_s);
-						Produce::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
-					Produce::up();
-					Produce::code();
-					Produce::down();
-						Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-						Produce::down();
-							Produce::val(K_number, LITERAL_IVAL, 0);
-						Produce::up();
-					Produce::up();
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), IF_BIP);
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), NE_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_symbol(Emit::tree(), K_value, original_deadflag_s);
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+						Produce::down(Emit::tree());
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
 			}
 			@<Compile an optional mid-rulebook paragraph break@>;
 			if (parameter_based) {
-				Produce::inv_primitive(Produce::opcode(STORE_BIP));
-				Produce::down();
-					Produce::ref_iname(K_value, Hierarchy::find(PARAMETER_VALUE_HL));
-					Produce::val_symbol(K_value, p_s);
-				Produce::up();
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
+					Produce::val_symbol(Emit::tree(), K_value, p_s);
+				Produce::up(Emit::tree());
 			}
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::ref_symbol(K_value, rv_s);
-				Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP));
-				Produce::down();
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_symbol(Emit::tree(), K_value, rv_s);
+				Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
+				Produce::down(Emit::tree());
 					Specifications::Compiler::emit_as_val(K_value, spec);
-				Produce::up();
-			Produce::up();
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
-				Produce::val_symbol(K_value, rv_s);
-				Produce::code();
-				Produce::down();
-					Produce::inv_primitive(Produce::opcode(IF_BIP));
-					Produce::down();
-						Produce::inv_primitive(Produce::opcode(EQ_BIP));
-						Produce::down();
-							Produce::val_symbol(K_value, rv_s);
-							Produce::val(K_number, LITERAL_IVAL, 2);
-						Produce::up();
-						Produce::code();
-						Produce::down();
-							Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-							Produce::down();
-								Produce::val_iname(K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
-							Produce::up();
-						Produce::up();
-					Produce::up();
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_symbol(Emit::tree(), K_value, rv_s);
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), IF_BIP);
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), EQ_BIP);
+						Produce::down(Emit::tree());
+							Produce::val_symbol(Emit::tree(), K_value, rv_s);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
+						Produce::up(Emit::tree());
+						Produce::code(Emit::tree());
+						Produce::down(Emit::tree());
+							Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+							Produce::down(Emit::tree());
+								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
+							Produce::up(Emit::tree());
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
 
-					Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-					Produce::down();
+					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+					Produce::down(Emit::tree());
 						Specifications::Compiler::emit_as_val(K_value, spec);
-					Produce::up();
-				Produce::up();
-			Produce::up();
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(LOOKUPREF_BIP));
-				Produce::down();
-					Produce::val_iname(K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
-					Produce::val(K_number, LITERAL_IVAL, 0);
-				Produce::up();
-				Produce::val(K_number, LITERAL_IVAL, 0);
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::up(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
 			break;
 	}
 
@@ -952,12 +952,12 @@ than once for each rule.
 	if (action_group_open) {
 		switch (format) {
 			case ROUTINE_RBF:
-					Produce::up();
-					Produce::code();
-					Produce::down();
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
 						@<Compile an optional mid-rulebook paragraph break@>;
-					Produce::up();
-				Produce::up();
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
 				break;
 		}
 		action_group_open = FALSE;
@@ -971,27 +971,27 @@ than once for each rule.
 			Emit::array_end(save_array);
 			break;
 		case ROUTINE_RBF:
-			Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-			Produce::down();
-				Produce::val(K_number, LITERAL_IVAL, 0);
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+			Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
 			Routines::end(save_array);
 			break;
 	}
 
 @<Compile an optional mid-rulebook paragraph break@> =
 	if (entry_count > 0) {
-		Produce::inv_primitive(Produce::opcode(IF_BIP));
-		Produce::down();
-			Produce::val_iname(K_number, Hierarchy::find(SAY__P_HL));
-			Produce::code();
-			Produce::down();
-				Produce::inv_call_iname(Hierarchy::find(RULEBOOKPARBREAK_HL));
-				Produce::down();
-					Produce::val_symbol(K_value, forbid_breaks_s);
-				Produce::up();
-			Produce::up();
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), IF_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEBOOKPARBREAK_HL));
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, forbid_breaks_s);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 
 @ And, finally, here's where a booking is turned into the action (if any) that

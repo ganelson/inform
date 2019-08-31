@@ -209,8 +209,8 @@ that routine later. This appearance of the routine name is called the "cue".
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
                     <span class="identifier">downs</span><span class="plain"> = </span><span class="functiontext">LocalVariables::emit_storage</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
                     <span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
-                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEXT_TY_EXPANDIFPERISHABLE_HL</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEXT_TY_EXPANDIFPERISHABLE_HL</span><span class="plain">));</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="functiontext">Frames::emit_allocation</span><span class="plain">(</span><span class="identifier">K_text</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain"> = </span><span class="functiontext">Strings::TextSubstitutions::new_text_substitution</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">phsf</span><span class="plain">,</span>
@@ -219,10 +219,10 @@ that routine later. This appearance of the routine name is called the "cue".
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_wanted</span><span class="plain"> == </span><span class="identifier">INTER_DATA_VHMODE</span><span class="plain">)</span>
                     <span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">tin</span><span class="plain">);</span>
                 <span class="reserved">else</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tin</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tin</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">)) {</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                    <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(); </span><span class="identifier">downs</span><span class="plain">--; }</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">downs</span><span class="plain">--; }</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -367,9 +367,9 @@ compiling it.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">makes_local_references</span><span class="plain"> =</span>
             <span class="functiontext">LocalVariables::local_parsed_recently</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">());</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">makes_local_references</span><span class="plain">) {</span>
-            <span class="identifier">Produce::push_code_position</span><span class="plain">(</span><span class="identifier">Produce::begin_position</span><span class="plain">(), </span><span class="identifier">Inter::Bookmarks::snapshot</span><span class="plain">(</span><span class="identifier">Packaging::at</span><span class="plain">()));</span>
+            <span class="identifier">Produce::push_code_position</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">Produce::begin_position</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()), </span><span class="identifier">Inter::Bookmarks::snapshot</span><span class="plain">(</span><span class="identifier">Packaging::at</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">())));</span>
             <span class="functiontext">LocalVariables::compile_retrieval</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
-            <span class="identifier">Produce::pop_code_position</span><span class="plain">();</span>
+            <span class="identifier">Produce::pop_code_position</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
@@ -406,27 +406,27 @@ a request for a new text substitution to be compiled later...
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
-            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IFDEBUG_BIP</span><span class="plain">));</span>
-            <span class="identifier">Produce::down</span><span class="plain">();</span>
-                <span class="identifier">Produce::code</span><span class="plain">();</span>
-                <span class="identifier">Produce::down</span><span class="plain">();</span>
-                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">IF_BIP</span><span class="plain">));</span>
-                    <span class="identifier">Produce::down</span><span class="plain">();</span>
-                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SUPPRESS_TEXT_SUBSTITUTION_HL</span><span class="plain">));</span>
-                        <span class="identifier">Produce::code</span><span class="plain">();</span>
-                        <span class="identifier">Produce::down</span><span class="plain">();</span>
-                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Produce::opcode</span><span class="plain">(</span><span class="identifier">PRINT_BIP</span><span class="plain">));</span>
-                            <span class="identifier">Produce::down</span><span class="plain">();</span>
+            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFDEBUG_BIP</span><span class="plain">);</span>
+            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
+                    <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SUPPRESS_TEXT_SUBSTITUTION_HL</span><span class="plain">));</span>
+                        <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
+                            <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
-                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">S</span><span class="plain">);</span>
                                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-                            <span class="identifier">Produce::up</span><span class="plain">();</span>
-                            <span class="identifier">Produce::rtrue</span><span class="plain">();</span>
-                        <span class="identifier">Produce::up</span><span class="plain">();</span>
-                    <span class="identifier">Produce::up</span><span class="plain">();</span>
-                <span class="identifier">Produce::up</span><span class="plain">();</span>
-            <span class="identifier">Produce::up</span><span class="plain">();</span>
+                            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                            <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                        <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                    <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ts_code_block</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ROUTINE_NT</span><span class="plain">);</span>
@@ -440,7 +440,7 @@ a request for a new text substitution to be compiled later...
 
         <span class="functiontext">Routines::Compile::code_block_outer</span><span class="plain">(0, </span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
 
-        <span class="identifier">Produce::rtrue</span><span class="plain">();</span>
+        <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">cm</span><span class="plain">);</span>

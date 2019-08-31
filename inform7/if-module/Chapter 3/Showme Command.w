@@ -27,14 +27,14 @@ void PL::Showme::compile_SHOWME_details(void) {
 	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_HL));
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
-	Produce::inv_primitive(Produce::opcode(IFDEBUG_BIP));
-	Produce::down();
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
+	Produce::down(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			PL::Showme::compile_SHOWME_type(FALSE, t_0_s, na_s);
 			PL::Showme::compile_SHOWME_type(TRUE, t_0_s, na_s);
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 	Routines::end(save);
 }
 
@@ -51,15 +51,15 @@ void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol 
 void PL::Showme::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
 	@<Skip if this object's definition has nothing to offer SHOWME@>;
 
-	Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
 		InferenceSubjects::emit_element_of_condition(subj, t_0_s);
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			@<Divide up the sublists of either/or properties in a SHOWME@>;
 			@<Compile code which shows properties inherited from this object's definition@>;
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 }
 
 @ This simply avoids compiling redundant empty |if| statements.
@@ -87,26 +87,26 @@ second of just one from "person".
 @<Divide up the sublists of either/or properties in a SHOWME@> =
 	text_stream *divider = I"; ";
 	if (val) divider = I"\n";
-	Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
-		Produce::inv_primitive(Produce::opcode(GT_BIP));
-		Produce::down();
-			Produce::val_symbol(K_value, na_s);
-			Produce::val(K_number, LITERAL_IVAL, 0);
-		Produce::up();
-		Produce::code();
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::ref_symbol(K_value, na_s);
-				Produce::val(K_number, LITERAL_IVAL, 0);
-			Produce::up();
-			Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-			Produce::down();
-				Produce::val_text(divider);
-			Produce::up();
-		Produce::up();
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), GT_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_symbol(Emit::tree(), K_value, na_s);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_symbol(Emit::tree(), K_value, na_s);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_text(Emit::tree(), divider);
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @<Compile code which shows properties inherited from this object's definition@> =
 	property *prn;
@@ -174,91 +174,91 @@ routine for colours; and the best thing is to print nothing at all.
 			(Kinds::Compare::le(K, K_object)))
 			require_nonzero = TRUE;
 		if (require_nonzero) {
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
 				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
-				Produce::inv_call_iname(iname);
-				Produce::down();
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
 					Kinds::RunTime::emit_weak_id_as_val(K_object);
-					Produce::val_symbol(K_value, t_0_s);
-					Produce::val_iname(K_value, Properties::iname(prn));
-				Produce::up();
-				Produce::code();
-				Produce::down();
+					Produce::val_symbol(Emit::tree(), K_value, t_0_s);
+					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
 		}
 		@<Compile the SHOWME printing of the value of a value property@>;
 		if (require_nonzero) {
-				Produce::up();
-			Produce::up();
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 		}
 	}
 
 @<Compile the SHOWME printing of the value of a value property@> =
 	TEMPORARY_TEXT(T);
 	WRITE_TO(T, "%+W: ", prn->name);
-	Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-	Produce::down();
-		Produce::val_text(T);
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_text(Emit::tree(), T);
+	Produce::up(Emit::tree());
 	DISCARD_TEXT(T);
 
 	if (Kinds::Compare::eq(K, K_text)) {
-		Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(EQ_BIP));
-			Produce::down();
-				Produce::inv_call_iname(Hierarchy::find(TEXT_TY_COMPARE_HL));
-				Produce::down();
-					Produce::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
-					Produce::down();
+		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_COMPARE_HL));
+				Produce::down(Emit::tree());
+					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
+					Produce::down(Emit::tree());
 						Kinds::RunTime::emit_weak_id_as_val(K_object);
-						Produce::val_symbol(K_value, t_0_s);
-						Produce::val_iname(K_value, Properties::iname(prn));
-					Produce::up();
-					Produce::val_iname(K_value, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
-				Produce::up();
-				Produce::val(K_number, LITERAL_IVAL, 0);
-			Produce::up();
-			Produce::code();
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-				Produce::down();
-					Produce::val_text(I"none");
-				Produce::up();
-			Produce::up();
-			Produce::code();
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(PRINTCHAR_BIP));
-				Produce::down();
-					Produce::val(K_number, LITERAL_IVAL, '\"');
-				Produce::up();
+						Produce::val_symbol(Emit::tree(), K_value, t_0_s);
+						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+					Produce::up(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
+				Produce::up(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_text(Emit::tree(), I"none");
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), PRINTCHAR_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, '\"');
+				Produce::up(Emit::tree());
 				@<Compile the SHOWME of the actual value@>;
-				Produce::inv_primitive(Produce::opcode(PRINTCHAR_BIP));
-				Produce::down();
-					Produce::val(K_number, LITERAL_IVAL, '\"');
-				Produce::up();
-			Produce::up();
-		Produce::up();
+				Produce::inv_primitive(Emit::tree(), PRINTCHAR_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, '\"');
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	} else {
 		@<Compile the SHOWME of the actual value@>;
 	}
 
-	Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-	Produce::down();
-		Produce::val_text(I"\n");
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_text(Emit::tree(), I"\n");
+	Produce::up(Emit::tree());
 
 @<Compile the SHOWME of the actual value@> =
-	Produce::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
-	Produce::down();
-		Produce::val_iname(K_value, Kinds::Behaviour::get_iname(K));
-		Produce::inv_call_iname(Hierarchy::find(GPROPERTY_HL));
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
+		Produce::down(Emit::tree());
 			Kinds::RunTime::emit_weak_id_as_val(K_object);
-			Produce::val_symbol(K_value, t_0_s);
-			Produce::val_iname(K_value, Properties::iname(prn));
-		Produce::up();
-	Produce::up();
+			Produce::val_symbol(Emit::tree(), K_value, t_0_s);
+			Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @ The I6 template code is allowed to bar certain either/or properties using
 |AllowInShowme|; it typically uses this to block distracting temporary-workspace
@@ -270,49 +270,49 @@ turn by turn.
 	if (Properties::EitherOr::stored_in_negation(prn))
 		allow = Properties::EitherOr::get_negation(prn);
 
-	Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
-		Produce::inv_primitive(Produce::opcode(AND_BIP));
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), AND_BIP);
+		Produce::down(Emit::tree());
 			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-				Produce::inv_call_iname(Hierarchy::find(ALLOWINSHOWME_HL));
-				Produce::down();
-					Produce::val_iname(K_value, Properties::iname(prn));
-				Produce::up();
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ALLOWINSHOWME_HL));
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::up(Emit::tree());
 			} else {
-				Produce::val(K_number, LITERAL_IVAL, 0);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			}
 			Properties::Emit::emit_has_property(K_value, t_0_s, prn);
-		Produce::up();
-		Produce::code();
-		Produce::down();
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 			@<Compile the comma as needed@>;
 			TEMPORARY_TEXT(T);
 			WRITE_TO(T, "%+W", prn->name);
-			Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-			Produce::down();
-				Produce::val_text(T);
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_text(Emit::tree(), T);
+			Produce::up(Emit::tree());
 			DISCARD_TEXT(T);
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 
 @<Compile the comma as needed@> =
-	Produce::inv_primitive(Produce::opcode(IF_BIP));
-	Produce::down();
-		Produce::inv_primitive(Produce::opcode(GT_BIP));
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(POSTINCREMENT_BIP));
-			Produce::down();
-				Produce::ref_symbol(K_value, na_s);
-			Produce::up();
-			Produce::val(K_number, LITERAL_IVAL, 0);
-		Produce::up();
-		Produce::code();
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-			Produce::down();
-				Produce::val_text(I", ");
-			Produce::up();
-		Produce::up();
-	Produce::up();
+	Produce::inv_primitive(Emit::tree(), IF_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), GT_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_symbol(Emit::tree(), K_value, na_s);
+			Produce::up(Emit::tree());
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_text(Emit::tree(), I", ");
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());

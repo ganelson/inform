@@ -437,7 +437,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
 		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
 		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
-		Hierarchy::make_available(Produce::tree(), an->an_iname);
+		Hierarchy::make_available(Emit::tree(), an->an_iname);
 		Produce::annotate_i(an->an_iname, ACTION_IANN, 1);
 	}
 	return an->an_iname;
@@ -446,7 +446,7 @@ inter_name *PL::Actions::double_sharp(action_name *an) {
 inter_name *PL::Actions::Sub(action_name *an) {
 	if (an->an_routine_iname == NULL) {
 		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, PL::Actions::base_iname(an), an->an_package);
-		Hierarchy::make_available(Produce::tree(), an->an_routine_iname);
+		Hierarchy::make_available(Emit::tree(), an->an_routine_iname);
 	}
 	return an->an_routine_iname;
 }
@@ -1147,16 +1147,16 @@ void PL::Actions::compile_action_routines(void) {
 		if (an->use_verb_routine_in_I6_library) continue;
 		inter_name *iname = PL::Actions::Sub(an);
 		packaging_state save = Routines::begin(iname);
-		Produce::inv_primitive(Produce::opcode(RETURN_BIP));
-		Produce::down();
+		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+		Produce::down(Emit::tree());
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
-			Produce::inv_call_iname(generic_iname);
-			Produce::down();
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) an->check_rules->allocation_id);
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) an->carry_out_rules->allocation_id);
-				Produce::val(K_number, LITERAL_IVAL, (inter_t) an->report_rules->allocation_id);
-			Produce::up();
-		Produce::up();
+			Produce::inv_call_iname(Emit::tree(), generic_iname);
+			Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->check_rules->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->carry_out_rules->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->report_rules->allocation_id);
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 		Routines::end(save);
 	}
 }
@@ -1207,19 +1207,19 @@ void PL::Actions::ActionData(void) {
 	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
 	inter_symbol *for_say_s = LocalVariables::add_named_call_as_symbol(I"for_say");
-	Produce::inv_primitive(Produce::opcode(SWITCH_BIP));
-	Produce::down();
-		Produce::val_symbol(K_value, act_s);
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, act_s);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 	LOOP_OVER(an, action_name) {
 		if (an->use_verb_routine_in_I6_library) continue;
-			Produce::inv_primitive(Produce::opcode(CASE_BIP));
-			Produce::down();
-				Produce::val_iname(K_value, PL::Actions::double_sharp(an));
-				Produce::code();
-				Produce::down();
+			Produce::inv_primitive(Emit::tree(), CASE_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(an));
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
 
 				int j = Wordings::first_wn(an->present_name), j0 = -1, somethings = 0, clc = 0;
 				while (j <= Wordings::last_wn(an->present_name)) {
@@ -1229,34 +1229,34 @@ void PL::Actions::ActionData(void) {
 
 							TEMPORARY_TEXT(AT);
 							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-							Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-							Produce::down();
-								Produce::val_text(AT);
-							Produce::up();
+							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+							Produce::down(Emit::tree());
+								Produce::val_text(Emit::tree(), AT);
+							Produce::up(Emit::tree());
 							DISCARD_TEXT(AT);
 
 							j0 = -1;
 						}
 						@<Insert a space here if needed to break up the action name@>;
-						Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-						Produce::down();
-							Produce::inv_primitive(Produce::opcode(EQ_BIP));
-							Produce::down();
-								Produce::val_symbol(K_value, for_say_s);
-								Produce::val(K_number, LITERAL_IVAL, 2);
-							Produce::up();
-							Produce::code();
-							Produce::down();
-								Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-								Produce::down();
-									Produce::val_text(I"it");
-								Produce::up();
-							Produce::up();
-							Produce::code();
-							Produce::down();
+						Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+						Produce::down(Emit::tree());
+							Produce::inv_primitive(Emit::tree(), EQ_BIP);
+							Produce::down(Emit::tree());
+								Produce::val_symbol(Emit::tree(), K_value, for_say_s);
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
+							Produce::up(Emit::tree());
+							Produce::code(Emit::tree());
+							Produce::down(Emit::tree());
+								Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+								Produce::down(Emit::tree());
+									Produce::val_text(Emit::tree(), I"it");
+								Produce::up(Emit::tree());
+							Produce::up(Emit::tree());
+							Produce::code(Emit::tree());
+							Produce::down(Emit::tree());
 								PL::Actions::cat_something2(an, somethings++, n_s, s_s);
-							Produce::up();
-						Produce::up();
+							Produce::up(Emit::tree());
+						Produce::up(Emit::tree());
 					} else {
 						if (j0<0) j0 = j;
 					}
@@ -1266,43 +1266,43 @@ void PL::Actions::ActionData(void) {
 					@<Insert a space here if needed to break up the action name@>;
 					TEMPORARY_TEXT(AT);
 					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-					Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-					Produce::down();
-						Produce::val_text(AT);
-					Produce::up();
+					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_text(Emit::tree(), AT);
+					Produce::up(Emit::tree());
 					DISCARD_TEXT(AT);
 				}
 				if (somethings < an->max_parameters) {
-					Produce::inv_primitive(Produce::opcode(IF_BIP));
-					Produce::down();
-						Produce::inv_primitive(Produce::opcode(NE_BIP));
-						Produce::down();
-							Produce::val_symbol(K_value, for_say_s);
-							Produce::val(K_number, LITERAL_IVAL, 2);
-						Produce::up();
-						Produce::code();
-						Produce::down();
+					Produce::inv_primitive(Emit::tree(), IF_BIP);
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), NE_BIP);
+						Produce::down(Emit::tree());
+							Produce::val_symbol(Emit::tree(), K_value, for_say_s);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
+						Produce::up(Emit::tree());
+						Produce::code(Emit::tree());
+						Produce::down(Emit::tree());
 							@<Insert a space here if needed to break up the action name@>;
 							PL::Actions::cat_something2(an, somethings++, n_s, s_s);
-						Produce::up();
-					Produce::up();
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
 				}
 
-				Produce::up();
-			Produce::up();
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
 	}
 
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
 	Routines::end(save);
 }
 
 @<Insert a space here if needed to break up the action name@> =
 	if (clc++ > 0) {
-		Produce::inv_primitive(Produce::opcode(PRINT_BIP));
-		Produce::down();
-			Produce::val_text(I" ");
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_text(Emit::tree(), I" ");
+		Produce::up(Emit::tree());
 	}
 
 @ =
@@ -1314,23 +1314,23 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	}
 	if (Kinds::Compare::le(K, K_object) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
-	Produce::inv_primitive(Produce::opcode(INDIRECT1V_BIP));
-	Produce::down();
-		Produce::val_iname(K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
+	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
 		if (Kinds::Compare::eq(K, K_understanding)) {
-			Produce::inv_primitive(Produce::opcode(PLUS_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(TIMES_BIP));
-				Produce::down();
-					Produce::val(K_number, LITERAL_IVAL, 100);
-					Produce::val_iname(K_number, Hierarchy::find(CONSULT_FROM_HL));
-				Produce::up();
-				Produce::val_iname(K_number, Hierarchy::find(CONSULT_WORDS_HL));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 100);
+					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_FROM_HL));
+				Produce::up(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_WORDS_HL));
+			Produce::up(Emit::tree());
 		} else {
-			Produce::val_symbol(K_value, var);
+			Produce::val_symbol(Emit::tree(), K_value, var);
 		}
-	Produce::up();
+	Produce::up(Emit::tree());
 }
 
 void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {

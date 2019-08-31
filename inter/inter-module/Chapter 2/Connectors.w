@@ -27,9 +27,9 @@ inter_symbol *Inter::Connectors::socket(inter_tree *I, text_stream *socket_name,
 
 inter_package *Inter::Connectors::connectors_package(inter_tree *I) {
 	if (I == NULL) internal_error("no tree for connectors");
-	inter_package *connectors = Inter::Tree::connectors_package(I);
+	inter_package *connectors = Site::connectors_package(I);
 	if (connectors == NULL) {
-		inter_package *main_package = Inter::Tree::main_package(I);
+		inter_package *main_package = Site::main_package(I);
 		if (main_package == NULL) internal_error("tree without main");
 		connectors = Inter::Packages::by_name(main_package, I"connectors");
 		if (connectors == NULL) {
@@ -40,27 +40,27 @@ inter_package *Inter::Connectors::connectors_package(inter_tree *I) {
 				(inter_t) Inter::Bookmarks::baseline(&IBM)+1, NULL, &(connectors));
 		}
 		if (connectors == NULL) internal_error("unable to create connector package");
-		Inter::Tree::set_connectors_package(I, connectors);
+		Site::set_connectors_package(I, connectors);
 		Inter::Packages::make_linklike(connectors);
 	}
 	return connectors;
 }
 
 inter_symbol *Inter::Connectors::find_socket(inter_tree *I, text_stream *identifier) {
-	inter_package *connectors = Inter::Tree::connectors_package(I);
+	inter_package *connectors = Site::connectors_package(I);
 	if (connectors) {
 		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_not_equating(
-			Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
+			Inter::Packages::scope(Site::connectors_package(I)), identifier);
 		if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return S;
 	}
 	return NULL;
 }
 
 inter_symbol *Inter::Connectors::find_plug(inter_tree *I, text_stream *identifier) {
-	inter_package *connectors = Inter::Tree::connectors_package(I);
+	inter_package *connectors = Site::connectors_package(I);
 	if (connectors) {
 		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_not_equating(
-			Inter::Packages::scope(Inter::Tree::connectors_package(I)), identifier);
+			Inter::Packages::scope(Site::connectors_package(I)), identifier);
 		if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return S;
 	}
 	return NULL;
@@ -73,7 +73,7 @@ void Inter::Connectors::wire_plug(inter_symbol *plug, inter_symbol *to) {
 }
 
 void Inter::Connectors::stecker(inter_tree *I) {
- 	inter_package *Q = Inter::Tree::connectors_package(I);
+ 	inter_package *Q = Site::connectors_package(I);
  	if (Q == NULL) return;
 	inter_symbols_table *ST = Inter::Packages::scope(Q);
 	for (int i=0; i<ST->size; i++) {
@@ -82,6 +82,7 @@ void Inter::Connectors::stecker(inter_tree *I) {
 			inter_symbol *socket = Inter::Connectors::find_socket(I, plug->equated_name);
 			if (socket) {
 				Inter::Connectors::wire_plug(plug, socket);
+				plug->equated_name = NULL;
 				LOG("Wired plug $3 to $3\n", plug, socket);
 			} else {
 				LOG("Loose plug: $3 (seeking %S)\n", plug, plug->equated_name);

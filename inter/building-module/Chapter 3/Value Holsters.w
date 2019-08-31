@@ -36,18 +36,18 @@ int Holsters::data_acceptable(value_holster *vh) {
 	return FALSE;
 }
 
-void Holsters::to_val_mode(value_holster *vh) {
+void Holsters::to_val_mode(inter_tree *I, value_holster *vh) {
 	if (vh == NULL) internal_error("no VH");
 	switch (vh->vhmode_provided) {
 		case INTER_DATA_VHMODE:
-			Produce::val(K_value, vh->val1, vh->val2);
+			Produce::val(I, K_value, vh->val1, vh->val2);
 			break;
 		case INTER_VOID_VHMODE:
 			internal_error("impossible conversion");
 			break;
 		case NO_VHMODE:
 			vh->val1 = LITERAL_IVAL; vh->val2 = 0;
-			Produce::val(K_value, vh->val1, vh->val2);
+			Produce::val(I, K_value, vh->val1, vh->val2);
 			break;
 	}
 	vh->vhmode_provided = INTER_VAL_VHMODE;

@@ -334,19 +334,19 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test head@>;
 
 	if ((tests > 0) || (ph->compile_with_run_time_debugging)) {
-		Produce::inv_primitive(Produce::opcode(IF_BIP));
-		Produce::down();
-			Produce::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
-			Produce::code();
-			Produce::down();
-				Produce::inv_call_iname(Hierarchy::find(DB_RULE_HL));
-				Produce::down();
-					Produce::val_iname(K_value, identifier);
-					Produce::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
-					Produce::val(K_number, LITERAL_IVAL, 0);
-				Produce::up();
-			Produce::up();
-		Produce::up();
+		Produce::inv_primitive(Emit::tree(), IF_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, identifier);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
 	}
 
 	return FALSE;
@@ -377,11 +377,11 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Scene test.
 
 @<Compile a scene test head@> =
-	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
 		PL::Scenes::emit_during_clause(phrcd->during_scene);
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 	tests++;
 
@@ -392,22 +392,22 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Action test.
 
 @<Compile an action test head@> =
-	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
 		if (phrcd->never_test_actor)
 			PL::Actions::Patterns::emit_pattern_match(phrcd->ap, TRUE);
 		else
 			PL::Actions::Patterns::emit_pattern_match(phrcd->ap, FALSE);
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 	tests++;
 	if (PL::Actions::Patterns::object_based(&(phrcd->ap))) {
-			Produce::inv_primitive(Produce::opcode(STORE_BIP));
-			Produce::down();
-				Produce::ref_iname(K_object, Hierarchy::find(SELF_HL));
-				Produce::val_iname(K_object, Hierarchy::find(NOUN_HL));
-			Produce::up();
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));
+				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
+			Produce::up(Emit::tree());
 	}
 
 @<Compile an action test tail@> =
@@ -417,15 +417,15 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Actor-is-player test.
 
 @<Compile an actor-is-player test head@> =
-	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
-		Produce::inv_primitive(Produce::opcode(EQ_BIP));
-		Produce::down();
-			Produce::val_iname(K_object, Hierarchy::find(ACTOR_HL));
-			Produce::val_iname(K_object, Hierarchy::find(PLAYER_HL));
-		Produce::up();
-		Produce::code();
-		Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), EQ_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
+			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 	tests++;
 
@@ -436,8 +436,8 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @h Activity-or-condition test.
 
 @<Compile an activity or explicit condition test head@> =
-	Produce::inv_primitive(Produce::opcode(IFELSE_BIP));
-	Produce::down();
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
 		activity_list *avl = phrcd->avl;
 		if (avl) {
 			Activities::emit_activity_list(avl);
@@ -445,10 +445,10 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 			Problems::Issue::sentence_problem(_p_(PM_BadWhenWhile),
 				"I don't understand the 'when/while' clause",
 				"which should name activities or conditions.");
-			Produce::val(K_truth_state, LITERAL_IVAL, 0);
+			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 		}
-		Produce::code();
-		Produce::down();
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
 
 		Activities::annotate_list_for_cross_references(avl, ph);
 		tests++;
@@ -458,25 +458,25 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	@<Compile a generic test fail@>;
 
 @<Compile a generic test fail@> =
-		Produce::up();
-		Produce::code();
-		Produce::down();
-			Produce::inv_primitive(Produce::opcode(IF_BIP));
-			Produce::down();
-				Produce::inv_primitive(Produce::opcode(GT_BIP));
-				Produce::down();
-					Produce::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
-					Produce::val(K_number, LITERAL_IVAL, 1);
-				Produce::up();
-				Produce::code();
-				Produce::down();
-					Produce::inv_call_iname(Hierarchy::find(DB_RULE_HL));
-					Produce::down();
-						Produce::val_iname(K_value, identifier);
-						Produce::val(K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
-						Produce::val(K_number, LITERAL_IVAL, failure_code);
-					Produce::up();
-				Produce::up();
-			Produce::up();
-		Produce::up();
-	Produce::up();
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), GT_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+				Produce::up(Emit::tree());
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, identifier);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, failure_code);
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());

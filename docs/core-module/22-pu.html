@@ -941,7 +941,7 @@ it was to debug the preamble-parsing code:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(</span><span class="reserved">ph_usage_data</span><span class="plain"> *</span><span class="identifier">phud</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"%~W:"</span><span class="plain">, </span><span class="identifier">phud</span><span class="plain">-</span><span class="element">&gt;full_preamble</span><span class="plain">);</span>
-        <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

@@ -3,31 +3,31 @@
 @h Compilation.
 
 =
-void EmitInterSchemas::emit(value_holster *VH, inter_schema *sch, void *opaque_state,
+void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch, void *opaque_state,
 	int to_code, int to_val, inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
-	if (sch->mid_case) { Produce::to_last_level(4); }
+	if (sch->mid_case) { Produce::to_last_level(I, 4); }
 	int prim_cat = VAL_PRIM_CAT;
 	if (to_code) prim_cat = CODE_PRIM_CAT;
 	int again = TRUE;
 	while (again) {
 		again = FALSE;
 		for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
-			if (EmitInterSchemas::process_conditionals(isn, first_call, second_call))
+			if (EmitInterSchemas::process_conditionals(I, isn, first_call, second_call))
 				again = TRUE;
 	}
 	for (inter_schema_node *isn = sch->node_tree; isn; isn=isn->next_node)
-		EmitInterSchemas::emit_inner(isn, VH, sch, opaque_state, prim_cat, first_call, second_call, inline_command_handler, i7_source_handler);
+		EmitInterSchemas::emit_inner(I, isn, VH, sch, opaque_state, prim_cat, first_call, second_call, inline_command_handler, i7_source_handler);
 }
 
 @ =
-int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn, inter_symbols_table *first_call, inter_symbols_table *second_call) {
 	if (isn == NULL) return FALSE;
 	if (isn->blocked_by_conditional) return FALSE;
 	if (isn->isn_type == DIRECTIVE_ISNT) @<Directive@>;
 	for (isn=isn->child_node; isn; isn=isn->next_node)
-		if (EmitInterSchemas::process_conditionals(isn, first_call, second_call))
+		if (EmitInterSchemas::process_conditionals(I, isn, first_call, second_call))
 			return TRUE;
 	return FALSE;
 }
@@ -75,7 +75,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
 		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
-			inter_symbol *symb = EmitInterSchemas::find_identifier_text(symbol_to_check, NULL, second_call);
+			inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check, NULL, second_call);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
 			LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
 			if (Inter::Symbols::is_defined(symb)) {
@@ -128,7 +128,7 @@ int EmitInterSchemas::process_conditionals(inter_schema_node *isn, inter_symbols
 	}
 
 @ =
-void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
+void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_holster *VH,
 	inter_schema *sch, void *opaque_state, int prim_cat, inter_symbols_table *first_call, inter_symbols_table *second_call,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t, void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *OUT, text_stream *S)) {
@@ -174,23 +174,23 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 			} else internal_error("bad label stuff");
 		}
 	}
-	Produce::place_label(Produce::reserve_label(L));
+	Produce::place_label(I, Produce::reserve_label(I, L));
 	DISCARD_TEXT(L);
 
 @<Code block@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("code block in expression");
 	if (isn->unopened == FALSE) {
-		Produce::code();
-		Produce::down();
+		Produce::code(I);
+		Produce::down(I);
 	}
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node)
-		EmitInterSchemas::emit_inner(at,
+		EmitInterSchemas::emit_inner(I, at,
 			VH, sch, opaque_state, CODE_PRIM_CAT, first_call, second_call,
 			inline_command_handler, i7_source_handler);
 	if (isn->unclosed == FALSE) {
-		Produce::up();
+		Produce::up(I);
 	}
-	if (isn->unopened) Produce::to_last_level(0);
+	if (isn->unopened) Produce::to_last_level(I, 0);
 
 @<Assembly@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("assembly in expression");
@@ -203,13 +203,13 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				opcode_text = tok->material;
 		}
 		if (opcode_text == NULL) internal_error("assembly malformed");
-		Produce::inv_assembly(opcode_text);
-		Produce::down();
+		Produce::inv_assembly(I, opcode_text);
+		Produce::down(I);
 		for (at = at->next_node; at; at=at->next_node)
-			EmitInterSchemas::emit_inner(at, VH, sch, opaque_state,
+			EmitInterSchemas::emit_inner(I, at, VH, sch, opaque_state,
 				VAL_PRIM_CAT, first_call, second_call,
 				inline_command_handler, i7_source_handler);
-		Produce::up();
+		Produce::up(I);
 	}
 
 @<Call@> =
@@ -219,12 +219,12 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		if (at->isn_type == EXPRESSION_ISNT) {
 			inter_schema_token *tok = at->expression_tokens;
 			if ((tok->ist_type == IDENTIFIER_ISTT) && (tok->next == NULL)) {
-				to_call = EmitInterSchemas::find_identifier(tok, first_call, second_call);
+				to_call = EmitInterSchemas::find_identifier(I, tok, first_call, second_call);
 				if (Inter::Symbols::is_local(to_call)) to_call = NULL;
 			}
 		}
 		if (to_call) {
-			Produce::inv_call(to_call);
+			Produce::inv_call(I, to_call);
 			at = at->next_node;
 		} else {
 			int argc = 0;
@@ -233,20 +233,20 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				argc++;
 			}
 			switch (argc) {
-				case 1: Produce::inv_primitive(Produce::opcode(INDIRECT0_BIP)); break;
-				case 2: Produce::inv_primitive(Produce::opcode(INDIRECT1_BIP)); break;
-				case 3: Produce::inv_primitive(Produce::opcode(INDIRECT2_BIP)); break;
-				case 4: Produce::inv_primitive(Produce::opcode(INDIRECT3_BIP)); break;
-				case 5: Produce::inv_primitive(Produce::opcode(INDIRECT4_BIP)); break;
+				case 1: Produce::inv_primitive(I, INDIRECT0_BIP); break;
+				case 2: Produce::inv_primitive(I, INDIRECT1_BIP); break;
+				case 3: Produce::inv_primitive(I, INDIRECT2_BIP); break;
+				case 4: Produce::inv_primitive(I, INDIRECT3_BIP); break;
+				case 5: Produce::inv_primitive(I, INDIRECT4_BIP); break;
 				default: internal_error("too many args for indirect call"); break;
 			}
 		}
-		Produce::down();
+		Produce::down(I);
 		for (; at; at=at->next_node)
-			EmitInterSchemas::emit_inner(at,
+			EmitInterSchemas::emit_inner(I, at,
 				VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
-		Produce::up();
+		Produce::up(I);
 	}
 
 @<Message@> =
@@ -255,18 +255,18 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 2: Produce::inv_primitive(Produce::opcode(MESSAGE0_BIP)); break;
-			case 3: Produce::inv_primitive(Produce::opcode(MESSAGE1_BIP)); break;
-			case 4: Produce::inv_primitive(Produce::opcode(MESSAGE2_BIP)); break;
-			case 5: Produce::inv_primitive(Produce::opcode(MESSAGE3_BIP)); break;
+			case 2: Produce::inv_primitive(I, MESSAGE0_BIP); break;
+			case 3: Produce::inv_primitive(I, MESSAGE1_BIP); break;
+			case 4: Produce::inv_primitive(I, MESSAGE2_BIP); break;
+			case 5: Produce::inv_primitive(I, MESSAGE3_BIP); break;
 			default: internal_error("too many args for message"); break;
 		}
-		Produce::down();
+		Produce::down(I);
 		for (; at; at=at->next_node)
-			EmitInterSchemas::emit_inner(at,
+			EmitInterSchemas::emit_inner(I, at,
 				VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
-		Produce::up();
+		Produce::up(I);
 	}
 
 @<Call-message@> =
@@ -275,79 +275,79 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int argc = 0;
 		for (inter_schema_node *n = isn->child_node; n; n=n->next_node) argc++;
 		switch (argc) {
-			case 1: Produce::inv_primitive(Produce::opcode(CALLMESSAGE0_BIP)); break;
-			case 2: Produce::inv_primitive(Produce::opcode(CALLMESSAGE1_BIP)); break;
-			case 3: Produce::inv_primitive(Produce::opcode(CALLMESSAGE2_BIP)); break;
-			case 4: Produce::inv_primitive(Produce::opcode(CALLMESSAGE3_BIP)); break;
+			case 1: Produce::inv_primitive(I, CALLMESSAGE0_BIP); break;
+			case 2: Produce::inv_primitive(I, CALLMESSAGE1_BIP); break;
+			case 3: Produce::inv_primitive(I, CALLMESSAGE2_BIP); break;
+			case 4: Produce::inv_primitive(I, CALLMESSAGE3_BIP); break;
 			default: internal_error("too many args for call-message"); break;
 		}
-		Produce::down();
+		Produce::down(I);
 		for (; at; at=at->next_node)
-			EmitInterSchemas::emit_inner(at,
+			EmitInterSchemas::emit_inner(I, at,
 				VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
-		Produce::up();
+		Produce::up(I);
 	}
 
 @<Eval block@> =
 	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT))
 		internal_error("eval block outside evaluation context");
-	if (isn->child_node == NULL) Produce::val(K_value, LITERAL_IVAL, 1);
+	if (isn->child_node == NULL) Produce::val(I, K_value, LITERAL_IVAL, 1);
 	else {
 		int d = 0;
 		for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 			if (at->next_node) {
 				d++;
-				Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-				Produce::down();
+				Produce::inv_primitive(I, SEQUENTIAL_BIP);
+				Produce::down(I);
 			}
-			EmitInterSchemas::emit_inner(at,
+			EmitInterSchemas::emit_inner(I, at,
 				VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
 		}
-		while (d > 0) { Produce::up(); d--; }
+		while (d > 0) { Produce::up(I); d--; }
 	}
 
 @<Operation@> =
-	if (prim_cat == REF_PRIM_CAT) { Produce::reference(); Produce::down(); }
+	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
 
-	Produce::inv_primitive(Produce::opcode(isn->isn_clarifier));
-	Produce::down();
+	Produce::inv_primitive(I, isn->isn_clarifier);
+	Produce::down(I);
 	int pc = VAL_PRIM_CAT;
 	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
-	EmitInterSchemas::emit_inner(isn->child_node,
+	EmitInterSchemas::emit_inner(I, isn->child_node,
 		VH, sch, opaque_state, pc, first_call, second_call,
 		inline_command_handler, i7_source_handler);
 	if (InterSchemas::arity(isn->isn_clarifier) == 2)
-		EmitInterSchemas::emit_inner(isn->child_node->next_node,
+		EmitInterSchemas::emit_inner(I, isn->child_node->next_node,
 			VH, sch, opaque_state, VAL_PRIM_CAT,
 			first_call, second_call,
 			inline_command_handler, i7_source_handler);
-	Produce::up();
+	Produce::up(I);
 
-	if (prim_cat == REF_PRIM_CAT) { Produce::up(); }
+	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }
 
 @<Subexpression@> =
 	int d = 0;
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 		if (at->next_node) {
 			d++;
-			Produce::inv_primitive(Produce::opcode(SEQUENTIAL_BIP));
-			Produce::down();
+			Produce::inv_primitive(I, SEQUENTIAL_BIP);
+			Produce::down(I);
 		}
-		EmitInterSchemas::emit_inner(at,
+		EmitInterSchemas::emit_inner(I, at,
 			VH, sch, opaque_state, prim_cat, first_call, second_call,
 			inline_command_handler, i7_source_handler);
 	}
-	while (d > 0) { Produce::up(); d--; }
+	while (d > 0) { Produce::up(I); d--; }
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
-	if (isn->isn_clarifier == CASE_BIP) Produce::to_last_level(2);
-	Produce::inv_primitive(Produce::opcode(isn->isn_clarifier));
+	if (isn->isn_clarifier == CASE_BIP) Produce::to_last_level(I, 2);
+	Produce::inv_primitive(I, isn->isn_clarifier);
 	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
 	if (arity > 0) {
-		Produce::down();
+		Produce::down(I);
 		if (isn->isn_clarifier == OBJECTLOOP_BIP)
 			@<Add the objectloop range tokens@>;
 		inter_schema_node *at = isn->child_node;
@@ -355,14 +355,14 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		int actual_arity = 0;
 		for (int i = 0; ((at) && (i<arity)); i++) {
 			actual_arity++;
-			EmitInterSchemas::emit_inner(at, VH, sch, opaque_state,
+			EmitInterSchemas::emit_inner(I, at, VH, sch, opaque_state,
 				InterSchemas::ip_prim_cat(isn->isn_clarifier, i),
 				first_call, second_call, inline_command_handler, i7_source_handler);
 			last = at;
 			at = at->next_node;
 		}
 		if (!((last) && (last->unclosed))) {
-			Produce::up();
+			Produce::up(I);
 		}
 	}
 
@@ -376,9 +376,9 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		inter_schema_node *var_node = oc_node->child_node;
 		inter_schema_node *cl_node = var_node?(var_node->next_node):NULL;
 		if ((var_node) && (cl_node)) {
-			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT,
+			EmitInterSchemas::emit_inner(I, var_node, VH, sch, opaque_state, REF_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
-			EmitInterSchemas::emit_inner(cl_node, VH, sch, opaque_state, VAL_PRIM_CAT,
+			EmitInterSchemas::emit_inner(I, cl_node, VH, sch, opaque_state, VAL_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
 		} else internal_error("malformed OC node");
 	} else {
@@ -386,15 +386,15 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		while ((var_node) && (var_node->isn_type != EXPRESSION_ISNT))
 			var_node = var_node->child_node;
 		if (var_node) {
-			EmitInterSchemas::emit_inner(var_node, VH, sch, opaque_state, REF_PRIM_CAT,
+			EmitInterSchemas::emit_inner(I, var_node, VH, sch, opaque_state, REF_PRIM_CAT,
 				first_call, second_call, inline_command_handler, i7_source_handler);
 			#ifdef CORE_MODULE
-			Produce::val_iname(K_value, Kinds::RunTime::I6_classname(K_object));
+			Produce::val_iname(I, K_value, Kinds::RunTime::I6_classname(K_object));
 			#endif
 			#ifndef CORE_MODULE
-			inter_symbol *plug = Inter::Connectors::find_plug(Produce::tree(), I"OBJECT_TY");
-			if (plug == NULL) plug = Inter::Connectors::plug(Produce::tree(), I"OBJECT_TY");
-			Produce::val_symbol(K_value, plug);
+			inter_symbol *plug = Inter::Connectors::find_plug(I, I"OBJECT_TY");
+			if (plug == NULL) plug = Inter::Connectors::plug(I, I"OBJECT_TY");
+			Produce::val_symbol(I, K_value, plug);
 			#endif
 		} else internal_error("objectloop without visible variable");
 	}
@@ -409,52 +409,52 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 
 	if ((tc == 1) && (prim_cat == LAB_PRIM_CAT)) lab_me = TRUE;
 
-	if (cat_me) { Produce::evaluation(); Produce::down(); }
-	if (prim_cat == REF_PRIM_CAT) { Produce::reference(); Produce::down(); }
+	if (cat_me) { Produce::evaluation(I); Produce::down(I); }
+	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
 
 	for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
 		switch (t->ist_type) {
 			case IDENTIFIER_ISTT: {
 				if (lab_me)
-					Produce::lab(Produce::reserve_label(t->material));
+					Produce::lab(I, Produce::reserve_label(I, t->material));
 				else {
 					#ifdef CORE_MODULE
 					local_variable *lvar = LocalVariables::by_name_any(t->material);
 					if (lvar) {
 						inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
-						Produce::val_symbol(K_value, lvar_s);
+						Produce::val_symbol(I, K_value, lvar_s);
 					} else {
-						Produce::val_symbol(K_value, EmitInterSchemas::find_identifier(t, first_call, second_call));
+						Produce::val_symbol(I, K_value, EmitInterSchemas::find_identifier(I, t, first_call, second_call));
 					}
 					#endif
 					#ifndef CORE_MODULE
-						Produce::val_symbol(K_value, EmitInterSchemas::find_identifier(t, first_call, second_call));
+						Produce::val_symbol(I, K_value, EmitInterSchemas::find_identifier(I, t, first_call, second_call));
 					#endif
 				}
 				break;
 			}
 			case ASM_ARROW_ISTT:
-				Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_ARROW_VSYMB));
+				Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_ARROW_VSYMB));
 				break;
 			case ASM_SP_ISTT:
-				Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_SP_VSYMB));
+				Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_SP_VSYMB));
 				break;
 			case ASM_NEGATED_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_NEG_RTRUE_VSYMB));
+					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_RTRUE_VSYMB));
 				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_NEG_RFALSE_VSYMB));
+					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_RFALSE_VSYMB));
 				else {
-					Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_NEG_VSYMB));
-					Produce::lab(Produce::reserve_label(t->material));
+					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_VSYMB));
+					Produce::lab(I, Produce::reserve_label(I, t->material));
 				}
 				break;
 			case ASM_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_RTRUE_VSYMB));
+					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_RTRUE_VSYMB));
 				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::val_symbol(K_value, Packaging::veneer_symbol(Produce::tree(), ASM_RFALSE_VSYMB));
-				else Produce::lab(Produce::reserve_label(t->material));
+					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_RFALSE_VSYMB));
+				else Produce::lab(I, Produce::reserve_label(I, t->material));
 				break;
 			case NUMBER_ISTT:
 			case BIN_NUMBER_ISTT:
@@ -463,27 +463,27 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_t) t->constant_number; }
 				else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
 					internal_error("bad number");
-				Produce::val(K_value, v1, v2);
+				Produce::val(I, K_value, v1, v2);
 				break;
 			}
 			case REAL_NUMBER_ISTT:
-				Produce::val_real_from_text(t->material);
+				Produce::val_real_from_text(I, t->material);
 				break;
 			case DQUOTED_ISTT:
 				if (print_ret_me) {
-					Produce::inv_primitive(Produce::opcode(PRINTRET_BIP));
-					Produce::down();
+					Produce::inv_primitive(I, PRINTRET_BIP);
+					Produce::down(I);
 				}
-				Produce::val_text(t->material);
+				Produce::val_text(I, t->material);
 				if (print_ret_me) {
-					Produce::up();
+					Produce::up(I);
 				}
 				break;
 			case SQUOTED_ISTT:
 				if (Str::len(t->material) == 1) {
-					Produce::val_char(Str::get_at(t->material, 0));
+					Produce::val_char(I, Str::get_at(t->material, 0));
 				} else {
-					Produce::val_dword(t->material);
+					Produce::val_dword(I, t->material);
 				}
 				break;
 			case I7_ISTT:
@@ -498,45 +498,45 @@ void EmitInterSchemas::emit_inner(inter_schema_node *isn, value_holster *VH,
 		}
 	}
 
-	if (cat_me) { Produce::up(); }
-	if (prim_cat == REF_PRIM_CAT) { Produce::up(); }
+	if (cat_me) { Produce::up(I); }
+	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }
 
 @<Non-conditional directive@> =
 	internal_error("unknown directive");
 
 @ =
-inter_symbol *EmitInterSchemas::find_identifier(inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+inter_symbol *EmitInterSchemas::find_identifier(inter_tree *I, inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {
 	if (t->as_quoted) return InterNames::to_symbol(t->as_quoted);
-	return EmitInterSchemas::find_identifier_text(t->material, first_call, second_call);
+	return EmitInterSchemas::find_identifier_text(I, t->material, first_call, second_call);
 }
 
-inter_symbol *EmitInterSchemas::find_identifier_text(text_stream *S, inter_symbols_table *first_call, inter_symbols_table *second_call) {
-	if (Str::get_at(S, 0) == 0x00A7) {
+inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream *name, inter_symbols_table *first_call, inter_symbols_table *second_call) {
+	if (Str::get_at(name, 0) == 0x00A7) {
 		TEMPORARY_TEXT(SR);
-		Str::copy(SR, S);
+		Str::copy(SR, name);
 		Str::delete_first_character(SR);
 		Str::delete_last_character(SR);
-		inter_symbol *I = Inter::SymbolsTables::url_name_to_symbol(Produce::tree(), NULL, SR);
+		inter_symbol *S = Inter::SymbolsTables::url_name_to_symbol(I, NULL, SR);
 		DISCARD_TEXT(SR);
-		if (I) return I;
+		if (S) return S;
 	}
 	if (first_call) {
-		inter_symbol *I = Produce::seek_symbol(first_call, S);
-		if (I) return I;
+		inter_symbol *S = Produce::seek_symbol(first_call, name);
+		if (S) return S;
 	}
 	if (second_call) {
-		inter_symbol *I = Produce::seek_symbol(second_call, S);
-		if (I) return I;
+		inter_symbol *S = Produce::seek_symbol(second_call, name);
+		if (S) return S;
 	}
-	inter_symbol *I = Veneer::find(Packaging::incarnate(Packaging::veneer(Produce::tree())), Packaging::veneer_booknark(Produce::tree()), S, Produce::kind_to_symbol(NULL));
-	if (I) return I;
-	I = Produce::seek_symbol(Produce::connectors_scope(), S);
-	if (I) return I;
-	I = Produce::seek_symbol(Produce::main_scope(), S);
-	if (I) return I;
-	I = InterNames::to_symbol(Produce::find_by_name(S));
-	if (I) return I;
-	LOG("Defeated on %S\n", S);
+	inter_symbol *S = Veneer::find(Packaging::incarnate(Site::veneer_request(I)), Site::veneer_booknark(I), name, Produce::kind_to_symbol(NULL));
+	if (S) return S;
+	S = Produce::seek_symbol(Produce::connectors_scope(I), name);
+	if (S) return S;
+	S = Produce::seek_symbol(Produce::main_scope(I), name);
+	if (S) return S;
+	S = InterNames::to_symbol(Produce::find_by_name(I, name));
+	if (S) return S;
+	LOG("Defeated on %S\n", name);
 	internal_error("unable to find identifier");
 	return NULL;
 }

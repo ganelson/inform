@@ -311,7 +311,7 @@ either specify two parameters, both of them terms...
         <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">val_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">code_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">val_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">EmitInterSchemas::emit</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;compiled</span><span class="plain">, </span><span class="identifier">ems</span><span class="plain">, </span><span class="identifier">code_mode</span><span class="plain">, </span><span class="identifier">val_mode</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
+        <span class="identifier">EmitInterSchemas::emit</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), &amp;</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">sch</span><span class="plain">-</span><span class="element">&gt;compiled</span><span class="plain">, </span><span class="identifier">ems</span><span class="plain">, </span><span class="identifier">code_mode</span><span class="plain">, </span><span class="identifier">val_mode</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
             <span class="plain">&amp;</span><span class="functiontext">Calculus::Schemas::sch_inline</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
@@ -439,7 +439,7 @@ either specify two parameters, both of them terms...
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">epar</span><span class="plain">) {</span>
             <span class="functiontext">Calculus::Schemas::sch_emit_parameter</span><span class="plain">(</span><span class="identifier">ems</span><span class="plain">-</span><span class="element">&gt;ops_termwise</span><span class="plain">[1],</span>
                 <span class="identifier">give_kind_id</span><span class="plain">, </span><span class="identifier">give_comparison_routine</span><span class="plain">, </span><span class="identifier">dereference_property</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -459,7 +459,7 @@ either specify two parameters, both of them terms...
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">give_comparison_routine</span><span class="plain">) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">cr</span><span class="plain"> = (</span><span class="identifier">pt</span><span class="plain">)?(</span><span class="identifier">Kinds::Behaviour::get_comparison_routine_as_iname</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;term_checked_as_kind</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">cr</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SIGNEDCOMPARE_HL</span><span class="plain">);</span>
-            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">);</span>
+            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">by_reference</span><span class="plain">) {</span>
                 <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
@@ -481,7 +481,7 @@ either specify two parameters, both of them terms...
                                 <span class="functiontext">Rvalues::new_self_object_constant</span><span class="plain">()));</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Calculus::Terms::emit</span><span class="plain">(</span><span class="identifier">cpt</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">down</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">();</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">down</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
