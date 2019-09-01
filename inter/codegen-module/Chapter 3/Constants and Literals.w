@@ -100,13 +100,14 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 
 	int ifndef_me = FALSE;
-	if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) == 1) return;
+	if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) > 0) return;
 	if ((Str::eq(con_name->symbol_name, I"WORDSIZE")) ||
 		(Str::eq(con_name->symbol_name, I"TARGET_ZCODE")) ||
 		(Str::eq(con_name->symbol_name, I"INDIV_PROP_START")) ||
 		(Str::eq(con_name->symbol_name, I"TARGET_GLULX")) ||
 		(Str::eq(con_name->symbol_name, I"DICT_WORD_SIZE")) ||
-		(Str::eq(con_name->symbol_name, I"DEBUG")))
+		(Str::eq(con_name->symbol_name, I"DEBUG")) ||
+		(Str::eq(con_name->symbol_name, I"cap_short_name")))
 		ifndef_me = TRUE;
 
 	if (Str::eq(con_name->symbol_name, I"thedark")) {

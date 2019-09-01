@@ -79,6 +79,8 @@ void Site::clear(inter_tree *I) {
 	for (int i=0; i<NO_DEFINED_HMD_VALUES; i++) B->hmds_indexed_by_id[i] = NULL;
 	B->veneer_symbols_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbols[i] = NULL;
+	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbol_names[i] = NULL;
+	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbol_translations[i] = NULL;
 	Veneer::create_indexes(I);
 	Packaging::initialise_state(I);
 }

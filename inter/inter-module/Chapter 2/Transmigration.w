@@ -131,7 +131,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 			if ((symb) && (symb->equated_to)) {
 				inter_symbol *target = symb->equated_to;
 				while (target->equated_to) target = target->equated_to;
-				if (Inter::Symbols::read_annotation(target, VENEER_IANN) == 1) {
+				if (Inter::Symbols::read_annotation(target, VENEER_IANN) > 0) {
 					symb->equated_to = Veneer::find(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL));
 				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {
 					inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
@@ -187,6 +187,8 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		TEMPORARY_TEXT(URL);
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = Inter::SymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
+		if ((equivalent == NULL) && (Inter::Kind::is(target)))
+			equivalent = Inter::Packages::search_resources_exhaustively(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
 			equivalent = Inter::Connectors::plug(ipct->destination_tree, URL);
 		DISCARD_TEXT(URL);

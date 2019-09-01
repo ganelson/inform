@@ -75,12 +75,10 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn
 		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
 		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
-LOG("Searching for %S\n", symbol_to_check);
 			inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check,
 				Inter::Packages::scope(Packaging::incarnate(Site::veneer_request(I))),
 				second_call);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
-LOG("Symb is $3\n", symb);
 			LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
 			if (Inter::Symbols::is_defined(symb)) {
 				def = TRUE;

@@ -11,6 +11,7 @@ Tests/hashes.intest
 Tests/_Results_Actual/
 
 codegen-module/Woven/
+building-module/Woven/
 inter-module/Woven/
 
 inter.mk

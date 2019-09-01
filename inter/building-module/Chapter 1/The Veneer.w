@@ -147,7 +147,11 @@ inter_symbol *Veneer::find(inter_tree *I, text_stream *S, inter_symbol *unchecke
 	if (Dictionaries::find(I->site.veneer_symbols_indexed_by_name, S)) {
 		inter_symbol **slot = (inter_symbol **) Dictionaries::read_value(I->site.veneer_symbols_indexed_by_name, S);
 		if (slot == NULL) internal_error("accident with veneer dictionary");
-		return Veneer::make(I, slot, S, NULL, unchecked_kind_symbol);
+		if (*slot) return *slot;
+		for (int ix=0; ix<MAX_VSYMBS; ix++)
+			if (Str::eq(I->site.veneer_symbol_names[ix], S))
+				return Veneer::find_by_index(I, ix, unchecked_kind_symbol);
+		internal_error("indexing accident with veneer dictionary");
 	}
 	return NULL;
 }

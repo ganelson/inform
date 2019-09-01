@@ -279,8 +279,7 @@ actually means it's rarely needed.)
 			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
 			P_cap_short_name = Properties::Valued::new_nameless_using(
 				K_text, Kinds::Behaviour::package(K_object), property_iname);
-			inter_name *iname = Hierarchy::find(CAP_SHORT_NAME_EXISTS_HL);
-			Emit::named_numeric_constant(iname, 1);
+			Hierarchy::make_available(Emit::tree(), property_iname);
 		}
 		if (faux)
 			Properties::Valued::assert(P_cap_short_name, subj,
@@ -484,5 +483,12 @@ void PL::Naming::compile_small_names(void) {
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(notice->routine_iname);
 		Emit::array_end(save);
+	}
+}
+void PL::Naming::compile_cap_short_name(void) {
+	if (P_cap_short_name == NULL) {
+		inter_name *iname = Hierarchy::find(CAPSHORTNAME_HL);
+		Emit::named_iname_constant(iname, K_value, Hierarchy::find(SHORT_NAME_HL));
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
 }

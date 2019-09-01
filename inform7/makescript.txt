@@ -5,15 +5,22 @@
 {identity-settings}
 
 BLORBLIB = $(ME)/Tests/Assistants/blorblib
+INTER = inter/Tangled/inter
 
 .PHONY: all
-all: executable preform
+all: executable preform templates
 
 .PHONY: executable
 executable: $(ME)/Tangled/$(MYNAME)
 
 .PHONY: preform
 preform: $(ME)/Tangled/Syntax.preform
+
+.PHONY: templates
+templates: $(ME)/Internal/Inter/template-zd.interb
+
+$(ME)/Internal/Inter/template-zd.interb: $(ME)/Internal/Inter/templates.interpipeline $(ME)/Internal/I6T/*.i6t
+	$(INTER) -template  inform7/Internal/I6T -variable  *out=$(ME)/Internal/Inter/template-zd.interb -pipeline-file  $(ME)/Internal/Inter/templates.interpipeline
 
 # Making the program:
 

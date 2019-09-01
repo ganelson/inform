@@ -574,9 +574,6 @@ ordering equivalent to alphabetical order.)
 to prevent them causing errors if they are referred to in code but not
 actually present in any object (as can easily happen with extensions
 presenting optional features which the user chooses not to employ).
-|cap_short_name| is similarly stubbed: this doesn't correspond to any
-I7 property, but is used by NI to record capitalised forms of the printed
-name (which in turn goes into |short_name|).
 
 (5) Counters are used to allocate cells of storage to inline phrases which
 need a permanent state associated with them: see the Standard Rules. Since
@@ -586,9 +583,6 @@ the counters, and therefore the amount of storage we need to allocate.
 (6) Similarly, each "quotation" box needs its own cell of memory.
 
 @c
-#IFNDEF CAP_SHORT_NAME_EXISTS;
-Constant cap_short_name = short_name;
-#ENDIF;
 Array Runtime_Quotations_Displayed --> CCOUNT_QUOTATIONS;
 
 @p Block Values.

@@ -51,7 +51,6 @@ void Hierarchy::establish(inter_tree *I) {
 @e REPARSE_CODE_HL
 @e MAX_POSITIVE_NUMBER_HL
 @e MIN_NEGATIVE_NUMBER_HL
-@e CAP_SHORT_NAME_EXISTS_HL
 @e NI_BUILD_COUNT_HL
 @e RANKING_TABLE_HL
 @e PLUGIN_FILES_HL
@@ -75,7 +74,6 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, REPARSE_CODE_HL, I"REPARSE_CODE", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MAX_POSITIVE_NUMBER_HL, I"MAX_POSITIVE_NUMBER", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MIN_NEGATIVE_NUMBER_HL, I"MIN_NEGATIVE_NUMBER", Translation::same(), generic_basics);
-	HierarchyLocations::con(I, CAP_SHORT_NAME_EXISTS_HL, I"CAP_SHORT_NAME_EXISTS", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, NI_BUILD_COUNT_HL, I"NI_BUILD_COUNT", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, RANKING_TABLE_HL, I"RANKING_TABLE", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, PLUGIN_FILES_HL, I"PLUGIN_FILES", Translation::same(), generic_basics);

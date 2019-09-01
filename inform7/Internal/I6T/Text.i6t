@@ -220,15 +220,7 @@ strings in the Z-machine, and advises the use of Glulx instead. Glulx
 does handle overruns safely, and indeed allows us to dynamically allocate
 memory as necessary so that we can always avoid overruns entirely.
 
-In either case, though, it's useful to have |TEXT_TY_BufferSize|, the size
-of the temporary buffer, large enough that it will never be overrun in
-ordinary use. This is controllable with the use option "maximum indexed
-text length".
-
 @c
-#ifndef TEXT_TY_BufferSize;
-Constant TEXT_TY_BufferSize = 512;
-#endif;
 Constant TEXT_TY_NoBuffers = 2;
 
 #ifdef TARGET_ZCODE;
