@@ -719,6 +719,11 @@ void NewVerbs::ConjugateVerbDefinitions(void) {
 	Emit::named_numeric_constant_signed(CV_NEG_iname, -2);
 	Emit::named_numeric_constant_signed(CV_MODAL_INAME_iname, -3);
 	Emit::named_numeric_constant_signed(CV_MEANING_iname, -4);
+	
+	Hierarchy::make_available(Emit::tree(), CV_POS_iname);
+	Hierarchy::make_available(Emit::tree(), CV_NEG_iname);
+	Hierarchy::make_available(Emit::tree(), CV_MODAL_INAME_iname);
+	Hierarchy::make_available(Emit::tree(), CV_MEANING_iname);
 }
 
 void NewVerbs::ConjugateVerb(void) {

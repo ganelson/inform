@@ -465,7 +465,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">());</span>
+                    <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">));</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -513,6 +513,7 @@ divided up by the extensions containing the rules which produce them.
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

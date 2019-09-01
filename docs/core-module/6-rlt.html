@@ -1255,7 +1255,8 @@ logical properties of the two terms of the BP being defined.
                     &lt;<span class="cwebmacro">Write the relation record for this BP</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CREATEDYNAMICRELATIONS_HL</span><span class="plain">));</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CREATEDYNAMICRELATIONS_HL</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"i"</span><span class="plain">, </span><span class="string">"loop counter"</span><span class="plain">);</span>
             <span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rel"</span><span class="plain">, </span><span class="string">"new relation"</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">) {</span>
@@ -1333,6 +1334,7 @@ logical properties of the two terms of the BP being defined.
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
     </pre>
 
@@ -2364,7 +2366,8 @@ logical properties of the two terms of the BP being defined.
 
     <pre class="display">
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::IterateRelations</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ITERATERELATIONS_HL</span><span class="plain">));</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ITERATERELATIONS_HL</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">callback_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"callback"</span><span class="plain">);</span>
             <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">)</span>
@@ -2376,6 +2379,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
             <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
     </pre>
 

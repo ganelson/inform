@@ -289,13 +289,6 @@ void PL::Parsing::TestScripts::write_text(void) {
 	}
 }
 
-void PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant(void) {
-	if (NUMBER_CREATED(test_scenario) > 0) {
-		inter_name *iname = Hierarchy::find(NO_TEST_SCENARIOS_HL);
-		Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(test_scenario));
-	}
-}
-
 void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -385,7 +378,8 @@ void PL::Parsing::TestScripts::new_internal(int code, wording W) {
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(INTERNALTESTCASES_HL));
+	inter_name *iname = Hierarchy::find(INTERNALTESTCASES_HL);
+	packaging_state save = Routines::begin(iname);
 	internal_test_case *itc; int n = 0;
 	LOOP_OVER(itc, internal_test_case) {
 		n++;
@@ -502,6 +496,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		DISCARD_TEXT(OUT);
 	}
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void PL::Parsing::TestScripts::begin_internal_reporting(void) {

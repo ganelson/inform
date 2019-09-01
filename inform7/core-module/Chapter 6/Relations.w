@@ -897,7 +897,8 @@ void Relations::compile_relation_records(void) {
 			@<Write the relation record for this BP@>;
 		}
 	}
-	packaging_state save = Routines::begin(Hierarchy::find(CREATEDYNAMICRELATIONS_HL));
+	inter_name *iname = Hierarchy::find(CREATEDYNAMICRELATIONS_HL);
+	packaging_state save = Routines::begin(iname);
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
@@ -975,6 +976,7 @@ void Relations::compile_relation_records(void) {
 		}
 	}
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @<Write the relation record for this BP@> =
@@ -1739,7 +1741,8 @@ void Relations::compile_blank_relation(kind *K) {
 
 =
 void Relations::IterateRelations(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(ITERATERELATIONS_HL));
+	inter_name *iname = Hierarchy::find(ITERATERELATIONS_HL);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -1751,6 +1754,7 @@ void Relations::IterateRelations(void) {
 			Produce::up(Emit::tree());
 		}
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h The bitmap for various-to-various relations.

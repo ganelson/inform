@@ -220,7 +220,8 @@ by index within the current table.)
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::compile_run_time_support</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TC_KOV_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TC_KOV_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">tcv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tc"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">SWITCH_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -250,6 +251,7 @@ by index within the current table.)
             <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::Constructors::UNKNOWN_iname</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

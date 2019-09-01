@@ -341,6 +341,7 @@ void Chronology::past_actions_i6_routines(void) {
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 #endif
 }
 
@@ -352,7 +353,8 @@ void Chronology::past_tenses_i6_escape(void) {
 		"Creating %d past tense conditions in TestSinglePastState\n",
 			NUMBER_CREATED(past_tense_condition_record));
 
-	packaging_state save = Routines::begin(Hierarchy::find(TESTSINGLEPASTSTATE_HL));
+	inter_name *iname = Hierarchy::find(TESTSINGLEPASTSTATE_HL);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *past_flag_s = LocalVariables::add_named_call_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::add_named_call_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::add_named_call_as_symbol(I"turn_end");
@@ -381,6 +383,7 @@ void Chronology::past_tenses_i6_escape(void) {
 	@<Answer the question posed@>;
 
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 	LOGIF(TIME_PERIODS, "Creation of past tense conditions complete\n");
 }
 

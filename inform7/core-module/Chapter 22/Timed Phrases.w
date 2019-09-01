@@ -44,6 +44,7 @@ void Phrases::Timed::TimedEventsTable(void) {
 		Emit::array_numeric_entry(0);
 	}
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void Phrases::Timed::TimedEventTimesTable(void) {
@@ -63,6 +64,7 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 		Emit::array_numeric_entry(0);
 	}
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @ That's it, really: everything else is just indexing.

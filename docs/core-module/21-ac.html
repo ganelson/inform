@@ -450,6 +450,7 @@ noun for it; for example, the "announcing activity".
         <span class="plain">}</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -827,6 +828,7 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_for_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -840,6 +842,7 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_after_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -853,6 +856,7 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::Activity_atb_rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -866,6 +870,7 @@ values, of the kind to which the activity applies.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(255);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(255);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Activities::annotate_list_for_cross_references</span><span class="plain">(</span><span class="reserved">activity_list</span><span class="plain"> *</span><span class="identifier">avl</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>

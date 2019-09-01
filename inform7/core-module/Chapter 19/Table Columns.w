@@ -145,7 +145,8 @@ int Tables::Columns::get_id(table_column *tc) {
 }
 
 void Tables::Columns::compile_run_time_support(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TC_KOV_HL));
+	inter_name *iname = Hierarchy::find(TC_KOV_HL);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -175,6 +176,7 @@ void Tables::Columns::compile_run_time_support(void) {
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h Discovering columns.

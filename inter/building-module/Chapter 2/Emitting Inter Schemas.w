@@ -75,8 +75,12 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn
 		if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
 		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
-			inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check, NULL, second_call);
+LOG("Searching for %S\n", symbol_to_check);
+			inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check,
+				Inter::Packages::scope(Packaging::incarnate(Site::veneer_request(I))),
+				second_call);
 			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+LOG("Symb is $3\n", symb);
 			LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
 			if (Inter::Symbols::is_defined(symb)) {
 				def = TRUE;
@@ -528,7 +532,7 @@ inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream 
 		inter_symbol *S = Produce::seek_symbol(second_call, name);
 		if (S) return S;
 	}
-	inter_symbol *S = Veneer::find(Packaging::incarnate(Site::veneer_request(I)), Site::veneer_booknark(I), name, Produce::kind_to_symbol(NULL));
+	inter_symbol *S = Veneer::find(I, name, Produce::kind_to_symbol(NULL));
 	if (S) return S;
 	S = Produce::seek_symbol(Produce::connectors_scope(I), name);
 	if (S) return S;

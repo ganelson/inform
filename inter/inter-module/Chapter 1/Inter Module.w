@@ -81,6 +81,7 @@ void InterModule::start(void) {
 @e INTER_BINARY_DA
 @e INTER_SYMBOLS_DA
 @e INTER_FRAMES_DA
+@e INTER_CONNECTORS_DA
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(INTER_MEMORY_DA, L"inter memory usage", FALSE, FALSE);
@@ -88,6 +89,7 @@ void InterModule::start(void) {
 	Log::declare_aspect(INTER_BINARY_DA, L"inter binary", FALSE, FALSE);
 	Log::declare_aspect(INTER_SYMBOLS_DA, L"inter symbols", FALSE, FALSE);
 	Log::declare_aspect(INTER_FRAMES_DA, L"inter frames", FALSE, FALSE);
+	Log::declare_aspect(INTER_CONNECTORS_DA, L"inter connectors", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('3', Inter::Symbols::log);

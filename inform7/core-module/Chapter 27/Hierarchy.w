@@ -81,7 +81,6 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, PLUGIN_FILES_HL, I"PLUGIN_FILES", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MAX_WEAK_ID_HL, I"MAX_WEAK_ID", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, NO_VERB_VERB_DEFINED_HL, I"NO_VERB_VERB_DEFINED", Translation::same(), generic_basics);
-	HierarchyLocations::con(I, NO_TEST_SCENARIOS_HL, I"NO_TEST_SCENARIOS", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(I, basics);
@@ -1548,18 +1547,6 @@ package_request *Hierarchy::exotic_package(int x) {
 	}
 	internal_error("unknown exotic package");
 	return NULL;
-}
-
-@
-
-=
-inter_name *Hierarchy::post_process(int HL_id, inter_name *iname) {
-	switch (HL_id) {
-		case SELF_HL:
-			Emit::variable(iname, K_value, UNDEF_IVAL, 0, I"self");
-			break;
-	}
-	return iname;
 }
 
 @

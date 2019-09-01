@@ -1373,6 +1373,7 @@ in question. This is where we compile the bitmaps in their fresh, empty form.
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;=((</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">action_name</span><span class="plain">))/16); </span><span class="identifier">i</span><span class="plain">++)</span>
             <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1587,8 +1588,11 @@ infrastructure, and we access it with a single call.
             <span class="identifier">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (20000+</span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ad_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">AD_RECORDS_HL</span><span class="plain">);</span>
         <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">ad_iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">record_count</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">ad_iname</span><span class="plain">);</span>
 
         <span class="identifier">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"action"</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 12, 0, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
@@ -1686,6 +1690,7 @@ infrastructure, and we access it with a single call.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DB_Action_Details_iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1761,6 +1766,7 @@ infrastructure, and we access it with a single call.
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::array_action_entry</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

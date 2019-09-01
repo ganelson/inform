@@ -725,10 +725,12 @@ which were introduced in December 2010.
 
 =
 void Rules::Bookings::start_list_compilation(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
+	inter_name *iname = Hierarchy::find(EMPTY_RULEBOOK_INAME_HL);
+	packaging_state save = Routines::begin(iname);
 	LocalVariables::add_named_call(I"forbid_breaks");
 	Produce::rfalse(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @

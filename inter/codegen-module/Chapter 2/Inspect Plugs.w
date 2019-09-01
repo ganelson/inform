@@ -25,9 +25,12 @@ void CodeGen::Inspection::visitor(inter_tree *I, inter_tree_node *P, void *state
 	for (int i=0; i<ST->size; i++) {
 		inter_symbol *S = ST->symbol_array[i];
 		if ((S) && (S->equated_to) && (Inter::Symbols::get_scope(S->equated_to) == PLUG_ISYMS)) {
-			LOG("$3 == $3 which is a loose plug, seeking %S\n", S, S->equated_to, S->equated_to->equated_name);
-			WRITE_TO(STDERR, "Failed to connect plug to: %S\n", S->equated_to->equated_name);
-			if (fail_flag) *fail_flag = TRUE;
+			if (!(Inter::Symbols::get_flag(S->equated_to, ERROR_ISSUED_MARK_BIT))) {
+				Inter::Symbols::set_flag(S->equated_to, ERROR_ISSUED_MARK_BIT);
+				LOG("$3 == $3 which is a loose plug, seeking %S\n", S, S->equated_to, S->equated_to->equated_name);
+				WRITE_TO(STDERR, "Failed to connect plug to: %S\n", S->equated_to->equated_name);
+				if (fail_flag) *fail_flag = TRUE;
+			}
 		}
 	}
 }

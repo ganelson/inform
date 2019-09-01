@@ -346,9 +346,9 @@ been typed at the keyboard.)
 
 @c
 [ KeyboardPrimitive a_buffer a_table;
-#Ifdef DEBUG; #Ifdef NO_TEST_SCENARIOS;
+#Ifdef DEBUG;
 	return TestKeyboardPrimitive(a_buffer, a_table);
-#Endif; #Endif;
+#Endif;
 	return VM_ReadKeyboard(a_buffer, a_table);
 ];
 

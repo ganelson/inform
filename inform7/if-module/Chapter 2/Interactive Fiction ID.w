@@ -45,6 +45,7 @@ void PL::Bibliographic::IFID::define_UUID(void) {
 	text_stream *uuid = PL::Bibliographic::IFID::read_uuid();
 	inter_name *UUID_array_iname = Hierarchy::find(UUID_ARRAY_HL);
 	Emit::named_string_constant(UUID_array_iname, uuid);
+	Hierarchy::make_available(Emit::tree(), UUID_array_iname);
 }
 
 inter_name *PL::Bibliographic::IFID::UUID(void) {

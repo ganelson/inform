@@ -909,6 +909,7 @@ whether any change in status has or has not occurred.
         &lt;<span class="cwebmacro">Add the scene-change tail</span> <span class="cwebmacronumber">25.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1438,7 +1439,8 @@ what handles this.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::ShowSceneStatus_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SHOWSCENESTATUS_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SHOWSCENESTATUS_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFDEBUG_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1471,6 +1473,7 @@ what handles this.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

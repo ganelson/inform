@@ -373,6 +373,7 @@ inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
 	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_HL);
 	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
+	Hierarchy::make_available(Emit::tree(), UNKNOWN_TY_iname);
 
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
@@ -386,6 +387,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 
 	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
 	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
+	Hierarchy::make_available(Emit::tree(), hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 	if (UNKNOWN_TY_iname == NULL) internal_error("no unknown yet");

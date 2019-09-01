@@ -117,7 +117,8 @@ void PL::Parsing::Tokens::Values::add_parse_name_vars(gpr_kit *gprk) {
 }
 
 void PL::Parsing::Tokens::Values::number(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(DECIMAL_TOKEN_INNER_HL));
+	inter_name *iname = Hierarchy::find(DECIMAL_TOKEN_INNER_HL);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
@@ -127,10 +128,12 @@ void PL::Parsing::Tokens::Values::number(void) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void PL::Parsing::Tokens::Values::time(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TIME_TOKEN_INNER_HL));
+	inter_name *iname = Hierarchy::find(TIME_TOKEN_INNER_HL);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	kind *K = PL::TimesOfDay::kind();
@@ -143,10 +146,12 @@ void PL::Parsing::Tokens::Values::time(void) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void PL::Parsing::Tokens::Values::truth_state(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(TRUTH_STATE_TOKEN_INNER_HL));
+	inter_name *iname = Hierarchy::find(TRUTH_STATE_TOKEN_INNER_HL);
+	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
 	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);
@@ -156,6 +161,7 @@ void PL::Parsing::Tokens::Values::truth_state(void) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void PL::Parsing::Tokens::Values::compile_type_gprs(void) {

@@ -559,7 +559,8 @@ feelings of modesty.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::ShowExtensionVersions_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWEXTENSIONVERSIONS_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWEXTENSIONVERSIONS_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">the_author_name</span><span class="plain">);</span>
@@ -582,8 +583,10 @@ feelings of modesty.
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">the_author_name</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWFULLEXTENSIONVERSIONS_HL</span><span class="plain">));</span>
+        <span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWFULLEXTENSIONVERSIONS_HL</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -594,8 +597,10 @@ feelings of modesty.
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWONEEXTENSION_HL</span><span class="plain">));</span>
+        <span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWONEEXTENSION_HL</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">id_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"id"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
@@ -618,6 +623,7 @@ feelings of modesty.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

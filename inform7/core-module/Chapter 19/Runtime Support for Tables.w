@@ -211,6 +211,7 @@ case.)
 	Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;

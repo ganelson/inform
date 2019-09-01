@@ -21,22 +21,32 @@ int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
-	Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
+	if (Str::eq(template_file, I"none"))
+		Inter::Tree::traverse(I, CodeGen::MergeTemplate::catch_all_visitor, NULL, NULL, 0);
+	else
+		Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
-	if (template_package == NULL)
-		template_package = CodeGen::Assimilate::new_package_named(IBM, I"template", plain_ptype_symbol);
-
+	inter_package *template_package = Inter::Packages::by_url(I, I"/main/template");
+	if (template_package == NULL) {
+		inter_package *main_package = Site::main_package(I);
+		inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_package);
+		template_package = CodeGen::Assimilate::new_package_named(&in_main, I"template", plain_ptype_symbol);
+	}
+	
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::MergeTemplate::receive_raw),  &(CodeGen::MergeTemplate::receive_command), NULL);
 	kit.no_i6t_file_areas = N;
 	for (int i=0; i<N; i++) kit.i6t_files[i] = PP[i];
+	int stage = EARLY_LINK_STAGE;
+	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
 	TEMPORARY_TEXT(T);
-	TemplateReader::I6T_file_intervene(T, EARLY_LINK_STAGE, NULL, NULL, &kit);
+	TemplateReader::I6T_file_intervene(T, stage, NULL, NULL, &kit);
 	CodeGen::MergeTemplate::receive_raw(T, &kit);
 	DISCARD_TEXT(T);
-	TemplateReader::extract(template_file, &kit);
+	if (Str::ne(template_file, I"none"))
+		TemplateReader::extract(template_file, &kit);
 }
 
 void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *state) {
@@ -50,15 +60,22 @@ void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *st
 	}
 }
 
-void CodeGen::MergeTemplate::guard(inter_error_message *ERR) {
-	if (ERR) { Inter::Errors::issue(ERR); internal_error("inter error"); }
+void CodeGen::MergeTemplate::catch_all_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	if (P->W.data[ID_IFLD] == LINK_IST) {
+		text_stream *S1 = NULL;
+		text_stream *S2 = NULL;
+		text_stream *S3 = Inter::Node::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inter::Node::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inter::Node::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
+	}
 }
 
 void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level) {
 	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 	Str::copy(glob_storage, content);
-	CodeGen::MergeTemplate::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
+	Produce::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
 }
 
 @

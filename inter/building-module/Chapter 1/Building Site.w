@@ -46,6 +46,10 @@ typedef struct building_site {
 	#define NO_DEFINED_HMD_VALUES 1
 	#endif
 	struct hierarchy_metadatum *hmds_indexed_by_id[NO_DEFINED_HMD_VALUES];
+	struct inter_symbol *veneer_symbols[MAX_VSYMBS];
+	struct text_stream *veneer_symbol_names[MAX_VSYMBS];
+	struct text_stream *veneer_symbol_translations[MAX_VSYMBS];
+	struct dictionary *veneer_symbols_indexed_by_name;
 } building_site;
 
 @ =
@@ -73,6 +77,9 @@ void Site::clear(inter_tree *I) {
 	B->hls_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->haps_indexed_by_id[i] = NULL;
 	for (int i=0; i<NO_DEFINED_HMD_VALUES; i++) B->hmds_indexed_by_id[i] = NULL;
+	B->veneer_symbols_indexed_by_name = Dictionaries::new(512, FALSE);
+	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbols[i] = NULL;
+	Veneer::create_indexes(I);
 	Packaging::initialise_state(I);
 }
 
@@ -187,7 +194,7 @@ inter_bookmark *Site::veneer_booknark(inter_tree *I) {
 	return &(I->site.veneer_bookmark);
 }
 inter_symbol *Site::veneer_symbol(inter_tree *I, int ix) {
-	inter_symbol *symb = Veneer::find_by_index(Packaging::incarnate(Site::veneer_request(I)), Site::veneer_booknark(I), ix, Produce::kind_to_symbol(NULL));
+	inter_symbol *symb = Veneer::find_by_index(I, ix, Produce::kind_to_symbol(NULL));
 	return symb;
 }
 

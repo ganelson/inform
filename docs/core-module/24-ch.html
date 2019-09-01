@@ -397,6 +397,7 @@ ever tampered with.
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 </pre>
@@ -416,7 +417,8 @@ ever tampered with.
             <span class="string">"Creating %d past tense conditions in TestSinglePastState\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                 <span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">past_tense_condition_record</span><span class="plain">));</span>
 
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSINGLEPASTSTATE_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSINGLEPASTSTATE_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">past_flag_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"past_flag"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">pt_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pt"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">turn_end_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"turn_end"</span><span class="plain">);</span>
@@ -445,6 +447,7 @@ ever tampered with.
         &lt;<span class="cwebmacro">Answer the question posed</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
 
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">, </span><span class="string">"Creation of past tense conditions complete\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

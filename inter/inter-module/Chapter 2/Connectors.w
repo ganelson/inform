@@ -5,6 +5,7 @@ To manage link symbols.
 @ =
 int unique_plug_number = 1;
 inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *wanted) {
+if (Str::eq(wanted, I"self")) internal_error("selfie!");
 	inter_package *connectors = Inter::Connectors::connectors_package(I);
 	TEMPORARY_TEXT(PN)
 	WRITE_TO(PN, "plug_%05d", unique_plug_number++);
@@ -12,7 +13,7 @@ inter_symbol *Inter::Connectors::plug(inter_tree *I, text_stream *wanted) {
 		Inter::Packages::scope(connectors), PN);
 	DISCARD_TEXT(PN);
 	Inter::SymbolsTables::make_plug(plug, wanted);
-	LOG("Plug I%d: $3 seeking %S\n", I->allocation_id, plug, plug->equated_name);
+	LOGIF(INTER_CONNECTORS, "Plug I%d: $3 seeking %S\n", I->allocation_id, plug, plug->equated_name);
 	return plug;
 }
 
@@ -21,7 +22,7 @@ inter_symbol *Inter::Connectors::socket(inter_tree *I, text_stream *socket_name,
 	inter_symbol *socket = Inter::SymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), socket_name);
 	Inter::SymbolsTables::make_socket(socket, wired_from);
-	LOG("Socket I%d: $3 wired to $3\n", I->allocation_id, socket, wired_from);
+	LOGIF(INTER_CONNECTORS, "Socket I%d: $3 wired to $3\n", I->allocation_id, socket, wired_from);
 	return socket;
 }
 
@@ -68,7 +69,7 @@ inter_symbol *Inter::Connectors::find_plug(inter_tree *I, text_stream *identifie
 
 void Inter::Connectors::wire_plug(inter_symbol *plug, inter_symbol *to) {
 	if (plug == NULL) internal_error("no plug");
-	LOG("Plug $3 wired to $3\n", plug, to);
+	LOGIF(INTER_CONNECTORS, "Plug $3 wired to $3\n", plug, to);
 	Inter::SymbolsTables::equate(plug, to);
 }
 
@@ -83,9 +84,6 @@ void Inter::Connectors::stecker(inter_tree *I) {
 			if (socket) {
 				Inter::Connectors::wire_plug(plug, socket);
 				plug->equated_name = NULL;
-				LOG("Wired plug $3 to $3\n", plug, socket);
-			} else {
-				LOG("Loose plug: $3 (seeking %S)\n", plug, plug->equated_name);
 			}
 		}
 	}

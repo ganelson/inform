@@ -263,6 +263,7 @@ void PL::Bibliographic::compile_constants(void) {
 	else
 		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
 	Emit::named_generic_constant(iname, v1, v2);
+	Hierarchy::make_available(Emit::tree(), iname);
 
 @ And similarly here:
 
@@ -276,6 +277,7 @@ void PL::Bibliographic::compile_constants(void) {
 		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
 	}
 	Emit::named_generic_constant(iname, v1, v2);
+	Hierarchy::make_available(Emit::tree(), iname);
 
 @ This time we compile nothing if no author is provided:
 
@@ -286,6 +288,7 @@ void PL::Bibliographic::compile_constants(void) {
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
 
 @ Similarly (but numerically):
@@ -296,6 +299,7 @@ void PL::Bibliographic::compile_constants(void) {
 		inter_t v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
@@ -310,6 +314,7 @@ should be able to fake the date-stamp with dates of their own choosing.
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
 	Emit::named_text_constant(iname, SN);
 	DISCARD_TEXT(SN);
+	Hierarchy::make_available(Emit::tree(), iname);
 
 @ The Library Card is part of the Contents index, and is intended as a
 natural way to present bibliographic data to the user. In effect, it's a

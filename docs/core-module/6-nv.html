@@ -1004,6 +1004,11 @@ foreign verbs (4).
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_NEG_iname</span><span class="plain">, -2);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain">, -3);</span>
         <span class="functiontext">Emit::named_numeric_constant_signed</span><span class="plain">(</span><span class="identifier">CV_MEANING_iname</span><span class="plain">, -4);</span>
+
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CV_POS_iname</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CV_NEG_iname</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CV_MODAL_INAME_iname</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CV_MEANING_iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NewVerbs::ConjugateVerb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

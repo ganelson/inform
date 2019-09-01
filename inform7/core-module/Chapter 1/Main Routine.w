@@ -288,7 +288,6 @@ list is not exhaustive.
 	COMPILATION_STEP(Tables::traverse_to_stock, I"Tables::traverse_to_stock")
 	COMPILATION_STEP(Properties::annotate_attributes, I"Properties::annotate_attributes")
 	COMPILATION_STEP(Rulebooks::Outcomes::RulebookOutcomePrintingRule, I"Rulebooks::Outcomes::RulebookOutcomePrintingRule")
-	COMPILATION_STEP(PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant, I"PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant")
 	COMPILATION_STEP(Kinds::RunTime::compile_instance_counts, I"Kinds::RunTime::compile_instance_counts")
 
 @ This is where we hand over to regular template files -- containing code

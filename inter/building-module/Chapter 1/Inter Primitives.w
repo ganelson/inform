@@ -124,14 +124,14 @@ inter_symbol *Primitives::get(inter_tree *I, inter_t bip) {
 void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim, text_stream *category) {
 	TEMPORARY_TEXT(prim_command);
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
-	CodeGen::MergeTemplate::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
+	Produce::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
 	inter_symbol *S = Inter::Textual::find_symbol(I, NULL, Inter::Tree::global_scope(I), prim, PRIMITIVE_IST, &E);
 	inter_t bip = Primitives::to_bip(I, S);
 	if (bip == 0) internal_error("missing bip");
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
 	Site::set_opcode(I, bip, S);
-	CodeGen::MergeTemplate::guard(E);
+	Produce::guard(E);
 	DISCARD_TEXT(prim_command);
 }
 

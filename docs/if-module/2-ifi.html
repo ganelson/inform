@@ -67,6 +67,7 @@ around it, in byte-accessible memory.
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">uuid</span><span class="plain"> = </span><span class="functiontext">PL::Bibliographic::IFID::read_uuid</span><span class="plain">();</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">UUID_array_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">UUID_ARRAY_HL</span><span class="plain">);</span>
         <span class="identifier">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">UUID_array_iname</span><span class="plain">, </span><span class="identifier">uuid</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">UUID_array_iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Bibliographic::IFID::UUID</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

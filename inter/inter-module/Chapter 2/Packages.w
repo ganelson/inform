@@ -124,7 +124,10 @@ void Inter::Packages::add_subpackage_name(inter_package *Q, inter_package *P) {
 	if (Q == NULL) internal_error("no parent supplied");
 	text_stream *N = P->package_name_t;
 	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
-	if (de) internal_error("duplicated package name");
+	if (de) {
+		LOG("This would be the second '%S' in $6\n", N, Q);
+		internal_error("duplicated package name");
+	}
 	Dictionaries::create(Q->name_lookup, N);
 	Dictionaries::write_value(Q->name_lookup, N, (void *) P);
 }

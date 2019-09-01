@@ -347,7 +347,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
-				Produce::inv_call_iname(Emit::tree(), Rules::RulePrintingRule());
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEPRINTINGRULE_HL));
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Rules::iname(resp->responding_rule));
 				Produce::up(Emit::tree());
@@ -383,6 +383,7 @@ divided up by the extensions containing the rules which produce them.
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 
 @<Make a ResponseDivisions entry@> =
 	rule *R;

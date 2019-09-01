@@ -393,6 +393,7 @@ compiled to constants, used early on at run-time to print the banner.
         <span class="reserved">else</span>
             <span class="identifier">Strings::TextLiterals::compile_literal_from_text</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"\</span><span class="plain">"</span><span class="string">Welcome\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -418,6 +419,7 @@ compiled to constants, used early on at run-time to print the banner.
             <span class="identifier">Strings::TextLiterals::compile_literal_from_text</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"\</span><span class="plain">"</span><span class="string">An Interactive Fiction\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -440,6 +442,7 @@ compiled to constants, used early on at run-time to print the banner.
             <span class="identifier">NonlocalVariables::treat_as_plain_text_word</span><span class="plain">(</span><span class="identifier">story_author_VAR</span><span class="plain">);</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_author_VAR</span><span class="plain">);</span>
             <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -462,6 +465,7 @@ compiled to constants, used early on at run-time to print the banner.
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_release_number_VAR</span><span class="plain">);</span>
             <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -488,6 +492,7 @@ should be able to fake the date-stamp with dates of their own choosing.
             <span class="identifier">year_digits</span><span class="plain">, (</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain">)+1, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">);</span>
         <span class="identifier">Emit::named_text_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">SN</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">SN</span><span class="plain">);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

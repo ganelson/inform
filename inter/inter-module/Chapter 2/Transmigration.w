@@ -25,6 +25,39 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	@<Physically move the subtree to its new home@>;
 	@<Correct any references from the migrant to the origin@>;
 	if (tidy_origin) @<Correct any references from the origin to the migrant@>;
+	inter_package *connectors = Site::connectors_package(origin_tree);
+	if (connectors) {
+		inter_symbols_table *T = Inter::Packages::scope(connectors);
+		if (T == NULL) internal_error("package with no symbols");
+		for (int i=0; i<T->size; i++) {
+			inter_symbol *symb = T->symbol_array[i];
+			if ((symb) && (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)) {
+				inter_symbol *target = symb->equated_to;
+				while (target->equated_to) target = target->equated_to;
+				inter_package *target_package = target->owning_table->owning_package;
+				while ((target_package) && (target_package != migrant)) {
+					target_package = Inter::Packages::parent(target_package);
+				}
+				if (target_package == migrant) {
+					LOGIF(INTER_CONNECTORS, "Origin offers socket inside migrant: $3 == $3\n", symb, target);
+					inter_symbol *equivalent = Inter::Connectors::find_socket(destination_tree, symb->symbol_name);
+					if (equivalent) {
+						inter_symbol *e_target = equivalent->equated_to;
+						while (e_target->equated_to) e_target = e_target->equated_to;
+						if (!Inter::Symbols::is_defined(e_target)) {
+							LOGIF(INTER_CONNECTORS, "Able to match with $3 == $3\n", equivalent, equivalent->equated_to);
+							equivalent->equated_to = target;
+							e_target->equated_to = target;
+						} else {
+							LOGIF(INTER_CONNECTORS, "Clash of sockets\n");
+						}
+					} else {
+						Inter::Connectors::socket(destination_tree, symb->symbol_name, symb);
+					}
+				}
+			}
+		}
+	}
 }
 
 @<Create these bookmarks@> =
@@ -98,12 +131,25 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 			if ((symb) && (symb->equated_to)) {
 				inter_symbol *target = symb->equated_to;
 				while (target->equated_to) target = target->equated_to;
-				inter_package *target_package = target->owning_table->owning_package;
-				while ((target_package) && (target_package != ipct->migrant)) {
-					target_package = Inter::Packages::parent(target_package);
+				if (Inter::Symbols::read_annotation(target, VENEER_IANN) == 1) {
+					symb->equated_to = Veneer::find(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL));
+				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {
+					inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
+					if (equivalent == NULL) {
+						equivalent = Inter::Connectors::find_plug(ipct->destination->package_head->tree, target->equated_name);
+						if (equivalent == NULL)
+							equivalent = Inter::Connectors::plug(ipct->destination->package_head->tree, target->equated_name);
+						Inter::Transmigration::cache(target, equivalent);
+					}
+					symb->equated_to = equivalent;					
+				} else {
+					inter_package *target_package = target->owning_table->owning_package;
+					while ((target_package) && (target_package != ipct->migrant)) {
+						target_package = Inter::Packages::parent(target_package);
+					}
+					if (target_package != ipct->migrant)
+						@<Correct the reference to this symbol@>;
 				}
-				if (target_package != ipct->migrant)
-					@<Correct the reference to this symbol@>;
 			}
 		}
 	}

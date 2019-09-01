@@ -214,6 +214,7 @@ void Phrases::Manager::add_rules_to_rulebooks(void) {
 	Rules::Bookings::make_automatic_placements();
 	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
 	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(rulebook));
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @ It might seem as if the rulebooks are now complete, but this is not true,

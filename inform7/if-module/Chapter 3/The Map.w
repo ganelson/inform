@@ -379,6 +379,7 @@ int PL::Map::map_compile_model_tables(void) {
 @<Declare I6 constants for the directions@> =
 	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
 	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
+	Hierarchy::make_available(Emit::tree(), ndi);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction) {
@@ -426,6 +427,7 @@ at run-time, so we can't know now how many we will need.
 			}
 	}
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 	VirtualMachines::note_usage("map", EMPTY_WORDING, I"map of rooms and doors",
 		words_used, 0, FALSE);
 

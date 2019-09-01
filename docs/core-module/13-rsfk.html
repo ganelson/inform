@@ -985,7 +985,8 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEFINDER_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEFINDER_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">, </span><span class="reserved">runtime_kind_structure</span><span class="plain">) {</span>
@@ -1013,6 +1014,7 @@ K, we have also seen its bases.
             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1964,7 +1966,8 @@ deduced from its value alone, <code class="display"><span class="extract">K</spa
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRINTKINDVALUEPAIR_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">pkvp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PRINTKINDVALUEPAIR_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pkvp_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">v_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"v"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
@@ -2013,6 +2016,7 @@ deduced from its value alone, <code class="display"><span class="extract">K</spa
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">pkvp_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2031,7 +2035,8 @@ which have to be given some type-safe value to start out at.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">dvok_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DEFAULTVALUEOFKOV_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">dvok_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sk_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"sk"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
@@ -2090,6 +2095,7 @@ which have to be given some type-safe value to start out at.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">dvok_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2112,7 +2118,8 @@ unless the two values are genuinely equal.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVCOMPARISONFUNCTION_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kcf_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVCOMPARISONFUNCTION_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">kcf_iname</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
@@ -2165,6 +2172,7 @@ unless the two values are genuinely equal.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">kcf_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2177,7 +2185,8 @@ unless the two values are genuinely equal.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVDOMAINSIZE_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kds_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVDOMAINSIZE_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">kds_iname</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
@@ -2228,6 +2237,7 @@ unless the two values are genuinely equal.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">kds_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2245,7 +2255,8 @@ storing pointers to blocks on the heap.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVISBLOCKVALUE_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kibv_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVISBLOCKVALUE_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">kibv_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2279,6 +2290,7 @@ storing pointers to blocks on the heap.
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">kibv_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2297,7 +2309,8 @@ such a function does, see "BlockValues.i6t".
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVSUPPORTFUNCTION_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ksf_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVSUPPORTFUNCTION_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ksf_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">fail_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"fail"</span><span class="plain">);</span>
 
@@ -2350,6 +2363,7 @@ such a function does, see "BlockValues.i6t".
 
         <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">ksf_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2364,9 +2378,10 @@ Z-machine array space.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::I7_Kind_Name_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">I7_KIND_NAME_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">I7_KIND_NAME_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
@@ -2389,6 +2404,7 @@ Z-machine array space.
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

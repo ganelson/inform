@@ -1012,6 +1012,7 @@ void PL::Actions::ActionHappened(void) {
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
 		Emit::array_numeric_entry(0);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h The grammar list.
@@ -1196,8 +1197,11 @@ void PL::Actions::ActionData(void) {
 		Emit::array_numeric_entry((inter_t) (20000+an->allocation_id));
 	}
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
+
 	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
 	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
+	Hierarchy::make_available(Emit::tree(), ad_iname);
 
 	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
 
@@ -1295,6 +1299,7 @@ void PL::Actions::ActionData(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), DB_Action_Details_iname);
 }
 
 @<Insert a space here if needed to break up the action name@> =
@@ -1352,6 +1357,7 @@ void PL::Actions::ActionCoding_array(void) {
 		else Emit::array_action_entry(an);
 	}
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h Indexing.

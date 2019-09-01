@@ -753,12 +753,9 @@ do.
 
 
 <pre class="display">
-    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_HL</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Rules::RulePrintingRule</span><span class="plain">());</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -785,12 +782,11 @@ do.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Rules::RulePrintingRule is used in 17/rs (<a href="17-rs.html#SP7_2">&#167;7.2</a>).</p>
 
 <p class="endnote">The function Rules::RulePrintingRule_routine is used in 22/cs (<a href="22-cs.html#SP13">&#167;13</a>).</p>
 

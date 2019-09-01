@@ -446,12 +446,14 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 				rvalue = NonlocalVariables::identifier(nlv);
 			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
 			if (nlv == command_prompt_VAR) {
-				packaging_state save = Routines::begin(Hierarchy::find(COMMANDPROMPTTEXT_HL));
+				inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
+				packaging_state save = Routines::begin(cpt_iname);
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_text, iname);
 				Produce::up(Emit::tree());
 				Routines::end(save);
+				Hierarchy::make_available(Emit::tree(), cpt_iname);
 			}
 
 		}

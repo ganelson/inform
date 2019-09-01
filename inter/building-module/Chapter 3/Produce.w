@@ -6,7 +6,7 @@
 
 =
 void Produce::guard(inter_error_message *ERR) {
-	if ((ERR) && (problem_count == 0)) { Inter::Errors::issue(ERR); /* internal_error("inter error"); */ }
+	if ((ERR) && (problem_count == 0)) { Inter::Errors::issue(ERR); internal_error("inter error"); }
 }
 
 inter_symbol *Produce::new_symbol(inter_symbols_table *T, text_stream *name) {

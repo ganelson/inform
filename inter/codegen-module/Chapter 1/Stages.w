@@ -127,6 +127,13 @@ int CodeGen::Stage::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 		0,
 		BASE_ICON, 0, NULL,
 		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+	inter_symbol *action_name_kind_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_action_name");
+	Inter::Kind::new(&in_generic,
+		Inter::SymbolsTables::id_from_symbol(I, generic_p, action_name_kind_symbol),
+		INT32_IDT,
+		0,
+		BASE_ICON, 0, NULL,
+		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	inter_t operands[2];
 	operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(&in_generic, unchecked_kind_symbol);
 	operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(&in_generic, unchecked_kind_symbol);

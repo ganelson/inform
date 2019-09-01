@@ -509,8 +509,9 @@ int TemplateReader::I6T_file_intervene(OUTPUT_STREAM, int stage, text_stream *se
 	if (Str::eq_wide_string(segment, L"Main.i6t")) return rv;
 	LOGIF(TEMPLATE_READING, "Stage %d Segment %S Part %S\n", stage, segment, part);
 	LOOP_OVER(i6ti, I6T_intervention)
-		if ((i6ti->intervention_stage == stage) &&
-			(Str::eq(i6ti->segment_name, segment))) {
+		if ((stage == CATCH_ALL_LINK_STAGE) ||
+			((i6ti->intervention_stage == stage) &&
+				(Str::eq(i6ti->segment_name, segment)))) {
 			i6ti->segment_found = TRUE;
 			if (Str::eq(i6ti->part_name, part) == FALSE) continue;
 			i6ti->part_found = TRUE;

@@ -448,13 +448,6 @@ without notice.
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) &gt; 0) {</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">NO_TEST_SCENARIOS_HL</span><span class="plain">);</span>
-            <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">));</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::TestScriptSub_stub_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_HL</span><span class="plain">);</span>
         <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
@@ -540,8 +533,6 @@ without notice.
 
 <p class="endnote">The function PL::Parsing::TestScripts::write_text is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
 
-<p class="endnote">The function PL::Parsing::TestScripts::NO_TEST_SCENARIOS_constant is used in 1/mr (<a href="1-mr.html#SP4_13">&#167;4.13</a>).</p>
-
 <p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_stub_routine is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
 
 <p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_routine is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
@@ -560,7 +551,8 @@ without notice.
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">itc_save_DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">itc_save_OUT</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::InternalTestCases_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_HL</span><span class="plain">));</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_HL</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">internal_test_case</span><span class="plain"> *</span><span class="identifier">itc</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">, </span><span class="reserved">internal_test_case</span><span class="plain">) {</span>
             <span class="identifier">n</span><span class="plain">++;</span>
@@ -677,6 +669,7 @@ without notice.
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::begin_internal_reporting</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -579,6 +579,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 	@<Add the scene-change tail@>;
 
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @<Add the scene-change tail@> =
@@ -978,7 +979,8 @@ what handles this.
 
 =
 void PL::Scenes::ShowSceneStatus_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWSCENESTATUS_HL));
+	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
+	packaging_state save = Routines::begin(iname);
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
@@ -1011,6 +1013,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @<Show status of this running scene@> =

@@ -410,7 +410,7 @@ void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) 
 		internal_error("misplaced package");
 	}
 
-	CodeGen::MergeTemplate::guard(Inter::Defn::verify_children_inner(P));
+	Produce::guard(Inter::Defn::verify_children_inner(P));
 }
 
 inter_symbol *CodeGen::Pipeline::uks(void) {

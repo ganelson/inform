@@ -686,6 +686,7 @@ inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 inter_name *PL::Parsing::Verbs::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
 	Emit::named_numeric_constant(iname, 1);
+	Hierarchy::make_available(Emit::tree(), iname);
 	return iname;
 }
 

@@ -24,7 +24,8 @@ properties.
 =
 void PL::Showme::compile_SHOWME_details(void) {
 	if (Plugins::Manage::plugged_in(showme_plugin) == FALSE) return;
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWMEDETAILS_HL));
+	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::add_named_call_as_symbol(I"na");
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
@@ -36,6 +37,7 @@ void PL::Showme::compile_SHOWME_details(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol *na_s) {

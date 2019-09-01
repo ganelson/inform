@@ -531,12 +531,9 @@ inter_name *Rules::iname(rule *R) {
 @h Printing rule names at run time.
 
 =
-inter_name *Rules::RulePrintingRule(void) {
-	return Hierarchy::find(RULEPRINTINGRULE_HL);
-}
-
 void Rules::RulePrintingRule_routine(void) {
-	packaging_state save = Routines::begin(Rules::RulePrintingRule());
+	inter_name *iname = Hierarchy::find(RULEPRINTINGRULE_HL);
+	packaging_state save = Routines::begin(iname);
 	inter_symbol *R_s = LocalVariables::add_named_call_as_symbol(I"R");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
@@ -563,6 +560,7 @@ void Rules::RulePrintingRule_routine(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @<Print a rulebook name@> =

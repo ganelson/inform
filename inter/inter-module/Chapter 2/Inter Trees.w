@@ -202,7 +202,6 @@ void Inter::Tree::place(inter_tree_node *C, int how, inter_tree_node *R) {
 @<Insert C after R@> =
 	inter_tree_node *P = Inter::Tree::parent(R);
 	if (P == NULL) internal_error("can't move C before R when R is nowhere");
-	if (P == R->tree->root_node) LOG("Wowser!\n");
 	Inter::Tree::set_parent_UNSAFE(C, P);
 	if (Inter::Tree::last_child(P) == R)
 		Inter::Tree::set_last_child_UNSAFE(P, C);

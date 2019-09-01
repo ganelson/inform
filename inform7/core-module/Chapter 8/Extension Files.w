@@ -387,7 +387,8 @@ feelings of modesty.
 
 =
 void Extensions::Files::ShowExtensionVersions_routine(void) {
-	packaging_state save = Routines::begin(Hierarchy::find(SHOWEXTENSIONVERSIONS_HL));
+	inter_name *iname = Hierarchy::find(SHOWEXTENSIONVERSIONS_HL);
+	packaging_state save = Routines::begin(iname);
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(the_author_name);
@@ -410,8 +411,10 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		DISCARD_TEXT(the_author_name);
 	}
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 
-	save = Routines::begin(Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL));
+	iname = Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL);
+	save = Routines::begin(iname);
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(C);
 		Extensions::Files::credit_ef(C, ef, TRUE);
@@ -422,8 +425,10 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		DISCARD_TEXT(C);
 	}
 	Routines::end(save);
-
-	save = Routines::begin(Hierarchy::find(SHOWONEEXTENSION_HL));
+	Hierarchy::make_available(Emit::tree(), iname);
+	
+	iname = Hierarchy::find(SHOWONEEXTENSION_HL);
+	save = Routines::begin(iname);
 	inter_symbol *id_s = LocalVariables::add_named_call_as_symbol(I"id");
 	LOOP_OVER(ef, extension_file) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -446,6 +451,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		Produce::up(Emit::tree());
 	}
 	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @ The actual credit consists of a single line, with name, version number

@@ -1179,6 +1179,7 @@ relation itself.)
                 <span class="identifier">default_rr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEANINGLESS_RR_HL</span><span class="plain">);</span>
                 <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">default_rr</span><span class="plain">);</span>
+                <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;record_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>

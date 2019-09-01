@@ -32,6 +32,7 @@ void Inter::Link::define(void) {
 @d BEFORE_LINK_STAGE 2
 @d INSTEAD_LINK_STAGE 3
 @d AFTER_LINK_STAGE 4
+@d CATCH_ALL_LINK_STAGE 5
 
 =
 void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {

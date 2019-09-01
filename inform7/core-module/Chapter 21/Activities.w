@@ -372,6 +372,7 @@ void Activities::activity_var_creators(void) {
 	}
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h Activity indexing.
@@ -617,6 +618,7 @@ void Activities::Activity_before_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void Activities::Activity_for_rulebooks_array(void) {
@@ -630,6 +632,7 @@ void Activities::Activity_for_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void Activities::Activity_after_rulebooks_array(void) {
@@ -643,6 +646,7 @@ void Activities::Activity_after_rulebooks_array(void) {
 	if (i==0) Emit::array_null_entry();
 	Emit::array_null_entry();
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void Activities::Activity_atb_rulebooks_array(void) {
@@ -656,6 +660,7 @@ void Activities::Activity_atb_rulebooks_array(void) {
 	if (i==0) Emit::array_numeric_entry(255);
 	Emit::array_numeric_entry(255);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void Activities::annotate_list_for_cross_references(activity_list *avl, phrase *ph) {

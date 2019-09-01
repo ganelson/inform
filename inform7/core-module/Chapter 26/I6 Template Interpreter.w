@@ -604,7 +604,9 @@ of Inform: the following routine performs |{-callv:TemplateFiles::compile_build_
 void TemplateFiles::compile_build_number(void) {
 	TEMPORARY_TEXT(build);
 	WRITE_TO(build, "%B", TRUE);
-	Emit::named_string_constant(Hierarchy::find(NI_BUILD_COUNT_HL), build);
+	inter_name *iname = Hierarchy::find(NI_BUILD_COUNT_HL);
+	Emit::named_string_constant(iname, build);
+	Hierarchy::make_available(Emit::tree(), iname);
 	DISCARD_TEXT(build);
 }
 

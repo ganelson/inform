@@ -882,6 +882,7 @@ in the final I6 output.
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Verbs::grammar_constant</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
         <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, 1);</span>
+        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
