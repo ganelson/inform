@@ -292,14 +292,12 @@ Global pending_boxed_quotation; ! a routine to overlay the quotation on screen
 ];
 
 @p Score Notification.
-This doesn't really deserve to be at I6 level at all, but since for traditional
-reasons we need to use conditional compilation on |USE_SCORING|, and since we
-want a fancy text style for Glulx, ...
+This doesn't really deserve to be at I6 level at all, but since we want a
+fancy text style for Glulx, ...
 
 @c
 [ NotifyTheScore d;
-#Iftrue USE_SCORING ~= 0;
-	if (notify_mode == 1) {
+	if ((TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
 		DivideParagraphPoint();
 		VM_Style(NOTE_VMSTY);
 		d = score-last_score;
@@ -308,7 +306,6 @@ want a fancy text style for Glulx, ...
 		new_line;
 		VM_Style(NORMAL_VMSTY);
 	}
-#Endif;
 ];
 
 @p Status Line.
@@ -358,7 +355,8 @@ Array T_SL_Score_Moves --> CONSTANT_PACKED_TEXT_STORAGE SL_Score_Moves;
 
 [ SL_Score_Moves;
 	if (not_yet_in_play) return;
-	#Iftrue USE_SCORING > 0; print sline1, "/", sline2; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT)
+		print sline1, "/", sline2;
 ];
 
 Array T_SL_Location --> CONSTANT_PACKED_TEXT_STORAGE SL_Location;

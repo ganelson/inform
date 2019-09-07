@@ -28,15 +28,6 @@ Constant LibSerial = "080126";
 Constant LibRelease = "6/12N";
 Constant LIBRARY_VERSION = 612;
 
-@p Use options.
-Use options are translated into I6 constant declarations, and NI puts them
-here:
-
-@c
-#Ifndef USE_SCORING;
-Constant USE_SCORING = DEFAULT_SCORING_SETTING;
-#Endif;
-
 @p Constants.
 
 @c

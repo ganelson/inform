@@ -8,6 +8,7 @@ complete in itself.
 
 =
 int trace_bin = FALSE;
+int suppress_type_errors = FALSE;
 
 void Inter::Binary::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading binary inter file %f)\n", F);
@@ -258,6 +259,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			inter_annotation IA = Inter::Annotations::from_bytecode(c1, c2);
 			if (Inter::Annotations::is_invalid(IA))
 				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
+			if (grid) Inter::Defn::transpose_annotation(&IA, grid, grid_extent, NULL);
 			Inter::Symbols::annotate(S, IA);
 		}
 		if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) {
@@ -440,7 +442,9 @@ enough that the slot exists for the eventual list to be stored in.
 		inter_error_message *E = NULL;
 		if (grid) E = Inter::Defn::transpose_construct(owner, P, grid, grid_extent);
 		if (E) { Inter::Errors::issue(E); exit(1); }
+		suppress_type_errors = TRUE;
 		E = Inter::Defn::verify_construct(owner, P);
+		suppress_type_errors = FALSE;
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
 		Inter::Bookmarks::insert(&at, P);

@@ -134,11 +134,13 @@ package main _plain
 		symbol public misc K_unchecked
 		symbol public misc K_typeless_int
 		symbol public misc K_truth_state
+		symbol public misc K_action_name
 		symbol public misc K_unchecked_function
 		symbol public misc K_list_of_values
 		kind K_unchecked unchecked
 		kind K_typeless_int int32
 		kind K_truth_state int2
+		kind K_action_name int32
 		kind K_unchecked_function function K_unchecked -> K_unchecked
 		kind K_list_of_values list of K_unchecked
 	package template _module

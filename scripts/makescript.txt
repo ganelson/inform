@@ -21,6 +21,7 @@ INTESTX = ../intest/Tangled/intest
 INTESTWEB = ../intest
 INWEB = ../inweb/Tangled/inweb
 INWEBX = ../inweb/Tangled/inweb
+INTERX = inter/Tangled/inter
 
 # The "-" at the front here tells make to load this file if it exists, and
 # continue otherwise. If it does exist, it will define the symbol INTEGRATION.
@@ -163,7 +164,7 @@ INFORM6X = inform6/Tangled/inform6
 
 .PHONY: all
 
-all: tools srules localintegration
+all: tools srules intertemplate localintegration
 
 .PHONY: force
 
@@ -176,6 +177,15 @@ inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.prefor
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 
 # (Of course those other four phony targets are yet to be defined.)
+
+.PHONY: intertemplate
+intertemplate: inform7/Internal/Inter/template-zd.interb inform7/Internal/Inter/template-gd.interb
+
+inform7/Internal/Inter/template-zd.interb: inform7/Internal/Inter/template-zd.interpipeline inform7/Internal/I6T/*.i6t
+	$(INTERX) -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-zd.interb -variable *outt=inform7/Internal/Inter/template-zd.intert -pipeline-file inform7/Internal/Inter/template-zd.interpipeline
+
+inform7/Internal/Inter/template-gd.interb: inform7/Internal/Inter/template-gd.interpipeline inform7/Internal/I6T/*.i6t
+	$(INTERX) -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-gd.interb -variable *outt=inform7/Internal/Inter/template-gd.intert -pipeline-file inform7/Internal/Inter/template-gd.interpipeline
 
 # -----------------------------------------------------------------------------
 # Target "makers"

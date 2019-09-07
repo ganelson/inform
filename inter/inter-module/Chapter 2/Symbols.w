@@ -234,6 +234,10 @@ void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_
 	if (symb) Inter::Annotations::write_set(OUT, &(symb->ann_set), F);
 }
 
+void Inter::Symbols::transpose_annotations(inter_symbol *symb, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	if (symb) Inter::Annotations::transpose_set(&(symb->ann_set), grid, grid_extent, E);
+}
+
 @ =
 int Inter::Symbols::is_predeclared(inter_symbol *S) {
 	if (S == NULL) return FALSE;

@@ -8,7 +8,9 @@ B/oowt: OutOfWorld Template.
 
 @c
 [ Perform_Undo;
-	#ifdef PREVENT_UNDO; IMMEDIATELY_UNDO_RM('A'); new_line; return; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) {
+		IMMEDIATELY_UNDO_RM('A'); new_line; return;
+	}
 	if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }
 	if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }
 	if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }
@@ -20,9 +22,11 @@ B/oowt: OutOfWorld Template.
 @c
 [ ANNOUNCE_SCORE_R;
 	if (actor ~= player) rfalse;
-	#Iftrue USE_SCORING == 0; ANNOUNCE_SCORE_RM('C'); new_line;
-	#ifnot; ANNOUNCE_SCORE_RM('A'); PrintRank();
-	#endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) {
+		ANNOUNCE_SCORE_RM('C'); new_line;
+	} else {
+		ANNOUNCE_SCORE_RM('A'); PrintRank();
+	}
 ];
 
 @p Switch Score Notification On Rule.
@@ -30,8 +34,8 @@ B/oowt: OutOfWorld Template.
 @c
 [ SWITCH_SCORE_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
-	#Iftrue USE_SCORING == 0; ANNOUNCE_SCORE_R();
-	#ifnot; notify_mode=1; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
+	else notify_mode=1;
 ];
 
 @p Standard Report Switching Score Notification On Rule.
@@ -39,7 +43,9 @@ B/oowt: OutOfWorld Template.
 @c
 [ REP_SWITCH_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
-	#Iftrue USE_SCORING ~= 0; REP_SWITCH_NOTIFY_ON_RM('A'); new_line; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
+		REP_SWITCH_NOTIFY_ON_RM('A'); new_line;
+	}
 ];
 
 @p Switch Score Notification Off Rule.
@@ -47,8 +53,8 @@ B/oowt: OutOfWorld Template.
 @c
 [ SWITCH_SCORE_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
-	#Iftrue USE_SCORING == 0; ANNOUNCE_SCORE_R();
-	#ifnot; notify_mode=0; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
+	else notify_mode=0;
 ];
 
 @p Standard Report Switching Score Notification Off Rule.
@@ -56,7 +62,9 @@ B/oowt: OutOfWorld Template.
 @c
 [ REP_SWITCH_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
-	#Iftrue USE_SCORING ~= 0; REP_SWITCH_NOTIFY_OFF_RM('A'); new_line; #endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
+		REP_SWITCH_NOTIFY_OFF_RM('A'); new_line;
+	}
 ];
 
 @p Prefer Sometimes Abbreviated Room Descriptions Rule.
@@ -127,7 +135,7 @@ B/oowt: OutOfWorld Template.
 		d++;
 		if (d < c-1) print ", ";
 		if (d == c-1) {
-			#ifdef SERIAL_COMMA; print ","; #endif;
+			if (TEMPLATE_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) print ",";
 			LIST_WRITER_INTERNAL_RM('C');
 		}
 	}

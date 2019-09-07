@@ -16,6 +16,7 @@ void Inter::Inv::define(void) {
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Inv::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Inv::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Inv::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Inv::write);
 	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Inv::verify_children);
@@ -88,6 +89,11 @@ inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_t opcod
 	if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Inv::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	if (P->W.data[METHOD_INV_IFLD] == INVOKED_OPCODE)
+		P->W.data[INVOKEE_INV_IFLD] = grid[P->W.data[INVOKEE_INV_IFLD]];
 }
 
 void Inter::Inv::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

@@ -155,6 +155,11 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_anno
 	}
 }
 
+void Inter::Defn::transpose_annotation(inter_annotation *IA, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	if (IA->annot->textual_flag)
+		IA->annot_value = grid[IA->annot_value];
+}
+
 @
 
 @d OUTSIDE_OF_PACKAGES 1

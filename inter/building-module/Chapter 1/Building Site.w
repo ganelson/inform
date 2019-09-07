@@ -145,7 +145,13 @@ inter_package *Site::main_package_if_it_exists(inter_tree *I) {
 }
 
 inter_package *Site::connectors_package(inter_tree *I) {
-	if (I) return I->site.connectors_package;
+	if (I) {
+		inter_package *P = I->site.connectors_package;
+		if (P) return P;
+		P = Inter::Packages::by_url(I, I"/main/connectors");
+		if (P) I->site.connectors_package = P;
+		return P;
+	}
 	return NULL;
 }
 

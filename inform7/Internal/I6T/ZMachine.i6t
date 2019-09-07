@@ -55,12 +55,12 @@ Global dict_end;
 
 	top_object = #largest_object-255;
 
-	#ifdef FIX_RNG;
-	@random 10000 -> i;
-	i = -i-2000;
-	print "[Random number generator seed is ", i, "]^";
-	@random i -> i;
-	#endif; ! FIX_RNG	
+	if (TEMPLATE_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+		@random 10000 -> i;
+		i = -i-2000;
+		print "[Random number generator seed is ", i, "]^";
+		@random i -> i;
+	}	
 ];
 
 @p Enable Acceleration.

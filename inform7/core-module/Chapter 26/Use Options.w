@@ -42,6 +42,9 @@ int dynamic_memory_allocation = 0;
 int allow_engineering_notation = FALSE;
 int use_exact_parsing_option = FALSE;
 int index_figure_thumbnails = 50;
+int undo_prevention = FALSE;
+int serial_comma = FALSE;
+int predictable_randomisation = FALSE;
 
 @ We can also meddle with the I6 memory settings which will be used to finish
 compiling the story file. We need this because we have no practical way to
@@ -162,7 +165,10 @@ there is no need to translate this to other languages.)
 	engineering notation |
 	unabbreviated object names |
 	index figure thumbnails |
-	gn testing version
+	gn testing version |
+	undo prevention |
+	serial comma |
+	predictable randomisation
 
 @ And these correspond to:
 
@@ -178,6 +184,9 @@ there is no need to translate this to other languages.)
 @d UNABBREVIATED_OBJECT_NAMES_UO 9
 @d INDEX_FIGURE_THUMBNAILS_UO 10
 @d GN_TESTING_VERSION_UO 11
+@d UNDO_PREVENTION_UO 12
+@d SERIAL_COMMA_UO 13
+@d PREDICTABLE_RANDOMISATION_UO 14
 
 @ =
 int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
@@ -329,6 +338,9 @@ those which need immediate action.
 			break;
 		case GN_TESTING_VERSION_UO:
 			break;
+		case UNDO_PREVENTION_UO: undo_prevention = TRUE; break;
+		case SERIAL_COMMA_UO: serial_comma = TRUE; break;
+		case PREDICTABLE_RANDOMISATION_UO: predictable_randomisation = TRUE; break;
 	}
 
 @ It's possible to configure the size of the memory allocation for the run-time
@@ -565,3 +577,17 @@ void UseOptions::TestUseOption_routine(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+
+@
+
+=
+void UseOptions::configure_template(void) {
+	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
+	int bitmap = 0;
+	if (scoring_option_set) bitmap += 1;
+	if (undo_prevention) bitmap += 2;
+	if (serial_comma) bitmap += 4;
+	if (predictable_randomisation) bitmap += 16;
+	Emit::named_numeric_constant(iname, (inter_t) bitmap);
+	Hierarchy::make_available(Emit::tree(), iname);
+}

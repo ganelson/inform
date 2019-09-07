@@ -273,3 +273,16 @@ void Inter::Warehouse::set_ref(inter_warehouse *warehouse, inter_t n, void *ref)
 	if (n >= (inter_t) warehouse->size) return;
 	warehouse->stored_resources[n].stored_ref = ref;
 }
+
+void Inter::Warehouse::wipe(void) {
+	if (the_only_warehouse == NULL) return;
+	for (int i=0; i<the_only_warehouse->size; i++) {
+		if (the_only_warehouse->stored_resources[i].irsrc == STRING_IRSRC) {
+			text_stream *T = the_only_warehouse->stored_resources[i].stored_text_stream;
+			if (T) {
+				Str::clear(T);
+				WRITE_TO(T, "XYZZY-%d", i);
+			}
+		}
+	}
+}

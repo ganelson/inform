@@ -462,12 +462,12 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 
 	! Print the exponent. There are two conventions coded here: the
 	! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").
-	#ifndef FLOAT_PROGRAMMING_EXPONENTS;
+	if (TEMPLATE_CONFIGURATION_BITMAP & PROGRAMMING_EXPONENTS_TCBIT == 0) {
 		PrintMultiplicationSign();
 		@streamstr "10";
 		@streamchar $5E;
 		@streamnum expo;
-	#ifnot;
+	} else {
 		! Convention is to use at least two digits.
 		@streamchar 'e';
 		if (expo < 0) {
@@ -480,7 +480,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 		if (expo < 10)
 			@streamchar '0';
 		@streamnum expo;
-	#endif; ! FLOAT_PROGRAMMING_EXPONENTS
+	}
 	
 	rtrue;
 

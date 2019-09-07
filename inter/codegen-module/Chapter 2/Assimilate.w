@@ -271,6 +271,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
 				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
+			if (Str::eq(identifier, I"absent"))
+				CodeGen::Assimilate::install_socket(I, con_name, I"P_absent");
 			break;
 		}
 		case VERB_PLM:
@@ -744,11 +746,12 @@ inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op,
 	return mcc_name;
 }
 
-int minor_const_count = 0;
+int ccs_count = 0;
 inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN);
-	WRITE_TO(NN, "Computed_Constant_Value_%d", minor_const_count++);
+	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
 	inter_symbol *mcc_name = Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+	Inter::Symbols::set_flag(mcc_name, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN);
 	return mcc_name;
 }

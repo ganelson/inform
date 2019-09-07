@@ -16,6 +16,7 @@ void Inter::Splat::define(void) {
 	IC->max_level = 100000000;
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Splat::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Splat::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Splat::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Splat::write);
 }
@@ -123,6 +124,10 @@ inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_t SID, inter_t
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P->W.data[MATTER_SPLAT_IFLD] = grid[P->W.data[MATTER_SPLAT_IFLD]];
 }
 
 void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

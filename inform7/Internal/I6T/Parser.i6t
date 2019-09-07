@@ -475,8 +475,8 @@ The return value is the number of words typed.
 			continue;
 		}
 		i = VM_Save_Undo();
-		#ifdef PREVENT_UNDO; undo_flag = 0; #endif;
-		#ifndef PREVENT_UNDO; undo_flag = 2; #endif;
+		if (TEMPLATE_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) undo_flag = 0;
+		else undo_flag = 2;
 		if (i == -1) undo_flag = 0;
 		if (i == 0) undo_flag = 1;
 		if (i == 2) {
@@ -697,12 +697,10 @@ Get the input, do OOPS and AGAIN.
 Is the command a direction name, and so an implicit GO? If so, go to (K).
 
 @c
-    #Ifdef LanguageIsVerb;
     if (verb_word == 0) {
         i = wn; verb_word = LanguageIsVerb(buffer, parse, verb_wordnum);
         wn = i;
     }
-    #Endif; ! LanguageIsVerb
 
     ! If the first word is not listed as a verb, it must be a direction
     ! or the name of someone to talk to
@@ -2246,9 +2244,9 @@ because we want to allow duplicates).
 
         if (i < j-1)  print ", ";
         if (i == j-1) {
-			#Ifdef SERIAL_COMMA;
-			if (j ~= 2) print ",";
-        	#Endif; ! SERIAL_COMMA
+			if (TEMPLATE_CONFIGURATION_BITMAP & SERIAL_COMMA_TCBIT) {
+				if (j ~= 2) print ",";
+        	}
         	PARSER_CLARIF_INTERNAL_RM('H');
         }
     }
@@ -2300,11 +2298,9 @@ because we want to allow duplicates).
     ! not themselves verbs - thus, "north" as a reply to "Which, the north
     ! or south door" is not treated as a fresh command but as an answer.)
 
-    #Ifdef LanguageIsVerb;
     if (first_word == 0) {
         j = wn; first_word = LanguageIsVerb(buffer2, parse2, 1); wn = j;
     }
-    #Endif; ! LanguageIsVerb
     if (first_word ~= 0) {
         j = first_word->#dict_par1;
         if ((0 ~= j&1) && ~~LanguageVerbMayBeName(first_word)) {
@@ -2381,11 +2377,9 @@ because we want to allow duplicates).
 		}
 
     first_word=(parse2-->1);
-    #Ifdef LanguageIsVerb;
     if (first_word==0) {
         j = wn; first_word=LanguageIsVerb(buffer2, parse2, 1); wn = j;
     }
-    #Endif; ! LanguageIsVerb
 
     ! Once again, if the reply looks like a command, give it to the
     ! parser to get on with and forget about the question...

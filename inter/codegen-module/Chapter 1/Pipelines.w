@@ -284,7 +284,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 							slashes = TRUE;
 					if (slashes) step->parsed_filename = Filenames::from_text(step->step_argument);
 					else step->parsed_filename = Filenames::in_folder(P, step->step_argument);
-					LOG("Parsed %S == %f\n", step->step_argument, step->parsed_filename);
 				}
 			}
 

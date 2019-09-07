@@ -46,6 +46,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e pragmatic_matter_I7CGS from 0
 @e compiler_versioning_matter_I7CGS
 @e attributes_at_eof_I7CGS
+@e very_early_matter_I7CGS
 @e early_matter_I7CGS
 @e text_literals_code_I7CGS
 @e summations_at_eof_I7CGS
@@ -55,12 +56,14 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e routines_at_eof_I7CGS
 @e code_at_eof_I7CGS
 @e verbs_at_eof_I7CGS
+@e stubs_at_eof_I7CGS
 
 =
 int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *gen) {
 	gen->segments[pragmatic_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
 	gen->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
@@ -70,6 +73,7 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	gen->segments[routines_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[code_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[verbs_at_eof_I7CGS] = CodeGen::new_segment();
+	gen->segments[stubs_at_eof_I7CGS] = CodeGen::new_segment();
 
 	generated_segment *saved = CodeGen::select(gen, compiler_versioning_matter_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -79,6 +83,11 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	WRITE("Constant life = NULL;\n");
 	CodeGen::deselect(gen, saved);
 
+	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("Stub LanguageIsVerb 3;\n");
+	CodeGen::deselect(gen, saved);
+	
 	return FALSE;
 }
 
@@ -88,6 +97,7 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 			inter_symbol *con_name =
 				Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 			int choice = early_matter_I7CGS;
+			if (Str::eq(con_name->symbol_name, I"DynamicMemoryAllocation")) choice = very_early_matter_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, LATE_IANN) == 1) choice = code_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;
 			if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) choice = arrays_at_eof_I7CGS;

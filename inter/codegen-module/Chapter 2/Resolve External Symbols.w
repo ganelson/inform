@@ -31,6 +31,7 @@ void CodeGen::Externals::visitor(inter_tree *I, inter_tree_node *P, void *state)
 			if (!Inter::Symbols::is_defined(D)) {
 				inter_symbol *socket = Inter::Connectors::find_socket(I, D->symbol_name);
 				if (socket) {
+LOG("Finding socket %S\n", D->symbol_name);
 					D = socket->equated_to;
 					S->equated_to = D;
 				}

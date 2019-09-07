@@ -284,6 +284,25 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
 	if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_ROUTINE)
 		P->W.data[DATA_CONST_IFLD] = grid[P->W.data[DATA_CONST_IFLD]];
+
+	switch (P->W.data[FORMAT_CONST_IFLD]) {
+		case CONSTANT_DIRECT:
+			P->W.data[DATA_CONST_IFLD+1] = Inter::Types::transpose_value(P->W.data[DATA_CONST_IFLD], P->W.data[DATA_CONST_IFLD+1], grid, grid_extent, E);
+			break;
+		case CONSTANT_INDIRECT_TEXT:
+			P->W.data[DATA_CONST_IFLD] = grid[P->W.data[DATA_CONST_IFLD]];
+			break;
+		case CONSTANT_SUM_LIST:
+		case CONSTANT_PRODUCT_LIST:
+		case CONSTANT_DIFFERENCE_LIST:
+		case CONSTANT_QUOTIENT_LIST:
+		case CONSTANT_INDIRECT_LIST:
+		case CONSTANT_STRUCT:
+			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+				P->W.data[i+1] = Inter::Types::transpose_value(P->W.data[i], P->W.data[i+1], grid, grid_extent, E);
+			}
+			break;
+	}
 }
 
 void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

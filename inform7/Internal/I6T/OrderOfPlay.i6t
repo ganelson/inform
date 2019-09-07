@@ -669,7 +669,7 @@ obituary" activity.
     }
     print "***";
     VM_Style(NORMAL_VMSTY);
-    print "^^"; #Ifndef NO_SCORING; print "^"; #Endif;
+    print "^^^";
     rfalse;
 ];
 
@@ -677,7 +677,7 @@ obituary" activity.
 
 @c
 [ PRINT_FINAL_SCORE_R;
-	#Iftrue USE_SCORING ~= 0; ANNOUNCE_SCORE_R(); #Endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
 	rfalse;
 ];
 

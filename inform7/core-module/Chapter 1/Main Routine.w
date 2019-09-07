@@ -387,6 +387,7 @@ with "Output.i6t".
 	COMPILATION_STEP(Phrases::Timed::TimedEventsTable, I"Phrases::Timed::TimedEventsTable")
 	COMPILATION_STEP(Phrases::Timed::TimedEventTimesTable, I"Phrases::Timed::TimedEventTimesTable")
 	COMPILATION_STEP(PL::Naming::compile_cap_short_name, I"PL::Naming::compile_cap_short_name")
+	COMPILATION_STEP(UseOptions::configure_template, I"UseOptions::configure_template")
 
 @<Convert inter to Inform 6@> =
 	if ((problem_count == 0) && (existing_story_file == FALSE)) {

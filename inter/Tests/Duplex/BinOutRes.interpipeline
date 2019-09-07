@@ -1,0 +1,9 @@
+read 0 <- *inA
+read 1 <- *inB
+generate 0 binary -> *binA
+generate 1 binary -> *binB
+wipe
+read 2 <- *binA
+read 3 <- *binB
+generate 2 text -> *outA
+generate 3 text -> *outB

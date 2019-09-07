@@ -14,6 +14,7 @@ void Inter::Pragma::define(void) {
 		I"pragma", I"pragmas"); /* pragmae? pragmata? */
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Pragma::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Pragma::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Pragma::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Pragma::write);
 }
@@ -66,6 +67,10 @@ inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *targe
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Pragma::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P->W.data[TEXT_PRAGMA_IFLD] = grid[P->W.data[TEXT_PRAGMA_IFLD]];
 }
 
 void Inter::Pragma::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

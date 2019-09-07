@@ -52,6 +52,11 @@ void Inter::Annotations::copy_set_to_symbol(inter_annotation_set *set, inter_sym
 			Inter::Symbols::annotate(S, *A);
 }
 
+void Inter::Annotations::transpose_set(inter_annotation_set *set, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	for (inter_annotation *A = set->anns; A; A = A->next)
+		Inter::Defn::transpose_annotation(A, grid, grid_extent, E);
+}
+
 void Inter::Annotations::write_set(OUTPUT_STREAM, inter_annotation_set *set, inter_tree_node *F) {
 	for (inter_annotation *A = set->anns; A; A = A->next)
 		Inter::Defn::write_annotation(OUT, F, *A);

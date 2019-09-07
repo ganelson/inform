@@ -15,7 +15,6 @@ inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
 }
 
 void Inter::Transmigration::move(inter_package *migrant, inter_package *destination, int tidy_origin) {
-	LOG("Move $5 to $5\n", migrant, destination);
 	inter_tree *origin_tree = Inter::Packages::tree(migrant);
 	inter_tree *destination_tree = Inter::Packages::tree(destination);
 	inter_package *origin = Inter::Packages::parent(migrant);
@@ -59,6 +58,21 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 		}
 	}
 }
+
+@<Log sockets in origin tree@> =
+	LOG("\n\n\nList of sockets in origin tree:\n");
+	inter_package *connectors = Site::connectors_package(origin_tree);
+	if (connectors) {
+		inter_symbols_table *T = Inter::Packages::scope(connectors);
+		if (T == NULL) internal_error("package with no symbols");
+		for (int i=0; i<T->size; i++) {
+			inter_symbol *symb = T->symbol_array[i];
+			if ((symb) && (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)) {
+				LOG("$3\n", symb);
+			}
+		}
+	}
+	LOG("---\n\n");
 
 @<Create these bookmarks@> =
 	deletion_point =

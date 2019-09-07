@@ -16,6 +16,7 @@ void Inter::Val::define(void) {
 	IC->max_level = 100000000;
 	IC->usage_permissions = INSIDE_CODE_PACKAGE;
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Val::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Val::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Val::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Val::write);
 }
@@ -64,6 +65,10 @@ inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	P->W.data[VAL2_VAL_IFLD] = Inter::Types::transpose_value(P->W.data[VAL1_VAL_IFLD], P->W.data[VAL2_VAL_IFLD], grid, grid_extent, E);
 }
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

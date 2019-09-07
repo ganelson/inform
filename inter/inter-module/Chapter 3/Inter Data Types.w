@@ -52,7 +52,22 @@ inter_data_type *Inter::Types::find_by_name(text_stream *name) {
 	return NULL;
 }
 
+inter_t Inter::Types::transpose_value(inter_t V1, inter_t V2, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	switch (V1) {
+		case DWORD_IVAL:
+		case PDWORD_IVAL:
+		case LITERAL_TEXT_IVAL:
+		case REAL_IVAL:
+		case GLOB_IVAL:
+		case DIVIDER_IVAL:
+			V2 = grid[V2];
+			break;
+	}
+	return V2;
+}
+
 inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind_symbol, inter_t V1, inter_t V2, inter_symbols_table *scope) {
+	if (suppress_type_errors) return NULL;
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);

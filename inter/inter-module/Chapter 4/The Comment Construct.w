@@ -15,6 +15,7 @@ void Inter::Comment::define(void) {
 		L" *",
 		I"comment", I"comments");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Comment::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Comment::transpose);
 	IC->min_level = 0;
 	IC->max_level = 100000000;
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
@@ -33,4 +34,8 @@ inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, int
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Comment::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	Inter::Node::attach_comment(P, grid[Inter::Node::get_comment(P)]);
 }

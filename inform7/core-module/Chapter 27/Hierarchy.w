@@ -58,6 +58,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
+@e TEMPLATE_CONFIGURATION_BITMAP_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -80,6 +81,7 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, MAX_WEAK_ID_HL, I"MAX_WEAK_ID", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, NO_VERB_VERB_DEFINED_HL, I"NO_VERB_VERB_DEFINED", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
+	HierarchyLocations::con(I, TEMPLATE_CONFIGURATION_BITMAP_HL, I"TEMPLATE_CONFIGURATION_BITMAP", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(I, basics);
 	HierarchyLocations::con(I, CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);
@@ -495,7 +497,6 @@ void Hierarchy::establish(inter_tree *I) {
 
 @h Interactive Fiction.
 
-@e DEFAULT_SCORING_SETTING_HL
 @e INITIAL_MAX_SCORE_HL
 @e NO_DIRECTIONS_HL
 @e SHOWSCENESTATUS_HL
@@ -514,7 +515,6 @@ void Hierarchy::establish(inter_tree *I) {
 	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
 
 	location_requirement synoptic_IF = HierarchyLocations::synoptic_submodule(I, interactive_fiction);
-	HierarchyLocations::con(I, DEFAULT_SCORING_SETTING_HL, I"DEFAULT_SCORING_SETTING", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(I, INITIAL_MAX_SCORE_HL, I"INITIAL_MAX_SCORE", Translation::same(), synoptic_IF);
 	HierarchyLocations::con(I, NO_DIRECTIONS_HL, I"No_Directions", Translation::same(), synoptic_IF);
 	HierarchyLocations::func(I, SHOWSCENESTATUS_HL, I"show_scene_status_fn", Translation::to(I"ShowSceneStatus"), synoptic_IF);

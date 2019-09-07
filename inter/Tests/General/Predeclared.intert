@@ -4,6 +4,7 @@ packagetype _linkage
 
 package main _plain
 	package resources _plain
+		kind K_unchecked unchecked
 		kind K_number int32
 		symbol public misc Banana
 		constant Peach K_number = Banana

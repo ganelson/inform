@@ -75,11 +75,11 @@
 
 	if: $VM G
 		set: $SRINTERB = inform7/Internal/I6T/sr-G.interb
+		set: $PIPELINE = inform7/Tests/test-pl-g.interpipeline
 	else
 		set: $SRINTERB = inform7/Internal/I6T/sr-Z.interb
+		set: $PIPELINE = inform7/Tests/test-pl-z.interpipeline
 	endif
-
-	set: $PIPELINE = inform7/Tests/test-pl.interpipeline
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.

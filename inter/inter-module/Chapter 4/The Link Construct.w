@@ -13,6 +13,7 @@ void Inter::Link::define(void) {
 		L"link (%i+) \"(%c*)\" \"(%c*)\" \"(%c*)\" \"(%c*)\"",
 		I"link", I"links");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Link::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Link::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Link::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Link::write);
 }
@@ -67,6 +68,11 @@ inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
+}
+
+void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++)
+		P->W.data[i] = grid[P->W.data[i]];
 }
 
 void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {

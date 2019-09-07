@@ -45,6 +45,7 @@ void CodeGen::Stage::make_stages(void) {
 		stages_made = TRUE;
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG, FALSE);
 
+		CodeGen::Stage::new(I"wipe", CodeGen::Stage::run_wipe_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-z", CodeGen::Stage::run_preparez_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-zd", CodeGen::Stage::run_preparezd_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-g", CodeGen::Stage::run_prepareg_stage, NO_STAGE_ARG, FALSE);
@@ -72,6 +73,11 @@ the pipeline:
 =
 int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 	return FALSE;
+}
+
+int CodeGen::Stage::run_wipe_stage(pipeline_step *step) {
+	Inter::Warehouse::wipe();
+	return TRUE;
 }
 
 int CodeGen::Stage::run_preparez_stage(pipeline_step *step) {
@@ -192,7 +198,6 @@ int CodeGen::Stage::run_read_stage(pipeline_step *step) {
 }
 
 int CodeGen::Stage::run_move_stage(pipeline_step *step) {
-	LOG("Arg is %S.\n", step->step_argument);
 	match_results mr = Regexp::create_mr();
 	inter_package *pack = NULL;
 	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
@@ -204,7 +209,7 @@ int CodeGen::Stage::run_move_stage(pipeline_step *step) {
 	}
 	Regexp::dispose_of(&mr);
 	if (pack == NULL) internal_error("not a package");
-	Inter::Transmigration::move(pack, Site::main_package(step->repository), TRUE);
+	Inter::Transmigration::move(pack, Site::main_package(step->repository), FALSE);
 
 	return TRUE;
 }
