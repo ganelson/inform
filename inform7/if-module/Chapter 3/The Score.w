@@ -34,6 +34,7 @@ score corresponding to successful completion and the highest rank.
 
 =
 void PL::Score::compile_max_score(void) {
+	int rt_made = FALSE;
 	table *t;
 	LOOP_OVER(t, table) {
 		if ((<rankings-table-name>(t->table_name_text)) &&
@@ -48,8 +49,16 @@ void PL::Score::compile_max_score(void) {
 				(NonlocalVariables::has_initial_value_set(max_score_VAR) == FALSE))
 				Assertions::PropertyKnowledge::initialise_global_variable(
 					max_score_VAR, ParseTree::get_evaluation(PN));
+			Hierarchy::make_available(Emit::tree(), iname);
+			UseOptions::ranking_table_given();
+			rt_made = TRUE;
 			break;
 		}
+	}
+	if (rt_made == FALSE) {
+		inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
+		Emit::named_generic_constant(iname, LITERAL_IVAL, 0);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
 	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
 	Hierarchy::make_available(Emit::tree(), iname);

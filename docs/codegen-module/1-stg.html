@@ -67,6 +67,7 @@ to the routine below.
             <span class="identifier">stages_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"stop"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 
+            <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"wipe"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_wipe_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"prepare-z"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_preparez_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"prepare-zd"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_preparezd_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"prepare-g"</span><span class="plain">, </span><span class="functiontext">CodeGen::Stage::run_prepareg_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -101,6 +102,11 @@ the pipeline:
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_stop_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_wipe_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
+        <span class="identifier">Inter::Warehouse::wipe</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_preparez_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
@@ -210,6 +216,12 @@ the pipeline:
                 <span class="identifier">LITERAL_IVAL</span><span class="plain">, 1,</span>
                 <span class="plain">(</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">Inter::Bookmarks::baseline</span><span class="plain">(</span><span class="identifier">in_veneer</span><span class="plain">) + 1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">P_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::create_with_unique_name</span><span class="plain">(</span><span class="identifier">Inter::Bookmarks::scope</span><span class="plain">(</span><span class="identifier">in_veneer</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"PLUGIN_FILES"</span><span class="plain">);</span>
+        <span class="identifier">Inter::Constant::new_numerical</span><span class="plain">(</span><span class="identifier">in_veneer</span><span class="plain">,</span>
+            <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">veneer_p</span><span class="plain">, </span><span class="identifier">P_name</span><span class="plain">),</span>
+            <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">veneer_p</span><span class="plain">, </span><span class="identifier">vi_unchecked</span><span class="plain">),</span>
+            <span class="identifier">LITERAL_IVAL</span><span class="plain">, 1,</span>
+            <span class="plain">(</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">Inter::Bookmarks::baseline</span><span class="plain">(</span><span class="identifier">in_veneer</span><span class="plain">) + 1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -221,7 +233,6 @@ the pipeline:
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Stage::run_move_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Arg is %S.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">);</span>
         <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;step_argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%d):(%c+)"</span><span class="plain">)) {</span>
@@ -233,7 +244,7 @@ the pipeline:
         <span class="plain">}</span>
         <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a package"</span><span class="plain">);</span>
-        <span class="identifier">Inter::Transmigration::move</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">, </span><span class="identifier">Site::main_package</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">Inter::Transmigration::move</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">, </span><span class="identifier">Site::main_package</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -242,6 +253,8 @@ the pipeline:
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Stage::run_stop_stage is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="endnote">The function CodeGen::Stage::run_wipe_stage is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="endnote">The function CodeGen::Stage::run_preparez_stage is used in <a href="#SP2">&#167;2</a>.</p>
 

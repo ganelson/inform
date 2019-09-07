@@ -82,11 +82,6 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	WRITE("Global reason_code = NULL;\n");
 	WRITE("Constant life = NULL;\n");
 	CodeGen::deselect(gen, saved);
-
-	saved = CodeGen::select(gen, stubs_at_eof_I7CGS);
-	OUT = CodeGen::current(gen);
-	WRITE("Stub LanguageIsVerb 3;\n");
-	CodeGen::deselect(gen, saved);
 	
 	return FALSE;
 }

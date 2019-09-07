@@ -45,6 +45,9 @@ int index_figure_thumbnails = 50;
 int undo_prevention = FALSE;
 int serial_comma = FALSE;
 int predictable_randomisation = FALSE;
+int command_line_echoing = FALSE;
+int American_dialect = FALSE;
+int room_description_level = 2;
 
 @ We can also meddle with the I6 memory settings which will be used to finish
 compiling the story file. We need this because we have no practical way to
@@ -168,7 +171,14 @@ there is no need to translate this to other languages.)
 	gn testing version |
 	undo prevention |
 	serial comma |
-	predictable randomisation
+	predictable randomisation |
+	command line echoing |
+	american dialect |
+	full-length room descriptions |
+	abbreviated room descriptions |
+	verbose room descriptions |
+	brief room descriptions |
+	superbrief room descriptions
 
 @ And these correspond to:
 
@@ -187,6 +197,13 @@ there is no need to translate this to other languages.)
 @d UNDO_PREVENTION_UO 12
 @d SERIAL_COMMA_UO 13
 @d PREDICTABLE_RANDOMISATION_UO 14
+@d COMMAND_LINE_ECHOING_UO 15
+@d AMERICAN_DIALECT_UO 16
+@d FULL_LENGTH_ROOM_DESCRIPTIONS_UO 17
+@d ABBREVIATED_ROOM_DESCRIPTIONS_UO 18
+@d VERBOSE_ROOM_DESCRIPTIONS_UO 19
+@d BRIEF_ROOM_DESCRIPTIONS_UO 20
+@d SUPERBRIEF_ROOM_DESCRIPTIONS_UO 21
 
 @ =
 int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
@@ -341,6 +358,13 @@ those which need immediate action.
 		case UNDO_PREVENTION_UO: undo_prevention = TRUE; break;
 		case SERIAL_COMMA_UO: serial_comma = TRUE; break;
 		case PREDICTABLE_RANDOMISATION_UO: predictable_randomisation = TRUE; break;
+		case COMMAND_LINE_ECHOING_UO: command_line_echoing = TRUE; break;
+		case AMERICAN_DIALECT_UO: American_dialect = TRUE; break;
+		case FULL_LENGTH_ROOM_DESCRIPTIONS_UO: room_description_level = 2; break;
+		case ABBREVIATED_ROOM_DESCRIPTIONS_UO: room_description_level = 3; break;
+		case VERBOSE_ROOM_DESCRIPTIONS_UO: room_description_level = 2; break;
+		case BRIEF_ROOM_DESCRIPTIONS_UO: room_description_level = 1; break;
+		case SUPERBRIEF_ROOM_DESCRIPTIONS_UO: room_description_level = 3; break;
 	}
 
 @ It's possible to configure the size of the memory allocation for the run-time
@@ -581,13 +605,36 @@ void UseOptions::TestUseOption_routine(void) {
 @
 
 =
+int no_verb_verb_exists = FALSE;
+int story_author_given = FALSE;
+int ranking_table_given = FALSE;
+void UseOptions::no_verb_verb(void) {
+	no_verb_verb_exists = TRUE;
+}
+void UseOptions::story_author_given(void) {
+	story_author_given = TRUE;
+}
+void UseOptions::ranking_table_given(void) {
+	ranking_table_given = TRUE;
+}
+
 void UseOptions::configure_template(void) {
-	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
 	int bitmap = 0;
-	if (scoring_option_set) bitmap += 1;
+	if (scoring_option_set == TRUE) bitmap += 1;
 	if (undo_prevention) bitmap += 2;
 	if (serial_comma) bitmap += 4;
 	if (predictable_randomisation) bitmap += 16;
+	if (command_line_echoing) bitmap += 32;
+	if (no_verb_verb_exists) bitmap += 64;
+	if (American_dialect) bitmap += 128;
+	if (story_author_given) bitmap += 256;
+	if (ranking_table_given) bitmap += 512;
+
+	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
 	Emit::named_numeric_constant(iname, (inter_t) bitmap);
+	Hierarchy::make_available(Emit::tree(), iname);
+
+	iname = Hierarchy::find(TEMPLATE_CONFIGURATION_LOOKMODE_HL);
+	Emit::named_numeric_constant(iname, (inter_t) room_description_level);
 	Hierarchy::make_available(Emit::tree(), iname);
 }

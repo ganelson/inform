@@ -18146,7 +18146,7 @@ Users normally teach these names to Inform by including one of the extensions "U
 
 Nothing restricts this usage to those extensions.
 
-[x] The template layer {PM_NoSuchTemplate} {PM_NoSuchPart} {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown}
+[x] The template layer {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown}
 
 ^^{extensions: Inform 6 template layer}
 ^^{Inform 6 inclusions: Inform 6 template layer}

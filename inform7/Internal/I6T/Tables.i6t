@@ -912,16 +912,16 @@ not to use these now dated conventions.
 
 @c
 [ PrintRank i j v;
-#ifdef RANKING_TABLE;
-	ANNOUNCE_SCORE_RM('B');
-	j = TableRows(RANKING_TABLE);
-	for (i=j:i>=1:i--)
-		if (score >= TableLookUpEntry(RANKING_TABLE, 1, i)) {
-		    v = TableLookUpEntry(RANKING_TABLE, 2, i);
-		    TEXT_TY_Say(v);
-		    ".";
-		}
-#endif;
+	if (TEMPLATE_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
+		ANNOUNCE_SCORE_RM('B');
+		j = TableRows(RANKING_TABLE);
+		for (i=j:i>=1:i--)
+			if (score >= TableLookUpEntry(RANKING_TABLE, 1, i)) {
+				v = TableLookUpEntry(RANKING_TABLE, 2, i);
+				TEXT_TY_Say(v);
+				".";
+			}
+	}
 	".";
 ];
 

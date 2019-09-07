@@ -390,9 +390,9 @@ compile a |Story_Author|.
 		VM_Style(NORMAL_VMSTY);
 		new_line;
 		TEXT_TY_Say(Headline);
-		#ifdef Story_Author;
-		print " by "; TEXT_TY_Say(Story_Author);
-		#endif; ! Story_Author
+		if (TEMPLATE_CONFIGURATION_BITMAP & STORY_AUTHOR_TCBIT) {
+			print " by "; TEXT_TY_Say(Story_Author);
+		}
 		new_line;
 		VM_Describe_Release();
 		print " / Inform 7 build ", (PrintI6Text) NI_BUILD_COUNT, " ";

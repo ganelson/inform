@@ -269,19 +269,7 @@ Global move_by;
 Global move_through;
 
 ! [12]
-#Ifdef DEFAULT_BRIEF_DESCRIPTIONS;
-Constant DEFAULT_LOOKMODE = 1; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
-#Endif;
-#Ifdef DEFAULT_VERBOSE_DESCRIPTIONS; 
-Constant DEFAULT_LOOKMODE = 2; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
-#Endif;
-#Ifdef DEFAULT_SUPERBRIEF_DESCRIPTIONS; 
-Constant DEFAULT_LOOKMODE = 3; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
-#Endif;
-#Ifndef DEFAULT_LOOKMODE;
-Constant DEFAULT_LOOKMODE = 2; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
-#Endif;
-Global lookmode = DEFAULT_LOOKMODE; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
+Global lookmode = TEMPLATE_CONFIGURATION_LOOKMODE; ! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF
 Global c_style; ! current list-writer style
 Global c_depth; ! current recursion depth
 Global c_iterator; ! current iteration function
@@ -530,15 +518,18 @@ point at which we can know for sure that no further grammar lines are
 needed.
 
 @c
-#IFDEF NO_VERB_VERB_DEFINED;
-[ UnknownVerb; verb_wordnum = 0; return 'no.verb'; ];
-[ PrintVerb v;
-	if (v == 'no.verb') { print "do something to"; rtrue; }
+[ UnknownVerb;
+	if (TEMPLATE_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+		verb_wordnum = 0; return 'no.verb';
+	}
 	rfalse;
 ];
-#Ifnot;
-[ UnknownVerb; rfalse; ]; [ PrintVerb v; rfalse; ];
-#ENDIF;
+[ PrintVerb v;
+	if (TEMPLATE_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
+		if (v == 'no.verb') { print "do something to"; rtrue; }
+	}
+	rfalse;
+];
 
 @p Deferred Propositions.
 Most conditions, such as "the score is 10", and descriptions, such as

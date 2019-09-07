@@ -289,6 +289,12 @@ void PL::Bibliographic::compile_constants(void) {
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
 		Hierarchy::make_available(Emit::tree(), iname);
+		UseOptions::story_author_given();
+	} else {
+		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
+		inter_t v1 = LITERAL_IVAL, v2 = 0;
+		Emit::named_generic_constant(iname, v1, v2);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
 
 @ Similarly (but numerically):

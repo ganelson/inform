@@ -67,6 +67,12 @@ set a use option applying only to itself.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_engineering_notation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_exact_parsing_option</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_figure_thumbnails</span><span class="plain"> = 50;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">undo_prevention</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">serial_comma</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">predictable_randomisation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">command_line_echoing</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">American_dialect</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = 2;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -239,7 +245,17 @@ there is no need to translate this to other languages.)
         <span class="identifier">engineering</span><span class="plain"> </span><span class="identifier">notation</span><span class="plain"> |</span>
         <span class="identifier">unabbreviated</span><span class="plain"> </span><span class="identifier">object</span><span class="plain"> </span><span class="identifier">names</span><span class="plain"> |</span>
         <span class="identifier">index</span><span class="plain"> </span><span class="identifier">figure</span><span class="plain"> </span><span class="identifier">thumbnails</span><span class="plain"> |</span>
-        <span class="identifier">gn</span><span class="plain"> </span><span class="identifier">testing</span><span class="plain"> </span><span class="identifier">version</span>
+        <span class="identifier">gn</span><span class="plain"> </span><span class="identifier">testing</span><span class="plain"> </span><span class="identifier">version</span><span class="plain"> |</span>
+        <span class="identifier">undo</span><span class="plain"> </span><span class="identifier">prevention</span><span class="plain"> |</span>
+        <span class="identifier">serial</span><span class="plain"> </span><span class="identifier">comma</span><span class="plain"> |</span>
+        <span class="identifier">predictable</span><span class="plain"> </span><span class="identifier">randomisation</span><span class="plain"> |</span>
+        <span class="identifier">command</span><span class="plain"> </span><span class="identifier">line</span><span class="plain"> </span><span class="identifier">echoing</span><span class="plain"> |</span>
+        <span class="identifier">american</span><span class="plain"> </span><span class="identifier">dialect</span><span class="plain"> |</span>
+        <span class="identifier">full</span><span class="plain">-</span><span class="identifier">length</span><span class="plain"> </span><span class="identifier">room</span><span class="plain"> </span><span class="identifier">descriptions</span><span class="plain"> |</span>
+        <span class="identifier">abbreviated</span><span class="plain"> </span><span class="identifier">room</span><span class="plain"> </span><span class="identifier">descriptions</span><span class="plain"> |</span>
+        <span class="identifier">verbose</span><span class="plain"> </span><span class="identifier">room</span><span class="plain"> </span><span class="identifier">descriptions</span><span class="plain"> |</span>
+        <span class="identifier">brief</span><span class="plain"> </span><span class="identifier">room</span><span class="plain"> </span><span class="identifier">descriptions</span><span class="plain"> |</span>
+        <span class="identifier">superbrief</span><span class="plain"> </span><span class="identifier">room</span><span class="plain"> </span><span class="identifier">descriptions</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -261,6 +277,16 @@ there is no need to translate this to other languages.)
     <span class="definitionkeyword">define</span> <span class="constant">UNABBREVIATED_OBJECT_NAMES_UO</span><span class="plain"> 9</span>
     <span class="definitionkeyword">define</span> <span class="constant">INDEX_FIGURE_THUMBNAILS_UO</span><span class="plain"> 10</span>
     <span class="definitionkeyword">define</span> <span class="constant">GN_TESTING_VERSION_UO</span><span class="plain"> 11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNDO_PREVENTION_UO</span><span class="plain"> 12</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SERIAL_COMMA_UO</span><span class="plain"> 13</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREDICTABLE_RANDOMISATION_UO</span><span class="plain"> 14</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMMAND_LINE_ECHOING_UO</span><span class="plain"> 15</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AMERICAN_DIALECT_UO</span><span class="plain"> 16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FULL_LENGTH_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 17</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ABBREVIATED_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 18</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VERBOSE_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 19</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SUPERBRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 21</span>
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
@@ -481,6 +507,16 @@ those which need immediate action.
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GN_TESTING_VERSION_UO</span><span class="plain">:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNDO_PREVENTION_UO</span><span class="plain">: </span><span class="identifier">undo_prevention</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SERIAL_COMMA_UO</span><span class="plain">: </span><span class="identifier">serial_comma</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREDICTABLE_RANDOMISATION_UO</span><span class="plain">: </span><span class="identifier">predictable_randomisation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMAND_LINE_ECHOING_UO</span><span class="plain">: </span><span class="identifier">command_line_echoing</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AMERICAN_DIALECT_UO</span><span class="plain">: </span><span class="identifier">American_dialect</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FULL_LENGTH_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 2; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ABBREVIATED_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 3; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERBOSE_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 2; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 1; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUPERBRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 3; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -832,6 +868,55 @@ one to test them, one to print them.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP21">&#167;21</a>.</p>
+
+<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_verb_verb_exists</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">story_author_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ranking_table_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::no_verb_verb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">no_verb_verb_exists</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::story_author_given</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">story_author_given</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::ranking_table_given</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">ranking_table_given</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::configure_template</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain"> = 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">undo_prevention</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serial_comma</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 4;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">predictable_randomisation</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 16;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">command_line_echoing</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 32;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_verb_verb_exists</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 64;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">American_dialect</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 128;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">story_author_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 256;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranking_table_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 512;</span>
+
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEMPLATE_CONFIGURATION_BITMAP_HL</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+
+        <span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEMPLATE_CONFIGURATION_LOOKMODE_HL</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">room_description_level</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function UseOptions::no_verb_verb appears nowhere else.</p>
+
+<p class="endnote">The function UseOptions::story_author_given appears nowhere else.</p>
+
+<p class="endnote">The function UseOptions::ranking_table_given appears nowhere else.</p>
+
+<p class="endnote">The function UseOptions::configure_template is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-i6i.html">Back to 'Inform 6 Inclusions'</a></li><li><a href="26-lt.html">Continue with 'List Together'</a></li></ul><hr class="tocbar">

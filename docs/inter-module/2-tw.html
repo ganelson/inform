@@ -301,6 +301,19 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= (</span><span class="constant">inter_t</span><span class="plain">) </span><span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">]</span><span class="element">.stored_ref</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inter::Warehouse::wipe</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_only_warehouse</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">the_only_warehouse</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_only_warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.irsrc</span><span class="plain"> == </span><span class="constant">STRING_IRSRC</span><span class="plain">) {</span>
+                <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">the_only_warehouse</span><span class="plain">-</span><span class="element">&gt;stored_resources</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.stored_text_stream</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">) {</span>
+                    <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"XYZZY-%d"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -344,6 +357,8 @@
 <p class="endnote">The function Inter::Warehouse::create_frame_list is used in 4/tkc (<a href="4-tkc.html#SP2">&#167;2</a>), 4/tic (<a href="4-tic.html#SP2">&#167;2</a>), 4/tpc4 (<a href="4-tpc4.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function Inter::Warehouse::set_ref appears nowhere else.</p>
+
+<p class="endnote">The function Inter::Warehouse::wipe appears nowhere else.</p>
 
 <p class="endnote">The structure warehouse_floor_space is accessed in 2/it, 2/bkm, 2/in, 2/st, 2/pck, 2/sym, 2/trn, 3/dfn, 3/iibf, 3/iitf, 3/vi, 3/idt, 4/tmc, 4/tvc, 4/tpc, 4/tlc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</p>
 

@@ -102,14 +102,14 @@ package main _plain
 				constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
 			package XB_arr _plain
 				symbol public misc XB
-				symbol public misc Computed_Constant_Value*
+				symbol public misc Computed_Constant_Value_0*
 				symbol external misc K_unchecked --> /main/other/K_unchecked
 				symbol public misc Computed_Constant_Value_1*
 				symbol public misc Computed_Constant_Value_2*
 				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant Computed_Constant_Value K_unchecked = 71
+				constant Computed_Constant_Value_0 K_unchecked = 71
 				constant Computed_Constant_Value_1 K_unchecked = 3
-				constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value, Computed_Constant_Value_1 }
+				constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
 				constant XB K_list_of_values = { Computed_Constant_Value_2 } __assimilated=1
 			package XC_arr _plain
 				symbol public misc XC

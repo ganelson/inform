@@ -543,7 +543,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 			#endif
 			LOG("Intervention at stage %d Segment %S Part %S\n", i6ti->intervention_stage, i6ti->segment_name, i6ti->part_name);
 			#ifdef PROBLEMS_MODULE
-			Problems::Issue::sentence_problem(_p_(PM_NoSuchTemplate),
+			Problems::Issue::sentence_problem(_p_(Untestable),
 				"no template file of that name was ever read in",
 				"so this attempt to intervene had no effect. "
 				"The template files have names like 'Output.i6t', 'Parser.i6t' "
@@ -560,7 +560,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 			#endif
 			LOG("Intervention at stage %d Segment %S Part %S\n", i6ti->intervention_stage, i6ti->segment_name, i6ti->part_name);
 			#ifdef PROBLEMS_MODULE
-			Problems::Issue::sentence_problem(_p_(PM_NoSuchPart),
+			Problems::Issue::sentence_problem(_p_(Untestable),
 				"that template file didn't have a part with that name",
 				"so this attempt to intervene had no effect. "
 				"Each template file is divided internally into a number of "

@@ -53,12 +53,12 @@ void Hierarchy::establish(inter_tree *I) {
 @e MIN_NEGATIVE_NUMBER_HL
 @e NI_BUILD_COUNT_HL
 @e RANKING_TABLE_HL
-@e PLUGIN_FILES_HL
 @e MAX_WEAK_ID_HL
 @e NO_VERB_VERB_DEFINED_HL
 @e NO_TEST_SCENARIOS_HL
 @e MEMORY_HEAP_SIZE_HL
 @e TEMPLATE_CONFIGURATION_BITMAP_HL
+@e TEMPLATE_CONFIGURATION_LOOKMODE_HL
 
 @e CCOUNT_QUOTATIONS_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
@@ -77,11 +77,11 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, MIN_NEGATIVE_NUMBER_HL, I"MIN_NEGATIVE_NUMBER", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, NI_BUILD_COUNT_HL, I"NI_BUILD_COUNT", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, RANKING_TABLE_HL, I"RANKING_TABLE", Translation::same(), generic_basics);
-	HierarchyLocations::con(I, PLUGIN_FILES_HL, I"PLUGIN_FILES", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MAX_WEAK_ID_HL, I"MAX_WEAK_ID", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, NO_VERB_VERB_DEFINED_HL, I"NO_VERB_VERB_DEFINED", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, MEMORY_HEAP_SIZE_HL, I"MEMORY_HEAP_SIZE", Translation::same(), generic_basics);
 	HierarchyLocations::con(I, TEMPLATE_CONFIGURATION_BITMAP_HL, I"TEMPLATE_CONFIGURATION_BITMAP", Translation::same(), generic_basics);
+	HierarchyLocations::con(I, TEMPLATE_CONFIGURATION_LOOKMODE_HL, I"TEMPLATE_CONFIGURATION_LOOKMODE", Translation::same(), generic_basics);
 
 	location_requirement synoptic_basics = HierarchyLocations::synoptic_submodule(I, basics);
 	HierarchyLocations::con(I, CCOUNT_QUOTATIONS_HL, I"CCOUNT_QUOTATIONS", Translation::same(), synoptic_basics);

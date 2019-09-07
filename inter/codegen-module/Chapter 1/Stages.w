@@ -187,6 +187,12 @@ int CodeGen::Stage::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 			LITERAL_IVAL, 1,
 			(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	}
+	inter_symbol *P_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"PLUGIN_FILES");
+	Inter::Constant::new_numerical(in_veneer,
+		Inter::SymbolsTables::id_from_symbol(I, veneer_p, P_name),
+		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
+		LITERAL_IVAL, 1,
+		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	return TRUE;
 }
 

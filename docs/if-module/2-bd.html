@@ -443,6 +443,12 @@ compiled to constants, used early on at run-time to print the banner.
             <span class="identifier">NonlocalVariables::seek_initial_value</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">story_author_VAR</span><span class="plain">);</span>
             <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
             <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+            <span class="identifier">UseOptions::story_author_given</span><span class="plain">();</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">STORY_AUTHOR_HL</span><span class="plain">);</span>
+            <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
+            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 

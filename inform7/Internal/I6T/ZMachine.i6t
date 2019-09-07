@@ -116,13 +116,11 @@ to document all of that.
 
 [ VM_ReadKeyboard  a_buffer a_table i;
     read a_buffer a_table;
-    #ifdef ECHO_COMMANDS;
-    print "** ";
-    for (i=2: i<=(a_buffer->1)+1: i++) print (char) a_buffer->i;
-    print "^";
-    #ifnot;
-    i=0;  ! suppress compiler warning
-    #endif;
+    if (TEMPLATE_CONFIGURATION_BITMAP & ECHO_COMMANDS_TCBIT) {
+	    print "** ";
+	    for (i=2: i<=(a_buffer->1)+1: i++) print (char) a_buffer->i;
+	    print "^";
+    }
 
     #Iftrue (#version_number == 6);
     @output_stream -1;

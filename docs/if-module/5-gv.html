@@ -209,6 +209,7 @@ verb".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NO_VERB_VERB_DEFINED_HL</span><span class="plain">);</span>
             <span class="identifier">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) 1);</span>
+            <span class="identifier">UseOptions::no_verb_verb</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">GRAMMAR_CONSTRUCTION</span><span class="plain">, </span><span class="string">"GV%d has verb %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 

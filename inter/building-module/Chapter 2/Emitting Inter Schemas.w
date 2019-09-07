@@ -394,9 +394,10 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			Produce::val_iname(I, K_value, Kinds::RunTime::I6_classname(K_object));
 			#endif
 			#ifndef CORE_MODULE
-			inter_symbol *plug = Inter::Connectors::find_plug(I, I"OBJECT_TY");
-			if (plug == NULL) plug = Inter::Connectors::plug(I, I"OBJECT_TY");
-			Produce::val_symbol(I, K_value, plug);
+			Produce::val_symbol(I, K_value, Site::veneer_symbol(I, OBJECT_VSYMB));
+	//		inter_symbol *plug = Inter::Connectors::find_plug(I, I"Object");
+//			if (plug == NULL) plug = Inter::Connectors::plug(I, I"Object");
+//			Produce::val_symbol(I, K_value, plug);
 			#endif
 		} else internal_error("objectloop without visible variable");
 	}

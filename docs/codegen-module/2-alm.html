@@ -331,6 +331,8 @@
                         <span class="identifier">Inter::SymbolsTables::id_from_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">Inter::Bookmarks::package</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">), </span><span class="identifier">unchecked_kind_symbol</span><span class="plain">),</span>
                         <span class="plain">(</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">Inter::Bookmarks::baseline</span><span class="plain">(</span><span class="identifier">IBM</span><span class="plain">) + 1, </span><span class="identifier">NULL</span><span class="plain">));</span>
                     <span class="functiontext">CodeGen::Assimilate::install_socket</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"absent"</span><span class="plain">))</span>
+                        <span class="functiontext">CodeGen::Assimilate::install_socket</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"P_absent"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERB_PLM</span><span class="plain">:</span>
@@ -882,11 +884,12 @@
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mcc_name</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">minor_const_count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ccs_count</span><span class="plain"> = 0;</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="functiontext">CodeGen::Assimilate::computed_constant_symbol</span><span class="plain">(</span><span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">NN</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NN</span><span class="plain">, </span><span class="string">"Computed_Constant_Value_%d"</span><span class="plain">, </span><span class="identifier">minor_const_count</span><span class="plain">++);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NN</span><span class="plain">, </span><span class="string">"Computed_Constant_Value_%d"</span><span class="plain">, </span><span class="identifier">ccs_count</span><span class="plain">++);</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">mcc_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_name_creating</span><span class="plain">(</span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">), </span><span class="identifier">NN</span><span class="plain">);</span>
+            <span class="identifier">Inter::Symbols::set_flag</span><span class="plain">(</span><span class="identifier">mcc_name</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">NN</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mcc_name</span><span class="plain">;</span>
         <span class="plain">}</span>

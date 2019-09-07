@@ -4,7 +4,7 @@ I've also read Standard Rules by Graham Nelson, which is 43240 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
 Problem__ PM_KindUnalterable
   >--> You wrote 'A person is a kind of room' (source text, line 2), but that
-    seems to contradict 'A person is a kind of thing' (the Standard Rules, line 475),
+    seems to contradict 'A person is a kind of thing' (the Standard Rules, line 464),
     as a room and a thing are incompatible. (If a room were a kind of a thing
     or vice versa there'd be no problem, but they aren't.)
-Inform 7 has finished: 45 centiseconds used.
+Inform 7 has finished: 40 centiseconds used.

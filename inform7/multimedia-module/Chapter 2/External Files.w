@@ -256,6 +256,7 @@ void PL::Files::arrays(void) {
 
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
 	Emit::named_numeric_constant(iname, (inter_t) (NUMBER_CREATED(external_file)));
+	Hierarchy::make_available(Emit::tree(), iname);
 
 	external_file *exf;
 	LOOP_OVER(exf, external_file) {
@@ -296,6 +297,7 @@ void PL::Files::arrays(void) {
 	LOOP_OVER(exf, external_file) Emit::array_iname_entry(exf->exf_iname);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h External Files Index.

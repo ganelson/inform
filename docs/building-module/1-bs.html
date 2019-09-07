@@ -96,6 +96,8 @@ itself during compilation.
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_HMD_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;hmds_indexed_by_id</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;veneer_symbols_indexed_by_name</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(512, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_VSYMBS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;veneer_symbols</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_VSYMBS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;veneer_symbol_names</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_VSYMBS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;veneer_symbol_translations</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">Veneer::create_indexes</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="functiontext">Packaging::initialise_state</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -160,7 +162,13 @@ itself during compilation.
     <span class="plain">}</span>
 
     <span class="identifier">inter_package</span><span class="plain"> *</span><span class="functiontext">Site::connectors_package</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">site</span><span class="element">.connectors_package</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) {</span>
+            <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">site</span><span class="element">.connectors_package</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+            <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Inter::Packages::by_url</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"/main/connectors"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">site</span><span class="element">.connectors_package</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -277,7 +285,7 @@ itself during compilation.
 
 <p class="endnote">The function Site::veneer_booknark is used in 1/tv (<a href="1-tv.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Site::veneer_symbol is used in 2/eis (<a href="2-eis.html#SP3_11">&#167;3.11</a>).</p>
+<p class="endnote">The function Site::veneer_symbol is used in 2/eis (<a href="2-eis.html#SP3_10_1">&#167;3.10.1</a>, <a href="2-eis.html#SP3_11">&#167;3.11</a>).</p>
 
 <p class="endnote">The function Site::get_cir is used in 3/pi (<a href="3-pi.html#SP3">&#167;3</a>).</p>
 

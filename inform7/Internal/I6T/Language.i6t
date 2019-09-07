@@ -138,11 +138,11 @@ Array LanguageNumbers table
         print (LanguageNumber) n/100, " hundred"; n = n%100; f = 1;
     }
     if (n == 0) rfalse;
-    #Ifdef DIALECT_US;
-    if (f == 1) print " ";
-    #Ifnot;
-    if (f == 1) print " and ";
-    #Endif;
+    if (TEMPLATE_CONFIGURATION_BITMAP & DIALECT_US_TCBIT) {
+	    if (f == 1) print " ";
+    } else {
+	    if (f == 1) print " and ";
+    }
     if ((n >= 20) && (n<100)) {
 		switch (n/10) {
 			2:  print "twenty";
@@ -270,4 +270,13 @@ adjective in a |name| property.
     if (w == 'long' or 'short' or 'normal' or 'brief' or 'full' or 'verbose')
         rtrue;
     rfalse;
+];
+
+@p Stubs.
+To reduce the need for conditional compilation, we provide these stub
+routines:
+
+@c
+[ LanguageIsVerb buffer parse verb_wordnum;
+	rfalse;
 ];

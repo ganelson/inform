@@ -6,7 +6,7 @@ Problem__ PM_VarKOVClash
 In Part SR2 - Variables and Rulebooks, Section SR2/3 - Used when ruling on
   accessibility in the extension Standard Rules by Graham Nelson:
   >--> You wrote 'The container in question is an object that varies' (the
-    Standard Rules, line 853): but the name supplied for this new variable is a
+    Standard Rules, line 842): but the name supplied for this new variable is a
     piece of text which is not available because it has a rival meaning
     already, as a result of definitions made elsewhere. (Sometimes these are
     indirect: for instance, defining a column in a table called 'question' can
@@ -17,7 +17,7 @@ In Part SR2 - Variables and Rulebooks, Section SR2/3 - Used when ruling on
     defined which might cause this clash.
 Problem__ PM_VarKOVClash
   >--> You wrote 'The supporter in question is an object that varies' (the
-    Standard Rules, line 854): again, the name supplied for this new variable
+    Standard Rules, line 843): again, the name supplied for this new variable
     is a piece of text which is not available because it has a rival meaning
     already.
-Inform 7 has finished: 47 centiseconds used.
+Inform 7 has finished: 41 centiseconds used.

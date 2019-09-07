@@ -62,6 +62,7 @@ score corresponding to successful completion and the highest rank.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Score::compile_max_score</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rt_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">table</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">rankings</span><span class="plain">-</span><span class="identifier">table</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">table_name_text</span><span class="plain">)) &amp;&amp;</span>
@@ -76,8 +77,16 @@ score corresponding to successful completion and the highest rank.
                     <span class="plain">(</span><span class="identifier">NonlocalVariables::has_initial_value_set</span><span class="plain">(</span><span class="identifier">max_score_VAR</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                     <span class="identifier">Assertions::PropertyKnowledge::initialise_global_variable</span><span class="plain">(</span>
                         <span class="identifier">max_score_VAR</span><span class="plain">, </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">));</span>
+                <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="identifier">UseOptions::ranking_table_given</span><span class="plain">();</span>
+                <span class="identifier">rt_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rt_made</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">RANKING_TABLE_HL</span><span class="plain">);</span>
+            <span class="identifier">Emit::named_generic_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INITIAL_MAX_SCORE_HL</span><span class="plain">);</span>
         <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>

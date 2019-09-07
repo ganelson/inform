@@ -109,7 +109,7 @@ where he is, the surprise will not be spoiled.
 	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
 
 	not_yet_in_play = true;
-	#ifdef I7_LOOKMODE; lookmode = I7_LOOKMODE; #endif;
+	lookmode = TEMPLATE_CONFIGURATION_LOOKMODE;
 	player = InitialSituation-->PLAYER_OBJECT_INIS;
 	the_time = InitialSituation-->START_TIME_INIS;
 	real_location = nothing;

@@ -1334,11 +1334,11 @@ to document all of that.
         glk_window_close(gg_quotewin, 0);
         gg_quotewin = 0;
     }
-    #ifdef ECHO_COMMANDS;
-    print "** ";
-    for (ix=WORDSIZE: ix<(a_buffer-->0)+WORDSIZE: ix++) print (char) a_buffer->ix;
-    print "^";
-    #endif; ! ECHO_COMMANDS
+    if (TEMPLATE_CONFIGURATION_BITMAP & ECHO_COMMANDS_TCBIT) {
+		print "** ";
+		for (ix=WORDSIZE: ix<(a_buffer-->0)+WORDSIZE: ix++) print (char) a_buffer->ix;
+		print "^";
+	}
 ];
 
 @p Buffer Functions.
