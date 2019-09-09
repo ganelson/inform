@@ -181,11 +181,11 @@ inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.prefor
 .PHONY: intertemplate
 intertemplate: inform7/Internal/Inter/template-zd.interb inform7/Internal/Inter/template-gd.interb
 
-inform7/Internal/Inter/template-zd.interb: inform7/Internal/Inter/template-zd.interpipeline inform7/Internal/I6T/*.i6t
-	$(INTERX) -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-zd.interb -variable *outt=inform7/Internal/Inter/template-zd.intert -pipeline-file inform7/Internal/Inter/template-zd.interpipeline
+inform7/Internal/Inter/template-zd.interb: inform7/Internal/Inter/template.interpipeline inform7/Internal/I6T/*.i6t
+	$(INTERX) -architecture zd -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-zd.interb -variable *outt=inform7/Internal/Inter/template-zd.intert -pipeline-file inform7/Internal/Inter/template.interpipeline
 
-inform7/Internal/Inter/template-gd.interb: inform7/Internal/Inter/template-gd.interpipeline inform7/Internal/I6T/*.i6t
-	$(INTERX) -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-gd.interb -variable *outt=inform7/Internal/Inter/template-gd.intert -pipeline-file inform7/Internal/Inter/template-gd.interpipeline
+inform7/Internal/Inter/template-gd.interb: inform7/Internal/Inter/template.interpipeline inform7/Internal/I6T/*.i6t
+	$(INTERX) -architecture gd -template  inform7/Internal/I6T -variable *out=inform7/Internal/Inter/template-gd.interb -variable *outt=inform7/Internal/Inter/template-gd.intert -pipeline-file inform7/Internal/Inter/template.interpipeline
 
 # -----------------------------------------------------------------------------
 # Target "makers"

@@ -60,6 +60,7 @@ int report_clock_time = FALSE;
 time_t right_now;
 text_stream *inter_processing_file = NULL;
 text_stream *inter_processing_pipeline = NULL;
+dictionary *pipeline_vars = NULL;
 pathname *path_to_inform7 = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
@@ -125,6 +126,7 @@ list is not exhaustive.
 @e TRANSIENT_CLSW
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
+@e PIPELINE_VARIABLE_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::declare_heading(
@@ -159,6 +161,8 @@ list is not exhaustive.
 		L"specify code-generation pipeline");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
 		L"specify code-generation pipeline from file X");
+	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
+		L"set pipeline variable X (in form name=value)");
 
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
@@ -395,20 +399,31 @@ with "Output.i6t".
 		LOG("Front end elapsed time: %dcs\n", ((int) (front_end - start)) / (CLOCKS_PER_SEC/100));
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
-			dictionary *D = CodeGen::Pipeline::basic_dictionary(
-				Filenames::get_leafname(filename_of_compiled_i6_code));
-			Str::copy(Dictionaries::create_text(D, I"*in"), I"*memory");
+			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+				if (VirtualMachines::is_16_bit())
+					CodeGen::Stage::set_architecture(I"zd");
+				else
+					CodeGen::Stage::set_architecture(I"gd");
+			} else {
+				if (VirtualMachines::is_16_bit())
+					CodeGen::Stage::set_architecture(I"z");
+				else
+					CodeGen::Stage::set_architecture(I"g");
+			}
+			@<Ensure inter pipeline variables dictionary@>;
+			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
+			Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), Filenames::get_leafname(filename_of_compiled_i6_code));
 			codegen_pipeline *SS = NULL;
 			if (inter_processing_file)
-				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), D);
+				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), pipeline_vars);
 			else if (Str::len(inter_processing_pipeline) > 0)
-				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, D);
+				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
 			else {
 				for (int area=0; area<NO_FS_AREAS; area++) {
 					pathname *P = pathname_of_inter_resources[area];
 					filename *F = Filenames::in_folder(P, I"default.interpipeline");
 					if (TextFiles::exists(F)) {
-						SS = CodeGen::Pipeline::parse_from_file(F, D);
+						SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
 						break;
 					}
 				}
@@ -422,6 +437,13 @@ with "Output.i6t".
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Compilation now complete");
+
+	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
+
+@<Ensure inter pipeline variables dictionary@> =
+	if (pipeline_vars == NULL)
+		pipeline_vars = CodeGen::Pipeline::basic_dictionary(
+			Filenames::get_leafname(filename_of_compiled_i6_code));
 
 @ Metadata.
 
@@ -490,6 +512,21 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
+		case PIPELINE_VARIABLE_CLSW: {
+			match_results mr = Regexp::create_mr();
+			if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+				if (Str::get_first_char(arg) != '*') {
+					Errors::fatal("-variable names must begin with '*'");
+				} else {
+					@<Ensure inter pipeline variables dictionary@>;
+					Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
+				}
+			} else {
+				Errors::fatal("-variable should take the form 'name=value'");
+			}
+			Regexp::dispose_of(&mr);
+			break;
+		}
 
 		/* Useful pathnames */
 		case PROJECT_CLSW: Locations::set_project(arg); break;

@@ -46,6 +46,7 @@ void CodeGen::Stage::make_stages(void) {
 		CodeGen::Stage::new(I"stop", CodeGen::Stage::run_stop_stage, NO_STAGE_ARG, FALSE);
 
 		CodeGen::Stage::new(I"wipe", CodeGen::Stage::run_wipe_stage, NO_STAGE_ARG, FALSE);
+		CodeGen::Stage::new(I"prepare", CodeGen::Stage::run_prepare_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-z", CodeGen::Stage::run_preparez_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-zd", CodeGen::Stage::run_preparezd_stage, NO_STAGE_ARG, FALSE);
 		CodeGen::Stage::new(I"prepare-g", CodeGen::Stage::run_prepareg_stage, NO_STAGE_ARG, FALSE);
@@ -78,6 +79,38 @@ int CodeGen::Stage::run_stop_stage(pipeline_step *step) {
 int CodeGen::Stage::run_wipe_stage(pipeline_step *step) {
 	Inter::Warehouse::wipe();
 	return TRUE;
+}
+
+@
+
+@e NO_ARCHITECTURE from 0
+@e Z_ARCHITECTURE
+@e ZD_ARCHITECTURE
+@e G_ARCHITECTURE
+@e GD_ARCHITECTURE
+
+=
+int current_architecture = NO_ARCHITECTURE;
+int CodeGen::Stage::set_architecture(text_stream *name) {
+	int setting = NO_ARCHITECTURE;
+	if (Str::eq_insensitive(name, I"z")) setting = Z_ARCHITECTURE;
+	if (Str::eq_insensitive(name, I"g")) setting = G_ARCHITECTURE;
+	if (Str::eq_insensitive(name, I"zd")) setting = ZD_ARCHITECTURE;
+	if (Str::eq_insensitive(name, I"gd")) setting = GD_ARCHITECTURE;
+	if (setting == NO_ARCHITECTURE) return FALSE;
+	current_architecture = setting;
+	return TRUE;
+}
+
+int CodeGen::Stage::run_prepare_stage(pipeline_step *step) {
+	switch (current_architecture) {
+		case NO_ARCHITECTURE: internal_error("no architecture set");
+		case Z_ARCHITECTURE: return CodeGen::Stage::run_prepare_stage_inner(step, TRUE, FALSE);
+		case ZD_ARCHITECTURE: return CodeGen::Stage::run_prepare_stage_inner(step, TRUE, TRUE);
+		case G_ARCHITECTURE: return CodeGen::Stage::run_prepare_stage_inner(step, FALSE, FALSE);
+		case GD_ARCHITECTURE: return CodeGen::Stage::run_prepare_stage_inner(step, FALSE, TRUE);
+	}
+	return FALSE;
 }
 
 int CodeGen::Stage::run_preparez_stage(pipeline_step *step) {

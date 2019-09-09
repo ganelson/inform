@@ -25,6 +25,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">DOMAIN_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEMPLATE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ARCHITECTURE_CLSW</span>
 </pre>
 
 <pre class="display">
@@ -63,6 +64,8 @@
             <span class="identifier">L</span><span class="string">"perform unit tests from file X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">DOMAIN_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"domain"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"specify folder to read/write inter files from/to"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"architecture"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"generate inter with architecture X"</span><span class="plain">);</span>
 
         <span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="functiontext">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"output.i6"</span><span class="plain">);</span>
 
@@ -111,6 +114,10 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_CLSW</span><span class="plain">: </span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEMPLATE_CLSW</span><span class="plain">: </span><span class="identifier">template_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_CLSW</span><span class="plain">: </span><span class="identifier">unit_test_file</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+                    <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no such -architecture"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

@@ -1,11 +1,13 @@
 read <- *in
-merge-template <- Output.i6t
+read 1 <- *template
+move 0 <- 1:/main/template
+merge-template <- none
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
-make-identifiers-unique
 resolve-external-symbols
 inspect-plugs
+make-identifiers-unique
 reconcile-verbs
-generate 0:/main/template inventory -> *log
+eliminate-redundant-labels
 generate inform6 -> *out

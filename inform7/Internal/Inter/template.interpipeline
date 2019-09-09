@@ -1,4 +1,4 @@
-prepare-zd
+prepare
 merge-template <- Output.i6t
 parse-linked-matter
 resolve-conditional-compilation

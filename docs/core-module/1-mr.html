@@ -89,6 +89,7 @@ Inform 6 code is complete.
     <span class="identifier">time_t</span><span class="plain"> </span><span class="identifier">right_now</span><span class="plain">;</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">inter_processing_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">inter_processing_pipeline</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inform7</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CoreMain::main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[]) {</span>
@@ -174,6 +175,7 @@ list is not exhaustive.
     <span class="definitionkeyword">enum</span> <span class="constant">TRANSIENT_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PIPELINE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PIPELINE_FILE_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PIPELINE_VARIABLE_CLSW</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register command-line arguments</span> <span class="cwebmacronumber">4.3</span>&gt; =
@@ -213,6 +215,8 @@ list is not exhaustive.
             <span class="identifier">L</span><span class="string">"specify code-generation pipeline"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-file"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"specify code-generation pipeline from file X"</span><span class="plain">);</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"variable"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"set pipeline variable X (in form name=value)"</span><span class="plain">);</span>
 
         <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"work within the Inform project X"</span><span class="plain">);</span>
@@ -573,20 +577,31 @@ list is not exhaustive.
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Front end elapsed time: %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">front_end</span><span class="plain"> - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
                 <span class="functiontext">CoreMain::go_to_log_phase</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Converting inter to Inform 6"</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                    <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span>
-                        <span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">));</span>
-                    <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*in"</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"*memory"</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
+                            <span class="identifier">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"zd"</span><span class="plain">);</span>
+                        <span class="reserved">else</span>
+                            <span class="identifier">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gd"</span><span class="plain">);</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
+                            <span class="identifier">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"z"</span><span class="plain">);</span>
+                        <span class="reserved">else</span>
+                            <span class="identifier">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"g"</span><span class="plain">);</span>
+                    <span class="plain">}</span>
+                    &lt;<span class="cwebmacro">Ensure inter pipeline variables dictionary</span> <span class="cwebmacronumber">4.15.1</span>&gt;<span class="plain">;</span>
+                    <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">pipeline_vars</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*in"</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"*memory"</span><span class="plain">);</span>
+                    <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">pipeline_vars</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*out"</span><span class="plain">), </span><span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">));</span>
                     <span class="identifier">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inter_processing_file</span><span class="plain">)</span>
-                        <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse_from_file</span><span class="plain">(</span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">inter_processing_file</span><span class="plain">), </span><span class="identifier">D</span><span class="plain">);</span>
+                        <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse_from_file</span><span class="plain">(</span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">inter_processing_file</span><span class="plain">), </span><span class="identifier">pipeline_vars</span><span class="plain">);</span>
                     <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">inter_processing_pipeline</span><span class="plain">) &gt; 0)</span>
-                        <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse</span><span class="plain">(</span><span class="identifier">inter_processing_pipeline</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+                        <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse</span><span class="plain">(</span><span class="identifier">inter_processing_pipeline</span><span class="plain">, </span><span class="identifier">pipeline_vars</span><span class="plain">);</span>
                     <span class="reserved">else</span><span class="plain"> {</span>
                         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">area</span><span class="plain">=0; </span><span class="identifier">area</span><span class="plain">&lt;</span><span class="constant">NO_FS_AREAS</span><span class="plain">; </span><span class="identifier">area</span><span class="plain">++) {</span>
                             <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">pathname_of_inter_resources</span><span class="plain">[</span><span class="identifier">area</span><span class="plain">];</span>
                             <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"default.interpipeline"</span><span class="plain">);</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) {</span>
-                                <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse_from_file</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+                                <span class="identifier">SS</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::parse_from_file</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">pipeline_vars</span><span class="plain">);</span>
                                 <span class="reserved">break</span><span class="plain">;</span>
                             <span class="plain">}</span>
                         <span class="plain">}</span>
@@ -600,11 +615,28 @@ list is not exhaustive.
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Back end elapsed time: %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">front_end</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100));</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) </span><span class="functiontext">CoreMain::go_to_log_phase</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Compilation now complete"</span><span class="plain">);</span>
+
+            <span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"output.i6"</span><span class="plain">);</span>
     </pre>
 
     <p class="inwebparagraph"></p>
 
     <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
+
+    <p class="inwebparagraph"><a id="SP4_15_1"></a><b>&#167;4.15.1.  </b><code class="display">
+    &lt;<span class="cwebmacrodefn">Ensure inter pipeline variables dictionary</span> <span class="cwebmacronumber">4.15.1</span>&gt; =
+    </code></p>
+
+
+    <pre class="displaydefn">
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pipeline_vars</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                <span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span>
+                    <span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">filename_of_compiled_i6_code</span><span class="plain">));</span>
+    </pre>
+
+    <p class="inwebparagraph"></p>
+
+    <p class="endnote">This code is used in <a href="#SP4_15">&#167;4.15</a>, <a href="#SP6">&#167;6</a>.</p>
 
     <p class="inwebparagraph"><a id="SP4_16"></a><b>&#167;4.16.  </b>Metadata.
     </p>
@@ -716,6 +748,21 @@ list is not exhaustive.
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">REQUIRE_PROBLEM_CLSW</span><span class="plain">: </span><span class="identifier">Problems::Fatal::require</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_CLSW</span><span class="plain">: </span><span class="identifier">inter_processing_pipeline</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">: </span><span class="identifier">inter_processing_file</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">: {</span>
+                    <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c+)=(%c+)"</span><span class="plain">)) {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) != </span><span class="character">'*'</span><span class="plain">) {</span>
+                            <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"-variable names must begin with '*'"</span><span class="plain">);</span>
+                        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                            &lt;<span class="cwebmacro">Ensure inter pipeline variables dictionary</span> <span class="cwebmacronumber">4.15.1</span>&gt;<span class="plain">;</span>
+                            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">pipeline_vars</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]), </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1]);</span>
+                        <span class="plain">}</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                        <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"-variable should take the form 'name=value'"</span><span class="plain">);</span>
+                    <span class="plain">}</span>
+                    <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
 
                 <span class="comment">Useful pathnames</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROJECT_CLSW</span><span class="plain">: </span><span class="functiontext">Locations::set_project</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>

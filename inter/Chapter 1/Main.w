@@ -13,6 +13,7 @@ this plan out.
 @e DOMAIN_CLSW
 @e TEMPLATE_CLSW
 @e TEST_CLSW
+@e ARCHITECTURE_CLSW
 
 =
 pathname *template_path = NULL;
@@ -50,6 +51,8 @@ int main(int argc, char **argv) {
 		L"perform unit tests from file X");
 	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
 		L"specify folder to read/write inter files from/to");
+	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
+		L"generate inter with architecture X");
 
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
 		
@@ -90,6 +93,10 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
 		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
 		case TEST_CLSW: unit_test_file = Filenames::from_text(arg); break;
+		case ARCHITECTURE_CLSW:
+			if (CodeGen::Stage::set_architecture(arg) == FALSE)
+				Errors::fatal("no such -architecture");
+			break;
 	}
 }
 

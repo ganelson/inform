@@ -1,8 +1,0 @@
-prepare-gd
-merge-template <- Output.i6t
-parse-linked-matter
-resolve-conditional-compilation
-assimilate
-resolve-external-symbols
-generate text -> *outt
-generate binary -> *out
