@@ -223,7 +223,7 @@ list is not exhaustive.
 	COMPILATION_STEP(Sentences::Headings::satisfy_dependencies, I"Sentences::Headings::satisfy_dependencies")
 
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Initialise language semantics");
-	if (problem_count == 0) Plugins::Manage::command(I"load");
+	if (problem_count == 0) Plugins::Manage::load_types();
 	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
 	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
 
@@ -401,14 +401,14 @@ with "Output.i6t".
 		if (existing_story_file == FALSE) {
 			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
 				if (VirtualMachines::is_16_bit())
-					CodeGen::Stage::set_architecture(I"zd");
+					CodeGen::Architecture::set(I"16d");
 				else
-					CodeGen::Stage::set_architecture(I"gd");
+					CodeGen::Architecture::set(I"32d");
 			} else {
 				if (VirtualMachines::is_16_bit())
-					CodeGen::Stage::set_architecture(I"z");
+					CodeGen::Architecture::set(I"16");
 				else
-					CodeGen::Stage::set_architecture(I"g");
+					CodeGen::Architecture::set(I"32");
 			}
 			@<Ensure inter pipeline variables dictionary@>;
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
@@ -431,8 +431,14 @@ with "Output.i6t".
 			if (SS == NULL)
 				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
+			linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
+			inter_library *stdr =
+				CodeGen::Libraries::find(I"standard_rules", NO_FS_AREAS, pathname_of_i6t_files);
+			if (stdr == NULL)
+				Problems::Fatal::issue("The Standard Rules inter library cannot be found");
+			ADD_TO_LINKED_LIST(stdr, inter_library, requirements_list);
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, NO_FS_AREAS, pathname_of_i6t_files);
+				SS, NO_FS_AREAS, pathname_of_i6t_files, requirements_list);
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}

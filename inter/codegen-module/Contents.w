@@ -7,6 +7,8 @@ Licence: Artistic License 2.0
 Chapter 1: Setting Up
 	Codegen Module
 	Stages
+	Architecture
+	Libraries
 	Pipelines
 
 Chapter 2: Miscellaneous Pipeline Stages

@@ -1,5 +1,5 @@
-prepare-zd
-merge-template <- Output.i6t
+prepare
+merge-template <- Main.i6t
 parse-linked-matter
 resolve-conditional-compilation
 assimilate

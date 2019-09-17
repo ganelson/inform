@@ -462,7 +462,7 @@ Document PM_BadObjectTranslation at doc450 "27.21" "27.21. Inform 6 objects and 
 Document PM_QuantityTranslatedAlready PM_NonQuantityTranslated PM_NonPropertyTranslated PM_TranslatedToNonIdentifier PM_TranslatedUnknownCategory PM_TranslatedTwice PM_TranslatesActionAlready PM_TranslatesNonAction at doc451 "27.22" "27.22. Inform 6 variables, properties, actions, and attributes".
 Document PM_GrammarTranslatedAlready at doc452 "27.23" "27.23. Inform 6 Understand tokens".
 Document PM_UnicodeOutOfRange PM_UnicodeNonLiteral PM_UnicodeAlready at doc454 "27.25" "27.25. Naming Unicode characters".
-Document PM_WhenDefiningUnknown PM_BeforeTheLibrary PM_BadI6Inclusion PM_NoSuchPart PM_NoSuchTemplate at doc455 "27.26" "27.26. The template layer".
+Document PM_WhenDefiningUnknown PM_BeforeTheLibrary PM_BadI6Inclusion at doc455 "27.26" "27.26. The template layer".
 Document PM_LabelNamespaceTooLong at doc458 "27.29" "27.29. Invocation labels, counters and storage".
 [...and so on...]
 
@@ -499,3 +499,4 @@ Use MAX_SYMBOLS of 20000.
 Use MAX_EXPRESSION_NODES of 256.
 Use MAX_LABELS of 200000.
 Use MAX_LOCAL_VARIABLES of 256.
+

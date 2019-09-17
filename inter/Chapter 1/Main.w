@@ -14,9 +14,13 @@ this plan out.
 @e TEMPLATE_CLSW
 @e TEST_CLSW
 @e ARCHITECTURE_CLSW
+@e ASSIMILATE_CLSW
 
 =
+pathname *path_to_inter = NULL;
+pathname *path_to_pipelines = NULL;
 pathname *template_path = NULL;
+int template_action = -1;
 pathname *domain_path = NULL;
 filename *output_textually = NULL;
 filename *output_binarily = NULL;
@@ -24,12 +28,17 @@ filename *unit_test_file = NULL;
 dictionary *pipeline_vars = NULL;
 filename *pipeline_as_file = NULL;
 text_stream *pipeline_as_text = NULL;
+linked_list *requirements_list = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
 	InterModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
+
+	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
+	path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
+	requirements_list = NEW_LINKED_LIST(text_stream);
 
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
@@ -53,10 +62,32 @@ int main(int argc, char **argv) {
 		L"specify folder to read/write inter files from/to");
 	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
 		L"generate inter with architecture X");
+	CommandLine::declare_switch(ASSIMILATE_CLSW, L"assimilate", 2,
+		L"assimilate I6T code into inter inside template X");
 
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
 		
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
+
+	if (template_action == ASSIMILATE_CLSW) {
+		text_stream *name = CodeGen::Architecture::leafname();
+		if (Str::len(name) == 0) Errors::fatal("no -architecture given");
+		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
+		TEMPORARY_TEXT(leafname);
+		WRITE_TO(leafname, "%S.interb", name);
+		filename *assim = Filenames::in_folder(template_path, leafname);
+		TEMPORARY_TEXT(fullname);
+		WRITE_TO(fullname, "%f", assim);
+		Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), fullname);
+		Str::clear(leafname);
+		Str::clear(fullname);
+		WRITE_TO(leafname, "%S.intert", name);
+		filename *assim_t = Filenames::in_folder(template_path, leafname);
+		WRITE_TO(fullname, "%f", assim_t);
+		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
+		DISCARD_TEXT(leafname);
+		DISCARD_TEXT(fullname);
+	}
 
 	Main::act();
 
@@ -92,9 +123,11 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		}
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
 		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
+		case ASSIMILATE_CLSW: template_path = Pathnames::from_text(arg);
+			pipeline_as_text = NULL; template_action = id; break;
 		case TEST_CLSW: unit_test_file = Filenames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
-			if (CodeGen::Stage::set_architecture(arg) == FALSE)
+			if (CodeGen::Architecture::set(arg) == FALSE)
 				Errors::fatal("no such -architecture");
 			break;
 	}
@@ -122,7 +155,7 @@ void Main::act(void) {
 		codegen_pipeline *SS;
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
-		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files);
+		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files, requirements_list);
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);
 	} else {

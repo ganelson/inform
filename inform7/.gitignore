@@ -39,3 +39,5 @@ Tests/Test Inter/_Inter_Binary/
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
 
+Internal/I6T/standard_rules/*.interb
+

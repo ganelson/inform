@@ -74,11 +74,9 @@
 	endif
 
 	if: $VM G
-		set: $SRINTERB = inform7/Internal/I6T/sr-G.interb
-		set: $TCACHE = inform7/Internal/Inter/template-gd.interb
+		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-32d.interb
 	else
-		set: $SRINTERB = inform7/Internal/I6T/sr-Z.interb
-		set: $TCACHE = inform7/Internal/Inter/template-zd.interb
+		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
 	endif
 	set: $PIPELINE = inform7/Tests/test.interpipeline
 	

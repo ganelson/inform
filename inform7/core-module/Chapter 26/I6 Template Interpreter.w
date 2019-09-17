@@ -380,7 +380,6 @@ safely between |{-open-index}| and |{-close-index}|.
 @<Act on I6T command and argument@> =
 	@<Act on the I6T lines command@>;
 	if (active == FALSE) continue;
-	if (Str::eq_wide_string(command, L"plugin")) { Plugins::Manage::command(argument); continue; }
 	if (Str::eq_wide_string(command, L"type")) { Kinds::Interpreter::despatch_kind_command(argument); continue; }
 	@<Act on the I6T counter command@>;
 	@<Act on an I6T indexing command@>;

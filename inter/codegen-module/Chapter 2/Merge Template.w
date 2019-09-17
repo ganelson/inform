@@ -38,7 +38,7 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::MergeTemplate::receive_raw),  &(CodeGen::MergeTemplate::receive_command), NULL);
 	kit.no_i6t_file_areas = N;
-	for (int i=0; i<N; i++) kit.i6t_files[i] = PP[i];
+	for (int i=0; i<N; i++) kit.i6t_files[i] = Pathnames::subfolder(PP[i], I"source");
 	int stage = EARLY_LINK_STAGE;
 	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
 	TEMPORARY_TEXT(T);

@@ -26,10 +26,14 @@
     <span class="definitionkeyword">enum</span> <span class="constant">TEMPLATE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ARCHITECTURE_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ASSIMILATE_CLSW</span>
 </pre>
 
 <pre class="display">
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inter</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_pipelines</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">template_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">template_action</span><span class="plain"> = -1;</span>
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">output_textually</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">output_binarily</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -37,12 +41,17 @@
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">pipeline_as_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">requirements_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         <span class="functiontext">Foundation::start</span><span class="plain">();</span>
         <span class="functiontext">InterModule::start</span><span class="plain">();</span>
         <span class="functiontext">BuildingModule::start</span><span class="plain">();</span>
         <span class="functiontext">CodegenModule::start</span><span class="plain">();</span>
+
+        <span class="identifier">path_to_inter</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INTER_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inter"</span><span class="plain">);</span>
+        <span class="identifier">path_to_pipelines</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inter</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Pipelines"</span><span class="plain">);</span>
+        <span class="identifier">requirements_list</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span>
             <span class="identifier">L</span><span class="string">"[[Purpose]]\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
@@ -66,10 +75,32 @@
             <span class="identifier">L</span><span class="string">"specify folder to read/write inter files from/to"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"architecture"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"generate inter with architecture X"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"assimilate"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"assimilate I6T code into inter inside template X"</span><span class="plain">);</span>
 
         <span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="functiontext">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"output.i6"</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::respond</span><span class="plain">, &amp;</span><span class="functiontext">Main::add_file</span><span class="plain">);</span>
+
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">template_action</span><span class="plain"> == </span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">) {</span>
+            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="functiontext">CodeGen::Architecture::leafname</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no -architecture given"</span><span class="plain">);</span>
+            <span class="identifier">pipeline_as_file</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">path_to_pipelines</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"assimilate.interpipeline"</span><span class="plain">);</span>
+            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%S.interb"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">assim</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">template_path</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">fullname</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">fullname</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">assim</span><span class="plain">);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">pipeline_vars</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*out"</span><span class="plain">), </span><span class="identifier">fullname</span><span class="plain">);</span>
+            <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">fullname</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%S.intert"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">assim_t</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">template_path</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">fullname</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">assim_t</span><span class="plain">);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">pipeline_vars</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*outt"</span><span class="plain">), </span><span class="identifier">fullname</span><span class="plain">);</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">fullname</span><span class="plain">);</span>
+        <span class="plain">}</span>
 
         <span class="functiontext">Main::act</span><span class="plain">();</span>
 
@@ -113,9 +144,11 @@
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_CLSW</span><span class="plain">: </span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEMPLATE_CLSW</span><span class="plain">: </span><span class="identifier">template_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">: </span><span class="identifier">template_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
+                <span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">template_action</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_CLSW</span><span class="plain">: </span><span class="identifier">unit_test_file</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::Stage::set_architecture</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::Architecture::set</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
                     <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no such -architecture"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -161,7 +194,7 @@
             <span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">SS</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pipeline_as_file</span><span class="plain">) </span><span class="identifier">SS</span><span class="plain"> = </span><span class="functiontext">CodeGen::Pipeline::parse_from_file</span><span class="plain">(</span><span class="identifier">pipeline_as_file</span><span class="plain">, </span><span class="identifier">pipeline_vars</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">SS</span><span class="plain"> = </span><span class="functiontext">CodeGen::Pipeline::parse</span><span class="plain">(</span><span class="identifier">pipeline_as_text</span><span class="plain">, </span><span class="identifier">pipeline_vars</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SS</span><span class="plain">) </span><span class="functiontext">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">domain_path</span><span class="plain">, </span><span class="identifier">SS</span><span class="plain">, </span><span class="identifier">NO_FS_AREAS</span><span class="plain">, </span><span class="identifier">pathname_of_i6t_files</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SS</span><span class="plain">) </span><span class="functiontext">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">domain_path</span><span class="plain">, </span><span class="identifier">SS</span><span class="plain">, </span><span class="identifier">NO_FS_AREAS</span><span class="plain">, </span><span class="identifier">pathname_of_i6t_files</span><span class="plain">, </span><span class="identifier">requirements_list</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unit_test_file</span><span class="plain">) {</span>
             <span class="functiontext">UnitTests::run</span><span class="plain">(</span><span class="identifier">unit_test_file</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>

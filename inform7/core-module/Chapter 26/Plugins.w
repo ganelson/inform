@@ -321,23 +321,19 @@ void Plugins::Manage::define_IFDEF_symbols(void) {
 }
 
 @ =
-void Plugins::Manage::command(text_stream *command) {
-	if (Str::eq_wide_string(command, L"load")) {
-		plugin *P;
-		LOOP_OVER(P, plugin)
-			if (P->now_plugged_in) {
-				void (*start)() = (void (*)()) P->starter_routine;
-				(*start)();
-				if (P->has_template_file) {
-					TEMPORARY_TEXT(segment_name);
-					WRITE_TO(segment_name, "Load-%s.i6t", P->has_template_file);
-					TemplateFiles::interpret(NULL, NULL, segment_name, -1);
-					DISCARD_TEXT(segment_name);
-				}
+void Plugins::Manage::load_types(void) {
+	plugin *P;
+	LOOP_OVER(P, plugin)
+		if (P->now_plugged_in) {
+			void (*start)() = (void (*)()) P->starter_routine;
+			(*start)();
+			if (P->has_template_file) {
+				TEMPORARY_TEXT(segment_name);
+				WRITE_TO(segment_name, "Load-%s.i6t", P->has_template_file);
+				TemplateFiles::interpret(NULL, NULL, segment_name, -1);
+				DISCARD_TEXT(segment_name);
 			}
-		return;
-	}
-	internal_error("No such plugin command");
+		}
 }
 
 int Plugins::Manage::plugged_in(plugin *P) {

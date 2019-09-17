@@ -1,6 +1,5 @@
 read <- *in
-read 1 <- *template
-move 0 <- 1:/main/template
+link
 merge-template <- none
 parse-linked-matter
 resolve-conditional-compilation

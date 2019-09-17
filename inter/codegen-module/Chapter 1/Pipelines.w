@@ -21,6 +21,7 @@ typedef struct pipeline_step {
 	int from_memory;
 	int repository_argument;
 	struct text_stream *text_out_file;
+	struct linked_list *requirements_list; /* of |inter_library| */
 	struct inter_tree *repository;
 	struct codegen_pipeline *pipeline;
 	MEMORY_MANAGEMENT
@@ -48,6 +49,7 @@ void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->the_PP = NULL;
 	step->repository = NULL;
 	step->pipeline = NULL;
+	step->requirements_list = NEW_LINKED_LIST(inter_library);
 }
 
 @ Here we write a textual description to a string, which is useful for
@@ -235,7 +237,8 @@ void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
 	S->memory_repository = I;
 }
 
-void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **PP) {
+void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **PP,
+	linked_list *requirements_list) {
 	if (S == NULL) return;
 	clock_t start = clock();
 
@@ -258,6 +261,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 			step->the_PP = PP;
 			step->repository = I;
 			step->pipeline = S;
+			step->requirements_list = requirements_list;
 
 			TEMPORARY_TEXT(STAGE_NAME);
 			WRITE_TO(STAGE_NAME, "inter step %d/%d (at %dcs): ", ++step_count, step_total,
