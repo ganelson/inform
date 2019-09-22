@@ -124,6 +124,17 @@ expression matching (see "RegExp.i6t").
 ];
 #ENDIF;
 
+@p DigitToValue.
+This takes a ZSCII or Unicode character code and returns its value as a digit,
+or returns $-1$ if it isn't a digit.
+
+@c
+[ DigitToValue c n;
+	n = c-'0';
+	if ((n<0) || (n>9)) return -1;
+	return n;
+];
+
 @p Testing.
 Not actually used: simply for testing the tables.
 

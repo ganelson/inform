@@ -80,9 +80,3 @@ good a point as any to parse them:
 	wn = original_wn;
 	return GPR_FAIL;
 ];
-
-@p Absolute value.
-It's convenient to have this around somewhere:
-
-@c
-[ NUMBER_TY_Abs x; if (x<0) return -x; return x; ];

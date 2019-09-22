@@ -503,7 +503,8 @@ integration: \
 		$(INTOOLSBUILTIN) \
 		$(INTERNAL)/Languages/English/Syntax.preform \
 		$(SRULESINPLACE) \
-		$(INTERNAL)/I6T/standard_rules/source/Main.i6t \
+		$(INTERNAL)/I6T/basic_inform/arch-32d.interb \
+		$(INTERNAL)/I6T/standard_rules/arch-32d.interb \
 		$(INTERNAL)/Inter/default.interpipeline \
 		$(INTERNALEXEMPLUM) \
 		$(IMAGESEXEMPLUM) \
@@ -579,7 +580,12 @@ endef
 
 # (d) Copying the I6 template into the app
 
-$(INTERNAL)/I6T/standard_rules/source/Main.i6t: inform7/Internal/I6T/*.i6t inform7/Internal/I6T/standard_rules/source/*.i6t inform7/Internal/I6T/standard_rules/library_metadata.txt
+$(INTERNAL)/I6T/standard_rules/arch-32d.interb: \
+	inform7/Internal/I6T/standard_rules/arch-32d.interb
+	$(call transfer-i6-template)
+
+$(INTERNAL)/I6T/basic_inform/arch-32d.interb: \
+	inform7/Internal/I6T/basic_inform/arch-32d.interb
 	$(call transfer-i6-template)
 
 # The I6 template could be tangled by inweb, but we don't do so: instead the

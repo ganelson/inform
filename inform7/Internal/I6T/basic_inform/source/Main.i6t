@@ -8,6 +8,35 @@ B/basict: Basic Inform Template.
 
 @c
 {-segment:Definitions.i6t}
+
+@p VM-Specific Code.
+These sections of code contain different definitions of the same routines,
+and in some cases the same arrays, to handle low-level functions in the
+virtual machine -- saving the game, performing UNDO, parsing typed text into
+dictionary word addresses and so on.
+
+@c
+#Ifdef TARGET_GLULX;
+{-segment:Glulx.i6t}
+#Endif;
+
+#Ifdef TARGET_ZCODE;
+{-segment:ZMachine.i6t}
+#Endif;
+
+@p More.
+
+@c
+{-segment:Mathematics.i6t}
+{-segment:FileIO.i6t}
+{-segment:Sort.i6t}
+{-segment:Tables.i6t}
+{-segment:MStack.i6t}
+{-segment:Rulebooks.i6t}
 {-segment:Flex.i6t}
 {-segment:BlockValues.i6t}
 {-segment:Text.i6t}
+{-segment:RegExp.i6t}
+{-segment:Lists.i6t}
+{-segment:Combinations.i6t}
+{-segment:RelationKind.i6t}
