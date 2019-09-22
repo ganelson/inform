@@ -397,7 +397,7 @@ compile a |Story_Author|.
 		VM_Describe_Release();
 		print " / Inform 7 build ", (PrintI6Text) NI_BUILD_COUNT, " ";
 		print "(I6/v"; inversion;
-		print " lib ", (PrintI6Text) LibRelease, ") ";
+		print ") ";
 		#Ifdef STRICT_MODE;
 		print "S";
 		#Endif; ! STRICT_MODE

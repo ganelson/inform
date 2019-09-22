@@ -115,7 +115,7 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		Str::copy(step, mr.exp[0]);
 	} else if (Regexp::match(&mr, step, L"(%C+?) (%c+)")) {
 		ST->package_argument = CodeGen::Pipeline::read_parameter(mr.exp[1], D, tfp);
-		if (ST->step_argument == NULL) return NULL;
+		if (ST->package_argument == NULL) return NULL;
 		Str::copy(step, mr.exp[0]);
 	}
 
@@ -356,8 +356,6 @@ inter_symbol *command_ptype_symbol = NULL;
 inter_symbol *property_ptype_symbol = NULL;
 inter_symbol *to_phrase_ptype_symbol = NULL;
 
-inter_package *template_package = NULL;
-
 void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 
 	code_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_code");
@@ -368,8 +366,6 @@ void CodeGen::Pipeline::prepare_to_run(inter_tree *I) {
 	command_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
 	property_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
 	to_phrase_ptype_symbol = Inter::SymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
-
-	template_package = Inter::Packages::by_url(I, I"/main/template");
 
 	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
 	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");

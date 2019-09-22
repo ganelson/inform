@@ -286,7 +286,9 @@ inter_package *Inter::Packages::by_url(inter_tree *I, text_stream *S) {
 				PUT_TO(C, c);
 			}
 		}
-		return Inter::Packages::by_name(at_P, C);
+		inter_package *pack = Inter::Packages::by_name(at_P, C);
+		DISCARD_TEXT(C);
+		return pack;
 	}
 	return Inter::Packages::by_name(I->root_package, S);
 }

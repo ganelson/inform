@@ -1,0 +1,13 @@
+B/basict: Basic Inform Template.
+
+@Purpose: Support for the language alone.
+
+@-------------------------------------------------------------------------------
+
+@p Contents.
+
+@c
+{-segment:Definitions.i6t}
+{-segment:Flex.i6t}
+{-segment:BlockValues.i6t}
+{-segment:Text.i6t}

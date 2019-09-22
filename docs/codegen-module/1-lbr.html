@@ -35,6 +35,11 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::URL</span><span class="plain">(</span><span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lib</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Libraries::read_metadata</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">,</span>
         <span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain"> = (</span><span class="reserved">inter_library</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
@@ -62,6 +67,8 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Libraries::new appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::Libraries::URL appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Libraries::read_metadata appears nowhere else.</p>
 
@@ -91,6 +98,10 @@
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Inter::Textual::read</span><span class="plain">(</span><span class="identifier">sidecar</span><span class="plain">, </span><span class="identifier">arch_file</span><span class="plain">);</span>
 
             <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">pack</span><span class="plain"> = </span><span class="identifier">Inter::Packages::by_url</span><span class="plain">(</span><span class="identifier">sidecar</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pack</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"sought attachment material at: %S in %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">, </span><span class="identifier">arch_file</span><span class="plain">);</span>
+                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to find attachment point package"</span><span class="plain">);</span>
+            <span class="plain">}</span>
             <span class="identifier">Inter::Transmigration::move</span><span class="plain">(</span><span class="identifier">pack</span><span class="plain">, </span><span class="identifier">Site::main_package</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>

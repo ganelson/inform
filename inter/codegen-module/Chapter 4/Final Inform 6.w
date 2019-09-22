@@ -12,6 +12,7 @@ void CodeGen::I6::create_target(void) {
 	METHOD_ADD(cgt, GENERAL_SEGMENT_MTID, CodeGen::I6::general_segment);
 	METHOD_ADD(cgt, TL_SEGMENT_MTID, CodeGen::I6::tl_segment);
 	METHOD_ADD(cgt, DEFAULT_SEGMENT_MTID, CodeGen::I6::default_segment);
+	METHOD_ADD(cgt, BASIC_CONSTANT_SEGMENT_MTID, CodeGen::I6::basic_constant_segment);
 	METHOD_ADD(cgt, CONSTANT_SEGMENT_MTID, CodeGen::I6::constant_segment);
 	METHOD_ADD(cgt, PROPERTY_SEGMENT_MTID, CodeGen::I6::property_segment);
 	METHOD_ADD(cgt, COMPILE_PRIMITIVE_MTID, CodeGen::I6::compile_primitive);
@@ -47,6 +48,16 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 @e compiler_versioning_matter_I7CGS
 @e attributes_at_eof_I7CGS
 @e very_early_matter_I7CGS
+@e constants_1_I7CGS
+@e constants_2_I7CGS
+@e constants_3_I7CGS
+@e constants_4_I7CGS
+@e constants_5_I7CGS
+@e constants_6_I7CGS
+@e constants_7_I7CGS
+@e constants_8_I7CGS
+@e constants_9_I7CGS
+@e constants_10_I7CGS
 @e early_matter_I7CGS
 @e text_literals_code_I7CGS
 @e summations_at_eof_I7CGS
@@ -64,6 +75,16 @@ int CodeGen::I6::begin_generation(code_generation_target *cgt, code_generation *
 	gen->segments[compiler_versioning_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[attributes_at_eof_I7CGS] = CodeGen::new_segment();
 	gen->segments[very_early_matter_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_1_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_2_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_3_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_4_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_5_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_6_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_7_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_8_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_9_I7CGS] = CodeGen::new_segment();
+	gen->segments[constants_10_I7CGS] = CodeGen::new_segment();
 	gen->segments[early_matter_I7CGS] = CodeGen::new_segment();
 	gen->segments[text_literals_code_I7CGS] = CodeGen::new_segment();
 	gen->segments[summations_at_eof_I7CGS] = CodeGen::new_segment();
@@ -112,8 +133,12 @@ int CodeGen::I6::general_segment(code_generation_target *cgt, code_generation *g
 int CodeGen::I6::default_segment(code_generation_target *cgt) {
 	return main_matter_I7CGS;
 }
-int CodeGen::I6::constant_segment(code_generation_target *cgt) {
+int CodeGen::I6::constant_segment(code_generation_target *cgt, code_generation *gen) {
 	return early_matter_I7CGS;
+}
+int CodeGen::I6::basic_constant_segment(code_generation_target *cgt, code_generation *gen, int depth) {
+	if (depth >= 10) depth = 10;
+	return constants_1_I7CGS + depth - 1;
 }
 int CodeGen::I6::property_segment(code_generation_target *cgt) {
 	return attributes_at_eof_I7CGS;

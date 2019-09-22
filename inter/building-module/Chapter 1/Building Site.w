@@ -15,6 +15,7 @@ itself during compilation.
 typedef struct building_site {
 	struct inter_package *main_package;
 	struct inter_package *connectors_package;
+	struct inter_package *assimilation_package;
 	struct inter_symbol *opcodes_set[MAX_BIPS];
 	struct inter_bookmark pragmas_bookmark;
 	struct inter_bookmark package_types_bookmark;
@@ -57,6 +58,7 @@ void Site::clear(inter_tree *I) {
 	building_site *B = &(I->site);
 	B->main_package = NULL;
 	B->connectors_package = NULL;
+	B->assimilation_package = NULL;
 	for (int i=0; i<MAX_BIPS; i++) B->opcodes_set[i] = NULL;
 	B->pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
@@ -163,6 +165,30 @@ void Site::set_main_package(inter_tree *I, inter_package *M) {
 void Site::set_connectors_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->site.connectors_package = M;
+}
+
+inter_package *Site::assimilation_package(inter_tree *I) {
+	if (I == NULL) internal_error("no tree"); 
+	return I->site.assimilation_package;
+}
+
+inter_package *Site::ensure_assimilation_package(inter_tree *I, inter_symbol *plain_ptype_symbol) {
+	if (I == NULL) internal_error("no tree"); 
+	if (I->site.assimilation_package == NULL) {
+		inter_package *main_package = Site::main_package(I);
+		inter_package *t_p = Inter::Packages::by_name(main_package, I"template");
+		if (t_p == NULL) {
+			inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_package);
+			t_p = CodeGen::Assimilate::new_package_named(&in_main, I"template", plain_ptype_symbol);
+		}
+		I->site.assimilation_package = t_p;
+	}
+	return I->site.assimilation_package;
+}
+
+void Site::set_assimilation_package(inter_tree *I, inter_package *M) {
+	if (I == NULL) internal_error("no tree"); 
+	I->site.assimilation_package = M;
 }
 
 dictionary *Site::modules_dictionary(inter_tree *I) {

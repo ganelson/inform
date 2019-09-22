@@ -7,3 +7,4 @@ inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 4: this stage shoul
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 5: this stage should not take a left arrow and a source
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 6: no such pipeline variable as '*this'
 
+inter: fatal error: pipeline could not be parsed

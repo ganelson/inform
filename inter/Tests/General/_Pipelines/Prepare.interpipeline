@@ -1,2 +1,2 @@
-prepare
+prepare <- template
 generate text -> *out

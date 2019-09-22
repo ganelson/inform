@@ -709,7 +709,7 @@ opcode, and so Glulx followed suit.
 		#Ifnot;
 		print (char) HDR_TERPVERSION->0;
 		#Endif;
-		print ") / ";
+		print ")^";
 	} else {
 		print "Interpreter ", HDR_TERPNUMBER->0, " Version ";
 		#Iftrue (#version_number == 6);
@@ -717,15 +717,9 @@ opcode, and so Glulx followed suit.
 		#Ifnot;
 		print (char) HDR_TERPVERSION->0;
 		#Endif;
-		print " / ";
+		print "^";
 	}
-	print "Library serial number ", (string) LibSerial, "^";
-	#Ifdef LanguageVersion;
-	print (string) LanguageVersion, "^";
-	#Endif; ! LanguageVersion
-	#ifdef ShowExtensionVersions;
 	ShowExtensionVersions();
-	#endif;
 	say__p = 1;
 ];
 

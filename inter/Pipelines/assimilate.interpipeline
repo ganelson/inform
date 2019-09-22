@@ -1,4 +1,4 @@
-prepare
+prepare <- *attach
 merge-template <- Main.i6t
 parse-linked-matter
 resolve-conditional-compilation

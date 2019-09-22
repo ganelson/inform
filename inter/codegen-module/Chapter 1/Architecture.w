@@ -38,7 +38,7 @@ text_stream *CodeGen::Architecture::leafname(void) {
 
 =
 void CodeGen::Architecture::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"prepare", CodeGen::Architecture::run_prepare_stage, NO_STAGE_ARG, FALSE);
+	CodeGen::Stage::new(I"prepare", CodeGen::Architecture::run_prepare_stage, GENERAL_STAGE_ARG, TRUE);
 }
 
 int CodeGen::Architecture::run_prepare_stage(pipeline_step *step) {
@@ -117,8 +117,11 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		LIST_ICON, 1, operands,
 		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	
-	inter_package *template_p = NULL;
-	Inter::Package::new_package_named(&in_main, I"template", FALSE, module_name, 1, NULL, &template_p);
+	if (Str::ne(step->step_argument, I"none")) {
+		inter_package *template_p = NULL;
+		Inter::Package::new_package_named(&in_main, step->step_argument, FALSE, module_name, 1, NULL, &template_p);
+		Site::set_assimilation_package(I, template_p);
+	}
 
 	inter_bookmark *in_veneer = Site::veneer_booknark(I);
 	inter_package *veneer_p = Inter::Packages::veneer(I);

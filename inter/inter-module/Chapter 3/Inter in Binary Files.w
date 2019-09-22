@@ -229,6 +229,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (BinaryFiles::read_int32(fh, &st) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		unsigned int sc;
 		if (BinaryFiles::read_int32(fh, &sc) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		unsigned int uniq;
+		if (BinaryFiles::read_int32(fh, &uniq) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 
 		unsigned int L;
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
@@ -249,6 +251,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		inter_symbol *S = Inter::SymbolsTables::symbol_from_name_creating_at_ID(res->stored_symbols_table, name, X);
 		Inter::Symbols::set_type(S, (int) st);
 		Inter::Symbols::set_scope(S, (int) sc);
+		if (uniq == 1) Inter::Symbols::set_flag(S, MAKE_NAME_UNIQUE);
 		if (Str::len(trans) > 0) Inter::Symbols::set_translate(S, trans);
 
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
@@ -287,6 +290,10 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				BinaryFiles::write_int32(fh, symb->symbol_ID);
 				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_type(symb));
 				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_scope(symb));
+				if (Inter::Symbols::get_flag(symb, MAKE_NAME_UNIQUE))
+					BinaryFiles::write_int32(fh, 1);
+				else
+					BinaryFiles::write_int32(fh, 0);
 				BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->symbol_name));
 				LOOP_THROUGH_TEXT(P, symb->symbol_name)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));

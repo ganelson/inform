@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 
 	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
 	path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
-	requirements_list = NEW_LINKED_LIST(text_stream);
+	requirements_list = NEW_LINKED_LIST(inter_library);
 
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
@@ -70,6 +70,8 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
 	if (template_action == ASSIMILATE_CLSW) {
+		inter_library *lib = CodeGen::Libraries::new(template_path);
+		text_stream *attach = CodeGen::Libraries::URL(lib);
 		text_stream *name = CodeGen::Architecture::leafname();
 		if (Str::len(name) == 0) Errors::fatal("no -architecture given");
 		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
@@ -87,6 +89,11 @@ int main(int argc, char **argv) {
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
 		DISCARD_TEXT(leafname);
 		DISCARD_TEXT(fullname);
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, attach, L"/main/(%c+)")) {
+			Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), mr.exp[0]);
+		}
+		Regexp::dispose_of(&mr);
 	}
 
 	Main::act();
@@ -156,6 +163,7 @@ void Main::act(void) {
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
 		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files, requirements_list);
+		else Errors::fatal("pipeline could not be parsed");
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);
 	} else {

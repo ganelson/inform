@@ -16,22 +16,9 @@ ICL mode.
 @p Identification.
 Both of the compiler and template layer, and of the story file to be produced.
 
-The "library" identifying texts are now a little anachronistic, since the
-template layer is not strictly speaking an I6 library in the same way as
-the original: but it is surely the spiritual successor to 6/11N, so we
-may as well mark it 6/12N.
-
-@c
-! This file was compiled by Inform 7: the build number and version of the
-! I6 template layer used are as follows.
-Constant LibSerial = "080126";
-Constant LibRelease = "6/12N";
-Constant LIBRARY_VERSION = 612;
-
 @p Constants.
 
 @c
-{-segment:Definitions.i6t}
 
 @p Global Variables.
 These are not the only global variables defined in the template layer:
@@ -574,9 +561,6 @@ handles the heap, and there is then one further section to support each of
 the kinds of value in question.
 
 @c
-{-segment:Flex.i6t}
-{-segment:BlockValues.i6t}
-{-segment:Text.i6t}
 {-segment:RegExp.i6t}
 {-segment:StoredAction.i6t}
 {-segment:Lists.i6t}

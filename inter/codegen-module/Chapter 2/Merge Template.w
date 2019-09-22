@@ -26,12 +26,7 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	else
 		Inter::Tree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
-	inter_package *template_package = Inter::Packages::by_url(I, I"/main/template");
-	if (template_package == NULL) {
-		inter_package *main_package = Site::main_package(I);
-		inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_package);
-		template_package = CodeGen::Assimilate::new_package_named(&in_main, I"template", plain_ptype_symbol);
-	}
+	inter_package *template_package = Site::ensure_assimilation_package(I, plain_ptype_symbol);	
 	
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);

@@ -22,7 +22,9 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
-	
+
+	Site::ensure_assimilation_package(I, plain_ptype_symbol);
+		
 	CodeGen::Assimilate::ensure(I, &verb_directive_reverse_symbol, I"VERB_DIRECTIVE_REVERSE");
 	CodeGen::Assimilate::ensure(I, &verb_directive_slash_symbol, I"VERB_DIRECTIVE_SLASH");
 	CodeGen::Assimilate::ensure(I, &verb_directive_divider_symbol, I"VERB_DIRECTIVE_DIVIDER");
@@ -60,6 +62,7 @@ void CodeGen::Assimilate::ensure(inter_tree *I, inter_symbol **S, text_stream *i
 =
 inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_stream *name, inter_tree_node *P) {
 	if (submodule_ptype_symbol) {
+		inter_package *template_package = Site::ensure_assimilation_package(I, plain_ptype_symbol);
 		inter_package *t_p = Inter::Packages::by_name(template_package, name);
 		if (t_p == NULL) {
 			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
@@ -801,6 +804,7 @@ void CodeGen::Assimilate::function_bodies(inter_tree *I) {
 			Produce::push_code_position(I, Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
 			value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 			inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
+			inter_package *template_package = Site::assimilation_package(I);
 			inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
 			EmitInterSchemas::emit(I, &VH, sch, NULL, TRUE, FALSE, scope1, scope2, NULL, NULL);
 			Produce::pop_code_position(I);

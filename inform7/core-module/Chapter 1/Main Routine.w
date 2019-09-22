@@ -432,6 +432,11 @@ with "Output.i6t".
 				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
+			inter_library *bi =
+				CodeGen::Libraries::find(I"basic_inform", NO_FS_AREAS, pathname_of_i6t_files);
+			if (bi == NULL)
+				Problems::Fatal::issue("The Basic Inform inter library cannot be found");
+			ADD_TO_LINKED_LIST(bi, inter_library, requirements_list);
 			inter_library *stdr =
 				CodeGen::Libraries::find(I"standard_rules", NO_FS_AREAS, pathname_of_i6t_files);
 			if (stdr == NULL)

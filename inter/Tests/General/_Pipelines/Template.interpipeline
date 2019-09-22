@@ -1,7 +1,0 @@
-prepare
-merge-template <- Main.i6t
-parse-linked-matter
-resolve-conditional-compilation
-assimilate
-resolve-external-symbols
-generate text -> *out

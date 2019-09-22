@@ -23,6 +23,11 @@ inter_library *CodeGen::Libraries::new(pathname *P) {
 	return lib;
 }
 
+text_stream *CodeGen::Libraries::URL(inter_library *lib) {
+	if (lib == NULL) return NULL;
+	return lib->attachment_point;
+}
+
 void CodeGen::Libraries::read_metadata(text_stream *text,
 	text_file_position *tfp, void *state) {
 	inter_library *lib = (inter_library *) state;
@@ -67,6 +72,10 @@ int CodeGen::Libraries::run_link_stage(pipeline_step *step) {
 		else Inter::Textual::read(sidecar, arch_file);		
 
 		inter_package *pack = Inter::Packages::by_url(sidecar, req->attachment_point);
+		if (pack == NULL) {
+			WRITE_TO(STDERR, "sought attachment material at: %S in %f\n", req->attachment_point, arch_file);
+			internal_error("unable to find attachment point package");
+		}
 		Inter::Transmigration::move(pack, Site::main_package(step->repository), FALSE);	
 	}
 	return TRUE;

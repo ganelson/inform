@@ -210,7 +210,14 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		case CONSTANT_SUM_LIST:
 		case CONSTANT_PRODUCT_LIST:
 		case CONSTANT_DIFFERENCE_LIST:
-		case CONSTANT_QUOTIENT_LIST:
+		case CONSTANT_QUOTIENT_LIST: {
+			int depth = CodeGen::CL::constant_depth(con_name, FALSE);
+			if (depth > 1) {
+				LOG("Con %S has depth %d\n", con_name->symbol_name, depth);
+				CodeGen::CL::constant_depth(con_name, TRUE);
+			}
+			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
+			text_stream *OUT = CodeGen::current(gen);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
@@ -226,19 +233,68 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 				if (bracket) WRITE(")");
 			}
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
+			CodeGen::deselect(gen, saved);
 			break;
+		}
 		case CONSTANT_DIRECT: {
-			inter_t val1 = P->W.data[DATA_CONST_IFLD];
-			inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
+			int depth = CodeGen::CL::constant_depth(con_name, FALSE);
+			if (depth > 1) LOG("Con %S has depth %d\n", con_name->symbol_name, depth);
+			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
+			text_stream *OUT = CodeGen::current(gen);
 			if (ifndef_me) WRITE("#ifndef %S;\n", CodeGen::CL::name(con_name));
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
+			inter_t val1 = P->W.data[DATA_CONST_IFLD];
+			inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
 			CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
 			if (ifndef_me) WRITE(" #endif;\n");
+			CodeGen::deselect(gen, saved);
 			break;
 		}
 		default: internal_error("ungenerated constant format");
 	}
+}
+
+int CodeGen::CL::constant_depth(inter_symbol *con, int trace) {
+	LOG_INDENT;
+	int d = CodeGen::CL::constant_depth_inner(con, trace);
+	if (trace) LOG("%S has depth %d\n", con->symbol_name, d);
+	LOG_OUTDENT;
+	return d;
+}
+int CodeGen::CL::constant_depth_inner(inter_symbol *con, int trace) {
+	if (con == NULL) return 1;
+	inter_tree_node *D = Inter::Symbols::definition(con);
+	if (D->W.data[ID_IFLD] != CONSTANT_IST) return 1;
+	if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
+		inter_t val1 = D->W.data[DATA_CONST_IFLD];
+		inter_t val2 = D->W.data[DATA_CONST_IFLD + 1];
+		if (val1 == ALIAS_IVAL) {
+			inter_symbol *alias =
+				Inter::SymbolsTables::symbol_from_data_pair_and_table(
+					val1, val2, Inter::Packages::scope(D->package));
+			return CodeGen::CL::constant_depth(alias, trace) + 1;
+		}
+		return 1;
+	}
+	if ((D->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) ||
+		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {
+		int total = 0;
+		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
+			inter_t val1 = D->W.data[i];
+			inter_t val2 = D->W.data[i + 1];
+			if (val1 == ALIAS_IVAL) {
+				inter_symbol *alias =
+					Inter::SymbolsTables::symbol_from_data_pair_and_table(
+						val1, val2, Inter::Packages::scope(D->package));
+				total += CodeGen::CL::constant_depth(alias, trace);
+			} else total++;
+		}
+		return 1 + total;
+	}
+	return 1;
 }
 
 typedef struct text_literal_holder {

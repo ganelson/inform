@@ -2136,11 +2136,7 @@ opcode, and so Glulx followed suit.
 	print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
 	".", ix & $FF, " / ";
 	@gestalt 0 0 ix;
-	print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
-	print "Library serial number ", (string) LibSerial, "^";
-	#Ifdef LanguageVersion;
-	print (string) LanguageVersion, "^";
-	#Endif; ! LanguageVersion
+	print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
 	ShowExtensionVersions();
 	say__p = 1;
 ];
