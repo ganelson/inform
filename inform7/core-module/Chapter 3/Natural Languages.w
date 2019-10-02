@@ -317,7 +317,7 @@ void NaturalLanguages::include_required(void) {
 			Feeds::feed_stream(TEMP);
 			DISCARD_TEXT(TEMP);
 		}
-	ParseTree::set_attachment_point_one_off(first_extension_inclusion);
+	ParseTree::set_attachment_point_one_off(language_extension_inclusion_point);
 	wording W = Feeds::end(id);
 	Sentences::break(W, NULL);
 	ParseTree::set_attachment_point_one_off(NULL);

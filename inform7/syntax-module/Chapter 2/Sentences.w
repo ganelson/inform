@@ -13,7 +13,8 @@ int no_sentences_read = 0;
 int sfsm_extension_position = 0; /* 0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after */
 node_type_t ssnt = 0;
 
-parse_node *first_extension_inclusion = NULL; /* presumably always the Standard Rules */
+parse_node *standard_rules_inclusion_point = NULL;
+parse_node *language_extension_inclusion_point = NULL; /* after the Standard Rules */
 
 @
 
@@ -451,7 +452,7 @@ source texts implicitly begin with an inclusion of the Standard Rules.)
 =
 <if-start-of-source-text> internal 0 {
 	int w1 = Wordings::first_wn(W);
-	if ((no_sentences_read == 2) &&
+	if ((no_sentences_read == 3) &&
 		((w1 == 0) || (compare_word(w1-1, PARBREAK_V)))) return TRUE;
 	return FALSE;
 }
@@ -488,7 +489,8 @@ stop -- it's needed before sentence-breaking has even taken place.
 		} else {
 			if (ssnt == INCLUDE_NT) {
 				new->down = <<rp>>;
-				if (first_extension_inclusion == NULL) first_extension_inclusion = new;
+				if (standard_rules_inclusion_point == NULL) standard_rules_inclusion_point = new;
+				else if (language_extension_inclusion_point == NULL) language_extension_inclusion_point = new;
 			}
 			ParseTree::set_type(new, ssnt);
 			#ifdef IF_MODULE

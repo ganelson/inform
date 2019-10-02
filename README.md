@@ -105,6 +105,7 @@ This repository is where development is done on the following executables:
 * inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/P-ui.html)
 * inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/P-ui.html)
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
+* basicinform - The Basic Inform extension, included in all Inform 7 works. - __version 1/191002__ - [&#9733;&nbsp;Web](docs/basicinform/index.html)
 * srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - [&#9733;&nbsp;Web](docs/srules/index.html)
 
 The inform7 subtree further contains these primary resources:

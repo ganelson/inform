@@ -129,6 +129,8 @@ text (because of being absent from the ZSCII character set).
             <span class="identifier">extension_identifier</span><span class="plain"> *</span><span class="identifier">eid</span><span class="plain"> = </span><span class="identifier">Extensions::Files::get_eid</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">eid</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Extensions::IDs::is_standard_rules</span><span class="plain">(</span><span class="identifier">eid</span><span class="plain">)))</span>
                 <span class="identifier">paraphrase</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"the Standard Rules"</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">eid</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Extensions::IDs::is_basic_inform</span><span class="plain">(</span><span class="identifier">eid</span><span class="plain">)))</span>
+                <span class="identifier">paraphrase</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"Basic Inform"</span><span class="plain">;</span>
             <span class="reserved">else</span>
                 <span class="identifier">paraphrase</span><span class="plain"> = </span><span class="identifier">file</span><span class="plain">;</span>
         <span class="plain">}</span>

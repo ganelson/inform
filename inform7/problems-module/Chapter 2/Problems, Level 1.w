@@ -90,6 +90,8 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 		extension_identifier *eid = Extensions::Files::get_eid(ef);
 		if ((eid) && (Extensions::IDs::is_standard_rules(eid)))
 			paraphrase = I"the Standard Rules";
+		else if ((eid) && (Extensions::IDs::is_basic_inform(eid)))
+			paraphrase = I"Basic Inform";
 		else
 			paraphrase = file;
 	}

@@ -19,7 +19,7 @@ Because of this mandatory insertion, one extension, the Standard Rules, is
 compulsorily included in every run. So there will certainly be at least two
 files of source text to be read, and quite possibly more.
 
-@d MANDATORY_INSERTED_TEXT L"Include the Standard Rules by Graham Nelson.\n\n"
+@d MANDATORY_INSERTED_TEXT L"Include Basic Inform by Graham Nelson. Include the Standard Rules by Graham Nelson.\n\n"
 
 =
 source_file *primary_source_file = NULL; /* first to be opened */

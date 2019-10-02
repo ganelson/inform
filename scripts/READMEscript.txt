@@ -118,6 +118,7 @@ This repository is where development is done on the following executables:
 @primaryd(inrtps, 'Web of InC', 'P-ui')
 @primaryd(inter, 'Web of InC', 'P-ui')
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
+@primary(basicinform, 'Web of Inform 7')
 @primary(srules, 'Web of Inform 7')
 
 The inform7 subtree further contains these primary resources:

@@ -195,6 +195,8 @@ which asks if a given EID is talking about them.
 =
 int an_eid_for_standard_rules_created = FALSE;
 extension_identifier an_eid_for_standard_rules;
+int an_eid_for_basic_inform_created = FALSE;
+extension_identifier an_eid_for_basic_inform;
 int Extensions::IDs::is_standard_rules(extension_identifier *eid) {
 	if (an_eid_for_standard_rules_created == FALSE) {
 		an_eid_for_standard_rules_created = TRUE;
@@ -202,6 +204,15 @@ int Extensions::IDs::is_standard_rules(extension_identifier *eid) {
 			I"Graham Nelson", I"Standard Rules", HYPOTHETICAL_EIDBC);
 	}
 	return Extensions::IDs::match(eid, &an_eid_for_standard_rules);
+}
+
+int Extensions::IDs::is_basic_inform(extension_identifier *eid) {
+	if (an_eid_for_basic_inform_created == FALSE) {
+		an_eid_for_basic_inform_created = TRUE;
+		Extensions::IDs::new(&an_eid_for_basic_inform,
+			I"Graham Nelson", I"Basic Inform", HYPOTHETICAL_EIDBC);
+	}
+	return Extensions::IDs::match(eid, &an_eid_for_basic_inform);
 }
 
 @h The database of known EIDs.

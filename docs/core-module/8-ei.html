@@ -265,6 +265,8 @@ which asks if a given EID is talking about them.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">an_eid_for_standard_rules_created</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">extension_identifier</span><span class="plain"> </span><span class="identifier">an_eid_for_standard_rules</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">an_eid_for_basic_inform_created</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">extension_identifier</span><span class="plain"> </span><span class="identifier">an_eid_for_basic_inform</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::IDs::is_standard_rules</span><span class="plain">(</span><span class="reserved">extension_identifier</span><span class="plain"> *</span><span class="identifier">eid</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an_eid_for_standard_rules_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">an_eid_for_standard_rules_created</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -273,11 +275,22 @@ which asks if a given EID is talking about them.
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Extensions::IDs::match</span><span class="plain">(</span><span class="identifier">eid</span><span class="plain">, &amp;</span><span class="identifier">an_eid_for_standard_rules</span><span class="plain">);</span>
     <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::IDs::is_basic_inform</span><span class="plain">(</span><span class="reserved">extension_identifier</span><span class="plain"> *</span><span class="identifier">eid</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an_eid_for_basic_inform_created</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">an_eid_for_basic_inform_created</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="functiontext">Extensions::IDs::new</span><span class="plain">(&amp;</span><span class="identifier">an_eid_for_basic_inform</span><span class="plain">,</span>
+                <span class="identifier">I</span><span class="string">"Graham Nelson"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Basic Inform"</span><span class="plain">, </span><span class="constant">HYPOTHETICAL_EIDBC</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Extensions::IDs::match</span><span class="plain">(</span><span class="identifier">eid</span><span class="plain">, &amp;</span><span class="identifier">an_eid_for_basic_inform</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Extensions::IDs::is_standard_rules is used in <a href="#SP6">&#167;6</a>, 8/ef (<a href="8-ef.html#SP8_1">&#167;8.1</a>), 8/ed2 (<a href="8-ed2.html#SP3_2_1">&#167;3.2.1</a>).</p>
+
+<p class="endnote">The function Extensions::IDs::is_basic_inform appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. The database of known EIDs. </b>We will need to be able to give rapid answers to questions like "is there
 an installed extension with this EID?" and "does any entry in the dictionary

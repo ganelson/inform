@@ -1,0 +1,562 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Booklet Title</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css"><style type="text/css">
+/* This is a CSS file for pages woven by the literate programming tool inweb */
+
+/* We'll start with syntax colouring, since everyone likes to toy with this: */
+
+.cwebmacrotext { color: #000000; font-weight: bold; } /* The name of a web macro */
+.functiontext  { color: #C00000; } /* When a C function is being defined */
+.string        { color: #408040; } /* A double-quoted C literal string */
+.character     { color: #204020; } /* A single-quoted C literal character */
+.constant     { color: #204020; } /* A named constant */
+.element    { color: #40407f; } /* A C structure element */
+.identifier    { color: #4040ff; } /* An identifier */
+.reserved      { color: #600000; } /* A reserved word */
+
+/* Comments at the end of lines are rendered like so: */
+
+.comment {
+	font: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	color: #404040;
+	font-style:italic;
+}
+
+/* The name of a web macro when being used: */
+
+.cwebmacro {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+}
+
+.cwebmacronumber {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 80%;
+	text-decoration: none;
+	color: #000000;
+}
+
+/* And when being defined: */
+
+.cwebmacrodefn {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+	font-weight:bold;
+}
+
+/* Now some generalities: */
+
+body {
+	background-color: #ffffff;
+	margin: 8px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	background-color: transparent;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Forms of paragraph: */
+
+p {
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	clear: both;
+}
+
+/* Where an inweb paragraph begins: */
+
+p.inwebparagraph {
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+
+/* If a web macro definition begins in its own paragraph, this is it: */
+
+p.macrodefinition {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+}
+
+/* The endnotes at the foot of code: "The function foo_bar is used in ..." */
+
+p.endnote {
+	font-size: 0.8em;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+	text-decoration:none;
+	color: #000000;
+}
+
+/* The Purpose slug: */
+
+p.purpose {
+	font-size: 1em;
+	font-style:italic;	
+	margin-left: 15px;
+}
+
+/* Blocks of code appear in these */
+
+pre {
+	font-family: Monaco, monospace;
+}
+
+pre.display {
+	padding: 3px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.displaydefn {
+	padding: 3px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.definitions {
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/* The following are for breadcrumbs of links: */
+
+ul, li {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.crumbs {
+	border:1px solid #dedede;
+	height:3.45em;
+}
+
+.crumbs li {
+	float:left;
+	line-height:2.3em;
+	padding-left:.75em;
+	color:#333;
+	font-size: 1.5em;
+}
+
+.crumbs li a {
+	display:block;
+	padding:0 15px 0 0;
+	background:url(crumbs.gif) no-repeat right center;
+}
+
+.crumbs li a:link, #crumbs li a:visited {
+	text-decoration:none;
+	color:#333;
+}
+
+.crumbs li a:hover, #crumbs li a:focus {
+	color:#dd2c0d;
+}
+
+/* This is for items in lists from inweb source: */
+
+ul.items {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.items li {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-left: 15px;
+}
+
+/* And this is for each section's table of contents: */
+
+ul.toc {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.toc li {
+	float:left;
+	margin-left: 15px;
+	color:#000;
+}
+
+ul.toc li a {
+	display:block;
+}
+
+ul.toc li a:link, ul.toc li a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+ul.toc li a:hover, ul.toc li a:focus {
+	color:#dd2c0d;
+}
+
+hr.tocbar {
+	clear: both;
+	margin-top:3px;
+	margin-bottom:3px;
+	color:#333;
+	border:0
+	background-color:#333;
+}
+
+/* This is for cross-reference links ("This code is used in ...") */
+
+p.endnote:link, p.endnote:visited, p.endnote:hover, p.endnote:focus {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:link, p.endnote a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:hover, p.endnote a:focus {
+	text-decoration:none;
+	color:#dd2c0d;
+}
+
+/* Now for the index page */
+
+p.heading {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	font-size: 20
+}
+p.chapter {
+	font-size: 14
+}
+p.tight {
+	font-size: 12
+}
+p.tightin {
+	padding-left: 25px;
+	font-size: 12
+}
+.chapterlist li {
+	padding-top: 8px;
+	padding-left: 16px;
+}
+.chaptertitle {
+	font-weight: bold;
+}
+.chapterlist .sectionlist li {
+	padding-left: 48px;
+}
+span.definitionkeyword {
+	color:#801010;
+	font-weight:bold;
+}
+span.extract {
+	font-size: 15px;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}
+
+
+
+</style>
+
+	</head>
+	<body>
+
+<!--Weave of 'S/prm' generated by 7-->
+<ul class="crumbs"><li><b>basicinform</b></li></ul><p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>Basic Inform is like a boot program for a computer that is
+starting up: at the beginning, the process is delicate, and the computer
+needs a fairly exact sequence of things to be done; halfway through, the
+essential work is done, but the system is still too primitive to be much
+use, so we begin to create convenient intermediate-level code sitting on
+top of the basics; so that, by the end, we have a fully flexible machine
+ready to go in any number of directions. In this commentary, we try to
+distinguish between what must be done (or else Inform will crash, or fail in
+some other way) and what is done simply as a design decision (to make the
+Inform language come out the way we want it). Quite interesting hybrid
+Informs could be built by making different decisions.
+</p>
+
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Title. </b>Every Inform 7 extension begins with a standard titling line and a
+rubric text, and this are no exception:
+</p>
+
+
+<pre class="display">
+    <span class="plain">Version [[Version Number]] of Basic Inform by Graham Nelson begins here.</span>
+
+    <span class="plain">"Basic Inform, included in every project, defines the basic framework</span>
+    <span class="plain">of Inform as a programming language."</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Starting up. </b>The first task is to create the verbs which enable us to do everything
+else. The first sentence should really read "The verb to mean means the
+built-in verb-means meaning", but that would be circular. So Inform
+starts with two verbs built in, "to mean" and "to be", with "to mean"
+having the built-in "verb-means meaning", and "to be" initially having
+no meaning at all. (We need "to be" because this enables us to conjugate
+forms of "mean" such as "X is meant by": note the "is".)
+</p>
+
+<p class="inwebparagraph">So we actually start by defining the copular verb "to be". This has a
+dozen special meanings, all valid only in assertion sentences, as well
+as its regular one.
+</p>
+
+
+<pre class="display">
+    <span class="plain">The verb to be means the built-in new-verb meaning.</span>
+    <span class="plain">The verb to be means the built-in new-plural meaning.</span>
+    <span class="plain">The verb to be means the built-in new-activity meaning.</span>
+    <span class="plain">The verb to be means the built-in new-action meaning.</span>
+    <span class="plain">The verb to be means the built-in new-adjective meaning.</span>
+    <span class="plain">The verb to be means the built-in new-either-or meaning.</span>
+    <span class="plain">The verb to be means the built-in defined-by-table meaning.</span>
+    <span class="plain">The verb to be means the built-in rule-listed-in meaning.</span>
+    <span class="plain">The verb to be means the built-in new-figure meaning.</span>
+    <span class="plain">The verb to be means the built-in new-sound meaning.</span>
+    <span class="plain">The verb to be means the built-in new-file meaning.</span>
+    <span class="plain">The verb to be means the built-in episode meaning.</span>
+    <span class="plain">The verb to be means the equality relation.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Unfinished business: the other meaning of "mean", and "imply" as
+a synonym for it.
+</p>
+
+
+<pre class="display">
+    <span class="plain">The verb to mean means the meaning relation.</span>
+
+    <span class="plain">The verb to imply means the built-in verb-means meaning.</span>
+    <span class="plain">The verb to imply means the meaning relation.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And now miscellaneous other important verbs. Note the plus notation, new
+in May 2016, which marks for a second object phrase, and is thus only
+useful for built-in meanings.
+</p>
+
+
+<pre class="display">
+    <span class="plain">The verb to be able to be means the built-in can-be meaning.</span>
+
+    <span class="plain">The verb to have means the possession relation.</span>
+
+    <span class="plain">The verb to specify means the built-in specifies-notation meaning.</span>
+
+    <span class="plain">The verb to relate means the built-in new-relation meaning.</span>
+    <span class="plain">The verb to relate means the universal relation.</span>
+
+    <span class="plain">The verb to substitute for means the built-in rule-substitutes-for meaning.</span>
+
+    <span class="plain">The verb to begin when means the built-in scene-begins-when meaning.</span>
+    <span class="plain">The verb to end when means the built-in scene-ends-when meaning.</span>
+    <span class="plain">The verb to end + when means the built-in scene-ends-when meaning.</span>
+
+    <span class="plain">The verb to do means the built-in rule-does-nothing meaning.</span>
+    <span class="plain">The verb to do + if means the built-in rule-does-nothing-if meaning.</span>
+    <span class="plain">The verb to do + when means the built-in rule-does-nothing-if meaning.</span>
+    <span class="plain">The verb to do + unless means the built-in rule-does-nothing-unless meaning.</span>
+
+    <span class="plain">The verb to translate into + as means the built-in translates-into-unicode meaning.</span>
+    <span class="plain">The verb to translate into + as means the built-in translates-into-i6 meaning.</span>
+    <span class="plain">The verb to translate into + as means the built-in translates-into-language meaning.</span>
+
+    <span class="plain">The verb to translate as means the built-in use-translates meaning.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Finally, the verbs used as imperatives: "Test ... with ...", for example.
+</p>
+
+
+<pre class="display">
+    <span class="plain">The verb to test + with in the imperative means the built-in test-with meaning.</span>
+    <span class="plain">The verb to understand + as in the imperative means the built-in understand-as meaning.</span>
+    <span class="plain">The verb to use in the imperative means the built-in use meaning.</span>
+    <span class="plain">The verb to release along with in the imperative means the built-in release-along-with meaning.</span>
+    <span class="plain">The verb to index map with in the imperative means the built-in index-map-with meaning.</span>
+    <span class="plain">The verb to include + in in the imperative means the built-in include-in meaning.</span>
+    <span class="plain">The verb to omit + from in the imperative means the built-in omit-from meaning.</span>
+    <span class="plain">The verb to document + at in the imperative means the built-in document-at meaning.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The following has no effect, and exists only to be a default non-value for
+"use option" variables, should anyone ever create them:
+</p>
+
+
+<pre class="display">
+    <span class="plain">Use ineffectual translates as (- ! Use ineffectual does nothing. -).</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We can now make definitions of miscellaneous options: none are used by default,
+but all translate into I6 constant definitions if used. (These are constants
+whose values are used in the I6 library or in the template layer, which is
+how they have effect.)
+</p>
+
+
+<pre class="display">
+    <span class="plain">Use American dialect translates as (- Constant DIALECT_US; -).</span>
+    <span class="plain">Use the serial comma translates as (- Constant SERIAL_COMMA; -).</span>
+    <span class="plain">Use full-length room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 2; #ENDIF; -).</span>
+    <span class="plain">Use abbreviated room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 3; #ENDIF; -).</span>
+    <span class="plain">Use memory economy translates as (- Constant MEMORY_ECONOMY; -).</span>
+    <span class="plain">Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).</span>
+    <span class="plain">Use scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 1; #ENDIF; -).</span>
+    <span class="plain">Use no scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 0; #ENDIF; -).</span>
+    <span class="plain">Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).</span>
+    <span class="plain">Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).</span>
+    <span class="plain">Use command line echoing translates as (- Constant ECHO_COMMANDS; -).</span>
+    <span class="plain">Use manual pronouns translates as (- Constant MANUAL_PRONOUNS; -).</span>
+    <span class="plain">Use undo prevention translates as (- Constant PREVENT_UNDO; -).</span>
+    <span class="plain">Use predictable randomisation translates as (- Constant FIX_RNG; -).</span>
+    <span class="plain">Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).</span>
+    <span class="plain">Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).</span>
+    <span class="plain">Use numbered rules translates as (- Constant NUMBERED_RULES; -).</span>
+    <span class="plain">Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).</span>
+    <span class="plain">Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).</span>
+    <span class="plain">Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).</span>
+    <span class="plain">Use VERBOSE room descriptions translates as (- Constant DEFAULT_VERBOSE_DESCRIPTIONS; -).</span>
+    <span class="plain">Use BRIEF room descriptions translates as (- Constant DEFAULT_BRIEF_DESCRIPTIONS; -).</span>
+    <span class="plain">Use SUPERBRIEF room descriptions translates as (- Constant DEFAULT_SUPERBRIEF_DESCRIPTIONS; -).</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>These, on the other hand, are settings used by the dynamic memory management
+code, which runs in I6 as part of the template layer. Each setting translates
+to an I6 constant declaration, with the value chosen being substituted for
+<code class="display"><span class="extract">{N}</span></code>.
+</p>
+
+<p class="inwebparagraph">The "dynamic memory allocation" defined here is slightly misleading, in
+that the memory is only actually consumed in the event that any of the
+kinds needing to use the heap is actually employed in the source
+text being compiled. (8192 bytes may not sound much these days, but in the
+tight array space of the Z-machine it's quite a large commitment, and we
+want to avoid it whenever possible.)
+</p>
+
+
+<pre class="display">
+    <span class="plain">Use dynamic memory allocation of at least 8192 translates as</span>
+        <span class="plain">(- Constant DynamicMemoryAllocation = {N}; -).</span>
+    <span class="plain">Use maximum text length of at least 1024 translates as</span>
+        <span class="plain">(- Constant TEXT_TY_BufferSize = {N}+3; -).</span>
+    <span class="plain">Use index figure thumbnails of at least 50 translates as</span>
+        <span class="plain">(- Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = {N}; -).</span>
+
+    <span class="plain">Use dynamic memory allocation of at least 8192.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Inform source text has a core of basic computational abilities, and then
+a whole set of additional elements to handle IF. We want all of those to be
+used, so:
+</p>
+
+
+<pre class="display">
+    <span class="plain">Use interactive fiction language elements. Use multimedia language elements.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Some Inform 7 projects are rather heavy-duty by the expectations of the
+Inform 6 compiler (which it uses as a code-generator): I6 was written fifteen
+years earlier, when computers were unimaginably smaller and slower. So many
+of its default memory settings need to be raised to higher maxima.
+</p>
+
+<p class="inwebparagraph">Note that the Z-machine cannot accommodate more than 255 verbs, so this is
+the highest <code class="display"><span class="extract">MAX_VERBS</span></code> setting we can safely make here.
+</p>
+
+<p class="inwebparagraph">The <code class="display"><span class="extract">MAX_LOCAL_VARIABLES</span></code> setting is suppressed by I7 if we're compiling
+to the Z-machine, because it's only legal in I6 when compiling to Glulx.
+</p>
+
+
+<pre class="display">
+    <span class="plain">Use ALLOC_CHUNK_SIZE of 32000.</span>
+    <span class="plain">Use MAX_ARRAYS of 10000.</span>
+    <span class="plain">Use MAX_CLASSES of 200.</span>
+    <span class="plain">Use MAX_VERBS of 255.</span>
+    <span class="plain">Use MAX_LABELS of 10000.</span>
+    <span class="plain">Use MAX_ZCODE_SIZE of 500000.</span>
+    <span class="plain">Use MAX_STATIC_DATA of 180000.</span>
+    <span class="plain">Use MAX_PROP_TABLE_SIZE of 200000.</span>
+    <span class="plain">Use MAX_INDIV_PROP_TABLE_SIZE of 20000.</span>
+    <span class="plain">Use MAX_STACK_SIZE of 65536.</span>
+    <span class="plain">Use MAX_SYMBOLS of 20000.</span>
+    <span class="plain">Use MAX_EXPRESSION_NODES of 256.</span>
+    <span class="plain">Use MAX_LABELS of 200000.</span>
+    <span class="plain">Use MAX_LOCAL_VARIABLES of 256.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Endpiece. </b>Every Inform 7 extension ends along these lines:
+</p>
+
+
+<pre class="display">
+    <span class="plain">Basic Inform ends here.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Sections.)</i></li><li><i>(This section ends Sections.)</i></li></ul><hr class="tocbar">
+<!--End of weave-->
+	</body>
+</html>
+

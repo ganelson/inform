@@ -263,16 +263,19 @@ versions:
 # this if need be; "make forcesrules" updates it regardless.
 
 SRULES = inform7/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+BINFORM = inform7/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7x
 
 .PHONY: srules
 srules: $(SRULES)
 
-$(SRULES): srules/Contents.w srules/Sections/*.w
+$(SRULES): srules/Contents.w srules/Sections/*.w basicinform/Contents.w basicinform/Sections/*.w
 	$(INWEBX) srules -tangle-to $(SRULES)
+	$(INWEBX) basicinform -tangle-to $(BINFORM)
 
 .PHONY: forcesrules
 forcesrules:
 	$(INWEBX) srules -tangle-to $(SRULES)
+	$(INWEBX) basicinform -tangle-to $(BINFORM)
 
 # -----------------------------------------------------------------------------
 # Target "tools"
@@ -413,6 +416,7 @@ pages:
 	$(INWEBX) inter/codegen-module -weave-docs -weave-into docs/codegen-module
 	$(INWEBX) inter/building-module -weave-docs -weave-into docs/building-module
 	$(INWEBX) srules -weave-docs -weave-into docs/srules
+	$(INWEBX) basicinform -weave-docs -weave-into docs/basicinform
 
 # -----------------------------------------------------------------------------
 # Target "clean"
@@ -491,6 +495,7 @@ INTOOLSBUILTIN = \
 	$(BUILTINCOMPS)/$(INTESTNAME)
 
 SRULESINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+BINFORMINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Basic\ Inform.i7x
 INTERNALEXEMPLUM = $(INTERNAL)/Miscellany/Cover.jpg
 INTERNALEXEMPLUMFROM = inform7/Internal/Miscellany/Cover.jpg
 IMAGESEXEMPLUM = $(BUILTINHTML)/doc_images/help.png
@@ -503,6 +508,7 @@ integration: \
 		$(INTOOLSBUILTIN) \
 		$(INTERNAL)/Languages/English/Syntax.preform \
 		$(SRULESINPLACE) \
+		$(BINFORMINPLACE) \
 		$(INTERNAL)/I6T/basic_inform/arch-32d.interb \
 		$(INTERNAL)/I6T/standard_rules/arch-32d.interb \
 		$(INTERNAL)/Inter/default.interpipeline \
@@ -576,6 +582,14 @@ $(SRULESINPLACE): $(SRULES)
 define transfer-standard-rules
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	cp $(SRULES) $(SRULESINPLACE)
+endef
+
+$(BINFORMINPLACE): $(BINFORM)
+	$(call transfer-basic-inform)
+
+define transfer-basic-inform
+	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
+	cp $(BINFORM) $(BINFORMINPLACE)
 endef
 
 # (d) Copying the I6 template into the app
