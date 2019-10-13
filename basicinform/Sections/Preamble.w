@@ -75,10 +75,6 @@ The verb to relate means the universal relation.
 
 The verb to substitute for means the built-in rule-substitutes-for meaning.
 
-The verb to begin when means the built-in scene-begins-when meaning.
-The verb to end when means the built-in scene-ends-when meaning.
-The verb to end + when means the built-in scene-ends-when meaning.
-
 The verb to do means the built-in rule-does-nothing meaning.
 The verb to do + if means the built-in rule-does-nothing-if meaning.
 The verb to do + when means the built-in rule-does-nothing-if meaning.
@@ -93,11 +89,7 @@ The verb to translate as means the built-in use-translates meaning.
 @ Finally, the verbs used as imperatives: "Test ... with ...", for example.
 
 =
-The verb to test + with in the imperative means the built-in test-with meaning.
-The verb to understand + as in the imperative means the built-in understand-as meaning.
 The verb to use in the imperative means the built-in use meaning.
-The verb to release along with in the imperative means the built-in release-along-with meaning.
-The verb to index map with in the imperative means the built-in index-map-with meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
 The verb to document + at in the imperative means the built-in document-at meaning.
@@ -116,17 +108,10 @@ how they have effect.)
 =
 Use American dialect translates as (- Constant DIALECT_US; -).
 Use the serial comma translates as (- Constant SERIAL_COMMA; -).
-Use full-length room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 2; #ENDIF; -).
-Use abbreviated room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 3; #ENDIF; -).
 Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
-Use scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 1; #ENDIF; -).
-Use no scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 0; #ENDIF; -).
 Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
 Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
 Use command line echoing translates as (- Constant ECHO_COMMANDS; -).
-Use manual pronouns translates as (- Constant MANUAL_PRONOUNS; -).
-Use undo prevention translates as (- Constant PREVENT_UNDO; -).
 Use predictable randomisation translates as (- Constant FIX_RNG; -).
 Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
 Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
@@ -134,9 +119,6 @@ Use numbered rules translates as (- Constant NUMBERED_RULES; -).
 Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
 Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
 Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
-Use VERBOSE room descriptions translates as (- Constant DEFAULT_VERBOSE_DESCRIPTIONS; -).
-Use BRIEF room descriptions translates as (- Constant DEFAULT_BRIEF_DESCRIPTIONS; -).
-Use SUPERBRIEF room descriptions translates as (- Constant DEFAULT_SUPERBRIEF_DESCRIPTIONS; -).
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates
