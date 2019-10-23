@@ -70,6 +70,7 @@ typedef struct inference {
 	struct parse_node *inferred_property_value; /* and its value, if any */
 
 	struct inference *next; /* next in list of inferences on same subject */
+	MEMORY_MANAGEMENT
 } inference;
 
 @h Creation.
@@ -525,17 +526,27 @@ same property but with different values.
 @d CI_DIFFER_IN_COPY_ONLY 7
 @d CI_IDENTICAL 0
 
-@ There's a lot of crude conversion of pointers to integers here, but it doesn't
-much matter what ordering is used so long as a definite and unchanging ordering
-is used.
+@ Funny story: until 2019, this routine ran by using pointer subtraction when
+comparing, for example, the INFS references in the inferences, on the principle
+that the ordering doesn't really matter so long as it is definite and stable
+during a run. But in the late 2010s, desktop operating systems such as MacOS
+Mojave began to randomize the address space of all executables, to make it
+harder for attackers to exploit buffer overflow bugs. As a result, although
+the following routine continued to make definite orderings, they would be
+randomly different from one run to another. Inform's output remained
+functionally correct, but the generated I6 code would subtly differ from
+run to run. And so we instead now incur the cost of looking up allocation IDs,
+and indeed of storing those for inference structures.
+
+Pointer subtraction is, in any case, frowned on in all the best houses, so this
+was probably a good thing.
 
 =
 int World::Inferences::compare_inferences(inference *i1, inference *i2) {
-	pointer_sized_int c;
 	if (i1 == i2) return CI_IDENTICAL;
 	if (i1 == NULL) return CI_DIFFER_IN_EXISTENCE;
 	if (i2 == NULL) return -CI_DIFFER_IN_EXISTENCE;
-	c = i1->inference_type - i2->inference_type;
+	int c = i1->inference_type - i2->inference_type;
 	if (c > 0) return CI_DIFFER_IN_TYPE; if (c < 0) return -CI_DIFFER_IN_TYPE;
 	property *pr1 = i1->inferred_property;
 	property *pr2 = i2->inferred_property;
@@ -543,17 +554,17 @@ int World::Inferences::compare_inferences(inference *i1, inference *i2) {
 		(pr2) && (Properties::is_either_or(pr2)) &&
 		((pr1 == Properties::EitherOr::get_negation(pr2)) ||
 		 (pr2 == Properties::EitherOr::get_negation(pr1)))) pr2 = pr1;
-	c = ((pointer_sized_int) pr1) - ((pointer_sized_int) pr2);
+	c = World::Inferences::measure_property(pr1) - World::Inferences::measure_property(pr2);
 	if (c > 0) return CI_DIFFER_IN_PROPERTY; if (c < 0) return -CI_DIFFER_IN_PROPERTY;
-	c = ((pointer_sized_int) i1->infs_ref2) - ((pointer_sized_int) i2->infs_ref2);
+	c = World::Inferences::measure_infs(i1->infs_ref2) - World::Inferences::measure_infs(i2->infs_ref2);
 	if (c > 0) return CI_DIFFER_IN_INFS2; if (c < 0) return -CI_DIFFER_IN_INFS2;
-	c = ((pointer_sized_int) i1->infs_ref1) - ((pointer_sized_int) i2->infs_ref1);
+	c = World::Inferences::measure_infs(i1->infs_ref1) - World::Inferences::measure_infs(i2->infs_ref1);
 	if (c > 0) return CI_DIFFER_IN_INFS1; if (c < 0) return -CI_DIFFER_IN_INFS1;
-	c = ((pointer_sized_int) i1->spec_ref2) - ((pointer_sized_int) i2->spec_ref2);
+	c = World::Inferences::measure_pn(i1->spec_ref2) - World::Inferences::measure_pn(i2->spec_ref2);
 	if (c > 0) return CI_DIFFER_IN_INFS2; if (c < 0) return -CI_DIFFER_IN_INFS2;
-	c = ((pointer_sized_int) i1->spec_ref1) - ((pointer_sized_int) i2->spec_ref1);
+	c = World::Inferences::measure_pn(i1->spec_ref1) - World::Inferences::measure_pn(i2->spec_ref1);
 	if (c > 0) return CI_DIFFER_IN_INFS1; if (c < 0) return -CI_DIFFER_IN_INFS1;
-	c = ((pointer_sized_int) i1) - ((pointer_sized_int) i2);
+	c = World::Inferences::measure_inf(i1) - World::Inferences::measure_inf(i2);
 	parse_node *val1 = i1->inferred_property_value;
 	parse_node *val2 = i2->inferred_property_value;
 	if ((i1->inferred_property != i2->inferred_property) ||
@@ -563,6 +574,23 @@ int World::Inferences::compare_inferences(inference *i1, inference *i2) {
 	}
 	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
 	return CI_IDENTICAL;
+}
+
+int World::Inferences::measure_property(property *P) {
+	if (P) return 1 + P->allocation_id;
+	return 0;
+}
+int World::Inferences::measure_inf(inference *I) {
+	if (I) return 1 + I->allocation_id;
+	return 0;
+}
+int World::Inferences::measure_infs(inference_subject *IS) {
+	if (IS) return 1 + IS->allocation_id;
+	return 0;
+}
+int World::Inferences::measure_pn(parse_node *N) {
+	if (N) return 1 + N->allocation_id;
+	return 0;
 }
 
 int infs_diversion = TRUE;

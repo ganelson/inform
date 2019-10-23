@@ -12,7 +12,7 @@ We need to itemise the structures we'll want to allocate:
 @e bibliographic_datum_MT
 @e heading_MT
 @e phrase_MT
-@e inference_array_MT
+@e inference_MT
 @e property_MT
 @e property_permission_MT
 @e extension_file_MT
@@ -126,6 +126,7 @@ ALLOCATE_INDIVIDUALLY(heading)
 ALLOCATE_INDIVIDUALLY(i6_inclusion_matter)
 ALLOCATE_INDIVIDUALLY(i6_memory_setting)
 ALLOCATE_INDIVIDUALLY(implication)
+ALLOCATE_INDIVIDUALLY(inference)
 ALLOCATE_INDIVIDUALLY(inference_subject)
 ALLOCATE_INDIVIDUALLY(instance)
 ALLOCATE_INDIVIDUALLY(internal_test_case)
@@ -179,7 +180,6 @@ ALLOCATE_IN_ARRAYS(activity_list, 1000)
 ALLOCATE_IN_ARRAYS(application, 100)
 ALLOCATE_IN_ARRAYS(extension_identifier_database_entry, 100)
 ALLOCATE_IN_ARRAYS(i6_schema, 100)
-ALLOCATE_IN_ARRAYS(inference, 100)
 ALLOCATE_IN_ARRAYS(instance_usage, 200)
 ALLOCATE_IN_ARRAYS(invocation_options, 100)
 ALLOCATE_IN_ARRAYS(local_variable, 100)
