@@ -202,6 +202,7 @@ the template to add more if it wants to.
 @<Create a website@> =
 	Placeholders::set_to(I"TEMPLATE", req->details1, 0);
 	text_stream *t = Placeholders::read(I"TEMPLATE");
+	WRITE_TO(STDERR, "TEMPLATE is %S\n", t);
 	if (use_css_code_styles) {
 		filename *from = Templates::find_file_in_specific_template(t, I"style.css");
 		if (from) {
@@ -210,6 +211,7 @@ the template to add more if it wants to.
 		}
 	}
 	Requests::release_file_into_website(I"index.html", t, NULL);
+	WRITE_TO(STDERR, "TEMPLATE is %S\n", t);
 	request *req;
 	LOOP_OVER(req, request)
 		if (req->private == FALSE)
@@ -226,6 +228,7 @@ the template to add more if it wants to.
 					DISCARD_TEXT(source_text);
 					Requests::release_file_into_website(I"source.html", t, NULL); break;
 			}
+	WRITE_TO(STDERR, "TEMPLATE is %S\n", t);
 	@<Add further material as requested by the template@>;
 
 @ Most templates do not request extra files, but they have the option by

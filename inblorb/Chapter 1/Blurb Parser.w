@@ -285,9 +285,10 @@ copied in |text1|, |num1|, ..., accordingly.
 		case release_file_COMMAND: {
 			filename *to_release = Filenames::from_text(text1);
 			TEMPORARY_TEXT(leaf);
-			WRITE_TO(leaf, "%f", Filenames::get_leafname(to_release));
-			Requests::request_3(COPY_REQ, text1, leaf, I"--", FALSE); break;
+			WRITE_TO(leaf, "%S", Filenames::get_leafname(to_release));
+			Requests::request_3(COPY_REQ, text1, leaf, I"--", FALSE);
 			DISCARD_TEXT(leaf);
+			break;
 		}
 		case release_file_from_COMMAND:
 			Requests::request_2(RELEASE_FILE_REQ, text1, text2, FALSE); break;

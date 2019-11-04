@@ -120,12 +120,12 @@ this will describe a 1-byte auxiliary file as "1 bytes", the contingency seems
 remote.
 
 @<Write a description of the rough file size@> =
-	char *units = "&nbsp;bytes";
+	text_stream *units = I"&nbsp;bytes";
 	long int remainder = 0;
-	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = "KB"; }
-	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = "MB"; }
-	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = "GB"; }
-	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = "TB"; }
+	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = I"KB"; }
+	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = I"MB"; }
+	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = I"GB"; }
+	if (size > 1024L) { remainder = size % 1024L; size /= 1024L; units = I"TB"; }
 	WRITE(",&nbsp;%d", (int) size);
 	if ((size < 100L) && (remainder >= 103L)) WRITE(".%d", (int) (remainder/103L));
 	WRITE("%S", units);

@@ -346,6 +346,7 @@ the template to add more if it wants to.
 <pre class="displaydefn">
         <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, 0);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_css_code_styles</span><span class="plain">) {</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"style.css"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -354,6 +355,7 @@ the template to add more if it wants to.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"index.html"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;private</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
@@ -370,6 +372,7 @@ the template to add more if it wants to.
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">source_text</span><span class="plain">);</span>
                         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"source.html"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Add further material as requested by the template</span> <span class="cwebmacronumber">6.9.1</span>&gt;<span class="plain">;</span>
 </pre>
 

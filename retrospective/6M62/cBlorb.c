@@ -3268,9 +3268,10 @@ void set_placeholder_to_inner(char *var, char *text, int reservation, int extend
 	int L = cblorb_strlen(text) + 1;
 	if (extend) L += cblorb_strlen(wv->pl_contents);
 	if (L >= MAX_FILENAME_LENGTH) { error("placeholder text too long"); return; }
-
-	if (extend) strcat(wv->pl_contents, text);
-	else strcpy(wv->pl_contents, text);
+	if (wv->pl_contents != text) {
+		if (extend) strcat(wv->pl_contents, text);
+		else strcpy(wv->pl_contents, text);
+	}
 }
 
 #line 146 "cBlorb/Chapter 3/Placeholders.w"
