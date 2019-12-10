@@ -88,7 +88,7 @@ And now we need a simple setting and some actions to manipulate the deck with:
 		let total be R times 5;
 		decide on total.
 	
-The above phrase rounds a number to the nearest five, so that the player is not autistically able to count a large number of cards in the discard pile at a single glance.
+The above phrase rounds a number to the nearest five, because it seems unrealistic for the player to be able to count a large number of cards in the discard pile at a single glance.
 	
 This next bit is an optional borrowing from the Activities chapter: we want to prevent Inform printing things like "You can see a discard pile (closed) here.", since we don't want the player to think of the piles as containers, even though Inform thinks of them in those terms. 
 	
