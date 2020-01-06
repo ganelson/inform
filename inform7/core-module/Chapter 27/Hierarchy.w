@@ -65,6 +65,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
 @e BASIC_MODE_HL
+@e SUBMAIN_HL
 
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
@@ -102,6 +103,7 @@ void Hierarchy::establish(inter_tree *I) {
 	submodule_identity *basic_extras = Packaging::register_submodule(I"basic_extras");
 	location_requirement generic_basic_extras = HierarchyLocations::generic_submodule(I, basic_extras);
 	HierarchyLocations::con(I, BASIC_MODE_HL, I"BASIC_MODE", Translation::same(), generic_basic_extras);
+	HierarchyLocations::func(I, SUBMAIN_HL, I"Submain_fn", Translation::to(I"Submain"), generic_basic_extras);
 
 @h Modules.
 

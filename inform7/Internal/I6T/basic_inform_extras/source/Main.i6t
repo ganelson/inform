@@ -32,10 +32,28 @@ Rules are not to be used.
 ];
 [ Main;
 	#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;
+	VM_Initialise();
+	print "^";
+	INITIALISE_MEMORY_R();
+	SEED_RANDOM_NUMBER_GENERATOR_R();
 	ClearRTP();
 	FollowRulebook(STARTUP_RB);
-	print "Hi!^";
+	Submain();
 	FollowRulebook(SHUTDOWN_RB);
+];
+
+Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
+
+[ INITIALISE_MEMORY_R;
+	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
+	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
+
+	CreatePropertyOffsets();
+	HeapInitialise(); ! Create a completely unused memory allocation heap
+	StackFramingInitialise(); ! Create an empty stack
+	CreateDynamicRelations(); ! Create relation structures on the heap
+
+	rfalse;
 ];
 
 @p Veneer.

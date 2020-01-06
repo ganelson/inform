@@ -375,6 +375,9 @@ with "Output.i6t".
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
 	COMPILATION_STEP(Lists::compile, I"Lists::compile")
+	if (basic_mode) {
+		COMPILATION_STEP(Phrases::invoke_to_begin, I"Phrases::invoke_to_begin")
+	}
 	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
 	COMPILATION_STEP(Strings::compile_responses, I"Strings::compile_responses")
 	COMPILATION_STEP(Lists::check, I"Lists::check")

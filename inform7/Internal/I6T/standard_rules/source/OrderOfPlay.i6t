@@ -123,27 +123,6 @@ where he is, the surprise will not be spoiled.
 	rfalse;
 ];
 
-@p Seed Random Number Generator Rule.
-Unless a seed is provided by NI, and it won't be for released story files,
-the VM's interpreter is supposed to start up with a good seed in its random
-number generator: something usually derived from, say, the milliseconds part
-of the current time of day, which is unlikely to repeat or show any pattern
-in real-world use. However, early Z-machine interpreters often did this quite
-badly, starting with poor seed values which meant that the first few random
-numbers always had something in common (being fairly small in their range,
-for instance). To obviate this we extract and throw away 100 random numbers
-to get the generator going, shaking out more obvious early patterns, but
-that cannot really help much if the VM interpreter's RNG is badly written.
-"Anyone who considers arithmetical methods of producing random digits is,
-of course, in a state of sin" (von Neumann).
-
-@c
-[ SEED_RANDOM_NUMBER_GENERATOR_R i;
-	if (RNG_SEED_AT_START_OF_PLAY) VM_Seed_RNG(RNG_SEED_AT_START_OF_PLAY);
-	for (i=1: i<=100: i++) random(i);
-	rfalse;
-];
-
 @p Position Player In Model World Rule.
 This seems as good a place as any to write down the invariant we attempt
 to maintain for the player's position variables:

@@ -18,6 +18,7 @@ typedef struct ph_usage_data {
 	struct wording full_preamble; /* e.g. to identify nameless rules in the log */
 	struct constant_phrase *constant_phrase_holder; /* for named To... phrases */
 	int phrase_effect; /* see below: basically, how the phrase is invoked */
+	int to_begin; /* used in Basic mode only: this is to be the main phrase */
 	int timing_of_event; /* one of two values defined below; or a specific time */
 	struct use_as_event *uses_as_event;
 	struct wording explicit_name; /* if a named rule, this is its name */
@@ -187,6 +188,13 @@ preambles match:
 <now-phrase-preamble> ::=
 	to now ...
 
+@ In basic mode (only), the To phrase "to begin" acts as something like
+|main| in a C-like language, so we need to take note of where it's defined:
+
+=
+<begin-phrase-preamble> ::=
+	to begin
+
 @ Much later on, Inform returns to the definition. If the preamble matches
 either of the final two productions of <rule-preamble>, then we definitely
 have a rule rather than a phrase definition or a timed event; and in that
@@ -263,6 +271,7 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
 	phud.rule_preamble = EMPTY_WORDING;
 	phud.rule_parameter = EMPTY_WORDING;
 	phud.whenwhile = EMPTY_WORDING;
+	phud.to_begin = FALSE;
 	#ifdef IF_MODULE
 	phud.during_scene_spec = NULL;
 	#endif
@@ -286,6 +295,9 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
 				"become immediately true. (To give it wider abilities, "
 				"the idea is to create new relations.)");
 		}
+	}
+	if ((basic_mode) && (<begin-phrase-preamble>(W))) {
+		phud.to_begin = TRUE;
 	}
 
 @ When we parse a named phrase in coarse mode, we need to make sure that

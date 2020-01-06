@@ -237,7 +237,7 @@
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 
-	step: $INT `$INTOPTIONS $STORYFILE <$SCRIPT >$A 2>&1
+	step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
 	or: 'unable to run $INTNAME (do you need to make interpreters?)'
 
 	exists: $I
