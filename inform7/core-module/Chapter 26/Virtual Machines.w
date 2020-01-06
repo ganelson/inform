@@ -190,6 +190,9 @@ void VirtualMachines::emit_fundamental_constants(void) {
 
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		VirtualMachines::emit_fundamental_constant(DEBUG_HL, 1);
+	
+	if (basic_mode)
+		VirtualMachines::emit_fundamental_constant(BASIC_MODE_HL, 1);
 
 	if (table_of_VM_data[target_VM].VM_code == Z_VM) {
 		VirtualMachines::emit_fundamental_constant(TARGET_ZCODE_HL, 1);

@@ -366,11 +366,14 @@ void Activities::activity_var_creators(void) {
 
 	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_value);
+	int c = 0;
 	LOOP_OVER(av, activity) {
 		if (StackedVariables::owner_empty(av->owned_by_av)) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(StackedVariables::frame_creator(av->owned_by_av));
+		c++;
 	}
 	Emit::array_numeric_entry(0);
+	if (c == 0) Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }

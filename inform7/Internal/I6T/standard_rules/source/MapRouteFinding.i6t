@@ -1,0 +1,364 @@
+B/mrf: MapRouteFinding.
+ 
+@Purpose: Testing and changing the fundamental spatial relations.
+ 
+@-------------------------------------------------------------------------------
+
+@p Map Route-Finding.
+The general problem we have to solve here is: given $x, y\in R$, where $R$
+is the set of rooms and we write $x\sim y$ if there is a map connection from
+$x$ to $y$,
+(i) find the smallest $m$ such that there exist $x = r_1\sim r_2\sim ...\sim r_m = y\in R$,
+or determine that no such $m$ exists, and
+(ii) find $d$, the first direction to take from $x$ to lead to $r_2$, or
+set $d=0$ if no such path exists or if $m=1$ so that $x=y$.
+
+Thus a typical outcome might be either "a shortest path from the Town Square
+to the Hilltop takes 11 moves, starting by going northeast from the Town
+Square", or alternatively "there's no path from the Town Square to the
+Hilltop at all". Note that the length of the shortest path is unambiguous,
+but that there might be many alternative paths of this minimum length:
+we deliberately do not specify which path is chosen if so, and the two
+algorithms used below do not necessarily choose the same one.
+
+Route-finding is not an easy operation in computation terms: the various
+algorithms available have theoretical running times which are easy (if
+sobering) to compute, but which are not in practice typical of what will
+happen, because they are quite sensitive to the map in question. Are all
+the rooms laid out in a long line? Are there clusters of connected rooms
+like islands? Are there dense clumps of interconnecting rooms? Are there
+huge but possibly time-saving loops? And so on. Overhead is also
+important. We present a choice of two algorithms: the "fast" one
+has a theoretical running time of $O(n^3)$, where $n$ is the number
+of rooms, whereas the "slow" one runs in $O(n^2)$, yet in practice
+the fast one easily outperforms the slow on typical heavy-use cases with
+large maps.
+
+The other issue is memory usage: we essentially have to strike a bargain
+between speed and memory overhead. Our "slow" algorithm needs only
+$O(n)$ storage, whereas our "fast" algorithm needs $O(n^2)$, and this
+is very significant in the Z-machine where array space is in desperately
+short supply and where, if $n > 50$ or so, the user is already likely to
+be fighting for the last few bytes in readable memory.
+
+The user is therefore offered the choice, by selecting the use options
+"Use fast route-finding" and "Use slow route-finding": and the defaults,
+if neither option is explicitly set, are fast on Glulx and slow on the
+Z-machine. If both use options are explicitly set -- which might happen
+due to a disagreement between extensions -- "fast" wins.
+
+@c
+#ifndef FAST_ROUTE_FINDING;
+#ifndef SLOW_ROUTE_FINDING;
+#ifdef TARGET_GLULX;
+Constant FAST_ROUTE_FINDING;
+#ifnot;
+Constant SLOW_ROUTE_FINDING;
+#endif;
+#endif;
+#endif;
+
+@p Cache Control.
+We provide code to enable our route-finding algorithms to cache their partial
+results from one usage to the next (though at present only the "fast"
+algorithm does this). The difficulty here is that the result of a route
+search depends on three things, any of which may change:
+
+(a) which subset of rooms we are route-finding through;
+(b) which subset of doors we are allowing ourselves to use; and
+(c) the current map connections between rooms.
+
+We keep track of (c) by watching for calls to |SignalMapChange()| from the
+routines in "WorldModel.i6t" which alter the map. (a) and (b), however,
+require tracking from call to call what the current subset of rooms and
+doors is. (It is not sufficient to remember the criteria used last time
+and this time, because circumstances could have changed such that the
+criteria produce a different outcome. For instance, searching through
+lighted rooms and using unlocked doors will produce a different result
+if a door has been locked or unlocked since last time, or if a room has
+become lighted or not.) We store the set of applicable rooms and doors
+by enumerating them in the property |room_index| and by the flags in the
+|DoorRoutingViable| array respectively.
+
+@c
+Constant NUM_DOORS = ICOUNT_DOOR;
+Constant NUM_ROOMS = ICOUNT_ROOM;
+
+Array DoorRoutingViable -> NUM_DOORS+1;
+
+Global map_has_changed = true;
+Global last_filter; Global last_use_doors;
+
+[ SignalMapChange; map_has_changed = true; ];
+
+[ MapRouteTo from to filter use_doors count  oy oyi ds;
+	if (from == nothing) return nothing;
+	if (to == nothing) return nothing;
+	if (from == to) return nothing;
+	if ((filter) && (filter(from) == 0)) return nothing;
+	if ((filter) && (filter(to) == 0)) return nothing;
+	if ((last_filter ~= filter) || (last_use_doors ~= use_doors)) map_has_changed = true;
+	oyi = 0;
+	objectloop (oy has mark_as_room) {
+		if ((filter == 0) || (filter(oy))) {
+			if (oy.room_index == -1) map_has_changed = true;
+			oy.room_index = oyi++;
+		} else {
+			if (oy.room_index >= 0) map_has_changed = true;
+			oy.room_index = -1;
+		}
+	}
+	oyi = 0;
+	objectloop (oy ofclass K4_door) {
+		ds = false;
+		if ((use_doors & 2) ||
+			(oy has open) || ((oy has openable) && (oy hasnt locked))) ds = true;
+		if (DoorRoutingViable->oyi ~= ds) map_has_changed = true;
+		DoorRoutingViable->oyi = ds;
+		oyi++;
+	}
+	if (map_has_changed) {
+		#ifdef FAST_ROUTE_FINDING; ComputeFWMatrix(filter, use_doors); #endif;
+		map_has_changed = false; last_filter = filter; last_use_doors = use_doors;
+	}
+	#ifdef FAST_ROUTE_FINDING;
+	if (count) return FastCountRouteTo(from, to, filter, use_doors);
+	return FastRouteTo(from, to, filter, use_doors);
+	#ifnot;
+	if (count) return SlowCountRouteTo(from, to, filter, use_doors);
+	return SlowRouteTo(from, to, filter, use_doors);
+	#endif;
+];
+
+@p Fast Route-Finding.
+The following is a form of Floyd's adaptation of Warshall's algorithm for
+finding the transitive closure of a directed graph.
+
+We need to store a matrix which for each pair of rooms $R_i$ and $R_j$
+records $a_{ij}$, the shortest path length from $R_i$ to $R_j$ or 0 if no
+path exists, and also $d_{ij}$, the first direction to take on leaving
+$R_i$ along a shortest path to $R_j$, or 0 if no path exists. For the sake
+of economy we represent the directions as their instance counts (numbered
+from 0 in order of creation), not as their direction object values, and
+then store a single word for each pair $(i, j)$: we store $d_{ij} + D
+a_{ij}$. This restricts us on a signed 16-bit virtual machine, and with the
+conventional set of $D=12$ directions, to the range $0\leq a_{ij}\leq
+5461$, that is, to path lengths of 5461 steps or fewer. A work of IF with
+5461 rooms will not fit in the Z-machine anyway: such a work would be on
+Glulx, which is 32-bit, and where $0\leq a_{ij}\leq 357,913,941$.
+
+We begin with $a_{ij} = 0$ for all pairs except where there is a viable
+map connection between $R_i$ and $R_j$: for those we set $a_{ij}=1$ and
+$d_{ij}$ equal to the direction of that map connection.
+
+Following Floyd and Warshall we test if each known shortest path $R_{x}$ to
+$R_{y}$ can be used to shorten the best known path from $R_{x}$ to anywhere
+else: that is, we look for cases where $a_{xy} + a_{yj} < a_{xj}$, since
+those show that going from $R_x$ to $R_j$ via $R_y$ takes fewer steps than
+going directly. See for instance Robert Sedgewick, {\it Algorithms} (1988),
+chapter 32.
+
+The trouble with the Floyd-Warshall algorithm is not so much that it takes
+in principle $O(n^3)$ time to construct the matrix: it does, but the
+coefficient is low, and in the early stages of the outer loop the fact that
+the vertex degree is at most $D$ and usually much lower helps to reduce the
+work further. The trouble is that there is no way to compute only the part
+of the matrix we want: we have to have the entire thing, and that means
+storing $n^2$ words of data, by which point we have computed not only the
+fastest route from $R_x$ to $R_y$ but also the fastest route from anywhere
+to anywhere else. Even when the original map is sparse, the Floyd-Warshall
+matrix is not, and it is difficult to store in any very compressed way
+without greatly increasing the complexity of the code. This is why we cache
+the results: we might as well, since we had to build the entire memory
+structure anyway, and it means the time expense is only paid once (or once
+for every time the state of doors and map connections changes), and the
+cache is useful for all future routes whatever their endpoints.
+
+@c
+#ifdef FAST_ROUTE_FINDING;
+Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
+
+[ FastRouteTo from to filter use_doors diri i dir oy;
+	if (from == to) return nothing;
+	i = (FWMatrix-->(from.room_index*NUM_ROOMS + to.room_index))/No_Directions;
+	if (i == 0) return nothing;
+	diri = (FWMatrix-->(from.room_index*NUM_ROOMS + to.room_index))%No_Directions;
+	i=0; objectloop (dir ofclass K3_direction) {
+		if (i == diri) return dir;
+		i++;
+	}
+	return nothing;
+];
+
+[ FastCountRouteTo from to filter use_doors  k;
+	if (from == to) return 0;
+	k = (FWMatrix-->(from.room_index*NUM_ROOMS + to.room_index))/No_Directions;
+	if (k == 0) return -1;
+	return k;
+];
+
+[ ComputeFWMatrix filter use_doors  oy ox oj axy ayj axj dir diri nd row;
+	objectloop (oy has mark_as_room) if (oy.room_index >= 0)
+		objectloop (ox has mark_as_room) if (ox.room_index >= 0)
+			FWMatrix-->(oy.room_index*NUM_ROOMS + ox.room_index) = 0;
+
+	objectloop (oy has mark_as_room) if (oy.room_index >= 0) {
+		row = (oy.IK1_Count)*No_Directions;
+		for (diri=0: diri<No_Directions: diri++) {
+			ox = Map_Storage-->(row+diri);
+			if ((ox) && (ox has mark_as_room) && (ox.room_index >= 0)) {
+				FWMatrix-->(oy.room_index*NUM_ROOMS + ox.room_index) = No_Directions + diri;
+				continue;
+			}
+			if (use_doors && (ox ofclass K4_door) &&
+				((use_doors & 2) || (DoorRoutingViable->(ox.IK4_Count)))) {
+				@push location; location = oy;
+				ox = ox.door_to();
+				@pull location;
+				if ((ox) && (ox has mark_as_room) && (ox.room_index >= 0)) {
+					FWMatrix-->(oy.room_index*NUM_ROOMS + ox.room_index) = No_Directions + diri;
+					continue;
+				}
+			}
+		}	
+	}
+
+	objectloop (oy has mark_as_room) if (oy.room_index >= 0)
+		objectloop (ox has mark_as_room) if (ox.room_index >= 0) {
+			axy = (FWMatrix-->(ox.room_index*NUM_ROOMS + oy.room_index))/No_Directions;
+			if (axy > 0)
+				objectloop (oj has mark_as_room) if (oj.room_index >= 0) {
+					ayj = (FWMatrix-->(oy.room_index*NUM_ROOMS + oj.room_index))/No_Directions;
+					if (ayj > 0) {
+						!print "Is it faster to go from ", (name) ox, " to ",
+						!   (name) oj, " via ", (name) oy, "?^";
+						axj = (FWMatrix-->(ox.room_index*NUM_ROOMS + oj.room_index))/
+							No_Directions;
+						if ((axj == 0) || (axy + ayj < axj)) {
+							!print "Yes^";
+							FWMatrix-->(ox.room_index*NUM_ROOMS + oj.room_index) =
+								(axy + ayj)*No_Directions +
+								(FWMatrix-->(ox.room_index*NUM_ROOMS + oy.room_index))%
+									No_Directions;
+						}
+					}
+				}
+		}
+];
+#ENDIF;
+
+@p Slow Route-Finding.
+The alternative algorithm, used when only $O(n)$ memory is available,
+computes only some of the shortest paths leading to $R_y$, and is not cached --
+both because the storage is likely to be reused often by other searches and
+because there is little gain from doing so, given that a subsequent search
+with different endpoints will not benefit from the results of this one. On
+the other hand, to call it "slow" is a little unfair. It is somewhat like
+Prim's algorithm for finding a minimum spanning tree, rooted at $R_y$, and
+grows the tree outward from $R_y$ until either $R_x$ is reached -- in which
+case we stop immediately -- or the (directed) component containing $R_y$
+has been exhausted -- in which case $R_x$, which must lie outside this, can
+have no path to $R_y$. In principle, the running time is $O(dn^2)$, where
+$d\leq D$ is the maximum vertex degree and $n$ is the number of rooms in
+the component containing $R_y$: in practice the degree is often much less
+than 12, while the algorithm finishes quickly in cases where $R_y$ is
+relatively isolated and inaccessible or where a shortish route does exist,
+and those are very common cases in typical usage. There will be circumstances
+where, because few routes need to be found and because of the shape of the
+map, the "slow" algorithm will outperform the "fast" one: this is why
+the user is allowed to control which algorithm is used.
+
+For each room $R_z$, the property |vector| stores the direction object of
+the way to go to its parent room in the tree rooted at $R_y$. Thus if the
+algorithm succeeds in finding a route from $R_x$ to $R_y$ then we generate
+the route by starting at $R_x$ and repeatedly going in the |vector| direction
+from where we currently stand until we reach $R_y$. Since every room needs
+a |vector| value, this requires $n$ words of storage. (The |vector| values
+store only enough of the minimal spanning tree to go upwards through the
+tree, but that's the only way we need to traverse it.)
+
+The method can be summed up thus:
+
+(a) Begin with every vector blank except that of $R_y$, the destination.
+(b) Repeatedly: For every room in the domain set, try each direction: if this
+leads to a room whose vector was determined on the last round ({\it not} on
+this one, as that may be a suboptimal route), set the vector to point to that
+room.
+(c) Stop as soon as the vector from the origin is set, or when a round happens
+in which no further vectors are found: in which case, we have completely
+explored the component of the map from which the destination can be reached,
+and the origin isn't in it, so we can return "no".
+
+To prove the correctness of this, we show inductively that after round $n$
+we have set the |vector| for every room having a shortest path to $R_y$ of
+length $n$, and that every |vector| points to a room having a |vector| in
+the direction of the shortest path from there to $R_y$.
+
+@c
+#ifndef FAST_ROUTE_FINDING;
+[ SlowRouteTo from to filter use_doors  obj dir in_direction progressed sl through_door;
+	if (from == nothing) return nothing;
+	if (to == nothing) return nothing;
+	if (from == to) return nothing;
+	objectloop (obj has mark_as_room) obj.vector = 0;
+	to.vector = 1;
+	!print "Routing from ", (the) from, " to ", (the) to, "^";
+	while (true) {
+		progressed = false;
+		!print "Pass begins^";
+		objectloop (obj has mark_as_room)
+			if ((filter == 0) || (filter(obj)))
+				if (obj.vector == 0)
+					objectloop (dir ofclass K3_direction) {
+						in_direction = Map_Storage-->((obj.IK1_Count)*No_Directions + dir.IK3_Count);
+						if (in_direction == nothing) continue;
+						!print (the) obj, " > ", (the) dir, " > ", (the) in_direction, "^";
+						if ((in_direction)
+							&& (in_direction has mark_as_room)
+							&& (in_direction.vector > 0)
+							&& ((filter == 0) || (filter(in_direction)))) {
+							obj.vector = dir | WORD_HIGHBIT;
+							!print "* ", (the) obj, " vector is ", (the) dir, "^";
+							progressed = true;
+							continue;
+						}
+						if (use_doors && (in_direction ofclass K4_door) &&
+							((use_doors & 2) ||
+							 (in_direction has open) ||
+							 ((in_direction has openable) && (in_direction hasnt locked)))) {
+							sl = location; location = obj;
+							through_door = in_direction.door_to();
+							location = sl;
+							!print "Through door is ", (the) through_door, "^";
+							if ((through_door)
+								&& (through_door has mark_as_room)
+								&& (through_door.vector > 0)
+								&& ((filter == 0) || (filter(through_door)))) {
+								obj.vector = dir | WORD_HIGHBIT;
+								!print "* ", (the) obj, " vector is ", (the) dir, "^";
+								progressed = true;
+								continue;
+							}
+						}
+					}
+		objectloop (obj has mark_as_room) obj.vector = obj.vector &~ WORD_HIGHBIT;
+		if (from.vector) return from.vector;
+		if (progressed == false) return from.vector;
+	}
+];
+
+[ SlowCountRouteTo from to filter use_doors obj i;
+	if (from == nothing) return -1;
+	if (to == nothing) return -1;
+	if (from == to) return 0;
+	if (from has mark_as_room && to has mark_as_room) {
+		obj = MapRouteTo(from,to,filter,use_doors);
+		if (obj == nothing) return -1;
+		i = 0; obj = from;
+		while ((obj ~= to) && (i<NUM_ROOMS)) { i++; obj = MapConnection(obj,obj.vector); }
+		return i;
+	}
+	return -1;
+];
+#ENDIF;
+

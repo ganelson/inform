@@ -905,26 +905,6 @@ And this is how we unserialise again. It makes sense only on Glulx.
 ];
 #ENDIF; ! TARGET_GLULX
 
-@p Print Rank.
-The table of scoring ranks is a residue from the ancient times of early IF:
-it gets a tiny amount of special treatment here, even though I7 works tend
-not to use these now dated conventions.
-
-@c
-[ PrintRank i j v;
-	if (TEMPLATE_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
-		ANNOUNCE_SCORE_RM('B');
-		j = TableRows(RANKING_TABLE);
-		for (i=j:i>=1:i--)
-			if (score >= TableLookUpEntry(RANKING_TABLE, 1, i)) {
-				v = TableLookUpEntry(RANKING_TABLE, 2, i);
-				TEXT_TY_Say(v);
-				".";
-			}
-	}
-	".";
-];
-
 @p Debugging.
 Routines to print the state of a table, for debugging purposes only.
 

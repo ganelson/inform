@@ -531,59 +531,6 @@ the values it refers to vanish from existence.
 	return from;
 ];
 
-@p Recognition-only-GPR.
-An I6 general parsing routine to look at words from the position marker
-|wn| in the player's command to see if they match the contents of the
-text |txt|, returning either |GPR_PREPOSITION| or |GPR_FAIL|
-according to whether a match could be made. This is used when the an
-object's name is set to include one of its properties, and the property in
-question is a text: "A flowerpot is a kind of thing. A flowerpot
-has a text called pattern. Understand the pattern property as
-describing a flowerpot." When the player types EXAMINE STRIPED FLOWERPOT,
-and there is a flowerpot in scope, the following routine is called to
-test whether its pattern property -- a text -- matches any words
-at the position STRIPED FLOWERPOT. Assuming a pot does indeed have the
-pattern "striped", the routine advances |wn| by 1 and returns
-|GPR_PREPOSITION| to indicate a match.
-
-This kind of GPR is called a "recognition-only-GPR", because it only
-recognises an existing value: it doesn't parse a new one.
-
-@c
-[ TEXT_TY_ROGPR txt p cp r;
-	if (txt == 0) return GPR_FAIL;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
-	r = TEXT_TY_ROGPRI(txt);
-	TEXT_TY_Untransmute(txt, p, cp);
-	return r;
-];
-[ TEXT_TY_ROGPRI txt
-	pos len wa wl wpos bdm ch own;
-	bdm = true; own = wn;
-	len = BlkValueLBCapacity(txt);
-	for (pos=0: pos<=len: pos++) {
-		if (pos == len) ch = 0; else ch = BlkValueRead(txt, pos);
-		if (ch == 32 or 9 or 10 or 0) {
-			if (bdm) continue;
-			bdm = true;
-			if (wpos ~= wl) return GPR_FAIL;
-			if (ch == 0) break;
-		} else {
-			if (bdm) {
-				bdm = false;
-				if (NextWordStopped() == -1) return GPR_FAIL;
-				wa = WordAddress(wn-1);
-				wl = WordLength(wn-1);
-				wpos = 0;
-			}
-			if (wa->wpos ~= ch or TEXT_TY_RevCase(ch)) return GPR_FAIL;
-			wpos++;
-		}
-	}
-	if (wn == own) return GPR_FAIL; ! Progress must be made to avoid looping
-	return GPR_PREPOSITION;
-];
-
 @p Blobs.
 That completes the compulsory services required for this KOV to function:
 from here on, the remaining routines provide definitions of text-related
@@ -1057,26 +1004,4 @@ expression search-and-replace is going on: see "RegExp.i6t".
 	}
 	print "*** TEXT_TY_Concatenate used on impossible blob type ***^";
 	rfalse;
-];
-
-@p Setting the Player's Command.
-In effect, the text typed most recently by the player is a sort of
-text already, though it isn't in text format, and doesn't live on
-the heap.
-
-@c
-[ SetPlayersCommand from_txt i len at p cp;
-	cp = from_txt-->0; p = TEXT_TY_Temporarily_Transmute(from_txt);
-	len = TEXT_TY_CharacterLength(from_txt);
-	if (len > 118) len = 118;
-	#ifdef TARGET_ZCODE;
-	buffer->1 = len; at = 2;
-	#ifnot;
-	buffer-->0 = len; at = 4;
-	#endif;
-	for (i=0:i<len:i++) buffer->(i+at) = CharToCase(BlkValueRead(from_txt, i), 0);
-	for (:at+i<120:i++) buffer->(at+i) = ' ';
-	VM_Tokenise(buffer, parse);
-	players_command = 100 + WordCount(); ! The snippet variable "player's command"
-	TEXT_TY_Untransmute(from_txt, p, cp);
 ];

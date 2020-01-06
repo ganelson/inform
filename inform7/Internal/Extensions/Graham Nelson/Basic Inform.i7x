@@ -64,6 +64,7 @@ Use numbered rules translates as (- Constant NUMBERED_RULES; -).
 Use telemetry recordings translates as (- Constant TELEMETRY_ON; -).
 Use no deprecated features translates as (- Constant NO_DEPRECATED_FEATURES; -).
 Use gn testing version translates as (- Constant GN_TESTING_VERSION; -).
+Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
 
 Use dynamic memory allocation of at least 8192 translates as
 	(- Constant DynamicMemoryAllocation = {N}; -).
@@ -90,6 +91,19 @@ Use MAX_SYMBOLS of 20000.
 Use MAX_EXPRESSION_NODES of 256.
 Use MAX_LABELS of 200000.
 Use MAX_LOCAL_VARIABLES of 256.
+
+An object has a value called variable initial value.
+
+A natural language is a kind of value.
+The language of play is a natural language that varies.
+
+Startup rules is a rulebook. [0]
+Startup rules have outcomes allow startup (success) and deny startup (failure).
+Shutdown rules is a rulebook. [1]
+
+To say (val - sayable value of kind K)
+	(documented at ph_say):
+	(- {-say:val:K} -).
 
 Basic Inform ends here.
 

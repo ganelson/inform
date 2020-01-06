@@ -785,8 +785,6 @@ a whole action might produce "Henry taking the grapefruit".)
 	}
 	print "~";
 ];
-[ DA_Number n; print n; ];
-[ DA_TruthState n; if (n==0) print "false"; else print "true"; ];
 [ DB_Action ac acr act n s for_say t at l j v c clc;
 	if ((for_say == 0) && (debug_rule_nesting > 0))
 		print "(", debug_rule_nesting, ") ";

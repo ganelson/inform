@@ -64,6 +64,8 @@ void Hierarchy::establish(inter_tree *I) {
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
 
+@e BASIC_MODE_HL
+
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
 
@@ -96,6 +98,10 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, DICT_WORD_SIZE_HL, I"DICT_WORD_SIZE", Translation::same(), veneer);
 	HierarchyLocations::con(I, WORDSIZE_HL, I"WORDSIZE", Translation::same(), veneer);
 	HierarchyLocations::con(I, INDIV_PROP_START_HL, I"INDIV_PROP_START", Translation::same(), veneer);
+
+	submodule_identity *basic_extras = Packaging::register_submodule(I"basic_extras");
+	location_requirement generic_basic_extras = HierarchyLocations::generic_submodule(I, basic_extras);
+	HierarchyLocations::con(I, BASIC_MODE_HL, I"BASIC_MODE", Translation::same(), generic_basic_extras);
 
 @h Modules.
 
@@ -989,8 +995,10 @@ void Hierarchy::establish(inter_tree *I) {
 	location_requirement in_K_number = HierarchyLocations::this_exotic_package(K_NUMBER_XPACKAGE);
 	HierarchyLocations::func(I, DECIMAL_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"DECIMAL_TOKEN_INNER"), in_K_number);
 
-	location_requirement in_K_time = HierarchyLocations::this_exotic_package(K_TIME_XPACKAGE);
-	HierarchyLocations::func(I, TIME_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"TIME_TOKEN_INNER"), in_K_time);
+	if (basic_mode == FALSE) {
+		location_requirement in_K_time = HierarchyLocations::this_exotic_package(K_TIME_XPACKAGE);
+		HierarchyLocations::func(I, TIME_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"TIME_TOKEN_INNER"), in_K_time);
+	}
 
 	location_requirement in_K_truth_state = HierarchyLocations::this_exotic_package(K_TRUTH_STATE_XPACKAGE);
 	HierarchyLocations::func(I, TRUTH_STATE_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"TRUTH_STATE_TOKEN_INNER"), in_K_truth_state);

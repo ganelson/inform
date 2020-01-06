@@ -109,8 +109,8 @@ must also exactly match the sequence in which these rulebooks are created
 in the Standard Rules file.
 
 @d STARTUP_RB 0 /* Startup rules */
-@d TURN_SEQUENCE_RB 1 /* Turn sequence rules */
-@d SHUTDOWN_RB 2 /* Shutdown rules */
+@d SHUTDOWN_RB 1 /* Shutdown rules */
+@d TURN_SEQUENCE_RB 2 /* Turn sequence rules */
 @d SCENE_CHANGING_RB 3 /* Scene changing rules */
 @d WHEN_PLAY_BEGINS_RB 4 /* When play begins */
 @d WHEN_PLAY_ENDS_RB 5 /* When play ends */

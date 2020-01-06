@@ -1,7 +1,7 @@
    Home
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
   
   Home
   1. 1
@@ -48,6 +48,7 @@
   figure name <= value, word value, enumerated value, sayable value
   sound name <= value, word value, enumerated value, sayable value
   external file <= value, word value, enumerated value, sayable value
+  natural language <= value, word value, enumerated value, sayable value
   room <= value, word value, sayable value, object
   thing <= value, word value, sayable value, object
   direction <= value, word value, sayable value, object
@@ -63,7 +64,6 @@
   device <= value, word value, sayable value, object, thing
   vehicle <= value, word value, sayable value, object, thing, container
   player's holdall <= value, word value, sayable value, object, thing, container
-  natural language <= value, word value, enumerated value, sayable value
   command parser error <= value, word value, enumerated value, sayable value
   grammatical tense <= value, word value, enumerated value, sayable value
   narrative viewpoint <= value, word value, enumerated value, sayable value
@@ -122,6 +122,7 @@
   figure name ->
   sound name ->
   external file ->
+  natural language ->
   room -> object ->
   thing -> object ->
   direction -> object ->
@@ -137,7 +138,6 @@
   device -> thing -> object ->
   vehicle -> container -> thing -> object ->
   player's holdall -> container -> thing -> object ->
-  natural language ->
   command parser error ->
   grammatical tense ->
   narrative viewpoint ->

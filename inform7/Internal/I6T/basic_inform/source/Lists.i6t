@@ -632,32 +632,6 @@ used instead.
 	BlkValueWrite(list, LIST_ITEM_BASE+i-1, v);
 ];
 
-@p Multiple Object List.
-The parser uses one data structure which is really a list: but which can't
-be represented as such because the heap might not exist. This is the multiple
-object list, which is used to handle commands like TAKE ALL by firing off a
-sequence of actions with one of the objects taken from entries in turn of
-the list. The following converts it to a list structure.
-
-@c
-[ LIST_OF_TY_Mol list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	len = multiple_object-->0;
-	LIST_OF_TY_SetLength(list, len);
-	for (i=1: i<=len: i++)
-		LIST_OF_TY_PutItem(list, i, multiple_object-->i);
-	return list;
-];
-
-[ LIST_OF_TY_Set_Mol list len i;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	len = BlkValueRead(list, LIST_LENGTH_F);
-	if (len > 63) len = 63;
-	multiple_object-->0 = len;
-	for (i=1: i<=len: i++)
-		multiple_object-->i = BlkValueRead(list, LIST_ITEM_BASE+i-1);
-];
-
 @p Reversing.
 Reversing a list is, happily, a very efficient operation when the list contains
 block-values: because the pointers are rearranged but none is duplicated or

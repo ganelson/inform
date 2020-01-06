@@ -48,28 +48,6 @@ to an empty range of values.
 Constant R_DecimalNumber = GenerateRandomNumber;
 Constant R_PrintTimeOfDay = GenerateRandomNumber;
 
-@p GroupChildren.
-The following runs through the child-objects of |par| in the I6 object tree,
-and moves those having a given |list_property| property value together, to
-become the eldest children. It preserves the ordering in between those
-objects, and also in between those not having that property value.
-
-We do this by temporarily moving objects into and out of |in_obj| and |out_obj|,
-objects which in all other circumstances never have children in the tree.
-
-@c
-[ GroupChildren par value;
-    while (child(par) ~= 0) {
-        if (LT_Compare(child(par).list_together, value) ~= 0)
-        	move child(par) to out_obj;
-        else
-        	move child(par) to in_obj;
-    }
-    while (child(in_obj) ~= 0)  move child(in_obj) to par;
-    while (child(out_obj) ~= 0) move child(out_obj) to par;
-    return child(par);
-];
-
 @p PrintSpaces.
 Which prints a row of $n$ spaces, for $n\geq 0$.
 
@@ -79,30 +57,6 @@ Which prints a row of $n$ spaces, for $n\geq 0$.
         print " ";
         n = n - 1;
     }
-];
-
-@p RunRoutines.
-This function may not be very well-named, but the idea is to take a property
-of a given object and either to print it (and return |true|) if it's a string,
-and call it (and pass along its return value) if it's a routine. If the
-object does not provide the property, we act on the default value for the
-property if it has one, and otherwise do nothing (and return |false|).
-
-The I6 pseudo-object |thedark| is used to give the impression that Darkness
-is a room in its own right, which is not really true. Note that it is not
-permitted to have properties other than the three named here: all other
-properties are redirected to the current location's object.
-
-Properties with numbers under |INDIV_PROP_START| are "common properties".
-These come along with a table of default values, so that it is meaningful
-(in I6, anyway) to read them even when they are not provided (so that the
-address, returned by the |.&| operator, is zero).
-
-@c
-[ RunRoutines obj prop;
-    if (obj == thedark) obj = real_location;
-    if ((obj.&prop == 0) && (prop >= INDIV_PROP_START)) rfalse;
-    return obj.prop();
 ];
 
 @p SwapWorkflags.
@@ -171,3 +125,22 @@ This is not quite so efficient, but not terrible.
 		}
 	} else "*** Arrcpy doesn't support this ***";
 ];
+
+@p Verbs as Values.
+
+@c
+[ PrintVerbAsValue vb;
+	if (vb == 0) print "(no verb)";
+	else { print "verb "; vb(1); }
+];
+
+[ VerbIsMeaningful vb;
+	if ((vb) && (BlkValueCompare(vb(CV_MEANING), MEANINGLESS_RR) ~= 0)) rtrue;
+	rfalse;
+];
+
+[ VerbIsModal vb;
+	if ((vb) && (vb(CV_MODAL))) rtrue;
+	rfalse;
+];
+

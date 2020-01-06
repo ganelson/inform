@@ -39,7 +39,6 @@ how they have effect.)
 =
 Use full-length room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 2; #ENDIF; -).
 Use abbreviated room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 3; #ENDIF; -).
-Use authorial modesty translates as (- Constant AUTHORIAL_MODESTY; -).
 Use scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 1; #ENDIF; -).
 Use no scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 0; #ENDIF; -).
 Use manual pronouns translates as (- Constant MANUAL_PRONOUNS; -).
@@ -347,3 +346,4 @@ Document PM_UnicodeOutOfRange PM_UnicodeNonLiteral PM_UnicodeAlready at doc454 "
 Document PM_WhenDefiningUnknown PM_BeforeTheLibrary PM_BadI6Inclusion at doc455 "27.26" "27.26. The template layer".
 Document PM_LabelNamespaceTooLong at doc458 "27.29" "27.29. Invocation labels, counters and storage".
 [...and so on...]
+

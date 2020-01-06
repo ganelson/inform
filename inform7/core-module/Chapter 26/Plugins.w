@@ -170,7 +170,6 @@ void Plugins::Manage::start(void) {
 	times_plugin->has_template_file = "Times";
 	CREATE_PLUGIN(scenes_plugin, PL::Scenes::start, FALSE, SCENES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	scenes_plugin->has_template_file = "Scenes";
-
 	CREATE_PLUGIN(bibliographic_plugin, PL::Bibliographic::start, FALSE, BIBLIOGRAPHIC_DATA_PLUGIN_NAME, IF_PLUGIN_NAME);
 	#endif
 
@@ -271,11 +270,22 @@ void Plugins::Manage::plug_in(wording W) {
 		if (P->set_number == IF_PLUGIN_NAME)
 			P->now_plugged_in = FALSE;
 	#endif
+	if (basic_mode) {
+		LOOP_OVER(P, plugin)
+			if (P->set_number == IF_PLUGIN_NAME)
+				P->now_plugged_in = FALSE;
+	}
 	#ifndef MULTIMEDIA_MODULE
 	LOOP_OVER(P, plugin)
 		if (P->set_number == MULTIMEDIA_PLUGIN_NAME)
 			P->now_plugged_in = FALSE;
 	#endif
+	if (basic_mode) {
+		LOOP_OVER(P, plugin)
+			if ((P->set_number == MULTIMEDIA_PLUGIN_NAME) &&
+				(P->plugin_number != GLULX_EXTERNAL_FILES_PLUGIN_NAME))
+				P->now_plugged_in = FALSE;
+	}
 }
 
 @<Issue problem for trying to remove the core@> =

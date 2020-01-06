@@ -1,0 +1,96 @@
+B/basicx: Basic Inform Extras.
+
+@Purpose: Additions to the Basic Inform template needed only if the Standard
+Rules are not to be used.
+
+@-------------------------------------------------------------------------------
+
+@p Miscellany.
+
+@c
+[ DefaultTopic; return 0; ];
+[ PrintSnippet x; ];
+[ LIST_WRITER_INTERNAL_RM x;
+	print " and ";
+];
+[ RunTimeProblemShowWM n x y z; ];
+[ OwnerOf o; return nothing; ];
+[ MoveObject from to; ];
+[ WriteListOfMarkedObjects in_style
+	obj c;
+	objectloop (obj ofclass Object && obj has workflag2) {
+		c++;
+	}
+	objectloop (obj ofclass Object && obj has workflag2) {
+		PrintShortName(obj);
+		c--;
+		if (c > 0) print ", ";
+	}
+];
+[ PrintShortName obj;
+	print (object) obj;
+];
+[ Main;
+	#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;
+	ClearRTP();
+	FollowRulebook(STARTUP_RB);
+	print "Hi!^";
+	FollowRulebook(SHUTDOWN_RB);
+];
+
+@p Veneer.
+
+@c
+#Ifdef TARGET_GLULX;
+[ OC__Cl obj cla j a n objflag;
+
+	@jl obj 1 ?NotObj;
+	@jg obj max_z_object ?NotObj;
+	@inc objflag;
+
+	@je cla Object Class ?ObjOrClass;
+	@je cla Routine String ?RoutOrStr;
+
+	@jin cla 1 ?~Mistake;
+
+	@jz objflag ?rfalse;
+	@get_prop_addr obj 2 -> a;
+	@jz a ?rfalse;
+	@get_prop_len a -> n;
+
+	@div n 2 -> n;
+	.Loop;
+	@loadw a j -> sp;
+	@je sp cla ?rtrue;
+	@inc j;
+	@jl j n ?Loop;
+	@rfalse;
+
+	.ObjOrClass;
+	@jz objflag ?rfalse;
+	@je cla Object ?JustObj;
+
+	! So now cla is Class
+	@jg obj String ?~rtrue;
+	@jin obj Class ?rtrue;
+	@rfalse;
+
+	.JustObj;
+	! So now cla is Object
+	@jg obj String ?~rfalse;
+	@jin obj Class ?rfalse;
+	@rtrue;
+
+	.RoutOrStr;
+	@jz objflag ?~rfalse;
+	@call_2s Z__Region obj -> sp;
+	@inc sp;
+	@je sp cla ?rtrue;
+	@rfalse;
+
+	.Mistake;
+	RT__Err("apply 'ofclass' for", cla, -1);
+	rfalse;
+];
+#Endif;
+

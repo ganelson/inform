@@ -1,0 +1,212 @@
+B/zmt: ZMachine Template.
+
+@Purpose: To provide Z-specific actions.
+
+@-------------------------------------------------------------------------------
+
+@p Veneer.
+
+@c
+[ OC__Cl obj cla j a n objflag;
+
+	@jl obj 1 ?NotObj;
+	@jg obj max_z_object ?NotObj;
+	@inc objflag;
+	@je cla K1_room ?~NotRoom;
+	@test_attr obj mark_as_room ?rtrue;
+	@rfalse;
+	.NotRoom;
+	@je cla K2_thing ?~NotObj;
+	@test_attr obj mark_as_thing ?rtrue;
+	@rfalse;
+	.NotObj;
+
+	@je cla Object Class ?ObjOrClass;
+	@je cla Routine String ?RoutOrStr;
+
+	@jin cla 1 ?~Mistake;
+
+	@jz objflag ?rfalse;
+	@get_prop_addr obj 2 -> a;
+	@jz a ?rfalse;
+	@get_prop_len a -> n;
+
+	@div n 2 -> n;
+	.Loop;
+	@loadw a j -> sp;
+	@je sp cla ?rtrue;
+	@inc j;
+	@jl j n ?Loop;
+	@rfalse;
+
+	.ObjOrClass;
+	@jz objflag ?rfalse;
+	@je cla Object ?JustObj;
+
+	! So now cla is Class
+	@jg obj String ?~rtrue;
+	@jin obj Class ?rtrue;
+	@rfalse;
+
+	.JustObj;
+	! So now cla is Object
+	@jg obj String ?~rfalse;
+	@jin obj Class ?rfalse;
+	@rtrue;
+
+	.RoutOrStr;
+	@jz objflag ?~rfalse;
+	@call_2s Z__Region obj -> sp;
+	@inc sp;
+	@je sp cla ?rtrue;
+	@rfalse;
+
+	.Mistake;
+	RT__Err("apply 'ofclass' for", cla, -1);
+	rfalse;
+];
+
+@p Quit The Game Rule.
+
+@c
+[ QUIT_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	QUIT_THE_GAME_RM('A');
+	if (YesOrNo()~=0) quit;
+];
+
+@p Restart The Game Rule.
+
+@c
+[ RESTART_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	RESTART_THE_GAME_RM('A');
+	if (YesOrNo()~=0) {
+		@restart;
+		RESTART_THE_GAME_RM('B'); new_line;
+	}
+];
+
+@p Restore The Game Rule.
+
+@c
+[ RESTORE_THE_GAME_R;
+	if (actor ~= player) rfalse;
+	restore RMaybe;
+	RESTORE_THE_GAME_RM('A'); new_line;
+	rtrue;
+	.RMaybe; RESTORE_THE_GAME_RM('B'); new_line;
+];
+
+@p Save The Game Rule.
+
+@c
+[ SAVE_THE_GAME_R flag;
+	if (actor ~= player) rfalse;
+	@save -> flag;
+	switch (flag) {
+		0: SAVE_THE_GAME_RM('A'); new_line;
+		1: SAVE_THE_GAME_RM('B'); new_line;
+		2: RESTORE_THE_GAME_RM('B'); new_line;
+	}
+];
+
+@p Verify The Story File Rule.
+This is a fossil now, really, but in the days of Infocom, the 110K story
+file occupying an entire disc was a huge data set: floppy discs were by no
+means a reliable medium, and cheap hardware often used hit-and-miss
+components, as on the notorious Commodore 64 disc controller. If somebody
+experienced an apparent bug in play, it could easily be that he had a
+corrupt disc or was unable to read data of that density. So the VERIFY
+command, which took up to ten minutes on some early computers, would chug
+through the entire story file and compute a checksum, compare it against a
+known result in the header, and determine that the story file could or
+could not properly be read. The Z-machine provided this service as an
+opcode, and so Glulx followed suit.
+
+@c
+[ VERIFY_THE_STORY_FILE_R;
+	if (actor ~= player) rfalse;
+	@verify ?Vmaybe;
+	jump Vwrong;
+	.Vmaybe; VERIFY_THE_STORY_FILE_RM('A'); new_line; rtrue;
+	.Vwrong;
+	VERIFY_THE_STORY_FILE_RM('B'); new_line;
+];
+
+@p Switch Transcript On Rule.
+
+@c
+[ SWITCH_TRANSCRIPT_ON_R;
+	if (actor ~= player) rfalse;
+	transcript_mode = ((0-->8) & 1);
+	if (transcript_mode) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
+	@output_stream 2;
+	if (((0-->8) & 1) == 0) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
+	SWITCH_TRANSCRIPT_ON_RM('B'); new_line; VersionSub();
+	transcript_mode = true;
+];
+
+@p Switch Transcript Off Rule.
+
+@c
+[ SWITCH_TRANSCRIPT_OFF_R;
+	if (actor ~= player) rfalse;
+	transcript_mode = ((0-->8) & 1);
+	if (transcript_mode == false) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }
+	SWITCH_TRANSCRIPT_OFF_RM('B'); new_line;
+	@output_stream -2;
+	if ((0-->8) & 1) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
+	transcript_mode = false;
+];
+
+@p Announce Story File Version Rule.
+
+@c
+[ ANNOUNCE_STORY_FILE_VERSION_R ix;
+	if (actor ~= player) rfalse;
+	Banner();
+	print "Identification number: ";
+	for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
+	print "^";
+	ix = 0; ! shut up compiler warning
+	if (standard_interpreter > 0) {
+		print "Standard interpreter ",
+			standard_interpreter/256, ".", standard_interpreter%256,
+			" (", HDR_TERPNUMBER->0;
+		#Iftrue (#version_number == 6);
+		print (char) '.', HDR_TERPVERSION->0;
+		#Ifnot;
+		print (char) HDR_TERPVERSION->0;
+		#Endif;
+		print ")^";
+	} else {
+		print "Interpreter ", HDR_TERPNUMBER->0, " Version ";
+		#Iftrue (#version_number == 6);
+		print HDR_TERPVERSION->0;
+		#Ifnot;
+		print (char) HDR_TERPVERSION->0;
+		#Endif;
+		print "^";
+	}
+	ShowExtensionVersions();
+	say__p = 1;
+];
+
+@p Descend To Specific Action Rule.
+There are 100 or so actions, typically, and this rule is for efficiency's
+sake: rather than perform 100 or so comparisons to see which routine to
+call, we indirect through a jump table. The routines called are the |-Sub|
+routines: thus, for instance, if |action| is |##Wait| then |WaitSub| is
+called. It is essential that this routine not be called for fake actions:
+in I7 use this is guaranteed, since fake actions are not allowed into the
+action machinery at all.
+
+Strangely, Glulx's action routines table is numbered in an off-by-one way
+compared to the Z-machine's: hence the |+1|.
+
+@c
+[ DESCEND_TO_SPECIFIC_ACTION_R;
+	indirect(#actions_table-->action);
+	rtrue;
+];

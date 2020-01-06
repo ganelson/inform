@@ -4,3 +4,4 @@ Global reason_code = NULL;
 Constant life = NULL;
 Constant I_green = 1;
 Constant I_red = 17;
+Array KindHierarchy --> K0_kind (0);

@@ -4,3 +4,4 @@ Global reason_code = NULL;
 Constant life = NULL;
 Constant Banana = 2;
 Constant Peach = Banana;
+Array KindHierarchy --> K0_kind (0);

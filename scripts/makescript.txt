@@ -184,6 +184,10 @@ intertemplate: \
 	inform7/Internal/I6T/basic_inform/arch-16.interb \
 	inform7/Internal/I6T/basic_inform/arch-32d.interb \
 	inform7/Internal/I6T/basic_inform/arch-32.interb \
+	inform7/Internal/I6T/basic_inform_extras/arch-16d.interb \
+	inform7/Internal/I6T/basic_inform_extras/arch-16.interb \
+	inform7/Internal/I6T/basic_inform_extras/arch-32d.interb \
+	inform7/Internal/I6T/basic_inform_extras/arch-32.interb \
 	inform7/Internal/I6T/standard_rules/arch-16d.interb \
 	inform7/Internal/I6T/standard_rules/arch-16.interb \
 	inform7/Internal/I6T/standard_rules/arch-32d.interb \
@@ -200,6 +204,18 @@ inform7/Internal/I6T/basic_inform/arch-32d.interb: inform7/Internal/I6T/basic_in
 
 inform7/Internal/I6T/basic_inform/arch-32.interb: inform7/Internal/I6T/basic_inform/source/*.i6t
 	$(INTERX) -architecture 32 -assimilate inform7/Internal/I6T/basic_inform
+
+inform7/Internal/I6T/basic_inform_extras/arch-16d.interb: inform7/Internal/I6T/basic_inform_extras/source/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/I6T/basic_inform_extras
+
+inform7/Internal/I6T/basic_inform_extras/arch-16.interb: inform7/Internal/I6T/basic_inform_extras/source/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/I6T/basic_inform_extras
+
+inform7/Internal/I6T/basic_inform_extras/arch-32d.interb: inform7/Internal/I6T/basic_inform_extras/source/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/I6T/basic_inform_extras
+
+inform7/Internal/I6T/basic_inform_extras/arch-32.interb: inform7/Internal/I6T/basic_inform_extras/source/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/I6T/basic_inform_extras
 
 inform7/Internal/I6T/standard_rules/arch-16d.interb: inform7/Internal/I6T/standard_rules/source/*.i6t
 	$(INTERX) -architecture 16d -assimilate inform7/Internal/I6T/standard_rules
@@ -510,6 +526,7 @@ integration: \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
 		$(INTERNAL)/I6T/basic_inform/arch-32d.interb \
+		$(INTERNAL)/I6T/basic_inform_extras/arch-32d.interb \
 		$(INTERNAL)/I6T/standard_rules/arch-32d.interb \
 		$(INTERNAL)/Inter/default.interpipeline \
 		$(INTERNALEXEMPLUM) \
@@ -602,6 +619,10 @@ $(INTERNAL)/I6T/basic_inform/arch-32d.interb: \
 	inform7/Internal/I6T/basic_inform/arch-32d.interb
 	$(call transfer-i6-template)
 
+$(INTERNAL)/I6T/basic_inform_extras/arch-32d.interb: \
+	inform7/Internal/I6T/basic_inform_extras/arch-32d.interb
+	$(call transfer-i6-template)
+
 # The I6 template could be tangled by inweb, but we don't do so: instead the
 # tangling happens at run-time and is done by Core Inform on the fly. So the
 # build process consists only of copying it:
@@ -624,6 +645,13 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/I6T/basic_inform/source/*.i6t $(INTERNAL)/I6T/basic_inform/source
 	cp -R -f inform7/Internal/I6T/basic_inform/*.interb $(INTERNAL)/I6T/basic_inform
 	cp -R -f inform7/Internal/I6T/basic_inform/library_metadata.txt $(INTERNAL)/I6T/basic_inform
+	mkdir -p "$(INTERNAL)/I6T/basic_inform_extras"
+	mkdir -p "$(INTERNAL)/I6T/basic_inform_extras/source"
+	rm -f $(INTERNAL)/I6T/basic_inform_extras/source/*.i6t
+	rm -f $(INTERNAL)/I6T/basic_inform_extras/*.interb
+	cp -R -f inform7/Internal/I6T/basic_inform_extras/source/*.i6t $(INTERNAL)/I6T/basic_inform_extras/source
+	cp -R -f inform7/Internal/I6T/basic_inform_extras/*.interb $(INTERNAL)/I6T/basic_inform_extras
+	cp -R -f inform7/Internal/I6T/basic_inform_extras/library_metadata.txt $(INTERNAL)/I6T/basic_inform_extras
 endef
 
 $(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline

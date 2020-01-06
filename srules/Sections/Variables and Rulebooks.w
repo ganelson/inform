@@ -180,9 +180,6 @@ The listing group size variable translates into I6 as "listing_size".
 =
 Section SR2/6 - Language generation
 
-A natural language is a kind of value.
-The language of play is a natural language that varies.
-
 The prior named object is an object that varies.
 The prior named object variable translates into I6 as "prior_named_noun".
 
@@ -353,9 +350,7 @@ about quitting or restarting.
 =
 Section SR2/7 - The Standard Rulebooks
 
-Startup rules is a rulebook. [0]
-Turn sequence rules is a rulebook. [1]
-Shutdown rules is a rulebook. [2]
+Turn sequence rules is a rulebook. [2]
 
 @ Now a set of rulebooks to do with the passage of time.
 

@@ -9,6 +9,55 @@ B/basict: Basic Inform Template.
 @c
 {-segment:Definitions.i6t}
 
+#ifdef TARGET_ZCODE;
+Constant BLOCKV_STACK_SIZE = 224;
+#ifnot;
+Constant BLOCKV_STACK_SIZE = DynamicMemoryAllocation/4;
+#endif;
+
+Array blockv_stack --> BLOCKV_STACK_SIZE;
+Global I7SFRAME;
+
+Global TEXT_TY_RE_Err = 0;
+Global prior_named_noun; ! for adaptive text generation
+Global prior_named_list; ! ditto: length of list of items
+Global prior_named_list_gender; ! ditto: common gender of list of items, or -1
+Global story_tense = 1; ! ditto: present tense
+Global story_viewpoint = 2; ! ditto: second person singular
+Global say__p = 1; Global say__pc = 0; Global say__pc_save = 0;
+Global say__n; Global say__comp;
+Global los_rv = false;
+Global parameter_object; ! = I7 "parameter-object" = I7 "container in question"
+Global parameter_value; ! not typesafe in I7
+Array deferred_calling_list --> 27;
+Global property_to_be_totalled; ! used to implement "total P of..."
+Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
+Global suppress_scope_loops;
+Global temporary_value; ! can be used anywhere side-effects can't occur
+! [13]
+Global clr_fg = 1; ! foreground colour
+Global clr_bg = 1; ! background colour
+Global clr_fgstatus = 1; ! foreground colour of statusline
+Global clr_bgstatus = 1; ! background colour of statusline
+Global clr_on; ! has colour been enabled by the player?
+Global statuswin_current; ! if writing to top window
+
+! [14]
+Global statuswin_cursize = 0;
+Global statuswin_size = 1;
+
+! [16]
+! Global debug_flag = 0;
+Global debug_rules = 0;
+Global debug_rule_nesting;
+Global reason_the_action_failed; ! = I7 "reason the action failed"
+
+! [3]
+Global standard_interpreter = 0;
+
+Array LocalParking --> 64;
+
+
 @p VM-Specific Code.
 These sections of code contain different definitions of the same routines,
 and in some cases the same arrays, to handle low-level functions in the
@@ -27,6 +76,7 @@ dictionary word addresses and so on.
 @p More.
 
 @c
+{-segment:Paragraphing.i6t}
 {-segment:Mathematics.i6t}
 {-segment:FileIO.i6t}
 {-segment:Sort.i6t}
@@ -40,3 +90,88 @@ dictionary word addresses and so on.
 {-segment:Lists.i6t}
 {-segment:Combinations.i6t}
 {-segment:RelationKind.i6t}
+{-segment:Relations.i6t}
+{-segment:RTP.i6t}
+{-segment:Utilities.i6t}
+
+Array Protect_I7_Arrays --> 16339 12345;
+
+@p Print Decimal Number.
+|DecimalNumber| is a trivial function which just prints a number, in decimal
+digits. It is left over from the I6 library's support routines for Glulx,
+where it was intended as a stub to pass to the Glulx |Glulx_PrintAnything| routine
+(which I7 does not use). In I7, however, it's also used as the default
+printing routine for new kinds of value.
+
+@c
+[ DecimalNumber num; print num; ];
+
+@p Print Text.
+The routine for printing an I7 "text" value, which might be text with or
+without substitutions.
+
+@c
+[ PrintI6Text x;
+	if (x ofclass String) print (string) x;
+	if (x ofclass Routine) return (x)();
+	if (x == EMPTY_TEXT_PACKED) rfalse;
+	rtrue;
+];
+[ I7_String x; TEXT_TY_Say(x); ]; ! An alternative name now used only by extensions
+
+@p Properties.
+Some either/or properties are compiled to I6 attributes, which must be
+predeclared, so we do that first. (All other properties can simply be
+used without declaration.)
+
+What then follows is a table of property metadata: in particular, specifying
+which properties can be used with which I6 classes or objects. Policing
+this at run-time costs a little speed, but traps many errors of programming,
+and keeps everything typesafe. It is the price we pay for the relatively
+lenient compile-time checking of I7's "object" kind of value. To make
+it as efficient as possible, we calculate offsets into the metadata: this
+has to be done (once) at run-time, with the routine compiled.
+
+@c
+Constant attributed_property_offsets_SIZE 48;
+Array attributed_property_offsets --> attributed_property_offsets_SIZE;
+Constant valued_property_offsets_SIZE (100 + CCOUNT_PROPERTY + INDIV_PROP_START-48);
+Array valued_property_offsets --> valued_property_offsets_SIZE;
+
+@p Print Or Run.
+This utility remains from the old I6 library: it essentially treats a
+property as textual and prints it where possible. Where the |no_break|
+flag is set, we expect the text to form only a small part of a paragraph,
+and it's inappropriate to break here: for instance, for printing the
+"printed name" of an object. Where the flag is clear, however, the text
+is expected to form its own paragraph.
+
+Where |PrintOrRun| is used in breaking mode, which is only for a very few
+properties in I7 (indeed at present only |initial| and |description|),
+the routine called is given the chance to decide whether to print or not.
+It should return |true| or |false| according to whether it did so; this
+allows us to divide the paragraph or not accordingly.
+
+@c
+[ PrintOrRun obj prop no_break  pv st routine_return_value;
+	@push self; self = obj;
+	if (prop == 0) {
+		print (name) prop; routine_return_value = true;
+	} else {
+		routine_return_value = TEXT_TY_Say(obj.prop);
+	}
+	@pull self;
+	if (routine_return_value) {
+		say__p = 1;
+		if (no_break == false) {
+			new_line;
+			DivideParagraphPoint();
+		}
+	}
+
+	return routine_return_value;
+];
+
+[ DA_Number n; print n; ];
+[ DA_TruthState n; if (n==0) print "false"; else print "true"; ];
+

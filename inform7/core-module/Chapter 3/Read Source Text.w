@@ -20,6 +20,7 @@ compulsorily included in every run. So there will certainly be at least two
 files of source text to be read, and quite possibly more.
 
 @d MANDATORY_INSERTED_TEXT L"Include Basic Inform by Graham Nelson. Include the Standard Rules by Graham Nelson.\n\n"
+@d BASIC_MODE_INSERTED_TEXT L"Include Basic Inform by Graham Nelson.\n\n"
 
 =
 source_file *primary_source_file = NULL; /* first to be opened */
@@ -39,7 +40,10 @@ int SourceFiles::read_extension_source_text(extension_file *EF,
 }
 
 void SourceFiles::read_primary_source_text(void) {
-	Feeds::feed_text(MANDATORY_INSERTED_TEXT);
+	if (basic_mode)
+		Feeds::feed_text(BASIC_MODE_INSERTED_TEXT);
+	else
+		Feeds::feed_text(MANDATORY_INSERTED_TEXT);
 	SourceFiles::read_further_mandatory_text();
 	SourceFiles::read_file(filename_of_i7_source, I"your source text", NULL, FALSE);
 }

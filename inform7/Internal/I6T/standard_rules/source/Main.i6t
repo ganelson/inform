@@ -122,32 +122,6 @@ Global location = InformLibrary; ! does not = I7 "location": see below
 Global sline1; Global sline2;
 
 ! [2]
-Global say__p = 1; Global say__pc = 0; Global say__pc_save = 0;
-Global say__n; Global say__comp;
-Global los_rv = false;
-Global parameter_object; ! = I7 "parameter-object" = I7 "container in question"
-Global parameter_value; ! not typesafe in I7
-Array deferred_calling_list --> 27;
-Global property_to_be_totalled; ! used to implement "total P of..."
-Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
-Global suppress_scope_loops;
-Global temporary_value; ! can be used anywhere side-effects can't occur
-
-#ifdef TARGET_ZCODE;
-Constant BLOCKV_STACK_SIZE = 224;
-#ifnot;
-Constant BLOCKV_STACK_SIZE = DynamicMemoryAllocation/4;
-#endif;
-
-Array blockv_stack --> BLOCKV_STACK_SIZE;
-Global I7SFRAME;
-
-Global TEXT_TY_RE_Err = 0;
-
-Array LocalParking --> 64;
-
-! [3]
-Global standard_interpreter = 0;
 Global undo_flag;
 
 ! [4]
@@ -221,7 +195,6 @@ Global pronoun_obj; ! and what object it was thought to refer to
 
 Global players_command = 100; ! = I7 "player's command"
 Global matched_text; ! = I7 "matched text"
-Global reason_the_action_failed; ! = I7 "reason the action failed"
 Global understand_as_mistake_number; ! which form of "Understand... as a mistake"
 Global particular_possession; ! = I7 "particular possession"
 
@@ -265,29 +238,8 @@ Global listing_together; ! object number of one member of a group being listed t
 Global listing_size; ! size of such a group
 Global c_margin; ! current level of indentation printed by WriteListFrom()
 Global inventory_stage = 1; ! 1 or 2 according to the context in which list_together uses
-Global prior_named_noun; ! for adaptive text generation
-Global prior_named_list; ! ditto: length of list of items
-Global prior_named_list_gender; ! ditto: common gender of list of items, or -1
-Global story_tense = 1; ! ditto: present tense
-Global story_viewpoint = 2; ! ditto: second person singular
 
-! [13]
-Global clr_fg = 1; ! foreground colour
-Global clr_bg = 1; ! background colour
-Global clr_fgstatus = 1; ! foreground colour of statusline
-Global clr_bgstatus = 1; ! background colour of statusline
-Global clr_on; ! has colour been enabled by the player?
-Global statuswin_current; ! if writing to top window
-
-! [14]
-Global statuswin_cursize = 0;
-Global statuswin_size = 1;
-
-! [16]
-! Global debug_flag = 0;
-Global debug_rules = 0;
 Global debug_scenes = 0;
-Global debug_rule_nesting;
 
 @p Compass.
 I6 identified compass directions as being children of the pseudo-object
@@ -308,6 +260,30 @@ segment, which contains the English definition.
 
 Default LanguageCases 1;
 
+@p VM-Specific Code.
+These sections of code contain different definitions of the same routines,
+and in some cases the same arrays, to handle low-level functions in the
+virtual machine -- saving the game, performing UNDO, parsing typed text into
+dictionary word addresses and so on.
+
+@c
+#Ifdef TARGET_GLULX;
+{-segment:Glulx.i6t}
+#Endif;
+
+#Ifdef TARGET_ZCODE;
+{-segment:ZMachine.i6t}
+#Endif;
+
+@p Score and Rankings Table.
+The following command tells NI to compile constant definitions for |INITIAL_MAX_SCORE|
+and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
+no ranking table, |RANKING_TABLE| is left undefined, so that we can |#ifdef| this
+possibility later.
+
+@c
+Global MAX_SCORE = INITIAL_MAX_SCORE;
+
 @p The Old Library.
 The I6 library consisted essentially of the parser, the verb routines, and
 a pile of utilities and world-modelling code, of which the biggest single
@@ -319,7 +295,6 @@ lives here:
 @c
 {-segment:Light.i6t}
 {-segment:ListWriter.i6t}
-{-segment:Utilities.i6t}
 
 @p Parser.
 The largest single block of code in the traditional I6 library part of the
@@ -348,33 +323,12 @@ Object InformParser "(Inform Parser)" has proper;
 
 Object InformLibrary "(Inform Library)" has proper;
 
-Array Protect_I7_Arrays --> 16339 12345;
-
 @p Order of Play.
 The |Main| routine, where execution begins, and the primitive rules in the
 principal rulebooks.
 
 @c
 {-segment:OrderOfPlay.i6t}
-
-@p Properties.
-Some either/or properties are compiled to I6 attributes, which must be
-predeclared, so we do that first. (All other properties can simply be
-used without declaration.)
-
-What then follows is a table of property metadata: in particular, specifying
-which properties can be used with which I6 classes or objects. Policing
-this at run-time costs a little speed, but traps many errors of programming,
-and keeps everything typesafe. It is the price we pay for the relatively
-lenient compile-time checking of I7's "object" kind of value. To make
-it as efficient as possible, we calculate offsets into the metadata: this
-has to be done (once) at run-time, with the routine compiled.
-
-@c
-Constant attributed_property_offsets_SIZE 48;
-Array attributed_property_offsets --> attributed_property_offsets_SIZE;
-Constant valued_property_offsets_SIZE (100 + CCOUNT_PROPERTY + INDIV_PROP_START-48);
-Array valued_property_offsets --> valued_property_offsets_SIZE;
 
 @p Activities.
 These are numbered upwards from 0 in order of creation. The following arrays
@@ -423,9 +377,9 @@ material new in I7 usage.
 {-segment:Figures.i6t}
 {-segment:OutOfWorld.i6t}
 {-segment:Printing.i6t}
-{-segment:Relations.i6t}
-{-segment:RTP.i6t}
 {-segment:WorldModel.i6t}
+{-segment:MapRouteFinding.i6t}
+{-segment:RTP.i6t}
 
 @p Parsing Tokens.
 GPRs, scope and noun filters to be used in grammar lines, but no actual

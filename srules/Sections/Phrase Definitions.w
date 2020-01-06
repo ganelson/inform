@@ -41,10 +41,6 @@ Part SR5 - Phrasebook
 
 Section SR5/1/1 - Saying - Values
 
-To say (val - sayable value of kind K)
-	(documented at ph_say):
-	(- {-say:val:K} -).
-
 @ Three little grace-notes for printing values: we can have numbers or
 times of day "in words", rather than given as digits, and we can produce
 an optional "s" where a number not equal to 1 has recently been printed.

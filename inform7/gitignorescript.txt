@@ -20,6 +20,7 @@ problems-module/Woven/
 syntax-module/Woven/
 words-module/Woven/
 
+Tests/Test Basic/_Results_Actual/
 Tests/Test Cases/_Results_Actual/
 Tests/Test Extensions/_Results_Actual/
 Tests/Test Index/_Indices_Actual/Gelix/
@@ -30,4 +31,5 @@ Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
 
 Internal/I6T/basic_inform/*.interb
+Internal/I6T/basic_inform_extras/*.interb
 Internal/I6T/standard_rules/*.interb

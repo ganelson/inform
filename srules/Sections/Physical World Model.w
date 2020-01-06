@@ -176,7 +176,6 @@ after an object is created).
 =
 An object has a text called specification.
 An object has a text called indefinite appearance text.
-An object has a value called variable initial value.
 An object has a text called list grouping key.
 
 @ These, on the other hand, are quite genuine:

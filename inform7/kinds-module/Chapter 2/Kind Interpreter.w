@@ -504,6 +504,10 @@ void Kinds::Interpreter::include_templates_for_kinds(void) {
 
 void Kinds::Interpreter::transcribe_kind_template(kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
+	#ifdef CORE_MODULE
+	if ((CoreMain::basic_mode()) && (Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
+		return;
+	#endif
 	text_stream *p = ttd->template_text;
 	int i = 0;
 	while (Str::get_at(p, i)) {

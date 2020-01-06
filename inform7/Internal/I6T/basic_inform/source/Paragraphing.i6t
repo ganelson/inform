@@ -1,0 +1,233 @@
+B/para: Paragraphing.
+ 
+@Purpose: To manage the line skips which space paragraphs out.
+
+@-------------------------------------------------------------------------------
+
+@p Paragraph Control.
+Ah, yes: the paragraph breaking algorithm. In {\it \TeX: The Program},
+Donald Knuth writes at $\S 768$: "It's sort of a miracle whenever |\halign|
+and |\valign| work, because they cut across so many of the control structures
+of \TeX." It's sort of a miracle whenever Inform 7's paragraph breaking
+system works, too. Most users probably imagine that it's implemented by
+having I7 look at where the cursor currently is (at the start of a line or
+not) and whether a line has just been skipped. In fact, the virtual machines
+simply do not offer facilities like that, and so we have to use our own
+book-keeping. Given the huge number of ways in which text can be printed,
+this is a delicate business. For some years now, "spacing bugs" -- those
+where a spurious extra skipped line appears in a paragraph break, or
+where, conversely, no line is skipped at all -- have been the least
+welcome in the Inform bugs database.
+
+The basic method is to set |say__p|, the paragraph flag, when we print any
+matter; every so often we reach a "divide paragraph" point -- for instance
+when one rule has finished and before another is about to start -- and at
+those positions we look for |say__p|, and print a skipped line (and clear
+|say__p| again) if we find it. Thus:
+
+	|> WAIT|
+	|The clock ticks ominously.| {\it ...first rule}
+	|    | {\it ...skipped line printed at a Divide Paragraph point}
+	|Mme Tourmalet rises from her chair and slips out.| {\it second rule}
+	|    | {\it ...skipped line printed at a Divide Paragraph point}
+	|> |
+
+A divide paragraph point occurs between any two rules in an action rulebook,
+but not an activity rulebook: many activities exist to print text, such as
+the names of objects, and there would be wild spacing accidents if paragraphs
+were divided there. Inform places DPPs elsewhere, too: and the text substitution
+"[conditional paragraph break]" allows the user to place one anywhere.
+
+A traditional layout convention handed down from Infocom makes an exception
+of the first paragraph to appear after the prompt, but only in one situation.
+Ordinarily, the first paragraph of any turn appears straight after the prompt:
+
+	|> EXAMINE DOG|
+	|Mme Tourmalet's borzoi looks as if it means fashion, not business.|
+
+The command is echoed on screen as the player types, but this doesn't set the
+paragraph flag, which is still clear when the text "Mme Tourmalet's..."
+begins to be printed. The single exception occurs when the command calls for
+the player to go to a new location, when a skipped line is printed before the
+room description for the new room. Thus:
+
+	|> SOUTH|
+	|    | {\it ...the "going look break"}
+	|Rocky Beach|
+
+(Note that this is not inherent in the looking action:
+
+	|> LOOK|
+	|Rocky Beach|
+
+...which obeys the standard paragraphing conventions.)
+
+So much for automatic paragraph breaks. However, we need a variety of different
+ways explicitly to control paragraphs, in order to accommodate traditional
+layout conventions handed down from Infocom.
+
+The simplest exceptional kind of paragraph break is a "command
+clarification break", in which a single new-line is printed but there is
+no skipped line: as the name implies, it's traditionally used when a
+command such as OPEN DOOR is clarified. For example:
+
+	|(first unlocking the oak door)| {\it ...now a command clarification break}
+	|You open the oak door.|
+
+This is not quite the same thing as a "run paragraph on" break, in which
+we also deliberately suppress the skipped line, but make an exception for
+the skipped line which ought to appear last before the prompt: the idea is
+to merge two or more paragraphs together.
+
+	|> TAKE ALL|
+	|marmot: Taken.| {\it ...we run paragraph on here}
+	|weasel: Taken.| {\it ...and also here}
+	|    | {\it ...despite which the final skip does occur}
+	|> | {\it ...before the next prompt}
+
+A more complicated case is "special look spacing", used for the break which
+occurs after the (boldface) short name of a room description is printed. This
+is tricky because it is sometimes followed directly by a long description, and
+we don't want a skipped line:
+
+	|Villa Christiane| {\it ...a special look spacing break}
+	|The walled garden of a villa in Cap d'Agde.|
+	|    | {\it ...a Divide Paragraph break}
+	|Mme Tourmalet's borzoi lazes in the long grass.|
+
+But sometimes it is followed directly by a subsequent paragraph, and again
+we want no skip:
+
+	|Villa Christiane| {\it ...a special look spacing break}
+	|Mme Tourmalet's borzoi lazes in the long grass.|
+
+And sometimes it is the only content of the room description and is followed
+only by the prompt:
+
+	|Villa Christiane| {\it ...a special look spacing break}
+	|    | {\it ...a break inserted before the prompt}
+	|> |
+
+To recap, we have five kinds of paragraph break:
+
+(a) Standard breaks at "divide paragraph points", used between rules.
+(b) The "going look break", used before the room description after going to
+a new room.
+(c) A "command clarification break", used after text clarifying a command.
+(d) A "run paragraph on" break, used to merge multiple paragraphs into a
+single block of text.
+(e) The "special look spacing" break, used after the boldface headline of
+a room description.
+
+We now have to implement all of these behaviours. The code, while very simple,
+is highly prone to behaving unexpectedly if changes are made, simply because
+of the huge number of circumstances in which paragraphs are printed: so change
+nothing without very careful testing.
+
+@p State.
+The current state is stored in a combination of two global variables:
+
+(1) |say__p|, the "say paragraph" flag, which is set if a paragraph break
+needs to be printed before the next text can begin;
+(2) |say__pc|, originally named as the "paragraph completed" flag, but
+which is now a bitmap:
+(-2a) |PARA_COMPLETED| is set if a standard paragraph break has been made
+since the last time the flag was cleared;
+(-2b) |PARA_PROMPTSKIP| is set to indicate that the current printing position
+does not follow a skipped line, and that further material is expected which
+will run on from the previous paragraph, but that if no further material turns
+up then a skipped line would be needed before the next prompt;
+(-2c) |PARA_SUPPRESSPROMPTSKIP| is set to indicate that, despite |PARA_PROMPTSKIP|
+being set, no skipped line is needed before the prompt after all;
+(-2d) |PARA_NORULEBOOKBREAKS| suppresses divide paragraph points in between
+rules in rulebooks; it treats all rulebooks, and in particular action rulebooks,
+the way activity rulebooks are treated. (The flag is used for short periods
+only and never across turn boundaries, prompts and so on.)
+(-2e) |PARA_CONTENTEXPECTED| is set after a paragraph division as a signal
+that if any contents looks likely to be printed soon then |say__p| needs
+to be set, because a successor paragraph will then have started. This
+is checked by calling |ParaContent()| -- while it's slow to have to call
+this routine so often, that's better than compiling inline code with the
+same effect, because minimising compiled code size is more important, and
+speed is never a big deal when printing.
+
+Not all printing is to the screen: sometimes the output is to a file, or to
+memory, and in that case we want to start the switched output at a clear
+paragraphing state and then go back to the screen afterwards without any
+sign of change. The correct way to do this is to push the |say__p| and
+|say__pc| variables onto the VM stack and call |ClearParagraphing()| before
+starting to print to the new stream, and then pull the variables back again
+before resuming printing to the old stream.
+
+In no other case should any code alter |say__pc| except via the routines
+below.
+
+@c
+!Constant TRACE_I7_SPACING;
+
+[ ClearParagraphing r;
+	say__p = 0; say__pc = 0;
+];
+
+[ DivideParagraphPoint;
+	#ifdef TRACE_I7_SPACING; print "[DPP", say__p, say__pc, "]"; #endif;
+	if (say__p) {
+		new_line; say__p = 0; say__pc = say__pc | PARA_COMPLETED;
+		say__pc_save = true;
+		if (say__pc & PARA_PROMPTSKIP) say__pc = say__pc - PARA_PROMPTSKIP;
+		if (say__pc & PARA_SUPPRESSPROMPTSKIP) say__pc = say__pc - PARA_SUPPRESSPROMPTSKIP;
+	}
+	#ifdef TRACE_I7_SPACING; print "[-->", say__p, say__pc, "]"; #endif;
+	say__pc = say__pc | PARA_CONTENTEXPECTED;
+	say__pc_save = (say__pc & PARA_COMPLETED);
+];
+
+[ AdjustParagraphPoint;
+	#ifdef TRACE_I7_SPACING; print "[APP ", say__p, " ", say__pc, " ", say__pc_save, "]^"; #endif;
+	if (say__pc_save) say__pc = (say__pc | PARA_COMPLETED);
+];
+
+[ ParaContent;
+	if (say__pc & PARA_CONTENTEXPECTED) {
+		say__pc = say__pc - PARA_CONTENTEXPECTED;
+		say__p = 1;
+	}
+];
+
+[ GoingLookBreak;
+	if (say__pc & PARA_COMPLETED == 0) new_line;
+	ClearParagraphing(10);
+];
+
+[ CommandClarificationBreak;
+	new_line;
+	ClearParagraphing(11);
+];
+
+[ RunParagraphOn;
+	#ifdef TRACE_I7_SPACING; print "[RPO", say__p, say__pc, "]"; #endif;
+	say__p = 0;
+	say__pc = say__pc | PARA_PROMPTSKIP;
+	say__pc = say__pc | PARA_SUPPRESSPROMPTSKIP;
+];
+
+[ SpecialLookSpacingBreak;
+	#ifdef TRACE_I7_SPACING; print "[SLS", say__p, say__pc, "]"; #endif;
+	say__p = 0;
+	say__pc = say__pc | PARA_PROMPTSKIP;
+];
+
+[ EnsureBreakBeforePrompt;
+	if ((say__p) ||
+		((say__pc & PARA_PROMPTSKIP) && ((say__pc & PARA_SUPPRESSPROMPTSKIP)==0)))
+		new_line;
+	ClearParagraphing(12);
+];
+
+[ PrintSingleParagraph matter;
+	say__p = 1;
+	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
+	TEXT_TY_Say(matter);
+	DivideParagraphPoint(13);
+	say__pc = 0;
+];

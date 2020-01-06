@@ -343,8 +343,9 @@ Rulebooks are created in a similar way, and again are numbered upwards from
 
 @c
 Constant STARTUP_RB                      = 0;
-Constant TURN_SEQUENCE_RB                = 1;
-Constant SHUTDOWN_RB                     = 2;
+Constant SHUTDOWN_RB                     = 1;
+
+Constant TURN_SEQUENCE_RB                = 2;
 
 Constant WHEN_PLAY_BEGINS_RB             = 4;
 Constant WHEN_PLAY_ENDS_RB               = 5;
@@ -539,15 +540,6 @@ zero value for the "description" kind of value.
 
 @c
 [ Prop_Falsity reason obj; return 0; ];
-
-@p Score and Rankings Table.
-The following command tells NI to compile constant definitions for |INITIAL_MAX_SCORE|
-and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
-no ranking table, |RANKING_TABLE| is left undefined, so that we can |#ifdef| this
-possibility later.
-
-@c
-Global MAX_SCORE = INITIAL_MAX_SCORE;
 
 @p Template Attributes.
 An I6 attribute is equivalent to an I7 "either/or property", though the

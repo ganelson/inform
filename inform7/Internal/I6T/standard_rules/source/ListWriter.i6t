@@ -238,21 +238,6 @@ prior named list number and gender for everything matching a description.
 	return 3;
 ];
 
-[ PrintVerbAsValue vb;
-	if (vb == 0) print "(no verb)";
-	else { print "verb "; vb(1); }
-];
-
-[ VerbIsMeaningful vb;
-	if ((vb) && (BlkValueCompare(vb(CV_MEANING), MEANINGLESS_RR) ~= 0)) rtrue;
-	rfalse;
-];
-
-[ VerbIsModal vb;
-	if ((vb) && (vb(CV_MODAL))) rtrue;
-	rfalse;
-];
-
 @p List Writer Regard Storage.
 This is somewhat hacky, but enables "[regarding list writer internals]".
 
@@ -454,6 +439,29 @@ Again, the return value is the new first entry in the raw list.
 	}
 	return obj;
 ];
+
+@p GroupChildren.
+The following runs through the child-objects of |par| in the I6 object tree,
+and moves those having a given |list_property| property value together, to
+become the eldest children. It preserves the ordering in between those
+objects, and also in between those not having that property value.
+
+We do this by temporarily moving objects into and out of |in_obj| and |out_obj|,
+objects which in all other circumstances never have children in the tree.
+
+@c
+[ GroupChildren par value;
+    while (child(par) ~= 0) {
+        if (LT_Compare(child(par).list_together, value) ~= 0)
+        	move child(par) to out_obj;
+        else
+        	move child(par) to in_obj;
+    }
+    while (child(in_obj) ~= 0)  move child(in_obj) to par;
+    while (child(out_obj) ~= 0) move child(out_obj) to par;
+    return child(par);
+];
+
 #Ifdef DBLW;
 [ DiagnoseSortList obj memb;
     for (memb=child(obj): memb~=nothing: memb=sibling(memb)) print memb, " --> "; new_line;

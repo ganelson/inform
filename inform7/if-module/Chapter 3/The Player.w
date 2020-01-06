@@ -340,7 +340,7 @@ void PL::Player::InitialSituation(void) {
 		PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);
 		PL::Player::InitialSituation_define(START_TIME_INIS_HL, 3);
 		PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
-		
+	
 		inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		NonlocalVariables::emit_initial_value(player_VAR);
