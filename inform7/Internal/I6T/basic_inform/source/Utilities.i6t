@@ -165,3 +165,30 @@ of course, in a state of sin" (von Neumann).
 	rfalse;
 ];
 
+@p Extracting Verb Numbers.
+A long tale of woe lies behind the following. Infocom games stored verb numbers
+in a single byte in dictionary entries, but they did so counting downwards, so
+that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
+suit so that debugging of Inform 1 could be aided by using the then-available
+tools for dumping dictionaries from Infocom story files; by using the Infocom
+format for dictionary tables, Inform's life was easier.
+
+But there was an implicit restriction there of 255 distinct verbs (not 256
+since not all words were verbs). When Glulx raised almost all of the Z-machine
+limits, it made space for 65535 verbs instead of 255, but it appears that
+nobody remembered to implement this in I6-for-Glulx and the Glulx form of
+the I6 library. This was only put right in March 2009, and the following
+routine was added to concentrate lookups of this field in one place.
+
+@c
+[ DictionaryWordToVerbNum dword verbnum;
+#Ifdef TARGET_ZCODE;
+	verbnum = $ff-(dword->#dict_par2);
+#Ifnot; ! GLULX
+	dword = dword + #dict_par2 - 1;
+    @aloads dword 0 verbnum;
+    verbnum = $ffff-verbnum;
+#Endif;
+	return verbnum;
+];
+

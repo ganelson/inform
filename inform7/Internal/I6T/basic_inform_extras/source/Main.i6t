@@ -56,15 +56,19 @@ Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
 	rfalse;
 ];
 
+[ DrawStatusLine width posb;
+];
+
 @p Veneer.
 
 @c
-#Ifdef TARGET_GLULX;
+#Ifdef TARGET_ZCODE;
 [ OC__Cl obj cla j a n objflag;
 
 	@jl obj 1 ?NotObj;
 	@jg obj max_z_object ?NotObj;
 	@inc objflag;
+	.NotObj;
 
 	@je cla Object Class ?ObjOrClass;
 	@je cla Routine String ?RoutOrStr;

@@ -42,6 +42,7 @@ int suppress_panel_changes = FALSE;
 void Data::Objects::page_World(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
 	if (existing_story_file) return; /* in this case there is no model world */
+	if (basic_mode) return; /* in this case there is no model world */
 
 	PL::SpatialMap::establish_benchmark_room();
 	PL::EPSMap::traverse_for_map_parameters(1);

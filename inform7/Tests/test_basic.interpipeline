@@ -1,0 +1,12 @@
+read <- *in
+link
+merge-template <- none
+parse-linked-matter
+resolve-conditional-compilation
+assimilate
+resolve-external-symbols
+inspect-plugs
+make-identifiers-unique
+reconcile-verbs
+eliminate-redundant-labels
+generate inform6 -> *out

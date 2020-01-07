@@ -1,0 +1,2 @@
+To begin:
+	say "Hello world."

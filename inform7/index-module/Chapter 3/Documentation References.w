@@ -312,6 +312,7 @@ and we need to search fairly seldom:
 
 =
 documentation_ref *Index::DocReferences::name_to_dr(text_stream *fn) {
+	if (basic_mode) return NULL;
 	documentation_ref *dr;
 	LOOP_OVER(dr, documentation_ref)
 		if (Str::eq(dr->doc_symbol, fn))
@@ -324,7 +325,7 @@ documentation_ref *Index::DocReferences::name_to_dr(text_stream *fn) {
 
 @<Complain about a bad documentation reference@> =
 	if (problem_count == 0) {
-		LOG("Bad ref was <%s>. Known references are:\n", fn);
+		LOG("Bad ref was <%S>. Known references are:\n", fn);
 		LOOP_OVER(dr, documentation_ref)
 			LOG("%S = %+N\n", dr->doc_symbol, dr->section);
 		internal_error("Bad index documentation reference");
