@@ -413,7 +413,7 @@ void UseOptions::compile(void) {
 			text_stream *UO = Str::new();
 			TemplateFiles::interpret(UO,
 				Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(uo->option_expansion)) + 1),
-				NULL, uo->minimum_setting_value);
+				NULL, uo->minimum_setting_value, NULL);
 			WRITE_TO(UO, "\n");
 			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, UO, NULL);
 		}

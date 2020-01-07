@@ -523,6 +523,8 @@ RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
 integration: \
 		$(INTOOLSBUILTIN) \
 		$(INTERNAL)/Languages/English/Syntax.preform \
+		$(INTERNAL)/Languages/English/Standard.indext \
+		$(INTERNAL)/Languages/English/Basic.indext \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
 		$(INTERNAL)/I6T/basic_inform/arch-32d.interb \
@@ -578,7 +580,7 @@ define transfer-intools
 	cp -f $(INTESTX) $(BUILTINCOMPS)/intest
 endef
 
-# (b) Copying Preform definition into the app
+# (b) Copying Preform definition and index things into the app
 
 $(INTERNAL)/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
 	$(call transfer-preform)
@@ -586,9 +588,17 @@ $(INTERNAL)/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.prefo
 $(INFORM7WEB)/Tangled/Syntax.preform:
 	$(MAKE) -f $(INFORM7MAKER)
 
+$(INTERNAL)/Languages/English/Standard.indext: inform7/Internal/Languages/English/Standard.indext
+	$(call transfer-preform)
+
+$(INTERNAL)/Languages/English/Basic.indext: inform7/Internal/Languages/English/Basic.indext
+	$(call transfer-preform)
+
 define transfer-preform
 	cp -f 'inform7/Tangled/Syntax.preform' "$(INTERNAL)/Languages/English/Syntax.preform"
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
+	cp -f 'inform7/Internal/Languages/English/Standard.indext' "$(INTERNAL)/Languages/English/Standard.indext"
+	cp -f 'inform7/Internal/Languages/English/Basic.indext' "$(INTERNAL)/Languages/English/Basic.indext"
 endef
 
 # (c) Copying the Standard Rules into the app

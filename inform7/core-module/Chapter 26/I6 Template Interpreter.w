@@ -129,17 +129,27 @@ run, whatever problems or disasters may occur.
 above:
 
 =
-void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name, int N_escape) {
+void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name,
+	int N_escape, filename *index_template) {
 	FILE *Input_File = NULL;
 	TEMPORARY_TEXT(default_command);
 	TEMPORARY_TEXT(heading_name);
-	int active = TRUE, indexing = FALSE, skip_part = FALSE, comment = TRUE;
+	int active = TRUE, indexing = (index_template)?TRUE:FALSE, skip_part = FALSE, comment = TRUE;
 	int col = 1, cr, sfp = 0;
 
 	if (Str::len(segment_name) > 0) {
 		@<Open the I6 template file@>;
 		comment = TRUE;
-	} else comment = FALSE;
+	} else {
+		if (index_template) {
+			Input_File = Filenames::fopen(index_template, "r");
+			if (Input_File == NULL) {
+				Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
+					"I couldn't open the template file for the index.");
+			}
+		}
+		comment = FALSE;
+	}
 
 	TEMPORARY_TEXT(command);
 	TEMPORARY_TEXT(argument);

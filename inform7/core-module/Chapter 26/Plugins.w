@@ -340,7 +340,7 @@ void Plugins::Manage::load_types(void) {
 			if (P->has_template_file) {
 				TEMPORARY_TEXT(segment_name);
 				WRITE_TO(segment_name, "Load-%s.i6t", P->has_template_file);
-				TemplateFiles::interpret(NULL, NULL, segment_name, -1);
+				TemplateFiles::interpret(NULL, NULL, segment_name, -1, NULL);
 				DISCARD_TEXT(segment_name);
 			}
 		}

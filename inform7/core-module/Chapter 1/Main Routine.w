@@ -489,7 +489,11 @@ with "Output.i6t".
 	if (basic_mode == FALSE)
 		PL::Bibliographic::Release::write_ifiction_and_blurb();
 	if (problem_count == 0) {
-		TemplateFiles::interpret(NULL, NULL, I"Index.i6t", -1);
+		natural_language *nl = NaturalLanguages::English();
+		filename *index_template =
+			Filenames::in_folder(nl->nl_bundle_path,
+				(basic_mode)?(I"Basic.indext"):(I"Standard.indext"));
+		TemplateFiles::interpret(NULL, NULL, NULL, -1, index_template);
 	}
 
 @<Post mortem logging@> =
