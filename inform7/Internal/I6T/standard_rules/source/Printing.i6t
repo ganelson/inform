@@ -110,13 +110,6 @@ in "ZMachine.i6t".
 
 @c
 [ DrawStatusLine width posb;
-	#Ifdef TARGET_ZCODE;
-	#Iftrue (#version_number == 6);
-	Z6_DrawStatusLine();
-	return;
-	#Endif;
-	#Endif;
-	
 	@push say__p; @push say__pc;
 	BeginActivity(CONSTRUCTING_STATUS_LINE_ACT);
 	VM_StatusLineHeight(1); VM_MoveCursorInStatusLine(1, 1); 

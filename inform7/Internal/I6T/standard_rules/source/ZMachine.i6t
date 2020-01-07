@@ -174,19 +174,11 @@ opcode, and so Glulx followed suit.
 		print "Standard interpreter ",
 			standard_interpreter/256, ".", standard_interpreter%256,
 			" (", HDR_TERPNUMBER->0;
-		#Iftrue (#version_number == 6);
-		print (char) '.', HDR_TERPVERSION->0;
-		#Ifnot;
 		print (char) HDR_TERPVERSION->0;
-		#Endif;
 		print ")^";
 	} else {
 		print "Interpreter ", HDR_TERPNUMBER->0, " Version ";
-		#Iftrue (#version_number == 6);
-		print HDR_TERPVERSION->0;
-		#Ifnot;
 		print (char) HDR_TERPVERSION->0;
-		#Endif;
 		print "^";
 	}
 	ShowExtensionVersions();

@@ -121,15 +121,6 @@ to document all of that.
 	    for (i=2: i<=(a_buffer->1)+1: i++) print (char) a_buffer->i;
 	    print "^";
     }
-
-    #Iftrue (#version_number == 6);
-    @output_stream -1;
-    @loadb a_buffer 1 -> sp;
-    @add a_buffer 2 -> sp;
-    @print_table sp sp;
-    new_line;
-    @output_stream 1;
-    #Endif;
 ];
 
 @p Buffer Functions.
@@ -282,23 +273,19 @@ is viable on recent revisions of Glulx.
 ];
 
 @p Audiovisual Resources.
-The Z-machine only barely supports figures and sound effects. I7 only allows
-us to use them for Version 6 of the Z-machine, even though sound effects have
-a longer pedigree and Infocom used them on some version 5 and even some
-version 3 works: really, though, from an I7 point of view we would prefer
-that anyone needing figures and sounds use Glulx instead.
+The Z-machine only barely supports figures and sound effects, and only in
+version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
+have a longer pedigree and Infocom used them on some version 5 and even some
+version 3 works: really, though, from an Inform point of view we would prefer
+that anyone needing figures and sounds use Glulx instead. (Inform 6 remains
+available for those who really need to make audiovisual effects in these
+long-gone formats.)
 
 @c
 [ VM_Picture resource_ID;
-	#IFTRUE #version_number == 6; ! Z-machine version 6
-	@draw_picture resource_ID;
-	#ENDIF;
 ];
 
 [ VM_SoundEffect resource_ID;
-	#IFTRUE #version_number == 6; ! Z-machine version 6
-	@sound_effect resource_ID;
-	#ENDIF;
 ];
 
 @p Typography.
@@ -395,16 +382,7 @@ in order to keep it accurate.
     }
 ];
 
-[ VM_ScreenWidth  width charw;
-	#Iftrue (#version_number == 6);
-    @get_wind_prop 1 3 -> width;
-    @get_wind_prop 1 13 -> charw;
-    charw = charw & $FF;
-    return (width+charw-1) / charw;
-	#Ifnot;
-	return (HDR_SCREENWCHARS->0);
-	#Endif;
-];
+[ VM_ScreenWidth  width charw; return (HDR_SCREENWCHARS->0); ];
 
 [ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
 
@@ -444,9 +422,6 @@ which is greatly superior in this respect).
         VM_SetWindowColours(clr_fgstatus, clr_bgstatus, 1, true);
         VM_ClearScreen();
     }
-    #Iftrue (#version_number == 6); ! request screen update
-    (0-->8) = (0-->8) | $$00000100;
-    #Endif;
 ];
 
 @p Main Window.
@@ -496,86 +471,14 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
         line = 1;
         column = 1;
     }
-    #Iftrue (#version_number == 6);
-    Z6_MoveCursor(line, column);
-    #Ifnot;
     @set_cursor line column;
-    #Endif;
 	statuswin_current = true;
 ];
 
-[ Z6_MoveCursor line column  charw charh; ! 1-based position on text grid
-#Iftrue (#version_number == 6);
-	@get_wind_prop 1 13 -> charw; ! font size
-	@log_shift charw $FFF8 -> charh;
-	charw = charw / $100;
-	line = 1 + charh*(line-1);
-	column = 1 + charw*(column-1);
-	@set_cursor line column;
-#Endif;
-];
-
 [ VM_StatusLineHeight height  wx wy x y charh;
-	#Iftrue (#version_number == 6);
-    ! Split the window. Standard 1.0 interpreters should keep the window 0
-    ! cursor in the same absolute position, but older interpreters,
-    ! including Infocom's don't - they keep the window 0 cursor in the
-    ! same position relative to its origin. We therefore compensate
-    ! manually.
-    @get_wind_prop 0 0 -> wy; @get_wind_prop 0 1 -> wx;
-    @get_wind_prop 0 13 -> charh; @log_shift charh $FFF8 -> charh;
-    @get_wind_prop 0 4 -> y; @get_wind_prop 0 5 -> x;
-    height = height * charh;
-    @split_window height;
-    y = y - height + wy - 1;
-    if (y < 1) y = 1;
-    x = x + wx - 1;
-    @set_cursor y x 0;
-    statuswin_cursize = height;
-	#Ifnot;
     if (statuswin_cursize ~= height)
         @split_window height;
     statuswin_cursize = height;
-	#Endif;
-];
-
-[ Z6_DrawStatusLine width x charw scw;
-	#Iftrue (#version_number == 6);
-	(0-->8) = (0-->8) &~ $$00000100;
-	@push say__p; @push say__pc;
-	BeginActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	VM_StatusLineHeight(statuswin_size);
-	! Now clear the window. This isn't totally trivial. Our approach is to select the
-	! fixed space font, measure its width, and print an appropriate
-	! number of spaces. We round up if the screen isn't a whole number
-	! of characters wide, and rely on window 1 being set to clip by default.
-	VM_MoveCursorInStatusLine(1, 1);
-	@set_font 4 -> x;
-	width = VM_ScreenWidth();
-	spaces width;
-	ClearParagraphing(8);
-	if (ForActivity(CONSTRUCTING_STATUS_LINE_ACT) == false) {
-		! Back to standard font for the display. We use output_stream 3 to
-		! measure the space required, the aim being to get 50 characters
-		! worth of space for the location name.
-		VM_MoveCursorInStatusLine(1, 2);
-		@set_font 1 -> x;
-		TEXT_TY_Say(left_hand_status_line);
-		@get_wind_prop 1 3 -> width;
-		@get_wind_prop 1 13 -> charw;
-		charw = charw & $FF;
-		@output_stream 3 StorageForShortName;
-		TEXT_TY_Say(right_hand_status_line);
-		@output_stream -3; scw = HDR_PIXELSTO3-->0 + charw;
-		x = 1+width-scw;
-		@set_cursor 1 x; TEXT_TY_Say(right_hand_status_line);
-	}
-	! Reselect roman, as Infocom's interpreters go funny if reverse is selected twice.
-	VM_MainWindow();
-	ClearParagraphing(8);
-	EndActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	@pull say__pc; @pull say__p;
-	#Endif;
 ];
 
 @p Quotation Boxes.
