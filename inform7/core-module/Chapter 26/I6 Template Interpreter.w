@@ -3,9 +3,7 @@
 Inform 6 meta-language is the language used by template files (with
 extension |.i6t|). It is not itself I6 code, but a list of instructions for
 making I6 code: most of the content is to be copied over verbatim, but certain
-escape sequences cause Inform to insert more elaborate material, or to do something
-active. The entire top-level logic of Inform is carried out by interpreting the
-|Main.i6t| file in this way.
+escape sequences cause Inform to do something active.
 
 @h Definitions.
 
@@ -384,7 +382,7 @@ Note that because we pass the current output file handle |of| through to
 this new invocation, it will have the file open if we do, and closed if
 we do. It will run in active mode, but that's fine, because we're in active
 mode too. It won't run in indexing mode, so |{-segment:...}| can't be used
-safely between |{-open-index}| and |{-close-index}|.
+in a |.indext| file.
 
 =
 @<Act on I6T command and argument@> =
@@ -414,15 +412,11 @@ not valid as a free-standing command: it can only occur at the end of a
 	}
 
 @h Indexing commands.
-Commands in between |{-open-index}| and |{-close-index}| are skipped when
-Inform has been called with a command-line switch to disable the index. (As is
-done by |intest|, to save time.) |{-index:name}| opens the index file
-called |name|.
+Commands in a |.indext| file are skipped when Inform has been called with a 
+ommand-line switch to disable the index. (As is done by |intest|, to save
+time.) |{-index:name}| opens the index file called |name|.
 
 @<Act on an I6T indexing command@> =
-	if (Str::eq_wide_string(command, L"open-index")) { indexing = TRUE; continue; }
-	if (Str::eq_wide_string(command, L"close-index")) { indexing = FALSE; continue; }
-
 	if ((indexing) && (do_not_generate_index)) continue;
 	if (Str::eq_wide_string(command, L"index-complete")) { if (indexing) Index::complete(); continue; }
 
