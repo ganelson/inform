@@ -452,25 +452,25 @@ with "Output.i6t".
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
 			inter_library *bi =
-				CodeGen::Libraries::find(I"basic_inform", NO_FS_AREAS, pathname_of_i6t_files);
+				CodeGen::Libraries::find(I"basic_inform", NO_FS_AREAS, pathname_of_inter_resources);
 			if (bi == NULL)
 				Problems::Fatal::issue("The Basic Inform inter library cannot be found");
 			ADD_TO_LINKED_LIST(bi, inter_library, requirements_list);
 			if (basic_mode == FALSE) {
 				inter_library *stdr =
-					CodeGen::Libraries::find(I"standard_rules", NO_FS_AREAS, pathname_of_i6t_files);
+					CodeGen::Libraries::find(I"standard_rules", NO_FS_AREAS, pathname_of_inter_resources);
 				if (stdr == NULL)
 					Problems::Fatal::issue("The Standard Rules inter library cannot be found");
 				ADD_TO_LINKED_LIST(stdr, inter_library, requirements_list);
 			} else {
 				inter_library *bix =
-					CodeGen::Libraries::find(I"basic_inform_extras", NO_FS_AREAS, pathname_of_i6t_files);
+					CodeGen::Libraries::find(I"basic_inform_extras", NO_FS_AREAS, pathname_of_inter_resources);
 				if (bix == NULL)
 					Problems::Fatal::issue("The The Basic Inform (extras) inter library cannot be found");
 				ADD_TO_LINKED_LIST(bix, inter_library, requirements_list);
 			}
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, NO_FS_AREAS, pathname_of_i6t_files, requirements_list);
+				SS, NO_FS_AREAS, pathname_of_inter_resources, requirements_list);
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
@@ -493,7 +493,7 @@ with "Output.i6t".
 		filename *index_template =
 			Filenames::in_folder(nl->nl_bundle_path,
 				(basic_mode)?(I"Basic.indext"):(I"Standard.indext"));
-		TemplateFiles::interpret(NULL, NULL, NULL, -1, index_template);
+		TemplateFiles::interpret(NULL, NULL, NULL, -1, index_template, FALSE);
 	}
 
 @<Post mortem logging@> =

@@ -30,6 +30,6 @@ Tests/Test Inter/_Inter_Binary/
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
 
-Internal/I6T/basic_inform/*.interb
-Internal/I6T/basic_inform_extras/*.interb
-Internal/I6T/standard_rules/*.interb
+Internal/Inter/basic_inform/*.interb
+Internal/Inter/basic_inform_extras/*.interb
+Internal/Inter/standard_rules/*.interb

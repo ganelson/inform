@@ -40,8 +40,7 @@ the preamble and the material in every part before the |@c| heading: these
 are commentary.
 
 It actually doesn't matter if a template file contains lines longer than
-this, so long as they do not occur inside |{-lines:...}| and |{-endlines}|,
-and so long as no individual braced command |{-...}| exceeds this length.
+this, so long as no individual braced command |{-...}| exceeds this length.
 
 @d MAX_I6T_LINE_LENGTH 1024
 
@@ -55,23 +54,7 @@ special escape syntax:
 	|{-command:argument}|
 
 tells Inform to act immediately on the I6T command given, with the
-argument supplied. One of these commands is special:
-
-	|{-lines:commandname}|
-
-tells Inform that all subsequent lines in the I6T file, up to the next
-|{-endlines}|, are to be read as a series of arguments for the
-|commandname| command. Thus,
-
-	|{-lines:admire}|
-	|Jackson Pollock|
-	|Paul Klee|
-	|Wassily Kandinsky|
-	|{-endlines}|
-
-is a shorthand form for:
-
-	|{-admire:Jackson Pollock}{-admire:Paul Klee}{-admire:Wassily Kandinsky}|
+argument supplied.
 
 The following comment syntax is useful mainly for commenting out commands:
 
@@ -128,9 +111,8 @@ above:
 
 =
 void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name,
-	int N_escape, filename *index_template) {
+	int N_escape, filename *index_template, int kinds_mode) {
 	FILE *Input_File = NULL;
-	TEMPORARY_TEXT(default_command);
 	TEMPORARY_TEXT(heading_name);
 	int active = TRUE, indexing = (index_template)?TRUE:FALSE, skip_part = FALSE, comment = TRUE;
 	int col = 1, cr, sfp = 0;
@@ -138,6 +120,7 @@ void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_n
 	if (Str::len(segment_name) > 0) {
 		@<Open the I6 template file@>;
 		comment = TRUE;
+		if (kinds_mode) comment = FALSE;
 	} else {
 		if (index_template) {
 			Input_File = Filenames::fopen(index_template, "r");
@@ -163,13 +146,12 @@ void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_n
 			continue;
 		}
 		if (comment == FALSE) {
-			if (Str::len(default_command) > 0) {
+			if (kinds_mode) {
 				if ((cr == 10) || (cr == 13)) continue; /* skip blank lines here */
-				@<Set the command to the default, and read rest of line as argument@>;
+				@<Set a special command, and read rest of line as argument@>;
 				if ((Str::get_first_char(argument) == '!') ||
 					(Str::get_first_char(argument) == 0)) continue; /* skip blanks and comments */
-				if (Str::eq_wide_string(argument, L"{-endlines}")) Str::clear(default_command);
-				else @<Act on I6T command and argument@>;
+				@<Act on I6T command and argument@>;
 				continue;
 			}
 			if (cr == '{') {
@@ -209,7 +191,6 @@ void TemplateFiles::interpret(OUTPUT_STREAM, wchar_t *sf, text_stream *segment_n
 	DISCARD_TEXT(argument);
 	if (Input_File) { if (DL) STREAM_FLUSH(DL); fclose(Input_File); }
 
-	DISCARD_TEXT(default_command);
 	DISCARD_TEXT(heading_name);
 }
 
@@ -219,9 +200,12 @@ installed area and lastly (but almost always) in the built-in resources.
 @<Open the I6 template file@> =
 	Input_File = NULL;
 	for (int area=0; area<NO_FS_AREAS; area++)
-		if (Input_File == NULL)
+		if (Input_File == NULL) {
+			pathname *P = pathname_of_inter_resources[area];
+			if (kinds_mode) P = Pathnames::subfolder(P, I"kinds");
 			Input_File = Filenames::fopen(
-				Filenames::in_folder(pathname_of_i6t_files[area], segment_name), "r");
+				Filenames::in_folder(P, segment_name), "r");
+		}
 	if (Input_File == NULL) {
 		WRITE_TO(STDERR, "inform: Unable to open segment <%S>\n", segment_name);
 		Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
@@ -318,13 +302,12 @@ a full-fledged tangler.
 		case INWEB_PURPOSE_SYNTAX: break;
 	}
 
-@ Here we are in |{-lines:...}| mode, so that the entire line of the file
-is to be read as an argument. Note that initial and trailing white space on
-the line is deleted: this makes it easier to lay out I6T template files
-tidily.
+@ We get here when reading a kinds template file. Note that initial and
+trailing white space on the line is deleted: this makes it easier to lay
+out I6T template files tidily.
 
-@<Set the command to the default, and read rest of line as argument@> =
-	Str::copy(command, default_command);
+@<Set a special command, and read rest of line as argument@> =
+	Str::copy(command, I"kinds");
 	Str::clear(argument);
 	if (Characters::is_space_or_tab(cr) == FALSE) PUT_TO(argument, cr);
 	int at_start = TRUE;
@@ -373,7 +356,7 @@ Only a few commands work even in passive mode, but they include file-handling
 because the close-file command needs to be able to get out of passive mode
 and back into active (and besides, because the file still needs to be closed).
 
-The |{-type:...}| command hands over the argument to a more specific
+The |{-kinds:...}| command hands over the argument to a more specific
 interpreter, one which constructs kinds.
 
 The |{-segment:...}| command recursively calls the I6T interpreter on the
@@ -386,9 +369,11 @@ in a |.indext| file.
 
 =
 @<Act on I6T command and argument@> =
-	@<Act on the I6T lines command@>;
 	if (active == FALSE) continue;
-	if (Str::eq_wide_string(command, L"type")) { Kinds::Interpreter::despatch_kind_command(argument); continue; }
+	if (Str::eq_wide_string(command, L"kinds")) {
+		Kinds::Interpreter::despatch_kind_command(argument);
+		continue;
+	}
 	@<Act on the I6T counter command@>;
 	@<Act on an I6T indexing command@>;
 
@@ -400,16 +385,6 @@ in a |.indext| file.
 		"{-%1} has been used, and this is an error. (It seems very unlikely indeed "
 		"that this could be legal Inform 6 which I'm misreading, but if so, try "
 		"adjusting the spacing to make this problem message go away.)");
-
-@ There is no corresponding code here to act on |{-endlines}| because it is
-not valid as a free-standing command: it can only occur at the end of a
-|{-lines:...}| block, and is acted upon above.
-
-@<Act on the I6T lines command@> =
-	if (Str::eq_wide_string(command, L"lines")) {
-		Str::copy(default_command, argument);
-		continue;
-	}
 
 @h Indexing commands.
 Commands in a |.indext| file are skipped when Inform has been called with a 

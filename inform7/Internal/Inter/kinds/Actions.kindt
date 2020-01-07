@@ -1,13 +1,3 @@
-B/lacts: Load Actions Template.
- 
-@Purpose: To load the Actions language definition element.
- 
-@-------------------------------------------------------------------------------
-
-@p Data type definitions.
-
-@c
-{-lines:type}
 DESCRIPTION_OF_ACTION_TY:
 apply-macro:#BASE-KIND
 singular:described action
@@ -20,7 +10,6 @@ constant-compilation-method:special
 description:a stored action
 index-priority:0
 ! To represent an action test implicitly cast as a conditional rvalue
-
 
 STORED_ACTION_TY:
 apply-macro:#BASE-KIND
@@ -44,7 +33,6 @@ documentation-reference:kind_storedaction
 index-default-value:waiting
 specification-text:A stored action, which can later be tried.
 
-
 ACTION_NAME_TY:
 apply-macro:#BASE-KIND
 singular:action name
@@ -63,5 +51,3 @@ documentation-reference:kind_actionname
 index-priority:6
 index-default-value:waiting action
 specification-text:An action is what happens when one of the people in the simulated world decides to do something. A full action would be something like 'dropping the box', but an action name is just the choice of which sort of thing is being done: here, it's 'the dropping action'. (Action names are always written with the word 'action' at the end, to make sure they aren't mistaken for full actions.)
-
-{-endlines}

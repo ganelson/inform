@@ -1,13 +1,3 @@
-B/ltims: Load Times Template.
- 
-@Purpose: To load the Times of Day language definition element.
- 
-@-------------------------------------------------------------------------------
-
-@p Data type definitions.
-
-@c
-{-lines:type}
 TIME_TY:
 apply-macro:#BASE-KIND
 singular:time
@@ -34,5 +24,3 @@ index-minimum-value:1 minute
 index-maximum-value:23 hours 59 minutes
 index-priority:2
 specification-text:A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.
-
-{-endlines}

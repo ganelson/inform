@@ -1,24 +1,3 @@
-B/lcore: Load Core Template.
- 
-@Purpose: To load the core language definition for Inform, which means creating
-the basis for its hierarchy of kinds.
-
-@-------------------------------------------------------------------------------
-
-@p Header.
-The following mass of type definitions is not heavily subdivided into
-paragraphs since it's read so early in Inform's run that "Include..."
-sentences haven't had time to be read yet -- so they aren't easy to
-customise. (Except by putting a whole customised version of the file into
-the relevant |Materials/I6T| folder.)
-
-The |{-lines:type}| command causes all subsequent lines to be sent as
-parameters to the |{-type:...}| command, until the next |{-endlines}|
-command.
-
-@c
-{-lines:type}
-
 #DEFAULTS:
 defined-in-source-text:no
 is-incompletely-defined:no
@@ -53,26 +32,10 @@ group:4
 instance-of:VALUE_TY
 index-priority:8
 
-@p Macros.
-New kinds of value cause some I7 source to be generated, following various
-combinations of the macros below. This used to be a mechanism to get around
-the lack of support for generic phrases in Inform, and since generics are
-now part of the design, macros like this are used just to create an awkward
-family of variables which circumvent the typelessness of the I6 parser:
-
-@c
 *UNDERSTOOD-VARIABLE:
 <kind> understood is a <kind> which varies.
 *END
 
-@p Group 1.
-These are kinds used in type-checking but not representing specific kinds at
-run-time.
-
-The |+| notation indicates a type name which NI requires us to construct,
-and with this specific name.
-
-@c
 +VALUE_TY:
 apply-macro:#KIND-OF-KIND
 singular:value
@@ -116,10 +79,6 @@ apply-macro:#KIND-OF-KIND
 singular:combined value of any arity
 plural:combined values of any arity
 
-@p Group 2.
-Data types.
-
-@c
 +OBJECT_TY:
 apply-macro:#BASE-KIND
 singular:object
@@ -138,7 +97,6 @@ description:an object
 index-priority:1
 index-default-value:nothing
 specification-text:Objects are values intended to simulate physical things: places, people, things, and so on. They come in many kinds. The special value 'nothing' is also allowed, and can be used to mean 'no object at all'.
-
 
 +NUMBER_TY:
 apply-macro:#BASE-KIND
@@ -163,7 +121,6 @@ documentation-reference:kind_number
 index-priority:2
 index-default-value:0
 specification-text:Whole number in the range -32768, -32767, ..., -2, -1, 0, 1, 2, 3, ..., 32767: small numbers can be written textually as 'one', 'two', 'three', ..., 'ten', 'eleven', 'twelve'. (A much larger number range is allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)
-
 
 +REAL_NUMBER_TY:
 apply-macro:#BASE-KIND
@@ -191,7 +148,6 @@ index-priority:2
 index-default-value:0
 specification-text: A real, or 'floating-point' number: the difference between this and ordinary "number" is that real numbers can hold values like 3.141, which aren't whole numbers, and can also hold very large or very small quantities in an approximate way. (Use of real numbers is only allowed if we compile the source to Glulx rather than the Z-machine: see the Settings panel.)
 
-
 +TRUTH_STATE_TY:
 apply-macro:#BASE-KIND
 singular:truth state
@@ -213,7 +169,6 @@ description:something which is either true or false
 documentation-reference:kind_truthstate
 index-default-value:false
 specification-text:The state of whether something is 'true' or 'false'. (In other computing languages, this might be called 'boolean', after the 19th-century logician George Boole, who first realised this was a kind of value.)
-
 
 +TEXT_TY:
 apply-macro:#BASE-KIND
@@ -239,7 +194,6 @@ description:some text
 index-default-value:""
 specification-text:Some text in double quotation marks, perhaps with substitutions written in square brackets.
 
-
 +UNICODE_CHARACTER_TY:
 apply-macro:#BASE-KIND
 singular:unicode character
@@ -254,7 +208,6 @@ constant-compilation-method:literal
 description:a Unicode character
 index-default-value:unicode 32 (<i>a space</i>)
 specification-text:A single character - a letter or item of punctuation.
-
 
 +USE_OPTION_TY:
 apply-macro:#BASE-KIND
@@ -273,7 +226,6 @@ description:the name of a use option
 index-priority:6
 index-default-value:the ineffectual option
 specification-text:One of the optional ways to configure Inform, such as the 'authorial modesty option'.
-
 
 +RESPONSE_TY:
 apply-macro:#BASE-KIND
@@ -312,7 +264,6 @@ index-priority:6
 index-default-value:verb be
 specification-text:One of the verbs which Inform knows how to conjugate.
 
-
 +SNIPPET_TY:
 apply-macro:#BASE-KIND
 singular:snippet
@@ -329,7 +280,6 @@ description:a snippet
 documentation-reference:kind_snippet
 index-default-value:<i>word 1 of command</i>
 specification-text:A fragment of the player's most recent typed command, taking in a run of consecutive words.
-
 
 +TABLE_TY:
 apply-macro:#BASE-KIND
@@ -351,7 +301,6 @@ index-default-value:<i>a table with no rows or columns</i>
 indexed-grey-if-empty:yes
 specification-text:Like tables of information in a book or newspaper, tables in Inform hold values which have been organised into rows and columns. A table name is just a single value, identifying which table is meant - say, 'Table of US Presidents' might be a table name value.
 
-
 +EQUATION_TY:
 apply-macro:#BASE-KIND
 singular:equation name
@@ -369,7 +318,6 @@ index-default-value:<i>an equation doing nothing</i>
 indexed-grey-if-empty:yes
 specification-text:Like formulae in a textbook or a scientific paper, equations in Inform are written out in displayed form and given names.
 
-
 +RULEBOOK_OUTCOME_TY:
 apply-macro:#BASE-KIND
 singular:rulebook outcome
@@ -384,7 +332,6 @@ index-default-value:allow access
 
 description:the name of a rulebook outcome
 index-priority:6
-
 
 +UNDERSTANDING_TY:
 apply-macro:#BASE-KIND
@@ -401,7 +348,6 @@ constant-compilation-method:special
 description:a topic
 index-priority:0
 
-
 +INTERMEDIATE_TY:
 apply-macro:#BASE-KIND
 
@@ -415,7 +361,6 @@ description:the intermediate result of some complex calculation
 index-priority:0
 ! Represents intermediate results of arithmetic in dimensional formulae
 
-
 +NIL_TY:
 apply-macro:#BASE-KIND
 
@@ -425,16 +370,10 @@ description:nothing
 index-priority:0
 ! Represents a lack of arguments, or of results
 
-
 +KIND_VARIABLE_TY:
 apply-macro:#KIND-VARIABLE
 description:a variable denoting a kind
 
-
-@p Group 3.
-Constructors.
-
-@c
 +PHRASE_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:phrase k -> l
@@ -449,7 +388,6 @@ constant-compilation-method:special
 
 index-default-value:<i>always the default value of L</i>
 
-
 +TUPLE_ENTRY_TY:
 apply-macro:#KIND-CONSTRUCTOR
 constructor-arity:covariant, covariant
@@ -458,7 +396,6 @@ instance-of:WORD_VALUE_TY
 
 index-priority:0
 ! Represents an entry in a multiple
-
 
 +VARIABLE_TY:
 apply-macro:#KIND-CONSTRUCTOR
@@ -470,7 +407,6 @@ instance-of:WORD_VALUE_TY
 
 index-priority:0
 ! Represents a variable name
-
 
 +RELATION_TY:
 apply-macro:#KIND-CONSTRUCTOR
@@ -493,7 +429,6 @@ i6-printing-routine:RELATION_TY_Say
 description:a relation of K to L
 index-default-value:<i>a relation never holding</i>
 
-
 +RULE_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:rule | k based rule | rule producing l | k based rule producing l
@@ -514,7 +449,6 @@ index-default-value:the little-used do nothing rule
 indexed-grey-if-empty:yes
 specification-text:One of many, many rules which determine what happens during play. Rules can be triggered by scenes beginning or ending, by certain actions, at certain times, or in the course of carrying out certain activities.
 
-
 +RULEBOOK_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:rulebook | k based rulebook | rulebook producing l | k based rulebook producing l
@@ -533,7 +467,6 @@ documentation-reference:kind_rulebook
 index-default-value:the action-processing rules
 specification-text:A list of rules to follow, in sequence, to get something done. A rulebook is like a ring-binder, with the individual rules as sheets of paper. Inform normally sorts these into their 'natural' order, with the most specific rules first, but it's easy to shuffle the pages if you need to. When some task is carried out during play, Inform is normally working through a rulebook, turning the pages one by one.
 
-
 +ACTIVITY_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:activity | activity on k
@@ -549,7 +482,6 @@ description:an activity
 documentation-reference:kind_activity
 index-default-value:printing the name
 specification-text:An activity is something which Inform does as part of the mechanics of play - for instance, printing the name of an object, which Inform often has to do. An activity can happen by itself ('printing the banner text', for instance) or can be applied to an object ('printing the name of something', say).
-
 
 +LIST_OF_TY:
 apply-macro:#KIND-CONSTRUCTOR
@@ -574,7 +506,6 @@ documentation-reference:kind_listof
 index-default-value:{ }
 specification-text:A flexible-length list of values, where all of the items have to have the same kind of value as each other - for instance, a list of rooms, or a list of lists of numbers. The empty list, with no items yet, is written { }, and a list with items in is written with commas dividing them - say {2, 5, 9}.
 
-
 +DESCRIPTION_OF_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:description of k
@@ -591,7 +522,6 @@ documentation-reference:kind_description
 index-default-value:<i>matching nothing</i>
 specification-text:A description of a set of values, where all of the items have to have the same kind of value as each other - for instance, 'even numbers' or 'open doors which are in lighted rooms'.
 
-
 +PROPERTY_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:property | k valued property
@@ -605,7 +535,6 @@ i6-printing-routine:PROPERTY_TY_Say
 
 description:a property of something
 
-
 +TABLE_COLUMN_TY:
 apply-macro:#KIND-CONSTRUCTOR
 singular:table column | k valued table column
@@ -617,7 +546,6 @@ instance-of:WORD_VALUE_TY
 constant-compilation-method:special
 
 description:the name of a column
-
 
 +COMBINATION_TY:
 apply-macro:#KIND-CONSTRUCTOR
@@ -644,11 +572,6 @@ index-priority:0
 index-default-value:{ }
 specification-text:A way to combine a fixed small number of values, of possibly different kinds, together.
 
-
-@p Groups 4 and 5.
-Enumerations and units.
-
-@c
 ! New kinds of value are initially given these settings:
 
 #NEW:
@@ -700,8 +623,3 @@ apply-template:*UNDERSTOOD-VARIABLE
 #REAL:
 instance-of:ARITHMETIC_VALUE_TY
 instance-of:REAL_ARITHMETIC_VALUE_TY
-
-@p Tail.
-
-@c
-{-endlines}

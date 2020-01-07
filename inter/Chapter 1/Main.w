@@ -157,12 +157,12 @@ void Main::act(void) {
 		if (NUMBER_CREATED(inter_file) > 0)
 			Errors::fatal("-pipeline and -pipeline-file cannot be combined with inter file parameters");
 		int NO_FS_AREAS = 0;
-		pathname *pathname_of_i6t_files[1];
-		if (template_path) { NO_FS_AREAS = 1; pathname_of_i6t_files[0] = template_path; }
+		pathname *pathname_of_inter_resources[1];
+		if (template_path) { NO_FS_AREAS = 1; pathname_of_inter_resources[0] = template_path; }
 		codegen_pipeline *SS;
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
-		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_i6t_files, requirements_list);
+		if (SS) CodeGen::Pipeline::run(domain_path, SS, NO_FS_AREAS, pathname_of_inter_resources, requirements_list);
 		else Errors::fatal("pipeline could not be parsed");
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);

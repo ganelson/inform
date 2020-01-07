@@ -1,13 +1,3 @@
-B/lfile: Load Files Template.
- 
-@Purpose: To load the Files language definition element.
- 
-@-------------------------------------------------------------------------------
-
-@p Data type definitions.
-
-@c
-{-lines:type}
 EXTERNAL_FILE_TY:
 apply-macro:#BASE-KIND
 singular:external file
@@ -30,5 +20,3 @@ index-priority:6
 index-default-value:<i>a non-file</i>
 indexed-grey-if-empty:yes
 specification-text:When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).
-
-{-endlines}
