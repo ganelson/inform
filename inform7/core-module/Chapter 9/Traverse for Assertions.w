@@ -159,14 +159,14 @@ void Assertions::Traverse::visit(parse_node *p, parse_node **last) {
 @<Initialise sentence handlers@> =
 	sentence_handlers_initialised = TRUE;
 	@<Empty the sentence handler tables@>;
-	TemplateFiles::register_sentence_handlers();
+	SHR::register_sentence_handlers();
 
 @ At this stage, all we do is empty the tables. The reason we have to delay
 before entering the valid handlers is that some of them will be defined in
 sections appearing after this one in the program: since C requires all
 identifiers used to be predeclared, this means we can't enter the valid
 handlers until right at the end of the program. The routine which does so,
-|TemplateFiles::register_sentence_handlers|, consists only of a run of
+|SHR::register_sentence_handlers|, consists only of a run of
 |REGISTER_SENTENCE_HANDLER| macro expansions and can be found in Chapter
 14.
 

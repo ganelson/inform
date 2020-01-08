@@ -340,7 +340,7 @@ void Plugins::Manage::load_types(void) {
 			if (P->has_template_file) {
 				TEMPORARY_TEXT(segment_name);
 				WRITE_TO(segment_name, "%s.kindt", P->has_template_file);
-				TemplateFiles::interpret(NULL, NULL, segment_name, -1, NULL, TRUE);
+				I6T::interpret_kindt(segment_name);
 				DISCARD_TEXT(segment_name);
 			}
 		}

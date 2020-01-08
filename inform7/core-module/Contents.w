@@ -272,6 +272,7 @@ Chapter 26: Compilation Utilities
 	Plugins
 	Plugin Calls
 	Test Scripts
+	Sentence Handler Registration
 
 Chapter 27: Bridge to Inter Module
 "Emitting Inter code ready for the code-generator."

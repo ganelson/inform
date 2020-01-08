@@ -411,9 +411,9 @@ void UseOptions::compile(void) {
 	LOOP_OVER(uo, use_option)
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
 			text_stream *UO = Str::new();
-			TemplateFiles::interpret(UO,
+			I6T::interpret_i6t(UO,
 				Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(uo->option_expansion)) + 1),
-				NULL, uo->minimum_setting_value, NULL, FALSE);
+				uo->minimum_setting_value);
 			WRITE_TO(UO, "\n");
 			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, UO, NULL);
 		}

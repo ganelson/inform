@@ -119,6 +119,20 @@ int VirtualMachines::is_16_bit(void) {
 	return TRUE;
 }
 
+@ Using which:
+
+=
+int VirtualMachines::veto_number(int X) {
+	if (((X > 32767) || (X < -32768)) && (VirtualMachines::is_16_bit())) {
+		Problems::Issue::sentence_problem(_p_(PM_LiteralOverflow),
+			"you use a number which is too large",
+			"at least with the Settings for this project as they currently "
+			"are. (Change to Glulx to be allowed to use much larger numbers.)");
+		return TRUE;
+	}
+	return FALSE;
+}
+
 @ Fundamental constants are emitted about our choice of virtual machine.
 
 The old I6 library used to confuse Z-vs-G with 16-vs-32-bit, but we try
@@ -224,18 +238,17 @@ void VirtualMachines::emit_fundamental_constants(void) {
 	}
 }
 
-@ Using which:
+@ This version-numbering constant is not really to do with the VM (it is
+Inform's own version number), but it belongs nowhere else either, so:
 
 =
-int VirtualMachines::veto_number(int X) {
-	if (((X > 32767) || (X < -32768)) && (VirtualMachines::is_16_bit())) {
-		Problems::Issue::sentence_problem(_p_(PM_LiteralOverflow),
-			"you use a number which is too large",
-			"at least with the Settings for this project as they currently "
-			"are. (Change to Glulx to be allowed to use much larger numbers.)");
-		return TRUE;
-	}
-	return FALSE;
+void VirtualMachines::compile_build_number(void) {
+	TEMPORARY_TEXT(build);
+	WRITE_TO(build, "%B", TRUE);
+	inter_name *iname = Hierarchy::find(NI_BUILD_COUNT_HL);
+	Emit::named_string_constant(iname, build);
+	Hierarchy::make_available(Emit::tree(), iname);
+	DISCARD_TEXT(build);
 }
 
 @ The limits are different on each platform. On Z, the maximum is fixed

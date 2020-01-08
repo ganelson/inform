@@ -173,7 +173,7 @@ void Config::Inclusions::new_intervention(int stage, text_stream *segment, text_
 	text_stream *X = NULL;
 	if (i6) {
 		X = Str::new();
-		TemplateFiles::interpret(X, i6, NULL, -1, NULL, FALSE);
+		I6T::interpret_i6t(X, i6, -1);
 	}
 	Emit::intervention(stage, segment, part, X, seg);
 }
@@ -186,9 +186,9 @@ void Config::Inclusions::compile_inclusions_for_subject(OUTPUT_STREAM, inference
 	i6_inclusion_matter *inclm;
 	LOOP_OVER (inclm, i6_inclusion_matter)
 		if (inclm->infs_to_include_with == infs) {
-			TemplateFiles::interpret(OUT,
+			I6T::interpret_i6t(OUT,
 				Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(inclm->material_to_include)) + 2),
-				NULL, -1, NULL, FALSE);
+				-1);
 			WRITE("\n");
 		}
 }

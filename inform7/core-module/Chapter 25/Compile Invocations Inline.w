@@ -146,7 +146,7 @@ void Invocations::Inline::csi_inline_inner(value_holster *VH, inter_schema *sch,
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) { to_val = TRUE; to_code = FALSE; }
 
 	EmitInterSchemas::emit(Emit::tree(), VH, sch, CSIS, to_code, to_val, NULL, NULL,
-		&Invocations::Inline::csi_inline_inner_inner, &TemplateFiles::compile_I7_from_I6);
+		&Invocations::Inline::csi_inline_inner_inner, &I6T::compile_I7_from_I6);
 }
 
 @ =

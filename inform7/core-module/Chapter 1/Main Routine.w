@@ -32,6 +32,7 @@ text_stream *story_filename_extension = NULL; /* What story file we will eventua
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
 int disable_import = FALSE;
+int do_not_generate_index = FALSE; /* Set by the |-noindex| command line option */
 
 @ This flag is set by the use option "Use no deprecated features", and makes
 Inform strict in rejecting syntaxes we intend to get rid of later on.
@@ -306,7 +307,7 @@ with "Output.i6t".
 	ProgressBar::update_progress_bar(4, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Generating inter");
 	COMPILATION_STEP(UseOptions::compile_icl_commands, I"UseOptions::compile_icl_commands")
-	COMPILATION_STEP(TemplateFiles::compile_build_number, I"TemplateFiles::compile_build_number")
+	COMPILATION_STEP(VirtualMachines::compile_build_number, I"VirtualMachines::compile_build_number")
 	COMPILATION_STEP(Plugins::Manage::define_IFDEF_symbols, I"Plugins::Manage::define_IFDEF_symbols")
 	COMPILATION_STEP(PL::Bibliographic::compile_constants, I"PL::Bibliographic::compile_constants")
 	COMPILATION_STEP(Extensions::Files::ShowExtensionVersions_routine, I"Extensions::Files::ShowExtensionVersions_routine")
@@ -493,7 +494,7 @@ with "Output.i6t".
 		filename *index_template =
 			Filenames::in_folder(nl->nl_bundle_path,
 				(basic_mode)?(I"Basic.indext"):(I"Standard.indext"));
-		TemplateFiles::interpret(NULL, NULL, NULL, -1, index_template, FALSE);
+		I6T::interpret_indext(index_template);
 	}
 
 @<Post mortem logging@> =
