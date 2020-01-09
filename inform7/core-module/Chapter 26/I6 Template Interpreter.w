@@ -62,7 +62,7 @@ void I6T::interpreter_shared(int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stre
 	int col = 1, cr, sfp = 0;
 	TEMPORARY_TEXT(heading_name);
 
-	int skip_part = FALSE, comment = FALSE;
+	int comment = FALSE;
 	if ((int_mode == I6TCODE_MODE) && (Str::len(segment_name) > 0)) comment = TRUE;
 
 	@<Open a file for input, if necessary@>;
@@ -74,12 +74,6 @@ void I6T::interpreter_shared(int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stre
 		Str::clear(argument);
 		@<Read next character from I6T stream@>;
 		NewCharacter: if (cr == EOF) break;
-		if ((cr == '@') && (col == 1)) {
-			int inweb_syntax = -1;
-			@<Read the rest of line as an at-heading@>;
-			@<Act on the at-heading, going in or out of comment mode as appropriate@>;
-			continue;
-		}
 		if (comment == FALSE) {
 			if (int_mode == KINDT_MODE) {
 				if ((cr == 10) || (cr == 13)) continue; /* skip blank lines here */
@@ -180,81 +174,6 @@ terminated |0x0a| in Unix fashion.
 	} else cr = EOF;
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
-@ Anything following an at-character in the first column is looked at to see if
-it's a heading, that is, an Inweb syntax:
-
-@d INWEB_PARAGRAPH_SYNTAX 1
-@d INWEB_CODE_SYNTAX 2
-@d INWEB_DASH_SYNTAX 3
-@d INWEB_PURPOSE_SYNTAX 4
-
-@<Read the rest of line as an at-heading@> =
-	TEMPORARY_TEXT(I6T_buffer);
-	int i = 0, committed = FALSE, unacceptable_character = FALSE;
-	while (i<MAX_I6T_LINE_LENGTH) {
-		@<Read next character from I6T stream@>;
-		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
-			if (Str::eq_wide_string(I6T_buffer, L"p")) inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(I6T_buffer, L"c")) inweb_syntax = INWEB_CODE_SYNTAX;
-			else if (Str::get_first_char(I6T_buffer) == '-') inweb_syntax = INWEB_DASH_SYNTAX;
-			else if (Str::begins_with_wide_string(I6T_buffer, L"Purpose:")) inweb_syntax = INWEB_PURPOSE_SYNTAX;
-			committed = TRUE;
-			if (inweb_syntax == -1) {
-				if (unacceptable_character == FALSE) {
-					if (OUT) {
-						PUT_TO(OUT, '@');
-						WRITE_TO(OUT, "%S", I6T_buffer);
-						PUT_TO(OUT, cr);
-					}
-					break;
-				} else {
-					LOG("heading begins: <%S>\n", I6T_buffer);
-					Problems::quote_stream(1, I6T_buffer);
-					Problems::Issue::unlocated_problem(_p_(PM_BadTemplateAtSign),
-						"An unknown '@...' marker has been found at column 0 in "
-						"raw Inform 6 template material: specifically, '@%1'. ('@' "
-						"has a special meaning in this first column, and this "
-						"might clash with its use to introduce an assembly-language "
-						"opcode in Inform 6: if that's a problem, you can avoid it "
-						"simply by putting one or more spaces or tabs in front of "
-						"the opcode(s) to keep them clear of the left margin.)");
-				}
-			}
-		}
-		if (!(((cr >= 'A') && (cr <= 'Z')) || ((cr >= 'a') && (cr <= 'z'))
-			|| ((cr >= '0') && (cr <= '9'))
-			|| (cr == '-') || (cr == '>') || (cr == ':') || (cr == '_')))
-			unacceptable_character = TRUE;
-		if ((cr == 10) || (cr == 13)) break;
-		PUT_TO(I6T_buffer, cr);
-	}
-	Str::copy(command, I6T_buffer);
-	DISCARD_TEXT(I6T_buffer);
-
-@ As can be seen, only a small minority of Inweb syntaxes are allowed:
-in particular, no |@d| or angle-bracketed macros. This interpreter is not
-a full-fledged tangler.
-
-@<Act on the at-heading, going in or out of comment mode as appropriate@> =
-	switch (inweb_syntax) {
-		case INWEB_PARAGRAPH_SYNTAX: {
-			Str::copy_tail(heading_name, command, 2);
-			int c;
-			while (((c = Str::get_last_char(heading_name)) != 0) &&
-				((c == ' ') || (c == '\t') || (c == '.')))
-				Str::delete_last_character(heading_name);
-			if (Str::len(heading_name) == 0)
-				I6T::error("Empty heading name in I6 template file");
-			comment = TRUE; skip_part = FALSE;
-			break;
-		}
-		case INWEB_CODE_SYNTAX:
-			if (skip_part == FALSE) comment = FALSE;
-			break;
-		case INWEB_DASH_SYNTAX: break;
-		case INWEB_PURPOSE_SYNTAX: break;
-	}
-
 @ We get here when reading a kinds template file. Note that initial and
 trailing white space on the line is deleted: this makes it easier to lay
 out I6T template files tidily.
@@ -310,7 +229,7 @@ which can trigger an unwanted |(+|.
 			Str::delete_last_character(i7_exp); break; }
 		PUT_TO(i7_exp, cr);
 	}
-	I6T::compile_I7_from_I6(NULL, OUT, i7_exp);
+	Invocations::Inline::compile_I7_expression_from_text(NULL, OUT, i7_exp);
 	DISCARD_TEXT(i7_exp);
 
 @h Acting on I6T commands.
@@ -400,109 +319,5 @@ void I6T::error(char *message) {
 		"an extension which does some 'template hacking', as it's called, "
 		"but made a mistake doing so.");
 	Problems::issue_problem_end();
-}
-
-@h I7 expression evaluation.
-This is not quite like regular expression evaluation, because we want
-"room" and "lighted" to be evaluated as the I6 translation of the
-relevant class or property, rather than as code to test the predicate
-"X is a room" or "X is lighted", and similarly for bare names
-of defined adjectives. So:
-
-=
-void I6T::compile_I7_from_I6(value_holster *VH, text_stream *OUT, text_stream *p) {
-	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
-		Produce::evaluation(Emit::tree());
-		Produce::down(Emit::tree());
-	}
-
-	I6T::compile_I7_from_I6_inner(VH, OUT, p);
-
-	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
-		Produce::up(Emit::tree());
-	}
-}
-
-void I6T::compile_I7_from_I6_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
-	wording LW = Feeds::feed_stream(p);
-
-	if (<property-name>(LW)) {
-		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, Properties::iname(<<rp>>));
-		else
-			WRITE_TO(OUT, "%n", Properties::iname(<<rp>>));
-		return;
-	}
-
-	if (<k-kind>(LW)) {
-		kind *K = <<rp>>;
-		if (Kinds::Compare::lt(K, K_object)) {
-			if (VH)
-				Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
-			else
-				WRITE_TO(OUT, "%n", Kinds::RunTime::I6_classname(K));
-			return;
-		}
-	}
-
-	instance *I = Instances::parse_object(LW);
-	if (I) {
-		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, Instances::iname(<<rp>>));
-		else
-			WRITE_TO(OUT, "%~I", I);
-		return;
-	}
-
-	adjectival_phrase *aph = Adjectives::parse(LW);
-	if (aph) {
-		if (Adjectives::Meanings::write_adjective_test_routine(VH, aph)) return;
-		Problems::Issue::unlocated_problem(_p_(BelievedImpossible),
-			"You tried to use '(+' and '+)' to expand to the Inform 6 routine "
-			"address of an adjective, but it was an adjective with no meaning.");
-		return;
-	}
-
-	#ifdef IF_MODULE
-	int initial_problem_count = problem_count;
-	#endif
-	parse_node *spec = NULL;
-	if (<s-value>(LW)) spec = <<rp>>;
-	else spec = Specifications::new_UNKNOWN(LW);
-	#ifndef IF_MODULE
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	#endif
-	#ifdef IF_MODULE
-	if (initial_problem_count < problem_count) return;
-	Dash::check_value(spec, NULL);
-	if (initial_problem_count < problem_count) return;
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-	if (VH)
-		Specifications::Compiler::emit_as_val(K_value, spec);
-	else {
-		nonlocal_variable *nlv = NonlocalVariables::parse(LW);
-		if (nlv) {
-			PUT(URL_SYMBOL_CHAR);
-			Inter::SymbolsTables::symbol_to_url_name(OUT, InterNames::to_symbol(NonlocalVariables::iname(nlv)));
-			PUT(URL_SYMBOL_CHAR);
-		} else {
-			value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
-			Specifications::Compiler::compile_inner(&VH2, spec);
-			inter_t v1 = 0, v2 = 0;
-			Holsters::unholster_pair(&VH2, &v1, &v2);
-			if (v1 == ALIAS_IVAL) {
-				PUT(URL_SYMBOL_CHAR);
-				inter_symbols_table *T = Inter::Packages::scope(Emit::current_enclosure()->actual_package);
-				inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
-				Inter::SymbolsTables::symbol_to_url_name(OUT, S);
-				PUT(URL_SYMBOL_CHAR);
-			} else {
-				CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
-			}
-		}
-	}
-	END_COMPILATION_MODE;
-	#endif
 }
 

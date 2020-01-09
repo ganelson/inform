@@ -1,10 +1,8 @@
-B/combt: Combinations Template.
- 
-@Purpose: Code to support the combination kind of value constructor.
- 
-@-------------------------------------------------------------------------------
+Combinations Template.
 
-@p Block Format.
+Code to support the combination kind of value constructor.
+
+@h Block Format.
 A combination is like a list, but simpler; it has a fixed, usually short,
 size. On the other hand, its entries are not all of the same kind as each
 other.
@@ -13,15 +11,15 @@ The short block for a combination is simply a pointer to the long block.
 This consists of one word to hold the strong kind ID, and then one word
 for each entry in the combination. Thus, a triple combination uses 4 words.
 
-@c
+=
 Constant COMBINATION_KIND_F = 0;    ! Strong kind ID
 Constant COMBINATION_ITEM_BASE = 1; ! List items begin at this entry
 
-@p KOV Support.
+@h KOV Support.
 See the "BlockValues.i6t" segment for the specification of the following
 routines.
 
-@c
+=
 [ COMBINATION_TY_Support task arg1 arg2 arg3;
 	switch(task) {
 		CREATE_KOVS:      return COMBINATION_TY_Create(arg1, arg2);
@@ -41,7 +39,7 @@ routines.
 	rfalse;
 ];
 
-@p Creation.
+@h Creation.
 A combination is like a list, but simpler; it has a fixed, usually short,
 size. On the other hand, its entries are not all of the same kind as each
 other.
@@ -51,7 +49,7 @@ block is the only header information: a pointer to a further structure in
 memory, describing the kind. The subsequent blocks are the actual records.
 Thus, a triple $(x, y, z)$ uses 4 words.
 
-@c
+=
 [ COMBINATION_TY_Create kind sb long_block N i bk v;
 	N = KindBaseArity(kind);
 	long_block = FlexAllocate(
@@ -66,11 +64,11 @@ Thus, a triple $(x, y, z)$ uses 4 words.
 	return BlkValueCreateSB1(sb, long_block);
 ];
 
-@p Destruction.
+@h Destruction.
 If the comb items are themselves block-values, they must all be freed before
 the comb itself can be freed.
 
-@c
+=
 [ COMBINATION_TY_Destroy comb kind no_items i bk;
 	kind = BlkValueRead(comb, COMBINATION_KIND_F);
 	no_items = KindBaseArity(kind);
@@ -81,11 +79,11 @@ the comb itself can be freed.
 	}
 ];
 
-@p Copying.
+@h Copying.
 Again, if the comb contains block-values then they must be duplicated rather
 than bitwise copied as pointers.
 
-@c
+=
 [ COMBINATION_TY_CopyKind to from;
 	BlkValueWrite(to, COMBINATION_KIND_F, BlkValueRead(from, COMBINATION_KIND_F));
 ];
@@ -112,11 +110,11 @@ than bitwise copied as pointers.
 	}
 ];
 
-@p Comparison.
+@h Comparison.
 This is a lexicographic comparison and assumes both combinations have the
 same kind.
 
-@c
+=
 [ COMBINATION_TY_Compare left_comb right_comb delta no_items i cf kind bk;
 	kind = BlkValueRead(left_comb, COMBINATION_KIND_F);
 	no_items = KindBaseArity(kind);
@@ -141,9 +139,9 @@ same kind.
 	rtrue;
 ];
 
-@p Hashing.
+@h Hashing.
 
-@c
+=
 [ COMBINATION_TY_Hash comb  kind rv no_items i bk;
 	rv = 0;
 	kind = BlkValueRead(comb, COMBINATION_KIND_F);
@@ -155,9 +153,9 @@ same kind.
 	return rv;
 ];
 
-@p Printing.
+@h Printing.
 
-@c
+=
 [ COMBINATION_TY_Say comb format no_items v i kind bk;
 	if ((comb==0) || (BlkValueWeakKind(comb) ~= COMBINATION_TY)) return;
 	kind = BlkValueRead(comb, COMBINATION_KIND_F);

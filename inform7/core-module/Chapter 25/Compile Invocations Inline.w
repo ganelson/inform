@@ -146,7 +146,7 @@ void Invocations::Inline::csi_inline_inner(value_holster *VH, inter_schema *sch,
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) { to_val = TRUE; to_code = FALSE; }
 
 	EmitInterSchemas::emit(Emit::tree(), VH, sch, CSIS, to_code, to_val, NULL, NULL,
-		&Invocations::Inline::csi_inline_inner_inner, &I6T::compile_I7_from_I6);
+		&Invocations::Inline::csi_inline_inner_inner, &Invocations::Inline::compile_I7_expression_from_text);
 }
 
 @ =
@@ -1632,4 +1632,108 @@ kind *Invocations::Inline::parse_bracing_operand_as_kind(text_stream *operand, k
 	Frames::temporarily_set_kvs(saved);
 	kind *K = Specifications::to_kind(spec);
 	return K;
+}
+
+@h I7 expression evaluation.
+This is not quite like regular expression evaluation, because we want
+"room" and "lighted" to be evaluated as the I6 translation of the
+relevant class or property, rather than as code to test the predicate
+"X is a room" or "X is lighted", and similarly for bare names
+of defined adjectives. So:
+
+=
+void Invocations::Inline::compile_I7_expression_from_text(value_holster *VH, text_stream *OUT, text_stream *p) {
+	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
+		Produce::evaluation(Emit::tree());
+		Produce::down(Emit::tree());
+	}
+
+	Invocations::Inline::compile_I7_expression_from_text_inner(VH, OUT, p);
+
+	if ((VH) && (VH->vhmode_wanted == INTER_VOID_VHMODE)) {
+		Produce::up(Emit::tree());
+	}
+}
+
+void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
+	wording LW = Feeds::feed_stream(p);
+
+	if (<property-name>(LW)) {
+		if (VH)
+			Produce::val_iname(Emit::tree(), K_value, Properties::iname(<<rp>>));
+		else
+			WRITE_TO(OUT, "%n", Properties::iname(<<rp>>));
+		return;
+	}
+
+	if (<k-kind>(LW)) {
+		kind *K = <<rp>>;
+		if (Kinds::Compare::lt(K, K_object)) {
+			if (VH)
+				Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+			else
+				WRITE_TO(OUT, "%n", Kinds::RunTime::I6_classname(K));
+			return;
+		}
+	}
+
+	instance *I = Instances::parse_object(LW);
+	if (I) {
+		if (VH)
+			Produce::val_iname(Emit::tree(), K_value, Instances::iname(<<rp>>));
+		else
+			WRITE_TO(OUT, "%~I", I);
+		return;
+	}
+
+	adjectival_phrase *aph = Adjectives::parse(LW);
+	if (aph) {
+		if (Adjectives::Meanings::write_adjective_test_routine(VH, aph)) return;
+		Problems::Issue::unlocated_problem(_p_(BelievedImpossible),
+			"You tried to use '(+' and '+)' to expand to the Inform 6 routine "
+			"address of an adjective, but it was an adjective with no meaning.");
+		return;
+	}
+
+	#ifdef IF_MODULE
+	int initial_problem_count = problem_count;
+	#endif
+	parse_node *spec = NULL;
+	if (<s-value>(LW)) spec = <<rp>>;
+	else spec = Specifications::new_UNKNOWN(LW);
+	#ifndef IF_MODULE
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+	#endif
+	#ifdef IF_MODULE
+	if (initial_problem_count < problem_count) return;
+	Dash::check_value(spec, NULL);
+	if (initial_problem_count < problem_count) return;
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
+	if (VH)
+		Specifications::Compiler::emit_as_val(K_value, spec);
+	else {
+		nonlocal_variable *nlv = NonlocalVariables::parse(LW);
+		if (nlv) {
+			PUT(URL_SYMBOL_CHAR);
+			Inter::SymbolsTables::symbol_to_url_name(OUT, InterNames::to_symbol(NonlocalVariables::iname(nlv)));
+			PUT(URL_SYMBOL_CHAR);
+		} else {
+			value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
+			Specifications::Compiler::compile_inner(&VH2, spec);
+			inter_t v1 = 0, v2 = 0;
+			Holsters::unholster_pair(&VH2, &v1, &v2);
+			if (v1 == ALIAS_IVAL) {
+				PUT(URL_SYMBOL_CHAR);
+				inter_symbols_table *T = Inter::Packages::scope(Emit::current_enclosure()->actual_package);
+				inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, v2);
+				Inter::SymbolsTables::symbol_to_url_name(OUT, S);
+				PUT(URL_SYMBOL_CHAR);
+			} else {
+				CodeGen::FC::val_from(OUT, Packaging::at(Emit::tree()), v1, v2);
+			}
+		}
+	}
+	END_COMPILATION_MODE;
+	#endif
 }

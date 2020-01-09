@@ -1,12 +1,10 @@
-B/defnt: Definitions Template.
- 
-@Purpose: Miscellaneous constant definitions, usually providing symbolic names
+Definitions Template.
+
+Miscellaneous constant definitions, usually providing symbolic names
 for otherwise inscrutable numbers, which are used throughout the template
 layer.
- 
-@-------------------------------------------------------------------------------
 
-@p Z-Machine Definitions.
+@h Z-Machine Definitions.
 The Z-machine contains certain special constants and variables at fixed
 position in its "header"; the addresses of these are given below. See
 {\it The Z-Machine Standards Document}, version 1.0, for details.
@@ -15,7 +13,7 @@ position in its "header"; the addresses of these are given below. See
 an I6 internal quantity defined by the compiler when the target is Glulx
 but not for Z.
 
-@c
+=
 #Ifdef TARGET_ZCODE;
 
 Global max_z_object;
@@ -60,13 +58,13 @@ Constant HDR_INFORMVERSION    = $3C;     ! four ASCII characters
 
 #Endif;
 
-@p Glulx Definitions.
+@h Glulx Definitions.
 We make similar header definitions for Glulx. Extensive further
 definitions, of constants needed to handle the Glk I/O layer, can be found
 in the "Infglk" section of "Glulx.i6t"; they are not used in the rest
 of the template layer, and would only get in the way here.
 
-@c
+=
 #IFDEF TARGET_GLULX;
 
 Global unicode_gestalt_ok; ! Set if interpreter supports Unicode
@@ -91,12 +89,12 @@ Constant ROM_GAMESERIAL       = $36;     ! six ASCII characters
 
 #Endif;
 
-@p Powers of Two.
+@h Powers of Two.
 I6 lacks support for logical shifts, and the Z-machine opcodes which bear
 on this are not always well supported, so the I6 library has traditionally
 used a lookup table for the values of $2^{15-n}$ where $0\leq n \leq 11$.
 
-@c
+=
 Array PowersOfTwo_TB
   --> $$100000000000
       $$010000000000
@@ -129,7 +127,7 @@ Array IncreasingPowersOfTwo_TB
 	  $$0100000000000000
 	  $$1000000000000000;
 
-@p Text Styles.
+@h Text Styles.
 These are the styles of text distinguished by the template layer, though
 they are not required to look different from each other on any given VM.
 The codes are independent of the VM targetted, though in fact they are
@@ -143,7 +141,7 @@ in which it is clearly inferior to the Z-machine, which it was designed
 to replace. Still, using these styles when we can will get the most out of
 it, and for unornamental works Glulx is fine in practice.
 
-@c
+=
 Constant NORMAL_VMSTY     = 0;
 Constant HEADER_VMSTY     = 3;
 Constant SUBHEADER_VMSTY  = 4;
@@ -152,12 +150,12 @@ Constant NOTE_VMSTY       = 6;
 Constant BLOCKQUOTE_VMSTY = 7;
 Constant INPUT_VMSTY      = 8;
 
-@p Colour Numbers.
+@h Colour Numbers.
 These are traditional colour names: quite who it was who thought that azure
 was the same colour as cyan is now unclear. Colour is, again, not easy to
 arrange on Glulx, but there is some workaround code.
 
-@c
+=
 Constant CLR_DEFAULT = 1;
 Constant CLR_BLACK   = 2;
 Constant CLR_RED     = 3;
@@ -168,7 +166,7 @@ Constant CLR_MAGENTA = 7; Constant CLR_PURPLE  = 7;
 Constant CLR_CYAN    = 8; Constant CLR_AZURE   = 8;
 Constant CLR_WHITE   = 9;
 
-@p Window Numbers.
+@h Window Numbers.
 Although Glulx can support elaborate tessalations of windows on screen (if
 the complexity of handling this can be mastered), the Z-machine has much
 more limited resources in general, so the template layer assumes a simple
@@ -176,34 +174,34 @@ screen model: there are just two screen areas, the scrolling main window
 in which commands are typed and responses printed, and the fixed status
 line bar at the top of the screen.
 
-@c
+=
 Constant WIN_ALL     = 0; ! Both windows at once
 Constant WIN_STATUS  = 1;
 Constant WIN_MAIN    = 2;
 
-@p Paragraphing Flags.
+@h Paragraphing Flags.
 I am not sure many dictionaries would countenance "to paragraph" as a
 verb, but never mind: the reference here is to the algorithm used to place
 paragraph breaks within text, which uses bitmaps composed of the following.
 
-@c
+=
 Constant PARA_COMPLETED          = 1;
 Constant PARA_PROMPTSKIP         = 2;
 Constant PARA_SUPPRESSPROMPTSKIP = 4;
 Constant PARA_NORULEBOOKBREAKS   = 8;
 Constant PARA_CONTENTEXPECTED    = 16;
 
-@p Descriptors in the Language of Play.
+@h Descriptors in the Language of Play.
 The following constants, which must be different in value from the number
 of any I6 attribute, are used in the |LanguageDescriptors| table found
 in the definition of the language of play.
 
-@c
+=
 Constant POSSESS_PK  = $100;
 Constant DEFART_PK   = $101;
 Constant INDEFART_PK = $102;
 
-@p Run-Time Problem Numbers.
+@h Run-Time Problem Numbers.
 The enumeration sequence here must correspond to that in the file of RTP
 texts, which is used to generate the HTML pages displayed by the Inform
 user interface when a run-time problem has occurred. (For instance, the
@@ -212,7 +210,7 @@ equivalent to |RTP_DIVZERO| being 17 below.) There is no significance to
 the sequence, which is simply the historical order in which they were added
 to I7.
 
-@c
+=
 Constant RTP_BACKDROP                = 1;
 Constant RTP_EXITDOOR                = 2;
 Constant RTP_NOEXIT                  = 3;
@@ -284,7 +282,7 @@ Constant RTP_LISTSIZENEGATIVE        = 68;
 Constant RTP_REGIONSNOTADJACENT      = 69;
 
 
-@p Template Activities.
+@h Template Activities.
 These are the activities defined in the Standard Rules. Most, though not
 all, are carried out by explicit function calls in the template layer,
 which is why we need their ID numbers: note that NI assigns each activity a
@@ -293,7 +291,7 @@ processes the Standard Rules before any other source text. (These numbers
 must correspond {\it both} to those in the source of NI, {\it and} to the
 creation sequence in the Standard Rules.)
 
-@c
+=
 Constant STARTING_VIRTUAL_MACHINE_ACT    = 0;
 Constant PRINTING_RESPONSE_ACT           = 1;
 
@@ -335,13 +333,13 @@ Constant PRINTING_LOCALE_DESCRIPTION_ACT = 31;
 Constant CHOOSING_NOTABLE_LOCALE_OBJ_ACT = 32;
 Constant PRINTING_LOCALE_PARAGRAPH_ACT   = 33;
 
-@p Template Rulebooks.
+@h Template Rulebooks.
 Rulebooks are created in a similar way, and again are numbered upwards from
 0 in order of creation. These are the ones used in the template layer.
 (These numbers must correspond {\it both} to those in the source of NI,
 {\it and} to the creation sequence in the Standard Rules.)
 
-@c
+=
 Constant STARTUP_RB                      = 0;
 Constant SHUTDOWN_RB                     = 1;
 
@@ -369,16 +367,16 @@ Constant REPORT_RB                       = 24;
 
 Constant MULTIPLE_ACTION_PROCESSING_RB   = 26;
 
-@p Kind IDs.
+@h Kind IDs.
 These are filled in automatically by NI, and have the same names as are used
 in the NI source (and in the Load-.i6t sections): for instance |NUMBER_TY|.
 
-@p Parser Error Numbers.
+@h Parser Error Numbers.
 The traditional ways in which the I6 library's parser, which we adopt here
 more or less intact, can give up on a player's command. See the {\it Inform
 Designer's Manual}, 4th edition, for details.
 
-@c
+=
 Constant STUCK_PE         = 1;
 Constant UPTO_PE          = 2;
 Constant NUMBER_PE        = 3;
@@ -405,7 +403,7 @@ Constant MISSINGPERSON_PE = 23;
 Constant ANIMALISTEN_PE   = 24;
 Constant TOTALK_PE        = 25;
 
-@p Scope Searching Reasons.
+@h Scope Searching Reasons.
 The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
@@ -416,21 +414,21 @@ I6's |EACH_TURN_REASON|, |REACT_BEFORE_REASON| and |REACT_AFTER_REASON|
 have been removed from this list as no longer meaningful; hence the lacuna
 in numbering.
 
-@c
+=
 Constant PARSING_REASON       = 0;
 Constant TALKING_REASON       = 1;
 Constant EACH_TURN_REASON     = 2;
 Constant LOOPOVERSCOPE_REASON = 5;
 Constant TESTSCOPE_REASON     = 6;
 
-@p Token Types.
+@h Token Types.
 Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
 The |*_TOKEN| constants must not be altered without modifying the I6 compiler
 to match (so, basically, they must not be altered at all).
 
-@c
+=
 Constant ILLEGAL_TT         = 0;    ! Types of grammar token: illegal
 Constant ELEMENTARY_TT      = 1;    !     (one of those below)
 Constant PREPOSITION_TT     = 2;    !     e.g. 'into'
@@ -451,7 +449,7 @@ Constant NUMBER_TOKEN       = 8;
 Constant TOPIC_TOKEN        = 9;
 Constant ENDIT_TOKEN        = 15;   ! Value used to mean "end of grammar line"
 
-@p GPR Return Values.
+@h GPR Return Values.
 GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
@@ -464,7 +462,7 @@ so that they effectively disappeared from view. But they might still be
 useful for implementing inflected forms of nouns, so we have retained them
 here regardless.
 
-@c
+=
 Constant GPR_FAIL           = -1;   ! Return values from General Parsing
 Constant GPR_PREPOSITION    = 0;    ! Routines
 Constant GPR_NUMBER         = 1;
@@ -478,10 +476,10 @@ Constant GPR_MULTIEXCEPT    = GPR_NOUN + 4;
 Constant GPR_MULTIINSIDE    = GPR_NOUN + 5;
 Constant GPR_CREATURE       = GPR_NOUN + 6;
 
-@p List Styles.
+@h List Styles.
 These constants make up bitmaps of the options in use when listing objects.
 
-@c
+=
 Constant NEWLINE_BIT        = $$0000000000000001; ! New-line after each entry
 Constant INDENT_BIT         = $$0000000000000010; ! Indent each entry by depth
 Constant FULLINV_BIT        = $$0000000000000100; ! Full inventory information after entry
@@ -501,17 +499,17 @@ Constant NOARTICLE_BIT      = $$0001000000000000; ! Print no articles, definite 
 Constant EXTRAINDENT_BIT    = $$0010000000000000; ! New in I7: extra indentation of 1 level
 Constant CFIRSTART_BIT      = $$0100000000000000; ! Capitalise first article in list
 
-@p Lengths Of Time.
+@h Lengths Of Time.
 Inform measures time in minutes.
 
-@c
+=
 Constant QUARTER_HOUR = 15;
 Constant HALF_HOUR = 30;
 Constant ONE_HOUR = 60;
 Constant TWELVE_HOURS = 720;
 Constant TWENTY_FOUR_HOURS = 1440;
 
-@p Empty Text.
+@h Empty Text.
 The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string |"exemplum"| twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
@@ -523,25 +521,25 @@ general mechanism for this in NI, but the single case most often needed
 is the empty text, since this is the default value for text variables
 and properties: we give it a name as follows.
 
-@c
+=
 Constant EMPTY_TEXT_PACKED "";
 Array EMPTY_TEXT_VALUE --> CONSTANT_PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;
 
-@p Empty Table.
+@h Empty Table.
 Similarly: the default value for the "table" kind of value, a Table
 containing no rows and no columns.
 
-@c
+=
 Array TheEmptyTable --> 0 0;
 
-@p Empty Set.
+@h Empty Set.
 The falsity proposition describes the empty set of objects, and is the
 zero value for the "description" kind of value.
 
-@c
+=
 [ Prop_Falsity reason obj; return 0; ];
 
-@p Template Attributes.
+@h Template Attributes.
 An I6 attribute is equivalent to an I7 "either/or property", though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
@@ -559,7 +557,7 @@ kinds. (So that for I7 use they are read-only.) Others still are used by
 the template layer as part of the implementation of services for I7, but
 are not visible to I7 source text as storage.
 
-@c
+=
 Attribute absent; ! Used to mark objects removed from play
 Attribute animate; ! I6-level marker for I7 kind "person"
 Attribute clothing; ! = I7 "wearable"
@@ -599,11 +597,11 @@ Attribute pushable; ! New in I7
 Attribute mark_as_room; ! Used in I7 to speed up testing "ofclass K1_room"
 Attribute mark_as_thing; ! Used in I7 to speed up testing "ofclass K2_thing"
 
-Attribute workflag; ! = I7 "marked for listing", but basically temporary workspace 
+Attribute workflag; ! = I7 "marked for listing", but basically temporary workspace
 Attribute workflag2; ! new in I7 and also temporary workspace
 Constant list_filter_permits = privately_named; ! another I7 listwriter convenience
 
-@p Template Properties.
+@h Template Properties.
 As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, |after|,
@@ -618,7 +616,7 @@ longer thought of as data attached to them. At that, it could have been
 worse: a few unused I6 library properties have been retained for possible
 future use.
 
-@c
+=
 Property add_to_scope; ! used as in I6 to place component parts in scope
 Property article "a"; ! used as in I6 to implement articles
 Property capacity 100; ! = I7 "carrying capacity"
@@ -651,22 +649,22 @@ Property IK3_Count;
 
 Property IK1_link; ! These are for linked lists used to make searches faster
 Property IK2_link; ! and again it's memory-efficient to declare the common ones
-Property IK5_link; ! 
-Property IK6_link; ! 
-Property IK8_link; ! 
+Property IK5_link; !
+Property IK6_link; !
+Property IK8_link; !
 
 Property articles; ! not used by I7, but an interesting hook in the parser
 Property grammar; ! not used by I7, but an interesting hook in the parser
 Property inside_description; ! not used by I7, but an interesting hook in the locale code
 Property short_name_indef 0; ! not used by I7, but an interesting hook in the listmaker
 
-@p Action Count.
+@h Action Count.
 The number of valid I7 actions in existence.
 
-@c
+=
 Constant ActionCount = CCOUNT_ACTION_NAME;
 
-@p Fake Actions.
+@h Fake Actions.
 Though sometimes useful for I6 coding tricks, fake actions -- action numbers
 not corresponding to any action, but different from those of valid actions,
 and useable with a number of action syntaxes -- are not conceptually present
@@ -682,16 +680,16 @@ The following fake actions from the I6 library have been dropped here:
 |##LetGo|, |##Receive|, |##ThrownAt|, |##Prompt|, |##Places|, |##Objects|,
 |##Order|, |##NotUnderstood|.
 
-@c
+=
 Fake_Action ListMiscellany;
 Fake_Action Miscellany;
 Fake_Action PluralFound;
 Fake_Action TheSame;
 
-@p Formal Parameters.
+@h Formal Parameters.
 These are needed for efficient run-time ambiguity resolution.
 
-@c
+=
 Global formal_rv;
 Global formal_par0;
 Global formal_par1;
@@ -703,12 +701,12 @@ Global formal_par6;
 Global formal_par7;
 Global unicode_temp;
 
-@p Template Configuration.
+@h Template Configuration.
 To minimise the need for conditional compilation in the template, the
 constant |TEMPLATE_CONFIGURATION_BITMAP| must be generated by the user
 (i.e., by I7). It's made up of these bits:
 
-@c
+=
 Constant USE_SCORING_TCBIT = 1;
 Constant PREVENT_UNDO_TCBIT = 2;
 Constant SERIAL_COMMA_TCBIT = 4;

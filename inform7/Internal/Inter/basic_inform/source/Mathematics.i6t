@@ -1,10 +1,8 @@
-B/math: Mathematics Template.
- 
-@Purpose: Mathematical functions, especially for real numbers.
- 
-@-------------------------------------------------------------------------------
+Mathematics Template.
 
-@p Square Root.
+Mathematical functions, especially for real numbers.
+
+@h Square Root.
 Although this routine performs integer square root, it does so using Glulx's
 floating-point operations if available (with code contributed by Andrew
 Plotkin): this is fast and remains accurate up to about 16 million.
@@ -17,7 +15,7 @@ and also glulxe) because of differences in how C compilers handle signed
 division of constants in the case where the dividend is $-2^{31}$, the unique
 number which cannot be negated in 32-bit twos complement arithmetic.
 
-@c
+=
 [ SquareRoot num
     op res one n x;
     if (num < 0) { RunTimeProblem(RTP_NEGATIVEROOT); return 1; }
@@ -51,7 +49,7 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 	return res;
 ];
 
-@p Cube Root.
+@h Cube Root.
 The following, again, uses floating-point arithmetic if it's available:
 this is fast and gives good accuracy for smallish numbers, but limited
 precision begins to tell at around 2000000.
@@ -61,7 +59,7 @@ Newton-Raphson approximation, not a great method but which, on the narrow
 ranges of integers we deal with, just about good enough. The square root is
 used only as a sighting shot.
 
-@c
+=
 [ CubeRoot num neg x y n;
     ! Use floating-point ops if available.
     #ifdef TARGET_GLULX;
@@ -85,39 +83,39 @@ used only as a sighting shot.
 	return x;
 ];
 
-@p Absolute value.
+@h Absolute value.
 Of an integer:
 
-@c
+=
 [ NUMBER_TY_Abs x; if (x<0) return -x; return x; ];
 
-@p IntegerDivide.
+@h IntegerDivide.
 We can't simply use I6's |/| operator, as that translates directly into a
 virtual machine opcode which crashes on divide by zero.
 
-@c
+=
 [ IntegerDivide A B;
 	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
 	return A/B;
 ];
 
-@p IntegerRemainder.
+@h IntegerRemainder.
 Similarly.
 
-@c
+=
 [ IntegerRemainder A B;
 	if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }
 	return A%B;
 ];
 
-@p UnsignedCompare.
+@h UnsignedCompare.
 Comparison of I6 integers is normally signed, that is, treating the word as
 a twos-complement signed number, so that |$FFFF| is less than |0|, for
 instance. If we want to construe words as being unsigned integers, or as
 addresses, we need to compare them with the following routine, which returns
 1 if $x>y$, 0 if $x=y$ and $-1$ if $x<y$.
 
-@c
+=
 [ UnsignedCompare x y u v;
 	#Ifdef TARGET_GLULX;
 	@jleu x y ?lesseq;
@@ -137,21 +135,21 @@ addresses, we need to compare them with the following routine, which returns
     #Endif;
 ];
 
-@p SignedCompare.
+@h SignedCompare.
 This routine is hardly ever needed; it wraps up ordinary comparisons.
 
-@c
+=
 [ SignedCompare x y;
 	if (x > y) return 1;
 	if (x == y) return 0;
 	return -1;
 ];
 
-@p Printing reals.
+@h Printing reals.
 Most of the code in this section is by Andrew Plotkin, and derives from test
 cases used to check the floating-point extensions to Glulx.
 
-@c
+=
 #Ifdef TARGET_GLULX;
 
 [ REAL_NUMBER_TY_Say fp;
@@ -245,7 +243,7 @@ Constant M_PI   = $40490FDB;
 Constant M_NPI  = $C0490FDB;
 Constant M_2PI  = $40C90FDB; ! 2*pi
 Constant M_PI2  = $3FC90FDB; ! pi/2
-Constant M_NPI2 = $BFC90FDB; 
+Constant M_NPI2 = $BFC90FDB;
 Constant M_E    = $402DF854;
 Constant M_E2   = $40EC7326; ! e^2
 Constant M_N0   = $80000000; ! negative zero
@@ -282,18 +280,18 @@ Constant M_NNAN = $FF800001; ! another, with a sign bit
 ! Contrariwise, if useall is false, unused characters at the end of the buffer
 ! are fine. (But not at the beginning; the float must start at the beginning
 ! of the buffer.)
-! 
+!
 [ FloatParse buf len useall
 	res ix val ch ten negative intpart fracpart fracdiv
 	expon expnegative count;
-	
+
 !	print "FloatParse <";
 !	for (ix=0: ix<len: ix++) print (char) buf->ix;
 !	print ">^";
 
 	if (len == 0)
 		return FLOAT_NAN;
-		
+
 	ix = 0;
 	negative = false;
 	intpart = 0;
@@ -422,7 +420,7 @@ Constant M_NNAN = $FF800001; ! another, with a sign bit
 
 ! Floating-point printing routines. (These are based on code in
 ! Glulxercise.inf, but modified.)
-  
+
 ! Print a float. This uses exponential notation ("[-]N.NNNe[+-]NN") if
 ! the exponent is not between 6 and -4. If it is (that is, if the
 ! absolute value is near 1.0) then it uses decimal notation ("[-]NNN.NNNNN").
@@ -464,7 +462,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 		@streamchar '-';
 		val = val & $7FFFFFFF;
 	}
-	
+
 	@jisnan val ?IsNan;
 	@jisinf val ?IsInf;
 
@@ -476,7 +474,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 
 	! Take as an example val=123.5, with precision=6. The desired
 	! result is "1.23000e+02".
-	
+
 	@log val sp;
 	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
 	@floor log10val fexpo;
@@ -498,7 +496,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	! after the first).
 
 	.DoPrint;
-	
+
 	if (idig >= 10*pow10) {
 		! Rounding errors have left us outside the decimal range of
 		! [1.0, 10.0) where we should be. Adjust to the next higher
@@ -506,7 +504,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 		expo++;
 		@div idig 10 idig;
 	}
-	
+
 	! Trim off trailing zeroes, as long as there's at least one digit
 	! after the decimal point. (Delete this stanza if you want to
 	! keep the trailing zeroes.)
@@ -518,7 +516,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 		prec--;
 	}
 	.DoneTrimming;
-	
+
 	for (ix=0 : ix<=prec : ix++) {
 		@div idig pow10 sp;
 		@mod sp 10 sp;
@@ -549,7 +547,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 			@streamchar '0';
 		@streamnum expo;
 	}
-	
+
 	rtrue;
 
 	.IsNan;
@@ -573,25 +571,25 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	if (prec > 8)
 		prec = 8;
 	pow10 = PowersOfTen --> prec;
-	
+
 	! Knock off the sign bit first.
 	if (val & $80000000) {
 		@streamchar '-';
 		val = val & $7FFFFFFF;
 	}
-	
+
 	@jisnan val ?IsNan;
 	@jisinf val ?IsInf;
 
 	! Take as an example val=123.5, with precision=6. The desired result
 	! is "123.50000".
-	
+
 	extra0 = 0;
 	@fmod val $3F800000 frac fint; ! $3F800000 is 1.0.
 	@ftonumz fint int;
 	! This converts the integer part of the value to an integer value;
 	! in our example, 123.
-	
+
 	if (int == $7FFFFFFF) {
 		! Looks like the integer part of the value is bigger than
 		! we can store in an int variable. (It could be as large
@@ -621,7 +619,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	@streamchar '.';
 
 	! Now we need to print the frac part, which is .5.
-	
+
 	@log frac sp;
 	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
 	@numtof prec sp;
@@ -636,7 +634,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 	! exactly the (post-decimal-point) digits we want to print.
 
 	.DoPrint;
-	
+
 	if (idig >= pow10) {
 		! Rounding errors have left us outside the decimal range of
 		! [0.0, 1.0) where we should be. I'm not sure this is possible,
@@ -655,7 +653,7 @@ Array PowersOfTen --> 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000
 		prec--;
 	}
 	.DoneTrimming;
-	
+
 	@div pow10 10 pow10;
 	for (ix=0 : ix<prec : ix++) {
 		@div idig pow10 sp;

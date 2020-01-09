@@ -1,10 +1,8 @@
-B/tabt: Tables Template.
- 
-@Purpose: To read, write, search and allocate rows in the Table data structure.
- 
-@-------------------------------------------------------------------------------
+Tables Template.
 
-@p Format.
+To read, write, search and allocate rows in the Table data structure.
+
+@h Format.
 The I7 Table structure is not to be confused with the I6 |table| form of
 array: it is essentially a two-dimensional array which has some metadata
 at the top of each column.
@@ -25,7 +23,7 @@ offset and |C-->3| up to |C-->(C-->0)| holding the entries.
 |C-->1| also contains seven upper bit flags. These are also defined in
 "Tables.w" in the NI source, and the values must agree.
 
-@c
+=
 Constant TB_COLUMN_REAL        $8000;
 Constant TB_COLUMN_SIGNED      $4000;
 Constant TB_COLUMN_TOPIC       $2000;
@@ -37,7 +35,7 @@ Constant TB_COLUMN_NUMBER      $01ff; ! Mask to remove upper bit flags
 
 Constant COL_HSIZE 2; ! Column header size: two words (ID/flags, blank bits)
 
-@p Find Column.
+@h Find Column.
 Columns can be referenced either by their physical column numbers -- from 1
 to, potentially, 99 -- or else by unique ID numbers associated with column
 names. For instance, if a table has a column called "liquid capacity",
@@ -50,7 +48,7 @@ a very large work, so we will probably one day revise the above to make
 use of the larger word-size in Glulx and so raise this limit. But so far
 nobody has got even close to it.)
 
-@c
+=
 [ TableFindCol tab col f i no_cols n;
 	no_cols = tab-->0;
 	for (i=1: i<=no_cols: i++)
@@ -59,18 +57,18 @@ nobody has got even close to it.)
 	return 0;
 ];
 
-@p Number of Rows.
+@h Number of Rows.
 The columns in a table can be assumed all to have the same height (i.e.,
 number of rows): thus the number of rows in |T| can be calculated by
 looking at column 1, thus...
 
-@c
+=
 [ TableRows tab first_col;
 	first_col = tab-->1; if (first_col == 0) return 0;
 	return (first_col-->0) - COL_HSIZE;
 ];
 
-@p Blanks.
+@h Blanks.
 Each table entry is stored in a single word in memory: indeed, column |C|
 row |R| is at address |(T-->C)-->(R+COL_HSIZE)|.
 
@@ -120,16 +118,16 @@ we need to check that we haven't got a false negative. (The more improbable
 |TABLE_NOVALUE| is as a stored value, the rarer it is that we have to
 check the blanks bitmap for a non-blank entry.)
 
-@c
+=
 Constant TABLE_NOVALUE = IMPROBABLE_VALUE;
 
-@p Masks.
+@h Masks.
 The blanks bitmaps are stored as bytes; we therefore need a quick way to
 test or set whether bit number $i$ of a byte is zero, where $0\leq i\leq 7$.
 I6 provides no very useful operators here, whereas memory lookup is cheap,
 so we use two arrays of bitmaps:
 
-@c
+=
 Array CheckTableEntryIsBlank_LU
 	->	$$00000001
 		$$00000010
@@ -149,7 +147,7 @@ Array CheckTableEntryIsNonBlank_LU
 		$$10111111
 		$$01111111;
 
-@p Testing Blankness.
+@h Testing Blankness.
 The following routine is the one which checks that there is no false negative:
 it should be used when we know that the table entry is |TABLE_NOVALUE|
 and we need to check the blank bit, if there is one, to make sure the entry
@@ -162,7 +160,7 @@ rows which isn't a multiple of 8, the spare bits at the end of the last byte
 in the blanks bitmap are wasted, but this is an acceptable overhead in
 practice.
 
-@c
+=
 [ CheckTableEntryIsBlank tab col row i at;
 	if (col >= 100) col = TableFindCol(tab, col);
 	if (col == 0) rtrue;
@@ -176,7 +174,7 @@ practice.
 	rfalse;
 ];
 
-@p Force Entry Blank.
+@h Force Entry Blank.
 We blank a table cell by storing |TABLE_NOVALUE| in its entry word and
 also setting the relevant bit in the blanks bitmap, if there is one.
 
@@ -190,7 +188,7 @@ only one.) |TABLE_NOVALUE| is chosen such that it cannot be an address
 of a memory block, which is convenient here. (The value 0 means "no memory
 block allocated yet".)
 
-@c
+=
 [ ForceTableEntryBlank tab col row i at oldv flags;
 	if (col >= 100) col = TableFindCol(tab, col);
 	if (col == 0) rtrue;
@@ -205,7 +203,7 @@ block allocated yet".)
 	(TB_Blanks->at) = (TB_Blanks->at) | (CheckTableEntryIsBlank_LU->(row%8));
 ];
 
-@p Force Entry Non-Blank.
+@h Force Entry Non-Blank.
 To unblank a cell, we need to clear the relevant bit in the bitmap. We then
 go on to write a new value in to the entry -- thus overwriting the
 |TABLE_NOVALUE| value -- but that isn't done here; the expectation is
@@ -215,7 +213,7 @@ The exception is again for columns holding a kind of value pointing to a
 memory block, where we create a suitable initialised but uninteresting
 memory block for the KOV in question, and set the entry to that.
 
-@c
+=
 [ ForceTableEntryNonBlank tab col row i at oldv flags tc kov;
 	if (col >= 100) col=TableFindCol(tab, col);
 	if (col == 0) rtrue;
@@ -236,13 +234,13 @@ memory block for the KOV in question, and set the entry to that.
 	(TB_Blanks->at) = (TB_Blanks->at) & (CheckTableEntryIsNonBlank_LU->(row%8));
 ];
 
-@p Swapping Blank Bits.
+@h Swapping Blank Bits.
 When sorting a table, we obviously need to swap rows from time to time; if
 any of its columns have blanks bitmaps, then the relevant bits in them
 need to be swapped to match, and the following routine performs this operation
 for two rows in a given column.
 
-@c
+=
 [ TableSwapBlankBits tab row1 row2 col at1 at2 bit1 bit2;
 	if (col >= 100) col=TableFindCol(tab, col);
 	if (col == 0) rtrue;
@@ -253,7 +251,7 @@ for two rows in a given column.
 	at2 = ((tab-->col)-->2) + (row2/8);
 	bit1 = ((TB_Blanks->at1) & (CheckTableEntryIsBlank_LU->(row1%8)));
 	bit2 = ((TB_Blanks->at2) & (CheckTableEntryIsBlank_LU->(row2%8)));
-	if (bit1) bit1 = true; 
+	if (bit1) bit1 = true;
 	if (bit2) bit2 = true;
 	if (bit1 == bit2) return;
 	if (bit1) {
@@ -269,14 +267,14 @@ for two rows in a given column.
 	}
 ];
 
-@p Moving Blank Bits Down.
+@h Moving Blank Bits Down.
 Another common table operation is to compress it by moving all the blank
 rows down to the bottom, so that non-blank rows occur in a contiguous block
 at the top: this means table sorting can be done without having to refer
 continually to the blanks bitmaps. The following operation is useful for
 keeping the blanks bitmaps up to date when blank rows are moved down.
 
-@c
+=
 [ TableMoveBlankBitsDown tab row1 row2 col at atp1 bit rx;
 	if (col >= 100) col=TableFindCol(tab, col);
 	if (col == 0) rtrue;
@@ -309,7 +307,7 @@ keeping the blanks bitmaps up to date when blank rows are moved down.
 	}
 ];
 
-@p Table Row Corresponding.
+@h Table Row Corresponding.
 |TableRowCorr(T, C, V)| returns the first row on which value |V| appears in
 column |C| of table |T|, or prints an error if it doesn't.
 
@@ -318,7 +316,7 @@ column |C| of table |T|, or 0 if |V| does not occur at all. If the column
 is a topic, then we match the entry as a snippet against the value as a
 general parsing routine.
 
-@c
+=
 [ TableRowCorr tab col lookup_value lookup_col i j f v;
 	if (col >= 100) col=TableFindCol(tab, col, true);
 	lookup_col = tab-->col;
@@ -362,7 +360,7 @@ general parsing routine.
 	return 0;
 ];
 
-@p Table Look Up Corresponding Row.
+@h Table Look Up Corresponding Row.
 |TableLookUpCorr(T, C1, C2, V)| finds the first row on which value |V|
 appears in column |C2|, and returns the corresponding value in |C1|, or
 prints an error if the value |V| cannot be found or has no corresponding
@@ -371,7 +369,7 @@ value in |C1|.
 |ExistsTableLookUpCorr(T, C1, C2, V)| returns |true| if the operation
 |TableLookUpCorr(T, C1, C2, V)| can be done, |false| otherwise.
 
-@c
+=
 [ TableLookUpCorr tab col1 col2 lookup_value write_flag write_value cola1 cola2 i j v f;
 	if (col1 >= 100) col1=TableFindCol(tab, col1, true);
 	if (col2 >= 100) col2=TableFindCol(tab, col2, true);
@@ -435,14 +433,14 @@ value in |C1|.
 	rfalse;
 ];
 
-@p Table Look Up Entry.
+@h Table Look Up Entry.
 |TableLookUpEntry(T, C, R)| returns the value at column |C|, row |R|, printing
 an error if that doesn't exist.
 
 |ExistsTableLookUpEntry(T, C, R)| returns true if a value exists at column
 |C|, row |R|, false otherwise.
 
-@c
+=
 [ TableLookUpEntry tab col index write_flag write_value v;
 	if (tab == 0) return RunTimeProblem(RTP_TABLE_NOTABLE2);
 	if (col >= 100) col=TableFindCol(tab, col, true);
@@ -482,7 +480,7 @@ an error if that doesn't exist.
 	rtrue;
 ];
 
-@p Blank Rows.
+@h Blank Rows.
 |TableRowIsBlank(T, R)| returns true if row |R| of table |T| is blank. (|R|
 must be a legal row number.)
 
@@ -495,7 +493,7 @@ a legal row number.)
 
 |TableBlankRow(T)| finds the first blank row in |T|.
 
-@c
+=
 [ TableRowIsBlank tab j k;
 	for (k=1:k<=tab-->0:k++) {
 		if (((tab-->k)-->(j+COL_HSIZE)) ~= TABLE_NOVALUE) rfalse;
@@ -544,10 +542,10 @@ a legal row number.)
 	return i;
 ];
 
-@p Random Row.
+@h Random Row.
 |TableRandomRow(T)| chooses a random non-blank row in |T|.
 
-@c
+=
 [ TableRandomRow tab i j k;
 	i = TableRows(tab);
 	j = TableFilledRows(tab);
@@ -559,10 +557,10 @@ a legal row number.)
 	}
 ];
 
-@p Swap Rows.
+@h Swap Rows.
 |TableSwapRows(T, R1, R2)| exchanges rows |R1| and |R2|.
 
-@c
+=
 [ TableSwapRows tab i j k l v1 v2;
 	if (i==j) return;
 	l = tab-->0;
@@ -576,7 +574,7 @@ a legal row number.)
 	}
 ];
 
-@p Compare Rows.
+@h Compare Rows.
 |TableCompareRows(T, C, R1, R2, D)| returns:
 
 (a) $+1$ if the entry at row R1 of column C is $>$ the entry at row R2,
@@ -589,7 +587,7 @@ less than all others, so that once again blanks are last. Finally, a wholly
 blank row is always placed after a row in which the entry in C is blank but
 where other entries are not.
 
-@c
+=
 [ TableCompareRows tab col row1 row2 dir val1 val2 bl1 bl2 f;
 	if (col >= 100) col=TableFindCol(tab, col, false);
 	val1 = (tab-->col)-->(row1+COL_HSIZE);
@@ -625,9 +623,9 @@ where other entries are not.
 	}
 ];
 
-@p Move Row Down.
+@h Move Row Down.
 
-@c
+=
 [ TableMoveRowDown tab r1 r2 rx k l m v f;
 	if (r1==r2) return;
 	l = tab-->0;
@@ -645,17 +643,17 @@ where other entries are not.
 	}
 ];
 
-@p Shuffle.
+@h Shuffle.
 |TableShuffle(T)| sorts |T| into random row order.
 
-@c
+=
 [ TableShuffle tab i to;
 	TableMoveBlanksToBack(tab, 1, TableRows(tab));
 	to = TableFilledRows(tab);
 	for (i=2:i<=to:i++) TableSwapRows(tab, i, random(i));
 ];
 
-@p Next Row.
+@h Next Row.
 |TableNextRow(T, C, R, D)| is used when scanning through a table in order
 of the values in column |C|: ascending order if |D = 1|, descending if |D =
 -1|. The current position is row |R| of column |C|, or |R = 0| if we have
@@ -671,7 +669,7 @@ Rows with blank entries in |C| are skipped.
 
 will perform a loop of valid row numbers in order of column |C|.
 
-@c
+=
 [ TableNextRow tab col row dir i k val v dv min_dv min_at signed_arithmetic f blk z;
 	if (col >= 100) col=TableFindCol(tab, col, false);
 	f = ((tab-->col)-->1);
@@ -743,9 +741,9 @@ will perform a loop of valid row numbers in order of column |C|.
 	return min_at;
 ];
 
-@p Move Blanks to Back.
+@h Move Blanks to Back.
 
-@c
+=
 [ TableMoveBlanksToBack tab fromrow torow i fbl lnbl blc;
 	if (torow < fromrow) return;
 	fbl = 0; lnbl = 0;
@@ -763,10 +761,10 @@ will perform a loop of valid row numbers in order of column |C|.
 	return torow-blc; ! Final non-blank row
 ];
 
-@p Sort.
+@h Sort.
 This is really only a front-end: it calls the sorting code at "Sort.i6t".
 
-@c
+=
 [ TableSort tab col dir test_flag algorithm i j k f;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
@@ -788,13 +786,13 @@ This is really only a front-end: it calls the sorting code at "Sort.i6t".
 	}
 ];
 
-@p Print Table to File.
+@h Print Table to File.
 This is how we serialise a table to an external file, though the writing
 is done by printing characters in the standard way; it's just that the output
 stream will be an external file rather than the screen when this routine
 is called.
 
-@c
+=
 [ TablePrint tab i j k row col v tc kov;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
@@ -822,10 +820,10 @@ is called.
 	rfalse;
 ];
 
-@p Read Table from File.
+@h Read Table from File.
 And this is how we unserialise again. It makes sense only on Glulx.
 
-@c
+=
 #ifdef TARGET_GLULX;
 [ TableRead tab auxf row maxrow col ch v sgn dg j tc kov;
 	for (col=1:col<=tab-->0:col++) {
@@ -905,10 +903,10 @@ And this is how we unserialise again. It makes sense only on Glulx.
 ];
 #ENDIF; ! TARGET_GLULX
 
-@p Debugging.
+@h Debugging.
 Routines to print the state of a table, for debugging purposes only.
 
-@c
+=
 [ TableColumnDebug tab col k i v tc kov;
 	if (col >= 100) col=TableFindCol(tab, col, false);
 	k = TableRows(tab);

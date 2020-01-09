@@ -1,12 +1,10 @@
-B/oowt: OutOfWorld Template.
- 
-@Purpose: To implement some of the out of world actions.
- 
-@-------------------------------------------------------------------------------
+OutOfWorld Template.
 
-@p Perform Undo.
+To implement some of the out of world actions.
 
-@c
+@h Perform Undo.
+
+=
 [ Perform_Undo;
 	if (TEMPLATE_CONFIGURATION_BITMAP & PREVENT_UNDO_TCBIT) {
 		IMMEDIATELY_UNDO_RM('A'); new_line; return;
@@ -17,9 +15,9 @@ B/oowt: OutOfWorld Template.
 	if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }
 ];
 
-@p Announce Score Rule.
+@h Announce Score Rule.
 
-@c
+=
 [ ANNOUNCE_SCORE_R;
 	if (actor ~= player) rfalse;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) {
@@ -29,18 +27,18 @@ B/oowt: OutOfWorld Template.
 	}
 ];
 
-@p Switch Score Notification On Rule.
+@h Switch Score Notification On Rule.
 
-@c
+=
 [ SWITCH_SCORE_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
 	else notify_mode=1;
 ];
 
-@p Standard Report Switching Score Notification On Rule.
+@h Standard Report Switching Score Notification On Rule.
 
-@c
+=
 [ REP_SWITCH_NOTIFY_ON_R;
 	if (actor ~= player) rfalse;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
@@ -48,18 +46,18 @@ B/oowt: OutOfWorld Template.
 	}
 ];
 
-@p Switch Score Notification Off Rule.
+@h Switch Score Notification Off Rule.
 
-@c
+=
 [ SWITCH_SCORE_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();
 	else notify_mode=0;
 ];
 
-@p Standard Report Switching Score Notification Off Rule.
+@h Standard Report Switching Score Notification Off Rule.
 
-@c
+=
 [ REP_SWITCH_NOTIFY_OFF_R;
 	if (actor ~= player) rfalse;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) {
@@ -67,57 +65,57 @@ B/oowt: OutOfWorld Template.
 	}
 ];
 
-@p Prefer Sometimes Abbreviated Room Descriptions Rule.
+@h Prefer Sometimes Abbreviated Room Descriptions Rule.
 
-@c
+=
 [ PREFER_SOMETIMES_ABBREVIATED_R;
 	if (actor ~= player) rfalse;
 	lookmode=1;
 ]; ! Brief
 
-@p Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule.
+@h Standard Report Prefer Sometimes Abbreviated Room Descriptions Rule.
 
-@c
+=
 [ REP_PREFER_SOMETIMES_ABBR_R;
 	if (actor ~= player) rfalse;
 	print (TEXT_TY_Say) Story; REP_PREFER_SOMETIMES_ABBR_RM('A'); new_line;
 ]; ! Brief
 
-@p Prefer Unabbreviated Room Descriptions Rule.
+@h Prefer Unabbreviated Room Descriptions Rule.
 
-@c
+=
 [ PREFER_UNABBREVIATED_R;
 	if (actor ~= player) rfalse;
 	lookmode=2;
 ]; ! Verbose
 
-@p Standard Report Prefer Unabbreviated Room Descriptions Rule.
+@h Standard Report Prefer Unabbreviated Room Descriptions Rule.
 
-@c
+=
 [ REP_PREFER_UNABBREVIATED_R;
 	if (actor ~= player) rfalse;
 	print (TEXT_TY_Say) Story; REP_PREFER_UNABBREVIATED_RM('A'); new_line;
 ]; ! Verbose
 
-@p Prefer Abbreviated Room Descriptions Rule.
+@h Prefer Abbreviated Room Descriptions Rule.
 
-@c
+=
 [ PREFER_ABBREVIATED_R;
 	if (actor ~= player) rfalse;
 	lookmode=3;
 ]; ! Superbrief
 
-@p Standard Report Prefer Abbreviated Room Descriptions Rule.
+@h Standard Report Prefer Abbreviated Room Descriptions Rule.
 
-@c
+=
 [ REP_PREFER_ABBREVIATED_R;
 	if (actor ~= player) rfalse;
 	print (TEXT_TY_Say) Story; REP_PREFER_ABBREVIATED_RM('A'); new_line;
 ]; ! Superbrief
 
-@p Announce Pronoun Meanings Rule.
+@h Announce Pronoun Meanings Rule.
 
-@c
+=
 [ ANNOUNCE_PRONOUN_MEANINGS_R x y c d;
 	if (actor ~= player) rfalse;
 	ANNOUNCE_PRONOUN_MEANINGS_RM('A');

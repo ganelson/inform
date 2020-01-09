@@ -1,11 +1,9 @@
-B/testt: Tests Template.
- 
-@Purpose: The command grammar and I6 implementation for testing commands such
-as TEST, ACTIONS and PURLOIN.
- 
-@-------------------------------------------------------------------------------
+Tests Template.
 
-@p Abstract Command.
+The command grammar and I6 implementation for testing commands such
+as TEST, ACTIONS and PURLOIN.
+
+@h Abstract Command.
 The code below is compiled only if the symbol |DEBUG| is defined, which it
 always is for normal runs in the Inform user interface, but not for Release
 runs.
@@ -18,7 +16,7 @@ target VM is the Z-machine).
 We take the commands in alphabetical order, beginning with ABSTRACT, which
 moves an object to a new position in the object tree.
 
-@c
+=
 [ XAbstractSub;
     if (XTestMove(noun, second)) return;
     move noun to second;
@@ -36,25 +34,25 @@ moves an object to a new position in the object tree.
     rfalse;
 ];
 
-@p Actions Command.
+@h Actions Command.
 ACTIONS turns tracing of actions on.
 
-@c
+=
 [ ActionsOnSub; trace_actions = 1; say__p = 1; "Actions listing on."; ];
 [ ActionsOffSub; trace_actions = 0; say__p = 1; "Actions listing off."; ];
 
-@p Gonear Command.
+@h Gonear Command.
 GONEAR teleports the player to the vicinity of some named item.
 
-@c
+=
 [ GonearSub;
 	PlayerTo(LocationOf(noun));
 ];
 
-@p Purloin Command.
+@h Purloin Command.
 To PURLOIN is to acquire something without reference to any rules on accessibility.
 
-@c
+=
 [ XPurloinSub;
     if (XTestMove(noun, player)) return;
     move noun to player; give noun moved; give noun ~concealed;
@@ -62,20 +60,20 @@ To PURLOIN is to acquire something without reference to any rules on accessibili
     "[Purloined.]";
 ];
 
-@p Random Command.
+@h Random Command.
 RANDOM forces the random-number generator to a predictable seed value.
 
-@c
+=
 [ PredictableSub;
     VM_Seed_RNG(-100);
     say__p = 1;
     "[Random number generator now predictable.]";
 ];
 
-@p Relations Command.
+@h Relations Command.
 RELATIONS lists the current state of the mutable relations.
 
-@c
+=
 [ ShowRelationsSub;
    IterateRelations(ShowOneRelation);
 ];
@@ -86,10 +84,10 @@ RELATIONS lists the current state of the mutable relations.
 	}
 ];
 
-@p Responses Command.
+@h Responses Command.
 RESPONSES lists the known responses.
 
-@c
+=
 Global suppress_text_substitution = false;
 [ ShowResponsesSub a i j reg wd set_mode;
 	if (NO_RESPONSES == 0) "There are no lettered responses.";
@@ -152,10 +150,10 @@ Global suppress_text_substitution = false;
 	}
 ];
 
-@p Rules Command.
+@h Rules Command.
 RULES changes the level of rule tracing.
 
-@c
+=
 [ RulesOnSub;
 	debug_rules = 1; say__p = 1;
 	"Rules tracing now switched on. Type ~rules off~ to switch it off again,
@@ -170,10 +168,10 @@ RULES changes the level of rule tracing.
 	"Rules tracing now switched off. Type ~rules~ to switch it on again.";
 ];
 
-@p Scenes Command.
+@h Scenes Command.
 SCENES switches scene-change tracing on or off, and also shows the current position.
 
-@c
+=
 [ ScenesOnSub;
 	debug_scenes = 1;
 	ShowSceneStatus(); say__p = 1;
@@ -184,10 +182,10 @@ SCENES switches scene-change tracing on or off, and also shows the current posit
 	"(Scene monitoring now switched off. Type ~scenes~ to switch it on again.)";
 ];
 
-@p Scope Command.
+@h Scope Command.
 SCOPE prints a numbered list of all objects in scope to the player.
 
-@c
+=
 Global x_scope_count;
 [ ScopeSub;
     x_scope_count = 0;
@@ -196,20 +194,20 @@ Global x_scope_count;
 ];
 [ Print_ScL obj; print_ret ++x_scope_count, ": ", (a) obj, " (", obj, ")"; ];
 
-@p Showheap Command.
+@h Showheap Command.
 SHOWHEAP is for debugging the memory heap, and is intended for Inform
 maintainers rather than users.
 
-@c
+=
 [ ShowHeapSub;
 	HeapDebug();
 ];
 
-@p ShowMe Command.
+@h ShowMe Command.
 SHOWME is probably the most useful testing command: it shows the state of the
 current room, or a named item.
 
-@c
+=
 [ ShowMeSub t_0;
 	t_0 = noun;
  	if (noun == nothing) noun = real_location;
@@ -281,11 +279,11 @@ current room, or a named item.
 	rtrue;
 ];
 
-@p Showverb Command.
+@h Showverb Command.
 SHOWVERB is a holdover from old I6 days, but still quite useful. It writes
 out the I6 command verb grammar for the supplied command.
 
-@c
+=
 [ ShowVerbSub address lines meta i x;
 	wn = 2; x = NextWordStopped();
     if (x == 0 || ((x->#dict_par1) & 1) == 0)
@@ -349,10 +347,10 @@ out the I6 command verb grammar for the supplied command.
     }
 ];
 
-@p Test Command.
+@h Test Command.
 TEST runs a short script of commands from the source text.
 
-@c
+=
 #ifdef DEBUG;
 
 #ifdef TARGET_GLULX;
@@ -426,11 +424,11 @@ Global test_sp = 0;
 
 #ENDIF;
 
-@p Trace Command.
+@h Trace Command.
 Another holdover from I6: TRACE sets the level of parser tracing, on a scale
 of 0 (off, the default) to 5.
 
-@c
+=
 [ TraceOnSub; parser_trace=1; say__p = 1; "[Trace on.]"; ];
 
 [ TraceLevelSub;
@@ -440,11 +438,11 @@ of 0 (off, the default) to 5.
 
 [ TraceOffSub; parser_trace=0; say__p = 1; "Trace off."; ];
 
-@p Tree Command.
+@h Tree Command.
 TREE prints out the I6 object tree, though this is not always very helpful
 in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
 
-@c
+=
 [ XTreeSub i;
     if (noun == 0) {
         objectloop (i)
@@ -466,7 +464,7 @@ in I7 terms. It should arguably be withdrawn, but doesn't seem to do any harm.
         WriteListFrom(child(obj), NEWLINE_BIT+INDENT_BIT+ALWAYS_BIT+FULLINV_BIT, 1);
 ];
 
-@p Grammar.
+@h Grammar.
 In the old I6 parser, testing commands had their own scope hardwired in to the
 code: this worked by comparing the verb command word directly against |'scope'|
 and the like. That would go wrong if the testing commands were translated into
@@ -475,7 +473,7 @@ better: using this token instead of |multi| provides a noun with universal
 scope (but restricted to I7 objects, so I6 pseudo-objects like |compass| are
 not picked up) and able to accept multiple objects.
 
-@c
+=
 [ testcommandnoun obj o2;
 	switch (scope_stage) {
 		1: rtrue; ! allow multiple objects

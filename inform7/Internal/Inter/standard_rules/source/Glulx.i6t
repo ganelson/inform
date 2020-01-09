@@ -1,15 +1,13 @@
-B/glut: Glulx Template.
+Glulx Template.
 
-@Purpose: To provide Glulx-specific actions.
+To provide Glulx-specific actions.
 
-@-------------------------------------------------------------------------------
-
-@p GlkList Command.
+@h GlkList Command.
 GLKLIST is a testing command best used by those who understand Glulx and its
 ways: it isn't documented in the I7 manual, because it is pretty inscrutable
 for "real" users, but it's probably worth keeping just the same.
 
-@c
+=
 #Ifdef DEBUG;
 [ GlkListSub id val;
     id = glk_window_iterate(0, gg_arguments);
@@ -57,12 +55,12 @@ Verb meta 'glklist'
     *                                           -> GlkList;
 #Endif;
 
-@p Undo.
+@h Undo.
 These are really emulations of the Z-machine's conventions on UNDO: Glulx's
 undo opcodes used different result codes while providing essentially the same
 functionality, for reasons which are opaque, but no trouble is caused thereby.
 
-@c
+=
 [ VM_Undo result_code;
 	@restoreundo result_code;
 	return (~~result_code);
@@ -74,9 +72,9 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
     return (~~result_code);
 ];
 
-@p Quit The Game Rule.
+@h Quit The Game Rule.
 
-@c
+=
 [ QUIT_THE_GAME_R;
 	if (actor ~= player) rfalse;
 	if ((actor == player) && (untouchable_silence == false))
@@ -84,9 +82,9 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 	if (YesOrNo()~=0) quit;
 ];
 
-@p Restart The Game Rule.
+@h Restart The Game Rule.
 
-@c
+=
 [ RESTART_THE_GAME_R;
 	if (actor ~= player) rfalse;
 	RESTART_THE_GAME_RM('A');
@@ -96,9 +94,9 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 	}
 ];
 
-@p Restore The Game Rule.
+@h Restore The Game Rule.
 
-@c
+=
 [ RESTORE_THE_GAME_R res fref;
 	if (actor ~= player) rfalse;
 	fref = glk_fileref_create_by_prompt($01, $02, 0);
@@ -113,9 +111,9 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 	RESTORE_THE_GAME_RM('A'); new_line;
 ];
 
-@p Save The Game Rule.
+@h Save The Game Rule.
 
-@c
+=
 [ SAVE_THE_GAME_R res fref;
 	if (actor ~= player) rfalse;
 	fref = glk_fileref_create_by_prompt($01, $01, 0);
@@ -140,7 +138,7 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 	SAVE_THE_GAME_RM('A'); new_line;
 ];
 
-@p Verify The Story File Rule.
+@h Verify The Story File Rule.
 This is a fossil now, really, but in the days of Infocom, the 110K story
 file occupying an entire disc was a huge data set: floppy discs were by no
 means a reliable medium, and cheap hardware often used hit-and-miss
@@ -153,7 +151,7 @@ known result in the header, and determine that the story file could or
 could not properly be read. The Z-machine provided this service as an
 opcode, and so Glulx followed suit.
 
-@c
+=
 [ VERIFY_THE_STORY_FILE_R res;
 	if (actor ~= player) rfalse;
 	@verify res;
@@ -161,9 +159,9 @@ opcode, and so Glulx followed suit.
 	VERIFY_THE_STORY_FILE_RM('B'); new_line;
 ];
 
-@p Switch Transcript On Rule.
+@h Switch Transcript On Rule.
 
-@c
+=
 [ SWITCH_TRANSCRIPT_ON_R;
 	if (actor ~= player) rfalse;
 	if (gg_scriptstr ~= 0) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
@@ -182,9 +180,9 @@ opcode, and so Glulx followed suit.
 	SWITCH_TRANSCRIPT_ON_RM('C'); new_line;
 ];
 
-@p Switch Transcript Off Rule.
+@h Switch Transcript Off Rule.
 
-@c
+=
 [ SWITCH_TRANSCRIPT_OFF_R;
 	if (actor ~= player) rfalse;
 	if (gg_scriptstr == 0) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }
@@ -193,9 +191,9 @@ opcode, and so Glulx followed suit.
 	gg_scriptstr = 0;
 ];
 
-@p Announce Story File Version Rule.
+@h Announce Story File Version Rule.
 
-@c
+=
 [ ANNOUNCE_STORY_FILE_VERSION_R ix;
 	if (actor ~= player) rfalse;
 	Banner();
@@ -211,7 +209,7 @@ opcode, and so Glulx followed suit.
 	say__p = 1;
 ];
 
-@p Descend To Specific Action Rule.
+@h Descend To Specific Action Rule.
 There are 100 or so actions, typically, and this rule is for efficiency's
 sake: rather than perform 100 or so comparisons to see which routine to
 call, we indirect through a jump table. The routines called are the |-Sub|
@@ -223,7 +221,7 @@ action machinery at all.
 Strangely, Glulx's action routines table is numbered in an off-by-one way
 compared to the Z-machine's: hence the |+1|.
 
-@c
+=
 [ DESCEND_TO_SPECIFIC_ACTION_R;
 	indirect(#actions_table-->(action+1));
 	rtrue;

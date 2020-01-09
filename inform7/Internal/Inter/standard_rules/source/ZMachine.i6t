@@ -1,12 +1,10 @@
-B/zmt: ZMachine Template.
+ZMachine Template.
 
-@Purpose: To provide Z-specific actions.
+To provide Z-specific actions.
 
-@-------------------------------------------------------------------------------
+@h Veneer.
 
-@p Veneer.
-
-@c
+=
 [ OC__Cl obj cla j a n objflag;
 
 	@jl obj 1 ?NotObj;
@@ -66,18 +64,18 @@ B/zmt: ZMachine Template.
 	rfalse;
 ];
 
-@p Quit The Game Rule.
+@h Quit The Game Rule.
 
-@c
+=
 [ QUIT_THE_GAME_R;
 	if (actor ~= player) rfalse;
 	QUIT_THE_GAME_RM('A');
 	if (YesOrNo()~=0) quit;
 ];
 
-@p Restart The Game Rule.
+@h Restart The Game Rule.
 
-@c
+=
 [ RESTART_THE_GAME_R;
 	if (actor ~= player) rfalse;
 	RESTART_THE_GAME_RM('A');
@@ -87,9 +85,9 @@ B/zmt: ZMachine Template.
 	}
 ];
 
-@p Restore The Game Rule.
+@h Restore The Game Rule.
 
-@c
+=
 [ RESTORE_THE_GAME_R;
 	if (actor ~= player) rfalse;
 	restore RMaybe;
@@ -98,9 +96,9 @@ B/zmt: ZMachine Template.
 	.RMaybe; RESTORE_THE_GAME_RM('B'); new_line;
 ];
 
-@p Save The Game Rule.
+@h Save The Game Rule.
 
-@c
+=
 [ SAVE_THE_GAME_R flag;
 	if (actor ~= player) rfalse;
 	@save -> flag;
@@ -111,7 +109,7 @@ B/zmt: ZMachine Template.
 	}
 ];
 
-@p Verify The Story File Rule.
+@h Verify The Story File Rule.
 This is a fossil now, really, but in the days of Infocom, the 110K story
 file occupying an entire disc was a huge data set: floppy discs were by no
 means a reliable medium, and cheap hardware often used hit-and-miss
@@ -124,7 +122,7 @@ known result in the header, and determine that the story file could or
 could not properly be read. The Z-machine provided this service as an
 opcode, and so Glulx followed suit.
 
-@c
+=
 [ VERIFY_THE_STORY_FILE_R;
 	if (actor ~= player) rfalse;
 	@verify ?Vmaybe;
@@ -134,9 +132,9 @@ opcode, and so Glulx followed suit.
 	VERIFY_THE_STORY_FILE_RM('B'); new_line;
 ];
 
-@p Switch Transcript On Rule.
+@h Switch Transcript On Rule.
 
-@c
+=
 [ SWITCH_TRANSCRIPT_ON_R;
 	if (actor ~= player) rfalse;
 	transcript_mode = ((0-->8) & 1);
@@ -147,9 +145,9 @@ opcode, and so Glulx followed suit.
 	transcript_mode = true;
 ];
 
-@p Switch Transcript Off Rule.
+@h Switch Transcript Off Rule.
 
-@c
+=
 [ SWITCH_TRANSCRIPT_OFF_R;
 	if (actor ~= player) rfalse;
 	transcript_mode = ((0-->8) & 1);
@@ -160,9 +158,9 @@ opcode, and so Glulx followed suit.
 	transcript_mode = false;
 ];
 
-@p Announce Story File Version Rule.
+@h Announce Story File Version Rule.
 
-@c
+=
 [ ANNOUNCE_STORY_FILE_VERSION_R ix;
 	if (actor ~= player) rfalse;
 	Banner();
@@ -185,7 +183,7 @@ opcode, and so Glulx followed suit.
 	say__p = 1;
 ];
 
-@p Descend To Specific Action Rule.
+@h Descend To Specific Action Rule.
 There are 100 or so actions, typically, and this rule is for efficiency's
 sake: rather than perform 100 or so comparisons to see which routine to
 call, we indirect through a jump table. The routines called are the |-Sub|
@@ -197,7 +195,7 @@ action machinery at all.
 Strangely, Glulx's action routines table is numbered in an off-by-one way
 compared to the Z-machine's: hence the |+1|.
 
-@c
+=
 [ DESCEND_TO_SPECIFIC_ACTION_R;
 	indirect(#actions_table-->action);
 	rtrue;

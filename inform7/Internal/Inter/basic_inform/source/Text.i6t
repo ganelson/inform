@@ -1,10 +1,8 @@
-B/text: Text Template.
+Text Template.
 
-@Purpose: Code to support the text kind of value.
- 
-@-------------------------------------------------------------------------------
+Code to support the text kind of value.
 
-@p Block Format.
+@h Block Format.
 The short block for a text is two words long: the first word selects which
 form of storage will be used to represent the content, and the second word
 is a reference to that content. This reference is an I6 String or Routine
@@ -29,24 +27,24 @@ variables. Unlike other text substitutions, this can't meaningfully be
 stored away to be expanded later: it must be expanded into unpacked
 text before it perishes.
 
-@c
+=
 Constant CONSTANT_PACKED_TEXT_STORAGE     = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 1;
 Constant CONSTANT_PERISHABLE_TEXT_STORAGE = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 2;
 Constant PACKED_TEXT_STORAGE              = BLK_BVBITMAP_TEXT + 3;
 Constant UNPACKED_TEXT_STORAGE            = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_LONGBLOCK + 4;
 
-@p Extent Of Long Block.
+@h Extent Of Long Block.
 When there's a long block, we need enough of the entries to store the
 number of characters, plus one for the null terminator.
 
-@c
+=
 [ TEXT_TY_Extent arg1 x;
 	x = BlkValueSeekZeroEntry(arg1);
 	if (x < 0) return -1; ! should not happen, of course
 	return x+1;
 ];
 
-@p Character Set.
+@h Character Set.
 On the Z-machine, we use the 8-bit ZSCII character set, stored in bytes;
 on Glulx, we use the opening 16-bit subset of Unicode (which though only a
 subset covers almost all letter forms used on Earth), stored in half-words.
@@ -60,7 +58,7 @@ screen, an essential technique for texts: it can only write each character to
 a single byte, and it does so in ZSCII. That forces our hand when it comes to
 choosing the indexed-text character set.
 
-@c
+=
 #IFDEF TARGET_ZCODE;
 Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE;
 Constant ZSCII_Tables;
@@ -72,13 +70,13 @@ Constant Large_Unicode_Tables;
 {-segment:UnicodeData.i6t}
 {-segment:Char.i6t}
 
-@p KOV Support.
+@h KOV Support.
 See the "BlockValues.i6t" segment for the specification of the following
 routines. Because no block values are ever stored in a text, they can
 freely be bitwise copied or forgotten, which is why we need do nothing
 special to copy or destroy a text.
 
-@c
+=
 [ TEXT_TY_Support task arg1 arg2 arg3;
 	switch(task) {
 		CREATE_KOVS:      return TEXT_TY_Create(arg2);
@@ -99,10 +97,10 @@ special to copy or destroy a text.
 	rfalse;
 ];
 
-@p Debugging.
+@h Debugging.
 This shows the various forms a text's short block can take:
 
-@c
+=
 [ TEXT_TY_Debug txt;
 	switch (txt-->0) {
 		CONSTANT_PACKED_TEXT_STORAGE:     print " = cp~", (PrintI6Text) txt-->1, "~";
@@ -113,33 +111,33 @@ This shows the various forms a text's short block can take:
 	}
 ];
 
-@p Creation.
+@h Creation.
 A newly created text is a two-word short block with no long block, like this:
 
 	|Array ThisIsAText --> PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;|
 
-@c
+=
 [ TEXT_TY_Create short_block x;
 	return BlkValueCreateSB2(short_block, PACKED_TEXT_STORAGE, EMPTY_TEXT_PACKED);
 ];
 
-@p Copy Short Block.
+@h Copy Short Block.
 When a short block for a constant is copied, the new copy isn't a constant
 any more.
 
-@c
+=
 [ TEXT_TY_CopySB to_bv from_bv;
 	BlkValueCopySB2(to_bv, from_bv);
 	if (to_bv-->0 & BLK_BVBITMAP_CONSTANTMASK) to_bv-->0 = PACKED_TEXT_STORAGE;
 ];
 
-@p Transmutation.
+@h Transmutation.
 What happens if a text is stored in packed form, but we need to access or
 change its individual characters? The answer is that we have to "transmute"
 it into long block form. Sometimes this is a permanent change, but often
 it's only temporary, and will soon be followed by an un-transmutation.
 
-@c
+=
 [ TEXT_TY_Transmute txt;
 	TEXT_TY_Temporarily_Transmute(txt);
 ];
@@ -147,11 +145,11 @@ it's only temporary, and will soon be followed by an un-transmutation.
 [ TEXT_TY_Temporarily_Transmute txt  x;
 	if ((txt) && (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0)) {
 		x = txt-->1; ! The old value was a packed string
-		
+
 		txt-->0 = UNPACKED_TEXT_STORAGE;
 		txt-->1 = FlexAllocate(32, TEXT_TY, TEXT_TY_Storage_Flags);
 		if (x ~= EMPTY_TEXT_PACKED) TEXT_TY_CastPrimitive(txt, false, x);
-		
+
 		return x;
 	}
 	return 0;
@@ -167,11 +165,11 @@ it's only temporary, and will soon be followed by an un-transmutation.
 	return txt;
 ];
 
-@p Mutability.
+@h Mutability.
 That neatly handles the question of how to make a text mutable. (Note that
 constants are never created in unpacked form.)
 
-@c
+=
 [ TEXT_TY_Mutable txt;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) {
 		TEXT_TY_Transmute(txt);
@@ -180,12 +178,12 @@ constants are never created in unpacked form.)
 	return 2; ! Tell BlockValue there's a long block pointer
 ];
 
-@p Casting.
+@h Casting.
 In general computing, "casting" is the process of translating data in one
 type into semantically equivalent data in another: the only interesting
 cast here is that a snippet can be turned into a text.
 
-@c
+=
 [ TEXT_TY_Cast to_txt from_kind from_value;
 	if (from_kind == TEXT_TY) {
 		BlkValueCopy(to_txt, from_value);
@@ -199,7 +197,7 @@ cast here is that a snippet can be turned into a text.
 	return BlkValueCast(to_txt, SNIPPET_TY, snippet);
 ];
 
-@p Data Conversion.
+@h Data Conversion.
 We use a single routine to handle two kinds of format translation: a
 packed I6 string into an unpacked text, or a snippet into an unpacked text.
 
@@ -220,7 +218,7 @@ strings in the Z-machine, and advises the use of Glulx instead. Glulx
 does handle overruns safely, and indeed allows us to dynamically allocate
 memory as necessary so that we can always avoid overruns entirely.
 
-@c
+=
 Constant TEXT_TY_NoBuffers = 2;
 
 #ifdef TARGET_ZCODE;
@@ -234,12 +232,12 @@ Global RawBufferSize = TEXT_TY_BufferSize;
 
 Global TEXT_TY_CastPrimitiveNesting = 0;
 
-@p Z Version.
+@h Z Version.
 The two versions of this routine, one for each virtual machine, are in all
 important respects the same, but there are enough fiddly differences that
 it's clearer to give two definitions, so:
 
-@c
+=
 #ifdef TARGET_ZCODE;
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value  len news buffer;
 	if (to_txt == 0) BlkValueError("no destination for cast");
@@ -268,9 +266,9 @@ it's clearer to give two definitions, so:
 	BlkValueMassCopyFromArray(to_txt, buffer+2, 1, len+1);
 ];
 
-@p Glulx Version.
+@h Glulx Version.
 
-@c
+=
 #ifnot; ! TARGET_ZCODE
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value
 	len i stream saved_stream news buffer buffer_size memory_to_free results;
@@ -278,7 +276,7 @@ it's clearer to give two definitions, so:
 	if (to_txt == 0) BlkValueError("no destination for cast");
 
 	buffer_size = (TEXT_TY_BufferSize + 2)*WORDSIZE;
-	
+
 	RawBufferSize = TEXT_TY_BufferSize;
 	buffer = RawBufferAddress + TEXT_TY_CastPrimitiveNesting*buffer_size;
 	TEXT_TY_CastPrimitiveNesting++;
@@ -333,9 +331,9 @@ it's clearer to give two definitions, so:
 	}
 	if (memory_to_free) VM_FreeMemory(memory_to_free);
 ];
-#endif; 
+#endif;
 
-@p Comparison.
+@h Comparison.
 This is more or less |strcmp|, the traditional C library routine for comparing
 strings, but it does pose a few interesting questions. The answers are:
 
@@ -344,7 +342,7 @@ strings, but it does pose a few interesting questions. The answers are:
 (b) Otherwise we test the current value of the text as expanded, so "[X]"
 and "17" can be equal as texts if X is 17.
 
-@c
+=
 [ TEXT_TY_Compare left_txt right_txt rv;
 	@push say__comp;
 	say__comp = true;
@@ -364,7 +362,7 @@ and "17" can be equal as texts if X is 17.
 		if ((left_txt-->1 ofclass Routine) && (right_txt-->1 ofclass Routine))
 			return left_txt-->1 - right_txt-->1;
 		cpl = left_txt-->0; cl = TEXT_TY_Temporarily_Transmute(left_txt);
-		cpr = right_txt-->0; cr = TEXT_TY_Temporarily_Transmute(right_txt);		
+		cpr = right_txt-->0; cr = TEXT_TY_Temporarily_Transmute(right_txt);
 	} else if (fl) {
 		cpl = left_txt-->0; cl = TEXT_TY_Temporarily_Transmute(left_txt);
 	} else if (fr) {
@@ -393,10 +391,10 @@ and "17" can be equal as texts if X is 17.
 	rtrue;
 ];
 
-@p Hashing.
+@h Hashing.
 This calculates a hash value for the string, using Bernstein's algorithm.
 
-@c
+=
 [ TEXT_TY_Hash txt  rv len i p cp;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
 	rv = 0;
@@ -407,14 +405,14 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 	return rv;
 ];
 
-@p Printing.
+@h Printing.
 Unicode is not the native character set on Glulx: it came along as a late
 addition to Glulx's specification. The deal is that we have to explicitly
 tell the Glk interface layer to perform certain operations in a Unicode way;
 if we simply perform |print (char) ch;| then the character |ch| will be
 printed in ZSCII rather than Unicode.
 
-@c
+=
 [ TEXT_TY_Say txt  ch i dsize;
 	if (txt==0) rfalse;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) return PrintI6Text(txt-->1);
@@ -432,10 +430,10 @@ printed in ZSCII rather than Unicode.
 	rtrue;
 ];
 
-@p Capitalised printing.
+@h Capitalised printing.
 It turns out to be useful to have a variation on this:
 
-@c
+=
 [ TEXT_TY_Say_Capitalised txt mod rc;
 	mod = BlkValueCreate(TEXT_TY);
 	TEXT_TY_SubstitutedForm(mod, txt);
@@ -449,7 +447,7 @@ It turns out to be useful to have a variation on this:
 	return rc;
 ];
 
-@p Serialisation.
+@h Serialisation.
 Here we print a serialised form of a text which can later be used
 to reconstruct the original text. The printing is apparently to the screen,
 but in fact always takes place when the output stream is a file.
@@ -458,7 +456,7 @@ The format chosen is a letter "S" for string, then a comma-separated list
 of decimal character codes, ending with the null terminator, and followed by
 a semicolon: thus |S65,66,67,0;| is the serialised form of the text "ABC".
 
-@c
+=
 [ TEXT_TY_WriteFile txt len pos ch p cp;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
 	len = BlkValueLBCapacity(txt);
@@ -474,12 +472,12 @@ a semicolon: thus |S65,66,67,0;| is the serialised form of the text "ABC".
 	TEXT_TY_Untransmute(txt, p, cp);
 ];
 
-@p Unserialisation.
+@h Unserialisation.
 If that's the word: the reverse process, in which we read a stream of
 characters from a file and reconstruct the text which gave rise to
 them.
 
-@c
+=
 [ TEXT_TY_ReadFile txt auxf ch i v dg pos tsize p;
 	TEXT_TY_Transmute(txt);
 	tsize = BlkValueLBCapacity(txt);
@@ -502,9 +500,9 @@ them.
 	return txt;
 ];
 
-@p Substitution.
+@h Substitution.
 
-@c
+=
 [ TEXT_TY_SubstitutedForm to txt;
 	if (txt) {
 		BlkValueCopy(to, txt);
@@ -520,18 +518,18 @@ them.
 	rtrue;
 ];
 
-@p Perishability.
+@h Perishability.
 As noted above, a perishable constant is one which must be expanded before
 the values it refers to vanish from existence.
 
-@c
+=
 [ TEXT_TY_ExpandIfPerishable to from;
 	if ((from) && (from-->0 == CONSTANT_PERISHABLE_TEXT_STORAGE))
 		return TEXT_TY_SubstitutedForm(to, from);
 	return from;
 ];
 
-@p Blobs.
+@h Blobs.
 That completes the compulsory services required for this KOV to function:
 from here on, the remaining routines provide definitions of text-related
 phrases in the Standard Rules.
@@ -547,9 +545,9 @@ sequences of words, divided up perhaps into sentences and even paragraphs.
 So we provide facilities which regard a text as being an array of "blobs",
 where a "blob" is a unit of text. The user can choose whether to see it
 as an array of characters, or words (of three different sorts: see the
-Inform documentation for details), or paragraphs, or lines. 
+Inform documentation for details), or paragraphs, or lines.
 
-@c
+=
 Constant CHR_BLOB = 1; ! Construe as an array of characters
 Constant WORD_BLOB = 2; ! Of words
 Constant PWORD_BLOB = 3; ! Of punctuated words
@@ -559,7 +557,7 @@ Constant LINE_BLOB = 6; ! Of lines
 
 Constant REGEXP_BLOB = 7; ! Not a blob type as such, but needed as a distinct value
 
-@p Blob Access.
+@h Blob Access.
 The following routine runs a small finite-state-machine to count the number
 of blobs in a text, using any of the above blob types (except
 |REGEXP_BLOB|, which is used for other purposes). If the optional arguments
@@ -569,7 +567,7 @@ text |ctxt|. If the further optional argument |rtxt| is supplied,
 then |ctxt| is instead written with the original text |txt| as it would
 read if the blob in question were replaced with the text in |rtxt|.
 
-@c
+=
 Constant WS_BRM = 1;
 Constant SKIPPED_BRM = 2;
 Constant ACCEPTED_BRM = 3;
@@ -710,11 +708,11 @@ Constant ACCEPTEDPN_BRM = 6;
 	return blobcount;
 ];
 
-@p Get Blob.
+@h Get Blob.
 The front end which uses the above routine to read a blob. (Note that, for
 efficiency's sake, we read characters more directly.)
 
-@c
+=
 [ TEXT_TY_GetBlob ctxt txt wanted blobtype;
 	if (txt==0) return;
 	if (blobtype == CHR_BLOB) return TEXT_TY_GetCharacter(ctxt, txt, wanted);
@@ -722,11 +720,11 @@ efficiency's sake, we read characters more directly.)
 	return ctxt;
 ];
 
-@p Replace Blob.
+@h Replace Blob.
 The front end which uses the above routine to replace a blob. (Once again,
 characters are handled directly to avoid incurring all that overhead.)
 
-@c
+=
 [ TEXT_TY_ReplaceBlob blobtype txt wanted rtxt ctxt ilen rlen i p cp;
 	TEXT_TY_Transmute(txt);
 	cp = rtxt-->0; p = TEXT_TY_Temporarily_Transmute(rtxt);
@@ -762,7 +760,7 @@ characters are handled directly to avoid incurring all that overhead.)
 	TEXT_TY_Untransmute(rtxt, p, cp);
 ];
 
-@p Replace Text.
+@h Replace Text.
 This is the general routine which searches for any instance of |ftxt|,
 as a blob, in |txt|, and replaces it with the text |rtxt|. It works on
 any of the above blob-types, but two cases are special: first, if the
@@ -773,7 +771,7 @@ single character. Second, if the blob-type is the special value
 |REGEXP_BLOB| then |ftxt| is interpreted as a regular expression rather
 than something literal to find: see "RegExp.i6t" for what happens next.
 
-@c
+=
 [ TEXT_TY_ReplaceText blobtype txt ftxt rtxt
 	r p1 p2 cp1 cp2;
 	TEXT_TY_Transmute(txt);
@@ -787,9 +785,9 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 
 [ TEXT_TY_ReplaceTextI blobtype txt ftxt rtxt
 	ctxt csize ilen flen i cl mpos ch chm whitespace punctuation;
-	if (blobtype == REGEXP_BLOB or CHR_BLOB) 
+	if (blobtype == REGEXP_BLOB or CHR_BLOB)
 		return TEXT_TY_Replace_RE(blobtype, txt, ftxt, rtxt);
-	
+
 	ilen = TEXT_TY_CharacterLength(txt);
 	flen = TEXT_TY_CharacterLength(ftxt);
 	ctxt = BlkValueCreate(TEXT_TY);
@@ -844,15 +842,15 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 		}
 		BlkValueWrite(ctxt, cl++, ch);
 	}
-	BlkValueCopy(txt, ctxt);	
+	BlkValueCopy(txt, ctxt);
 	BlkValueFree(ctxt);
 ];
 
-@p Character Length.
+@h Character Length.
 When accessing at the character-by-character level, things are much easier
 and we needn't go through any finite state machine palaver.
 
-@c
+=
 [ TEXT_TY_CharacterLength txt ch i dsize p cp r;
 	if (txt==0) return 0;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
@@ -875,12 +873,12 @@ and we needn't go through any finite state machine palaver.
 	rfalse;
 ];
 
-@p Get Character.
+@h Get Character.
 Characters in a text are numbered upwards from 1 by the users of this
 routine: which is why we subtract 1 when reading the array in the
 block-value, which counts from 0.
 
-@c
+=
 [ TEXT_TY_GetCharacter ctxt txt i ch p cp;
 	if (txt==0) return 0;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
@@ -893,7 +891,7 @@ block-value, which counts from 0.
 	return ctxt;
 ];
 
-@p Casing.
+@h Casing.
 In many programming languages, characters are a distinct data type from
 strings, but not in I7. To I7, a character is simply a text which
 happens to have length 1 -- this has its inefficiencies, but is conceptually
@@ -907,7 +905,7 @@ letters; in the case of Unicode, it follows the Unicode standard.
 Note that there is no requirement for |txt| to be only a single character
 long.
 
-@c
+=
 [ TEXT_TY_CharactersOfCase txt case i ch len p cp r;
 	if (txt==0) return 0;
 	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
@@ -921,13 +919,13 @@ long.
 	return r;
 ];
 
-@p Change Case.
+@h Change Case.
 We set |ctxt| to the text in |txt|, except that all the letters are
 converted to the |case| given (0 for lower, 1 for upper). The definition
 of what is a "letter", what case it has and what the other-case form is
 are as specified in the ZSCII and Unicode standards.
 
-@c
+=
 [ TEXT_TY_CharactersToCase ctxt txt case i ch len bnd pk cp;
 	if (txt==0) return 0;
 	cp = txt-->0; pk = TEXT_TY_Temporarily_Transmute(txt);
@@ -964,7 +962,7 @@ are as specified in the ZSCII and Unicode standards.
 	return ctxt;
 ];
 
-@p Concatenation.
+@h Concatenation.
 To concatenate two texts is to place one after the other: thus "green"
 concatenated with "horn" makes "greenhorn". In this routine, |from_txt|
 would be "horn", and is added at the end of |to_txt|, which is returned in
@@ -974,7 +972,7 @@ When the blob type is |REGEXP_BLOB|, the routine is used not for simple
 concatenation but to handle the concatenations occurring when a regular
 expression search-and-replace is going on: see "RegExp.i6t".
 
-@c
+=
 [ TEXT_TY_Concatenate to_txt from_txt blobtype ref_txt
 	p cp r;
 	if (to_txt==0) rfalse;

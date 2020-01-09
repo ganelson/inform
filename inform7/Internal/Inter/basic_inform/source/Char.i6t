@@ -1,17 +1,15 @@
-B/chart: Char Template.
- 
-@Purpose: To decide whether letters are upper or lower case, and convert
-between the two.
- 
-@-------------------------------------------------------------------------------
+Char Template.
 
-@p Char Is Of Case.
+To decide whether letters are upper or lower case, and convert
+between the two.
+
+@h Char Is Of Case.
 The following decides whether a character |c| belongs to case |case|, where
 0 means lower case and 1 means upper. |c| is interpreted according to the
 character casing chart in "UnicodeData.i6t", which means, it will be
 ZSCII for the Z-machine and Unicode for Glulx.
 
-@c
+=
 [ CharIsOfCase c case
 	i tab min max len par;
 	if (c<'A') rfalse;
@@ -38,11 +36,11 @@ ZSCII for the Z-machine and Unicode for Glulx.
 	rfalse;
 ];
 
-@p Char To Case.
+@h Char To Case.
 And the following converts character |c| to the desired case, or returns
 it unchanged if it is not a letter with variant casings.
 
-@c
+=
 [ CharToCase c case
 	i tab min max len par del f;
 	if (c<'A') return c;
@@ -74,12 +72,12 @@ it unchanged if it is not a letter with variant casings.
 	return c;
 ];
 
-@p Reversing Case.
+@h Reversing Case.
 It's convenient to provide this relatively fast routine to reverse the
 case of a letter since this is an operation used frequently in regular
 expression matching (see "RegExp.i6t").
 
-@c
+=
 #IFDEF TARGET_ZCODE;
 [ TEXT_TY_RevCase ch;
 	if (ch<'A') return ch;
@@ -124,21 +122,21 @@ expression matching (see "RegExp.i6t").
 ];
 #ENDIF;
 
-@p DigitToValue.
+@h DigitToValue.
 This takes a ZSCII or Unicode character code and returns its value as a digit,
 or returns $-1$ if it isn't a digit.
 
-@c
+=
 [ DigitToValue c n;
 	n = c-'0';
 	if ((n<0) || (n>9)) return -1;
 	return n;
 ];
 
-@p Testing.
+@h Testing.
 Not actually used: simply for testing the tables.
 
-@c
+=
 [ CharTestCases case i j;
 	for (i=32: i<$E0: i++) {
 		if ((i>=127) && (i<155)) continue;

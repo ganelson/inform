@@ -1,10 +1,8 @@
-B/wmt: WorldModel Template.
- 
-@Purpose: Testing and changing the fundamental spatial relations.
- 
-@-------------------------------------------------------------------------------
+WorldModel Template.
 
-@p The Core Tree.
+Testing and changing the fundamental spatial relations.
+
+@h The Core Tree.
 Whereas I6 traditionally has a simple object tree hierarchy for containment,
 support, carrying and so on, the I7 template also uses the |component_*|
 properties to provide a second tree which defines the "part of" relation.
@@ -37,7 +35,7 @@ and similar conditions -- thus, it would appear that in the immediate past
 the player had been on the holder of the player, which is not in fact the
 case. So we return |thedark| as a typesafe but impossible value here.
 
-@c
+=
 [ HolderOf o;
 	if (InitialSituation-->DONE_INIS == false) return thedark;
 	if (o && (o.component_parent)) return o.component_parent;
@@ -62,7 +60,7 @@ case. So we return |thedark| as a typesafe but impossible value here.
 	return o;
 ];
 
-@p Climbing the Core Tree.
+@h Climbing the Core Tree.
 |LocationOf| returns the room in which an object can be found, or |nothing|
 if it is out of play. Directions and regions are always out of play. Doors
 and backdrops can be in multiple places: if they are in the current location,
@@ -74,7 +72,7 @@ For a room, |LocationOf| is necessarily itself.
 |o2|, or returns |nothing| if there is no common ancestor. (This is a port
 of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 
-@c
+=
 [ LocationOf o;
 	if (~~(o ofclass K1_room or K2_thing)) return nothing;
 	if (o ofclass K4_door) {
@@ -95,7 +93,7 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 [ CommonAncestor o1 o2 i j;
 	o1 = CoreOf(o1);
 	o2 = CoreOf(o2);
-	
+
 	for (i=o1: i: i = CoreOfParentOfCoreOf(i))
 		for (j=o2: j: j = CoreOfParentOfCoreOf(j))
 			if (j == i) return j;
@@ -115,7 +113,7 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 	rfalse;
 ];
 
-@p To Decide Whether In.
+@h To Decide Whether In.
 A curiosity, this: the I6 definition of "To decide whether in (obj - object)".
 As can be seen, there are three possible interpretations of "in", depending
 on the kind of object, so this could all be done with three different
@@ -129,7 +127,7 @@ uses direct containment, whereas we use indirect containment. Thus "in the
 Hall" and "in the laundry-basket" are both true if the player is in a
 laundry-basket in the Hall.
 
-@c
+=
 [ WhetherIn obj;
 	if (obj has enterable) {
 		if (IndirectlyContains(obj, player)) rtrue;
@@ -144,7 +142,7 @@ laundry-basket in the Hall.
 	rfalse;
 ];
 
-@p Containment Relation.
+@h Containment Relation.
 This is the single most important relation in I7: direct containment. It is
 complicated by the fact that "A is in B" is represented differently at
 run-time when A is a room and B is a region, and when it isn't.
@@ -160,7 +158,7 @@ by iterating through the object-tree children of B, but for containment we
 have to provide an iterator function |TestContainmentRange|, as otherwise we
 would get the wrong result when B is a region.
 
-@c
+=
 [ ContainerOf A p;
 	if (A ofclass K1_room) return A.map_region;
 	p = parent(A);
@@ -184,10 +182,10 @@ would get the wrong result when B is a region.
 	return nothing;
 ];
 
-@p Support Relation.
+@h Support Relation.
 This then is simpler, with no need for an iterator governing searches.
 
-@c
+=
 [ SupporterOf obj p;
 	p = parent(obj);
 	if (p == nothing) return nothing;
@@ -195,41 +193,41 @@ This then is simpler, with no need for an iterator governing searches.
 	return nothing;
 ];
 
-@p Carrying Relation.
+@h Carrying Relation.
 Only people may carry, and something worn is not in this sense carried.
 
-@c
+=
 [ CarrierOf obj p;
 	p = parent(obj);
 	if (p && (p ofclass K8_person) && (obj hasnt worn)) return p;
 	return nothing;
 ];
 
-@p Wearing Relation.
+@h Wearing Relation.
 Only people may wear.
 
-@c
+=
 [ WearerOf obj p;
 	p = parent(obj);
 	if (p && (p ofclass K8_person) && (obj has worn)) return p;
 	return nothing;
 ];
 
-@p Having Relation.
+@h Having Relation.
 A person has something if and only if he either wears or carries it.
 
-@c
+=
 [ OwnerOf obj p;
 	p = parent(obj);
 	if (p && (p ofclass K8_person)) return p;
 	return nothing;
 ];
 
-@p Making Parts.
+@h Making Parts.
 Note that |MakePart| removes the part-to-be from the object tree before
 attaching it: it cannot, of course, be the core of the resulting object.
 
-@c
+=
 [ MakePart P Of First;
 	if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
 	if (parent(P)) remove P; give P ~worn;
@@ -254,11 +252,11 @@ attaching it: it cannot, of course, be the core of the resulting object.
 		}
 ];
 
-@p Movements.
+@h Movements.
 Note that an object is detached from its component parent, if it has one,
 when moved.
 
-@c
+=
 [ MoveObject F T opt going_mode was L;
 	if (F == nothing) return RunTimeProblem(RTP_CANTMOVENOTHING);
 	if (F ofclass K7_backdrop) {
@@ -308,14 +306,14 @@ when moved.
 	remove F;
 ];
 
-@p On Stage.
+@h On Stage.
 The following implements the "on-stage" and "off-stage" adjectives
 provided by the Standard Rules. Here, as above, note that the I6 attribute
 |absent| marks a floating object (see below) which has been removed from
 play; in I7 only doors and backdrops are allowed to float, and only backdrops
 are allowed to be removed from play.
 
-@c
+=
 [ OnStage O set x;
 	if (O ofclass K1_room) rfalse;
 	if (set < 0) {
@@ -335,13 +333,13 @@ are allowed to be removed from play.
 	rfalse;
 ];
 
-@p Moving the Player.
+@h Moving the Player.
 Note that the player object can only be moved by this routine: this allows
 us to maintain the invariant for |real_location| and |location| (for which,
 see "Light.i6t") and to ensure that multiply-present objects can be
 witnessed where they need to be.
 
-@c
+=
 [ PlayerTo newplace flag L;
     L = LocationOf(newplace);
    	if (L == nothing) return RunTimeProblem(RTP_CANTBEOFFSTAGE);
@@ -358,7 +356,7 @@ witnessed where they need to be.
     @pull actor;
 ];
 
-@p Move During Going.
+@h Move During Going.
 The following routine preserves the invariant for |real_location|, but gets
 |location| wrong since it doesn't adjust for light. Nor are floating objects
 moved. It should be used only in the course of other operations which get
@@ -366,7 +364,7 @@ the rest of this right. (I7 uses it only for the "going" action, where
 these various operations are each handled by different named rules to
 increase the flexibility of the system.)
 
-@c
+=
 [ MoveDuringGoing F T;
 	MoveObject(F, T, 0, true);
 	if (actor == player) {
@@ -375,16 +373,16 @@ increase the flexibility of the system.)
 	}
 ];
 
-@p Being Everywhere.
+@h Being Everywhere.
 The following is used as the |found_in| property for any backdrop which is
 "everywhere", that is, which is found in every room.
 
-@c
+=
 [ FoundEverywhere; rtrue; ];
 
-@p Testing Everywhere.
+@h Testing Everywhere.
 
-@c
+=
 [ BackdropEverywhere O;
 	if (O ofclass K7_backdrop) {
 		if (O has absent) rfalse;
@@ -393,7 +391,7 @@ The following is used as the |found_in| property for any backdrop which is
 	rfalse;
 ];
 
-@p Changing the Player.
+@h Changing the Player.
 It is very important that nobody simply change the value of the |player|
 variable, because so much else must be updated when the identity of the
 player changes: the light situation, floating objects, the |real_location|
@@ -415,7 +413,7 @@ fact. No such device is needed for other people being changed from because
 they are explicitly given printed names -- say "Mr Darcy", "the sous-chef",
 etc. -- in the source text.
 
-@c
+=
 [ ChangePlayer obj flag;
 	if (~~(obj ofclass K8_person)) return RunTimeProblem(RTP_CANTCHANGE, obj);
 	if (~~(OnStage(obj, -1))) return RunTimeProblem(RTP_CANTCHANGEOFFSTAGE, obj);
@@ -441,7 +439,7 @@ etc. -- in the source text.
     SilentlyConsiderLight();
 ];
 
-@p Floating Objects.
+@h Floating Objects.
 A single object can only be in one position in the object tree, yet backdrops
 and doors must be present in multiple rooms. This is accomplished by making
 them, in I6 jargon, "floating objects": objects which move in the tree
@@ -472,7 +470,7 @@ location, but (b) assumed that the only sense by which the player could
 witness an object was sight. In I7, |thedark| is not a valid room, and we
 are a bit more careful about the senses.
 
-@c
+=
 [ MoveFloatingObjects toroom i k l m address flag;
 	if (toroom == nothing) toroom = real_location;
     if (toroom == nothing) return;
@@ -513,12 +511,12 @@ are a bit more careful about the senses.
 	MoveFloatingObjects();
 ];
 
-@p Backdrop Location.
-This determines what the "location" of a backdrop is, or, if "target" is 
+@h Backdrop Location.
+This determines what the "location" of a backdrop is, or, if "target" is
 other than nothing, determines whether it can ever be the location. Note
 that this routine also works for two-sided doors, despite its name.
 
-@c
+=
 [ BackdropLocation O target address m x i k l r sl;
 	if (O has absent) return nothing;
 	if ((target == nothing or real_location) && (parent(O) == real_location))
@@ -557,21 +555,21 @@ that this routine also works for two-sided doors, despite its name.
 	return nothing;
 ];
 
-@p Wearing Clothes.
+@h Wearing Clothes.
 An object X is worn by a person P if and only if (i) the object tree |parent|
 of X is P, and (ii) X has the |worn| attribute. In fact for I7 purposes we
 are careful to ensure that (ii) happens only when (i) does in any case:
 if X is moved in the object tree, or made a part of something, or removed
 from play, then |worn| is removed.
 
-@c
+=
 [ WearObject X P opt;
 	if (X == false) rfalse;
 	if (X notin P) MoveObject(X, P, opt);
 	give X worn;
 ];
 
-@p Map Connections.
+@h Map Connections.
 |MapConnection| returns the room which is in the given direction (as an object)
 from the given room: it is used, among other things, to test the "mapped east
 of" and similar relations. (The same relations are asserted true with
@@ -588,7 +586,7 @@ but |nothing| is not a typesafe value for "door".)
 
 Note that map connections via doors are immutable.
 
-@c
+=
 [ MapConnection from_room dir
 	in_direction through_door;
 	if ((from_room ofclass K1_room) && (dir ofclass K3_direction)) {
@@ -616,7 +614,7 @@ Note that map connections via doors are immutable.
 	if ((obj ofclass K1_room) && (dir ofclass K3_direction)) {
 		in_direction = Map_Storage-->
 			((obj.IK1_Count)*No_Directions + dir.IK3_Count);
-		if (in_direction ofclass K1_room or K4_door) return in_direction;	
+		if (in_direction ofclass K1_room or K4_door) return in_direction;
 	}
 	return nothing;
 ];
@@ -649,11 +647,11 @@ Note that map connections via doors are immutable.
 	return;
 ];
 
-@p Adjacency Relation.
+@h Adjacency Relation.
 A relation between two rooms which, note, does not see connections through
 doors.
 
-@c
+=
 [ TestAdjacency R1 R2 i row;
 	if (R1 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R1);
 	else if (R2 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R2);
@@ -663,7 +661,7 @@ doors.
 	rfalse;
 ];
 
-@p Regional Containment Relation.
+@h Regional Containment Relation.
 This tests whether an object with a definite physical location is in a
 given region. (For a two-sided door which straddles regions, the front side
 is what counts; for a backdrop, a direction or another region, the answer
@@ -673,7 +671,7 @@ property which is the smallest region containing it, if any does, and
 parenthood corresponds to spatial containment. (Note that in I7, a region
 must either completely contain another region, or else have no overlap with it.)
 
-@c
+=
 [ TestRegionalContainment obj region o;
 	if ((obj == nothing) || (region == nothing)) rfalse;
 	if (obj ofclass K7_backdrop or K4_door) {
@@ -694,7 +692,7 @@ must either completely contain another region, or else have no overlap with it.)
 	rfalse;
 ];
 
-@p Doors.
+@h Doors.
 There are two sorts of door: one-sided and two-sided.
 
 A two-sided door is in two rooms at once: one is called the front side, the
@@ -708,7 +706,7 @@ of course depends on which side of it the player is standing. Similarly,
 |door_dir| returned the direction property (|n_to|, |s_to|, etc.), here in
 I7's template it returns the direction object (|n_obj|, |s_obj|, etc.)
 
-@c
+=
 [ FrontSideOfDoor D; if (~~(D ofclass K4_door)) rfalse;
 	if (D provides found_in) return (D.&found_in)-->0; ! Two-sided
 	return parent(D); ! One-sided
@@ -739,22 +737,22 @@ I7's template it returns the direction object (|n_obj|, |s_obj|, etc.)
 	return rv;
 ];
 
-@p Visibility Relation.
+@h Visibility Relation.
 We use |TestScope| to decide whether there is a line of sight from A to B;
 it's a relation which cannot be asserted true or false.
 
-@c
+=
 [ TestVisibility A B;
 	if (~~OffersLight(parent(CoreOf(A)))) rfalse;
 	if (suppress_scope_loops) rtrue;
 	return TestScope(B, A);
 ];
 
-@p Touchability Relation.
+@h Touchability Relation.
 We use |ObjectIsUntouchable| to decide whether there is physical access from
 A to B; it's a relation which cannot be asserted true or false.
 
-@c
+=
 [ TestTouchability A B rv;
 	if (A ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(B));
 	if (B ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(A));
@@ -765,11 +763,11 @@ A to B; it's a relation which cannot be asserted true or false.
 	rtrue;
 ];
 
-@p Concealment Relation.
+@h Concealment Relation.
 An activity determines whether one object conceals another; it's a relation
 which cannot be asserted true or false.
 
-@c
+=
 [ TestConcealment A B;
 	if (A ofclass K2_thing && B ofclass K2_thing) {
 		particular_possession = B;

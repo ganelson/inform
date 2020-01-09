@@ -1,25 +1,23 @@
-B/light: Light Template.
+Light Template.
 
-@Purpose: The determination of light, visibility and physical access.
+The determination of light, visibility and physical access.
 
-@-------------------------------------------------------------------------------
-
-@p Darkness.
+@h Darkness.
 "Darkness" is not really a place: but in I6 it has to be an object so that
 the location-name on the status line can be "Darkness". In I7 we use it as
 little as possible: note that it has no properties.
 
-@c
+=
 Object thedark "(darkness object)";
 
-@p Light Measurement.
+@h Light Measurement.
 These two routines, |OffersLight| and |HasLightSource|, are largely unchanged
 from their I6 definitions; see the {\it Inform Designer's Manual}, 4th edition,
 for a commentary. In terms of how they are used in I7, |OffersLight| is called
 only by the two rules below; |HasLightSource| is called also in determining
 the scope, that is, what is visible to the player.
 
-@c
+=
 [ OffersLight obj j;
     while (obj) {
 		if (obj has light) rtrue;
@@ -80,7 +78,7 @@ the scope, that is, what is visible to the player.
     return (obj hasnt enterable);
 ];
 
-@p Invariant.
+@h Invariant.
 The following routines maintain two variables about the light condition
 of the player:
 
@@ -92,16 +90,16 @@ equals |thedark| and |lightflag| is true.
 Note that they are not allowed to alter |real_location|, whose definition
 has nothing to do with light.
 
-@c
+=
 Global lightflag = false;
 
-@p Adjust Light Rule.
+@h Adjust Light Rule.
 This rule fires at least once a turn, and more often when the player moves
 location, since that's likely to invalidate any previous assumptions. It
 compares the state of light now with the last time it ran, and gives
 instructions on what to do in each of the four possibilities.
 
-@c
+=
 [ ADJUST_LIGHT_R previous_light_condition;
     previous_light_condition = lightflag;
     lightflag = OffersLight(parent(player));
@@ -136,7 +134,7 @@ instructions on what to do in each of the four possibilities.
     rfalse;
 ];
 
-@p Silent Light Consideration.
+@h Silent Light Consideration.
 The Adjust Light Rule makes a fuss when light changes: it prints messages,
 for instance. This rule is silent instead, and simply does the minimum
 necessary to maintain the light invariant. It is used in only four
@@ -153,19 +151,19 @@ answer is that the going action is just about to print details of the
 new location anyway, so it would be redundant to have the adjust light
 rule print out details as well.
 
-@c
+=
 [ SilentlyConsiderLight;
     lightflag = OffersLight(parent(player));
 	if (lightflag) location = real_location; else location = thedark;
 	rfalse;
 ];
 
-@p Translucency.
+@h Translucency.
 |IsSeeThrough| is used at various places: roughly speaking, it determines
 whether |obj| being in scope means that the object-tree contents of |obj|
 are in scope.
 
-@c
+=
 [ IsSeeThrough obj;
     if ((obj has supporter)
     	|| (obj has transparent)
@@ -175,7 +173,7 @@ are in scope.
    rfalse;
 ];
 
-@p Visibility Parent.
+@h Visibility Parent.
 The idea of |VisibilityParent| is that it takes us from a given position in
 the object tree, |o|, to the next visible position above. Note that
 (1) A container has an inside and an outside: this routine calculates from
@@ -185,25 +183,25 @@ closed container;
 surface of a container, so that if |o| is part of a closed opaque container
 then the visibility parent of |o| is its actual parent.
 
-@c
+=
 [ VisibilityParent o;
     if (o && (o has container) && (o hasnt open) && (o hasnt transparent)) return nothing;
 	if (o) o = CoreOfParentOfCoreOf(o);
     return o;
 ];
 
-@p Find Visibility Levels.
+@h Find Visibility Levels.
 The following routine sets the pair of variables |visibility_ceiling|, the
 highest visible point in the object tree above the player -- or |thedark|
 if the player cannot see at all -- and |visibility_levels|, the number of
 steps of |VisibilityParent| needed to reach this ceiling; or 0 if the
 player cannot see at all.
 
-@c
+=
 [ FindVisibilityLevels lc up;
 	if (location == thedark) {
 		visibility_ceiling = thedark;
-		visibility_levels = 0;	
+		visibility_levels = 0;
 	} else {
 		visibility_ceiling = player;
 		while (true) {
@@ -216,10 +214,10 @@ player cannot see at all.
 	}
 ];
 
-@p Touchability Ceiling.
+@h Touchability Ceiling.
 Analogously:
 
-@c
+=
 [ TouchabilityCeiling original o p;
 	o = original;
 	while (o) {
@@ -233,7 +231,7 @@ Analogously:
 	return o;
 ];
 
-@p Scope Ceiling.
+@h Scope Ceiling.
 Scope is almost the same thing as visibility, but not quite, and the following
 routine does not quite duplicate the calculation of |FindVisibilityLevels|.
 The difference arises in the first step, where we take the |parent| of |pos|,
@@ -241,7 +239,7 @@ not the core of the |parent| of the core of |pos|: this makes a
 difference if |pos| is inside a container which is itself part of something
 else.
 
-@c
+=
 [ ScopeCeiling pos c;
 	if (pos == player && location == thedark) return thedark;
 	c = parent(pos);
@@ -250,7 +248,7 @@ else.
 	return c;
 ];
 
-@p Object Is Untouchable.
+@h Object Is Untouchable.
 The following routine imitates the I6 library one of the same name, but
 works instead by delegating the decision to the accessibility rulebook.
 
@@ -264,7 +262,7 @@ assume that the author knows what he is doing, and in the second case, the
 circumstances in which saying yes would be a wrong call are {\it highly}
 improbable.
 
-@c
+=
 [ ObjectIsUntouchable item silent_flag p save_sp decision moving x;
 	if (LocationOf(p) ~= real_location) {
 		for (x = CoreOf(item): x: x = CoreOfParentOfCoreOf(x)) {
@@ -290,9 +288,9 @@ improbable.
 	return decision;
 ];
 
-@p Access Through Barriers Rule.
+@h Access Through Barriers Rule.
 
-@c
+=
 [ ACCESS_THROUGH_BARRIERS_R ancestor i j external p;
 	p = touch_persona; if (p == 0) p = actor;
 
@@ -352,9 +350,9 @@ improbable.
 	rtrue;
 ];
 
-@p Can't Reach Inside Closed Containers Rule.
+@h Can't Reach Inside Closed Containers Rule.
 
-@c
+=
 [ CANT_REACH_INSIDE_CLOSED_R;
 	if (parameter_value has container && parameter_value hasnt open) {
 		if (touch_persona == 0) {
@@ -368,9 +366,9 @@ improbable.
 	rfalse;
 ];
 
-@p Can't Reach Outside Closed Containers Rule.
+@h Can't Reach Outside Closed Containers Rule.
 
-@c
+=
 [ CANT_REACH_OUTSIDE_CLOSED_R;
 	if (parameter_value has container && parameter_value hasnt open) {
 		if (touch_persona == 0) {
@@ -384,9 +382,9 @@ improbable.
 	rfalse;
 ];
 
-@p Can't Reach Inside Rooms Rule.
+@h Can't Reach Inside Rooms Rule.
 
-@c
+=
 [ CANT_REACH_INSIDE_ROOMS_R;
 	if (parameter_value && parameter_value ofclass K1_room) {
 		if (touch_persona == 0) {

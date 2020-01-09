@@ -195,9 +195,10 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf, text_stream *segm
 		Str::clear(argument);
 		@<Read next character from I6T stream@>;
 		NewCharacter: if (cr == EOF) break;
-		if ((cr == '@') && (col == 1)) {
+		if (((cr == '@') || (cr == '=')) && (col == 1)) {
 			int inweb_syntax = -1;
-			@<Read the rest of line as an at-heading@>;
+			if (cr == '=') inweb_syntax = INWEB_CODE_SYNTAX;
+			else @<Read the rest of line as an at-heading@>;
 			@<Act on the at-heading, going in or out of comment mode as appropriate@>;
 			continue;
 		}
@@ -298,6 +299,7 @@ it's a heading, that is, an Inweb syntax:
 		@<Read next character from I6T stream@>;
 		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
 			if (Str::eq_wide_string(I6T_buffer, L"p")) inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
+			else if (Str::eq_wide_string(I6T_buffer, L"h")) inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
 			else if (Str::eq_wide_string(I6T_buffer, L"c")) inweb_syntax = INWEB_CODE_SYNTAX;
 			else if (Str::get_first_char(I6T_buffer) == '-') inweb_syntax = INWEB_DASH_SYNTAX;
 			else if (Str::begins_with_wide_string(I6T_buffer, L"Purpose:")) inweb_syntax = INWEB_PURPOSE_SYNTAX;

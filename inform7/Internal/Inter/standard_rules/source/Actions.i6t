@@ -1,11 +1,9 @@
-B/actt: Actions Template.
- 
-@Purpose: To try actions by people in the model world, processing the
-necessary rulebooks.
- 
-@-------------------------------------------------------------------------------
+Actions Template.
 
-@p Summary.
+To try actions by people in the model world, processing the
+necessary rulebooks.
+
+@h Summary.
 To review: an action is an impulse to do something by a person in the model
 world. Commands such as DROP POTATO are converted into actions ("dropping
 the Idaho potato"); sometimes they succeed, sometimes they fail. While
@@ -48,7 +46,7 @@ This segment of the template is divided into two: first, the I6 code needed
 for (i) to (vii), the alternative ways for actions to begin; and secondly
 the common machinery into which all actions eventually pass.
 
-@p Action Data.
+@h Action Data.
 This is perhaps a good place to document the |ActionData| array, a convenient
 table of metadata about the actions. Since this is compiled by NI, the
 following structure can't be modified here without making matching changes
@@ -59,7 +57,7 @@ The routine |FindAction| locates the record in this table for a given
 action number, returning its word offset within the table: the argument $-1$
 means "the current action".
 
-@c
+=
 Constant AD_ACTION = 0; ! The I6 action number (0 to 4095)
 Constant AD_REQUIREMENTS = 1; ! Such as requiring light; a bitmap, see below
 Constant AD_NOUN_KOV = 2; ! Kind of value of the first noun
@@ -84,11 +82,11 @@ Constant AD_RECORD_SIZE = 6;
 	return 0;
 ];
 
-@p Requirements Bitmap.
+@h Requirements Bitmap.
 As noted above, the |AD_REQUIREMENTS| field is a bitmap of flags for
 various possible action requirements:
 
-@c
+=
 Constant TOUCH_NOUN_ABIT   = $$00000001;
 Constant TOUCH_SECOND_ABIT = $$00000010;
 Constant LIGHT_ABIT        = $$00000100;
@@ -104,18 +102,18 @@ Constant CARRY_SECOND_ABIT = $$10000000;
 [ NeedToTouchSecondNoun; return TestActionMask(TOUCH_SECOND_ABIT); ];
 [ NeedLightForAction;    return TestActionMask(LIGHT_ABIT); ];
 
-[ TestActionMask match mask at; 
-	at = FindAction(-1); 
-	if (at == 0) rfalse; 
-	mask = ActionData-->(at+AD_REQUIREMENTS); 
-	if (mask & match) rtrue; 
-	rfalse; 
+[ TestActionMask match mask at;
+	at = FindAction(-1);
+	if (at == 0) rfalse;
+	mask = ActionData-->(at+AD_REQUIREMENTS);
+	if (mask & match) rtrue;
+	rfalse;
 ];
 
-@p Try Action.
+@h Try Action.
 This is method (ii) in the summary above.
 
-@c
+=
 [ TryAction req by ac n s stora smeta tbits saved_command text_of_command;
 	if (stora) return STORED_ACTION_TY_New(ac, n, s, by, req, stora);
 	tbits = req & (16+32);
@@ -161,23 +159,23 @@ This is method (ii) in the summary above.
 	TrackActions(true, smeta);
 ];
 
-@p I6 Angle Brackets.
+@h I6 Angle Brackets.
 This is method (iii) in the summary above. The routine here has slightly
 odd conventions and a curious name which would take too long to explain:
 neither can be changed without amending the veneer code within the I6
 compiler.
 
-@c
+=
 [ R_Process a i j;
 	@push inp1; @push inp2;
     inp1 = i; inp2 = j; BeginAction(a, i, j);
     @pull inp2; @pull inp1;
 ];
 
-@p Conversion.
+@h Conversion.
 This is method (iv) in the summary above.
 
-@c
+=
 Global converted_action_outcome = -1;
 [ GVS_Convert ac n s;
 	converted_action_outcome = BeginAction(ac, n, s);
@@ -207,10 +205,10 @@ Global converted_action_outcome = -1;
 	rtrue;
 ];
 
-@p Implicit Take.
+@h Implicit Take.
 This is method (vi) in the summary above.
 
-@c
+=
 [ ImplicitTake obj ks;
 	if (actor == player) { STANDARD_IMPLICIT_TAKING_RM('A', obj); }
 	else {
@@ -227,7 +225,7 @@ This is method (vi) in the summary above.
 	rfalse;
 ];
 
-@p Look After Going.
+@h Look After Going.
 This is method (vii) in the summary above.
 
 Fundamentally, room descriptions arise through looking actions, but they
@@ -236,13 +234,13 @@ paragraph break (see "Printing.i6t" for an explanation of this). Room
 descriptions through looking are always given in full, unless we have
 SUPERBRIEF mode set.
 
-@c
+=
 [ LookAfterGoing;
 	GoingLookBreak();
 	AbbreviatedRoomDescription();
 ];
 
-@p Abbreviated Room Description.
+@h Abbreviated Room Description.
 This is used when we want a room description with the same abbreviation
 conventions as after a going action, and we don't quite want a looking
 action fully to take place. We nevertheless want to be sure that the
@@ -270,9 +268,9 @@ but it looks nothing like the |LookSub| of the old I6 library. NI compiles
 (with whatever rulebook numbers are appropriate). |GenericVerbSub| then
 runs through the specific action processing stage.
 
-@c
+=
 [ AbbreviatedRoomDescription  prior_action pos frame_id;
-	prior_action = action; 
+	prior_action = action;
 
 	action = ##Look;
 	pos = FindAction(##Look);
@@ -289,7 +287,7 @@ runs through the specific action processing stage.
 	action = prior_action;
 ];
 
-@p Begin Action.
+@h Begin Action.
 We now begin the second half of the segment: the machinery which handles
 all actions.
 
@@ -301,7 +299,7 @@ nonetheless using I6 angled-brackets, so... In other respects all we do
 is to save details of whatever current action is happening onto the stack,
 and then call |ActionPrimitive|.
 
-@c
+=
 [ BeginAction a n s moi notrack  rv;
 	ChronologyPoint();
 
@@ -311,12 +309,12 @@ and then call |ActionPrimitive|.
 	if (action < 4096) rv = ActionPrimitive();
 
 	@pull multiple_object_item; @pull self; @pull second; @pull noun; @pull action;
-	
+
 	if (notrack == false) TrackActions(true, meta);
 	return rv;
 ];
 
-@p Action Primitive.
+@h Action Primitive.
 This is somewhat different from the I6 library counterpart which gives it
 its name, but the idea is the same. It has no arguments at all: everything
 it needs to know is now stored in global variables. The routine looks long,
@@ -333,7 +331,7 @@ main rulebook. This is what short-circuits out of world actions and
 protects them from before and instead rules: see the Standard Rules for
 more discussion of this.
 
-@c
+=
 [ ActionPrimitive  rv p1 p2 p3 p4 p5 frame_id;
 	MStack_CreateRBVars(ACTION_PROCESSING_RB);
 
@@ -398,13 +396,13 @@ more discussion of this.
 	rfalse;
 ];
 
-@p Internal Rule.
+@h Internal Rule.
 Provided only as a hook on which to hang responses.
 
-@c
+=
 [ ACTION_PROCESSING_INTERNAL_R; ];
 
-@p Type Safety.
+@h Type Safety.
 Some basic action requirements have to be met before we can go any further:
 if they aren't, then it isn't type-safe even to run the action processing
 rulebook.
@@ -426,7 +424,7 @@ or "supplying a missing second noun" activities to fill the void.
 
 We return |true| if type safety is violated, |false| if all is well.
 
-@c
+=
 [ ActionVariablesNotTypeSafe mask noun_kova second_kova at;
 	at = FindAction(-1); if (at == 0) rfalse; ! For any I6-defined actions
 
@@ -508,7 +506,7 @@ We return |true| if type safety is violated, |false| if all is well.
 	rfalse;
 ];
 
-@p Basic Visibility Rule.
+@h Basic Visibility Rule.
 This is one of the I6 primitive rules in the action processing rulebook:
 see the account in the Standard Rules for details.
 
@@ -516,7 +514,7 @@ Note that this rule only blocks the player from acting in darkness: this is
 because light is only reckoned from the player's perspective in any case,
 so that it would be unfair to apply the rule to any other person.
 
-@c
+=
 [ BASIC_VISIBILITY_R;
 	if (act_requester) rfalse;
 	if ((NeedLightForAction()) &&
@@ -535,11 +533,11 @@ so that it would be unfair to apply the rule to any other person.
 	rfalse;
 ];
 
-@p Basic Accessibility Rule.
+@h Basic Accessibility Rule.
 This is one of the I6 primitive rules in the action processing rulebook:
 see the account in the Standard Rules for details.
 
-@c
+=
 [ BASIC_ACCESSIBILITY_R mask at;
 	if (act_requester) rfalse;
 	at = FindAction(-1);
@@ -549,11 +547,11 @@ see the account in the Standard Rules for details.
 	if ((mask & TOUCH_NOUN_ABIT) && noun && (inp1 ~= 1)) {
 		if (noun ofclass K3_direction) {
 			RulebookFails();
-			reason_the_action_failed = BASIC_ACCESSIBILITY_R; 
+			reason_the_action_failed = BASIC_ACCESSIBILITY_R;
 			if (actor~=player) rtrue;
 			BASIC_ACCESSIBILITY_RM('A'); new_line;
 			RulebookFails();
-			reason_the_action_failed = BASIC_ACCESSIBILITY_R; 
+			reason_the_action_failed = BASIC_ACCESSIBILITY_R;
 			rtrue;
 		}
 		if (ObjectIsUntouchable(noun, (actor~=player), actor)) {
@@ -570,7 +568,7 @@ see the account in the Standard Rules for details.
 			if (actor~=player) rtrue;
 			BASIC_ACCESSIBILITY_RM('A'); new_line;
 			RulebookFails();
-			reason_the_action_failed = BASIC_ACCESSIBILITY_R; 
+			reason_the_action_failed = BASIC_ACCESSIBILITY_R;
 			rtrue;
 		}
 		if (ObjectIsUntouchable(second, (actor~=player), actor)) {
@@ -582,13 +580,13 @@ see the account in the Standard Rules for details.
 	rfalse;
 ];
 
-@p Carrying Requirements Rule.
+@h Carrying Requirements Rule.
 This is one of the I6 primitive rules in the action processing rulebook:
 see the account in the Standard Rules for details.
 
-@c
+=
 [ CARRYING_REQUIREMENTS_R mask at;
-	
+
 	at = FindAction(-1);
 	if (at == 0) rfalse;
 	mask = ActionData-->(at+AD_REQUIREMENTS);
@@ -617,19 +615,19 @@ see the account in the Standard Rules for details.
 	rfalse;
 ];
 
-@p Standard Implicit Taking Rule.
+@h Standard Implicit Taking Rule.
 
-@c
+=
 [ STANDARD_IMPLICIT_TAKING_R;
 	ImplicitTake(parameter_value);
 	rfalse;
 ];
 
-@p Requested Actions Require Persuasion Rule.
+@h Requested Actions Require Persuasion Rule.
 This is one of the I6 primitive rules in the action processing rulebook:
 see the account in the Standard Rules for details.
 
-@c
+=
 [ REQUESTED_ACTIONS_REQUIRE_R rv;
 	if ((actor ~= player) && (act_requester)) {
 		@push say__p;
@@ -647,11 +645,11 @@ see the account in the Standard Rules for details.
 	rfalse;
 ];
 
-@p Carry Out Requested Actions Rule.
+@h Carry Out Requested Actions Rule.
 This is one of the I6 primitive rules in the action processing rulebook:
 see the account in the Standard Rules for details.
 
-@c
+=
 [ CARRY_OUT_REQUESTED_ACTIONS_R rv;
 	if ((actor ~= player) && (act_requester)) {
 		@push act_requester; act_requester = nothing;
@@ -669,7 +667,7 @@ see the account in the Standard Rules for details.
 	rfalse;
 ];
 
-@p Generic Verb Subroutine.
+@h Generic Verb Subroutine.
 In I6, actions are carried out by routines with names like |TakeSub|,
 consisting of |-Sub| tacked on to the action name |Take|. |Sub| stands for
 "subroutine": this is all a convention going back to Inform 1, which was
@@ -678,7 +676,7 @@ in 1993 practically an assembler. In the I6 code generated by I7, every
 |GenericVerbSub| which specifies the three rulebooks it owns: its check,
 carry out and report rulebooks.
 
-@c
+=
 Array Details_of_Specific_Action-->5;
 
 [ GenericVerbSub ch co re vis rv;
@@ -699,7 +697,7 @@ Array Details_of_Specific_Action-->5;
 	rtrue;
 ];
 
-@p Work Out Details Of Specific Action Rule.
+@h Work Out Details Of Specific Action Rule.
 This is one of the I6 primitive rules in the specific action processing
 rulebook, and it's basically a trick to allow information known to the
 |GenericVerbSub| routine to be passed down as rulebook variables for the
@@ -707,7 +705,7 @@ specific action-processing rules -- in effect allowing us to pass not
 one but five parameters to the rulebook: the out-of-world and silence
 flags, plus the three specific rulebooks needed to process the action.
 
-@c
+=
 [ WORK_OUT_DETAILS_OF_SPECIFIC_R;
 	MStack-->MstVO(SPECIFIC_ACTION_PROCESSING_RB, 0) = Details_of_Specific_Action-->0;
 	MStack-->MstVO(SPECIFIC_ACTION_PROCESSING_RB, 1) = Details_of_Specific_Action-->1;
@@ -717,7 +715,7 @@ flags, plus the three specific rulebooks needed to process the action.
 	rfalse;
 ];
 
-@p Actions Bitmap.
+@h Actions Bitmap.
 This is a fairly large bitmap recording which actions have succeeded thus
 far on which nouns. It was to some extent an early attempt at implementing
 a past-tense system; I'm not at all sure it was successful, since it is
@@ -726,14 +724,14 @@ for instance, and the notion of "success" is a vexed one for actions
 anyway. There is a clearly defined meaning, but it doesn't always correspond
 to what the user might expect, which is unfortunate.
 
-@c
+=
 [ TestActionBitmap obj act i j k bitmap;
 	if (obj == nothing) bitmap = ActionHappened;
 	else {
 		if (~~(obj provides action_bitmap)) rfalse;
 		bitmap = obj.&action_bitmap;
 	}
-	if (act == -1) return (((bitmap->0) & 1) ~= 0); 
+	if (act == -1) return (((bitmap->0) & 1) ~= 0);
 	for (i=0, k=2: i<ActionCount: i++) {
 		if (act == ActionCoding-->i) {
 			return (((bitmap->j) & k) ~= 0);
@@ -763,13 +761,13 @@ to what the user might expect, which is unfortunate.
 	}
 ];
 
-@p Printing Actions.
+@h Printing Actions.
 This is really for debugging purposes, but also provides us with a way to
 print a stored action, for instance, or to print an action name value.
 (For instance, printing an action name might result in "taking"; printing
 a whole action might produce "Henry taking the grapefruit".)
 
-@c
+=
 [ SayActionName act; DB_Action(0, 0, act, 0, 0, 2); ];
 
 [ DA_Name n; if (n ofclass K3_direction) print (name) n; else print (the) n; ];

@@ -1,10 +1,8 @@
-B/relkt: Relation Kind Template.
- 
-@Purpose: Code to support the relation kind.
- 
-@-------------------------------------------------------------------------------
+Relation Kind Template.
 
-@p Block Format.
+Code to support the relation kind.
+
+@h Block Format.
 Inform uses a rich variety of relations, with many different data representations,
 but we aim to hide that complexity from the user. At run-time, a relation is
 represented by a block value. The short block of this BV is simply a pointer
@@ -18,7 +16,7 @@ but we will use the |BlkValueRead| and |BlkValueWrite| routines in this
 section, which need offsets in the form |RRV_NAME|. (The discrepancy of 5 is
 to allow for the five-word block header.)
 
-@c
+=
 Constant RRV_NAME     		RR_NAME-5;        ! Packed string, e.g. "containment relation"
 Constant RRV_PERMISSIONS	RR_PERMISSIONS-5; ! A bitmap of what operations this supports
 Constant RRV_STORAGE		RR_STORAGE-5;     ! Data location, depending on format
@@ -29,11 +27,11 @@ Constant RRV_USED			6;
 Constant RRV_FILLED			7;
 Constant RRV_DATA_BASE		8;
 
-@p KOV Support.
+@h KOV Support.
 See the "BlockValues.i6t" segment for the specification of the following
 routines.
 
-@c
+=
 [ RELATION_TY_Support task arg1 arg2 arg3;
 	switch(task) {
 		CREATE_KOVS:      return RELATION_TY_Create(arg1, 0, arg2);
@@ -52,9 +50,9 @@ routines.
 	rfalse;
 ];
 
-@p Other Definitions.
+@h Other Definitions.
 
-@c
+=
 ! valencies
 Constant RRVAL_V_TO_V		0;
 Constant RRVAL_V_TO_O		RELS_Y_UNIQUE;
@@ -105,7 +103,7 @@ Constant RLIST_ALL_X 1;
 Constant RLIST_ALL_Y 2;
 Constant RLIST_ALL_PAIRS 3;
 
-@p Tunable Parameters.
+@h Tunable Parameters.
 These constants affect the performance characteristics of the dictionary
 structures used for relations on the heap. Changing their values may alter the
 balance between memory consumption and running time.
@@ -113,7 +111,7 @@ balance between memory consumption and running time.
 |RRP_MIN_SIZE|, |RRP_RESIZE_SMALL|, and |RRP_RESIZE_LARGE| must all be
 powers of two.
 
-@c
+=
 Constant RRP_MIN_SIZE      8;   ! minimum number of entries (DO NOT CHANGE)
 Constant RRP_PERTURB_SHIFT 5;   ! affects the probe sequence
 Constant MINUS_RRP_PERTURB_SHIFT -5;   ! affects the probe sequence
@@ -122,7 +120,7 @@ Constant RRP_RESIZE_LARGE  2;   ! resize factor for large tables
 Constant RRP_LARGE_IS      256; ! how many entries make a table "large"?
 Constant RRP_CROWDED_IS    2;   ! when filled entries outnumber unfilled by _ to 1
 
-@p Abstract Relations.
+@h Abstract Relations.
 As the following shows, we can abstractly use a relation -- that is, we can
 use a relation whose identity we know little about -- by calling its handler
 routine |R| in the form |R(rel, task, X, Y)|.
@@ -154,7 +152,7 @@ operations it does offer.
 At present, these permissions are not checked as rigorously as they should be
 (they're correctly set, but not much monitored).
 
-@c
+=
 [ RelationTest relation task X Y  handler rv;
 	handler = RlnGetF(relation, RR_HANDLER);
 	return handler(relation, task, X, Y);
@@ -170,18 +168,18 @@ At present, these permissions are not checked as rigorously as they should be
 	rel-->fld = v;
 ];
 
-@p Empty Relations.
+@h Empty Relations.
 The absolute minimum relation is one which can only be tested, and which is
 always empty, that is, where no two values are ever related to each other.
 The necessary handler routine is |EmptyRelationHandler|.
 
-@c
+=
 [ EmptyRelationHandler relation task X Y;
 	if (task == RELS_EMPTY) rtrue;
 	rfalse;
 ];
 
-@p Creation.
+@h Creation.
 Something we have to be careful about is what we mean by copying, or indeed
 creating, a relation. For example, if we write
 
@@ -206,7 +204,7 @@ happen when Q is created. If we find this handler, we intercept and replace
 it with one of the heap relation handlers, which thus makes the relation a
 newly constructed data structure which can grow freely from here.
 
-@c
+=
 [ RELATION_TY_Create kov from sb rel i skov handler;
 	rel = FlexAllocate((RRV_DATA_BASE + 3*RRP_MIN_SIZE)*WORDSIZE,
 		RELATION_TY, BLK_FLAG_WORD+BLK_FLAG_MULTIPLE);
@@ -240,32 +238,32 @@ newly constructed data structure which can grow freely from here.
 	return BlkValueCreateSB1(sb, rel);
 ];
 
-@p Destruction.
+@h Destruction.
 If the relation stores block values on either side, invoke the handler using a special task
 value to free the memory associated with them.
 
-@c
+=
 [ RELATION_TY_Destroy rel  handler;
 	handler = BlkValueRead(rel, RRV_HANDLER);
 	handler(rel, RELS_DESTROY);
 ];
 
-@p Copying.
+@h Copying.
 Same as destruction: invoke the handler using a special value to tell it to perform
 deep copying.
 
-@c
+=
 [ RELATION_TY_Copy lto lfrom  handler;
 	handler = BlkValueRead(lto, RRV_HANDLER);
 	handler(lto, RELS_COPY);
 ];
 
-@p Comparison.
+@h Comparison.
 It really isn't clear how to define equality for relations, but we follow
 the doctrine above. What we don't do is to test its actual state -- that
 would be very slow and might be impossible.
 
-@c
+=
 [ RELATION_TY_Compare rleft rright ind1 ind2;
 	ind1 = BlkValueRead(rleft, RRV_HANDLER);
 	ind2 = BlkValueRead(rright, RRV_HANDLER);
@@ -279,17 +277,17 @@ would be very slow and might be impossible.
 	rtrue;
 ];
 
-@p Printing.
+@h Printing.
 
-@c
+=
 [ RELATION_TY_Say rel;
 	if (rel == 0) print "(null relation)"; ! shouldn't happen
 	else print (string) RlnGetF(rel, RR_NAME);
 ];
 
-@p Naming.
+@h Naming.
 
-@c
+=
 [ RELATION_TY_Name rel txt;
 	if (rel) {
 		BlkValueWrite(rel, RRV_NAME, txt);
@@ -297,13 +295,13 @@ would be very slow and might be impossible.
 	}
 ];
 
-@p Choose Relation Handler.
+@h Choose Relation Handler.
 We implement two different various-to-various handler routines for the
 sake of efficiency. The choice of handler routines is made based on
 the kinds of value being related. Each handler also has a corresponding
 wrapper for symmetric relations.
 
-@c
+=
 [ ChooseRelationHandler kov sym;
 	if (KOVIsBlockValue(KindBaseTerm(kov, 0))) {
 		if (sym) return SymHashListRelationHandler;
@@ -319,14 +317,14 @@ wrapper for symmetric relations.
 	rfalse;
 ];
 
-@p Valency.
+@h Valency.
 "Valency" refers to the number of participants allowed on either side
 of the relation: various-to-various, one-to-various, various-to-one, or
 one-to-one. A newly created relation is always various-to-various. We
 allow the author to change the valency, but only if no entries have
 been added yet.
 
-@c
+=
 [ RELATION_TY_SetValency rel val  kov filled cur handler ext;
 	filled = BlkValueRead(rel, RRV_FILLED);
 	if (filled) { RunTimeProblem(RTP_RELATIONCHANGEIMPOSSIBLE); rfalse; }
@@ -363,7 +361,7 @@ been added yet.
 	return BlkValueRead(rel, RRV_PERMISSIONS) & VALENCY_MASK;
 ];
 
-@p Double Hash Set Relation Handler.
+@h Double Hash Set Relation Handler.
 This implements relations which are stored as a double-hashed set.
 The storage comprises a list of three-word entries $(F, X, Y)$, where
 $F$ is a flags word. The ordering of the list is determined by a probe
@@ -387,7 +385,7 @@ The utility routine |DoubleHashSetCheckResize| checks whether the
 dictionary has become too full after inserting a pair, and expands it
 if so.
 
-@c
+=
 [ DoubleHashSetRelationHandler rel task X Y sym  kov kx ky at tmp v;
 	kov = BlkValueRead(rel, RRV_KIND);
 	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
@@ -540,7 +538,7 @@ if so.
 			RLIST_ALL_PAIRS:
 				! LIST_OF_TY_InsertItem will make a deep copy of the item,
 				! so we can reuse a single combination value here
-				
+
 				Y = BlkValueCreate(kov);
 				for (at = BlkValueRead(rel, RRV_STORAGE): at >= 0: at--) {
 					tmp = RRV_DATA_BASE + 3*at;
@@ -676,7 +674,7 @@ if so.
 	rtrue;
 ];
 
-@p Hash List Relation Handler.
+@h Hash List Relation Handler.
 This implements relations which are stored as a hash table mapping
 keys to either single values or lists of values. The storage comprises a list
 of three-word entries, either $(F, X, Y)$ or $(F, X, L)$, where $F$ is a
@@ -689,30 +687,30 @@ above.
 |HashListRelationHandler| is a thin wrapper around |HashCoreRelationHandler|,
 which is shared with two other handlers below.
 
-@c
+=
 [ HashListRelationHandler rel task X Y  sym kov kx ky;
 	kov = BlkValueRead(rel, RRV_KIND);
 	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 1);
 ];
 
-@p Hash Table Relation Handler.
+@h Hash Table Relation Handler.
 This is the same as the Hash List Relation Handler above, except that only
 one value may be stored for each key. This implements various-to-one
 relations.
 
-@c
+=
 [ HashTableRelationHandler rel task X Y  kov kx ky;
 	kov = BlkValueRead(rel, RRV_KIND);
 	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 0);
 ];
 
-@p Reversed Hash Table Relation Handler.
+@h Reversed Hash Table Relation Handler.
 This is the same as the Hash Table Relation Handler except that the sides
 are reversed. This implements one-to-various relations.
 
-@c
+=
 [ ReversedHashTableRelationHandler rel task X Y  kov kx ky swap;
 	kov = BlkValueRead(rel, RRV_KIND);
 	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
@@ -744,7 +742,7 @@ are reversed. This implements one-to-various relations.
 	return HashCoreRelationHandler(rel, task, kx, ky, X, Y, 0);
 ];
 
-@p Symmetric Relation Handlers.
+@h Symmetric Relation Handlers.
 These are simple wrappers around the asymmetric handlers defined above.
 When a pair is inserted or removed, the wrappers insert or remove the
 reversed pair as well.
@@ -755,7 +753,7 @@ implement symmetric V-to-V relations.
 ("|SymTwoInOneHashTableRelationHandler|" would have
 exceeded Inform 6's 32-character name limit.)
 
-@c
+=
 [ SymDoubleHashSetRelationHandler rel task X Y;
 	if (task == RELS_ASSERT_TRUE or RELS_ASSERT_FALSE)
 		DoubleHashSetRelationHandler(rel, task, Y, X);
@@ -774,7 +772,7 @@ exceeded Inform 6's 32-character name limit.)
 	return TwoInOneHashTableRelationHandler(rel, task, X, Y, 1);
 ];
 
-@p Hash Core Relation Handler.
+@h Hash Core Relation Handler.
 This implements the core functionality that is shared between
 |HashListRelationHandler|, |HashTableRelationHandler|, and
 |ReversedHashTableRelationHandler|. All three handlers are the same except
@@ -788,7 +786,7 @@ includes |RRF_SINGLE|, $Y$ is a single value; otherwise, $Y$ is a list
 set, allowing only one value per key: a new pair $(X, Y')$ will replace
 the existing pair $(X, Y)$.
 
-@c
+=
 [ HashCoreRelationHandler rel task kx ky X Y mult  sym rev at tmp fl;
 	if (task == RELS_SET_VALENCY) {
 		return RELATION_TY_SetValency(rel, X);
@@ -1198,7 +1196,7 @@ the existing pair $(X, Y)$.
 	rtrue;
 ];
 
-@p Equivalence Hash Table Relation Handler.
+@h Equivalence Hash Table Relation Handler.
 This implements group relations. The table format is identical to that used
 by |HashCoreRelationHandler|, but we use it differently. Although the
 relation appears to relate Xs to Xs as far as the game is concerned, the
@@ -1228,7 +1226,7 @@ situation would be inefficient, so we keep the $Y$ entry regardless.
 
 This code uses the Hash Core utility functions defined above.
 
-@c
+=
 [ EquivHashTableRelationHandler rel task X Y  kx at at2 tmp fl i ext;
 	kx = KindBaseTerm(BlkValueRead(rel, RRV_KIND), 0);
 	if (task == RELS_SET_VALENCY) {
@@ -1440,7 +1438,7 @@ This code uses the Hash Core utility functions defined above.
 	}
 ];
 
-@p Two-In-One Hash Table Relation Handler.
+@h Two-In-One Hash Table Relation Handler.
 This implements one-to-one relations, which are stored as a hash table
 mapping keys to single values and vice versa. To enforce the one-to-one
 constraint, we need the ability to quickly check whether a value is
@@ -1480,7 +1478,7 @@ parts corresponding to the pairs $(A, X)$ and $(Y, B)$, and will not mark
 either as deleted. (Such overlap is only possible when the domains of $X$
 and $Y$ are the same kind of value.)
 
-@c
+=
 [ TwoInOneHashTableRelationHandler rel task X Y sym  kov kx ky at at2 tmp fl;
 	kov = BlkValueRead(rel, RRV_KIND);
 	kx = KindBaseTerm(kov, 0); ky = KindBaseTerm(kov, 1);
@@ -1882,7 +1880,7 @@ and $Y$ are the same kind of value.)
 	rtrue;
 ];
 
-@p Empty.
+@h Empty.
 This implements the "empty" adjective. We can always check whether a relation
 is empty. For most relation types, we can cause the relation to become empty by
 removing all pairs: but this is impossible for equivalence relations, which are
@@ -1891,7 +1889,7 @@ relation to become non-empty, since that would require making up data.
 
 In any case, the implementation is delegated to the relation handler.
 
-@c
+=
 [ RELATION_TY_Empty rel set  handler;
 	handler = RlnGetF(rel, RR_HANDLER);
 	return handler(rel, RELS_EMPTY, set);

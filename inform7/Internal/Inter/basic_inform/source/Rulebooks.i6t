@@ -1,10 +1,8 @@
-B/rbt: Rulebooks Template.
- 
-@Purpose: To work through the rules in a rulebook until a decision is made.
- 
-@-------------------------------------------------------------------------------
+Rulebooks Template.
 
-@p Latest Rule Result.
+To work through the rules in a rulebook until a decision is made.
+
+@h Latest Rule Result.
 This used to be a large data structure which kept track of the effect of
 procedural rules, but in January 2011 procedurals were abolished. It retains
 only one purpose: as a place to record the result of the most recently
@@ -21,7 +19,7 @@ return values.
 (3) |RS_NEITHER| is similar except that it cannot return any value, so that
 words 2 and 3 are meaningless.
 
-@c
+=
 Constant RS_NEITHER		= 0;
 Constant RS_SUCCEEDS	= 1;
 Constant RS_FAILS		= 2;
@@ -39,7 +37,7 @@ Array latest_rule_result --> 3;
 	latest_rule_result-->2 = rule2;
 ];
 
-@p Following.
+@h Following.
 Until January 2011, there were two ways to invoke a rulebook: to "follow" it
 or simply "process" it. With the demise of procedural rules, these became
 equivalent.
@@ -85,7 +83,7 @@ or failed if --
 
 and otherwise there was no decision.
 
-@c
+=
 Global process_rulebook_count; ! Depth of processing recursion
 Global debugging_rules = false; ! Are we tracing rule invocations?
 
@@ -147,7 +145,7 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 		DivideParagraphPoint();
 ];
 
-@p Specifying Outcomes.
+@h Specifying Outcomes.
 The following provide ways for rules to succeed, fail or decline to do
 either.
 
@@ -156,7 +154,7 @@ of the most recent rule completed, not the current one. (It's used only
 when saving and restoring this in the actions machinery: rules should not
 call it.)
 
-@c
+=
 [ ActRulebookSucceeds rule_id;
 	if (rule_id) reason_the_action_failed = rule_id;
 	RulebookSucceeds();
@@ -183,10 +181,10 @@ call it.)
 	latest_rule_result-->0 = a;
 ];
 
-@p Discovering Outcomes.
+@h Discovering Outcomes.
 And here is how to tell what the results were.
 
-@c
+=
 [ RulebookOutcome a;
 	a = latest_rule_result-->0;
 	if ((a == RS_FAILS) || (a == RS_SUCCEEDS)) return a;
@@ -212,7 +210,7 @@ And here is how to tell what the results were.
 	return 0;
 ];
 
-@p Printing Rule Names.
+@h Printing Rule Names.
 This is the I6 printing rule used for a value of kind "rule", which as
 noted above can either be rulebook ID numbers in the range 0 to $N-1$ or
 are addresses of individual rules.
@@ -223,19 +221,19 @@ omit the necessary arrays. (It's not the text which is the problem so
 much as the table of addresses pointing to that text, which has to live in
 precious readable memory on the Z-machine.)
 
-@p Casting.
+@h Casting.
 Nothing needs to be done to a rulebook value to make it a rule value.
 
-@c
+=
 [ RULEBOOK_TY_to_RULE_TY r;
 	return r;
 ];
 
-@p Debugging.
+@h Debugging.
 Two modest routines to print out the names of rules and rulebooks when they
 occur, in so far as memory economy allows this.
 
-@c
+=
 [ DebugRulebooks subs parameter i;
 	spaces(2*process_rulebook_count);
 	print "[", (RulePrintingRule) subs;

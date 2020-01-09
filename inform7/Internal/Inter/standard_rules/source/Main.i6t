@@ -1,11 +1,9 @@
-B/outt: Output Template.
+Output Template.
 
-@Purpose: This is the superstructure of the file of I6 code output by NI:
+This is the superstructure of the file of I6 code output by NI:
 from ICL commands at the top down to the signing-off comments at the bottom.
 
-@-------------------------------------------------------------------------------
-
-@p ICL Commands.
+@h ICL Commands.
 The Inform Control Language is a mini-language for controlling the I6 compiler,
 able to set command-line switches, memory settings and so on. I6 ordinarily
 discards lines beginning with exclamation marks as comments, but at the very
@@ -13,14 +11,14 @@ top of the file, lines beginning |!%| are read as ICL commands: as soon as
 any line (including a blank line) doesn't have this signature, I6 exits
 ICL mode.
 
-@p Identification.
+@h Identification.
 Both of the compiler and template layer, and of the story file to be produced.
 
-@p Constants.
+@h Constants.
 
-@c
+=
 
-@p Global Variables.
+@h Global Variables.
 These are not the only global variables defined in the template layer:
 those needed locally only by single sections (and not used in definitions
 of phrases in the Standard Rules, or referred to by NI directly) are defined
@@ -116,7 +114,7 @@ appearance of text in particular scenes to be. (Cf. Adam Cadre's I6 patch
 but not for the more commonly used versions 5 or 8, whose screen model is
 based on character cells.
 
-@c
+=
 ! [1]
 Global location = InformLibrary; ! does not = I7 "location": see below
 Global sline1; Global sline2;
@@ -241,32 +239,32 @@ Global inventory_stage = 1; ! 1 or 2 according to the context in which list_toge
 
 Global debug_scenes = 0;
 
-@p Compass.
+@h Compass.
 I6 identified compass directions as being children of the pseudo-object
 |Compass|, so we define it. (Note that |Compass| is not a valid I7 object,
 and is used for no other purpose.) Because of the traditional structure
 of language definitions, this needs to come first.
 
-@c
+=
 Object Compass "compass" has concealed;
 
-@p Language of Play.
+@h Language of Play.
 The equivalent of I6's language definition file, though here the idea is
 that a translation should have an inclusion to replace the "Language.i6t"
 segment, which contains the English definition.
 
-@c
+=
 {-segment:Language.i6t}
 
 Default LanguageCases 1;
 
-@p VM-Specific Code.
+@h VM-Specific Code.
 These sections of code contain different definitions of the same routines,
 and in some cases the same arrays, to handle low-level functions in the
 virtual machine -- saving the game, performing UNDO, parsing typed text into
 dictionary word addresses and so on.
 
-@c
+=
 #Ifdef TARGET_GLULX;
 {-segment:Glulx.i6t}
 #Endif;
@@ -275,16 +273,16 @@ dictionary word addresses and so on.
 {-segment:ZMachine.i6t}
 #Endif;
 
-@p Score and Rankings Table.
+@h Score and Rankings Table.
 The following command tells NI to compile constant definitions for |INITIAL_MAX_SCORE|
 and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
 no ranking table, |RANKING_TABLE| is left undefined, so that we can |#ifdef| this
 possibility later.
 
-@c
+=
 Global MAX_SCORE = INITIAL_MAX_SCORE;
 
-@p The Old Library.
+@h The Old Library.
 The I6 library consisted essentially of the parser, the verb routines, and
 a pile of utilities and world-modelling code, of which the biggest single
 component was the list-writer. The parser lives on below; the verb routines
@@ -292,11 +290,11 @@ are gone, with the equivalent functionality having moved upstairs into
 I7 source text in the Standard Rules; and the rest of the library largely
 lives here:
 
-@c
+=
 {-segment:Light.i6t}
 {-segment:ListWriter.i6t}
 
-@p Parser.
+@h Parser.
 The largest single block of code in the traditional I6 library part of the
 template layer is the parser.
 
@@ -311,7 +309,7 @@ bugs, as the next arrays in memory would be corrupted: as a tripwire,
 the |Protect_I7_Arrays| array consists of two magic values in sequence.
 If it is ever discovered to contain the wrong data, the alarm sounds.
 
-@c
+=
 Object InformParser "(Inform Parser)" has proper;
 
 {-segment:Parser.i6t}
@@ -323,14 +321,14 @@ Object InformParser "(Inform Parser)" has proper;
 
 Object InformLibrary "(Inform Library)" has proper;
 
-@p Order of Play.
+@h Order of Play.
 The |Main| routine, where execution begins, and the primitive rules in the
 principal rulebooks.
 
-@c
+=
 {-segment:OrderOfPlay.i6t}
 
-@p Activities.
+@h Activities.
 These are numbered upwards from 0 in order of creation. The following arrays
 taken together provide, for each activity number: (i) the rulebook numbers
 for the before, for, and after stages of the activity, and (ii) a flag
@@ -339,38 +337,38 @@ a parsing activity allowed to make use of the action which conjecturally
 might result from the current grammar line being parsed. (This is called
 the "action to be", hence "atb".)
 
-@p Object Tree.
+@h Object Tree.
 The I6 object tree contains |Class| definitions as well as objects, but
 we precede both with a pseudo-object called |property_numberspace_forcer|.
 It does nothing except to ensure that properties are declared in I6 in the
 same sequence as I7 (which need not otherwise happen); it plays no part
 in play, and is not a valid I7 "object" value.
 
-@p Tables.
+@h Tables.
 The initial state of the I6 arrays corresponding to each I7 table: see
 "Tables.i6t" for details.
 
-@p Equations.
+@h Equations.
 Routines to evaluate from equations.
 
-@p Actions.
+@h Actions.
 
-@p Phrases.
+@h Phrases.
 The following innocent-looking commands tell NI to compile I6 definitions
 for all of the rules which are not I6-written primitives, and also for
 adjective definitions, so it results in a fairly enormous cataract of code.
 
-@p Rulebooks.
+@h Rulebooks.
 The literally hundreds of rulebooks are set up here. (In the end a rulebook
 is only a (word) array of rule addresses, terminated with a |NULL|.)
 
-@p Scenes.
+@h Scenes.
 
-@p The New Library.
+@h The New Library.
 The gleaming, aluminium and glass extension to the library: almost all of it
 material new in I7 usage.
 
-@c
+=
 
 {-segment:Actions.i6t}
 {-segment:Activities.i6t}
@@ -381,36 +379,36 @@ material new in I7 usage.
 {-segment:MapRouteFinding.i6t}
 {-segment:RTP.i6t}
 
-@p Parsing Tokens.
+@h Parsing Tokens.
 GPRs, scope and noun filters to be used in grammar lines, but no actual
 grammar lines as yet.
 
-@c
+=
 {-segment:Number.i6t}
 {-segment:Time.i6t}
 
-@p Text generation.
+@h Text generation.
 
-@p Testing commands.
+@h Testing commands.
 
-@c
+=
 #IFDEF DEBUG;
 {-segment:Tests.i6t}
 #ENDIF; ! DEBUG
 
-@p I6 Inclusions.
+@h I6 Inclusions.
 This paragraph contains no code, by default: it's a hook on which to hang
 verbatim I6 material.
 
-@c
+=
 ! "Include (- ... -)" inclusions with no specified position appear here.
 
-@p Entries in constant lists.
+@h Entries in constant lists.
 Well: most of them, anyway. In particular, all of those which are lists of
 texts with substitution will be swept up, which is important for timing
 reasons. A second round later on will catch any later ones.
 
-@p To Phrases.
+@h To Phrases.
 We now compile all of the remaining code in the source text: the "To..."
 phrases and all of their attendant text routines, loop-over-scope routines
 and so on.
@@ -421,14 +419,14 @@ new text with substitutions. On the other hand we mustn't leave it any later,
 because a text substitution might contain references to the past, or involve
 propositions which must be deferred into routines.
 
-@p Chronology.
+@h Chronology.
 Similarly, this is where we wrap up all references to past tenses: after this
 point, we cannot safely compile any I7 condition in the past tense.
 
-@c
+=
 {-segment:Chronology.i6t}
 
-@p Grammar.
+@h Grammar.
 This is the trickiest matter of timing. We had to leave the grammar lines
 until now because the past-tense code above might have needed to investigate
 whether the player's command matched a given pattern at some time in the
@@ -437,7 +435,7 @@ should not be dismissed as an aberration). This is therefore the earliest
 point at which we can know for sure that no further grammar lines are
 needed.
 
-@c
+=
 [ UnknownVerb;
 	if (TEMPLATE_CONFIGURATION_BITMAP & NO_VERB_VERB_DEFINED_TCBIT) {
 		verb_wordnum = 0; return 'no.verb';
@@ -451,7 +449,7 @@ needed.
 	rfalse;
 ];
 
-@p Deferred Propositions.
+@h Deferred Propositions.
 Most conditions, such as "the score is 10", and descriptions, such as
 "open doors which are in lighted rooms", are translated by NI into
 propositions in a form of predicate calculus. Sometimes these can be
@@ -459,7 +457,7 @@ compiled immediately to I6 code, but other times they involve complicated
 searches and have to be "deferred" into special routines which will
 perform them. This is where we compile those routines.
 
-@p Miscellaneous Loose Ends.
+@h Miscellaneous Loose Ends.
 And we still aren't done, because we still have:
 
 (1) Routines which switch between possible interpretations of phrases
@@ -484,21 +482,21 @@ the counters, and therefore the amount of storage we need to allocate.
 
 (6) Similarly, each "quotation" box needs its own cell of memory.
 
-@c
+=
 Array Runtime_Quotations_Displayed --> CCOUNT_QUOTATIONS;
 
-@p Block Values.
+@h Block Values.
 These are values which are pointers to more elaborate data on the memory heap,
 rather than values in themselves: they point to "blocks". A section of code
 handles the heap, and there is then one further section to support each of
 the kinds of value in question.
 
-@c
+=
 {-segment:StoredAction.i6t}
 
-@p Signing off.
+@h Signing off.
 And that's all, folks.
 
-@c
+=
 ! End of automatically generated I6 source
 ! --------------------------------------------------------------------------

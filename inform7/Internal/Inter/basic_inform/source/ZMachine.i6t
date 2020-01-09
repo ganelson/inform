@@ -1,10 +1,8 @@
-B/zmt: ZMachine Template.
+ZMachine Template.
 
-@Purpose: To provide routines handling low-level Z-machine facilities.
+To provide routines handling low-level Z-machine facilities.
 
-@-------------------------------------------------------------------------------
-
-@p Summary.
+@h Summary.
 This segment closely parallels "Glulx.i6t", which provides exactly
 equivalent functionality (indeed, usually the same-named functions and in
 the same order) for the Glulx VM. This is intended to make the rest of the
@@ -14,9 +12,9 @@ of the grammar and dictionary tables that it is not really practical for
 the parser (for instance) to call VM-neutral routines to get the data it
 wants out of these arrays.
 
-@p Variables and Arrays.
+@h Variables and Arrays.
 
-@c
+=
 Global top_object; ! largest valid number of any tree object
 Global xcommsdir; ! true if command recording is on
 Global transcript_mode; ! true if game scripting is on
@@ -33,11 +31,11 @@ Global dict_start;
 Global dict_entry_size;
 Global dict_end;
 
-@p Starting Up.
+@h Starting Up.
 |VM_Initialise()| is almost the first routine called, except that the
 "starting the virtual machine" activity is allowed to go first.
 
-@c
+=
 [ VM_Initialise i;
 	standard_interpreter = HDR_TERPSTANDARD-->0;
 	transcript_mode = ((HDR_GAMEFLAGS-->0) & 1);
@@ -60,19 +58,19 @@ Global dict_end;
 		i = -i-2000;
 		print "[Random number generator seed is ", i, "]^";
 		@random i -> i;
-	}	
+	}
 ];
 
-@p Enable Acceleration.
+@h Enable Acceleration.
 This rule enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files, so for the Z-machine it has no effect.
 
-@c
+=
 [ ENABLE_GLULX_ACCEL_R;
 	rfalse;
 ];
 
-@p Release Number.
+@h Release Number.
 Like all software, IF story files have release numbers to mark revised
 versions being circulated: unlike most software, and partly for traditional
 reasons, the version number is recorded not in some print statement or
@@ -82,13 +80,13 @@ of the story file header.
 |VM_Describe_Release()| describes the release and is used as part of the
 "banner", IF's equivalent to a title page.
 
-@c
+=
 [ VM_Describe_Release i;
 	print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
 	for (i=0 : i<6 : i++) print (char) HDR_GAMESERIAL->i;
 ];
 
-@p Keyboard Input.
+@h Keyboard Input.
 The VM must provide three routines for keyboard input:
 
 (a) |VM_KeyChar()| waits for a key to be pressed and then returns the
@@ -101,7 +99,7 @@ into the buffer |b|, then parses it into a word stream in the table |t|.
 There are elaborations to due with mouse clicks, but this isn't the place
 to document all of that.
 
-@c
+=
 [ VM_KeyChar win  key;
     if (win) @set_window win;
     @read_char 1 -> key;
@@ -123,7 +121,7 @@ to document all of that.
     }
 ];
 
-@p Buffer Functions.
+@h Buffer Functions.
 A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
 into individual words, pointing to the relevant entries in the dictionary
@@ -145,7 +143,7 @@ are called tokens.
 "Language To Informese": it's used only by translations into non-English
 languages of play, and is not called in the template.
 
-@c
+=
 [ VM_CopyBuffer bto bfrom i;
     for (i=0: i<INPUT_BUFFER_LEN: i++) bto->i = bfrom->i;
 ];
@@ -182,7 +180,7 @@ languages of play, and is not called in the template.
     if (b->1 < b->0) (b->1)++;
 ];
 
-@p Dictionary Functions.
+@h Dictionary Functions.
 Again, the dictionary structure is differently arranged on the different VMs.
 This is a data structure containing, in compressed form, the text of all the
 words to be recognised by tokenisation (above). In I6 for Z, a dictionary word
@@ -195,7 +193,7 @@ in the dictionary data structure.
 |VM_DictionaryAddressToNumber(A)| and |VM_NumberToDictionaryAddress(N)|
 convert between record numbers and dictionary addresses.
 
-@c
+=
 [ VM_InvalidDictionaryAddress addr;
     if ((UnsignedCompare(addr, dict_start) < 0) ||
 		(UnsignedCompare(addr, dict_end) >= 0) ||
@@ -206,14 +204,14 @@ convert between record numbers and dictionary addresses.
 [ VM_DictionaryAddressToNumber w; return (w-(HDR_DICTIONARY-->0 + 7))/9; ];
 [ VM_NumberToDictionaryAddress n; return HDR_DICTIONARY-->0 + 7 + 9*n; ];
 
-@p Command Tables.
+@h Command Tables.
 The VM is also generated containing a data structure for the grammar
 produced by I6's |Verb| and |Extend| directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
 recognised by the parser.
 
-@c
+=
 [ VM_CommandTableAddress i;
 	return (HDR_STATICMEMORY-->0)-->i;
 ];
@@ -225,11 +223,11 @@ recognised by the parser.
         	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
 ];
 
-@p SHOWVERB support.
+@h SHOWVERB support.
 Further VM-specific tables cover actions and attributes, and these are
 used by the SHOWVERB testing command.
 
-@c
+=
 #Ifdef DEBUG;
 [ DebugAction a anames;
     if (a >= 4096) { print "<fake action ", a-4096, ">"; return; }
@@ -247,24 +245,24 @@ used by the SHOWVERB testing command.
 ];
 #Endif;
 
-@p RNG.
+@h RNG.
 No routine is needed for extracting a random number, since I6's built-in
 |random| function does that, but it's useful to abstract the process of
 seeding the RNG so that it produces a repeatable sequence of "random"
 numbers from here on: the necessary opcodes are different for the two VMs.
 
-@c
+=
 [ VM_Seed_RNG n;
 	if (n > 0) n = -n;
 	@random n -> n;
 ];
 
-@p Memory Allocation.
+@h Memory Allocation.
 This is dynamic memory allocation: something which is never practicable in
 the Z-machine, because the whole address range is already claimed, but which
 is viable on recent revisions of Glulx.
 
-@c
+=
 [ VM_AllocateMemory amount;
 	return 0;
 ];
@@ -272,7 +270,7 @@ is viable on recent revisions of Glulx.
 [ VM_FreeMemory address;
 ];
 
-@p Audiovisual Resources.
+@h Audiovisual Resources.
 The Z-machine only barely supports figures and sound effects, and only in
 version 6 of the Z-machine, which Inform 7 no longer supports. Sound effects
 have a longer pedigree and Infocom used them on some version 5 and even some
@@ -281,19 +279,19 @@ that anyone needing figures and sounds use Glulx instead. (Inform 6 remains
 available for those who really need to make audiovisual effects in these
 long-gone formats.)
 
-@c
+=
 [ VM_Picture resource_ID;
 ];
 
 [ VM_SoundEffect resource_ID;
 ];
 
-@p Typography.
+@h Typography.
 Relatively few typographic effects are available on the Z-machine, so that
 many of the semantic markups for text which would be distinguishable on
 Glulx are indistinguishable here.
 
-@c
+=
 [ VM_Style sty;
 	switch (sty) {
 		NORMAL_VMSTY, NOTE_VMSTY: style roman;
@@ -301,12 +299,12 @@ Glulx are indistinguishable here.
 	}
 ];
 
-@p Character Casing.
+@h Character Casing.
 The following are the equivalent of |tolower| and |toupper|, the traditional
 C library functions for forcing letters into lower and upper case form, for
 the ZSCII character set.
 
-@c
+=
 [ VM_UpperToLowerCase c;
 	if (c < 'A') return c;
 	if (c <= 'Z') return c + 32;
@@ -357,7 +355,7 @@ the ZSCII character set.
 	return c;
 ];
 
-@p The Screen.
+@h The Screen.
 Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
@@ -373,7 +371,7 @@ Clearing all windows (|WIN_ALL| here) has the side-effect of collapsing the
 status line, so we need to ensure that |statuswin_cursize| is reduced to 0,
 in order to keep it accurate.
 
-@c
+=
 [ VM_ClearScreen window;
     switch (window) {
 		WIN_ALL:    @erase_window -1; statuswin_cursize = 0;
@@ -386,7 +384,7 @@ in order to keep it accurate.
 
 [ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
 
-@p Window Colours.
+@h Window Colours.
 Each window can have its own foreground and background colours.
 
 The colour of individual letters or words of type is not controllable in
@@ -394,7 +392,7 @@ Glulx, to the frustration of many, and so the template layer of I7 has no
 framework for handling this (even though it is controllable on the Z-machine,
 which is greatly superior in this respect).
 
-@c
+=
 [ VM_SetWindowColours f b window;
     if (clr_on && f && b) {
         if (window == 0) {  ! if setting both together, set reverse
@@ -424,7 +422,7 @@ which is greatly superior in this respect).
     }
 ];
 
-@p Main Window.
+@h Main Window.
 The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
 
@@ -432,7 +430,7 @@ ordinarily occupies almost all of the screen area.
 status line, to the main window. Note that the Z-machine implementation
 emulates the Glulx model of window rather than text colours.
 
-@c
+=
 [ VM_MainWindow;
     if (statuswin_current) {
         if (clr_on && clr_bgstatus > 1) @set_colour clr_fg clr_bg;
@@ -442,7 +440,7 @@ emulates the Glulx model of window rather than text colours.
     statuswin_current = false;
 ];
 
-@p Status Line.
+@h Status Line.
 Despite the name, the status line need not be a single line at the top of
 the screen: that's only the conventional default arrangement. It can expand
 to become the equivalent of an old-fashioned VT220 terminal, with menus
@@ -460,7 +458,7 @@ at the given character grid position $(x, y)$. Line 1 represents the top
 line; line 2 is underneath, and so on; columns are similarly numbered from
 1 at the left.
 
-@c
+=
 [ VM_MoveCursorInStatusLine line column; ! 1-based position on text grid
     if (~~statuswin_current) {
          @set_window 1;
@@ -481,14 +479,14 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
     statuswin_cursize = height;
 ];
 
-@p Quotation Boxes.
+@h Quotation Boxes.
 No routine is needed to produce quotation boxes: the I6 |box| statement
 generates the necessary Z-machine opcodes all by itself.
 
-@p Undo.
+@h Undo.
 These simply wrap the relevant opcodes.
 
-@c
+=
 [ VM_Undo result_code;
 	@restore_undo result_code;
 	return result_code;
@@ -499,9 +497,9 @@ These simply wrap the relevant opcodes.
 	return result_code;
 ];
 
-@p Veneer.
+@h Veneer.
 
-@c
+=
 [ Unsigned__Compare x y u v;
 	@je x y ?rfalse; ! i.e., return 0
 	@jl x 0 ?XNegative;
@@ -519,7 +517,7 @@ These simply wrap the relevant opcodes.
 
 	.XNegative;
 	@jl y 0 ?~rtrue; ! if x < 0, y >= 0, return 1
-	
+
 	! Here x < 0, y < 0, x ~= y
 	@jg x y ?rtrue;
 	@ret -1;

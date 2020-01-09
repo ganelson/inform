@@ -1,10 +1,8 @@
-B/mrf: MapRouteFinding.
- 
-@Purpose: Testing and changing the fundamental spatial relations.
- 
-@-------------------------------------------------------------------------------
+MapRouteFinding.
 
-@p Map Route-Finding.
+Testing and changing the fundamental spatial relations.
+
+@h Map Route-Finding.
 The general problem we have to solve here is: given $x, y\in R$, where $R$
 is the set of rooms and we write $x\sim y$ if there is a map connection from
 $x$ to $y$,
@@ -47,7 +45,7 @@ if neither option is explicitly set, are fast on Glulx and slow on the
 Z-machine. If both use options are explicitly set -- which might happen
 due to a disagreement between extensions -- "fast" wins.
 
-@c
+=
 #ifndef FAST_ROUTE_FINDING;
 #ifndef SLOW_ROUTE_FINDING;
 #ifdef TARGET_GLULX;
@@ -58,7 +56,7 @@ Constant SLOW_ROUTE_FINDING;
 #endif;
 #endif;
 
-@p Cache Control.
+@h Cache Control.
 We provide code to enable our route-finding algorithms to cache their partial
 results from one usage to the next (though at present only the "fast"
 algorithm does this). The difficulty here is that the result of a route
@@ -80,7 +78,7 @@ become lighted or not.) We store the set of applicable rooms and doors
 by enumerating them in the property |room_index| and by the flags in the
 |DoorRoutingViable| array respectively.
 
-@c
+=
 Constant NUM_DOORS = ICOUNT_DOOR;
 Constant NUM_ROOMS = ICOUNT_ROOM;
 
@@ -130,7 +128,7 @@ Global last_filter; Global last_use_doors;
 	#endif;
 ];
 
-@p Fast Route-Finding.
+@h Fast Route-Finding.
 The following is a form of Floyd's adaptation of Warshall's algorithm for
 finding the transitive closure of a directed graph.
 
@@ -174,7 +172,7 @@ structure anyway, and it means the time expense is only paid once (or once
 for every time the state of doors and map connections changes), and the
 cache is useful for all future routes whatever their endpoints.
 
-@c
+=
 #ifdef FAST_ROUTE_FINDING;
 Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
 
@@ -220,7 +218,7 @@ Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
 					continue;
 				}
 			}
-		}	
+		}
 	}
 
 	objectloop (oy has mark_as_room) if (oy.room_index >= 0)
@@ -247,7 +245,7 @@ Array FWMatrix --> NUM_ROOMS*NUM_ROOMS;
 ];
 #ENDIF;
 
-@p Slow Route-Finding.
+@h Slow Route-Finding.
 The alternative algorithm, used when only $O(n)$ memory is available,
 computes only some of the shortest paths leading to $R_y$, and is not cached --
 both because the storage is likely to be reused often by other searches and
@@ -294,7 +292,7 @@ we have set the |vector| for every room having a shortest path to $R_y$ of
 length $n$, and that every |vector| points to a room having a |vector| in
 the direction of the shortest path from there to $R_y$.
 
-@c
+=
 #ifndef FAST_ROUTE_FINDING;
 [ SlowRouteTo from to filter use_doors  obj dir in_direction progressed sl through_door;
 	if (from == nothing) return nothing;

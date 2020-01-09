@@ -1,11 +1,9 @@
-B/blkvt: BlockValues Template.
- 
-@Purpose: Routines for copying, comparing, creating and destroying block
-values, and for reading and writing them as if they were arrays.
- 
-@-------------------------------------------------------------------------------
+BlockValues Template.
 
-@p Overview.
+Routines for copying, comparing, creating and destroying block
+values, and for reading and writing them as if they were arrays.
+
+@h Overview.
 Each I7 value is represented at run-time by an I6 word: on the Z-machine,
 a 16-bit number, and on Glulx, a 32-bit number. The correspondence between
 these numbers and the original values depends on the kind of value: "number"
@@ -82,10 +80,10 @@ causes a block value representing this list to be stored in memory. The
 long block for a constant needs to be immortal, since this memory must
 never be freed: it's therefore given a reference count of "infinity".
 
-@c
+=
 Constant RC_INFINITY = MAX_POSITIVE_NUMBER;
 
-@p Short Block Format.
+@h Short Block Format.
 A short block begins with a word which is usually, but not always, a pointer
 to the long block. There are three possibilities:
 
@@ -101,7 +99,7 @@ is stored in the second word of the short block.
 (c) Otherwise the short block has length 1 and contains only a pointer to
 the long block.
 
-@c
+=
 Constant BLK_BVBITMAP           = $ff;
 
 Constant BLK_BVBITMAP_LONGBLOCK = $10; ! Word 1 of SB is pointer to LB
@@ -118,10 +116,10 @@ Constant BLK_BVBITMAP_TEXTMASK      = $ff20;
 Constant BLK_BVBITMAP_CONSTANTMASK  = $ff40;
 #ENDIF;
 
-@p Long Block Access.
+@h Long Block Access.
 Illustrating this:
 
-@c
+=
 [ BlkValueGetLongBlock bv o;
 	if (bv) {
 		o = bv-->0;
@@ -135,12 +133,12 @@ Illustrating this:
 	return bv;
 ];
 
-@p Weak Kind.
+@h Weak Kind.
 This returns the weak kind ID of a block value. Most of the time this
 information is stored in the long block, but that poses a problem for BVs
 which have no long block: we must use the bitmap instead.
 
-@c
+=
 [ BlkValueWeakKind bv o;
 	if (bv) {
 		o = bv-->0;
@@ -154,25 +152,25 @@ which have no long block: we must use the bitmap instead.
 	return NIL_TY;
 ];
 
-@p Reference counting.
+@h Reference counting.
 Reference counts lie in a word at a fixed offset from the start of the
 long block: doctrinally, any block value with no long block at all (such
 as a piece of packed text) has reference count infinity.
 
-@c
+=
 [ BlkValueGetRefCountPrimitive bv long_block;
 	long_block = BlkValueGetLongBlock(bv);
 	if (long_block) return long_block-->BLK_HEADER_RCOUNT;
 	return RC_INFINITY;
 ];
 
-@p Changing Reference Counts.
+@h Changing Reference Counts.
 When incrementing, infinity's the limit; when decrementing, it never
 reduces. Note that the decrement function returns the new reference count,
 but the increment function returns nothing. It's only when reference counts
 go downwards that we have to worry about whether something happens.
 
-@c
+=
 [ BlkValueIncRefCountPrimitive bv long_block refc;
 	long_block = BlkValueGetLongBlock(bv);
 	if (long_block) {
@@ -195,13 +193,13 @@ go downwards that we have to worry about whether something happens.
 	return RC_INFINITY;
 ];
 
-@p Long Block Capacity.
+@h Long Block Capacity.
 As we've seen, the long block has some metadata in a header, but otherwise
 it's organised as if it were an array, with entries 8, 16 or 32 bits wide.
 At any given time, the "capacity" of the LB is the number of entries in
 this array: that doesn't mean that the BV is using them all at any given moment.
 
-@c
+=
 [ BlkValueLBCapacity bv  long_block array_size_in_bytes entry_size_in_bytes flags;
 	long_block = BlkValueGetLongBlock(bv);
 	if (long_block == 0) return 0;
@@ -231,7 +229,7 @@ this array: that doesn't mean that the BV is using them all at any given moment.
 	rtrue;
 ];
 
-@p Long Block Array Access.
+@h Long Block Array Access.
 Though the customer thinks he's getting an array, in fact the storage in
 the LB is not necessarily contiguous, since it can span multiple Flex blocks.
 We abstract that with two routines to read and write entries.
@@ -246,7 +244,7 @@ reads the nth entry in the long block for |bv|, whereas
 
 read it from the given long block directly. |BlkValueWrite| is similar.
 
-@c
+=
 [ BlkValueRead from pos do_not_indirect
 	long_block chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes seek_byte_position;
 	if (from == 0) rfalse;
@@ -318,11 +316,11 @@ read it from the given long block directly. |BlkValueWrite| is similar.
 	print_ret "*** BlkValueWrite: writing to index out of range: ", pos, " in ", to, " ***";
 ];
 
-@p First Zero Entry.
+@h First Zero Entry.
 This returns the entry index of the first zero entry in the long block's array,
 or -1 if it has no zeros.
 
-@c
+=
 [ BlkValueSeekZeroEntry from
 	long_block chunk_size_in_bytes header_size_in_bytes flags entry_size_in_bytes
 	byte_position addr from_addr to_addr;
@@ -367,7 +365,7 @@ or -1 if it has no zeros.
 	return -1;
 ];
 
-@p Mass Copy Entries.
+@h Mass Copy Entries.
 This copies a given number of entries from one BV's long block to another;
 they must both be of the same word size but can differ in header size.
 Functionally, it's identical to
@@ -378,7 +376,7 @@ Functionally, it's identical to
 but it's much, much faster, and runs in a reasonably small number of cycles
 given what it needs to do.
 
-@c
+=
 [ BlkValueMassCopyEntries to_bv from_bv no_entries_to_copy
 	from_long_block from_addr from_bytes_left from_header_size_in_bytes
 	to_long_block to_addr to_bytes_left to_header_size_in_bytes
@@ -437,10 +435,10 @@ given what it needs to do.
 	}
 ];
 
-@p Mass Copy From Array.
+@h Mass Copy From Array.
 The following is helpful when reading an array of characters into a text:
 
-@c
+=
 [ BlkValueMassCopyFromArray to_bv from_array from_entry_size no_entries_to_copy
 	to_long_block to_addr to_entries_left to_header_size to_entry_size
 	flags;
@@ -478,7 +476,7 @@ The following is helpful when reading an array of characters into a text:
 	}
 ];
 
-@p KOVS Routines.
+@h KOVS Routines.
 Different kinds of value use different data formats for both their short and
 long blocks, so it follows that each kind needs its own routines to carry out
 the fundamental operations of creating, destroying, copying and comparing.
@@ -496,7 +494,7 @@ The support function can be called with any of the following task constants
 as its first argument: it then has a further one to three arguments
 depending on the task in hand.
 
-@c
+=
 Constant CREATE_KOVS      = 1;
 Constant CAST_KOVS        = 2;
 Constant DESTROY_KOVS     = 3;
@@ -515,7 +513,7 @@ Constant DEBUG_KOVS       = 15;
 
 ! Constant BLKVALUE_TRACE; ! Uncomment this to expose masses of tracery
 
-@p Creation.
+@h Creation.
 To create a block value, call:
 
 	|BlkValueCreate(kind)|
@@ -536,7 +534,7 @@ These work by delegating to:
 
 which returns the address of the short block for the new value.
 
-@c
+=
 [ BlkValueCreate strong_kind short_block  kovs;
 
 	kovs = KOVSupportFunction(strong_kind, "impossible allocation");
@@ -548,19 +546,19 @@ which returns the address of the short block for the new value.
 	return short_block;
 ];
 
-@p Errors.
+@h Errors.
 No I7 source text should ever result in a call to this, unless it does
 unpleasant things at the I6 level.
 
-@c
+=
 [ BlkValueError reason;
 	print "*** Value handling failed: ", (string) reason, " ***^";
 	RunTimeProblem(RTP_HEAPERROR);
 	@quit;
 ];
 
-@p Short Block Allocation.
-The first thing a KOVS does when creating a value is to initialise its 
+@h Short Block Allocation.
+The first thing a KOVS does when creating a value is to initialise its
 short block. The following routines provide for a one-word and a two-word
 short block respectively. The KOVS should pass these routines the same
 |short_block| value it was called with. As can be seen, if this is zero
@@ -569,7 +567,7 @@ That incurs a fair amount of overhead in time and memory, though. The
 SB data is stored in the data portion of the Flex block, which is why
 we get its address from by adding the data offset to the block address.
 
-@c
+=
 [ BlkValueCreateSB1 short_block val;
 	if (short_block == 0)
 		short_block = FlexAllocate(WORDSIZE, 0, BLK_FLAG_WORD) + BLK_DATA_OFFSET;
@@ -584,7 +582,7 @@ we get its address from by adding the data offset to the block address.
 	return short_block;
 ];
 
-@p Block Values On Stack.
+@h Block Values On Stack.
 As noted above, it's wasteful to keep allocating short blocks using Flex.
 For the short blocks of block values in local variables, we store them on
 a stack instead. This is a top-down stack, so the current stack frame
@@ -596,7 +594,7 @@ the short block at the given word offset in the current stack frame.
 (I7 compiles calls to these routines when compiling code to manage
 local variables.)
 
-@c
+=
 [ StackFramingInitialise;
 	I7SFRAME = blockv_stack + WORDSIZE*BLOCKV_STACK_SIZE;
 ];
@@ -615,7 +613,7 @@ local variables.)
     BlkValueFree(I7SFRAME + WORDSIZE*offset);
 ];
 
-@p Freeing.
+@h Freeing.
 As noted above, every value returned by |BlkValueCreate| must later be
 freed by calling the following routine exactly once:
 
@@ -629,7 +627,7 @@ As noted above, short blocks are sometimes created within Flex blocks on
 the heap, using |FlexAllocate|; and if this is one of those, we need to free
 the relevant Flex block.
 
-@c
+=
 [ BlkValueFree bv kovs d;
 	if (bv == 0) return;
 
@@ -643,7 +641,7 @@ the relevant Flex block.
 		FlexFree(bv - BLK_DATA_OFFSET);
 ];
 
-@p Quick Copy.
+@h Quick Copy.
 The basic method of copying block value B into block value A is to destroy the
 old contents of A, which are about to be overwritten; then copy the short
 block of A into the short block of B, a quick process; and increment the
@@ -655,14 +653,14 @@ The support function should respond to:
 
 by copying the short blocks alone.
 
-@c
+=
 [ BlkValueQuickCopyPrimitive to_bv from_bv kovs;
 	BlkValueDestroyPrimitive(to_bv, kovs);
 	kovs(COPYSB_KOVS, to_bv, from_bv);
 	BlkValueIncRefCountPrimitive(from_bv);
 ];
 
-@p Short Block Copy.
+@h Short Block Copy.
 In fact, most of the work of copying a short block is standard. If a SB
 consists only a single word pointing to the LB, the first routine below
 handles all the work needed to handle the |COPYSB_KOVS| task. The
@@ -670,7 +668,7 @@ surprising line in this routine is to deal with the convention that a
 pointer value of 0 means the LB immediately follows the SB: if that's
 true in |from_bv|, it won't be true in |to_bv|, so we must correct it.
 
-@c
+=
 [ BlkValueCopySB1 to_bv from_bv;
 	to_bv-->0 = from_bv-->0;
 	if (to_bv-->0 == 0) to_bv-->0 = from_bv + WORDSIZE;
@@ -682,7 +680,7 @@ true in |from_bv|, it won't be true in |to_bv|, so we must correct it.
 	if (to_bv-->1 == 0) to_bv-->1 = from_bv + 2*WORDSIZE;
 ];
 
-@p Slow Copy.
+@h Slow Copy.
 Why don't we always do this? Consider the case where B is a list of rooms, and
 A is a list of objects. If we give A's short block a pointer to the long block
 of B, A will suddenly change its kind as well as its contents, because the
@@ -720,7 +718,7 @@ thus perhaps recursing, if any of that data contained block values in turn:
 as for instance it will if we're copying a list of texts. Note that |k|
 is the value given us by |KINDDATA_KOVS|.
 
-@c
+=
 [ BlkValueSlowCopyPrimitive to_bv from_bv kovs recycling
 	k from_long_block no_entries_to_copy;
 	k = kovs(KINDDATA_KOVS, to_bv, from_bv);
@@ -739,7 +737,7 @@ is the value given us by |KINDDATA_KOVS|.
 !print "Whence to: "; BlkValueDebug(to_bv); print "^";
 ];
 
-@p Copy.
+@h Copy.
 As noted above, some copies are quick, and some are slow. We decide by
 asking the kind's support function:
 
@@ -747,7 +745,7 @@ asking the kind's support function:
 
 which should return true if a quick copy is okay, or false if not.
 
-@c
+=
 [ BlkValueCopy to_bv from_bv  to_kind from_kind kovs;
 	if (to_bv == 0) BlkValueError("copy to null value");
 	if (from_bv == 0) BlkValueError("copy from null value");
@@ -762,7 +760,7 @@ which should return true if a quick copy is okay, or false if not.
 	if (to_kind ~= from_kind) BlkValueError("copy incompatible kinds");
 
 	kovs = KOVSupportFunction(to_kind, "impossible copy");
-	
+
 	if (kovs(COPYQUICK_KOVS, to_bv, from_bv))
 		BlkValueQuickCopyPrimitive(to_bv, from_bv, kovs);
 	else
@@ -776,7 +774,7 @@ which should return true if a quick copy is okay, or false if not.
 	return to_bv;
 ];
 
-@p Destruction.
+@h Destruction.
 We will also need primitives for two different forms of destruction. This
 is something which should happen whenever a block value is thrown away,
 not to be used again: either because it's being freed, or because new
@@ -796,7 +794,7 @@ freeing of some of the data, which in turn means that that data must be
 destroyed, and so on. So it's essential that block values be well-founded:
 a list must not, for example, contain itself.
 
-@c
+=
 [ BlkValueDestroyPrimitive bv kovs long_block;
 	#ifdef BLKVALUE_TRACE; print "Destroying ", (BlkValueDebug) bv, "^"; #endif;
 	if (BlkValueDecRefCountPrimitive(bv) == 0) {
@@ -806,14 +804,14 @@ a list must not, for example, contain itself.
 	}
 ];
 
-@p Recycling.
+@h Recycling.
 This is like destruction in that it disposes of the value safely, but it
 tries to keep the long block for reuse, rather than deallocating it. This
 won't work if other people are still using it, so in the case where its
 reference count is 2 or more, we simply reduce the count by 1 and then
 replace the small block with a new one (at the same address).
 
-@c
+=
 [ BlkValueRecyclePrimitive bv kovs;
 	#ifdef BLKVALUE_TRACE; print "Recycling ", (BlkValueDebug) bv, "^"; #endif;
 	if (BlkValueDecRefCountPrimitive(bv) == 0) {
@@ -824,7 +822,7 @@ replace the small block with a new one (at the same address).
 	}
 ];
 
-@p Mutability.
+@h Mutability.
 A block value is by definition mutable if it has a long block with reference
 count 1, because then the data in the long block can freely be changed without
 corrupting other block values.
@@ -840,7 +838,7 @@ to allocate the short block for this safe copy on the heap and then free it
 again moments later, so instead we put the short block on the stack, making
 a temporary one-value stack frame instead to hold it.
 
-@c
+=
 [ BlkMakeMutable bv block bv_kind kovs sb_size;
 	if (bv == 0) BlkValueError("tried to make null block mutable");
 
@@ -865,7 +863,7 @@ a temporary one-value stack frame instead to hold it.
 	}
 ];
 
-@p Casting.
+@h Casting.
 We can also perform an assignment to an already-created block value in the
 form of a cast, that is, a conversion of data from one kind to another:
 or at least, for some kinds of value we can.
@@ -876,14 +874,14 @@ casts from the given value, with the given kind, into the existing block
 value |to_bv|. Note that the source value doesn't need to be a BV itself.
 This mechanism is used, for example, to cast snippets to text.
 
-@c
+=
 [ BlkValueCast to_bv original_kind original_value  kovs;
 	kovs = KOVSupportFunction(BlkValueWeakKind(to_bv), "impossible cast");
 	kovs(CAST_KOVS, to_bv, original_kind, original_value);
 	return to_bv;
 ];
 
-@p Comparison.
+@h Comparison.
 And it's a similar story with comparison:
 
 	|kovs(COMPARE_KOVS, bv_left, bv_right)|
@@ -893,7 +891,7 @@ number if |bv_right| is "greater than" |bv_left|, and a negative number if
 not. The interpretation of "greater than" depends on the kind, but should be
 something which the user would find natural.
 
-@c
+=
 [ BlkValueCompare bv_left bv_right  kind_left kind_right kovs;
 	if ((bv_left == 0) && (bv_right == 0)) return 0;
 	if (bv_left == 0) return 1;
@@ -907,7 +905,7 @@ something which the user would find natural.
 	return kovs(COMPARE_KOVS, bv_left, bv_right);
 ];
 
-@p Hashing.
+@h Hashing.
 Given a value of any kind, assign it a hash code which fits in a single
 virtual machine word, maximizing the chances that two different values
 will have different hash codes.
@@ -921,7 +919,7 @@ to return one for us. Whatever this does, it must at minimum have the
 property that two equivalent blocks (for which |COMPARE_KOVS| returns 0)
 produce the same hash value.
 
-@c
+=
 [ GetHashValue kind value;
 	if (KOVIsBlockValue(kind)) return BlkValueHash(value);
 	return value;
@@ -934,7 +932,7 @@ produce the same hash value.
 	return kovs(HASH_KOVS, bv);
 ];
 
-@p Serialisation.
+@h Serialisation.
 Some block values can be written to external files (on Glulx): others cannot.
 The following routines abstract that.
 
@@ -958,7 +956,7 @@ screen, it seems reasonable to call it a file input-output function just the
 same. The |WRITE_FILE_KOVS| should return |true| or |false| according to
 whether it was able to write the data.
 
-@c
+=
 [ BlkValueReadFromFile bv auxf ch bv_kind  kovs;
 	kovs = KOVSupportFunction(bv_kind);
 	if (kovs) return kovs(READ_FILE_KOVS, bv, auxf, ch);
@@ -971,11 +969,11 @@ whether it was able to write the data.
 	rfalse;
 ];
 
-@p Debugging.
+@h Debugging.
 Surprisingly, the above system of reference-counted double indirection didn't
 work first time, so it turned out to be useful to have these routines on hand.
 
-@c
+=
 [ BlkValueDebug bv flag refc long_block kovs;
 	print "(BV";
 	if (bv) {
@@ -995,12 +993,12 @@ work first time, so it turned out to be useful to have these routines on hand.
 	print ")";
 ];
 
-@p Printing Memory Addresses.
+@h Printing Memory Addresses.
 The point of the anonymity flag is that, with this set, the output can be
 used as the required output in an Inform test case without tiny movements
 in memory between builds invalidating this required output.
 
-@c
+=
 [ BlkDebugAddress addr flag d;
 	if (flag) { print "###"; return; }
 
@@ -1011,7 +1009,7 @@ in memory between builds invalidating this required output.
 		print "=f"; if (d >= 0) print "+"; print d;
 		return;
 	}
-	
+
 	d = addr - Flex_Heap;
 	if ((d >= 0) && (d < MEMORY_HEAP_SIZE + 16)) {
 		print "h+", (BlkPrintHexadecimal) d;
@@ -1021,9 +1019,9 @@ in memory between builds invalidating this required output.
 	print (BlkPrintHexadecimal) addr;
 ];
 
-@p Hexadecimal Printing.
+@h Hexadecimal Printing.
 
-@c
+=
 [ BlkPrintHexadecimal v;
 	#iftrue WORDSIZE == 4;
 	if (v & $ffff0000) {

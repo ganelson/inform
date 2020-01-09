@@ -1,12 +1,10 @@
-B/ordt: OrderOfPlay Template.
+OrderOfPlay Template.
 
-@Purpose: The sequence of events in play: the Main routine which runs the
+The sequence of events in play: the Main routine which runs the
 startup rulebook, the turn sequence rulebook and the shutdown rulebook; and
 most of the I6 definitions of primitive rules in those rulebooks.
 
-@-------------------------------------------------------------------------------
-
-@p Main.
+@h Main.
 This is where every I6 story file begins execution: it can end either by
 returning, or by a |quit| statement or equivalent opcode. (In I7 this does
 indeed happen when the quitting the game action is carried out, or when QUIT
@@ -19,7 +17,7 @@ The |EarlyInTurnSequence| flag is used to enforce the requirement that the
 turn sequence rulebook is being followed directly from |Main|, an anomaly
 explained in the Standard Rules.
 
-@c
+=
 Global EarlyInTurnSequence;
 Global IterationsOfTurnSequence;
 
@@ -40,14 +38,14 @@ Global IterationsOfTurnSequence;
 	}
 ];
 
-@p Virtual Machine Startup Rule.
+@h Virtual Machine Startup Rule.
 We delegate to the appropriate VM-specific section of code for the real work.
 The printing of three blank lines at the start of play is traditional: on early
 Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
 space the opening text better.
 
-@c
+=
 [ VIRTUAL_MACHINE_STARTUP_R;
 	CarryOutActivity(STARTING_VIRTUAL_MACHINE_ACT);
 	VM_Initialise();
@@ -55,7 +53,7 @@ space the opening text better.
 	rfalse;
 ];
 
-@p Initial Situation.
+@h Initial Situation.
 The array |InitialSituation| is compiled by NI and contains:
 
 (-0) The object number for the player, which is usually |selfobj|.
@@ -70,7 +68,7 @@ is compiled outside of the object tree (as can happen if the source text
 reads, say, "Mrs Bridges is a woman. The player is Mrs Bridges."): in
 other circumstances they are often correct, but this must not be relied on.
 
-@p Initialise Memory Rule.
+@h Initialise Memory Rule.
 This rule amalgamates some minimal initialisations which all need to happen
 before we can risk using some of the more exotic I7 kinds:
 
@@ -103,7 +101,7 @@ about to be read from the keyboard, suppresses the standard status line
 text: thus, if there is some long text to read before the player finds out
 where he is, the surprise will not be spoiled.
 
-@c
+=
 [ INITIALISE_MEMORY_R;
 	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
 	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
@@ -123,7 +121,7 @@ where he is, the surprise will not be spoiled.
 	rfalse;
 ];
 
-@p Position Player In Model World Rule.
+@h Position Player In Model World Rule.
 This seems as good a place as any to write down the invariant we attempt
 to maintain for the player's position variables:
 
@@ -170,12 +168,12 @@ waiting. (Nobody ought to use these variables at this point, but in case
 they do use them by accident in a "when play begins" rule, we want Inform
 to behave predictably and without type-unsafe values entering code.)
 
-@c
+=
 [ POSITION_PLAYER_IN_MODEL_R player_to_be;
 
 	player = selfobj;
 	player_to_be = InitialSituation-->PLAYER_OBJECT_INIS;
-	
+
 	location = LocationOf(player_to_be);
 	if (location == 0) {
 		location = InitialSituation-->START_ROOM_INIS;
@@ -188,14 +186,14 @@ to behave predictably and without type-unsafe values entering code.)
 	else { real_location = location; SilentlyConsiderLight(); }
 
 	NOTE_OBJECT_ACQUISITIONS_R(); MoveFloatingObjects();
-	
+
 	actor = player; act_requester = nothing; actors_location = real_location; action = ##Wait;
 
 	InitialSituation-->DONE_INIS = true;
 	rfalse;
 ];
 
-@p Parse Command Rule.
+@h Parse Command Rule.
 This section contains only two primitive rules from the turn sequence
 rulebook, the matched pair of the "parse command rule" and the
 "generate action rule"; the others are found in the sections on Light
@@ -257,7 +255,7 @@ have a larger results array, rather than this pile of occasionally
 used variables? The reasons are purely historical: the I6 parser
 developed gradually over about a decade.
 
-@c
+=
 Constant ACTION_PRES = 0;
 Constant NO_INPS_PRES = 1;
 Constant INP1_PRES = 2;
@@ -272,7 +270,7 @@ Constant INP2_PRES = 3; ! Parser.i6t code assumes this is INP1_PRES + 1
 	rfalse;
 ];
 
-@p Treat Parser Results.
+@h Treat Parser Results.
 We don't quite use the results exactly as they are returned by the parser:
 we make modifications in a few special cases.
 
@@ -288,7 +286,7 @@ happens out of world.
 the action resulting from ASK PERSON ABOUT SOMETHING, so that |##Tell|
 is converted to |##Ask| in these cases.
 
-@c
+=
 [ TreatParserResults;
 	if (parser_results-->ACTION_PRES == ##MistakeAction) meta = true;
 
@@ -299,7 +297,7 @@ is converted to |##Ask| in these cases.
 	}
 ];
 
-@p Generate Action Rule.
+@h Generate Action Rule.
 For what are, again, historical reasons to do with the development of I6,
 the current action is recorded in a slate of global variables:
 
@@ -357,7 +355,7 @@ Finally, note that an out of world action stops the turn sequence early, at
 the end of action generation: this is what prevents the time of day advancing,
 every turn rules from firing, and so forth -- see the Standard Rules.
 
-@c
+=
 [ GENERATE_ACTION_R i;
 	if (EarlyInTurnSequence == false) rfalse; ! Prevent use outside top level
 	EarlyInTurnSequence = false;
@@ -395,7 +393,7 @@ every turn rules from firing, and so forth -- see the Standard Rules.
 		}
 		if (multiple_object-->0 == 0) rfalse;
 	}
-	
+
 	if (multiflag) {
 		GenerateMultipleActions();
 		multiflag = false;
@@ -408,7 +406,7 @@ every turn rules from firing, and so forth -- see the Standard Rules.
 	rfalse;
 ];
 
-@p Generate Multiple Actions.
+@h Generate Multiple Actions.
 So this routine is used to issue the individual actions necessary when
 a multiple object list has been supplied as either the noun or second noun
 part of an action generated by the parser. Note that we stop processing
@@ -421,7 +419,7 @@ the results from any item in the list: this is both more condensed on screen
 in ordinary lists, and might allow the user to play tricks such as gathering
 up reports from a list and delivering them later in some processed way.
 
-@c
+=
 [ GenerateMultipleActions initial_location k item;
 	initial_location = location;
 	for (k=1: k<=multiple_object-->0: k++) {
@@ -437,7 +435,7 @@ up reports from a list and delivering them later in some processed way.
 	}
 ];
 
-@p Timed Events Rule.
+@h Timed Events Rule.
 A timed event is a rule stored in the |TimedEventsTable|, an I6 table array:
 zero entries in this table are ignored, and the sequence is significant
 only if more than one event goes off at the same moment, in which case
@@ -460,7 +458,7 @@ immediately in the same use of the timed events rule: there is guaranteed
 to be a blank slot in the timer array at or before the current position
 because we have just blanked one.
 
-@c
+=
 [ TIMED_EVENTS_R i d event_timer fire rule;
 	for (i=1: i<=(TimedEventsTable-->0): i++)
 		if ((rule=TimedEventsTable-->i) ~= 0) {
@@ -480,7 +478,7 @@ because we have just blanked one.
 	rfalse;
 ];
 
-@p Setting Timed Events.
+@h Setting Timed Events.
 This is the corresponding routine which adds events to the timer tables, and
 is used to define phrases like "the cuckoo clock explodes in 7 turns from
 now" or "the cuckoo clock explodes at 4 PM". Here the |rule| would be
@@ -492,7 +490,7 @@ setting for its firing overwrites an old one. (This ensures that the table
 does not slowly balloon in size if the user has not been careful to ensure
 that events always fire.)
 
-@c
+=
 [ SetTimedEvent rule event_time absolute_time i b;
 	for (i=1: i<=(TimedEventsTable-->0): i++) {
 		if (rule == TimedEventsTable-->i) { b=i; break; }
@@ -504,11 +502,11 @@ that events always fire.)
 	else TimedEventTimesTable-->b = -event_time;
 ];
 
-@p Setting Time Of Day.
+@h Setting Time Of Day.
 This is the old I6 library routine |SetTime|, which is no longer used in I7
 at present; but might be, some day.
 
-@c
+=
 Global time_step;
 
 [ SetTime t s;
@@ -516,11 +514,11 @@ Global time_step;
     if (s < 0) time_step = 0-s;
 ];
 
-@p Advance Time Rule.
+@h Advance Time Rule.
 This rule advances the two measures of the passing of time: the number of
 |turns| of play, and |the_time| of day.
 
-@c
+=
 [ ADVANCE_TIME_R;
     turns++;
     if (the_time ~= NULL) {
@@ -537,10 +535,10 @@ This rule advances the two measures of the passing of time: the number of
 	rfalse;
 ];
 
-@p Note Object Acquisitions Rule.
+@h Note Object Acquisitions Rule.
 See the Standard Rules for comment on this.
 
-@c
+=
 [ NOTE_OBJECT_ACQUISITIONS_R obj;
     objectloop (obj in player) give obj moved;
     objectloop (obj has concealed)
@@ -556,13 +554,13 @@ See the Standard Rules for comment on this.
 	rfalse;
 ];
 
-@p Resurrect Player If Asked Rule.
+@h Resurrect Player If Asked Rule.
 If a rule in the "when play ends" rulebook set |resurrect_please|, by executing
 the "resume the game" phrase, then this is where we notice that: making
 the shutdown rulebook succeed then tells |Main| to fall back into the turn
 sequence.
 
-@c
+=
 [ RESURRECT_PLAYER_IF_ASKED_R;
 	if (resurrect_please) {
 		RulebookSucceeds(); resurrect_please = false;
@@ -571,14 +569,14 @@ sequence.
 	rfalse;
 ];
 
-@p Ask The Final Question Rule.
+@h Ask The Final Question Rule.
 And so we come to the bittersweet end: we ask the final question endlessly,
 until the player gives a reply which takes drastic enough action to destroy
 the current execution context in the VM, for instance by typing QUIT, RESTART,
 UNDO or RESTORE. The question and answer are all managed by the activity,
 which is defined in I7 source text in the Standard Rules.
 
-@c
+=
 [ ASK_FINAL_QUESTION_R;
 	print "^";
 	while (true) {
@@ -588,12 +586,12 @@ which is defined in I7 source text in the Standard Rules.
     }
 ];
 
-@p Read The Final Answer Rule.
+@h Read The Final Answer Rule.
 This erases the current command, so is a technique we couldn't use during
 actual play, but here commands are but a distant memory. So we can use the
 same buffers for the final question as for game commands.
 
-@c
+=
 [ READ_FINAL_ANSWER_R;
 	DrawStatusLine();
 	KeyboardPrimitive(buffer, parse);
@@ -603,37 +601,37 @@ same buffers for the final question as for game commands.
 	rfalse;
 ];
 
-@p Immediately Restart VM Rule.
+@h Immediately Restart VM Rule.
 Now for four rules acting on typical responses to the final question.
 
-@c
+=
 [ IMMEDIATELY_RESTART_VM_R; @restart; ];
 
-@p Immediately Restore Saved Game Rule.
+@h Immediately Restore Saved Game Rule.
 It is almost certainly unnecessary to set |actor| to |player| here, but
 we do so just in case, because |RESTORE_THE_GAME_R| is protected against
 doing anything when it thinks it might have been called erroneously through
 a command like "DAPHNE, RESTORE". (Out of world actions should never
 be carried out that way, but again, it's a precaution.)
 
-@c
+=
 [ IMMEDIATELY_RESTORE_SAVED_R; actor = player; RESTORE_THE_GAME_R(); ];
 
-@p Immediately Quit Rule.
+@h Immediately Quit Rule.
 
-@c
+=
 [ IMMEDIATELY_QUIT_R; @quit; ];
 
-@p Immediately Undo Rule.
+@h Immediately Undo Rule.
 
-@c
+=
 [ IMMEDIATELY_UNDO_R; Perform_Undo(); ];
 
-@p Print Obituary Headline Rule.
+@h Print Obituary Headline Rule.
 Finally, definitions of three primitive rules for the "printing the player's
 obituary" activity.
 
-@c
+=
 [ PRINT_OBITUARY_HEADLINE_R;
     print "^^    ";
     VM_Style(ALERT_VMSTY);
@@ -652,17 +650,17 @@ obituary" activity.
     rfalse;
 ];
 
-@p Print Final Score Rule.
+@h Print Final Score Rule.
 
-@c
+=
 [ PRINT_FINAL_SCORE_R;
 	if (TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();
 	rfalse;
 ];
 
-@p Display Final Status Line Rule.
+@h Display Final Status Line Rule.
 
-@c
+=
 [ DISPLAY_FINAL_STATUS_LINE_R;
 	sline1 = score; sline2 = turns;
 	rfalse;

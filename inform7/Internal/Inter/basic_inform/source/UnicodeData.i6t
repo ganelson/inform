@@ -1,10 +1,8 @@
-B/unict: UnicodeData Template.
- 
-@Purpose: To tabulate casings in the character set.
- 
-@-------------------------------------------------------------------------------
+UnicodeData Template.
 
-@p Source.
+To tabulate casings in the character set.
+
+@h Source.
 When this section is included, exactly one of the following constants is
 defined:
 
@@ -35,12 +33,12 @@ Unicode number-space in which upper and lower case letters alternate.)
 An offset of |UNIC_NCT| means no case change is possible; and any character
 not included in the ranges below is not a letter.
 
-@c
+=
 Constant UNIC_NCT = 10000; ! Safe as highest case-change delta is 8383
 
-@p ZSCII Casing Tables.
+@h ZSCII Casing Tables.
 
-@c
+=
 #IFDEF ZSCII_Tables;
 Array CharCasingChart0 -->
     $0061 (  26) (     -32) $009b (   3) (       3) $00a1 (   1)   UNIC_NCT
@@ -58,9 +56,9 @@ Array CharCasingChart1 -->
 ;
 #ENDIF; ! ZSCII_Tables
 
-@p Small Unicode Casing Tables.
+@h Small Unicode Casing Tables.
 
-@c
+=
 #IFDEF Small_Unicode_Tables;
 Array CharCasingChart0 -->
     $0061 (  26) (     -32) $00aa (   1)   UNIC_NCT $00b5 (   1)   UNIC_NCT $00ba (   1)   UNIC_NCT
@@ -74,9 +72,9 @@ Array CharCasingChart1 -->
 
 #ENDIF; ! Small_Unicode_Tables
 
-@p Large Unicode Casing Tables.
+@h Large Unicode Casing Tables.
 
-@c
+=
 #IFDEF Large_Unicode_Tables;
 Array CharCasingChart0 -->
     $0061 (  26) (     -32) $00aa (   1)   UNIC_NCT $00b5 (   1) (     743) $00ba (   1)   UNIC_NCT

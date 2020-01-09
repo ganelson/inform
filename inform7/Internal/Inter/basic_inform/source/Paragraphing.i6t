@@ -1,10 +1,8 @@
-B/para: Paragraphing.
- 
-@Purpose: To manage the line skips which space paragraphs out.
+Paragraphing.
 
-@-------------------------------------------------------------------------------
+To manage the line skips which space paragraphs out.
 
-@p Paragraph Control.
+@h Paragraph Control.
 Ah, yes: the paragraph breaking algorithm. In {\it \TeX: The Program},
 Donald Knuth writes at $\S 768$: "It's sort of a miracle whenever |\halign|
 and |\valign| work, because they cut across so many of the control structures
@@ -124,7 +122,7 @@ is highly prone to behaving unexpectedly if changes are made, simply because
 of the huge number of circumstances in which paragraphs are printed: so change
 nothing without very careful testing.
 
-@p State.
+@h State.
 The current state is stored in a combination of two global variables:
 
 (1) |say__p|, the "say paragraph" flag, which is set if a paragraph break
@@ -162,7 +160,7 @@ before resuming printing to the old stream.
 In no other case should any code alter |say__pc| except via the routines
 below.
 
-@c
+=
 !Constant TRACE_I7_SPACING;
 
 [ ClearParagraphing r;

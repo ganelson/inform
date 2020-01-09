@@ -1,17 +1,15 @@
-B/iot: FileIO Template.
- 
-@Purpose: Reading and writing external files, in the Glulx virtual machine only.
- 
-@-------------------------------------------------------------------------------
+FileIO Template.
 
-@p Language.
+Reading and writing external files, in the Glulx virtual machine only.
+
+@h Language.
 This whole template contains material used only if the "Glulx external files"
 element is part of Inform's current definition, so:
 
-@c
+=
 #IFDEF PLUGIN_FILES;
 
-@p Structure.
+@h Structure.
 The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
 structure containing information about external files. The following
 constants specify memory offsets and values. Note the safety value stored
@@ -21,7 +19,7 @@ author of Inform since it was the examination board identifying number of
 his school, and so had to be filled in on all of the many papers he sat
 during his formative years.)
 
-@c
+=
 Constant AUXF_MAGIC = 0; ! First word holds a safety constant
 Constant AUXF_MAGIC_VALUE = 16339; ! Should be first word of any valid file structure
 Constant AUXF_STATUS = 1; ! One of the following:
@@ -35,17 +33,17 @@ Constant AUXF_FILENAME = 4; ! Packed address of constant string
 Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
 	! string array of IFID of owner wrapped in //...//, or NULL to leave open
 
-@p Instances.
+@h Instances.
 These structures are not dynamically created: they are precompiled by the NI
 compiler, already filled in with the necessary values. The following command
 generates them.
 
-@p Errors.
+@h Errors.
 This is used for I/O errors of all kinds: it isn't within the Glulx-only
 code because one of the errors is to try to use these routines on the
 Z-machine.
 
-@c
+=
 [ FileIO_Error extf err_text  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) {
 		print "^*** Error on unknown file: ", (string) err_text, " ***^";
@@ -59,12 +57,12 @@ Z-machine.
 	return 0;
 ];
 
-@p Glulx Material.
+@h Glulx Material.
 
-@c
+=
 #IFDEF TARGET_GLULX;
 
-@p Existence.
+@h Existence.
 Determine whether a file exists on disc. Note that we have no concept of
 directories, or the file system structure on the host machine: indeed, it
 is entirely up to the Glulx VM what it does when asked to look for a file.
@@ -74,7 +72,7 @@ the Inform user interface, they are either (for preference) stored in a
 |Files| subfolder of the |Materials| folder for a project, or else stored
 alongside the Inform project file.
 
-@c
+=
 [ FileIO_Exists extf  fref struc rv usage;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) rfalse;
 	struc = TableOfExternalFiles-->extf;
@@ -88,7 +86,7 @@ alongside the Inform project file.
 	return rv;
 ];
 
-@p Readiness.
+@h Readiness.
 One of our problems is that a file might be being used by another application:
 perhaps even by another story file running in a second incarnation of Glulx,
 like a parallel world of which we can know nothing. We actually want to
@@ -109,7 +107,7 @@ in having this marker asterisk.
 |FileIO_MarkReady| changes the readiness state of a file, writing the
 asterisk or hyphen into the initial character as needed.
 
-@c
+=
 [ FileIO_Ready extf  struc fref usage str ch;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) rfalse;
 	struc = TableOfExternalFiles-->extf;
@@ -155,9 +153,9 @@ asterisk or hyphen into the initial character as needed.
 	glk_fileref_destroy(fref);
 ];
 
-@p Open File.
+@h Open File.
 
-@c
+=
 [ FileIO_Open extf write_flag append_flag
 	struc fref str mode ix ch not_this_ifid owner force_header usage;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
@@ -244,12 +242,12 @@ asterisk or hyphen into the initial character as needed.
 	return FileIO_Error(extf, "tried to open a file which seems to be malformed");
 ];
 
-@p Close File.
+@h Close File.
 Note that a call to the following, in write mode, must be followed by a
 |glk_stream_set_current()|, or else the next print statement will run into
 Glk errors.
 
-@c
+=
 [ FileIO_Close extf  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to open a non-file");
@@ -269,9 +267,9 @@ Glk errors.
 	struc-->AUXF_STATUS = AUXF_STATUS_IS_CLOSED;
 ];
 
-@p Get Character.
+@h Get Character.
 
-@c
+=
 [ FileIO_GetC extf  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) return -1;
 	struc = TableOfExternalFiles-->extf;
@@ -279,9 +277,9 @@ Glk errors.
 	return glk_get_char_stream(struc-->AUXF_STREAM);
 ];
 
-@p Put Character.
+@h Put Character.
 
-@c
+=
 [ FileIO_PutC extf char  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) return -1;
 		return FileIO_Error(extf, "tried to write to a non-file");
@@ -294,12 +292,12 @@ Glk errors.
 	return glk_put_char_stream(struc-->AUXF_STREAM, char);
 ];
 
-@p Print Line.
+@h Print Line.
 We read characters from the supplied file until the next newline
 character. (We allow for that to be encoded as either a single |0a| or a
 single |0d|.) Each character is printed, and at the end we print a newline.
 
-@c
+=
 [ FileIO_PrintLine extf ch  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to write to a non-file");
@@ -312,13 +310,13 @@ single |0d|.) Each character is printed, and at the end we print a newline.
 	}
 ];
 
-@p Print Contents.
+@h Print Contents.
 Repeating this until the file runs out is equivalent to the Unix command
 |cat|, that is, it copies the stream of characters from the file to the
 output stream. (This might well be another file, just as with |cat|, in
 which case we have a copy utility.)
 
-@c
+=
 [ FileIO_PrintContents extf tab  struc;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to access a non-file");
@@ -331,12 +329,12 @@ which case we have a copy utility.)
 	rtrue;
 ];
 
-@p Print Text.
+@h Print Text.
 The following writes a given piece of text as the new content of the file,
 either as the whole file (if |append_flag| is false) or adding only to the
 end (if true).
 
-@c
+=
 [ FileIO_PutContents extf text append_flag  struc str ch oldstream;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to access a non-file");
@@ -355,13 +353,13 @@ end (if true).
 	rfalse;
 ];
 
-@p Serialising Tables.
+@h Serialising Tables.
 The most important data structures to "serialise" -- that is, to convert
 from their binary representations in memory into text representations in an
 external file -- are Tables. Here we only carry out the file-handling; the
 actual translations are in "Tables.i6t".
 
-@c
+=
 [ FileIO_PutTable extf tab rv  struc oldstream;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to write table to a non-file");
@@ -389,11 +387,11 @@ actual translations are in "Tables.i6t".
 	rtrue;
 ];
 
-@p Z-Machine Stubs.
+@h Z-Machine Stubs.
 These routines do the minimum possible, but equally, they only generate a
 run-time problem when there is no alternative.
 
-@c
+=
 #IFNOT; ! TARGET_GLULX
 [ FileIO_Exists extf; rfalse; ];
 [ FileIO_Ready extf; rfalse; ];
@@ -407,9 +405,9 @@ run-time problem when there is no alternative.
 [ FileIO_PutContents extf; FileIO_PutTable(extf); ];
 #ENDIF; ! TARGET_GLULX
 
-@p Back To Core.
+@h Back To Core.
 
-@c
+=
 #IFNOT; ! PLUGIN_FILES
 [ FileIO_GetC extf; return -1; ];
 #ENDIF; ! PLUGIN_FILES

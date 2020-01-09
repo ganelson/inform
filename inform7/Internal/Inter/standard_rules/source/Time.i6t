@@ -1,33 +1,31 @@
-B/timet: Time Template.
- 
-@Purpose: Support for parsing and printing times of day.
- 
-@-------------------------------------------------------------------------------
+Time Template.
 
-@p Rounding.
+Support for parsing and printing times of day.
+
+@h Rounding.
 The following rounds a numerical value |t1| to the nearest unit of |t2|;
 for instance, if |t2| is 5 then it rounds to the nearest 5. The name is an
 anachronism, as it's used for all kinds of value.
 
-@c
+=
 [ RoundOffTime t1 t2;
 	if (t1 >= 0) return ((t1+t2/2)/t2)*t2;
 	return -((-t1+t2/2)/t2)*t2;
 ];
 
-@p Conversion To Number.
+@h Conversion To Number.
 
-@c
+=
 [ NUMBER_TY_to_TIME_TY n;
 	n = n%1440;
 	if (n < 0) return n + 1440;
 	return n;
 ];
 
-@p Digital Printing.
+@h Digital Printing.
 For instance, "2:06 am".
 
-@c
+=
 [ PrintTimeOfDay t h aop;
 	if (t<0) { print "<no time>"; return; }
 	if (t >= TWELVE_HOURS) { aop = "pm"; t = t - TWELVE_HOURS; } else aop = "am";
@@ -36,10 +34,10 @@ For instance, "2:06 am".
 	if (t%ONE_HOUR < 10) print "0"; print t%ONE_HOUR, " ", (string) aop;
 ];
 
-@p Analogue Printing.
+@h Analogue Printing.
 For instance, "six minutes past two".
 
-@c
+=
 [ PrintTimeOfDayEnglish t h m dir aop;
 	h = (t/ONE_HOUR) % 12; m = t%ONE_HOUR; if (h==0) h=12;
 	if (m==0) { print (number) h, " o'clock"; return; }
@@ -55,12 +53,12 @@ For instance, "six minutes past two".
 	print " ", (string) dir, " ", (number) h;
 ];
 
-@p Understanding.
+@h Understanding.
 This I6 grammar token converts words in the player's command to a valid
 I7 time, and is heavily based on the one presented as a solution to an
 exercise in the DM4.
 
-@c
+=
 [ TIME_TOKEN first_word second_word at length flag
 	illegal_char offhour hr mn i original_wn;
 	original_wn = wn;
@@ -142,21 +140,21 @@ exercise in the DM4.
 	return x;
 ];
 
-@p Relative Time Token.
+@h Relative Time Token.
 "Time" is an interesting kind of value since it can hold two conceptually
 different ways of thinking about time: absolute times, such as "12:03 PM",
 and also relative times, like "ten minutes". For parsing purposes, these
 are completely different from each other, and the time token above handles
 only absolute times; we need the following for relative ones.
 
-@c
+=
 [ RELATIVE_TIME_TOKEN first_word second_word offhour mult mn original_wn;
 	original_wn = wn;
 	wn = original_wn;
-	
+
 	first_word = NextWordStopped(); wn--;
 	if (first_word == 'an' or 'a//') mn=1; else mn=TryNumber(wn);
-	
+
     if (mn == -1000) {
 		first_word = NextWordStopped();
 		if (first_word == 'half') offhour = HALF_HOUR;
@@ -173,7 +171,7 @@ only absolute times; we need the following for relative ones.
 		return GPR_FAIL;
     }
 	wn++;
-	
+
 	first_word = NextWordStopped();
 	switch (first_word) {
 		'minutes', 'minute': mult = 1;
@@ -194,25 +192,25 @@ only absolute times; we need the following for relative ones.
 	return GPR_NUMBER;
 ];
 
-@p Scene Change Machinery Rule.
+@h Scene Change Machinery Rule.
 
-@c
-[ SCENE_CHANGE_MACHINERY_R; 
+=
+[ SCENE_CHANGE_MACHINERY_R;
 	DetectSceneChange();
 ];
 
-@p During Scene Matching.
+@h During Scene Matching.
 
-@c
+=
 [ DuringSceneMatching prop sc;
 	for (sc=0: sc<NUMBER_SCENES_CREATED: sc++)
 		if ((scene_status-->sc == 1) && (prop(sc+1))) rtrue;
 	rfalse;
 ];
 
-@p Scene Questions.
+@h Scene Questions.
 
-@c
+=
 [ SceneUtility sc task;
 	if (sc <= 0) return 0;
 	if (task == 1 or 2) {

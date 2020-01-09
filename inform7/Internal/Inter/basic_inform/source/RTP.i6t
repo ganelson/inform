@@ -1,11 +1,9 @@
-B/rtpt: RTP Template.
- 
-@Purpose: To issue run-time problem messages, and to perform some run-time
-type checking which may issue such messages.
- 
-@-------------------------------------------------------------------------------
+RTP Template.
 
-@p Reporting.
+To issue run-time problem messages, and to perform some run-time
+type checking which may issue such messages.
+
+@h Reporting.
 All RTPs are produced by calling the following routine, which takes one
 compulsory argument: |n|, the RTP number. When I7 is being used with the
 Inform user interface, it's important that these numbers correspond to the
@@ -20,12 +18,12 @@ The arguments |par1|, |par2| and |par3| are optional parameters clarifying the
 message; |ln| is an optional parameter specifying a paragraph number in the
 original source text (though in fact I7 does not use this at present).
 
-@c
+=
 Array RTP_Buffer --> 7;
 [ RunTimeProblem n par1 par2 par3 ln file;
 	if (RTP_Buffer-->0 == -1) {
-		RTP_Buffer-->0 = n; 
-		RTP_Buffer-->1 = par1; 
+		RTP_Buffer-->0 = n;
+		RTP_Buffer-->1 = par1;
 		RTP_Buffer-->2 = par2;
 		RTP_Buffer-->3 = par3;
 		RTP_Buffer-->4 = ln;
@@ -47,8 +45,8 @@ Array RTP_Buffer --> 7;
 	if (RTP_Buffer-->0 == -1 or -2) return;
 	if (RTP_Buffer-->6) return;
 
-	n = RTP_Buffer-->0; 
-	par1 = RTP_Buffer-->1; 
+	n = RTP_Buffer-->0;
+	par1 = RTP_Buffer-->1;
 	par2 = RTP_Buffer-->2;
 	par3 = RTP_Buffer-->3;
 	ln = RTP_Buffer-->4;
@@ -198,7 +196,7 @@ Array RTP_Buffer --> 7;
 			print "Attempt to use list item which does not exist.^";
 		RTP_LISTSIZENEGATIVE:
 			print "Attempt to resize list to ", par1, " entries - there must ",
-			"always be 0 or more.^";	
+			"always be 0 or more.^";
 		RTP_REGEXPSYNTAXERROR:
 			print "Syntax error in regular expression.^";
 		RTP_NOGLULXUNICODE:
@@ -217,7 +215,7 @@ Array RTP_Buffer --> 7;
 		RTP_WRONGASSIGNEDKIND:
 			print "Attempt to set a variable to the wrong kind of object: ",
 				"you wrote '", (string) par2, "', which sets the value to ", (the) par1,
-				" - but that doesn't have the kind '", (string) par3, "'.^";			
+				" - but that doesn't have the kind '", (string) par3, "'.^";
 		RTP_RELKINDVIOLATION:
 			print "Tried to change a relation for objects with the wrong kinds: ",
 				(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",
@@ -240,13 +238,13 @@ Array RTP_Buffer --> 7;
 	print "^";
 ];
 
-@p Low-Level Errors.
+@h Low-Level Errors.
 The following is a residue from the old I6 library, and most of its possible
 messages can't be seen in I7 use -- for instance I7 has no timers or daemons,
 so error 4 is out of the question. But we retain the routine because the
 veneer code added by I6 requires it to be present.
 
-@c
+=
 Constant MAX_TIMERS = 0;
 [ RunTimeError n p1 p2;
     #Ifdef DEBUG;
@@ -278,16 +276,16 @@ Constant MAX_TIMERS = 0;
     RunTimeProblem(RTP_LOWLEVELERROR);
 ];
 
-@p Argument Type Checking Failed.
+@h Argument Type Checking Failed.
 This is called when run-time type checking for the argument of a phrase
 fails, so that no definition for the phrase can be applied.
 
-@c
+=
 [ ArgumentTypeFailed line file;
 	RunTimeProblem(RTP_TYPECHECK, 0, 0, 0, line, file);
 ];
 
-@p Return Type Checking Failed.
+@h Return Type Checking Failed.
 Similarly, though in a more restricted set of circumstances. NI can usually
 prove that the value returned by a phrase matches its supposed kind, but
 because of the deliberately weak type-checking within the kind of value
@@ -297,7 +295,7 @@ the following routine. The value |V| is a valid "object", but that means
 it can be |nothing|, and we must check that it matches a given I7 kind |K|
 (where |nothing| is not valid).
 
-@c
+=
 [ CheckKindReturned V K;
 	if (V ofclass K) return V;
 	if (V == nothing) RunTimeProblem(RTP_DECIDEONNOTHING);
@@ -305,7 +303,7 @@ it can be |nothing|, and we must check that it matches a given I7 kind |K|
 	return V;
 ];
 
-@p Whether Provides.
+@h Whether Provides.
 This routine defines the phrase "if O provides P": there are three tests
 to pass, and if any of the three fail, we return |false|. (The |issue_rtp|
 flag, causing RTPs to be issued depending on which test fails, is never set
@@ -317,7 +315,7 @@ have it, or its kind's kind, and so on. Thirdly, the object has to actually
 have the property in question at an I6 level -- having permission to have
 it doesn't mean it actually does have.
 
-@c
+=
 [ WhetherProvides obj either_or p issue_rtp  off i textual a l;
 	if (metaclass(obj) ~= Object) rfalse;
 	if (p<0) p = ~p;
@@ -330,7 +328,7 @@ it doesn't mean it actually does have.
 		rfalse;
 	}
 	textual = property_metadata-->off; off++;
-	
+
 	if (ScanPropertyMetadata(obj, off)) jump PermissionFound;
 	if (obj provides KD_Count) {
 		l = obj.KD_Count;
@@ -357,20 +355,20 @@ it doesn't mean it actually does have.
 	print (string) textual;
 ];
 
-@p Scan Property Metadata.
+@h Scan Property Metadata.
 The |property_metadata| table is a series of zero-terminated lists of objects
 (or class objects, representing I7 kinds). Each list corresponds to a single
 property; the position in the table is called the "offset" for the property.
 The following searches from a given offset.
 
-@c
+=
 [ ScanPropertyMetadata obj off i;
 	for (i=off: property_metadata-->i >= 0: i++)
 		if (obj == property_metadata-->i) rtrue;
 	rfalse;
 ];
 
-@p Get Either-Or Property.
+@h Get Either-Or Property.
 If |p| represents a property, then |~p| (its bitwise negation) represents its
 logical negation. The bitwise negation will change the sign bit; since all
 properties are ordinarily positive, we can detect bitwise negation by looking
@@ -388,7 +386,7 @@ the property. This is so that a description such as "open things" can be
 applied against any object without run-time errors, even though it is only
 normally valid for doors and containers.
 
-@c
+=
 [ GetEitherOrProperty o p;
 	if (o == nothing) rfalse;
 	if (p<0) p = ~p;
@@ -399,11 +397,11 @@ normally valid for doors and containers.
 	rfalse;
 ];
 
-@p Set Either-Or Property.
+@h Set Either-Or Property.
 An attempt to {\it write} an either/or property which is not provided will,
 however, always produce a run-time problem.
 
-@c
+=
 [ SetEitherOrProperty o p negate adj;
 	if (p<0) { p = ~p; negate = ~negate; }
 	if (adj) {
@@ -417,7 +415,7 @@ however, always produce a run-time problem.
 	}
 ];
 
-@p Value Property.
+@h Value Property.
 Some value properties belong to other values (those created in tables), and
 these are detected by being properties of a special |VPH_Class| pseudo-object
 |V| -- an I6 object which is not part of the world model, and not a valid I7
@@ -431,7 +429,7 @@ The |door_to| property, relevant only for doors, is called rather than read:
 this enables it to be an I6 routine returning the other side of the door from
 the one which the player is on.
 
-@c
+=
 [ GProperty K V pr obj;
 	if (K == OBJECT_TY) obj = V; else obj = value_property_holders-->K;
 	if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }
@@ -453,12 +451,12 @@ the one which the player is on.
     rfalse;
 ];
 
-@p Write Value Property.
+@h Write Value Property.
 This routine's name must consist of the read-value-property routine's name
 with the prefix |Write|, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 
-@c
+=
 [ WriteGProperty K V pr val obj;
 	if (K == OBJECT_TY) obj = V; else obj = value_property_holders-->K;
 	if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }
@@ -471,11 +469,11 @@ converted from an rvalue to an lvalue.
 	}
 ];
 
-@p Printing Property Names.
-Inform doesn't print property names prettily; it more or less prints them 
+@h Printing Property Names.
+Inform doesn't print property names prettily; it more or less prints them
 only as decimal numbers.
 
-@c
+=
 [ PROPERTY_TY_Say v;
 	print "property ", v;
 ];

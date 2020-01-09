@@ -1,25 +1,23 @@
-B/print: Printing Template.
- 
-@Purpose: To manage the line skips which space paragraphs out, and to handle
+Printing Template.
+
+To manage the line skips which space paragraphs out, and to handle
 the printing of names of objects, pieces of text and numbers.
 
-@-------------------------------------------------------------------------------
-
-@p Say Number.
+@h Say Number.
 The global variable |say__n| is set to the numerical value of any quantity
 printed, and this is used for the text substitution "[s]", so that
 "You have been awake for [turn count] turn[s]." will expand correctly.
 
-@c
+=
 [ STextSubstitution;
 	if (say__n ~= 1) print "s";
 ];
 
-@p Prompt.
+@h Prompt.
 This is the text printed just before we wait for the player's command: it
 prompts him to type.
 
-@c
+=
 [ PrintPrompt i;
 	RunTimeProblemShow();
 	ClearRTP();
@@ -30,7 +28,7 @@ prompts him to type.
 	ClearParagraphing(14);
 ];
 
-@p Boxed Quotations.
+@h Boxed Quotations.
 These appear once only, and happen outside of the paragraphing scheme: they
 are normally overlaid as windows on top of the regular text. We can request
 one at any time, but it will appear only at prompt time, when the screen is
@@ -39,7 +37,7 @@ possible that {\it Border Zone}-like tricks with real-time play might be
 going on, but whatever happens, there is at least a human-appreciable pause
 in which the quotation can be read before being taken away again.)
 
-@c
+=
 Global pending_boxed_quotation; ! a routine to overlay the quotation on screen
 
 [ DisplayBoxedQuotation Q;
@@ -63,11 +61,11 @@ Global pending_boxed_quotation; ! a routine to overlay the quotation on screen
 	}
 ];
 
-@p Score Notification.
+@h Score Notification.
 This doesn't really deserve to be at I6 level at all, but since we want a
 fancy text style for Glulx, ...
 
-@c
+=
 [ NotifyTheScore d;
 	if ((TEMPLATE_CONFIGURATION_BITMAP & USE_SCORING_TCBIT) && (notify_mode == 1)) {
 		DivideParagraphPoint();
@@ -80,12 +78,12 @@ fancy text style for Glulx, ...
 	}
 ];
 
-@p Print Rank.
+@h Print Rank.
 The table of scoring ranks is a residue from the ancient times of early IF:
 it gets a tiny amount of special treatment here, even though I7 works tend
 not to use these now dated conventions.
 
-@c
+=
 [ PrintRank i j v;
 	if (TEMPLATE_CONFIGURATION_BITMAP & RANKING_TABLE_TCBIT) {
 		ANNOUNCE_SCORE_RM('B');
@@ -100,7 +98,7 @@ not to use these now dated conventions.
 	".";
 ];
 
-@p Status Line.
+@h Status Line.
 Status line printing happens on the upper screen window, and outside of the
 paragraph control system.
 
@@ -108,11 +106,11 @@ Support for version 6 of the Z-machine is best described as grudging. It
 requires a heavily rewritten |DrawStatusLine| equivalent, to be found
 in "ZMachine.i6t".
 
-@c
+=
 [ DrawStatusLine width posb;
 	@push say__p; @push say__pc;
 	BeginActivity(CONSTRUCTING_STATUS_LINE_ACT);
-	VM_StatusLineHeight(1); VM_MoveCursorInStatusLine(1, 1); 
+	VM_StatusLineHeight(1); VM_MoveCursorInStatusLine(1, 1);
 	if (statuswin_current) {
 		width = VM_ScreenWidth(); posb = width-15;
 		spaces width;
@@ -130,12 +128,12 @@ in "ZMachine.i6t".
 	@pull say__pc; @pull say__p;
 ];
 
-@p Status Line Utilities.
+@h Status Line Utilities.
 Two convenient routines for the default values of |right_hand_status_line|
 and |left_hand_status_line| respectively. |SL_Location| also implements the
 text substitution "[player's surroundings]".
 
-@c
+=
 Array T_SL_Score_Moves --> CONSTANT_PACKED_TEXT_STORAGE SL_Score_Moves;
 
 [ SL_Score_Moves;
@@ -162,11 +160,11 @@ Array T_SL_Location --> CONSTANT_PACKED_TEXT_STORAGE SL_Location;
 
 [ DARKNESS_NAME_INTERNAL_R; ];
 
-@p Banner.
+@h Banner.
 Note that NI always compiles |Story| and |Headline| texts, but does not always
 compile a |Story_Author|.
 
-@c
+=
 [ Banner;
    BeginActivity(PRINTING_BANNER_TEXT_ACT);
    if (ForActivity(PRINTING_BANNER_TEXT_ACT) == false) {
@@ -194,7 +192,7 @@ compile a |Story_Author|.
     EndActivity(PRINTING_BANNER_TEXT_ACT);
 ];
 
-@p Short Name Storage.
+@h Short Name Storage.
 None of the following functions should be called for the Z-machine if the
 short name exceeds the size of the following buffer: whereas the Glulx
 implementation of |VM_PrintToBuffer| will safely truncate overlong text,
@@ -205,7 +203,7 @@ to handle entire paragraphs (so, no fuss about dividing) but complicated
 by having to capitalise the first letter. We do this by writing to the
 buffer and then altering the first character.
 
-@c
+=
 Array StorageForShortName buffer 250;
 
 [ CPrintOrRun obj prop  v length i;
@@ -232,12 +230,12 @@ Array StorageForShortName buffer 250;
     else CPrintOrRun(str, 0);
 ];
 
-@p Object Names I.
+@h Object Names I.
 We now begin the work of printing object names. In the lowest level of this
 process we print just the name itself (without articles attached), and we
 do it by carrying out an activity.
 
-@c
+=
 [ PSN__ o;
     if (o == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
     switch (metaclass(o)) {
@@ -254,11 +252,11 @@ do it by carrying out an activity.
     PSN__(obj); indef_mode = i;
 ];
 
-@p Standard Name Printing Rule.
+@h Standard Name Printing Rule.
 In its initial state, the "printing the name of" activity has just one rule:
 the following "for" rule.
 
-@c
+=
 Global caps_mode = false;
 
 [ STANDARD_NAME_PRINTING_R obj;
@@ -271,7 +269,7 @@ Global caps_mode = false;
 		String:   print "<string ~", (string) obj, "~>"; return;
 		nothing:  print "<illegal object number ", obj, ">"; return;
     }
-    if (obj == player) { 
+    if (obj == player) {
    	    if (indef_mode == NULL && caps_mode) PRINT_PROTAGONIST_INTERNAL_RM('A');
    	    else PRINT_PROTAGONIST_INTERNAL_RM('B');
    	    return;
@@ -290,22 +288,22 @@ Global caps_mode = false;
     print (object) obj;
 ];
 
-@p Standard Response Issuing Rule.
+@h Standard Response Issuing Rule.
 To print a response, we trigger off the response issuing activity. The following
 is the default "for" rule for that activity:
 
-@c
+=
 [ STANDARD_RESPONSE_ISSUING_R;
 	RegardingSingleObject();
 	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
 ];
 
-@p Internal Rule.
+@h Internal Rule.
 
-@c
+=
 [ PRINT_PROTAGONIST_INTERNAL_R; ];
 
-@p Object Names II.
+@h Object Names II.
 The second level of the system for printing object names handles the placing
 of articles in front of them: {\it the} red herring, {\it an} elephant,
 {\it Some} bread. The following routine allows us to choose:
@@ -324,7 +322,7 @@ The routine then looks after issues such as which contraction form to
 use: for instance, in English, whether to use "a" or "an" for the
 indefinite singular depends on the text of the object's name.
 
-@c
+=
 Global short_name_case;
 
 [ PrefaceByArticle obj acode pluralise capitalise  i artform findout artval;
@@ -386,17 +384,17 @@ Global short_name_case;
     print (PSN__) obj;
 ];
 
-@p Print English Number.
+@h Print English Number.
 Another traditional name, this: in fact it prints the number as text in
 whatever is the current language of play.
 
-@c
+=
 [ EnglishNumber n; LanguageNumber(n); ];
 
-@p Object Names III.
+@h Object Names III.
 The routines accessible from outside this segment.
 
-@c
+=
 [ IndefArt obj i;
 	if (obj == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
     i = indef_mode; indef_mode = true;
@@ -452,11 +450,11 @@ The routines accessible from outside this segment.
     PrefaceByArticle(obj, 0); indef_mode = i;
 ];
 
-@p Say One Of.
+@h Say One Of.
 These routines are described in the Extensions chapter of the Inform
 documentation.
 
-@c
+=
 [ I7_SOO_PAR oldval count; if (count <= 1) return count; return random(count); ];
 [ I7_SOO_RAN oldval count v; if (count <= 1) return count;
 	v = oldval; while (v == oldval) v = random(count); return v; ];
@@ -465,9 +463,9 @@ documentation.
 [ I7_SOO_STOP oldval count; oldval++; if (oldval > count) oldval = count; return oldval; ];
 [ I7_SOO_TAP oldval count tn rn c; if (count <= 1) return count; tn = count*(count+1)/2;
 	rn = random(tn); for (c=1:c<=count:c++) { rn = rn - c; if (rn<=0) return (count-c+1); } ];
-[ I7_SOO_TRAN oldval count; if (oldval<count) return oldval+1; 
+[ I7_SOO_TRAN oldval count; if (oldval<count) return oldval+1;
 	return count + 1 + I7_SOO_RAN(oldval%(count+1), count); ];
-[ I7_SOO_TPAR oldval count; if (oldval<count) return oldval+1; 
+[ I7_SOO_TPAR oldval count; if (oldval<count) return oldval+1;
 	return count + 1 + I7_SOO_PAR(oldval%(count+1), count); ];
 
 Array I7_SOO_SHUF->32;

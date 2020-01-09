@@ -1,11 +1,9 @@
-B/lwt: ListWriter Template.
- 
-@Purpose: A flexible object-lister taking care of plurals, inventory information,
-various formats and so on.
- 
-@-------------------------------------------------------------------------------
+ListWriter Template.
 
-@p Specification.
+A flexible object-lister taking care of plurals, inventory information,
+various formats and so on.
+
+@h Specification.
 The list-writer is called by one of the following function calls:
 
 (1) |WriteListOfMarkedObjects(style)|, where the set of objects listed is
@@ -102,7 +100,7 @@ Finally, the |ISARE_BIT| is differently interpreted in I7: instead of printing
 something like " are ducks and drakes", as it would have done in I6, the
 initial space is now suppressed and we instead print "are ducks and drakes".
 
-@p Memory.
+@h Memory.
 The list-writer needs to dynamically allocate temporary array space of a known
 size, in such a way that the array is effectively on the local stack frame:
 if only either the Z-machine or Glulx supported a stack in memory, this would
@@ -113,7 +111,7 @@ object and recurses in turn to most other objects: in practice, this never
 happens. It would be nice to allocate more just in case, but the Z-machine is
 desperately short of array memory.
 
-@c
+=
 Constant REQUISITION_STACK_SIZE = 3*ICOUNT_OBJECT;
 Array requisition_stack --> REQUISITION_STACK_SIZE;
 Global requisition_stack_pointer = 0;
@@ -132,7 +130,7 @@ Global requisition_stack_pointer = 0;
 	requisition_stack_pointer = (addr - requisition_stack)/WORDSIZE;
 ];
 
-@p WriteListOfMarkedObjects.
+@h WriteListOfMarkedObjects.
 This routine will use the |MarkedListIterator|. That means it has to create
 an array containing the object numbers of every object with the |workflag2|
 attribute set, placing the address of this array in |MarkedObjectArray| and
@@ -148,7 +146,7 @@ object number order (which is essentially the order of traversal of the
 initial state of the object tree: thus objects in Room A will all appear
 before objects in Room B if A was created before B in the source text).
 
-@c
+=
 Global MarkedObjectArray = 0;
 Global MarkedObjectLength = 0;
 
@@ -174,7 +172,7 @@ Global MarkedObjectLength = 0;
 		@push MarkedObjectArray; @push MarkedObjectLength;
 		MarkedObjectArray = RequisitionStack(length);
 		MarkedObjectLength = length;
-		if (MarkedObjectArray == 0) return RunTimeProblem(RTP_LISTWRITERMEMORY); 
+		if (MarkedObjectArray == 0) return RunTimeProblem(RTP_LISTWRITERMEMORY);
 
 		if (common_parent) {
 			ObjectTreeCoalesce(child(common_parent));
@@ -197,11 +195,11 @@ Global MarkedObjectLength = 0;
 	return;
 ];
 
-@p List Number and Gender.
+@h List Number and Gender.
 As a brief parenthesis, the same algorithm can be used to work out the
 prior named list number and gender for everything matching a description.
 
-@c
+=
 [ RegardingMarkedObjects
 	obj length g gc;
 	gc = -2;
@@ -216,7 +214,7 @@ prior named list number and gender for everything matching a description.
 	prior_named_list = length;
 	prior_named_list_gender = gc;
 	if (length == 0) { prior_named_noun = nothing; prior_named_list_gender = -1; }
-	return;	
+	return;
 ];
 
 [ RegardingSingleObject obj;
@@ -238,10 +236,10 @@ prior named list number and gender for everything matching a description.
 	return 3;
 ];
 
-@p List Writer Regard Storage.
+@h List Writer Regard Storage.
 This is somewhat hacky, but enables "[regarding list writer internals]".
 
-@c
+=
 Array LWI_Storage --> 1 (-1) nothing;
 [ SetLWI a b c;
 	LWI_Storage-->0 = a;
@@ -254,10 +252,10 @@ Array LWI_Storage --> 1 (-1) nothing;
 	prior_named_noun = LWI_Storage-->2;
 ];
 
-@p Response Printing.
+@h Response Printing.
 From which:
 
-@c
+=
 [ ResponseViaActivity R;
 	@push prior_named_noun; @push prior_named_list; @push prior_named_list_gender;
 	RegardingSingleObject(nothing);
@@ -265,7 +263,7 @@ From which:
 	@pull prior_named_list_gender; @pull prior_named_list; @pull prior_named_noun;
 ];
 
-@p About Iterator Functions.
+@h About Iterator Functions.
 Suppose |Iter| is an iterator function and that we have a "raw list"
 $x_1, x_2, ..., x_n$ of objects. Of these, the iterator function will
 choose a sublist of "qualifying" objects. It is called with arguments
@@ -299,7 +297,7 @@ the raw list is; |depth| is supplied to help in that decision. But if |L|
 is non-zero then the iterator is required to disqualify any entry whose
 |list_together| value is not |L|.
 
-@c
+=
 Constant SEEK_ITF = 0;
 Constant ADVANCE_ITF = 1;
 Constant COALESCE_ITF = 2;
@@ -307,7 +305,7 @@ Constant START_ITF = 3;
 
 ! Constant DBLW; ! Uncomment this to provide debugging information at run-time
 
-@p Marked List Iterator.
+@h Marked List Iterator.
 Here the raw list is provided by the |MarkedObjectArray|, which is convenient
 for coalescing, but not so helpful for translating the |obj| parameter into
 the $i$ such that it is $x_i$. We simply search from the beginning to do
@@ -316,7 +314,7 @@ unnecessary $O(n^2)$ calculations. But it saves memory and nuisance, and the
 iterator is used only with printing to the screen, which never needs to be
 very rapid anyway (because the player can only read very slowly).
 
-@c
+=
 [ MarkedListIterator obj depth required_lt function i;
     if (obj == nothing) return nothing;
     if (required_lt == 0) required_lt = EMPTY_TEXT_VALUE;
@@ -342,12 +340,12 @@ very rapid anyway (because the player can only read very slowly).
 	return nothing;
 ];
 
-@p Concealment.
+@h Concealment.
 This is the definition of concealment used by the list-writer, and means that,
 for example, the "deciding the concealed possessions" activity is taken into
 account.
 
-@c
+=
 [ ConcealedFromLists obj c;
 	if ((obj has concealed) || (obj has scenery)) rtrue;
 	c = parent(obj);
@@ -355,10 +353,10 @@ account.
 	rfalse;
 ];
 
-@p Coalesce Marked List.
+@h Coalesce Marked List.
 The return value is the new first entry in the raw list.
 
-@c
+=
 [ MarkedListCoalesce o i lt l swap m;
 	for (i=0: i<MarkedObjectLength: i++) {
 		lt = (MarkedObjectArray-->i).list_together;
@@ -385,13 +383,13 @@ The return value is the new first entry in the raw list.
 	return MarkedObjectArray-->0;
 ];
 
-@p Object Tree Iterator.
+@h Object Tree Iterator.
 Here the raw list is the list of all children of a given parent: since the
 argument |obj| is required to be a member of the raw list, we can use
 |parent(obj)| to find it. Now seeking and advancing are fast, but coalescing
 is slower.
 
-@c
+=
 Global list_filter_routine;
 
 [ ObjectTreeIterator obj depth required_lt function;
@@ -412,10 +410,10 @@ Global list_filter_routine;
     }
 ];
 
-@p Coalesce Object Tree.
+@h Coalesce Object Tree.
 Again, the return value is the new first entry in the raw list.
 
-@c
+=
 [ ObjectTreeCoalesce obj memb lt later;
 	#Ifdef DBLW; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
 	.StartAgain;
@@ -440,7 +438,7 @@ Again, the return value is the new first entry in the raw list.
 	return obj;
 ];
 
-@p GroupChildren.
+@h GroupChildren.
 The following runs through the child-objects of |par| in the I6 object tree,
 and moves those having a given |list_property| property value together, to
 become the eldest children. It preserves the ordering in between those
@@ -449,7 +447,7 @@ objects, and also in between those not having that property value.
 We do this by temporarily moving objects into and out of |in_obj| and |out_obj|,
 objects which in all other circumstances never have children in the tree.
 
-@c
+=
 [ GroupChildren par value;
     while (child(par) ~= 0) {
         if (LT_Compare(child(par).list_together, value) ~= 0)
@@ -468,11 +466,11 @@ objects which in all other circumstances never have children in the tree.
 ];
 #Endif;
 
-@p WriteListFrom.
+@h WriteListFrom.
 And here we go at last. Or at any rate we initialise the quartet of global
 variables detailing the current list-writing process, and begin.
 
-@c
+=
 [ WriteListFrom first in_style depth noactivity iter a ol;
 	@push c_iterator; @push c_style; @push c_depth; @push c_margin;
     if (iter) c_iterator = iter; else c_iterator = ObjectTreeIterator;
@@ -504,20 +502,20 @@ variables detailing the current list-writing process, and begin.
     @pull c_margin; @pull c_depth; @pull c_style; @pull c_iterator;
 ];
 
-@p Standard Contents Listing Rule.
+@h Standard Contents Listing Rule.
 The default for the listing contents activity is to call this rule in its
 "for" stage: note that this suppresses the use of the activity, to avoid
 an infinite regress. The activity is used only for the default
 |ObjectTreeIterator|, so there is no need to specify which is used.
 
-@c
+=
 [ STANDARD_CONTENTS_LISTING_R;
 	WriteListFrom(child(parameter_value), c_style, c_depth, true);
 ];
 
-@p Partitioning.
+@h Partitioning.
 Given qualifying objects $x_1, ..., x_j$, we partition them into classes of
-the equivalence relation $x_i\sim x_j$ if and only 
+the equivalence relation $x_i\sim x_j$ if and only
 
 (i) they both have a |plural| property (not necessarily the same), and
 (ii) neither will cause the list-maker to recurse downwards to show the
@@ -534,7 +532,7 @@ in order of first appearance in the list. For each object $x_i$,
 equivalence class number $c$, |partition_class_sizes->c| is the number of
 objects in this class.
 
-@c
+=
 #Ifdef DBLW;
 Global DBLW_no_classes; Global DBLW_no_objs;
 [ DebugPartition partition_class_sizes partition_classes first depth i k o;
@@ -550,11 +548,11 @@ Global DBLW_no_classes; Global DBLW_no_objs;
 ];
 #Endif;
 
-@p Partition List.
+@h Partition List.
 The following creates the |partition_classes| and |partition_class_sizes|
 accordingly. We return $n$, the number of classes.
 
-@c
+=
 [ PartitionList first no_objs depth partition_classes partition_class_sizes
 	i k l n m;
     for (i=0: i<no_objs: i++) partition_classes->i = 0;
@@ -580,13 +578,13 @@ accordingly. We return $n$, the number of classes.
     return n;
 ];
 
-@p Equivalence Relation.
+@h Equivalence Relation.
 The above algorithm will fail unless |ListEqual| is indeed reflexive, symmetric
 and transitive, which ultimately depends on the care with which |Identical|
 is implemented, which in turn hangs on the |parse_noun| properties compiled
 by NI. But this seems to be sound.
 
-@c
+=
 [ ListEqual o1 o2;
 	if ((o1.plural == 0) || (o2.plural == 0)) rfalse;
  	if (child(o1) ~= 0 && WillRecurs(o1) ~= 0) rfalse;
@@ -612,7 +610,7 @@ by NI. But this seems to be sound.
     rfalse;
 ];
 
-@p Grouping.
+@h Grouping.
 A "group" is a maximally-sized run of one or more adjacent partition
 classes in the list whose first members have a common value of
 |list_together| which is a routine or string, and which is not equal to
@@ -657,7 +655,7 @@ We calculate the number of groups by starting with the number of classes
 and then subtracting one each time two adjacent classes share |list_together|
 in the above sense.
 
-@c
+=
 [ NumberOfGroupsInList o no_classes depth partition_classes partition_class_sizes
 	no_groups cl memb k current_lt lt;
 	current_lt = EMPTY_TEXT_VALUE;
@@ -696,10 +694,10 @@ in the above sense.
 	return BlkValueCompare(lt1, lt2);
 ];
 
-@p Write List Recursively.
+@h Write List Recursively.
 The big one: |WriteListR| is the heart of the list-writer.
 
-@c
+=
 [ WriteListR o depth from_start
 	partition_classes partition_class_sizes
 	cl memb index k2 l m no_classes q groups_to_do current_lt;
@@ -752,7 +750,7 @@ The big one: |WriteListR| is the heart of the list-writer.
         	(LT_Compare(memb.list_together, EMPTY_TEXT_VALUE) == 0)) current_lt = EMPTY_TEXT_VALUE;
 		else {
             if (LT_Compare(memb.list_together, current_lt) == 0) continue;
-            
+
             ! Otherwise this class begins a new group
             @push listing_size;
             q = memb; listing_size = 1; l = index; m = cl;
@@ -795,7 +793,7 @@ The big one: |WriteListR| is the heart of the list-writer.
     FreeStack(partition_classes);
 ]; ! end of WriteListR
 
-@p Write Multiple Class Group.
+@h Write Multiple Class Group.
 The text of a single group which contains more than one partition class.
 We carry out the "grouping together" activity, so that the user can add
 text fore and aft -- this is how groups of objects such as "X, Y and Z"
@@ -809,7 +807,7 @@ and Z again, and they will instead be individual classes in the new
 list -- so each will end up being sent, in turn, to |WriteSingleClassGroup|
 below, and {\it that} is where they are printed.
 
-@c
+=
 [ WriteMultiClassGroup cl memb depth partition_class_sizes pv q k2 l;
 	! Save the style, because the activity below is allowed to change it
 	q = c_style;
@@ -837,16 +835,16 @@ below, and {\it that} is where they are printed.
 
 		c_margin++;
 		@push lt_value; @push listing_together; @push listing_size;
-		
+
 		lt_value = memb.list_together; listing_together = memb;
 		#Ifdef DBLW; print "^^DOWN lt_value = ", lt_value, " listing_together = ", memb, "^^";
 		@push DBLW_no_classes; @push DBLW_no_objs; #Endif;
-		WriteListR(memb, depth, false); 
+		WriteListR(memb, depth, false);
 		#Ifdef DBLW; print "^^UP^^"; @pull DBLW_no_objs; @pull DBLW_no_classes; #Endif;
 
 		@pull listing_size; @pull listing_together; @pull lt_value;
 		c_margin--;
-		
+
 		pv = memb.list_together;
 		if (TEXT_TY_IsSubstituted(pv) == false) {
 			inventory_stage = 2;
@@ -857,7 +855,7 @@ below, and {\it that} is where they are printed.
 		}
 		.Omit__Sublist2;
 	}
-  
+
 	EndActivity(GROUPING_TOGETHER_ACT, memb);
 
 	! If the NEWLINE_BIT has been forced by the activity, act now
@@ -868,13 +866,13 @@ below, and {\it that} is where they are printed.
 	c_style = q;
 ];
 
-@p Write Single Class Group.
+@h Write Single Class Group.
 The text of a single group which contains exactly one partition class.
 Because of the way the multiple-class case recurses, every class ends up
 in this routine sooner or later; this is the place where the actual
 name of an object is printed, at long last.
 
-@c
+=
 [ WriteSingleClassGroup cl memb depth size q;
 	q = c_style;
     if (c_style & INDENT_BIT) PrintSpaces(2*(depth+c_margin));
@@ -906,14 +904,14 @@ name of an object is printed, at long last.
 	c_style = q;
 ];
 
-@p Write After Entry.
+@h Write After Entry.
 Each entry can be followed by supplementary, usually parenthetical, information:
 exactly what, depends on the style. The extreme case is when the style, and
 the object, call for recursion to list the object-tree contents: this is
 achieved by calling |WriteListR|, using the |ObjectTreeIterator| (whatever
 the iterator used at the top level) and increasing the depth by 1.
 
-@c
+=
 [ WriteAfterEntry o depth
     p recurse_flag parenth_flag eldest_child child_count combo;
 
@@ -949,7 +947,7 @@ the iterator used at the top level) and increasing the depth by 1.
 				if (o has light)           { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('D', o);  parenth_flag = true; }
 				if (o has worn)            { LIST_WRITER_INTERNAL_RM('A'); LIST_WRITER_INTERNAL_RM('L', o); parenth_flag = true; }
 			}
-	
+
 			if (o has container) {
 				if (o has openable) {
 					if (parenth_flag) {
@@ -991,7 +989,7 @@ the iterator used at the top level) and increasing the depth by 1.
         if (c_style & ENGLISH_BIT) { print " "; LIST_WRITER_INTERNAL_RM('Q', o); print " "; }
         recurse_flag = true;
     }
-    
+
     if (child_count && (c_style & RECURSE_BIT)) {
         if (o has supporter) {
             if (c_style & ENGLISH_BIT) {
@@ -1033,10 +1031,10 @@ the iterator used at the top level) and increasing the depth by 1.
     }
 ];
 
-@p Internal Rule.
+@h Internal Rule.
 This rule does nothing in itself; it exists as a placeholder for the
 response texts used by the list-writer.
 
-@c
+=
 [ LIST_WRITER_INTERNAL_R;
 ];

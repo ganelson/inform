@@ -1,12 +1,10 @@
-B/rtpt: RTP Template.
- 
-@Purpose: To issue run-time problem messages arising from the world model.
- 
-@-------------------------------------------------------------------------------
+RTP Template.
 
-@p Reporting.
+To issue run-time problem messages arising from the world model.
 
-@c
+@h Reporting.
+
+=
 [ RunTimeProblemShowWM n par1 par2 par3;
 	switch(n) {
 		RTP_SCENEHASNTSTARTED:

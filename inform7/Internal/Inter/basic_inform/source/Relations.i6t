@@ -1,14 +1,12 @@
-B/relt: Relations Template.
- 
-@Purpose: To manage run-time storage for relations between objects, and to
+Relations Template.
+
+To manage run-time storage for relations between objects, and to
 find routes through relations and the map.
 
-@-------------------------------------------------------------------------------
-
-@p Relation Records.
+@h Relation Records.
 See "RelationKind.i6t" for further explanation.
 
-@c
+=
 Constant RR_NAME     		5;
 Constant RR_PERMISSIONS		6;
 Constant RR_STORAGE			7;
@@ -16,11 +14,11 @@ Constant RR_KIND			8;
 Constant RR_HANDLER			9;
 Constant RR_DESCRIPTION		10;
 
-@p Valency Adjectives.
+@h Valency Adjectives.
 These are defined in the Standard Rules; the following routines must either
 test the state (if |set| is negative), or change the state to |set|.
 
-@c
+=
 Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNIQUE;
 [ RELATION_TY_EquivalenceAdjective rel set  perms state handler;
 	perms = RlnGetF(rel, RR_PERMISSIONS);
@@ -37,7 +35,7 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to an equivalence relation ***";		
+		"*** Can't change this to an equivalence relation ***";
 ];
 
 [ RELATION_TY_SymmetricAdjective rel set  perms state handler;
@@ -49,7 +47,7 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to a symmetric relation ***";		
+		"*** Can't change this to a symmetric relation ***";
 ];
 
 [ RELATION_TY_OToOAdjective rel set  perms state handler i;
@@ -68,7 +66,7 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to a one-to-one relation ***";		
+		"*** Can't change this to a one-to-one relation ***";
 ];
 
 [ RELATION_TY_OToVAdjective rel set  perms state handler;
@@ -88,7 +86,7 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to a one-to-various relation ***";		
+		"*** Can't change this to a one-to-various relation ***";
 ];
 
 [ RELATION_TY_VToOAdjective rel set  perms state handler;
@@ -108,7 +106,7 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to a various-to-one relation ***";		
+		"*** Can't change this to a various-to-one relation ***";
 ];
 
 [ RELATION_TY_VToVAdjective rel set  perms state handler;
@@ -126,10 +124,10 @@ Constant VALENCY_MASK = RELS_EQUIVALENCE+RELS_SYMMETRIC+RELS_X_UNIQUE+RELS_Y_UNI
 	RlnSetF(rel, RR_PERMISSIONS, perms);
 	handler = RlnGetF(rel, RR_HANDLER);
 	if (handler(rel, RELS_SET_VALENCY, perms & VALENCY_MASK) == 0)
-		"*** Can't change this to a various-to-various relation ***";		
+		"*** Can't change this to a various-to-various relation ***";
 ];
 
-@p One To One Relations.
+@h One To One Relations.
 We provide routines to assert a 1-to-1 relation true, or to assert it false.
 The relation |rel| is represented by a property number, and the property in
 question is used to store the fact of a relationship: $O_1\sim O_2$ if and
@@ -139,7 +137,7 @@ There is no routine to test a 1-to-1 relation, since the predicate calculus
 code in NI simplifies propositions which test these into direct looking up
 of the property relation.
 
-@c
+=
 [ Relation_Now1to1 obj1 relation_property obj2 ol; ! Assert 1-1 true
 	if (obj2) objectloop (ol provides relation_property)
 		if (ol.relation_property == obj2) ol.relation_property = nothing;
@@ -165,11 +163,11 @@ of the property relation.
 		WriteGProperty(KOV, obj1, relation_property, 0);
 ];
 
-@p Symmetric One To One Relations.
+@h Symmetric One To One Relations.
 Here the relation is used for both objects: $O_1\sim O_2$ if and only if
 both |O1.relation_property == O2| and |O2.relation_property == O1|.
 
-@c
+=
 [ Relation_NowS1to1 obj1 relation_property obj2; ! Assert symmetric 1-1 true
 	if ((obj1 ofclass Object) && (obj1 provides relation_property) &&
 		(obj2 ofclass Object) && (obj2 provides relation_property)) {
@@ -190,7 +188,7 @@ both |O1.relation_property == O2| and |O2.relation_property == O1|.
 [ Relation_NowS1to1V obj1 obj2 KOV relation_property; ! Assert symmetric 1-1 true
 	if (GProperty(KOV, obj1, relation_property))
 		WriteGProperty(KOV, GProperty(KOV, obj1, relation_property), relation_property, 0);
-	if (GProperty(KOV, obj2, relation_property)) 
+	if (GProperty(KOV, obj2, relation_property))
 		WriteGProperty(KOV, GProperty(KOV, obj2, relation_property), relation_property, 0);
 	WriteGProperty(KOV, obj1, relation_property, obj2);
 	WriteGProperty(KOV, obj2, relation_property, obj1);
@@ -203,7 +201,7 @@ both |O1.relation_property == O2| and |O2.relation_property == O1|.
 	}
 ];
 
-@p Various To Various Relations.
+@h Various To Various Relations.
 Here the relation is represented by an array holding its metadata. Each
 object in the domain of the relation provides two properties, holding its
 left index and its right index. The index is its position in the left or
@@ -223,7 +221,7 @@ property in the relevant part of the relation metadata: note that 0 is
 not a valid property number.
 
 The structure for a relation consists of eight |-->| words, followed by a
-bitmap in which we store 16 bits in each |-->| word. (Yes, this is wasteful 
+bitmap in which we store 16 bits in each |-->| word. (Yes, this is wasteful
 in Glulx, where |-->| words store 32 bits, but memory is not in short supply
 in Glulx and the total cost of relations is in practice small; we prefer
 to keep all the code involved simple.) The structure is precompiled by the
@@ -242,7 +240,7 @@ If this all seems rather suboptimally programmed in order to reduce code
 complexity, I can only say that careless drafts here were the source of
 some extremely difficult bugs to find.
 
-@c
+=
 Constant VTOVS_LEFT_INDEX_PROP = 0;
 Constant VTOVS_RIGHT_INDEX_PROP = 1;
 Constant VTOVS_LEFT_DOMAIN_SIZE = 2;
@@ -311,7 +309,7 @@ Constant VTOVS_CACHE = 7;
 	if ((vtov_structure-->pr) & i1) rtrue; rfalse;
 ];
 
-@p Equivalence Relations.
+@h Equivalence Relations.
 For every equivalence relation there is a corresponding function $f$ such
 that $x\sim y$ if and only if $f(x)=f(y)$, where $f(x)$ is a number identifying
 the equivalence class of $x$. Rather than inefficiently storing a large
@@ -320,7 +318,7 @@ keep the relation transitive), we store $f$: that is, for every object in
 the domain set, there is a property |prop| such that |O.prop| is the value
 $f(O)$.
 
-@c
+=
 [ Relation_NowEquiv obj1 relation_property obj2 big little;
 	big = obj1.relation_property; little = obj2.relation_property;
 	if (big == little) return;
@@ -354,7 +352,7 @@ $f(O)$.
 ];
 
 [ Relation_NowNEquivV obj1 obj2 KOV relation_property n old new i;
-	old = GProperty(KOV, obj1, relation_property); 
+	old = GProperty(KOV, obj1, relation_property);
 	new = GProperty(KOV, obj2, relation_property);
 	if (old ~= new) return;
 	new = 0;
@@ -366,18 +364,18 @@ $f(O)$.
 	WriteGProperty(KOV, obj1, relation_property, new);
 ];
 
-@p Show Various to Various.
+@h Show Various to Various.
 The rest of the code for relations has no use except for debugging: it
 implements the RELATIONS testing command. Speed is unimportant here.
 
-@c
+=
 [ Relation_ShowVtoV relation sym x obj1 obj2 pr pr2 proutine1 proutine2 vtov_structure;
 	vtov_structure = RlnGetF(relation, RR_STORAGE);
 	pr = vtov_structure-->VTOVS_LEFT_INDEX_PROP;
 	pr2 = vtov_structure-->VTOVS_RIGHT_INDEX_PROP;
 	proutine1 = vtov_structure-->VTOVS_LEFT_PRINTING_ROUTINE;
 	proutine2 = vtov_structure-->VTOVS_RIGHT_PRINTING_ROUTINE;
- 
+
 	if (pr && pr2) {
 		objectloop (obj1 provides pr)
 		  objectloop (obj2 provides pr2) {
@@ -427,9 +425,9 @@ implements the RELATIONS testing command. Speed is unimportant here.
 		  }
 ];
 
-@p Show One to One.
+@h Show One to One.
 
-@c
+=
 [ Relation_ShowOtoO relation sym x relation_property t N obj1 obj2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
 	t = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
@@ -459,13 +457,13 @@ implements the RELATIONS testing command. Speed is unimportant here.
 	}
 ];
 
-@p Show Reversed One to One.
+@h Show Reversed One to One.
 There's no such kind of relation as this: but the same code used to show
 1-to-1 relations is also used to show various-to-1 relations, since the
 storage is the same. To show 1-to-various relations, we need a transposed
 form of the same code in which left and right are exchanged: this is it.
 
-@c
+=
 [ Relation_RShowOtoO relation sym x relation_property obj1 obj2 t1 t2 N1 N2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
 	t1 = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
@@ -523,9 +521,9 @@ form of the same code in which left and right are exchanged: this is it.
 	}
 ];
 
-@p Show Equivalence.
+@h Show Equivalence.
 
-@c
+=
 [ RSE_Flip KOV v relation_property x;
 	x = GProperty(KOV, v, relation_property); x = -x;
 	WriteGProperty(KOV, v, relation_property, x);
@@ -617,14 +615,14 @@ form of the same code in which left and right are exchanged: this is it.
 	}
 ];
 
-@p Relation Emptying.
+@h Relation Emptying.
 These routines, mercifully a little simpler, define the adjective "empty" as
 it applied to relations. Each routine has to forcibly empty the relation if
 the clear flag is set, and in any case return either true or false to say
 whether the relation is empty at the end of the call. For relations in groups,
 "empty" is understood to mean that each object relates only to itself.
 
-@c
+=
 [ Relation_EmptyOtoO relation sym clear relation_property obj1 obj2 t1 t2 N1 N2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
 	t1 = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
@@ -682,7 +680,7 @@ whether the relation is empty at the end of the call. For relations in groups,
 				WriteGProperty(t, obj1, relation_property, v++);
 		}
 		rtrue;
-	}	
+	}
 	if (t == OBJECT_TY) {
 		objectloop (obj1 provides relation_property)
 			objectloop (obj2 provides relation_property)
@@ -702,7 +700,7 @@ whether the relation is empty at the end of the call. For relations in groups,
 	pr2 = vtov_structure-->VTOVS_RIGHT_INDEX_PROP;
 	proutine1 = vtov_structure-->VTOVS_LEFT_PRINTING_ROUTINE;
 	proutine2 = vtov_structure-->VTOVS_RIGHT_PRINTING_ROUTINE;
- 
+
 	if (pr && pr2) {
 		objectloop (obj1 provides pr)
 			objectloop (obj2 provides pr2) {
@@ -745,7 +743,7 @@ whether the relation is empty at the end of the call. For relations in groups,
 	rtrue;
 ];
 
-@p Relation Route-Finding.
+@h Relation Route-Finding.
 The general problem we have to solve here is: given $x, y\in D$, where $\sim$
 is a relation on a domain set $D$ of objects,
 
@@ -769,7 +767,7 @@ something should go wrong, for instance if the property of a 1-to-V
 relation has been modified by some third-party code in such a way that
 it loses its defining invariant.
 
-@c
+=
 Constant MAX_ROUTE_LENGTH = ICOUNT_OBJECT + 32;
 
 [ RelationRouteTo relation from to count  handler;
@@ -800,7 +798,7 @@ Constant MAX_ROUTE_LENGTH = ICOUNT_OBJECT + 32;
 	return i;
 ];
 
-@p One To Various Route-Finding.
+@h One To Various Route-Finding.
 Here we can immediately determine, given $y$, the unique $y'$ such that
 $y'\sim y$, so finding a path from $x$ to $y$ is a matter of following the
 only path leading to $y$ and seeing if it ever passed through $x$; thus the
@@ -810,7 +808,7 @@ pointless to cache this.
 Note that we can assume here that $x\neq y$, or rather, that |from ~= to|,
 because that case has already been taken care of.
 
-@c
+=
 [ OtoVRelRouteTo relation_property from to previous;
 	while ((to) && (to provides relation_property) && (to.relation_property)) {
 		previous = to.relation_property;
@@ -821,7 +819,7 @@ because that case has already been taken care of.
 	return nothing;
 ];
 
-@p Various To One Route-Finding.
+@h Various To One Route-Finding.
 This time the simplifying assumption is that, given $x$, we can immediately
 determine the unique $x'$ such that $x\sim x'$, so it suffices to follow
 the only path forwards from $x$ and see if it ever reaches $y$. The routine
@@ -829,7 +827,7 @@ is not quite a mirror image of the one above, because both have the same
 return requirements: we have to ensure that the |vector| properties lay out
 the path, and also return the next step after $x$.
 
-@c
+=
 [ VtoORelRouteTo relation_property from to next  start;
 	start = from;
 	while ((from) && (from provides relation_property) && (from.relation_property)) {
@@ -841,7 +839,7 @@ the path, and also return the next step after $x$.
 	return nothing;
 ];
 
-@p Slow Various To Various Route-Finding.
+@h Slow Various To Various Route-Finding.
 Now there are no simplifying assumptions and the problem is essentially the
 same as the one solved for route-finding in the map, above. Once again we
 present two different algorithms: first, a form of Prim's algorithm for
@@ -857,7 +855,7 @@ We use the fast algorithm for a given relation if and only if the NI compiler
 has allocated the necessary cache memory; the two use options above, for
 map route-finding, don't control this.
 
-@c
+=
 [ VtoVRelRouteTo relation from to count obj obj2 related progressed left_ix pr2 i vtov_structure;
 	vtov_structure = RlnGetF(relation, RR_STORAGE);
 	if (vtov_structure-->VTOVS_CACHE)
@@ -892,7 +890,7 @@ map route-finding, don't control this.
 	return from.vector;
 ];
 
-@p Fast Various To Various Route-Finding.
+@h Fast Various To Various Route-Finding.
 Now, as above, a form of the Floyd-Warshall algorithm. The matrix is here
 stored in the cache of memory pointed to in the V-to-V relation structure.
 We are unable to combine $a_{ij}$ and $d_{ij}$ into a single cell of
@@ -914,7 +912,7 @@ Where $n\geq 256$, we resign ourselves to storing two words for each pair
 $(i,j)$, making $2n^2$ bytes of storage on the Z-machine and $4n^2$ bytes
 of storage on Glulx, but lookup of a cached result is slightly faster.
 
-@c
+=
 [ FastVtoVRelRouteTo relation from to count
 	domainsize cache cache2 left_ix ox oy oj offset axy axj ayj;
 	domainsize = RlnGetF(relation, RR_STORAGE)-->2; ! Number of left instances
@@ -1008,7 +1006,7 @@ of storage on Glulx, but lookup of a cached result is slightly faster.
 	return nothing;
 ];
 
-@p Iterating Relations.
+@h Iterating Relations.
 The following is provided to make it possible to run an I6 routine on each
 relation in turn. (Each right-way-round relation, at any rate.)
 

@@ -1,10 +1,8 @@
-B/figst: Figures Template.
- 
-@Purpose: To display figures and play sound effects.
- 
-@-------------------------------------------------------------------------------
+Figures Template.
 
-@p Resource Usage.
+To display figures and play sound effects.
+
+@h Resource Usage.
 We record whether pictures or sounds have been used before by storing
 single byte flags in the following array. (The extra 5 values allow for the
 fact that it can be legal to use low undeclared sound effect resource
@@ -17,21 +15,21 @@ sound effects, then 4 a picture again, etc.) ID number 1 is in fact always
 a picture: it means the cover art, and is the I6 representation of the
 value "figure of cover".
 
-@c
+=
 Array ResourceUsageFlags -> (ICOUNT_FIGURE_NAME + ICOUNT_SOUND_NAME + 5);
 
-@p Figures.
+@h Figures.
 
-@c
+=
 [ DisplayFigure resource_ID one_time;
 	if ((one_time) && (ResourceUsageFlags->resource_ID)) return;
 	ResourceUsageFlags->resource_ID = true;
 	print "^"; VM_Picture(resource_ID); print "^";
 ];
 
-@p Sound Effects.
+@h Sound Effects.
 
-@c
+=
 [ PlaySound resource_ID one_time;
 	if (resource_ID == 0) return; ! The "silence" non-sound effect
 	if ((one_time) && (ResourceUsageFlags->resource_ID)) return;

@@ -1,14 +1,12 @@
-B/langt: Language Template.
- 
-@Purpose: The fundamental definitions needed by the parser and the verb
+Language Template.
+
+The fundamental definitions needed by the parser and the verb
 library in order to specify the language of play -- that is, the language
 used for communications between the story file and the player.
- 
-@-------------------------------------------------------------------------------
 
-@p Vocabulary.
+@h Vocabulary.
 
-@c
+=
 Constant AGAIN1__WD     = 'again';
 Constant AGAIN2__WD     = 'g//';
 Constant AGAIN3__WD     = 'again';
@@ -59,9 +57,9 @@ Constant QUIT2__WD      = 'quit';
 Constant RESTART__WD    = 'restart';
 Constant RESTORE__WD    = 'restore';
 
-@p Pronouns.
+@h Pronouns.
 
-@c
+=
 Array LanguagePronouns table
 
   ! word        possible GNAs                   connected
@@ -75,9 +73,9 @@ Array LanguagePronouns table
     'her'     $$010000000000                    NULL
     'them'    $$000111000111                    NULL;
 
-@p Descriptors.
+@h Descriptors.
 
-@c
+=
 Array LanguageDescriptors table
 
   ! word        possible GNAs   descriptor      connected
@@ -103,9 +101,9 @@ Array LanguageDescriptors table
     'lighted' $$111111111111    light           NULL
     'unlit'   $$111111111111    (-light)        NULL;
 
-@p Numbers.
+@h Numbers.
 
-@c
+=
 Array LanguageNumbers table
     'one' 1 'two' 2 'three' 3 'four' 4 'five' 5
     'six' 6 'seven' 7 'eight' 8 'nine' 9 'ten' 10
@@ -180,9 +178,9 @@ Array LanguageNumbers table
 	}
 ];
 
-@p Time.
+@h Time.
 
-@c
+=
 [ LanguageTimeOfDay hours mins i;
     i = hours%12;
     if (i == 0) i = 12;
@@ -191,21 +189,21 @@ Array LanguageNumbers table
     if ((hours/12) > 0) print " pm"; else print " am";
 ];
 
-@p Directions.
+@h Directions.
 
-@c
+=
 [ LanguageDirection d;
 	print (name) d;
 ];
 
-@p Translation.
+@h Translation.
 
-@c
+=
 [ LanguageToInformese; ];
 
-@p Articles.
+@h Articles.
 
-@c
+=
 Constant LanguageAnimateGender   = male;
 Constant LanguageInanimateGender = neuter;
 
@@ -233,7 +231,7 @@ Array LanguageArticles -->
 
 Array LanguageGNAsToArticles --> 0 0 0 1 1 1 0 0 0 1 1 1;
 
-@p Commands.
+@h Commands.
 |LanguageVerbLikesAdverb| is called by |PrintCommand| when printing an |UPTO_PE|
 error or an inference message.  Words which are intransitive verbs, i.e.,
 which require a direction name as an adverb ("walk west"), not a noun
@@ -247,7 +245,7 @@ long stick?" prompt from the parser. If the reply is another verb
 unless it is one of these words which could be both a verb and an
 adjective in a |name| property.
 
-@c
+=
 [ LanguageVerb i;
     switch (i) {
       'i//','inv','inventory':
@@ -272,11 +270,11 @@ adjective in a |name| property.
     rfalse;
 ];
 
-@p Stubs.
+@h Stubs.
 To reduce the need for conditional compilation, we provide these stub
 routines:
 
-@c
+=
 [ LanguageIsVerb buffer parse verb_wordnum;
 	rfalse;
 ];

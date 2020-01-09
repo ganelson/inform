@@ -1,10 +1,8 @@
-B/acvt: Activities Template.
- 
-@Purpose: To run the necessary rulebooks to carry out an activity.
- 
-@-------------------------------------------------------------------------------
+Activities Template.
 
-@p The Activities Stack.
+To run the necessary rulebooks to carry out an activity.
+
+@h The Activities Stack.
 Activities are more like nested function calls than independent processes;
 they finish in reverse order of starting, and are placed on a stack. This
 needs only very limited size in practice: 20 might seem a bit low, but making
@@ -12,19 +10,19 @@ it much higher simply means that oddball bugs in the user's code -- where
 activities recursively cause themselves ad infinitum -- will be caught less
 efficiently.
 
-@c
+=
 Constant MAX_NESTED_ACTIVITIES = 20;
 Global activities_sp = 0;
 Array activities_stack --> MAX_NESTED_ACTIVITIES;
 Array activity_parameters_stack --> MAX_NESTED_ACTIVITIES;
 
-@p Rule Debugging Inhibition.
+@h Rule Debugging Inhibition.
 The output from RULES or RULES ALL becomes totally illegible if it is applied
 even to the activities printing names of objects, so this is inhibited when
 any such activity is running. |FixInhibitFlag| is called each time the stack
 changes and ensures that |inhibit_flag| has exactly this meaning.
 
-@c
+=
 Global inhibit_flag = 0;
 Global saved_debug_rules = 0;
 [ FixInhibitFlag n act inhibit_rule_debugging;
@@ -45,14 +43,14 @@ Global saved_debug_rules = 0;
 	inhibit_flag = inhibit_rule_debugging;
 ];
 
-@p Testing Activities.
+@h Testing Activities.
 The following tests whether a given activity |A| is currently running
 whose parameter-object matches description |desc|, where as usual the
 description is represented by a routine testing membership, and where
 zero |desc| means that any parameter is valid. Alternatively, we can
 require a specific parameter value of |val|.
 
-@c
+=
 [ TestActivity A desc val i;
 	for (i=0:i<activities_sp:i++)
 		if (activities_stack-->i == A) {
@@ -65,11 +63,11 @@ require a specific parameter value of |val|.
 	rfalse;
 ];
 
-@p Emptiness.
+@h Emptiness.
 An activity is defined by its three rulebooks: it is empty if they are all
 empty.
 
-@c
+=
 [ ActivityEmpty A x;
 	x = Activity_before_rulebooks-->A;
 	if (rulebooks_array-->x ~= EMPTY_RULEBOOK) rfalse;
@@ -85,11 +83,11 @@ empty.
 	rtrue;
 ];
 
-@p Process Activity Rulebook.
+@h Process Activity Rulebook.
 This is really much like processing any rulebook, except that |self| is
 temporarily set to the parameter, and is preserved by the process.
 
-@c
+=
 [ ProcessActivityRulebook rulebook parameter  rv;
 	@push self;
 	if (parameter) self = parameter;
@@ -99,11 +97,11 @@ temporarily set to the parameter, and is preserved by the process.
 	rfalse;
 ];
 
-@p Carrying Out Activities.
+@h Carrying Out Activities.
 This is a three-stage process; most activities are run by calling the following
 simple routine, but some are run by calling the three subroutines independently.
 
-@c
+=
 [ CarryOutActivity A o rv;
 	BeginActivity(A, o);
 	rv = ForActivity(A, o);
@@ -111,7 +109,7 @@ simple routine, but some are run by calling the three subroutines independently.
 	return rv;
 ];
 
-@p Begin.
+@h Begin.
 Note that when an activity based on the conjectural "future action" is
 being run -- in a few parser-related cases, that is -- the identity of this
 action is put temporarily into |action|, and the current value saved while
@@ -119,7 +117,7 @@ this takes place. That allows rules in the activity rulebooks to have
 preambles based on the current action, and yet be tested against what is not
 yet the current action.
 
-@c
+=
 [ BeginActivity A o x;
 	if (activities_sp == MAX_NESTED_ACTIVITIES) return RunTimeProblem(RTP_TOOMANYACTS);
 	activity_parameters_stack-->activities_sp = o;
@@ -132,9 +130,9 @@ yet the current action.
 	return o;
 ];
 
-@p For.
+@h For.
 
-@c
+=
 [ ForActivity A o x;
 	if (Activity_atb_rulebooks->A) { x = action; action = action_to_be; }
 	o = ProcessActivityRulebook(Activity_for_rulebooks-->A, o);
@@ -142,9 +140,9 @@ yet the current action.
 	return o;
 ];
 
-@p End.
+@h End.
 
-@c
+=
 [ EndActivity A o rv x;
 	if ((activities_sp > 0) && (activities_stack-->(activities_sp-1) == A)) {
 		if (Activity_atb_rulebooks->A) { x = action; action = action_to_be; }
@@ -157,12 +155,12 @@ yet the current action.
 	return RunTimeProblem(RTP_CANTABANDON);
 ];
 
-@p Abandon.
+@h Abandon.
 For (very) rare cases where an activity must be abandoned midway; such an
 activity must be being run by calling the three stages individually, and
 |EndActivity| must not have been called yet.
 
-@c
+=
 [ AbandonActivity A o;
 	if ((activities_sp > 0) && (activities_stack-->(activities_sp-1) == A)) {
 		activities_sp--; FixInhibitFlag();

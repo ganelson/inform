@@ -1,7 +1,0 @@
-There is a room.
-
-Include (-
-
-@fish;
-
--).

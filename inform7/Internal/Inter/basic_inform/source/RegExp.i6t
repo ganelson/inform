@@ -1,18 +1,16 @@
-B/regxt: RegExp Template.
- 
-@Purpose: Code to match and replace on regular expressions against indexed
-text strings.
- 
-@-------------------------------------------------------------------------------
+RegExp Template.
 
-@p Debugging.
+Code to match and replace on regular expressions against indexed
+text strings.
+
+@h Debugging.
 Set this to true at your peril.
 
-@c
+=
 Global TEXT_TY_RE_Trace = false; ! Change to true for (a lot of) debugging data in use
 [ TEXT_TY_RE_SetTrace F; TEXT_TY_RE_Trace = F; ];
 
-@p Algorithm.
+@h Algorithm.
 Once Inform 7 supported (indexed) text, regular-expression matching became an
 obvious goal: regexp-based features offer more or less the gold standard in
 text search and replace facilities, and I7 is so concerned with text that
@@ -41,7 +39,7 @@ solve all of Perl's test cases without its default memory allocation being
 raised. In other respects, the algorithm below appears to be accurate if
 not very fast.
 
-@p Class Codes.
+@h Class Codes.
 While in principle we could keep the match expression in textual form, in
 practice the syntax of regular expressions is complex enough that this
 would be tricky and rather slow: we would be parsing the same notations over
@@ -54,7 +52,7 @@ has a 16-bit word but an 8-bit character set, so that all character values
 are positive; similarly, Unicode is (for our purposes) a 16-bit character
 set on a 32-bit virtual machine.)
 
-@c
+=
 ! Character classes
 
 Constant NEWLINE_RE_CC = -1;
@@ -104,7 +102,7 @@ Constant NEVER_RE_CC = -45;
 
 Constant SENSITIVITY_RE_CC = -50;
 
-@p Packets.
+@h Packets.
 The nodes of the compiled expression tree are stored in "packets", which
 are segments of a fixed array. A regexp complicated enough that it cannot
 be stored in |RE_MAX_PACKETS| packets will be rejected with an error: it
@@ -118,7 +116,7 @@ these packets together and also the current state of the temporary variables
 recording how far we have progressed in trying all of the possible ways to
 match the packet.
 
-@c
+=
 Constant RE_MAX_PACKETS = 32;
 
 Constant RE_PACKET_SIZE = 14; ! Words of memory used per packet
@@ -141,13 +139,13 @@ Constant RE_CACHE1 = 11;
 Constant RE_CACHE2 = 12;
 Constant RE_MODES = 13;
 
-@p Nodes.
+@h Nodes.
 The routine to create a node, something which happens only during the
 compilation phase, and also the routine which returns the address of a given
 node. Nodes are numbered from 0 up to $M-1$, where $M$ is the constant
 |RE_MAX_PACKETS|.
 
-@c
+=
 [ TEXT_TY_RE_Node n cc par1 par2 par3  offset;
 	if ((n<0) || (n >= RE_MAX_PACKETS)) rfalse;
 	offset = RE_PACKET_space + n*RE_PACKET_SIZE_IN_BYTES;
@@ -170,7 +168,7 @@ node. Nodes are numbered from 0 up to $M-1$, where $M$ is the constant
 	return RE_PACKET_space + n*RE_PACKET_SIZE_IN_BYTES;
 ];
 
-@p Match Variables.
+@h Match Variables.
 A bracketed subexpression can be used as a variable: we support |\1|, ..., |\9|
 to mean "the value of subexpression 1 to 9", and |\0| to mean "the whole
 text matched", as if the entire regexp were bracketed. (PCRE and Perl also
@@ -188,7 +186,7 @@ text variables and fill them in as appropriate, memory permitting.
 |TEXT_TY_RE_EmptyMatchVars| empties any such variables which may survive from
 a previous match, setting them to the empty text.
 
-@c
+=
 Array RE_Subexpressions --> 11; ! Address of node for this subexpression
 Array Allocated_Match_Vars --> 10; ! Indexed text to hold values of the variables
 
@@ -247,7 +245,7 @@ Array Allocated_Match_Vars --> 10; ! Indexed text to hold values of the variable
 	return Allocated_Match_Vars-->vn;
 ];
 
-@p Markers.
+@h Markers.
 At each node, the |-->RE_DATA1| and |-->RE_DATA2| fields represent the
 character positions of the start and end of the text matched by the node
 and its subtree (if any). These are called markers.
@@ -255,7 +253,7 @@ and its subtree (if any). These are called markers.
 Thus |TEXT_TY_MV_End(N, 0)| returns the start of |\N| and |TEXT_TY_MV_End(N, 1)|
 the end of |\N|, according to the current match of subexpression |N|.
 
-@c
+=
 [ TEXT_TY_MV_End n end
 	offset;
 	offset = RE_Subexpressions-->n;
@@ -272,13 +270,13 @@ the end of |\N|, according to the current match of subexpression |N|.
 	}
 ];
 
-@p Debugging.
+@h Debugging.
 Code in this paragraph simply prints a convenient screen representation of
 the compiled regexp, together with the current values of its markers. It is
 invaluable for debugging purposes and, touch wood, may not be needed again,
 but it is relatively compact and we keep it just in case.
 
-@c
+=
 [ TEXT_TY_RE_DebugTree ftxt detail;
 	print "Pattern: ", (TEXT_TY_Say) ftxt, "^";
 	TEXT_TY_RE_DebugSubtree(ftxt, 1, RE_PACKET_space, detail);
@@ -379,14 +377,14 @@ but it is relatively compact and we keep it just in case.
 	print "^";
 ];
 
-@p Compiling Tree For Substring Search.
+@h Compiling Tree For Substring Search.
 When we search for a literal substring, say looking for "per" in
 "Supernumerary", we will in fact use the same apparatus as when searching
 for a regular expression: we compile a very simple node tree in which |\0|
 as the root contains just one child node, a |LITERAL_RE_CC| matching exactly
 the text "per". We return 2 since that's the number of nodes in the tree.
 
-@c
+=
 [ TEXT_TY_CHR_CompileTree ftxt exactly
 	root literal fto no_packets token attach_to;
 
@@ -394,7 +392,7 @@ the text "per". We return 2 since that's the number of nodes in the tree.
 
 	root = TEXT_TY_RE_Node(0, SUBEXP_RE_CC, 0, 0, 0);
 	literal = TEXT_TY_RE_Node(1, LITERAL_RE_CC, 0, fto, 0);
-	
+
 	root-->RE_DOWN = literal;
 	literal-->RE_UP = root;
 
@@ -415,18 +413,18 @@ the text "per". We return 2 since that's the number of nodes in the tree.
 			exactly-->RE_UP = attach_to; exactly = exactly-->RE_NEXT;
 		}
 	}
-	
+
 	no_packets = TEXT_TY_RE_ExpandChoices(RE_PACKET_space, no_packets);
 ];
 
-@p Compiling Tree For Regexp Search.
+@h Compiling Tree For Regexp Search.
 But in general we need to compile a regular expression string into a tree
 of the kind described above, and here is the routine which does that,
 returning the number of nodes used to build the tree. The syntax it accepts
 is very fully documented in {\it Writing with Inform}, so no details are
 given here.
 
-@c
+=
 Array Subexp_Posns --> 20;
 [ TEXT_TY_RE_CompileTree ftxt exactly
 	no_packets ffrom fto cc par1 par2 par3
@@ -442,7 +440,7 @@ Array Subexp_Posns --> 20;
 	RE_Subexpressions-->0 = attach_to; RE_Subexpressions-->10 = 1; no_subs = 1;
 
 	quantifiable = false; blevel = 0;
-	
+
 	for (ffrom = 0: ffrom < fto: ) {
 		cc = BlkValueRead(ftxt, ffrom++); par1 = 0; par2 = 0; par3 = 0;
 		if (cc == '\') {
@@ -527,7 +525,7 @@ Array Subexp_Posns --> 20;
 					}
 					.AllowForm;
 					if (par2 == 0) par1 = no_subs++; else par1 = -1;
-					cc = SUBEXP_RE_CC; 
+					cc = SUBEXP_RE_CC;
 					quantifiable = false;
 					if (blevel == 20) return "subexpressions too deep";
 					Subexp_Posns-->(blevel++) = TEXT_TY_RE_NodeAddress(no_packets);
@@ -613,9 +611,9 @@ Array Subexp_Posns --> 20;
 					quantifiable = false;
 			}
 		}
-		
+
 		.CClassKnown;
-		
+
 		if (cc >= 0) {
 			quantifiable = true;
 			if ((attach_to-->RE_CCLASS == LITERAL_RE_CC) &&
@@ -628,7 +626,7 @@ Array Subexp_Posns --> 20;
 			}
 			cc = LITERAL_RE_CC; par1 = ffrom-1; par2 = ffrom;
 		}
-		
+
 		if (no_packets >= RE_MAX_PACKETS) return "regexp too complex";
 
 		if (TEXT_TY_RE_Trace == 2) {
@@ -643,7 +641,7 @@ Array Subexp_Posns --> 20;
 			RE_Subexpressions-->(token-->RE_PAR1) = token;
 			(RE_Subexpressions-->10)++;
 		}
-		
+
 		if ((attach_to-->RE_CCLASS == SUBEXP_RE_CC or CHOICE_RE_CC or IF_RE_CC) &&
 			(attach_to-->RE_DOWN == NULL)) {
 			attach_to-->RE_DOWN = token; token-->RE_UP = attach_to;
@@ -676,7 +674,7 @@ Array Subexp_Posns --> 20;
 				}
 			}
 		}
-		
+
 		if (token-->RE_CCLASS == CHOICE_RE_CC) {
 			if (no_packets >= RE_MAX_PACKETS) return "regexp too complex";
 			token-->RE_NEXT = TEXT_TY_RE_Node(no_packets++, CHOICE_RE_CC, 0, 0, 0);
@@ -693,7 +691,7 @@ Array Subexp_Posns --> 20;
 		}
 
 	}
-	
+
 	if (blevel ~= 0) return "subexpression bracket mismatch";
 
 	if (exactly) {
@@ -712,16 +710,16 @@ Array Subexp_Posns --> 20;
 			exactly-->RE_UP = attach_to; exactly = exactly-->RE_NEXT;
 		}
 	}
-	
+
 	no_packets = TEXT_TY_RE_ExpandChoices(RE_PACKET_space, no_packets);
 
 	if (TEXT_TY_RE_Trace) {
 		print "Compiled pattern:^";
 		TEXT_TY_RE_DebugTree(ftxt);
 	}
-	
+
 	bits = TEXT_TY_RE_CheckTree(RE_PACKET_space, no_subs); if (bits) return bits;
-	
+
 	return no_packets;
 ];
 
@@ -796,7 +794,7 @@ Array Subexp_Posns --> 20;
 					nex-->RE_UP = then_node;
 				}
 			}
-			
+
 			if (cond_node-->RE_DOWN ~= NULL) {
 				nex = cond_node-->RE_DOWN;
 				if ((nex-->RE_CCLASS ~= SUBEXP_RE_CC) ||
@@ -899,7 +897,7 @@ Array Subexp_Posns --> 20;
 				if (token-->RE_PAR1 ~= token-->RE_PAR2) return -1;
 				rv = TEXT_TY_RE_Width(token-->RE_DOWN);
 				if (rv == -1) return -1;
-				w = w + rv*(token-->RE_PAR1);				
+				w = w + rv*(token-->RE_PAR1);
 			DISJUNCTION_RE_CC:
 				aw = -1;
 				for (choice = token-->RE_DOWN: choice ~= NULL: choice = choice-->RE_NEXT) {
@@ -919,7 +917,7 @@ Array Subexp_Posns --> 20;
 	return w;
 ];
 
-@p Parser.
+@h Parser.
 The virtue of all of that tree compilation is that the code which actually
 does the work -- which parses the source text to see if the regular expression
 matches it -- is much shorter and quicker: indeed, it takes up fewer lines
@@ -939,7 +937,7 @@ regexp is constrained by a |^| glyph to begin matching at the start of the
 source text, which will cause a |START_RE_CC| node to be the eldest child
 of the |\0| root.
 
-@c
+=
 Global TEXT_TY_RE_RewindCount;
 [ TEXT_TY_RE_PrintNoRewinds; print TEXT_TY_RE_RewindCount; ];
 
@@ -951,13 +949,13 @@ Constant ACCUM_MFLAG = 2;
 
 	ilen = TEXT_TY_CharacterLength(txt);
 	if ((ipos<0) || (ipos>ilen)) return -1;
-	
+
 	root = RE_PACKET_space;
-	
+
 	initial_mode = 0; if (insens) initial_mode = CIS_MFLAG;
-	
+
 	TEXT_TY_RE_Clear_Markers(RE_PACKET_space);
-	
+
 	for (:ipos<=ilen:ipos++) {
 		if ((RE_PACKET_space-->RE_DOWN ~= NULL) &&
 			((RE_PACKET_space-->RE_DOWN)-->RE_CCLASS == START_RE_CC) &&
@@ -978,7 +976,7 @@ Constant ACCUM_MFLAG = 2;
 	return rv;
 ];
 
-@p Parse At Position.
+@h Parse At Position.
 |TEXT_TY_RE_ParseAtPosition(ftxt, txt, ifrom, ito)| attempts to match text
 beginning at position |ifrom| in the text |txt| and extending for
 any length up to position |ito|: it returns the number of characters which
@@ -987,7 +985,7 @@ made. |ftxt| is the original text of the regular expression in its
 precompiled form, which we need partly to print good debugging information,
 but mostly in order to match against a |LITERAL_RE_CC| node.
 
-@c
+=
 [ TEXT_TY_RE_ParseAtPosition ftxt txt ifrom ito token mode_flags
 	outcome ipos npos rv i ch edge rewind_this;
 
@@ -1008,20 +1006,20 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 		token-->RE_MODES = mode_flags; ! Save in case of backtrack
 
 		switch (token-->RE_CCLASS) {
-			
+
 			! Should never happen
-			
+
 			CHOICE_RE_CC: return "internal error";
-			
+
 			! Mode switches
-			
+
 			SENSITIVITY_RE_CC:
 				if (token-->RE_PAR1) mode_flags = mode_flags | CIS_MFLAG;
 				else mode_flags = mode_flags & (~CIS_MFLAG);
 				outcome = true;
-		
+
 			! Zero-length positional markers
-			
+
 			ALWAYS_RE_CC:
 				outcome = true;
 			NEVER_RE_CC:
@@ -1058,7 +1056,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				if (rv ~= 1) outcome = true;
 
 			! Control constructs
-		
+
 			IF_RE_CC:
 				i = token-->RE_PAR1; ch = false;
 				if (TEXT_TY_RE_Trace) {
@@ -1068,7 +1066,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				if (i >= 1) {
 					 if ((i<RE_Subexpressions-->10) &&
 					 	((RE_Subexpressions-->i)-->RE_DATA1 >= 0)) ch = true;
-				} else {					 	
+				} else {
 					rv = TEXT_TY_RE_ParseAtPosition(ftxt, txt, ipos, ito,
 						(token-->RE_DOWN)-->RE_DOWN, mode_flags);
 					if (rv >= 0) ch = true;
@@ -1117,7 +1115,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 					} else {
 						if (mode_flags & ACCUM_MFLAG == false)
 							TEXT_TY_RE_FailSubexpressions(ch-->RE_DOWN);
-					}						
+					}
 				}
 				if (outcome == false) {
 					if (TEXT_TY_RE_Trace) {
@@ -1165,7 +1163,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				token-->RE_DATA1 = ipos;
 				if ((token-->RE_DOWN)-->RE_CCLASS == SUBEXP_RE_CC) {
 					(token-->RE_DOWN)-->RE_CACHE1 = -1;
-					(token-->RE_DOWN)-->RE_CACHE2 = -1;	
+					(token-->RE_DOWN)-->RE_CACHE2 = -1;
 				}
 				if (TEXT_TY_RE_Trace) {
 					print "Trying quantifier from ", ipos, ": ";
@@ -1186,7 +1184,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 						if (rv < 0) break;
 						if ((token-->RE_DOWN)-->RE_CCLASS == SUBEXP_RE_CC) {
 							(token-->RE_DOWN)-->RE_CACHE1 = (token-->RE_DOWN)-->RE_DATA1;
-							(token-->RE_DOWN)-->RE_CACHE2 = (token-->RE_DOWN)-->RE_DATA2;	
+							(token-->RE_DOWN)-->RE_CACHE2 = (token-->RE_DOWN)-->RE_DATA2;
 						}
 						if ((rv == 0) && (token-->RE_PAR2 == 30000) && (i>=1)) { i++; break; }
 						npos = npos + rv;
@@ -1207,7 +1205,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 						if (rv < 0) break;
 						if ((token-->RE_DOWN)-->RE_CCLASS == SUBEXP_RE_CC) {
 							(token-->RE_DOWN)-->RE_CACHE1 = (token-->RE_DOWN)-->RE_DATA1;
-							(token-->RE_DOWN)-->RE_CACHE2 = (token-->RE_DOWN)-->RE_DATA2;	
+							(token-->RE_DOWN)-->RE_CACHE2 = (token-->RE_DOWN)-->RE_DATA2;
 						}
 						if ((rv == 0) && (token-->RE_PAR2 == 30000) && (i>=1)) { i++; break; }
 						npos = npos + rv;
@@ -1234,7 +1232,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 						TEXT_TY_RE_FailSubexpressions(token-->RE_DOWN);
 					if ((token-->RE_DOWN)-->RE_CCLASS == SUBEXP_RE_CC) {
 						(token-->RE_DOWN)-->RE_DATA1 = (token-->RE_DOWN)-->RE_CACHE1;
-						(token-->RE_DOWN)-->RE_DATA2 = (token-->RE_DOWN)-->RE_CACHE2;	
+						(token-->RE_DOWN)-->RE_DATA2 = (token-->RE_DOWN)-->RE_CACHE2;
 					}
 					if (TEXT_TY_RE_Trace) {
 						print "Successful quant reps ", i, ": ";
@@ -1249,9 +1247,9 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 						TEXT_TY_RE_DebugNode(token, ftxt, true);
 					}
 				}
-				
+
 			! Character classes
-				
+
 			NOTHING_RE_CC: ;
 			ANYTHING_RE_CC: if (ch) outcome = true; ipos++;
 			WHITESPACE_RE_CC:
@@ -1296,9 +1294,9 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				if (TEXT_TY_RE_Range(ch, ftxt,
 					token-->RE_PAR1, token-->RE_PAR2, token-->RE_PAR3, mode_flags & CIS_MFLAG))
 					{ outcome = true; ipos++; }
-			
+
 			! Substring matches
-			
+
 			LITERAL_RE_CC:
 				rv = TEXT_TY_RE_MatchSubstring(txt, ipos,
 					ftxt, token-->RE_PAR1, token-->RE_PAR2, mode_flags & CIS_MFLAG);
@@ -1313,7 +1311,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 				}
 				.NeverMatchIncompleteVar;
 		}
-		
+
 		if (outcome == false) {
 			if (TEXT_TY_RE_RewindCount++ >= 10000) {
 				if (TEXT_TY_RE_RewindCount == 10001) {
@@ -1357,7 +1355,7 @@ but mostly in order to match against a |LITERAL_RE_CC| node.
 	return ipos - ifrom;
 ];
 
-@p Backtracking.
+@h Backtracking.
 It would be very straightforward to match regular expressions with the
 above recursive code if, for every node, there were a fixed number of
 characters (depending on the node) such that there would either be a
@@ -1399,7 +1397,7 @@ Rather than describing |TEXT_TY_RE_SeekBacktrack| in detail here, it is probably
 more useful to suggest that the reader observe it in action by setting
 |TEXT_TY_RE_Trace| and trying a few regular expressions.
 
-@c
+=
 [ TEXT_TY_RE_SeekBacktrack token ftxt downwards ito report_only untried;
 	for (: token ~= NULL: token = token-->RE_NEXT) {
 		if ((TEXT_TY_RE_Trace) && (report_only == false)) {
@@ -1455,7 +1453,7 @@ more useful to suggest that the reader observe it in action by setting
 	rfalse;
 ];
 
-@p Fail Subexpressions.
+@h Fail Subexpressions.
 Here, an attempt to make a complicated match against the node in |token| has
 failed: that means that any subexpressions which were matched in the course of
 the attempt must also in retrospect be considered unmatched. So we work down
@@ -1470,7 +1468,7 @@ If the |downwards| flag is clear, it not only invalidates subexpression
 matches below the node but also to the right of the node -- this is useful
 for a backtrack which runs back quite some distance.
 
-@c
+=
 [ TEXT_TY_RE_FailSubexpressions token downwards;
 	for (: token ~= NULL: token = token-->RE_NEXT) {
 		if (token-->RE_DOWN ~= NULL) TEXT_TY_RE_FailSubexpressions(token-->RE_DOWN);
@@ -1482,14 +1480,14 @@ for a backtrack which runs back quite some distance.
 	}
 ];
 
-@p Erasing Constraints.
+@h Erasing Constraints.
 As explained above, temporary constraints are placed on some nodes when we
 are backtracking to test possible cases. When we do backtrack, though, it's
 important to lift any constraints left over from the previous attempt to
 parse material which is part of or subsequent to the token whose match
 attempt has been abandoned.
 
-@c
+=
 [ TEXT_TY_RE_EraseConstraints token;
 	while (token ~= NULL) {
 		switch (token-->RE_CCLASS) {
@@ -1501,12 +1499,12 @@ attempt has been abandoned.
 	}
 ];
 
-@p Matching Literal Text.
+@h Matching Literal Text.
 Here we attempt to make a match of the substring of the text |mtxt| which runs
 from character |mfrom| to character |mto|, looking for it at the given
 position |ipos| in the source text |txt|.
 
-@c
+=
 [ TEXT_TY_RE_MatchSubstring txt ipos mtxt mfrom mto insens
 	i ch;
 	if (mfrom < 0) return 0;
@@ -1523,14 +1521,14 @@ position |ipos| in the source text |txt|.
 	return mto-mfrom;
 ];
 
-@p Matching Character Range.
+@h Matching Character Range.
 Suppose that a character range is stored in |ftxt| between the character
 positions |rf| and |rt|. Then |TEXT_TY_RE_Range(ch, ftxt, rf, rt, negate, insens)|
 tests whether a given character |ch| lies within that character range,
 negating the outcome if |negate| is set, and performing comparisons
 case insensitively if |insens| is set.
 
-@c
+=
 [ TEXT_TY_RE_Range ch ftxt rf rt negate insens
 	i chm upper crev;
 	if (ch == 0) rfalse;
@@ -1596,7 +1594,7 @@ case insensitively if |insens| is set.
 	rfalse;
 ];
 
-@p Search And Replace.
+@h Search And Replace.
 And finally, last but not least: the routine which searches an indexed
 text |txt| trying to match it against |ftxt|. If |ftxtype| is set to
 |REGEXP_BLOB| then |ftxt| is expected to be a regular expression such
@@ -1617,7 +1615,7 @@ indeed useful where the blob type is |CHR_BLOB|.)
 
 For an explanation of the use of the word "blob", see "Text.i6t".
 
-@c
+=
 [ TEXT_TY_Replace_RE ftxtype txt ftxt rtxt insens exactly
 	r p p1 p2 cp cp1 cp2;
 	!print "Find: "; BlkValueDebug(ftxt); print "^";
@@ -1645,7 +1643,7 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 		CHR_BLOB: i = TEXT_TY_CHR_CompileTree(ftxt, exactly);
 		default: "*** bad ftxtype ***";
 	}
-	
+
 	if ((i<0) || (i>RE_MAX_PACKETS)) {
 		TEXT_TY_RE_Err = i;
 		print "*** Regular expression error: ", (string) TEXT_TY_RE_Err, " ***^";
@@ -1657,12 +1655,12 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 		TEXT_TY_RE_DebugTree(ftxt);
 		print "(compiled to ", i, " packets)^";
 	}
-	
+
 	if (ftxtype == REGEXP_BLOB) TEXT_TY_RE_EmptyMatchVars();
 	mpos = 0; chm = 0; cpos = 0;
 	while (TEXT_TY_RE_Parse(ftxt, txt, mpos, insens) >= 0) {
 		chm++;
-		
+
 		if (TEXT_TY_RE_Trace) {
 			print "^*** Match ", chm, " found (", RE_PACKET_space-->RE_DATA1, ",",
 				RE_PACKET_space-->RE_DATA2, "): ";
@@ -1674,9 +1672,9 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 			}
 			print " ***^";
 		}
-		
+
 		if (rtxt == 0) break; ! Accept only one match, replace nothing
-		
+
 		if (rtxt ~= 0 or 1) {
 			if (chm == 1) {
 				ctxt = BlkValueCreate(TEXT_TY);
@@ -1693,10 +1691,10 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 				BlkValueWrite(ctxt, cl++, ch);
 			}
 			BlkValueWrite(ctxt, cl, 0);
-	
+
 			TEXT_TY_Concatenate(ctxt, rtxt, ftxtype, txt);
 			csize = BlkValueLBCapacity(ctxt);
-			cl = TEXT_TY_CharacterLength(ctxt);			
+			cl = TEXT_TY_CharacterLength(ctxt);
 		}
 
 		mpos = RE_PACKET_space-->RE_DATA2; cpos = mpos;
@@ -1720,7 +1718,7 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 				BlkValueWrite(ctxt, cl++, ch);
 			}
 		}
-		
+
 		if (ftxtype == REGEXP_BLOB) {
 			TEXT_TY_RE_CreateMatchVars(txt);
 			if (TEXT_TY_RE_Trace)
@@ -1729,18 +1727,18 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 
 		if (rtxt ~= 0 or 1) {
 			BlkValueWrite(ctxt, cl, 0);
-			BlkValueCopy(txt, ctxt);	
+			BlkValueCopy(txt, ctxt);
 			BlkValueFree(ctxt);
 		}
 	}
 	return chm;
 ];
 
-@p Concatenation.
+@h Concatenation.
 See the corresponding routine in "Text.i6t": this is a variation
 which handles the special syntaxes used in search-and-replace.
 
-@c
+=
 [ TEXT_TY_RE_Concatenate txt_to txt_from blobtype txt_ref
 	pos len ch i tosize x y case;
 	if ((txt_to==0) || (BlkValueWeakKind(txt_to) ~= TEXT_TY)) rfalse;
@@ -1779,7 +1777,7 @@ which handles the special syntaxes used in search-and-replace.
 				}
 				continue;
 			}
-			
+
 		}
 		if (pos+1 >= tosize) {
 			if (BlkValueSetLBCapacity(txt_to, 2*tosize) == false) break;

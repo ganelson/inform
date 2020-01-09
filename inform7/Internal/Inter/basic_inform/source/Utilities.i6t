@@ -1,20 +1,18 @@
-B/utilt: Utilities Template.
+Utilities Template.
 
-@Purpose: Miscellaneous utility routines for some fundamental I6 needs.
+Miscellaneous utility routines for some fundamental I6 needs.
 
-@-------------------------------------------------------------------------------
+@h Saying Phrases.
 
-@p Saying Phrases.
-
-@c
+=
 [ SayPhraseName closure;
 	if (closure == 0) print "nothing";
 	else print (string) closure-->2;
 ];
 
-@p Kinds.
+@h Kinds.
 
-@c
+=
 [ KindAtomic kind;
 	if ((kind >= 0) && (kind < BASE_KIND_HWM)) return kind;
 	return kind-->0;
@@ -30,7 +28,7 @@ B/utilt: Utilities Template.
 	return kind-->(2+n);
 ];
 
-@p GenerateRandomNumber.
+@h GenerateRandomNumber.
 The following uses the virtual machine's RNG (via the I6 built-in function
 |random|) to produce a uniformly random integer in the range $n$ to $m$
 inclusive, where $n$ and $m$ are allowed to be either way around; so that
@@ -38,7 +36,7 @@ a random number between 17 and 4 is the same thing as a random number
 between 4 and 17, and there is therefore no pair of $n$ and $m$ corresponding
 to an empty range of values.
 
-@c
+=
 [ GenerateRandomNumber n m s;
 	if (n==m) return n;
 	if (n>m) { s = n; n = m; m = s; }
@@ -48,10 +46,10 @@ to an empty range of values.
 Constant R_DecimalNumber = GenerateRandomNumber;
 Constant R_PrintTimeOfDay = GenerateRandomNumber;
 
-@p PrintSpaces.
+@h PrintSpaces.
 Which prints a row of $n$ spaces, for $n\geq 0$.
 
-@c
+=
 [ PrintSpaces n;
     while (n > 0) {
         print " ";
@@ -59,12 +57,12 @@ Which prints a row of $n$ spaces, for $n\geq 0$.
     }
 ];
 
-@p SwapWorkflags.
+@h SwapWorkflags.
 Recall that we have two general-purpose temporary attributes for each object:
 |workflag| and |workflag2|. The following swaps their values over for every
 object at once.
 
-@c
+=
 [ SwapWorkflags obj lst;
 	objectloop (obj ofclass Object) {
 		lst = false;
@@ -76,18 +74,18 @@ object at once.
 	}
 ];
 
-@p TestUseOption.
+@h TestUseOption.
 This routine, compiled by NI, returns |true| if the supplied argument is the
 number of a use option in force for the current run of NI, and |false|
 otherwise.
 
-@p ZRegion.
+@h ZRegion.
 I7 contains many relics from I6, but here's a relic from I5: a routine which
 used to determine the metaclass of a value, before that concept was given a
 name. In I6 code, it can be implemented simply using |metaclass|, as the
 following shows. (The name is from "region of the Z-machine".)
 
-@c
+=
 [ ZRegion addr;
     switch (metaclass(addr)) {
 		nothing: return 0;
@@ -97,10 +95,10 @@ following shows. (The name is from "region of the Z-machine".)
     }
 ];
 
-@p Memcpy.
+@h Memcpy.
 This is equivalent to C's memcpy function, in good ways and bad.
 
-@c
+=
 [ Memcpy to_addr from_addr size  n;
 #Ifdef TARGET_ZCODE;
 	for (n = size/WORDSIZE: (n--) > 0: ) to_addr-->n = from_addr-->n;
@@ -110,10 +108,10 @@ This is equivalent to C's memcpy function, in good ways and bad.
 #Endif; ! TARGET_
 ];
 
-@p Arrcpy.
+@h Arrcpy.
 This is not quite so efficient, but not terrible.
 
-@c
+=
 [ Arrcpy to_array to_entry_size from_array from_entry_size no_entries  n val;
 	if (to_entry_size == from_entry_size)
 		Memcpy(to_array, from_array, to_entry_size*no_entries);
@@ -126,9 +124,9 @@ This is not quite so efficient, but not terrible.
 	} else "*** Arrcpy doesn't support this ***";
 ];
 
-@p Verbs as Values.
+@h Verbs as Values.
 
-@c
+=
 [ PrintVerbAsValue vb;
 	if (vb == 0) print "(no verb)";
 	else { print "verb "; vb(1); }
@@ -144,7 +142,7 @@ This is not quite so efficient, but not terrible.
 	rfalse;
 ];
 
-@p Seed Random Number Generator Rule.
+@h Seed Random Number Generator Rule.
 Unless a seed is provided by NI, and it won't be for released story files,
 the VM's interpreter is supposed to start up with a good seed in its random
 number generator: something usually derived from, say, the milliseconds part
@@ -158,14 +156,14 @@ that cannot really help much if the VM interpreter's RNG is badly written.
 "Anyone who considers arithmetical methods of producing random digits is,
 of course, in a state of sin" (von Neumann).
 
-@c
+=
 [ SEED_RANDOM_NUMBER_GENERATOR_R i;
 	if (RNG_SEED_AT_START_OF_PLAY) VM_Seed_RNG(RNG_SEED_AT_START_OF_PLAY);
 	for (i=1: i<=100: i++) random(i);
 	rfalse;
 ];
 
-@p Extracting Verb Numbers.
+@h Extracting Verb Numbers.
 A long tale of woe lies behind the following. Infocom games stored verb numbers
 in a single byte in dictionary entries, but they did so counting downwards, so
 that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
@@ -180,7 +178,7 @@ nobody remembered to implement this in I6-for-Glulx and the Glulx form of
 the I6 library. This was only put right in March 2009, and the following
 routine was added to concentrate lookups of this field in one place.
 
-@c
+=
 [ DictionaryWordToVerbNum dword verbnum;
 #Ifdef TARGET_ZCODE;
 	verbnum = $ff-(dword->#dict_par2);

@@ -1,11 +1,9 @@
-B/flext: Flex Template.
- 
-@Purpose: To allocate flexible-sized blocks of memory as needed to hold
-arbitrary-length strings of text, stored actions or other block values.
- 
-@-------------------------------------------------------------------------------
+Flex Template.
 
-@p Blocks.
+To allocate flexible-sized blocks of memory as needed to hold
+arbitrary-length strings of text, stored actions or other block values.
+
+@h Blocks.
 The purpose of the Flex routines is to manage flexible-sized "blocks" of
 memory for any general-purpose use. The main customer for this service is
 the system for creating texts, lists, stored actions, and so on, which
@@ -40,7 +38,7 @@ behave differently.
 These definitions must not be altered without making matching changes
 to the compiler.
 
-@c
+=
 Constant BLK_HEADER_N = 0;
 Constant BLK_HEADER_FLAGS = 1;
 Constant BLK_FLAG_MULTIPLE = $$00000001;
@@ -53,7 +51,7 @@ Constant BLK_HEADER_RCOUNT = 2;
 
 Constant BLK_DATA_OFFSET = 3*WORDSIZE;
 
-@p Multiple Blocks.
+@h Multiple Blocks.
 Some of the data we want to store will be fixed in size, but some of it will
 need to expand or contract. The latter can change unpredictably in size and
 might at any point overflow their current storage, so they're stored in a
@@ -89,14 +87,14 @@ is the beginning. The need to fit these two extra words in means that the
 data section is deferred, and so for a multiple-block data begins at the
 byte offset |BLK_DATA_MULTI_OFFSET| rather than |BLK_DATA_OFFSET|.
 
-@c
+=
 Constant BLK_DATA_MULTI_OFFSET = BLK_DATA_OFFSET + 2*WORDSIZE;
 Constant BLK_NEXT 3;
 Constant BLK_PREV 4;
 
 ! Constant BLKVALUE_TRACE = 1; ! Uncomment this for debugging purposes
 
-@p The Heap.
+@h The Heap.
 Properly speaking, a "heap" is a specific kind of structure often used for
 managing uneven-sized or unpredictably changing data. We use "heap" here in
 the looser sense of being an amorphous-sized collection of blocks of memory,
@@ -141,17 +139,17 @@ is a matter of being careful to fragment blocks only from the front when
 smaller blocks are needed, and to rejoin from the back when blocks are
 freed and added to the free space object.
 
-@c
+=
 Array Flex_Heap -> (MEMORY_HEAP_SIZE + 16); ! Plus 16 to allow room for head-free-block
 
-@p Initialisation.
+@h Initialisation.
 To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the NI compiler,
 and is always itself a power of 2, say $2^n$. We therefore have $2^n + 2^4$
 bytes available to us, and we format these as a free space list of two
 blocks: the $2^4$-sized "head-free-block" described above followed by
 a $2^n$-sized block exactly containing the whole of the rest of the heap.
 
-@c
+=
 [ HeapInitialise n bsize blk2;
 	blk2 = Flex_Heap + 16;
 	Flex_Heap->BLK_HEADER_N = 4;
@@ -169,7 +167,7 @@ a $2^n$-sized block exactly containing the whole of the rest of the heap.
 	blk2-->BLK_PREV = Flex_Heap;
 ];
 
-@p Net Free Space.
+@h Net Free Space.
 "Net" in the sense of "after deductions for the headers": this is the
 actual number of free bytes left on the heap which could be used for data.
 Note that it is used to predict whether it is possible to fit something
@@ -177,7 +175,7 @@ further in: so there are two answers, depending on whether the something
 is multiple-block data (with a larger header and therefore less room for
 data) or single-block data (smaller header, more room).
 
-@c
+=
 [ HeapNetFreeSpace multiple txb asize;
 	for (txb=Flex_Heap-->BLK_NEXT: txb~=NULL: txb=txb-->BLK_NEXT) {
 		asize = asize + FlexSize(txb);
@@ -187,7 +185,7 @@ data) or single-block data (smaller header, more room).
 	return asize;
 ];
 
-@p Make Space.
+@h Make Space.
 The following routine determines if there is enough free space to accommodate
 another |size| bytes of data, given that it has to be multiple-block data if
 the |multiple| flag is set. If the answer turns out to be "no", we see if
@@ -206,7 +204,7 @@ besides, running out of memory tends to be something you don't do only once.
 (The code below is a refinement on the original, suggested by Jesse McGrew,
 which handles non-multiple blocks better.)
 
-@c
+=
 Constant SMALLEST_BLK_WORTH_ALLOCATING = 12; ! i.e. 2^12 = 4096 bytes
 
 [ HeapMakeSpace size multiple  newblocksize newblock B n;
@@ -266,7 +264,7 @@ Constant SMALLEST_BLK_WORTH_ALLOCATING = 12; ! i.e. 2^12 = 4096 bytes
 	}
 ];
 
-@p Block Allocation.
+@h Block Allocation.
 Now for the Flex routines. Those with names ending in |Internal| are private
 and should only be called by other Flex routines. Even the public ones must
 be used with care, or memory leaks or crashes will occur.
@@ -293,10 +291,10 @@ block of size $2^k$. To continue the comparison with binary arithmetic,
 this is like a subtraction with repeated carries:
 $$ 10000000_2 - 00001000_2 = 01111000_2 $$
 
-@c
+=
 [ FlexAllocate size kov flags
 	dsize n m free_block min_m max_m smallest_oversized_block secondhalf i hsize head tail;
-	
+
 	if (HeapMakeSpace(size, flags & BLK_FLAG_MULTIPLE) == false) FlexError("ran out");
 
 	! Calculate the header size for a block of this KOV
@@ -367,10 +365,10 @@ $$ 10000000_2 - 00001000_2 = 01111000_2 $$
 		secondhalf->BLK_HEADER_FLAGS = free_block->BLK_HEADER_FLAGS;
 		min_m--;
 	}
-	
+
 	! Once that is done, free_block points to a block which is exactly the
 	! right size, so we can fall into...
-	
+
 	! Case III: There is a free block which has the correct size.
 	.CorrectSizeFound;
 	! Delete the free block from the double linked list of free blocks: note
@@ -390,30 +388,30 @@ $$ 10000000_2 - 00001000_2 = 01111000_2 $$
 		free_block-->BLK_NEXT = NULL;
 		free_block-->BLK_PREV = NULL;
 	}
-	
+
 	! Zero out the data bytes in the memory allocated
 	for (i=hsize:i<dsize:i++) free_block->i=0;
 	return free_block;
 ];
 
-@p Errors.
+@h Errors.
 In the event that |FlexAllocate| returns 0, the caller may not be able
 to survive, so the following is provided as a standardised way to halt
 the virtual machine.
 
-@c
+=
 [ FlexError reason;
 	print "*** Memory ", (string) reason, " ***^";
 	RunTimeProblem(RTP_HEAPERROR);
 	@quit;
 ];
 
-@p Merging.
+@h Merging.
 Given a free block |block|, find the maximal contiguous run of free blocks
 which contains it, and then call |FlexRecutInternal| to recut it to conform to
 invariant (b) above.
 
-@c
+=
 [ FlexMergeInternal block first last pv nx;
 	first = block; last = block;
 	while (last-->BLK_NEXT == last+FlexSize(last))
@@ -433,13 +431,13 @@ invariant (b) above.
 	}
 ];
 
-@p Recutting.
+@h Recutting.
 Given a segment of the free block list, containing blocks known to be contiguous
 in memory, we recut into a sequence of blocks satisfying invariant (b): we
 repeatedly cut the largest $2^m$-sized chunk off the back end until it is all
 used up.
 
-@c
+=
 [ FlexRecutInternal first last tsize backsize mfrom mto bnext backend n dsize fine_so_far;
 	if (first == last) rfalse;
 	mfrom = first; mto = last + FlexSize(last);
@@ -469,7 +467,7 @@ used up.
 	rtrue;
 ];
 
-@p Deallocation.
+@h Deallocation.
 As noted above, |FlexFree| must be called exactly once on each nonzero
 pointer returned by |FlexAllocate|.
 
@@ -488,7 +486,7 @@ I6 arrays fill up memory from the bottom.)
 Certain blocks {\it outside} the heap are marked as "resident" in memory,
 that is, are indestructible. This enables Inform to compile constant values.
 
-@c
+=
 [ FlexFree block fromtxb ptxb;
 	if (block == 0) return;
 	if ((block->BLK_HEADER_FLAGS) & BLK_FLAG_RESIDENT) return;
@@ -528,7 +526,7 @@ that is, are indestructible. This enables Inform to compile constant values.
 	}
 ];
 
-@p Resizing.
+@h Resizing.
 A block which has been allocated, but not yet freed, can sometimes have
 its data capacity changed by |FlexResize|.
 
@@ -541,7 +539,7 @@ the simplest thing to do. Sometimes it might mean preserving a not very
 efficient block division, but it minimises the churn of blocks being
 allocated and freed, which is probably good.
 
-@c
+=
 [ FlexResize block req newsize dsize newblk kov n i otxb flags;
 	if (block == 0) FlexError("failed resizing null block");
 	kov = block-->BLK_HEADER_KOV;
@@ -570,11 +568,11 @@ allocated and freed, which is probably good.
 	}
 ];
 
-@p Block Size.
+@h Block Size.
 These two routines are provided for the use of the |BlockValue| routines
 only.
 
-@c
+=
 [ FlexSize txb bsize n; ! Size of an individual block, including header
 	if (txb == 0) return 0;
 	for (bsize=1: n<txb->BLK_HEADER_N: bsize=bsize*2) n++;
@@ -591,10 +589,10 @@ only.
 	return size_in_bytes;
 ];
 
-@p Debugging Routines.
+@h Debugging Routines.
 These two routines are purely for testing the above code.
 
-@c
+=
 [ FlexDebug txb n k i bsize tot dtot kov;
 	if (txb == 0) "Block never created.";
 	kov = txb-->BLK_HEADER_KOV;
