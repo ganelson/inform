@@ -35,6 +35,7 @@ files of source text to be read, and quite possibly more.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MANDATORY_INSERTED_TEXT</span><span class="plain"> </span><span class="identifier">L</span><span class="string">"Include Basic Inform by Graham Nelson. Include the Standard Rules by Graham Nelson.\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BASIC_MODE_INSERTED_TEXT</span><span class="plain"> </span><span class="identifier">L</span><span class="string">"Include Basic Inform by Graham Nelson.\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
 </pre>
 
 <pre class="display">
@@ -60,7 +61,10 @@ primary source text.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SourceFiles::read_primary_source_text</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="constant">MANDATORY_INSERTED_TEXT</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">)</span>
+            <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="constant">BASIC_MODE_INSERTED_TEXT</span><span class="plain">);</span>
+        <span class="reserved">else</span>
+            <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="constant">MANDATORY_INSERTED_TEXT</span><span class="plain">);</span>
         <span class="functiontext">SourceFiles::read_further_mandatory_text</span><span class="plain">();</span>
         <span class="functiontext">SourceFiles::read_file</span><span class="plain">(</span><span class="identifier">filename_of_i7_source</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"your source text"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>

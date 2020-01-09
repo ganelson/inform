@@ -241,7 +241,7 @@ artificially to run through those sentences.
 <pre class="displaydefn">
         <span class="identifier">sentence_handlers_initialised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Empty the sentence handler tables</span> <span class="cwebmacronumber">7.3.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">TemplateFiles::register_sentence_handlers</span><span class="plain">();</span>
+        <span class="functiontext">SHR::register_sentence_handlers</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -253,7 +253,7 @@ before entering the valid handlers is that some of them will be defined in
 sections appearing after this one in the program: since C requires all
 identifiers used to be predeclared, this means we can't enter the valid
 handlers until right at the end of the program. The routine which does so,
-<code class="display"><span class="extract">TemplateFiles::register_sentence_handlers</span></code>, consists only of a run of
+<code class="display"><span class="extract">SHR::register_sentence_handlers</span></code>, consists only of a run of
 <code class="display"><span class="extract">REGISTER_SENTENCE_HANDLER</span></code> macro expansions and can be found in Chapter
 14.
 </p>

@@ -217,7 +217,6 @@ present.
         <span class="identifier">times_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Times"</span><span class="plain">;</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">scenes_plugin</span><span class="plain">, </span><span class="identifier">PL::Scenes::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SCENES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">scenes_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Scenes"</span><span class="plain">;</span>
-
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">bibliographic_plugin</span><span class="plain">, </span><span class="identifier">PL::Bibliographic::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
@@ -359,11 +358,22 @@ with the following.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">)</span>
                 <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) {</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">)</span>
+                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MULTIMEDIA_MODULE</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">)</span>
                 <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) {</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> != </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">))</span>
+                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
@@ -417,7 +427,7 @@ with the following.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Plugins::Manage::show_configuration is used in 26/vm (<a href="26-vm.html#SP18">&#167;18</a>).</p>
+<p class="endnote">The function Plugins::Manage::show_configuration is used in 26/vm (<a href="26-vm.html#SP19">&#167;19</a>).</p>
 
 <p class="endnote">The function Plugins::Manage::show appears nowhere else.</p>
 
@@ -451,8 +461,8 @@ with the following.
                 <span class="plain">(*</span><span class="identifier">start</span><span class="plain">)();</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain">) {</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">, </span><span class="string">"Load-%s.i6t"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain">);</span>
-                    <span class="functiontext">TemplateFiles::interpret</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">, -1);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">, </span><span class="string">"%s.kindt"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain">);</span>
+                    <span class="functiontext">I6T::interpret_kindt</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
                     <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>

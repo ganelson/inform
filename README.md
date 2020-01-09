@@ -108,9 +108,14 @@ This repository is where development is done on the following executables:
 * basicinform - The Basic Inform extension, included in all Inform 7 works. - __version 1/191002__ - [&#9733;&nbsp;Web](docs/basicinform/index.html)
 * srules - The Standard Rules extension, included in all Inform 7 works. - __version 5/190315__ - [&#9733;&nbsp;Web](docs/srules/index.html)
 
+This repository also contains the webs for the Template (at the subtree inform7/Internal/Inter). These are libraries of low-level Inter code needed at run-time, whose source is written in Inform 6 notation:
+
+* basic_inform - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/basic_inform/index.html)
+* standard_rules - Support for Inform as an interactive fiction tool - [&#9733;&nbsp;Web](docs/standard_rules/index.html)
+* basic_inform_extras - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/basic_inform_extras/index.html)
+
 The inform7 subtree further contains these primary resources:
 
-* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
 * inform7/Internal/Extensions - Libraries of code. Inform 7
 	* inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x - __unversioned__
 	* inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x - __version 7/140425__

@@ -592,9 +592,9 @@ and problem messages must be issued.)
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) {</span>
                 <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">UO</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-                <span class="functiontext">TemplateFiles::interpret</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">,</span>
+                <span class="functiontext">I6T::interpret_i6t</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">,</span>
                     <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_expansion</span><span class="plain">)) + 1),</span>
-                    <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">);</span>
+                    <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                 <span class="functiontext">Emit::intervention</span><span class="plain">(</span><span class="identifier">EARLY_LINK_STAGE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">UO</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -670,7 +670,7 @@ source code: see the DM4 for details.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::index is used in 26/vm (<a href="26-vm.html#SP18">&#167;18</a>).</p>
+<p class="endnote">The function UseOptions::index is used in 26/vm (<a href="26-vm.html#SP19">&#167;19</a>).</p>
 
 <p class="inwebparagraph"><a id="SP19_1"></a><b>&#167;19.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write in the index line for a use option not taken</span> <span class="cwebmacronumber">19.1</span>&gt; =

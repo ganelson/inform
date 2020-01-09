@@ -103,6 +103,9 @@ This repository is where development is done on the following executables:
 @define primaryd(program, language, doc)
 * @program - @purpose(@program) - __@version(@program)__ - [&#9733;&nbsp;Web](docs/@program/index.html) - [&#9654;&nbsp;Documentation](docs/@program/@doc.html)
 @end
+@define primaryl(program, language, purp)
+* @program - @purp - [&#9733;&nbsp;Web](docs/@program/index.html)
+@end
 @define book(title, path, topic)
 * @title - @topic. Ebook in Indoc format, stored at path @path.
 @end
@@ -121,9 +124,14 @@ This repository is where development is done on the following executables:
 @primary(basicinform, 'Web of Inform 7')
 @primary(srules, 'Web of Inform 7')
 
+This repository also contains the webs for the Template (at the subtree inform7/Internal/Inter). These are libraries of low-level Inter code needed at run-time, whose source is written in Inform 6 notation:
+
+@primaryl(basic_inform, 'Web of Inform 6', 'Support for Inform as a programming language')
+@primaryl(standard_rules, 'Web of Inform 6', 'Support for Inform as an interactive fiction tool')
+@primaryl(basic_inform_extras, 'Web of Inform 6', 'Additional support needed only if the Standard Rules are not used')
+
 The inform7 subtree further contains these primary resources:
 
-* The I6 Template - The .i6t files used in code generation. Inform 6; held in inform7/Internal/I6T
 * inform7/Internal/Extensions - Libraries of code. Inform 7
 @extension('inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x')
 @extension('inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x')
@@ -219,6 +227,12 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 		Documentation is <a href="@program/@manual.html">here</a>.</p>
 	</li>
 @end
+@define webt(program, purp)
+	<li>
+		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		<span class="purpose">@purp</span></p>
+	</li>
+@end
 @define xweb(program)
 	<li>
 		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
@@ -289,6 +303,13 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@web('inter', 'P-ui')
 			@mod('inter', 'inter')
 			@mod('inter', 'codegen')
+		</ul>
+		<hr>
+		<p class="chapter">The Template libraries of run-time support code:</p>
+		<ul class="sectionlist">
+			@webt('basic_inform', 'support for Inform as a programming language')
+			@webt('standard_rules', 'support for Inform as an interactive fiction tool')
+			@webt('basic_inform_extras', 'additional support needed only if the Standard Rules are not used')
 		</ul>
 		<hr>
 		<p class="chapter">Other webs in this repository:</p>

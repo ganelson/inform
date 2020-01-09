@@ -445,6 +445,7 @@ nothing at all &mdash; not issuing any internal errors.
 
     <pre class="display">
         <span class="reserved">documentation_ref</span><span class="plain"> *</span><span class="functiontext">Index::DocReferences::name_to_dr</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">documentation_ref</span><span class="plain"> *</span><span class="identifier">dr</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">dr</span><span class="plain">, </span><span class="reserved">documentation_ref</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">dr</span><span class="plain">-</span><span class="element">&gt;doc_symbol</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">))</span>
@@ -469,7 +470,7 @@ nothing at all &mdash; not issuing any internal errors.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad ref was &lt;%s&gt;. Known references are:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad ref was &lt;%S&gt;. Known references are:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">dr</span><span class="plain">, </span><span class="reserved">documentation_ref</span><span class="plain">)</span>
                     <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%S = %+N\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">dr</span><span class="plain">-</span><span class="element">&gt;doc_symbol</span><span class="plain">, </span><span class="identifier">dr</span><span class="plain">-</span><span class="element">&gt;section</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Bad index documentation reference"</span><span class="plain">);</span>

@@ -193,40 +193,40 @@ intertemplate: \
 	inform7/Internal/Inter/standard_rules/arch-32d.interb \
 	inform7/Internal/Inter/standard_rules/arch-32.interb
 
-inform7/Internal/Inter/basic_inform/arch-16d.interb: inform7/Internal/Inter/basic_inform/source/*.i6t
+inform7/Internal/Inter/basic_inform/arch-16d.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
 	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/basic_inform
 
-inform7/Internal/Inter/basic_inform/arch-16.interb: inform7/Internal/Inter/basic_inform/source/*.i6t
+inform7/Internal/Inter/basic_inform/arch-16.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
 	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/basic_inform
 
-inform7/Internal/Inter/basic_inform/arch-32d.interb: inform7/Internal/Inter/basic_inform/source/*.i6t
+inform7/Internal/Inter/basic_inform/arch-32d.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
 	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/basic_inform
 
-inform7/Internal/Inter/basic_inform/arch-32.interb: inform7/Internal/Inter/basic_inform/source/*.i6t
+inform7/Internal/Inter/basic_inform/arch-32.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
 	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/basic_inform
 
-inform7/Internal/Inter/basic_inform_extras/arch-16d.interb: inform7/Internal/Inter/basic_inform_extras/source/*.i6t
+inform7/Internal/Inter/basic_inform_extras/arch-16d.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
 	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/basic_inform_extras
 
-inform7/Internal/Inter/basic_inform_extras/arch-16.interb: inform7/Internal/Inter/basic_inform_extras/source/*.i6t
+inform7/Internal/Inter/basic_inform_extras/arch-16.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
 	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/basic_inform_extras
 
-inform7/Internal/Inter/basic_inform_extras/arch-32d.interb: inform7/Internal/Inter/basic_inform_extras/source/*.i6t
+inform7/Internal/Inter/basic_inform_extras/arch-32d.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
 	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/basic_inform_extras
 
-inform7/Internal/Inter/basic_inform_extras/arch-32.interb: inform7/Internal/Inter/basic_inform_extras/source/*.i6t
+inform7/Internal/Inter/basic_inform_extras/arch-32.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
 	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/basic_inform_extras
 
-inform7/Internal/Inter/standard_rules/arch-16d.interb: inform7/Internal/Inter/standard_rules/source/*.i6t
+inform7/Internal/Inter/standard_rules/arch-16d.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
 	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/standard_rules
 
-inform7/Internal/Inter/standard_rules/arch-16.interb: inform7/Internal/Inter/standard_rules/source/*.i6t
+inform7/Internal/Inter/standard_rules/arch-16.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
 	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/standard_rules
 
-inform7/Internal/Inter/standard_rules/arch-32d.interb: inform7/Internal/Inter/standard_rules/source/*.i6t
+inform7/Internal/Inter/standard_rules/arch-32d.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
 	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/standard_rules
 
-inform7/Internal/Inter/standard_rules/arch-32.interb: inform7/Internal/Inter/standard_rules/source/*.i6t
+inform7/Internal/Inter/standard_rules/arch-32.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
 	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/standard_rules
 
 # -----------------------------------------------------------------------------
@@ -405,6 +405,9 @@ endef
 .PHONY: pages
 pages:
 	$(INPOLICYX) -write-me scripts/READMEscript.txt
+	$(INWEBX) inform7/Internal/Inter/basic_inform -weave-docs -weave-into docs/basic_inform
+	$(INWEBX) inform7/Internal/Inter/standard_rules -weave-docs -weave-into docs/standard_rules
+	$(INWEBX) inform7/Internal/Inter/basic_inform_extras -weave-docs -weave-into docs/basic_inform_extras
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
@@ -647,23 +650,23 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/Inter/*.interpipeline $(INTERNAL)/Inter
 	mkdir -p "$(INTERNAL)/Inter/standard_rules"
 	mkdir -p "$(INTERNAL)/Inter/standard_rules/source"
-	rm -f $(INTERNAL)/Inter/standard_rules/source/*.i6t
+	rm -f $(INTERNAL)/Inter/standard_rules/Sections/*.i6t
 	rm -f $(INTERNAL)/Inter/standard_rules/*.interb
-	cp -R -f inform7/Internal/Inter/standard_rules/source/*.i6t $(INTERNAL)/Inter/standard_rules/source
+	cp -R -f inform7/Internal/Inter/standard_rules/Sections/*.i6t $(INTERNAL)/Inter/standard_rules/source
 	cp -R -f inform7/Internal/Inter/standard_rules/*.interb $(INTERNAL)/Inter/standard_rules
 	cp -R -f inform7/Internal/Inter/standard_rules/library_metadata.txt $(INTERNAL)/Inter/standard_rules
 	mkdir -p "$(INTERNAL)/Inter/basic_inform"
 	mkdir -p "$(INTERNAL)/Inter/basic_inform/source"
-	rm -f $(INTERNAL)/Inter/basic_inform/source/*.i6t
+	rm -f $(INTERNAL)/Inter/basic_inform/Sections/*.i6t
 	rm -f $(INTERNAL)/Inter/basic_inform/*.interb
-	cp -R -f inform7/Internal/Inter/basic_inform/source/*.i6t $(INTERNAL)/Inter/basic_inform/source
+	cp -R -f inform7/Internal/Inter/basic_inform/Sections/*.i6t $(INTERNAL)/Inter/basic_inform/source
 	cp -R -f inform7/Internal/Inter/basic_inform/*.interb $(INTERNAL)/Inter/basic_inform
 	cp -R -f inform7/Internal/Inter/basic_inform/library_metadata.txt $(INTERNAL)/Inter/basic_inform
 	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras"
 	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras/source"
-	rm -f $(INTERNAL)/Inter/basic_inform_extras/source/*.i6t
+	rm -f $(INTERNAL)/Inter/basic_inform_extras/Sections/*.i6t
 	rm -f $(INTERNAL)/Inter/basic_inform_extras/*.interb
-	cp -R -f inform7/Internal/Inter/basic_inform_extras/source/*.i6t $(INTERNAL)/Inter/basic_inform_extras/source
+	cp -R -f inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t $(INTERNAL)/Inter/basic_inform_extras/source
 	cp -R -f inform7/Internal/Inter/basic_inform_extras/*.interb $(INTERNAL)/Inter/basic_inform_extras
 	cp -R -f inform7/Internal/Inter/basic_inform_extras/library_metadata.txt $(INTERNAL)/Inter/basic_inform_extras
 	mkdir -p "$(INTERNAL)/Inter/kinds"
