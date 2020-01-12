@@ -29,37 +29,37 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 
 
 <pre class="display">
-    <span class="plain">[ SquareRoot num</span>
-        <span class="plain">op res one n x;</span>
-        <span class="plain">if (num &lt; 0) { RunTimeProblem(RTP_NEGATIVEROOT); return 1; }</span>
+    <span class="plain">[ </span><span class="identifier">SquareRoot</span><span class="plain"> </span><span class="identifier">num</span>
+        <span class="identifier">op</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">one</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NEGATIVEROOT</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">; }</span>
 
-        <span class="plain">! Use floating-point ops if available.</span>
-        <span class="plain">#ifdef TARGET_GLULX;</span>
-        <span class="plain">@gestalt 11 0 n;</span>
-        <span class="plain">if (n) {</span>
-            <span class="plain">@numtof num x;</span>
-            <span class="plain">@sqrt x x;</span>
-            <span class="plain">@ftonumz x num;</span>
-            <span class="plain">return num;</span>
+        <span class="comment">! Use floating-point ops if available.</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">gestalt</span><span class="plain"> </span><span class="constant">11</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">num</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">sqrt</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
         <span class="plain">}</span>
-    <span class="plain">#endif;</span>
-        <span class="plain">op = num;</span>
-        <span class="plain">if (num &lt; 0) { RunTimeProblem(RTP_NEGATIVEROOT); return 1; }</span>
-        <span class="plain">! "one" starts at the highest power of four &lt;= the argument.</span>
-        <span class="plain">for (one = WORD_NEXTTOHIGHBIT: one &gt; op: one = one/4) ;</span>
+    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="identifier">op</span><span class="plain"> = </span><span class="identifier">num</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NEGATIVEROOT</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">; }</span>
+        <span class="comment">! "one" starts at the highest power of four &lt;= the argument.</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">one</span><span class="plain"> = </span><span class="identifier">WORD_NEXTTOHIGHBIT</span><span class="plain">: </span><span class="identifier">one</span><span class="plain"> &gt; </span><span class="identifier">op</span><span class="plain">: </span><span class="identifier">one</span><span class="plain"> = </span><span class="identifier">one</span><span class="plain">/4) ;</span>
 
-        <span class="plain">while (one ~= 0) {</span>
-            <span class="plain">! print "Round: op = ", op, " res = ", res, ", res**2 = ", res*res, " one = ", one, " nthb = ", WORD_NEXTTOHIGHBIT, "^";</span>
-            <span class="plain">if (op &gt;= res + one) {</span>
-                <span class="plain">op = op - res - one;</span>
-                <span class="plain">res = res/2 + one;</span>
-            <span class="plain">} else {</span>
-                <span class="plain">res = res/2;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">one</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="comment">! print "Round: op = ", op, " res = ", res, ", res**2 = ", res*res, " one = ", one, " nthb = ", WORD_NEXTTOHIGHBIT, "^";</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain"> &gt;= </span><span class="identifier">res</span><span class="plain"> + </span><span class="identifier">one</span><span class="plain">) {</span>
+                <span class="identifier">op</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">one</span><span class="plain">;</span>
+                <span class="identifier">res</span><span class="plain"> = </span><span class="identifier">res</span><span class="plain">/2 + </span><span class="identifier">one</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">res</span><span class="plain"> = </span><span class="identifier">res</span><span class="plain">/2;</span>
             <span class="plain">}</span>
-            <span class="plain">one = one/4;</span>
+            <span class="identifier">one</span><span class="plain"> = </span><span class="identifier">one</span><span class="plain">/4;</span>
         <span class="plain">}</span>
-        <span class="plain">! print "Res is ", res, "^";</span>
-        <span class="plain">return res;</span>
+        <span class="comment">! print "Res is ", res, "^";</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -78,27 +78,27 @@ used only as a sighting shot.
 
 
 <pre class="display">
-    <span class="plain">[ CubeRoot num neg x y n;</span>
-        <span class="plain">! Use floating-point ops if available.</span>
-        <span class="plain">#ifdef TARGET_GLULX;</span>
-        <span class="plain">@gestalt 11 0 n;</span>
-        <span class="plain">if (n) {</span>
-            <span class="plain">if (num &lt; 0) {</span>
-                <span class="plain">neg = true;</span>
-                <span class="plain">num = -num;</span>
+    <span class="plain">[ </span><span class="identifier">CubeRoot</span><span class="plain"> </span><span class="identifier">num</span><span class="plain"> </span><span class="identifier">neg</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="comment">! Use floating-point ops if available.</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">gestalt</span><span class="plain"> </span><span class="constant">11</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">neg</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="identifier">num</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">num</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">@numtof num x;</span>
-            <span class="plain">@pow x 1051372203 x; ! pow(x, 0.3333)</span>
-            <span class="plain">@ftonumz x num;</span>
-            <span class="plain">if (neg)</span>
-                <span class="plain">return -num;</span>
-            <span class="plain">else</span>
-                <span class="plain">return num;</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">num</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">pow</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="constant">1051372203</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="comment">! pow(x, 0.3333)</span>
+            <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">neg</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">-</span><span class="identifier">num</span><span class="plain">;</span>
+            <span class="reserved">else</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">#endif;</span>
-        <span class="plain">if (num &lt; 0) x = -SquareRoot(-num); else x = SquareRoot(num);</span>
-        <span class="plain">for (n=0: (y ~= x) &amp;&amp; (n++ &lt; 100): y = x, x = (2*x + num/x/x)/3) ;</span>
-        <span class="plain">return x;</span>
+        <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">x</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">SquareRoot</span><span class="plain">(-</span><span class="identifier">num</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">SquareRoot</span><span class="plain">(</span><span class="identifier">num</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">=0: (</span><span class="identifier">y</span><span class="plain"> ~= </span><span class="identifier">x</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain">++ &lt; </span><span class="constant">100</span><span class="plain">): </span><span class="identifier">y</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">, </span><span class="identifier">x</span><span class="plain"> = (2*</span><span class="identifier">x</span><span class="plain"> + </span><span class="identifier">num</span><span class="plain">/</span><span class="identifier">x</span><span class="plain">/</span><span class="identifier">x</span><span class="plain">)/3) ;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -109,7 +109,7 @@ used only as a sighting shot.
 
 
 <pre class="display">
-    <span class="plain">[ NUMBER_TY_Abs x; if (x&lt;0) return -x; return x; ];</span>
+    <span class="plain">[ </span><span class="identifier">NUMBER_TY_Abs</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">&lt;0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-</span><span class="identifier">x</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -120,9 +120,9 @@ virtual machine opcode which crashes on divide by zero.
 
 
 <pre class="display">
-    <span class="plain">[ IntegerDivide A B;</span>
-        <span class="plain">if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }</span>
-        <span class="plain">return A/B;</span>
+    <span class="plain">[ </span><span class="identifier">IntegerDivide</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_DIVZERO</span><span class="plain">); </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">/</span><span class="identifier">B</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -133,9 +133,9 @@ virtual machine opcode which crashes on divide by zero.
 
 
 <pre class="display">
-    <span class="plain">[ IntegerRemainder A B;</span>
-        <span class="plain">if (B == 0) { RunTimeProblem(RTP_DIVZERO); rfalse; }</span>
-        <span class="plain">return A%B;</span>
+    <span class="plain">[ </span><span class="identifier">IntegerRemainder</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_DIVZERO</span><span class="plain">); </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">%</span><span class="identifier">B</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -150,23 +150,23 @@ addresses, we need to compare them with the following routine, which returns
 
 
 <pre class="display">
-    <span class="plain">[ UnsignedCompare x y u v;</span>
-        <span class="plain">#Ifdef TARGET_GLULX;</span>
-        <span class="plain">@jleu x y ?lesseq;</span>
-        <span class="plain">return 1;</span>
-        <span class="plain">.lesseq;</span>
-        <span class="plain">@jeq x y ?equal;</span>
-        <span class="plain">return -1;</span>
-        <span class="plain">.equal;</span>
-        <span class="plain">return 0;</span>
-        <span class="plain">#Ifnot;</span>
-        <span class="plain">if (x == y) return 0;</span>
-        <span class="plain">if (x &lt; 0 &amp;&amp; y &gt;= 0) return 1;</span>
-        <span class="plain">if (x &gt;= 0 &amp;&amp; y &lt; 0) return -1;</span>
-        <span class="plain">u = x&amp;~WORD_HIGHBIT; v= y&amp;~WORD_HIGHBIT;</span>
-        <span class="plain">if (u &gt; v) return 1;</span>
-        <span class="plain">return -1;</span>
-        <span class="plain">#Endif;</span>
+    <span class="plain">[ </span><span class="identifier">UnsignedCompare</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">u</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jleu</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> ?</span><span class="identifier">lesseq</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">lesseq</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jeq</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> ?</span><span class="identifier">equal</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">equal</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">y</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain"> &amp;&amp; </span><span class="identifier">y</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain"> &amp;&amp; </span><span class="identifier">y</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">u</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">&amp;~</span><span class="identifier">WORD_HIGHBIT</span><span class="plain">; </span><span class="identifier">v</span><span class="plain">= </span><span class="identifier">y</span><span class="plain">&amp;~</span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">u</span><span class="plain"> &gt; </span><span class="identifier">v</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -177,10 +177,10 @@ addresses, we need to compare them with the following routine, which returns
 
 
 <pre class="display">
-    <span class="plain">[ SignedCompare x y;</span>
-        <span class="plain">if (x &gt; y) return 1;</span>
-        <span class="plain">if (x == y) return 0;</span>
-        <span class="plain">return -1;</span>
+    <span class="plain">[ </span><span class="identifier">SignedCompare</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; </span><span class="identifier">y</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">y</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -192,552 +192,552 @@ cases used to check the floating-point extensions to Glulx.
 
 
 <pre class="display">
-    <span class="plain">#Ifdef TARGET_GLULX;</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Say fp;</span>
-        <span class="plain">print (Float) fp;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Say</span><span class="plain"> </span><span class="identifier">fp</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">Float</span><span class="plain">) </span><span class="identifier">fp</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Compare r1 r2;</span>
-        <span class="plain">@jflt r1 r2 ?less;</span>
-        <span class="plain">@jfeq r1 r2 0 ?same;</span>
-        <span class="plain">return 1;</span>
-        <span class="plain">.same; return 0;</span>
-        <span class="plain">.less; return -1;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Compare</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jflt</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> ?</span><span class="identifier">less</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jfeq</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> ?</span><span class="identifier">same</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">same</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">less</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ NUMBER_TY_to_REAL_NUMBER_TY int real; @numtof int real; return real; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_to_NUMBER_TY real int; @ftonumn real int; return int; ];</span>
+    <span class="plain">[ </span><span class="identifier">NUMBER_TY_to_REAL_NUMBER_TY</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">real</span><span class="plain">; @</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">real</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">real</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_to_NUMBER_TY</span><span class="plain"> </span><span class="identifier">real</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">; @</span><span class="identifier">ftonumn</span><span class="plain"> </span><span class="identifier">real</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">; ];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Sin in out; @sin in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Cos in out; @cos in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Tan in out; @tan in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Arcsin in out; @asin in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Arccos in out; @acos in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Arctan in out; @atan in out; return out; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Sin</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">sin</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Cos</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">cos</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Tan</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">tan</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Arcsin</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">asin</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Arccos</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">acos</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Arctan</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">atan</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Sinh in tmp out;</span>
-        <span class="plain">@exp in tmp;</span>
-        <span class="plain">@fsub M_0 in in;</span>
-        <span class="plain">@exp in out;</span>
-        <span class="plain">@fadd tmp out out;</span>
-        <span class="plain">@fmul out M_HALF out;</span>
-        <span class="plain">return out;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Sinh</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">M_0</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="reserved">in</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="identifier">out</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">out</span><span class="plain"> </span><span class="identifier">M_HALF</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Cosh in tmp out;</span>
-        <span class="plain">@exp in tmp;</span>
-        <span class="plain">@fsub M_0 in in;</span>
-        <span class="plain">@exp in out;</span>
-        <span class="plain">@fsub tmp out out;</span>
-        <span class="plain">@fmul out M_HALF out;</span>
-        <span class="plain">return out;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Cosh</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">M_0</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="reserved">in</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="identifier">out</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">out</span><span class="plain"> </span><span class="identifier">M_HALF</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Tanh in tmp out;</span>
-        <span class="plain">tmp = REAL_NUMBER_TY_Sinh(in);</span>
-        <span class="plain">in = REAL_NUMBER_TY_Cosh(in);</span>
-        <span class="plain">@fdiv tmp in out;</span>
-        <span class="plain">return out;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Tanh</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="identifier">tmp</span><span class="plain"> = </span><span class="identifier">REAL_NUMBER_TY_Sinh</span><span class="plain">(</span><span class="reserved">in</span><span class="plain">);</span>
+        <span class="reserved">in</span><span class="plain"> = </span><span class="identifier">REAL_NUMBER_TY_Cosh</span><span class="plain">(</span><span class="reserved">in</span><span class="plain">);</span>
+        <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">tmp</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Reciprocal in out; @fdiv M_1 in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Negate in out; @fsub M_0 in out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Plus x y out; @fadd x y out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Minus x y out; @fsub x y out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Times x y out; @fmul x y out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Divide x y out; @fdiv x y out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Remainder x y r q; @fmod x y r q; return r; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Approximate x y quotient out;</span>
-        <span class="plain">@fdiv x y quotient;</span>
-        <span class="plain">@fadd quotient M_HALF quotient;</span>
-        <span class="plain">@floor quotient quotient;</span>
-        <span class="plain">@fmul quotient y out;</span>
-        <span class="plain">return out;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Reciprocal</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">M_1</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Negate</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">M_0</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Plus</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Minus</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Times</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Divide</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Remainder</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">; @</span><span class="identifier">fmod</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Approximate</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain"> </span><span class="identifier">M_HALF</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">floor</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">quotient</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Root x out; @sqrt x out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Cube_Root x out; @pow x M_THIRD out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Pow x y out; @pow x y out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Exp x out; @exp x out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Log x out; @log x out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_BLog x n d out;</span>
-        <span class="plain">@log x out;</span>
-        <span class="plain">if (n == 10) d = M_LOG10;</span>
-        <span class="plain">else {</span>
-            <span class="plain">@numtof n d;</span>
-            <span class="plain">@log d d;</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Root</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">sqrt</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Cube_Root</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">pow</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">M_THIRD</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Pow</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">pow</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Exp</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">exp</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Log</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_BLog</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">) </span><span class="identifier">d</span><span class="plain"> = </span><span class="identifier">M_LOG10</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">@fdiv out d out;</span>
-        <span class="plain">return out;</span>
+        <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">out</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Floor x out; @floor x out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Ceiling x out; @ceil x out; return out; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Abs x; return x &amp; $7fffffff; ];</span>
-    <span class="plain">[ REAL_NUMBER_TY_Nan x; @jisnan x ?Nan; rfalse; .Nan; rtrue; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Floor</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">floor</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Ceiling</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; @</span><span class="identifier">ceil</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">out</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Abs</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> &amp; </span><span class="constant">$7fffffff</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Nan</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; @</span><span class="identifier">jisnan</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> ?</span><span class="identifier">Nan</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; .</span><span class="identifier">Nan</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; ];</span>
 
-    <span class="plain">Constant M_0    = $0;</span>
-    <span class="plain">Constant M_1    = $3F800000;</span>
-    <span class="plain">Constant M_HALF = $3F000000; ! 1/3</span>
-    <span class="plain">Constant M_THIRD = $3EAAAAAB; ! 1/3</span>
-    <span class="plain">Constant M_LOG10 = $40135D8E; ! log(10)</span>
-    <span class="plain">Constant M_N1   = $BF800000; ! -1</span>
-    <span class="plain">Constant M_PI   = $40490FDB;</span>
-    <span class="plain">Constant M_NPI  = $C0490FDB;</span>
-    <span class="plain">Constant M_2PI  = $40C90FDB; ! 2*pi</span>
-    <span class="plain">Constant M_PI2  = $3FC90FDB; ! pi/2</span>
-    <span class="plain">Constant M_NPI2 = $BFC90FDB;</span>
-    <span class="plain">Constant M_E    = $402DF854;</span>
-    <span class="plain">Constant M_E2   = $40EC7326; ! e^2</span>
-    <span class="plain">Constant M_N0   = $80000000; ! negative zero</span>
-    <span class="plain">Constant M_INF  = $7F800000; ! infinity</span>
-    <span class="plain">Constant M_NINF = $FF800000; ! negative infinity</span>
-    <span class="plain">Constant M_NAN  = $7F800001; ! one of many NaN values</span>
-    <span class="plain">Constant M_NNAN = $FF800001; ! another, with a sign bit</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_0</span><span class="plain">    = </span><span class="constant">$0</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_1</span><span class="plain">    = </span><span class="constant">$3F800000</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_HALF</span><span class="plain"> = </span><span class="constant">$3F000000</span><span class="plain">; </span><span class="comment">! 1/3</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_THIRD</span><span class="plain"> = </span><span class="constant">$3EAAAAAB</span><span class="plain">; </span><span class="comment">! 1/3</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_LOG10</span><span class="plain"> = </span><span class="constant">$40135D8E</span><span class="plain">; </span><span class="comment">! log(10)</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_N1</span><span class="plain">   = </span><span class="constant">$BF800000</span><span class="plain">; </span><span class="comment">! -1</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_PI</span><span class="plain">   = </span><span class="constant">$40490FDB</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_NPI</span><span class="plain">  = </span><span class="constant">$C0490FDB</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_2PI</span><span class="plain">  = </span><span class="constant">$40C90FDB</span><span class="plain">; </span><span class="comment">! 2*pi</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_PI2</span><span class="plain">  = </span><span class="constant">$3FC90FDB</span><span class="plain">; </span><span class="comment">! pi/2</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_NPI2</span><span class="plain"> = </span><span class="constant">$BFC90FDB</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_E</span><span class="plain">    = </span><span class="constant">$402DF854</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_E2</span><span class="plain">   = </span><span class="constant">$40EC7326</span><span class="plain">; </span><span class="comment">! e^2</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_N0</span><span class="plain">   = </span><span class="constant">$80000000</span><span class="plain">; </span><span class="comment">! negative zero</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_INF</span><span class="plain">  = </span><span class="constant">$7F800000</span><span class="plain">; </span><span class="comment">! infinity</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_NINF</span><span class="plain"> = </span><span class="constant">$FF800000</span><span class="plain">; </span><span class="comment">! negative infinity</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_NAN</span><span class="plain">  = </span><span class="constant">$7F800001</span><span class="plain">; </span><span class="comment">! one of many NaN values</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">M_NNAN</span><span class="plain"> = </span><span class="constant">$FF800001</span><span class="plain">; </span><span class="comment">! another, with a sign bit</span>
 
-    <span class="plain">! Floating-point parsing routines.</span>
+    <span class="comment">! Floating-point parsing routines.</span>
 
-    <span class="plain">! Parse a float from a text buffer. Returns a float value, or FLOAT_NAN if</span>
-    <span class="plain">! no value was understood.</span>
-    <span class="plain">!</span>
-    <span class="plain">! The recognized format, if you'll pardon a slightly bastardized regexp</span>
-    <span class="plain">! syntax, is "S?D*(PD*)?(ES?D+)?" where S is a sign character "+" or "-",</span>
-    <span class="plain">! D is a decimal digit "0" to "9", P is a decimal point ".",</span>
-    <span class="plain">! and E is the exponential modifier "E" or "e".</span>
-    <span class="plain">!</span>
-    <span class="plain">! For flexibility, the string "M10^" is also accepted for E, where M is</span>
-    <span class="plain">! "X", "x", "*", or the multiplication sign @{D7}. Optional spaces are</span>
-    <span class="plain">! allowed before and after the M sign. (But only for the "10^" form of</span>
-    <span class="plain">! the exponent, not the "e" form.)</span>
-    <span class="plain">!</span>
-    <span class="plain">! This routine does not try to recognize special names for infinity or NaN,</span>
-    <span class="plain">! but it can return FLOAT_INFINITY or FLOAT_NINFINITY if the exponent is too</span>
-    <span class="plain">! large.</span>
-    <span class="plain">!</span>
-    <span class="plain">! This routine relies on floating-point math. Therefore, the same string</span>
-    <span class="plain">! may parse to slightly different float values on different interpreters!</span>
-    <span class="plain">! Be warned.</span>
-    <span class="plain">!</span>
-    <span class="plain">! If useall is true, this insists on using all len characters from the buffer.</span>
-    <span class="plain">! (It returns FLOAT_NAN if any unrecognized characters are left over.)</span>
-    <span class="plain">! Contrariwise, if useall is false, unused characters at the end of the buffer</span>
-    <span class="plain">! are fine. (But not at the beginning; the float must start at the beginning</span>
-    <span class="plain">! of the buffer.)</span>
-    <span class="plain">!</span>
-    <span class="plain">[ FloatParse buf len useall</span>
-        <span class="plain">res ix val ch ten negative intpart fracpart fracdiv</span>
-        <span class="plain">expon expnegative count;</span>
+    <span class="comment">! Parse a float from a text buffer. Returns a float value, or FLOAT_NAN if</span>
+    <span class="comment">! no value was understood.</span>
+    <span class="comment">!</span>
+    <span class="comment">! The recognized format, if you'll pardon a slightly bastardized regexp</span>
+    <span class="comment">! syntax, is "S?D*(PD*)?(ES?D+)?" where S is a sign character "+" or "-",</span>
+    <span class="comment">! D is a decimal digit "0" to "9", P is a decimal point ".",</span>
+    <span class="comment">! and E is the exponential modifier "E" or "e".</span>
+    <span class="comment">!</span>
+    <span class="comment">! For flexibility, the string "M10^" is also accepted for E, where M is</span>
+    <span class="comment">! "X", "x", "*", or the multiplication sign @{D7}. Optional spaces are</span>
+    <span class="comment">! allowed before and after the M sign. (But only for the "10^" form of</span>
+    <span class="comment">! the exponent, not the "e" form.)</span>
+    <span class="comment">!</span>
+    <span class="comment">! This routine does not try to recognize special names for infinity or NaN,</span>
+    <span class="comment">! but it can return FLOAT_INFINITY or FLOAT_NINFINITY if the exponent is too</span>
+    <span class="comment">! large.</span>
+    <span class="comment">!</span>
+    <span class="comment">! This routine relies on floating-point math. Therefore, the same string</span>
+    <span class="comment">! may parse to slightly different float values on different interpreters!</span>
+    <span class="comment">! Be warned.</span>
+    <span class="comment">!</span>
+    <span class="comment">! If useall is true, this insists on using all len characters from the buffer.</span>
+    <span class="comment">! (It returns FLOAT_NAN if any unrecognized characters are left over.)</span>
+    <span class="comment">! Contrariwise, if useall is false, unused characters at the end of the buffer</span>
+    <span class="comment">! are fine. (But not at the beginning; the float must start at the beginning</span>
+    <span class="comment">! of the buffer.)</span>
+    <span class="comment">!</span>
+    <span class="plain">[ </span><span class="identifier">FloatParse</span><span class="plain"> </span><span class="identifier">buf</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">useall</span>
+        <span class="identifier">res</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain"> </span><span class="identifier">negative</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain"> </span><span class="identifier">fracdiv</span>
+        <span class="identifier">expon</span><span class="plain"> </span><span class="identifier">expnegative</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">;</span>
 
-    <span class="plain">!	print "FloatParse &lt;";</span>
-    <span class="plain">!	for (ix=0: ix&lt;len: ix++) print (char) buf-&gt;ix;</span>
-    <span class="plain">!	print "&gt;^";</span>
+    <span class="comment">!	print "FloatParse &lt;";</span>
+    <span class="comment">!	for (ix=0: ix&lt;len: ix++) print (char) buf-&gt;ix;</span>
+    <span class="comment">!	print "&gt;^";</span>
 
-        <span class="plain">if (len == 0)</span>
-            <span class="plain">return FLOAT_NAN;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
 
-        <span class="plain">ix = 0;</span>
-        <span class="plain">negative = false;</span>
-        <span class="plain">intpart = 0;</span>
-        <span class="plain">fracpart = 0;</span>
-        <span class="plain">@numtof 10 ten;</span>
+        <span class="identifier">ix</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">negative</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">intpart</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">fracpart</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain">;</span>
 
-        <span class="plain">! Sign character (optional)</span>
-        <span class="plain">ch = buf-&gt;ix;</span>
-        <span class="plain">if (ch == '-') {</span>
-            <span class="plain">negative = true;</span>
-            <span class="plain">ix++;</span>
+        <span class="comment">! Sign character (optional)</span>
+        <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) {</span>
+            <span class="identifier">negative</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+            <span class="identifier">ix</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="plain">else if (ch == '+') {</span>
-            <span class="plain">ix++;</span>
-        <span class="plain">}</span>
-
-        <span class="plain">! Some digits (optional)</span>
-        <span class="plain">for (count=0 : ix&lt;len : ix++, count++) {</span>
-            <span class="plain">ch = buf-&gt;ix;</span>
-            <span class="plain">if (ch &lt; '0' || ch &gt; '9')</span>
-                <span class="plain">break;</span>
-            <span class="plain">val = (ch - '0');</span>
-            <span class="plain">@numtof val val;</span>
-            <span class="plain">@fmul intpart ten intpart;</span>
-            <span class="plain">@fadd intpart val intpart;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'+'</span><span class="plain">) {</span>
+            <span class="identifier">ix</span><span class="plain">++;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Decimal point and more digits (optional)</span>
-        <span class="plain">if (ix&lt;len &amp;&amp; buf-&gt;ix == '.') {</span>
-            <span class="plain">ix++;</span>
-            <span class="plain">@numtof 1 fracdiv;</span>
-            <span class="plain">for ( : ix&lt;len : ix++, count++) {</span>
-                <span class="plain">ch = buf-&gt;ix;</span>
-                <span class="plain">if (ch &lt; '0' || ch &gt; '9')</span>
-                    <span class="plain">break;</span>
-                <span class="plain">val = (ch - '0');</span>
-                <span class="plain">@numtof	val val;</span>
-                <span class="plain">@fmul fracpart ten fracpart;</span>
-                <span class="plain">@fadd fracpart val fracpart;</span>
-                <span class="plain">@fmul fracdiv ten fracdiv;</span>
+        <span class="comment">! Some digits (optional)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">=0 : </span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++, </span><span class="identifier">count</span><span class="plain">++) {</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> &lt; </span><span class="character">'0'</span><span class="plain"> || </span><span class="identifier">ch</span><span class="plain"> &gt; </span><span class="character">'9'</span><span class="plain">)</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = (</span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">);</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain">;</span>
+        <span class="plain">}</span>
+
+        <span class="comment">! Decimal point and more digits (optional)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain"> &amp;&amp; </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain">) {</span>
+            <span class="identifier">ix</span><span class="plain">++;</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="identifier">fracdiv</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> ( : </span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++, </span><span class="identifier">count</span><span class="plain">++) {</span>
+                <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> &lt; </span><span class="character">'0'</span><span class="plain"> || </span><span class="identifier">ch</span><span class="plain"> &gt; </span><span class="character">'9'</span><span class="plain">)</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">val</span><span class="plain"> = (</span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">);</span>
+                <span class="plain">@</span><span class="identifier">numtof</span><span class="plain">	</span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">fracdiv</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain"> </span><span class="identifier">fracdiv</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">@fdiv fracpart fracdiv fracpart;</span>
+            <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain"> </span><span class="identifier">fracdiv</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! If there are no digits before *or* after the decimal point, fail.</span>
-        <span class="plain">if (count == 0)</span>
-            <span class="plain">return FLOAT_NAN;</span>
+        <span class="comment">! If there are no digits before *or* after the decimal point, fail.</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
 
-        <span class="plain">! Combine the integer and fractional parts.</span>
-        <span class="plain">@fadd intpart fracpart res;</span>
+        <span class="comment">! Combine the integer and fractional parts.</span>
+        <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">intpart</span><span class="plain"> </span><span class="identifier">fracpart</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
 
-        <span class="plain">! Exponent (optional)</span>
-        <span class="plain">if (ix&lt;len &amp;&amp; buf-&gt;ix == 'e' or 'E' or ' ' or '*' or 'x' or 'X' or $D7) {</span>
-            <span class="plain">if (buf-&gt;ix == 'e' or 'E') {</span>
-                <span class="plain">! no spaces, just the 'e'</span>
-                <span class="plain">ix++;</span>
-                <span class="plain">if (ix == len)</span>
-                    <span class="plain">return FLOAT_NAN;</span>
+        <span class="comment">! Exponent (optional)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain"> &amp;&amp; </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> == </span><span class="character">'e'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'E'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">' '</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'*'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'x'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'X'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">$D7</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> == </span><span class="character">'e'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'E'</span><span class="plain">) {</span>
+                <span class="comment">! no spaces, just the 'e'</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> == </span><span class="identifier">len</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">else {</span>
-                <span class="plain">! any number of spaces, "*", any number of spaces more, "10^"</span>
-                <span class="plain">while (ix &lt; len &amp;&amp; buf-&gt;ix == ' ')</span>
-                    <span class="plain">ix++;</span>
-                <span class="plain">if (ix == len)</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">if (buf-&gt;ix ~= '*' or 'x' or 'X' or $D7)</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">ix++;</span>
-                <span class="plain">while (ix &lt; len &amp;&amp; buf-&gt;ix == ' ')</span>
-                    <span class="plain">ix++;</span>
-                <span class="plain">if (ix == len)</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">if (buf-&gt;ix ~= '1')</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">ix++;</span>
-                <span class="plain">if (buf-&gt;ix ~= '0')</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">ix++;</span>
-                <span class="plain">if (buf-&gt;ix ~= $5E)</span>
-                    <span class="plain">return FLOAT_NAN;</span>
-                <span class="plain">ix++;</span>
-            <span class="plain">}</span>
-
-            <span class="plain">! Sign character (optional)</span>
-            <span class="plain">expnegative = false;</span>
-            <span class="plain">ch = buf-&gt;ix;</span>
-            <span class="plain">if (ch == '-') {</span>
-                <span class="plain">expnegative = true;</span>
-                <span class="plain">ix++;</span>
-            <span class="plain">}</span>
-            <span class="plain">else if (ch == '+') {</span>
-                <span class="plain">ix++;</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="comment">! any number of spaces, "*", any number of spaces more, "10^"</span>
+                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> &lt; </span><span class="identifier">len</span><span class="plain"> &amp;&amp; </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">)</span>
+                    <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> == </span><span class="identifier">len</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> ~= </span><span class="character">'*'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'x'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'X'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">$D7</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> &lt; </span><span class="identifier">len</span><span class="plain"> &amp;&amp; </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">)</span>
+                    <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> == </span><span class="identifier">len</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> ~= </span><span class="character">'1'</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> ~= </span><span class="character">'0'</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain"> ~= </span><span class="constant">$5E</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
             <span class="plain">}</span>
 
-            <span class="plain">expon = 0;</span>
-            <span class="plain">! Some digits (mandatory)</span>
-            <span class="plain">for (count=0 : ix&lt;len : ix++, count++) {</span>
-                <span class="plain">ch = buf-&gt;ix;</span>
-                <span class="plain">if (ch &lt; '0' || ch &gt; '9')</span>
-                    <span class="plain">break;</span>
-                <span class="plain">expon = 10*expon + (ch - '0');</span>
+            <span class="comment">! Sign character (optional)</span>
+            <span class="identifier">expnegative</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) {</span>
+                <span class="identifier">expnegative</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
+            <span class="plain">}</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'+'</span><span class="plain">) {</span>
+                <span class="identifier">ix</span><span class="plain">++;</span>
             <span class="plain">}</span>
 
-            <span class="plain">if (count == 0)</span>
-                <span class="plain">return FLOAT_NAN;</span>
+            <span class="identifier">expon</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="comment">! Some digits (mandatory)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">=0 : </span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++, </span><span class="identifier">count</span><span class="plain">++) {</span>
+                <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">buf</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> &lt; </span><span class="character">'0'</span><span class="plain"> || </span><span class="identifier">ch</span><span class="plain"> &gt; </span><span class="character">'9'</span><span class="plain">)</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">expon</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">*</span><span class="identifier">expon</span><span class="plain"> + (</span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">);</span>
+            <span class="plain">}</span>
 
-            <span class="plain">if (expnegative)</span>
-                <span class="plain">expon = -expon;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
 
-            <span class="plain">if (expon) {</span>
-                <span class="plain">@numtof expon expon;</span>
-                <span class="plain">@pow ten expon val;</span>
-                <span class="plain">@fmul res val res;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expnegative</span><span class="plain">)</span>
+                <span class="identifier">expon</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">expon</span><span class="plain">;</span>
+
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expon</span><span class="plain">) {</span>
+                <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">expon</span><span class="plain"> </span><span class="identifier">expon</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">pow</span><span class="plain"> </span><span class="identifier">ten</span><span class="plain"> </span><span class="identifier">expon</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">if (negative) {</span>
-            <span class="plain">! set the value's sign bit</span>
-            <span class="plain">res = $80000000 | res;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">negative</span><span class="plain">) {</span>
+            <span class="comment">! set the value's sign bit</span>
+            <span class="identifier">res</span><span class="plain"> = </span><span class="constant">$80000000</span><span class="plain"> | </span><span class="identifier">res</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">if (useall &amp;&amp; ix ~= len)</span>
-            <span class="plain">return FLOAT_NAN;</span>
-        <span class="plain">return res;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">useall</span><span class="plain"> &amp;&amp; </span><span class="identifier">ix</span><span class="plain"> ~= </span><span class="identifier">len</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FLOAT_NAN</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">! Floating-point printing routines. (These are based on code in</span>
-    <span class="plain">! Glulxercise.inf, but modified.)</span>
+    <span class="comment">! Floating-point printing routines. (These are based on code in</span>
+    <span class="comment">! Glulxercise.inf, but modified.)</span>
 
-    <span class="plain">! Print a float. This uses exponential notation ("[-]N.NNNe[+-]NN") if</span>
-    <span class="plain">! the exponent is not between 6 and -4. If it is (that is, if the</span>
-    <span class="plain">! absolute value is near 1.0) then it uses decimal notation ("[-]NNN.NNNNN").</span>
-    <span class="plain">! The precision is the number of digits after the decimal point</span>
-    <span class="plain">! (at least one, no more than eight). The default is five, because</span>
-    <span class="plain">! beyond that rounding errors creep in, and even exactly-represented</span>
-    <span class="plain">! float values are printed with trailing fudgy digits.</span>
-    <span class="plain">! Trailing zeroes are trimmed.</span>
-    <span class="plain">[ Float val prec   pval;</span>
-        <span class="plain">pval = val &amp; $7FFFFFFF;</span>
+    <span class="comment">! Print a float. This uses exponential notation ("[-]N.NNNe[+-]NN") if</span>
+    <span class="comment">! the exponent is not between 6 and -4. If it is (that is, if the</span>
+    <span class="comment">! absolute value is near 1.0) then it uses decimal notation ("[-]NNN.NNNNN").</span>
+    <span class="comment">! The precision is the number of digits after the decimal point</span>
+    <span class="comment">! (at least one, no more than eight). The default is five, because</span>
+    <span class="comment">! beyond that rounding errors creep in, and even exactly-represented</span>
+    <span class="comment">! float values are printed with trailing fudgy digits.</span>
+    <span class="comment">! Trailing zeroes are trimmed.</span>
+    <span class="plain">[ </span><span class="identifier">Float</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">prec</span><span class="plain">   </span><span class="identifier">pval</span><span class="plain">;</span>
+        <span class="identifier">pval</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain"> &amp; </span><span class="constant">$7FFFFFFF</span><span class="plain">;</span>
 
-        <span class="plain">@jz pval ?UseFloatDec;</span>
-        <span class="plain">@jfge pval $49742400 ?UseFloatExp; ! 1000000.0</span>
-        <span class="plain">@jflt pval $38D1B717 ?UseFloatExp; ! 0.0001</span>
+        <span class="plain">@</span><span class="identifier">jz</span><span class="plain"> </span><span class="identifier">pval</span><span class="plain"> ?</span><span class="identifier">UseFloatDec</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jfge</span><span class="plain"> </span><span class="identifier">pval</span><span class="plain"> </span><span class="constant">$49742400</span><span class="plain"> ?</span><span class="identifier">UseFloatExp</span><span class="plain">; </span><span class="comment">! 1000000.0</span>
+        <span class="plain">@</span><span class="identifier">jflt</span><span class="plain"> </span><span class="identifier">pval</span><span class="plain"> </span><span class="constant">$38D1B717</span><span class="plain"> ?</span><span class="identifier">UseFloatExp</span><span class="plain">; </span><span class="comment">! 0.0001</span>
 
-        <span class="plain">.UseFloatDec;</span>
-        <span class="plain">return FloatDec(val, prec);</span>
-        <span class="plain">.UseFloatExp;</span>
-        <span class="plain">return FloatExp(val, prec);</span>
+        <span class="plain">.</span><span class="identifier">UseFloatDec</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FloatDec</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">prec</span><span class="plain">);</span>
+        <span class="plain">.</span><span class="identifier">UseFloatExp</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FloatExp</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">prec</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">Array PowersOfTen --&gt; 1 10 100 1000 10000 100000 1000000 10000000 100000000 1000000000;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">PowersOfTen</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">1</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="constant">1000</span><span class="plain"> </span><span class="constant">10000</span><span class="plain"> </span><span class="constant">100000</span><span class="plain"> </span><span class="constant">1000000</span><span class="plain"> </span><span class="constant">10000000</span><span class="plain"> </span><span class="constant">100000000</span><span class="plain"> </span><span class="constant">1000000000</span><span class="plain">;</span>
 
-    <span class="plain">! Print a float in exponential notation: "[-]N.NNNe[+-]NN".</span>
-    <span class="plain">! The precision is the number of digits after the decimal point</span>
-    <span class="plain">! (at least one, no more than eight). The default is five, because</span>
-    <span class="plain">! beyond that rounding errors creep in, and even exactly-represented</span>
-    <span class="plain">! float values are printed with trailing fudgy digits.</span>
-    <span class="plain">! Trailing zeroes are trimmed.</span>
-    <span class="plain">[ FloatExp val prec   log10val expo fexpo idig ix pow10;</span>
-        <span class="plain">if (prec == 0)</span>
-            <span class="plain">prec = 5;</span>
-        <span class="plain">if (prec &gt; 8)</span>
-            <span class="plain">prec = 8;</span>
-        <span class="plain">pow10 = PowersOfTen --&gt; prec;</span>
+    <span class="comment">! Print a float in exponential notation: "[-]N.NNNe[+-]NN".</span>
+    <span class="comment">! The precision is the number of digits after the decimal point</span>
+    <span class="comment">! (at least one, no more than eight). The default is five, because</span>
+    <span class="comment">! beyond that rounding errors creep in, and even exactly-represented</span>
+    <span class="comment">! float values are printed with trailing fudgy digits.</span>
+    <span class="comment">! Trailing zeroes are trimmed.</span>
+    <span class="plain">[ </span><span class="identifier">FloatExp</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">prec</span><span class="plain">   </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain"> </span><span class="identifier">fexpo</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">prec</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> &gt; </span><span class="constant">8</span><span class="plain">)</span>
+            <span class="identifier">prec</span><span class="plain"> = </span><span class="constant">8</span><span class="plain">;</span>
+        <span class="identifier">pow10</span><span class="plain"> = </span><span class="identifier">PowersOfTen</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">prec</span><span class="plain">;</span>
 
-        <span class="plain">! Knock off the sign bit first.</span>
-        <span class="plain">if (val &amp; $80000000) {</span>
-            <span class="plain">@streamchar '-';</span>
-            <span class="plain">val = val &amp; $7FFFFFFF;</span>
+        <span class="comment">! Knock off the sign bit first.</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain"> &amp; </span><span class="constant">$80000000</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain"> &amp; </span><span class="constant">$7FFFFFFF</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">@jisnan val ?IsNan;</span>
-        <span class="plain">@jisinf val ?IsInf;</span>
+        <span class="plain">@</span><span class="identifier">jisnan</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> ?</span><span class="identifier">IsNan</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jisinf</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> ?</span><span class="identifier">IsInf</span><span class="plain">;</span>
 
-        <span class="plain">if (val == $0) {</span>
-            <span class="plain">expo = 0;</span>
-            <span class="plain">idig = 0;</span>
-            <span class="plain">jump DoPrint;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain"> == </span><span class="constant">$0</span><span class="plain">) {</span>
+            <span class="identifier">expo</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">idig</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">DoPrint</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Take as an example val=123.5, with precision=6. The desired</span>
-        <span class="plain">! result is "1.23000e+02".</span>
+        <span class="comment">! Take as an example val=123.5, with precision=6. The desired</span>
+        <span class="comment">! result is "1.23000e+02".</span>
 
-        <span class="plain">@log val sp;</span>
-        <span class="plain">@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)</span>
-        <span class="plain">@floor log10val fexpo;</span>
-        <span class="plain">@ftonumn fexpo expo;</span>
-        <span class="plain">! expo is now the exponent (as an integer). For our example, expo=2.</span>
+        <span class="plain">@</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain">; </span><span class="comment">! $40135D8E is log(10)</span>
+        <span class="plain">@</span><span class="identifier">floor</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">fexpo</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">ftonumn</span><span class="plain"> </span><span class="identifier">fexpo</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">;</span>
+        <span class="comment">! expo is now the exponent (as an integer). For our example, expo=2.</span>
 
-        <span class="plain">@fsub log10val fexpo sp;</span>
-        <span class="plain">@numtof prec sp;</span>
-        <span class="plain">@fadd sp sp sp;</span>
-        <span class="plain">@fmul sp $40135D8E sp;</span>
-        <span class="plain">@exp sp sp;</span>
-        <span class="plain">! The stack value is now exp((log10val - fexpo + prec) * log(10)).</span>
-        <span class="plain">! We've shifted the decimal point left by expo digits (so that</span>
-        <span class="plain">! it's after the first nonzero digit), and then right by prec</span>
-        <span class="plain">! digits. In our example, that would be 1235000.0.</span>
-        <span class="plain">@ftonumn sp idig;</span>
-        <span class="plain">! Round to an integer, and we have 1235000. Notice that this is</span>
-        <span class="plain">! exactly the digits we want to print (if we stick a decimal point</span>
-        <span class="plain">! after the first).</span>
+        <span class="plain">@</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">fexpo</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">prec</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="comment">! The stack value is now exp((log10val - fexpo + prec) * log(10)).</span>
+        <span class="comment">! We've shifted the decimal point left by expo digits (so that</span>
+        <span class="comment">! it's after the first nonzero digit), and then right by prec</span>
+        <span class="comment">! digits. In our example, that would be 1235000.0.</span>
+        <span class="plain">@</span><span class="identifier">ftonumn</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain">;</span>
+        <span class="comment">! Round to an integer, and we have 1235000. Notice that this is</span>
+        <span class="comment">! exactly the digits we want to print (if we stick a decimal point</span>
+        <span class="comment">! after the first).</span>
 
-        <span class="plain">.DoPrint;</span>
+        <span class="plain">.</span><span class="identifier">DoPrint</span><span class="plain">;</span>
 
-        <span class="plain">if (idig &gt;= 10*pow10) {</span>
-            <span class="plain">! Rounding errors have left us outside the decimal range of</span>
-            <span class="plain">! [1.0, 10.0) where we should be. Adjust to the next higher</span>
-            <span class="plain">! exponent.</span>
-            <span class="plain">expo++;</span>
-            <span class="plain">@div idig 10 idig;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">idig</span><span class="plain"> &gt;= </span><span class="constant">10</span><span class="plain">*</span><span class="identifier">pow10</span><span class="plain">) {</span>
+            <span class="comment">! Rounding errors have left us outside the decimal range of</span>
+            <span class="comment">! [1.0, 10.0) where we should be. Adjust to the next higher</span>
+            <span class="comment">! exponent.</span>
+            <span class="identifier">expo</span><span class="plain">++;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Trim off trailing zeroes, as long as there's at least one digit</span>
-        <span class="plain">! after the decimal point. (Delete this stanza if you want to</span>
-        <span class="plain">! keep the trailing zeroes.)</span>
-        <span class="plain">while (prec &gt; 1) {</span>
-            <span class="plain">@mod idig 10 sp;</span>
-            <span class="plain">@jnz sp ?DoneTrimming;</span>
-            <span class="plain">@div pow10 10 pow10;</span>
-            <span class="plain">@div idig 10 idig;</span>
-            <span class="plain">prec--;</span>
+        <span class="comment">! Trim off trailing zeroes, as long as there's at least one digit</span>
+        <span class="comment">! after the decimal point. (Delete this stanza if you want to</span>
+        <span class="comment">! keep the trailing zeroes.)</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">mod</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">jnz</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> ?</span><span class="identifier">DoneTrimming</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain">;</span>
+            <span class="identifier">prec</span><span class="plain">--;</span>
         <span class="plain">}</span>
-        <span class="plain">.DoneTrimming;</span>
+        <span class="plain">.</span><span class="identifier">DoneTrimming</span><span class="plain">;</span>
 
-        <span class="plain">for (ix=0 : ix&lt;=prec : ix++) {</span>
-            <span class="plain">@div idig pow10 sp;</span>
-            <span class="plain">@mod sp 10 sp;</span>
-            <span class="plain">@streamnum sp;</span>
-            <span class="plain">if (ix == 0)</span>
-                <span class="plain">@streamchar '.';</span>
-            <span class="plain">@div pow10 10 pow10;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=0 : </span><span class="identifier">ix</span><span class="plain">&lt;=</span><span class="identifier">prec</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++) {</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">mod</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">streamnum</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'.'</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Print the exponent. There are two conventions coded here: the</span>
-        <span class="plain">! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; PROGRAMMING_EXPONENTS_TCBIT == 0) {</span>
-            <span class="plain">PrintMultiplicationSign();</span>
-            <span class="plain">@streamstr "10";</span>
-            <span class="plain">@streamchar $5E;</span>
-            <span class="plain">@streamnum expo;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">! Convention is to use at least two digits.</span>
-            <span class="plain">@streamchar 'e';</span>
-            <span class="plain">if (expo &lt; 0) {</span>
-                <span class="plain">@streamchar '-';</span>
-                <span class="plain">@neg expo expo;</span>
+        <span class="comment">! Print the exponent. There are two conventions coded here: the</span>
+        <span class="comment">! programmatic ("1.0e+00") and the literary ("1.0 x 10^0").</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">PROGRAMMING_EXPONENTS_TCBIT</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">PrintMultiplicationSign</span><span class="plain">();</span>
+            <span class="plain">@</span><span class="identifier">streamstr</span><span class="plain"> </span><span class="string">"10"</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="constant">$5E</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">streamnum</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="comment">! Convention is to use at least two digits.</span>
+            <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'e'</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">;</span>
+                <span class="plain">@</span><span class="identifier">neg</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">else {</span>
-                <span class="plain">@streamchar '+';</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'+'</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if (expo &lt; 10)</span>
-                <span class="plain">@streamchar '0';</span>
-            <span class="plain">@streamnum expo;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &lt; </span><span class="constant">10</span><span class="plain">)</span>
+                <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">streamnum</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">rtrue;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
 
-        <span class="plain">.IsNan;</span>
-        <span class="plain">PrintNan();</span>
-        <span class="plain">rtrue;</span>
+        <span class="plain">.</span><span class="identifier">IsNan</span><span class="plain">;</span>
+        <span class="identifier">PrintNan</span><span class="plain">();</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
 
-        <span class="plain">.IsInf;</span>
-        <span class="plain">PrintInfinity();</span>
-        <span class="plain">rtrue;</span>
+        <span class="plain">.</span><span class="identifier">IsInf</span><span class="plain">;</span>
+        <span class="identifier">PrintInfinity</span><span class="plain">();</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">! Print a float in decimal notation: "[-]NNN.NNNNN".</span>
-    <span class="plain">! The precision is the number of digits after the decimal point</span>
-    <span class="plain">! (at least one, no more than eight). The default is five, because</span>
-    <span class="plain">! beyond that rounding errors creep in, and even exactly-represented</span>
-    <span class="plain">! float values are printed with trailing fudgy digits.</span>
-    <span class="plain">! Trailing zeroes are trimmed.</span>
-    <span class="plain">[ FloatDec val prec   log10val int fint extra0 frac idig ix pow10;</span>
-        <span class="plain">if (prec == 0)</span>
-            <span class="plain">prec = 5;</span>
-        <span class="plain">if (prec &gt; 8)</span>
-            <span class="plain">prec = 8;</span>
-        <span class="plain">pow10 = PowersOfTen --&gt; prec;</span>
+    <span class="comment">! Print a float in decimal notation: "[-]NNN.NNNNN".</span>
+    <span class="comment">! The precision is the number of digits after the decimal point</span>
+    <span class="comment">! (at least one, no more than eight). The default is five, because</span>
+    <span class="comment">! beyond that rounding errors creep in, and even exactly-represented</span>
+    <span class="comment">! float values are printed with trailing fudgy digits.</span>
+    <span class="comment">! Trailing zeroes are trimmed.</span>
+    <span class="plain">[ </span><span class="identifier">FloatDec</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">prec</span><span class="plain">   </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">fint</span><span class="plain"> </span><span class="identifier">extra0</span><span class="plain"> </span><span class="identifier">frac</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">prec</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> &gt; </span><span class="constant">8</span><span class="plain">)</span>
+            <span class="identifier">prec</span><span class="plain"> = </span><span class="constant">8</span><span class="plain">;</span>
+        <span class="identifier">pow10</span><span class="plain"> = </span><span class="identifier">PowersOfTen</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">prec</span><span class="plain">;</span>
 
-        <span class="plain">! Knock off the sign bit first.</span>
-        <span class="plain">if (val &amp; $80000000) {</span>
-            <span class="plain">@streamchar '-';</span>
-            <span class="plain">val = val &amp; $7FFFFFFF;</span>
+        <span class="comment">! Knock off the sign bit first.</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain"> &amp; </span><span class="constant">$80000000</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain"> &amp; </span><span class="constant">$7FFFFFFF</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">@jisnan val ?IsNan;</span>
-        <span class="plain">@jisinf val ?IsInf;</span>
+        <span class="plain">@</span><span class="identifier">jisnan</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> ?</span><span class="identifier">IsNan</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jisinf</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> ?</span><span class="identifier">IsInf</span><span class="plain">;</span>
 
-        <span class="plain">! Take as an example val=123.5, with precision=6. The desired result</span>
-        <span class="plain">! is "123.50000".</span>
+        <span class="comment">! Take as an example val=123.5, with precision=6. The desired result</span>
+        <span class="comment">! is "123.50000".</span>
 
-        <span class="plain">extra0 = 0;</span>
-        <span class="plain">@fmod val $3F800000 frac fint; ! $3F800000 is 1.0.</span>
-        <span class="plain">@ftonumz fint int;</span>
-        <span class="plain">! This converts the integer part of the value to an integer value;</span>
-        <span class="plain">! in our example, 123.</span>
+        <span class="identifier">extra0</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmod</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="constant">$3F800000</span><span class="plain"> </span><span class="identifier">frac</span><span class="plain"> </span><span class="identifier">fint</span><span class="plain">; </span><span class="comment">! $3F800000 is 1.0.</span>
+        <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">fint</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">;</span>
+        <span class="comment">! This converts the integer part of the value to an integer value;</span>
+        <span class="comment">! in our example, 123.</span>
 
-        <span class="plain">if (int == $7FFFFFFF) {</span>
-            <span class="plain">! Looks like the integer part of the value is bigger than</span>
-            <span class="plain">! we can store in an int variable. (It could be as large</span>
-            <span class="plain">! as 3e+38.) We're going to have to use a log function to</span>
-            <span class="plain">! reduce it by some number of factors of 10, and then pad</span>
-            <span class="plain">! with zeroes.</span>
-            <span class="plain">@log fint sp;</span>
-            <span class="plain">@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)</span>
-            <span class="plain">@ftonumz log10val extra0;</span>
-            <span class="plain">@sub extra0 8 extra0;</span>
-            <span class="plain">! extra0 is the number of zeroes we'll be padding with.</span>
-            <span class="plain">@numtof extra0 sp;</span>
-            <span class="plain">@fsub log10val sp sp;</span>
-            <span class="plain">@fmul sp $40135D8E sp;</span>
-            <span class="plain">@exp sp sp;</span>
-            <span class="plain">! The stack value is now exp((log10val - extra0) * log(10)).</span>
-            <span class="plain">! We've shifted the decimal point far enough left to leave</span>
-            <span class="plain">! about eight digits, which is all we can print as an integer.</span>
-            <span class="plain">@ftonumz sp int;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">int</span><span class="plain"> == </span><span class="constant">$7FFFFFFF</span><span class="plain">) {</span>
+            <span class="comment">! Looks like the integer part of the value is bigger than</span>
+            <span class="comment">! we can store in an int variable. (It could be as large</span>
+            <span class="comment">! as 3e+38.) We're going to have to use a log function to</span>
+            <span class="comment">! reduce it by some number of factors of 10, and then pad</span>
+            <span class="comment">! with zeroes.</span>
+            <span class="plain">@</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">fint</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain">; </span><span class="comment">! $40135D8E is log(10)</span>
+            <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">extra0</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">sub</span><span class="plain"> </span><span class="identifier">extra0</span><span class="plain"> </span><span class="constant">8</span><span class="plain"> </span><span class="identifier">extra0</span><span class="plain">;</span>
+            <span class="comment">! extra0 is the number of zeroes we'll be padding with.</span>
+            <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">extra0</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">fsub</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="comment">! The stack value is now exp((log10val - extra0) * log(10)).</span>
+            <span class="comment">! We've shifted the decimal point far enough left to leave</span>
+            <span class="comment">! about eight digits, which is all we can print as an integer.</span>
+            <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Print the integer part.</span>
-        <span class="plain">@streamnum int;</span>
-        <span class="plain">for (ix=0 : ix&lt;extra0 : ix++)</span>
-            <span class="plain">@streamchar '0';</span>
+        <span class="comment">! Print the integer part.</span>
+        <span class="plain">@</span><span class="identifier">streamnum</span><span class="plain"> </span><span class="identifier">int</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=0 : </span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">extra0</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++)</span>
+            <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">;</span>
 
-        <span class="plain">@streamchar '.';</span>
+        <span class="plain">@</span><span class="identifier">streamchar</span><span class="plain"> </span><span class="character">'.'</span><span class="plain">;</span>
 
-        <span class="plain">! Now we need to print the frac part, which is .5.</span>
+        <span class="comment">! Now we need to print the frac part, which is .5.</span>
 
-        <span class="plain">@log frac sp;</span>
-        <span class="plain">@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)</span>
-        <span class="plain">@numtof prec sp;</span>
-        <span class="plain">@fadd log10val sp sp;</span>
-        <span class="plain">@fmul sp $40135D8E sp;</span>
-        <span class="plain">@exp sp sp;</span>
-        <span class="plain">! The stack value is now exp((frac + prec) * log(10)).</span>
-        <span class="plain">! We've shifted the decimal point right by prec</span>
-        <span class="plain">! digits. In our example, that would be 50000.0.</span>
-        <span class="plain">@ftonumn sp idig;</span>
-        <span class="plain">! Round to an integer, and we have 50000. Notice that this is</span>
-        <span class="plain">! exactly the (post-decimal-point) digits we want to print.</span>
+        <span class="plain">@</span><span class="identifier">log</span><span class="plain"> </span><span class="identifier">frac</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fdiv</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain">; </span><span class="comment">! $40135D8E is log(10)</span>
+        <span class="plain">@</span><span class="identifier">numtof</span><span class="plain"> </span><span class="identifier">prec</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fadd</span><span class="plain"> </span><span class="identifier">log10val</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">fmul</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">$40135D8E</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">exp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="comment">! The stack value is now exp((frac + prec) * log(10)).</span>
+        <span class="comment">! We've shifted the decimal point right by prec</span>
+        <span class="comment">! digits. In our example, that would be 50000.0.</span>
+        <span class="plain">@</span><span class="identifier">ftonumn</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain">;</span>
+        <span class="comment">! Round to an integer, and we have 50000. Notice that this is</span>
+        <span class="comment">! exactly the (post-decimal-point) digits we want to print.</span>
 
-        <span class="plain">.DoPrint;</span>
+        <span class="plain">.</span><span class="identifier">DoPrint</span><span class="plain">;</span>
 
-        <span class="plain">if (idig &gt;= pow10) {</span>
-            <span class="plain">! Rounding errors have left us outside the decimal range of</span>
-            <span class="plain">! [0.0, 1.0) where we should be. I'm not sure this is possible,</span>
-            <span class="plain">! actually, but we'll just adjust downward.</span>
-            <span class="plain">idig = pow10 - 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">idig</span><span class="plain"> &gt;= </span><span class="identifier">pow10</span><span class="plain">) {</span>
+            <span class="comment">! Rounding errors have left us outside the decimal range of</span>
+            <span class="comment">! [0.0, 1.0) where we should be. I'm not sure this is possible,</span>
+            <span class="comment">! actually, but we'll just adjust downward.</span>
+            <span class="identifier">idig</span><span class="plain"> = </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">! Trim off trailing zeroes, as long as there's at least one digit</span>
-        <span class="plain">! after the decimal point. (Delete this stanza if you want to</span>
-        <span class="plain">! keep the trailing zeroes.)</span>
-        <span class="plain">while (prec &gt; 1) {</span>
-            <span class="plain">@mod idig 10 sp;</span>
-            <span class="plain">@jnz sp ?DoneTrimming;</span>
-            <span class="plain">@div pow10 10 pow10;</span>
-            <span class="plain">@div idig 10 idig;</span>
-            <span class="plain">prec--;</span>
+        <span class="comment">! Trim off trailing zeroes, as long as there's at least one digit</span>
+        <span class="comment">! after the decimal point. (Delete this stanza if you want to</span>
+        <span class="comment">! keep the trailing zeroes.)</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">prec</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">mod</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">jnz</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> ?</span><span class="identifier">DoneTrimming</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain">;</span>
+            <span class="identifier">prec</span><span class="plain">--;</span>
         <span class="plain">}</span>
-        <span class="plain">.DoneTrimming;</span>
+        <span class="plain">.</span><span class="identifier">DoneTrimming</span><span class="plain">;</span>
 
-        <span class="plain">@div pow10 10 pow10;</span>
-        <span class="plain">for (ix=0 : ix&lt;prec : ix++) {</span>
-            <span class="plain">@div idig pow10 sp;</span>
-            <span class="plain">@mod sp 10 sp;</span>
-            <span class="plain">@streamnum sp;</span>
-            <span class="plain">@div pow10 10 pow10;</span>
+        <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=0 : </span><span class="identifier">ix</span><span class="plain">&lt;</span><span class="identifier">prec</span><span class="plain"> : </span><span class="identifier">ix</span><span class="plain">++) {</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">idig</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">mod</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">streamnum</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="identifier">pow10</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rtrue;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
 
-        <span class="plain">.IsNan;</span>
-        <span class="plain">PrintNan();</span>
-        <span class="plain">rtrue;</span>
+        <span class="plain">.</span><span class="identifier">IsNan</span><span class="plain">;</span>
+        <span class="identifier">PrintNan</span><span class="plain">();</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
 
-        <span class="plain">.IsInf;</span>
-        <span class="plain">PrintInfinity();</span>
-        <span class="plain">rtrue;</span>
+        <span class="plain">.</span><span class="identifier">IsInf</span><span class="plain">;</span>
+        <span class="identifier">PrintInfinity</span><span class="plain">();</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ PrintInfinity;</span>
-        <span class="plain">@streamunichar $221E;</span>
-        <span class="plain">! @streamstr "Inf";</span>
+    <span class="plain">[ </span><span class="identifier">PrintInfinity</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">streamunichar</span><span class="plain"> </span><span class="constant">$221E</span><span class="plain">;</span>
+        <span class="comment">! @streamstr "Inf";</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ PrintNan;</span>
-        <span class="plain">@streamunichar $26a0;</span>
-        <span class="plain">! @streamstr "NaN";</span>
+    <span class="plain">[ </span><span class="identifier">PrintNan</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">streamunichar</span><span class="plain"> </span><span class="constant">$26a0</span><span class="plain">;</span>
+        <span class="comment">! @streamstr "NaN";</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ PrintMultiplicationSign;</span>
-        <span class="plain">print " ";</span>
-        <span class="plain">@streamunichar $D7;</span>
-        <span class="plain">print " ";</span>
-        <span class="plain">! @streamstr " x ";</span>
+    <span class="plain">[ </span><span class="identifier">PrintMultiplicationSign</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">streamunichar</span><span class="plain"> </span><span class="constant">$D7</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
+        <span class="comment">! @streamstr " x ";</span>
     <span class="plain">];</span>
 
-    <span class="plain">#Ifnot; ! TARGET_GLULX</span>
+    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Say real; print real; ]; ! Needs to exist, but likely never used</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Say</span><span class="plain"> </span><span class="identifier">real</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">real</span><span class="plain">; ]; </span><span class="comment">! Needs to exist, but likely never used</span>
 
-    <span class="plain">[ REAL_NUMBER_TY_Compare r1 r2; return UnsignedCompare(r1, r2); ];</span>
+    <span class="plain">[ </span><span class="identifier">REAL_NUMBER_TY_Compare</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">UnsignedCompare</span><span class="plain">(</span><span class="identifier">r1</span><span class="plain">, </span><span class="identifier">r2</span><span class="plain">); ];</span>
 
-    <span class="plain">#Endif; ! TARGET_GLULX</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
 </pre>
 
 <p class="inwebparagraph"></p>

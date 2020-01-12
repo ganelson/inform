@@ -471,7 +471,7 @@ property usage is legal.
 		}
 		WRITE(";\n");
 	} else {
-		WRITE("Array KindHierarchy --> K0_kind (0);\n");
+		WRITE("Array KindHierarchy --> (0) (0);\n");
 	}
 
 @h Lookup mechanism for properties of value instances.

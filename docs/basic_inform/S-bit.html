@@ -17,55 +17,55 @@
 
 
 <pre class="display">
-    <span class="plain">{-segment:Definitions.i6t}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Definitions</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
 
-    <span class="plain">#ifdef TARGET_ZCODE;</span>
-    <span class="plain">Constant BLOCKV_STACK_SIZE = 224;</span>
-    <span class="plain">#ifnot;</span>
-    <span class="plain">Constant BLOCKV_STACK_SIZE = DynamicMemoryAllocation/4;</span>
-    <span class="plain">#endif;</span>
+    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain"> = </span><span class="constant">224</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain"> = </span><span class="identifier">DynamicMemoryAllocation</span><span class="plain">/4;</span>
+    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
 
-    <span class="plain">Array blockv_stack --&gt; BLOCKV_STACK_SIZE;</span>
-    <span class="plain">Global I7SFRAME;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">blockv_stack</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7SFRAME</span><span class="plain">;</span>
 
-    <span class="plain">Global TEXT_TY_RE_Err = 0;</span>
-    <span class="plain">Global prior_named_noun; ! for adaptive text generation</span>
-    <span class="plain">Global prior_named_list; ! ditto: length of list of items</span>
-    <span class="plain">Global prior_named_list_gender; ! ditto: common gender of list of items, or -1</span>
-    <span class="plain">Global story_tense = 1; ! ditto: present tense</span>
-    <span class="plain">Global story_viewpoint = 2; ! ditto: second person singular</span>
-    <span class="plain">Global say__p = 1; Global say__pc = 0; Global say__pc_save = 0;</span>
-    <span class="plain">Global say__n; Global say__comp;</span>
-    <span class="plain">Global los_rv = false;</span>
-    <span class="plain">Global parameter_object; ! = I7 "parameter-object" = I7 "container in question"</span>
-    <span class="plain">Global parameter_value; ! not typesafe in I7</span>
-    <span class="plain">Array deferred_calling_list --&gt; 27;</span>
-    <span class="plain">Global property_to_be_totalled; ! used to implement "total P of..."</span>
-    <span class="plain">Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing</span>
-    <span class="plain">Global suppress_scope_loops;</span>
-    <span class="plain">Global temporary_value; ! can be used anywhere side-effects can't occur</span>
-    <span class="plain">! [13]</span>
-    <span class="plain">Global clr_fg = 1; ! foreground colour</span>
-    <span class="plain">Global clr_bg = 1; ! background colour</span>
-    <span class="plain">Global clr_fgstatus = 1; ! foreground colour of statusline</span>
-    <span class="plain">Global clr_bgstatus = 1; ! background colour of statusline</span>
-    <span class="plain">Global clr_on; ! has colour been enabled by the player?</span>
-    <span class="plain">Global statuswin_current; ! if writing to top window</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">TEXT_TY_RE_Err</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_noun</span><span class="plain">; </span><span class="comment">! for adaptive text generation</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list</span><span class="plain">; </span><span class="comment">! ditto: length of list of items</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list_gender</span><span class="plain">; </span><span class="comment">! ditto: common gender of list of items, or -1</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_tense</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! ditto: present tense</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_viewpoint</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! ditto: second person singular</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__pc_save</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__n</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__comp</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">los_rv</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_object</span><span class="plain">; </span><span class="comment">! = I7 "parameter-object" = I7 "container in question"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_value</span><span class="plain">; </span><span class="comment">! not typesafe in I7</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">deferred_calling_list</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">27</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_to_be_totalled</span><span class="plain">; </span><span class="comment">! used to implement "total P of..."</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_loop_sign</span><span class="plain">; </span><span class="comment">! $+1$ for increasing order, $-1$ for decreasing</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">suppress_scope_loops</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">temporary_value</span><span class="plain">; </span><span class="comment">! can be used anywhere side-effects can't occur</span>
+    <span class="comment">! [13]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! foreground colour</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! background colour</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! foreground colour of statusline</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! background colour of statusline</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_on</span><span class="plain">; </span><span class="comment">! has colour been enabled by the player?</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_current</span><span class="plain">; </span><span class="comment">! if writing to top window</span>
 
-    <span class="plain">! [14]</span>
-    <span class="plain">Global statuswin_cursize = 0;</span>
-    <span class="plain">Global statuswin_size = 1;</span>
+    <span class="comment">! [14]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_cursize</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_size</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
-    <span class="plain">! [16]</span>
-    <span class="plain">! Global debug_flag = 0;</span>
-    <span class="plain">Global debug_rules = 0;</span>
-    <span class="plain">Global debug_rule_nesting;</span>
-    <span class="plain">Global reason_the_action_failed; ! = I7 "reason the action failed"</span>
+    <span class="comment">! [16]</span>
+    <span class="comment">! Global debug_flag = 0;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debug_rules</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debug_rule_nesting</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">reason_the_action_failed</span><span class="plain">; </span><span class="comment">! = I7 "reason the action failed"</span>
 
-    <span class="plain">! [3]</span>
-    <span class="plain">Global standard_interpreter = 0;</span>
+    <span class="comment">! [3]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">standard_interpreter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-    <span class="plain">Array LocalParking --&gt; 64;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LocalParking</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">64</span><span class="plain">;</span>
 
 </pre>
 
@@ -79,13 +79,13 @@ dictionary word addresses and so on.
 
 
 <pre class="display">
-    <span class="plain">#Ifdef TARGET_GLULX;</span>
-    <span class="plain">{-segment:Glulx.i6t}</span>
-    <span class="plain">#Endif;</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Glulx</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
 
-    <span class="plain">#Ifdef TARGET_ZCODE;</span>
-    <span class="plain">{-segment:ZMachine.i6t}</span>
-    <span class="plain">#Endif;</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">ZMachine</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -94,25 +94,25 @@ dictionary word addresses and so on.
 
 
 <pre class="display">
-    <span class="plain">{-segment:Paragraphing.i6t}</span>
-    <span class="plain">{-segment:Mathematics.i6t}</span>
-    <span class="plain">{-segment:FileIO.i6t}</span>
-    <span class="plain">{-segment:Sort.i6t}</span>
-    <span class="plain">{-segment:Tables.i6t}</span>
-    <span class="plain">{-segment:MStack.i6t}</span>
-    <span class="plain">{-segment:Rulebooks.i6t}</span>
-    <span class="plain">{-segment:Flex.i6t}</span>
-    <span class="plain">{-segment:BlockValues.i6t}</span>
-    <span class="plain">{-segment:Text.i6t}</span>
-    <span class="plain">{-segment:RegExp.i6t}</span>
-    <span class="plain">{-segment:Lists.i6t}</span>
-    <span class="plain">{-segment:Combinations.i6t}</span>
-    <span class="plain">{-segment:RelationKind.i6t}</span>
-    <span class="plain">{-segment:Relations.i6t}</span>
-    <span class="plain">{-segment:RTP.i6t}</span>
-    <span class="plain">{-segment:Utilities.i6t}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Paragraphing</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Mathematics</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">FileIO</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Sort</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Tables</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">MStack</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Rulebooks</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Flex</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">BlockValues</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Text</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">RegExp</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Lists</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Combinations</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">RelationKind</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Relations</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">RTP</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+    <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Utilities</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
 
-    <span class="plain">Array Protect_I7_Arrays --&gt; 16339 12345;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Protect_I7_Arrays</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">16339</span><span class="plain"> </span><span class="constant">12345</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -126,7 +126,7 @@ printing routine for new kinds of value.
 
 
 <pre class="display">
-    <span class="plain">[ DecimalNumber num; print num; ];</span>
+    <span class="plain">[ </span><span class="identifier">DecimalNumber</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -137,13 +137,13 @@ without substitutions.
 
 
 <pre class="display">
-    <span class="plain">[ PrintI6Text x;</span>
-        <span class="plain">if (x ofclass String) print (string) x;</span>
-        <span class="plain">if (x ofclass Routine) return (x)();</span>
-        <span class="plain">if (x == EMPTY_TEXT_PACKED) rfalse;</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">PrintI6Text</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">String</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">x</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">Routine</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">)();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">EMPTY_TEXT_PACKED</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ I7_String x; TEXT_TY_Say(x); ]; ! An alternative name now used only by extensions</span>
+    <span class="plain">[ </span><span class="identifier">I7_String</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">); ]; </span><span class="comment">! An alternative name now used only by extensions</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -164,10 +164,10 @@ has to be done (once) at run-time, with the routine compiled.
 
 
 <pre class="display">
-    <span class="plain">Constant attributed_property_offsets_SIZE 48;</span>
-    <span class="plain">Array attributed_property_offsets --&gt; attributed_property_offsets_SIZE;</span>
-    <span class="plain">Constant valued_property_offsets_SIZE (100 + CCOUNT_PROPERTY + INDIV_PROP_START-48);</span>
-    <span class="plain">Array valued_property_offsets --&gt; valued_property_offsets_SIZE;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">attributed_property_offsets_SIZE</span><span class="plain"> </span><span class="constant">48</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">attributed_property_offsets</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">attributed_property_offsets_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">valued_property_offsets_SIZE</span><span class="plain"> (100 + </span><span class="identifier">CCOUNT_PROPERTY</span><span class="plain"> + </span><span class="identifier">INDIV_PROP_START</span><span class="plain">-48);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">valued_property_offsets</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">valued_property_offsets_SIZE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -189,27 +189,27 @@ allows us to divide the paragraph or not accordingly.
 
 
 <pre class="display">
-    <span class="plain">[ PrintOrRun obj prop no_break  pv st routine_return_value;</span>
-        <span class="plain">@push self; self = obj;</span>
-        <span class="plain">if (prop == 0) {</span>
-            <span class="plain">print (name) prop; routine_return_value = true;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">routine_return_value = TEXT_TY_Say(obj.prop);</span>
+    <span class="plain">[ </span><span class="identifier">PrintOrRun</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain"> </span><span class="identifier">no_break</span><span class="plain">  </span><span class="identifier">pv</span><span class="plain"> </span><span class="identifier">st</span><span class="plain"> </span><span class="identifier">routine_return_value</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">self</span><span class="plain">; </span><span class="identifier">self</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prop</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">prop</span><span class="plain">; </span><span class="identifier">routine_return_value</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">routine_return_value</span><span class="plain"> = </span><span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">prop</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">@pull self;</span>
-        <span class="plain">if (routine_return_value) {</span>
-            <span class="plain">say__p = 1;</span>
-            <span class="plain">if (no_break == false) {</span>
-                <span class="plain">new_line;</span>
-                <span class="plain">DivideParagraphPoint();</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">self</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">routine_return_value</span><span class="plain">) {</span>
+            <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_break</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
+                <span class="reserved">new_line</span><span class="plain">;</span>
+                <span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">return routine_return_value;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">routine_return_value</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DA_Number n; print n; ];</span>
-    <span class="plain">[ DA_TruthState n; if (n==0) print "false"; else print "true"; ];</span>
+    <span class="plain">[ </span><span class="identifier">DA_Number</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">DA_TruthState</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">==0) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"false"</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"true"</span><span class="plain">; ];</span>
 
 </pre>
 

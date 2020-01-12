@@ -239,73 +239,73 @@ below.
 
 
 <pre class="display">
-    <span class="plain">!Constant TRACE_I7_SPACING;</span>
+    <span class="comment">!Constant TRACE_I7_SPACING;</span>
 
-    <span class="plain">[ ClearParagraphing r;</span>
-        <span class="plain">say__p = 0; say__pc = 0;</span>
+    <span class="plain">[ </span><span class="identifier">ClearParagraphing</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DivideParagraphPoint;</span>
-        <span class="plain">#ifdef TRACE_I7_SPACING; print "[DPP", say__p, say__pc, "]"; #endif;</span>
-        <span class="plain">if (say__p) {</span>
-            <span class="plain">new_line; say__p = 0; say__pc = say__pc | PARA_COMPLETED;</span>
-            <span class="plain">say__pc_save = true;</span>
-            <span class="plain">if (say__pc &amp; PARA_PROMPTSKIP) say__pc = say__pc - PARA_PROMPTSKIP;</span>
-            <span class="plain">if (say__pc &amp; PARA_SUPPRESSPROMPTSKIP) say__pc = say__pc - PARA_SUPPRESSPROMPTSKIP;</span>
+    <span class="plain">[ </span><span class="identifier">DivideParagraphPoint</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[DPP"</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">"]"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) {</span>
+            <span class="reserved">new_line</span><span class="plain">; </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_COMPLETED</span><span class="plain">;</span>
+            <span class="identifier">say__pc_save</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">#ifdef TRACE_I7_SPACING; print "[--&gt;", say__p, say__pc, "]"; #endif;</span>
-        <span class="plain">say__pc = say__pc | PARA_CONTENTEXPECTED;</span>
-        <span class="plain">say__pc_save = (say__pc &amp; PARA_COMPLETED);</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[--&gt;"</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">"]"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">;</span>
+        <span class="identifier">say__pc_save</span><span class="plain"> = (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_COMPLETED</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ AdjustParagraphPoint;</span>
-        <span class="plain">#ifdef TRACE_I7_SPACING; print "[APP ", say__p, " ", say__pc, " ", say__pc_save, "]^"; #endif;</span>
-        <span class="plain">if (say__pc_save) say__pc = (say__pc | PARA_COMPLETED);</span>
+    <span class="plain">[ </span><span class="identifier">AdjustParagraphPoint</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[APP "</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="string">" "</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">" "</span><span class="plain">, </span><span class="identifier">say__pc_save</span><span class="plain">, </span><span class="string">"]^"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc_save</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = (</span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_COMPLETED</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ParaContent;</span>
-        <span class="plain">if (say__pc &amp; PARA_CONTENTEXPECTED) {</span>
-            <span class="plain">say__pc = say__pc - PARA_CONTENTEXPECTED;</span>
-            <span class="plain">say__p = 1;</span>
+    <span class="plain">[ </span><span class="identifier">ParaContent</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">) {</span>
+            <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">;</span>
+            <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ GoingLookBreak;</span>
-        <span class="plain">if (say__pc &amp; PARA_COMPLETED == 0) new_line;</span>
-        <span class="plain">ClearParagraphing(10);</span>
+    <span class="plain">[ </span><span class="identifier">GoingLookBreak</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_COMPLETED</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="identifier">ClearParagraphing</span><span class="plain">(10);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ CommandClarificationBreak;</span>
-        <span class="plain">new_line;</span>
-        <span class="plain">ClearParagraphing(11);</span>
+    <span class="plain">[ </span><span class="identifier">CommandClarificationBreak</span><span class="plain">;</span>
+        <span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="identifier">ClearParagraphing</span><span class="plain">(11);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RunParagraphOn;</span>
-        <span class="plain">#ifdef TRACE_I7_SPACING; print "[RPO", say__p, say__pc, "]"; #endif;</span>
-        <span class="plain">say__p = 0;</span>
-        <span class="plain">say__pc = say__pc | PARA_PROMPTSKIP;</span>
-        <span class="plain">say__pc = say__pc | PARA_SUPPRESSPROMPTSKIP;</span>
+    <span class="plain">[ </span><span class="identifier">RunParagraphOn</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[RPO"</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">"]"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">;</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ SpecialLookSpacingBreak;</span>
-        <span class="plain">#ifdef TRACE_I7_SPACING; print "[SLS", say__p, say__pc, "]"; #endif;</span>
-        <span class="plain">say__p = 0;</span>
-        <span class="plain">say__pc = say__pc | PARA_PROMPTSKIP;</span>
+    <span class="plain">[ </span><span class="identifier">SpecialLookSpacingBreak</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[SLS"</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">"]"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ EnsureBreakBeforePrompt;</span>
-        <span class="plain">if ((say__p) ||</span>
-            <span class="plain">((say__pc &amp; PARA_PROMPTSKIP) &amp;&amp; ((say__pc &amp; PARA_SUPPRESSPROMPTSKIP)==0)))</span>
-            <span class="plain">new_line;</span>
-        <span class="plain">ClearParagraphing(12);</span>
+    <span class="plain">[ </span><span class="identifier">EnsureBreakBeforePrompt</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">say__p</span><span class="plain">) ||</span>
+            <span class="plain">((</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">)==0)))</span>
+            <span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="identifier">ClearParagraphing</span><span class="plain">(12);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ PrintSingleParagraph matter;</span>
-        <span class="plain">say__p = 1;</span>
-        <span class="plain">say__pc = say__pc | PARA_NORULEBOOKBREAKS;</span>
-        <span class="plain">TEXT_TY_Say(matter);</span>
-        <span class="plain">DivideParagraphPoint(13);</span>
-        <span class="plain">say__pc = 0;</span>
+    <span class="plain">[ </span><span class="identifier">PrintSingleParagraph</span><span class="plain"> </span><span class="identifier">matter</span><span class="plain">;</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_NORULEBOOKBREAKS</span><span class="plain">;</span>
+        <span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">);</span>
+        <span class="identifier">DivideParagraphPoint</span><span class="plain">(13);</span>
+        <span class="identifier">say__pc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

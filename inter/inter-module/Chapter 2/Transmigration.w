@@ -18,7 +18,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	inter_tree *origin_tree = Inter::Packages::tree(migrant);
 	inter_tree *destination_tree = Inter::Packages::tree(destination);
 	inter_package *origin = Inter::Packages::parent(migrant);
-	inter_bookmark deletion_point, insertion_point, primitives_point;
+	inter_bookmark deletion_point, insertion_point, primitives_point, ptypes_point;
 	@<Create these bookmarks@>;
 	@<Mark the insertion and deletion points with comments@>;
 	@<Physically move the subtree to its new home@>;
@@ -85,6 +85,12 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 			prims = F;
 	if (prims == NULL) internal_error("dest has no prims");
 	primitives_point = Inter::Bookmarks::after_this_node(destination->package_head->tree, prims);
+	inter_tree_node *ptypes = NULL;
+	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
+		if (F->W.data[ID_IFLD] == PACKAGETYPE_IST)
+			ptypes = F;
+	if (ptypes == NULL) internal_error("dest has no prims");
+	ptypes_point = Inter::Bookmarks::after_this_node(destination->package_head->tree, ptypes);
 
 @<Mark the insertion and deletion points with comments@> =
 	inter_t C1 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&deletion_point), Inter::Bookmarks::package(&deletion_point));
@@ -107,6 +113,7 @@ typedef struct ipct_state {
 	inter_package *migrant;
 	inter_package *destination;
 	inter_bookmark *primitives_point;
+	inter_bookmark *ptypes_point;
 	inter_tree *origin_tree;
 	inter_tree *destination_tree;
 } ipct_state;
@@ -118,6 +125,7 @@ typedef struct ipct_state {
 	ipct.origin_tree = origin_tree;
 	ipct.destination_tree = destination_tree;
 	ipct.primitives_point = &primitives_point;
+	ipct.ptypes_point = &ptypes_point;
 
 @<Correct any references from the migrant to the origin@> =
 	ipct_state ipct;
@@ -138,6 +146,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (pack == NULL) internal_error("no package defined here");
 		if (Inter::Packages::is_linklike(pack)) return;
+		@<Correct the reference to this package type@>;
 		inter_symbols_table *T = Inter::Packages::scope(pack);
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
@@ -193,6 +202,30 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		equivalent_primitive = NULL;
 	} else {
 		Inter::Bookmarks::insert(ipct->primitives_point, D);
+	}
+
+@<Correct the reference to this package type@> =
+	inter_symbol *original_ptype =
+		Inter::SymbolsTables::symbol_from_id(
+			Inter::Tree::global_scope(ipct->origin_tree), P->W.data[PTYPE_PACKAGE_IFLD]);
+	inter_symbol *equivalent_ptype = Inter::Transmigration::cached_equivalent(original_ptype);
+	if (equivalent_ptype == NULL) {
+		equivalent_ptype = Inter::SymbolsTables::symbol_from_name(Inter::Tree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
+		if (equivalent_ptype) Inter::Transmigration::cache(original_ptype, equivalent_ptype);
+	}
+	if (equivalent_ptype)
+		P->W.data[PTYPE_PACKAGE_IFLD] = Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
+
+@<Duplicate this package type@> =
+	equivalent_ptype = Inter::SymbolsTables::symbol_from_name_creating(Inter::Tree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+	inter_tree_node *D = Inter::Node::fill_1(ipct->ptypes_point, PACKAGETYPE_IST, Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(ipct->ptypes_point), D);
+	if (E) {
+		Inter::Errors::issue(E);
+		equivalent_ptype = NULL;
+	} else {
+		Inter::Bookmarks::insert(ipct->ptypes_point, D);
 	}
 
 @<Correct the reference to this symbol@> =

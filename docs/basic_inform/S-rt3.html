@@ -31,223 +31,223 @@ original source text (though in fact I7 does not use this at present).
 
 
 <pre class="display">
-    <span class="plain">Array RTP_Buffer --&gt; 7;</span>
-    <span class="plain">[ RunTimeProblem n par1 par2 par3 ln file;</span>
-        <span class="plain">if (RTP_Buffer--&gt;0 == -1) {</span>
-            <span class="plain">RTP_Buffer--&gt;0 = n;</span>
-            <span class="plain">RTP_Buffer--&gt;1 = par1;</span>
-            <span class="plain">RTP_Buffer--&gt;2 = par2;</span>
-            <span class="plain">RTP_Buffer--&gt;3 = par3;</span>
-            <span class="plain">RTP_Buffer--&gt;4 = ln;</span>
-            <span class="plain">RTP_Buffer--&gt;5 = file;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">RTP_Buffer</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">7</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">RunTimeProblem</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain"> </span><span class="identifier">par3</span><span class="plain"> </span><span class="identifier">ln</span><span class="plain"> </span><span class="identifier">file</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == </span><span class="constant">-1</span><span class="plain">) {</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="identifier">n</span><span class="plain">;</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;1 = </span><span class="identifier">par1</span><span class="plain">;</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;2 = </span><span class="identifier">par2</span><span class="plain">;</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;3 = </span><span class="identifier">par3</span><span class="plain">;</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;4 = </span><span class="identifier">ln</span><span class="plain">;</span>
+            <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;5 = </span><span class="identifier">file</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">RunTimeProblemShow();</span>
+        <span class="identifier">RunTimeProblemShow</span><span class="plain">();</span>
     <span class="plain">];</span>
-    <span class="plain">[ ClearRTP;</span>
-        <span class="plain">RTP_Buffer--&gt;0 = -1;</span>
-        <span class="plain">RTP_Buffer--&gt;6 = false;</span>
+    <span class="plain">[ </span><span class="identifier">ClearRTP</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6 = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ SuspendRTP;</span>
-        <span class="plain">RTP_Buffer--&gt;6 = true;</span>
+    <span class="plain">[ </span><span class="identifier">SuspendRTP</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6 = </span><span class="reserved">true</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ ResumeRTP;</span>
-        <span class="plain">RTP_Buffer--&gt;6 = false;</span>
+    <span class="plain">[ </span><span class="identifier">ResumeRTP</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6 = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ RunTimeProblemShow   n par1 par2 par3 ln file i c;</span>
-        <span class="plain">if (RTP_Buffer--&gt;0 == -1 or -2) return;</span>
-        <span class="plain">if (RTP_Buffer--&gt;6) return;</span>
+    <span class="plain">[ </span><span class="identifier">RunTimeProblemShow</span><span class="plain">   </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain"> </span><span class="identifier">par3</span><span class="plain"> </span><span class="identifier">ln</span><span class="plain"> </span><span class="identifier">file</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == </span><span class="constant">-1</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">-2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="plain">n = RTP_Buffer--&gt;0;</span>
-        <span class="plain">par1 = RTP_Buffer--&gt;1;</span>
-        <span class="plain">par2 = RTP_Buffer--&gt;2;</span>
-        <span class="plain">par3 = RTP_Buffer--&gt;3;</span>
-        <span class="plain">ln = RTP_Buffer--&gt;4;</span>
-        <span class="plain">file = RTP_Buffer--&gt;5;</span>
-        <span class="plain">RTP_Buffer--&gt;0 = -2;</span>
+        <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0;</span>
+        <span class="identifier">par1</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;1;</span>
+        <span class="identifier">par2</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;2;</span>
+        <span class="identifier">par3</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;3;</span>
+        <span class="identifier">ln</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;4;</span>
+        <span class="identifier">file</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;5;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="constant">-2</span><span class="plain">;</span>
 
-        <span class="plain">new_line;</span>
-        <span class="plain">print "*** Run-time problem P", n;</span>
-        <span class="plain">if (ln) {</span>
-            <span class="plain">print " (at paragraph ", ln, " in ";</span>
-            <span class="plain">if (file == 0) print "the source text";</span>
-            <span class="plain">else ShowOneExtension(file);</span>
-            <span class="plain">print ")";</span>
+        <span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Run-time problem P"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ln</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">" (at paragraph "</span><span class="plain">, </span><span class="identifier">ln</span><span class="plain">, </span><span class="string">" in "</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">file</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"the source text"</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">ShowOneExtension</span><span class="plain">(</span><span class="identifier">file</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">")"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">print ": ";</span>
-        <span class="plain">switch(n) {</span>
-            <span class="plain">RTP_BACKDROP:</span>
-                <span class="plain">print "Tried to move ", (the) par1, " (a backdrop) to ", (the) par2,</span>
-                    <span class="plain">", which is not a region.^";</span>
-            <span class="plain">RTP_CANTCHANGE:</span>
-                <span class="plain">print "Tried to change player to ", (the) par1, ", which is not a person.^";</span>
-            <span class="plain">RTP_NOEXIT:</span>
-                <span class="plain">print "Tried to change ", (the) par2, " exit of ", (the) par1,</span>
-                    <span class="plain">", but it didn't seem to have such an exit to change.^";</span>
-            <span class="plain">RTP_EXITDOOR:</span>
-                <span class="plain">print "Tried to change ", (the) par2, " exit of ", (the) par1,</span>
-                    <span class="plain">", but it led to a door, not a room.^";</span>
-            <span class="plain">RTP_IMPREL:</span>
-                <span class="plain">print "Tried to access an inappropriate relation for ", (the) par1,</span>
-                    <span class="plain">", violating '", (string) RlnGetF(par2, RR_DESCRIPTION), "'.^";</span>
-            <span class="plain">RTP_TOOMANYRULEBOOKS:</span>
-                <span class="plain">print "Too many rulebooks in simultaneous use.^";</span>
-            <span class="plain">RTP_TOOMANYEVENTS:</span>
-                <span class="plain">print "Too many timed events are going on at once.^";</span>
-            <span class="plain">RTP_BADPROPERTY:</span>
-                <span class="plain">print "Tried to access non-existent property for ", (the) par1, ".^";</span>
-            <span class="plain">RTP_UNPROVIDED:</span>
-                <span class="plain">print "Since ", (the) par1, " is not allowed the property ~",</span>
-                        <span class="plain">(string) par2, "~, it is against the rules to try to use it.^";</span>
-            <span class="plain">RTP_UNSET:</span>
-                <span class="plain">print "Although ", (the) par1, " is allowed to have the property ~",</span>
-                    <span class="plain">(string) par2, "~, no value was ever given, so it can't now be used.^";</span>
-            <span class="plain">RTP_TOOMANYACTS:</span>
-                <span class="plain">print "Too many activities are going on at once.^";</span>
-            <span class="plain">RTP_CANTABANDON:</span>
-                <span class="plain">print "Tried to abandon an activity which wasn't going on.^";</span>
-            <span class="plain">RTP_CANTEND:</span>
-                <span class="plain">print "Tried to end an activity which wasn't going on.^";</span>
-            <span class="plain">RTP_CANTMOVENOTHING:</span>
-                <span class="plain">print "You can't move nothing.^";</span>
-            <span class="plain">RTP_CANTREMOVENOTHING:</span>
-                <span class="plain">print "You can't remove nothing from play.^";</span>
-            <span class="plain">RTP_DIVZERO:</span>
-                <span class="plain">print "You can't divide by zero.^";</span>
-            <span class="plain">RTP_BADVALUEPROPERTY:</span>
-                <span class="plain">print "Tried to access property for a value which didn't fit: ",</span>
-                    <span class="plain">"if this were a number it would be ", par1, ".^";</span>
-            <span class="plain">RTP_NOTBACKDROP:</span>
-                <span class="plain">print "Tried to move ", (the) par1, " (not a backdrop) to ", (the) par2,</span>
-                    <span class="plain">", which is a region.^";</span>
-            <span class="plain">RTP_TABLE_NOCOL:</span>
-                <span class="plain">print "Attempt to look up a non-existent column in the table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_NOCORR:</span>
-                <span class="plain">print "Attempt to look up a non-existent correspondence in the table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_NOROW:</span>
-                <span class="plain">print "Attempt to look up a non-existent row in the table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_NOENTRY:</span>
-                <span class="plain">print "Attempt to look up a non-existent entry at column ", par2,</span>
-                    <span class="plain">", row ", par3, " of the table '", (PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_NOTABLE:</span>
-                <span class="plain">print "Attempt to blank out a row from a non-existent table (value ",</span>
-                    <span class="plain">par1, ").^";</span>
-            <span class="plain">RTP_TABLE_NOTABLE2:</span>
-                <span class="plain">print "Attempt to access an entry from a non-existent table.^";</span>
-            <span class="plain">RTP_TABLE_NOMOREBLANKS:</span>
-                <span class="plain">print "Attempt to choose a blank row in a table with none left: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_NOROWS:</span>
-                <span class="plain">print "Attempt to choose a random row in an entirely blank table: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_CANTRUNTHROUGH:</span>
-                <span class="plain">print "Attempt to repeat through a table in a tricky column order: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_CANTSORT:</span>
-                <span class="plain">print "Attempt to sort a table whose ordering must remain fixed: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_CANTSAVE:</span>
-                <span class="plain">print "Attempt to save a table to a file whose data is unstable: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_WONTFIT:</span>
-                <span class="plain">print "File being read has too many rows or columns to fit into table: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_TABLE_BADFILE:</span>
-                <span class="plain">print "File being read is not a previously saved table: table '",</span>
-                    <span class="plain">(PrintTableName) par1, "'.^";</span>
-            <span class="plain">RTP_NOTINAROOM:</span>
-                <span class="plain">print "Attempt to test if the current location is '",</span>
-                    <span class="plain">(the) par1, "', which is not a room or region.^";</span>
-            <span class="plain">RTP_BADTOPIC:</span>
-                <span class="plain">print "Attempt to see if a snippet of text matches something which</span>
-                    <span class="plain">is not a topic.^";</span>
-            <span class="plain">RTP_ROUTELESS:</span>
-                <span class="plain">print "Attempt to find route or count steps through an implicit</span>
-                    <span class="plain">relation.^";</span>
-            <span class="plain">RTP_PROPOFNOTHING:</span>
-                <span class="plain">print "Attempt to use a property of the 'nothing' non-object: property ",</span>
-                    <span class="plain">(PrintPropertyName) par2, "^";</span>
-            <span class="plain">RTP_DECIDEONWRONGKIND:</span>
-                <span class="plain">print "Attempt to 'decide on V' where V is the wrong kind of object.^";</span>
-            <span class="plain">RTP_DECIDEONNOTHING:</span>
-                <span class="plain">print "Attempt to 'decide on nothing'.^";</span>
-            <span class="plain">RTP_LOWLEVELERROR:</span>
-                <span class="plain">print "Low level error.^";</span>
-            <span class="plain">RTP_DONTIGNORETURNSEQUENCE:</span>
-                <span class="plain">print "Attempt to ignore the turn sequence rules.^";</span>
-            <span class="plain">RTP_SAYINVALIDSNIPPET:</span>
-                <span class="plain">print "Attempt to say a snippet value which is currently invalid: words ",</span>
-                    <span class="plain">par1, " to ", par2, ".^";</span>
-            <span class="plain">RTP_SPLICEINVALIDSNIPPET:</span>
-                <span class="plain">print "Attempt to splice a snippet value which is currently invalid: words ",</span>
-                    <span class="plain">par1, " to ", par2, ".^";</span>
-            <span class="plain">RTP_INCLUDEINVALIDSNIPPET:</span>
-                <span class="plain">print "Attempt to match a snippet value which is currently invalid: words ",</span>
-                    <span class="plain">par1, " to ", par2, ".^";</span>
-            <span class="plain">RTP_LISTWRITERMEMORY:</span>
-                <span class="plain">print "The list-writer has run out of memory.^";</span>
-            <span class="plain">RTP_CANTREMOVEPLAYER:</span>
-                <span class="plain">print "Attempt to remove the player from play.^";</span>
-            <span class="plain">RTP_CANTBEOFFSTAGE:</span>
-                <span class="plain">print "Attempt to move the player off-stage.^";</span>
-            <span class="plain">RTP_CANTREMOVEDOORS:</span>
-                <span class="plain">print "Attempt to remove a door from play.^";</span>
-            <span class="plain">RTP_CANTCHANGEOFFSTAGE:</span>
-                <span class="plain">print "Attempt to change the player to a person off-stage.^";</span>
-            <span class="plain">RTP_MSTACKMEMORY:</span>
-                <span class="plain">print "The memory stack is exhausted.^";</span>
-            <span class="plain">RTP_TYPECHECK:</span>
-                <span class="plain">print "Phrase applied to an incompatible kind of value.^";</span>
-            <span class="plain">RTP_FILEIOERROR:</span>
-                <span class="plain">print "Error handling external file.^";</span>
-            <span class="plain">RTP_HEAPERROR:</span>
-                <span class="plain">print "Memory allocation proved impossible.^";</span>
-            <span class="plain">RTP_LISTRANGEERROR:</span>
-                <span class="plain">print "Attempt to use list item which does not exist.^";</span>
-            <span class="plain">RTP_LISTSIZENEGATIVE:</span>
-                <span class="plain">print "Attempt to resize list to ", par1, " entries - there must ",</span>
-                <span class="plain">"always be 0 or more.^";</span>
-            <span class="plain">RTP_REGEXPSYNTAXERROR:</span>
-                <span class="plain">print "Syntax error in regular expression.^";</span>
-            <span class="plain">RTP_NOGLULXUNICODE:</span>
-                <span class="plain">print "This interpreter does not support Unicode.^";</span>
-            <span class="plain">RTP_BACKDROPONLY:</span>
-                <span class="plain">print "Only backdrops can be moved to multiple places.^";</span>
-            <span class="plain">RTP_NOTTHING:</span>
-                <span class="plain">print "Tried to move ", (the) par1, " (not a thing) to ", (the) par2,</span>
-                    <span class="plain">", but only things can move around.^";</span>
-            <span class="plain">RTP_NEGATIVEROOT:</span>
-                <span class="plain">print "You can't take the square root of a negative number.^";</span>
-            <span class="plain">RTP_CANTITERATE:</span>
-                <span class="plain">print "You can't implicitly repeat through the values of this kind: ",</span>
-                    <span class="plain">"a problem arising from a description which started out here - ~",</span>
-                    <span class="plain">(string) par1, "~.^";</span>
-            <span class="plain">RTP_WRONGASSIGNEDKIND:</span>
-                <span class="plain">print "Attempt to set a variable to the wrong kind of object: ",</span>
-                    <span class="plain">"you wrote '", (string) par2, "', which sets the value to ", (the) par1,</span>
-                    <span class="plain">" - but that doesn't have the kind '", (string) par3, "'.^";</span>
-            <span class="plain">RTP_RELKINDVIOLATION:</span>
-                <span class="plain">print "Tried to change a relation for objects with the wrong kinds: ",</span>
-                    <span class="plain">(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",</span>
-                    <span class="plain">"relate (or unrelate) ", (the) par1, " to ", (the) par2, ".^";</span>
-            <span class="plain">RTP_CANTMAKEPART:</span>
-                <span class="plain">print "Tried to make the player part of something: ",</span>
-                    <span class="plain">(the) par1, ".^";</span>
-            <span class="plain">RTP_TEXTTOKENTOOHARD:</span>
-                <span class="plain">print "This use of '[text]' is too complicated.^";</span>
-            <span class="plain">RTP_RELATIONCHANGEIMPOSSIBLE:</span>
-                <span class="plain">print "This change of the relation's nature is impossible in play.^";</span>
-            <span class="plain">RTP_RELMINIMAL:</span>
-                <span class="plain">print "This operation can't be done with the relation '",</span>
-                    <span class="plain">(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";</span>
-            <span class="plain">RTP_REGIONSNOTADJACENT:</span>
-                <span class="plain">print "You can't test whether something is adjacent to a region: ",</span>
-                    <span class="plain">"such as, in this case, ", (the) par1, ".^";</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">": "</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">) {</span>
+            <span class="identifier">RTP_BACKDROP</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (a backdrop) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
+                    <span class="string">", which is not a region.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTCHANGE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change player to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">", which is not a person.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NOEXIT</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">" exit of "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
+                    <span class="string">", but it didn't seem to have such an exit to change.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_EXITDOOR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">" exit of "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
+                    <span class="string">", but it led to a door, not a room.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_IMPREL</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access an inappropriate relation for "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
+                    <span class="string">", violating '"</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par2</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TOOMANYRULEBOOKS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many rulebooks in simultaneous use.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TOOMANYEVENTS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many timed events are going on at once.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_BADPROPERTY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access non-existent property for "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_UNPROVIDED</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Since "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" is not allowed the property ~"</span><span class="plain">,</span>
+                        <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">"~, it is against the rules to try to use it.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_UNSET</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Although "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" is allowed to have the property ~"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">"~, no value was ever given, so it can't now be used.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TOOMANYACTS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many activities are going on at once.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTABANDON</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to abandon an activity which wasn't going on.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTEND</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to end an activity which wasn't going on.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTMOVENOTHING</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't move nothing.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTREMOVENOTHING</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't remove nothing from play.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_DIVZERO</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't divide by zero.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_BADVALUEPROPERTY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access property for a value which didn't fit: "</span><span class="plain">,</span>
+                    <span class="string">"if this were a number it would be "</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NOTBACKDROP</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (not a backdrop) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
+                    <span class="string">", which is a region.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOCOL</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to look up a non-existent column in the table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOCORR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to look up a non-existent correspondence in the table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOROW</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to look up a non-existent row in the table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOENTRY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to look up a non-existent entry at column "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">,</span>
+                    <span class="string">", row "</span><span class="plain">, </span><span class="identifier">par3</span><span class="plain">, </span><span class="string">" of the table '"</span><span class="plain">, (</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOTABLE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to blank out a row from a non-existent table (value "</span><span class="plain">,</span>
+                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">").^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOTABLE2</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to access an entry from a non-existent table.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOMOREBLANKS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to choose a blank row in a table with none left: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_NOROWS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to choose a random row in an entirely blank table: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_CANTRUNTHROUGH</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to repeat through a table in a tricky column order: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_CANTSORT</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to sort a table whose ordering must remain fixed: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_CANTSAVE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to save a table to a file whose data is unstable: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_WONTFIT</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"File being read has too many rows or columns to fit into table: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TABLE_BADFILE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"File being read is not a previously saved table: table '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NOTINAROOM</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to test if the current location is '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"', which is not a room or region.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_BADTOPIC</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to see if a snippet of text matches something which</span>
+                    <span class="identifier">is</span><span class="plain"> </span><span class="identifier">not</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">topic</span><span class="plain">.^</span><span class="string">";</span>
+            <span class="identifier">RTP_ROUTELESS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to find route or count steps through an implicit</span>
+                    <span class="identifier">relation</span><span class="plain">.^</span><span class="string">";</span>
+            <span class="identifier">RTP_PROPOFNOTHING</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to use a property of the 'nothing' non-object: property "</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">PrintPropertyName</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_DECIDEONWRONGKIND</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to 'decide on V' where V is the wrong kind of object.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_DECIDEONNOTHING</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to 'decide on nothing'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_LOWLEVELERROR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Low level error.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_DONTIGNORETURNSEQUENCE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to ignore the turn sequence rules.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_SAYINVALIDSNIPPET</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to say a snippet value which is currently invalid: words "</span><span class="plain">,</span>
+                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_SPLICEINVALIDSNIPPET</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to splice a snippet value which is currently invalid: words "</span><span class="plain">,</span>
+                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_INCLUDEINVALIDSNIPPET</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to match a snippet value which is currently invalid: words "</span><span class="plain">,</span>
+                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_LISTWRITERMEMORY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"The list-writer has run out of memory.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTREMOVEPLAYER</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to remove the player from play.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTBEOFFSTAGE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to move the player off-stage.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTREMOVEDOORS</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to remove a door from play.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTCHANGEOFFSTAGE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to change the player to a person off-stage.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_MSTACKMEMORY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"The memory stack is exhausted.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TYPECHECK</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Phrase applied to an incompatible kind of value.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_FILEIOERROR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Error handling external file.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_HEAPERROR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Memory allocation proved impossible.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to use list item which does not exist.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_LISTSIZENEGATIVE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to resize list to "</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" entries - there must "</span><span class="plain">,</span>
+                <span class="string">"always be 0 or more.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_REGEXPSYNTAXERROR</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Syntax error in regular expression.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NOGLULXUNICODE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"This interpreter does not support Unicode.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_BACKDROPONLY</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Only backdrops can be moved to multiple places.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NOTTHING</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (not a thing) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
+                    <span class="string">", but only things can move around.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_NEGATIVEROOT</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't take the square root of a negative number.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTITERATE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't implicitly repeat through the values of this kind: "</span><span class="plain">,</span>
+                    <span class="string">"a problem arising from a description which started out here - ~"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"~.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_WRONGASSIGNEDKIND</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to set a variable to the wrong kind of object: "</span><span class="plain">,</span>
+                    <span class="string">"you wrote '"</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">"', which sets the value to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
+                    <span class="string">" - but that doesn't have the kind '"</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">par3</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_RELKINDVIOLATION</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change a relation for objects with the wrong kinds: "</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par3</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">", but you tried to "</span><span class="plain">,</span>
+                    <span class="string">"relate (or unrelate) "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_CANTMAKEPART</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to make the player part of something: "</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_TEXTTOKENTOOHARD</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"This use of '[text]' is too complicated.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_RELATIONCHANGEIMPOSSIBLE</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"This change of the relation's nature is impossible in play.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_RELMINIMAL</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"This operation can't be done with the relation '"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par3</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">"'.^"</span><span class="plain">;</span>
+            <span class="identifier">RTP_REGIONSNOTADJACENT</span><span class="plain">:</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't test whether something is adjacent to a region: "</span><span class="plain">,</span>
+                    <span class="string">"such as, in this case, "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">RunTimeProblemShowWM(n, par1, par2, par3);</span>
-        <span class="plain">print "^";</span>
+        <span class="identifier">RunTimeProblemShowWM</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="identifier">par3</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -261,35 +261,35 @@ veneer code added by I6 requires it to be present.
 
 
 <pre class="display">
-    <span class="plain">Constant MAX_TIMERS = 0;</span>
-    <span class="plain">[ RunTimeError n p1 p2;</span>
-        <span class="plain">#Ifdef DEBUG;</span>
-        <span class="plain">print "** Library error ", n, " (", p1, ",", p2, ") **^** ";</span>
-        <span class="plain">switch (n) {</span>
-        <span class="plain">1:    print "preposition not found (this should not occur)";</span>
-        <span class="plain">2:    print "Property value not routine or string: ~", (property) p2, "~ of ~", (name) p1,</span>
-                    <span class="plain">"~ (", p1, ")";</span>
-        <span class="plain">3:    print "Entry in property list not routine or string: ~", (property) p2, "~ list of ~",</span>
-                    <span class="plain">(name) p1, "~ (", p1, ")";</span>
-        <span class="plain">4:    print "Too many timers/daemons are active simultaneously.</span>
-                    <span class="plain">The limit is the library constant MAX_TIMERS (currently ",</span>
-                    <span class="plain">MAX_TIMERS, ") and should be increased";</span>
-        <span class="plain">5:    print "Object ~", (name) p1, "~ has no ~time_left~ property";</span>
-        <span class="plain">7:    print "The object ~", (name) p1, "~ can only be used as a player object if it has</span>
-                    <span class="plain">the ~number~ property";</span>
-        <span class="plain">8:    print "Attempt to take random entry from an empty table array";</span>
-        <span class="plain">9:    print p1, " is not a valid direction property number";</span>
-        <span class="plain">10:   print "The player-object is outside the object tree";</span>
-        <span class="plain">11:   print "The room ~", (name) p1, "~ has no ~description~ property";</span>
-        <span class="plain">12:   print "Tried to set a non-existent pronoun using SetPronoun";</span>
-        <span class="plain">13:   print "A 'topic' token can only be followed by a preposition";</span>
-        <span class="plain">default: print "(unexplained)";</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MAX_TIMERS</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">RunTimeError</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"** Library error "</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">","</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">") **^** "</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">) {</span>
+        <span class="constant">1</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"preposition not found (this should not occur)"</span><span class="plain">;</span>
+        <span class="constant">2</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Property value not routine or string: ~"</span><span class="plain">, (</span><span class="identifier">property</span><span class="plain">) </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">"~ of ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">,</span>
+                    <span class="string">"~ ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
+        <span class="constant">3</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Entry in property list not routine or string: ~"</span><span class="plain">, (</span><span class="identifier">property</span><span class="plain">) </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">"~ list of ~"</span><span class="plain">,</span>
+                    <span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
+        <span class="constant">4</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many timers/daemons are active simultaneously.</span>
+                    <span class="identifier">The</span><span class="plain"> </span><span class="identifier">limit</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> </span><span class="identifier">library</span><span class="plain"> </span><span class="identifier">constant</span><span class="plain"> </span><span class="identifier">MAX_TIMERS</span><span class="plain"> (</span><span class="identifier">currently</span><span class="plain"> </span><span class="string">",</span>
+                    <span class="identifier">MAX_TIMERS</span><span class="plain">, </span><span class="string">") and should be increased"</span><span class="plain">;</span>
+        <span class="constant">5</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Object ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ has no ~time_left~ property"</span><span class="plain">;</span>
+        <span class="constant">7</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"The object ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ can only be used as a player object if it has</span>
+                    <span class="identifier">the</span><span class="plain"> ~</span><span class="identifier">number</span><span class="plain">~ </span><span class="identifier">property</span><span class="string">";</span>
+        <span class="constant">8</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to take random entry from an empty table array"</span><span class="plain">;</span>
+        <span class="constant">9</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">" is not a valid direction property number"</span><span class="plain">;</span>
+        <span class="constant">10</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"The player-object is outside the object tree"</span><span class="plain">;</span>
+        <span class="constant">11</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"The room ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ has no ~description~ property"</span><span class="plain">;</span>
+        <span class="constant">12</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to set a non-existent pronoun using SetPronoun"</span><span class="plain">;</span>
+        <span class="constant">13</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"A 'topic' token can only be followed by a preposition"</span><span class="plain">;</span>
+        <span class="reserved">default</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"(unexplained)"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">print " **^";</span>
-        <span class="plain">#Ifnot;</span>
-        <span class="plain">print "** Library error ", n, " (", p1, ",", p2, ") **^";</span>
-        <span class="plain">#Endif; ! DEBUG</span>
-        <span class="plain">RunTimeProblem(RTP_LOWLEVELERROR);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">" **^"</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"** Library error "</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">","</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">") **^"</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">! DEBUG</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LOWLEVELERROR</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -301,8 +301,8 @@ fails, so that no definition for the phrase can be applied.
 
 
 <pre class="display">
-    <span class="plain">[ ArgumentTypeFailed line file;</span>
-        <span class="plain">RunTimeProblem(RTP_TYPECHECK, 0, 0, 0, line, file);</span>
+    <span class="plain">[ </span><span class="identifier">ArgumentTypeFailed</span><span class="plain"> </span><span class="identifier">line</span><span class="plain"> </span><span class="identifier">file</span><span class="plain">;</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TYPECHECK</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">file</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -320,11 +320,11 @@ it can be <code class="display"><span class="extract">nothing</span></code>, and
 
 
 <pre class="display">
-    <span class="plain">[ CheckKindReturned V K;</span>
-        <span class="plain">if (V ofclass K) return V;</span>
-        <span class="plain">if (V == nothing) RunTimeProblem(RTP_DECIDEONNOTHING);</span>
-        <span class="plain">else RunTimeProblem(RTP_DECIDEONWRONGKIND);</span>
-        <span class="plain">return V;</span>
+    <span class="plain">[ </span><span class="identifier">CheckKindReturned</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_DECIDEONNOTHING</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_DECIDEONWRONGKIND</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -345,43 +345,43 @@ it doesn't mean it actually does have.
 
 
 <pre class="display">
-    <span class="plain">[ WhetherProvides obj either_or p issue_rtp  off i textual a l;</span>
-        <span class="plain">if (metaclass(obj) ~= Object) rfalse;</span>
-        <span class="plain">if (p&lt;0) p = ~p;</span>
-        <span class="plain">if (either_or) {</span>
-            <span class="plain">if (p &lt; FBNA_PROP_NUMBER) off = attributed_property_offsets--&gt;p;</span>
-            <span class="plain">else off = valued_property_offsets--&gt;p;</span>
-        <span class="plain">} else off = valued_property_offsets--&gt;p;</span>
-        <span class="plain">if (off&lt;0) {</span>
-            <span class="plain">if (issue_rtp) RunTimeProblem(RTP_BADPROPERTY, obj);</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">WhetherProvides</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">either_or</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">issue_rtp</span><span class="plain">  </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">metaclass</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">) ~= </span><span class="identifier">Object</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;0) </span><span class="identifier">p</span><span class="plain"> = ~</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">either_or</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &lt; </span><span class="identifier">FBNA_PROP_NUMBER</span><span class="plain">) </span><span class="identifier">off</span><span class="plain"> = </span><span class="identifier">attributed_property_offsets</span><span class="plain">--&gt;</span><span class="identifier">p</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> = </span><span class="identifier">valued_property_offsets</span><span class="plain">--&gt;</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> = </span><span class="identifier">valued_property_offsets</span><span class="plain">--&gt;</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">off</span><span class="plain">&lt;0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_rtp</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BADPROPERTY</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">textual = property_metadata--&gt;off; off++;</span>
+        <span class="identifier">textual</span><span class="plain"> = </span><span class="identifier">property_metadata</span><span class="plain">--&gt;</span><span class="identifier">off</span><span class="plain">; </span><span class="identifier">off</span><span class="plain">++;</span>
 
-        <span class="plain">if (ScanPropertyMetadata(obj, off)) jump PermissionFound;</span>
-        <span class="plain">if (obj provides KD_Count) {</span>
-            <span class="plain">l = obj.KD_Count;</span>
-            <span class="plain">while (l &gt; 0) {</span>
-                <span class="plain">a = l*2;</span>
-                <span class="plain">if (ScanPropertyMetadata(KindHierarchy--&gt;a, off)) jump PermissionFound;</span>
-                <span class="plain">l = KindHierarchy--&gt;(a+1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ScanPropertyMetadata</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">off</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">PermissionFound</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">KD_Count</span><span class="plain">) {</span>
+            <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">KD_Count</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">a</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain">*2;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ScanPropertyMetadata</span><span class="plain">(</span><span class="identifier">KindHierarchy</span><span class="plain">--&gt;</span><span class="identifier">a</span><span class="plain">, </span><span class="identifier">off</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">PermissionFound</span><span class="plain">;</span>
+                <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">KindHierarchy</span><span class="plain">--&gt;(</span><span class="identifier">a</span><span class="plain">+1);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">if (issue_rtp) RunTimeProblem(RTP_UNPROVIDED, obj, textual);</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_rtp</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_UNPROVIDED</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">textual</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
 
-        <span class="plain">.PermissionFound;</span>
-            <span class="plain">if (either_or) rtrue;</span>
-            <span class="plain">if (obj provides p) rtrue;</span>
-            <span class="plain">if (issue_rtp) RunTimeProblem(RTP_UNSET, obj, textual);</span>
-            <span class="plain">rfalse;</span>
+        <span class="plain">.</span><span class="identifier">PermissionFound</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">either_or</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_rtp</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_UNSET</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">textual</span><span class="plain">);</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ PrintPropertyName  p  off textual;</span>
-        <span class="plain">if (p&lt;0) p = ~p;</span>
-        <span class="plain">off = valued_property_offsets--&gt;p;</span>
-        <span class="plain">textual = property_metadata--&gt;off;</span>
-        <span class="plain">print (string) textual;</span>
+    <span class="plain">[ </span><span class="identifier">PrintPropertyName</span><span class="plain">  </span><span class="identifier">p</span><span class="plain">  </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;0) </span><span class="identifier">p</span><span class="plain"> = ~</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">off</span><span class="plain"> = </span><span class="identifier">valued_property_offsets</span><span class="plain">--&gt;</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">textual</span><span class="plain"> = </span><span class="identifier">property_metadata</span><span class="plain">--&gt;</span><span class="identifier">off</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">textual</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -395,10 +395,10 @@ The following searches from a given offset.
 
 
 <pre class="display">
-    <span class="plain">[ ScanPropertyMetadata obj off i;</span>
-        <span class="plain">for (i=off: property_metadata--&gt;i &gt;= 0: i++)</span>
-            <span class="plain">if (obj == property_metadata--&gt;i) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">ScanPropertyMetadata</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">off</span><span class="plain">: </span><span class="identifier">property_metadata</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="identifier">property_metadata</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -426,14 +426,14 @@ normally valid for doors and containers.
 
 
 <pre class="display">
-    <span class="plain">[ GetEitherOrProperty o p;</span>
-        <span class="plain">if (o == nothing) rfalse;</span>
-        <span class="plain">if (p&lt;0) p = ~p;</span>
-        <span class="plain">if (WhetherProvides(o, true, p, false)) {</span>
-            <span class="plain">if (p&lt;FBNA_PROP_NUMBER) { if (o has p) rtrue; rfalse; }</span>
-            <span class="plain">if ((o provides p) &amp;&amp; (o.p)) rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">GetEitherOrProperty</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;0) </span><span class="identifier">p</span><span class="plain"> = ~</span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">FBNA_PROP_NUMBER</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">p</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -445,15 +445,15 @@ however, always produce a run-time problem.
 
 
 <pre class="display">
-    <span class="plain">[ SetEitherOrProperty o p negate adj;</span>
-        <span class="plain">if (p&lt;0) { p = ~p; negate = ~negate; }</span>
-        <span class="plain">if (adj) {</span>
-            <span class="plain">(adj)(o);</span>
-        <span class="plain">} else if (WhetherProvides(o, true, p, true)) {</span>
-            <span class="plain">if (negate) {</span>
-                <span class="plain">if (p&lt;FBNA_PROP_NUMBER) give o ~p; else o.p = false;</span>
-            <span class="plain">} else {</span>
-                <span class="plain">if (p&lt;FBNA_PROP_NUMBER) give o p; else o.p = true;</span>
+    <span class="plain">[ </span><span class="identifier">SetEitherOrProperty</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">negate</span><span class="plain"> </span><span class="identifier">adj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;0) { </span><span class="identifier">p</span><span class="plain"> = ~</span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">negate</span><span class="plain"> = ~</span><span class="identifier">negate</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">adj</span><span class="plain">) {</span>
+            <span class="plain">(</span><span class="identifier">adj</span><span class="plain">)(</span><span class="identifier">o</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">negate</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">FBNA_PROP_NUMBER</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> ~</span><span class="identifier">p</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">p</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">FBNA_PROP_NUMBER</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">p</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -478,25 +478,25 @@ the one which the player is on.
 
 
 <pre class="display">
-    <span class="plain">[ GProperty K V pr obj;</span>
-        <span class="plain">if (K == OBJECT_TY) obj = V; else obj = value_property_holders--&gt;K;</span>
-        <span class="plain">if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }</span>
-        <span class="plain">if (obj provides pr) {</span>
-            <span class="plain">if (K == OBJECT_TY) {</span>
-                <span class="plain">if (pr == door_to) return obj.pr();</span>
-                <span class="plain">if (WhetherProvides(V, false, pr, true)) return obj.pr;</span>
-                <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">GProperty</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">value_property_holders</span><span class="plain">--&gt;</span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_PROPOFNOTHING</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">); </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain"> == </span><span class="identifier">door_to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain">();</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain">;</span>
+                <span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if (obj ofclass K0_kind)</span>
-                <span class="plain">WhetherProvides(V, false, pr, true); ! to force a run-time problem</span>
-            <span class="plain">if ((V &lt; 1) || (V &gt; obj.value_range)) {</span>
-                <span class="plain">RunTimeProblem(RTP_BADVALUEPROPERTY); return 0; }</span>
-            <span class="plain">return (obj.pr)--&gt;(V+COL_HSIZE);</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if (obj ofclass K0_kind)</span>
-                <span class="plain">WhetherProvides(V, false, pr, true); ! to force a run-time problem</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K0_kind</span><span class="plain">)</span>
+                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">! to force a run-time problem</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">V</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">V</span><span class="plain"> &gt; </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">value_range</span><span class="plain">)) {</span>
+                <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BADVALUEPROPERTY</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; }</span>
+            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain">)--&gt;(</span><span class="identifier">V</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K0_kind</span><span class="plain">)</span>
+                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">! to force a run-time problem</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -509,15 +509,15 @@ converted from an rvalue to an lvalue.
 
 
 <pre class="display">
-    <span class="plain">[ WriteGProperty K V pr val obj;</span>
-        <span class="plain">if (K == OBJECT_TY) obj = V; else obj = value_property_holders--&gt;K;</span>
-        <span class="plain">if (obj == 0) { RunTimeProblem(RTP_PROPOFNOTHING, obj, pr); rfalse; }</span>
-        <span class="plain">if (K == OBJECT_TY) {</span>
-            <span class="plain">if (WhetherProvides(V, false, pr, true)) obj.pr = val;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if ((V &lt; 1) || (V &gt; obj.value_range))</span>
-                <span class="plain">return RunTimeProblem(RTP_BADVALUEPROPERTY);</span>
-            <span class="plain">if (obj provides pr) { (obj.pr)--&gt;(V+COL_HSIZE) = val; }</span>
+    <span class="plain">[ </span><span class="identifier">WriteGProperty</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">value_property_holders</span><span class="plain">--&gt;</span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_PROPOFNOTHING</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">); </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">)) </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">V</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">V</span><span class="plain"> &gt; </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">value_range</span><span class="plain">))</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BADVALUEPROPERTY</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain">) { (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain">)--&gt;(</span><span class="identifier">V</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">) = </span><span class="identifier">val</span><span class="plain">; }</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -530,8 +530,8 @@ only as decimal numbers.
 
 
 <pre class="display">
-    <span class="plain">[ PROPERTY_TY_Say v;</span>
-        <span class="plain">print "property ", v;</span>
+    <span class="plain">[ </span><span class="identifier">PROPERTY_TY_Say</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"property "</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

@@ -17,9 +17,9 @@
 
 
 <pre class="display">
-    <span class="plain">[ SayPhraseName closure;</span>
-        <span class="plain">if (closure == 0) print "nothing";</span>
-        <span class="plain">else print (string) closure--&gt;2;</span>
+    <span class="plain">[ </span><span class="identifier">SayPhraseName</span><span class="plain"> </span><span class="identifier">closure</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">closure</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nothing"</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">closure</span><span class="plain">--&gt;2;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -29,19 +29,19 @@
 
 
 <pre class="display">
-    <span class="plain">[ KindAtomic kind;</span>
-        <span class="plain">if ((kind &gt;= 0) &amp;&amp; (kind &lt; BASE_KIND_HWM)) return kind;</span>
-        <span class="plain">return kind--&gt;0;</span>
+    <span class="plain">[ </span><span class="identifier">KindAtomic</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">kind</span><span class="plain"> &lt; </span><span class="identifier">BASE_KIND_HWM</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">--&gt;0;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ KindBaseArity kind;</span>
-        <span class="plain">if ((kind &gt;= 0) &amp;&amp; (kind &lt; BASE_KIND_HWM)) return 0;</span>
-        <span class="plain">return kind--&gt;1;</span>
+    <span class="plain">[ </span><span class="identifier">KindBaseArity</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">kind</span><span class="plain"> &lt; </span><span class="identifier">BASE_KIND_HWM</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">--&gt;1;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ KindBaseTerm kind n;</span>
-        <span class="plain">if ((kind &gt;= 0) &amp;&amp; (kind &lt; BASE_KIND_HWM)) return UNKNOWN_TY;</span>
-        <span class="plain">return kind--&gt;(2+n);</span>
+    <span class="plain">[ </span><span class="identifier">KindBaseTerm</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">kind</span><span class="plain"> &lt; </span><span class="identifier">BASE_KIND_HWM</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">UNKNOWN_TY</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">--&gt;(2+</span><span class="identifier">n</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -57,14 +57,14 @@ to an empty range of values.
 
 
 <pre class="display">
-    <span class="plain">[ GenerateRandomNumber n m s;</span>
-        <span class="plain">if (n==m) return n;</span>
-        <span class="plain">if (n&gt;m) { s = n; n = m; m = s; }</span>
-        <span class="plain">n--;</span>
-        <span class="plain">return random(m-n) + n;</span>
+    <span class="plain">[ </span><span class="identifier">GenerateRandomNumber</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">==</span><span class="identifier">m</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">&gt;</span><span class="identifier">m</span><span class="plain">) { </span><span class="identifier">s</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">; </span><span class="identifier">m</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">; }</span>
+        <span class="identifier">n</span><span class="plain">--;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">m</span><span class="plain">-</span><span class="identifier">n</span><span class="plain">) + </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">Constant R_DecimalNumber = GenerateRandomNumber;</span>
-    <span class="plain">Constant R_PrintTimeOfDay = GenerateRandomNumber;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">R_DecimalNumber</span><span class="plain"> = </span><span class="identifier">GenerateRandomNumber</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">R_PrintTimeOfDay</span><span class="plain"> = </span><span class="identifier">GenerateRandomNumber</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -74,10 +74,10 @@ to an empty range of values.
 
 
 <pre class="display">
-    <span class="plain">[ PrintSpaces n;</span>
-        <span class="plain">while (n &gt; 0) {</span>
-            <span class="plain">print " ";</span>
-            <span class="plain">n = n - 1;</span>
+    <span class="plain">[ </span><span class="identifier">PrintSpaces</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
+            <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -91,14 +91,14 @@ object at once.
 
 
 <pre class="display">
-    <span class="plain">[ SwapWorkflags obj lst;</span>
-        <span class="plain">objectloop (obj ofclass Object) {</span>
-            <span class="plain">lst = false;</span>
-            <span class="plain">if (obj has workflag2) lst = true;</span>
-            <span class="plain">give obj ~workflag2;</span>
-            <span class="plain">if (obj has workflag) give obj workflag2;</span>
-            <span class="plain">give obj ~workflag;</span>
-            <span class="plain">if (lst) give obj workflag;</span>
+    <span class="plain">[ </span><span class="identifier">SwapWorkflags</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">lst</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">Object</span><span class="plain">) {</span>
+            <span class="identifier">lst</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">workflag2</span><span class="plain">) </span><span class="identifier">lst</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+            <span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> ~</span><span class="identifier">workflag2</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">workflag</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">workflag2</span><span class="plain">;</span>
+            <span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> ~</span><span class="identifier">workflag</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lst</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">workflag</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -118,12 +118,12 @@ following shows. (The name is from "region of the Z-machine".)
 
 
 <pre class="display">
-    <span class="plain">[ ZRegion addr;</span>
-        <span class="plain">switch (metaclass(addr)) {</span>
-            <span class="plain">nothing: return 0;</span>
-            <span class="plain">Object, Class: return 1;</span>
-            <span class="plain">Routine: return 2;</span>
-            <span class="plain">String: return 3;</span>
+    <span class="plain">[ </span><span class="identifier">ZRegion</span><span class="plain"> </span><span class="identifier">addr</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="reserved">metaclass</span><span class="plain">(</span><span class="identifier">addr</span><span class="plain">)) {</span>
+            <span class="reserved">nothing</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">Object</span><span class="plain">, </span><span class="identifier">Class</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">Routine</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">;</span>
+            <span class="identifier">String</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">3</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -135,13 +135,13 @@ following shows. (The name is from "region of the Z-machine".)
 
 
 <pre class="display">
-    <span class="plain">[ Memcpy to_addr from_addr size  n;</span>
-    <span class="plain">#Ifdef TARGET_ZCODE;</span>
-        <span class="plain">for (n = size/WORDSIZE: (n--) &gt; 0: ) to_addr--&gt;n = from_addr--&gt;n;</span>
-        <span class="plain">for (n = size: ((n--) % WORDSIZE ~= 0): ) to_addr-&gt;n = from_addr-&gt;n;</span>
-    <span class="plain">#Ifnot; ! TARGET_GLULX</span>
-        <span class="plain">@mcopy size from_addr to_addr;</span>
-    <span class="plain">#Endif; ! TARGET_</span>
+    <span class="plain">[ </span><span class="identifier">Memcpy</span><span class="plain"> </span><span class="identifier">to_addr</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">  </span><span class="identifier">n</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">/</span><span class="identifier">WORDSIZE</span><span class="plain">: (</span><span class="identifier">n</span><span class="plain">--) &gt; </span><span class="constant">0</span><span class="plain">: ) </span><span class="identifier">to_addr</span><span class="plain">--&gt;</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">--&gt;</span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">: ((</span><span class="identifier">n</span><span class="plain">--) % </span><span class="identifier">WORDSIZE</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">): ) </span><span class="identifier">to_addr</span><span class="plain">-&gt;</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">-&gt;</span><span class="identifier">n</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+        <span class="plain">@</span><span class="identifier">mcopy</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain"> </span><span class="identifier">to_addr</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">! TARGET_</span>
     <span class="plain">];</span>
 </pre>
 
@@ -152,16 +152,16 @@ following shows. (The name is from "region of the Z-machine".)
 
 
 <pre class="display">
-    <span class="plain">[ Arrcpy to_array to_entry_size from_array from_entry_size no_entries  n val;</span>
-        <span class="plain">if (to_entry_size == from_entry_size)</span>
-            <span class="plain">Memcpy(to_array, from_array, to_entry_size*no_entries);</span>
-        <span class="plain">else if ((to_entry_size == 2) &amp;&amp; (from_entry_size == 4)) {</span>
-            <span class="plain">for (n = 0: n&lt;no_entries: n++) {</span>
-                <span class="plain">val = from_array--&gt;n;</span>
-                <span class="plain">to_array-&gt;0 = (val/256)%256; to_array-&gt;1 = val%256;</span>
-                <span class="plain">to_array = to_array + 2;</span>
+    <span class="plain">[ </span><span class="identifier">Arrcpy</span><span class="plain"> </span><span class="identifier">to_array</span><span class="plain"> </span><span class="identifier">to_entry_size</span><span class="plain"> </span><span class="identifier">from_array</span><span class="plain"> </span><span class="identifier">from_entry_size</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain">  </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_entry_size</span><span class="plain"> == </span><span class="identifier">from_entry_size</span><span class="plain">)</span>
+            <span class="identifier">Memcpy</span><span class="plain">(</span><span class="identifier">to_array</span><span class="plain">, </span><span class="identifier">from_array</span><span class="plain">, </span><span class="identifier">to_entry_size</span><span class="plain">*</span><span class="identifier">no_entries</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">to_entry_size</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">from_entry_size</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">)) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="identifier">no_entries</span><span class="plain">: </span><span class="identifier">n</span><span class="plain">++) {</span>
+                <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">from_array</span><span class="plain">--&gt;</span><span class="identifier">n</span><span class="plain">;</span>
+                <span class="identifier">to_array</span><span class="plain">-&gt;0 = (</span><span class="identifier">val</span><span class="plain">/256)%256; </span><span class="identifier">to_array</span><span class="plain">-&gt;1 = </span><span class="identifier">val</span><span class="plain">%256;</span>
+                <span class="identifier">to_array</span><span class="plain"> = </span><span class="identifier">to_array</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} else "*** Arrcpy doesn't support this ***";</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="string">"*** Arrcpy doesn't support this ***"</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -171,19 +171,19 @@ following shows. (The name is from "region of the Z-machine".)
 
 
 <pre class="display">
-    <span class="plain">[ PrintVerbAsValue vb;</span>
-        <span class="plain">if (vb == 0) print "(no verb)";</span>
-        <span class="plain">else { print "verb "; vb(1); }</span>
+    <span class="plain">[ </span><span class="identifier">PrintVerbAsValue</span><span class="plain"> </span><span class="identifier">vb</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vb</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"(no verb)"</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"verb "</span><span class="plain">; </span><span class="identifier">vb</span><span class="plain">(1); }</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ VerbIsMeaningful vb;</span>
-        <span class="plain">if ((vb) &amp;&amp; (BlkValueCompare(vb(CV_MEANING), MEANINGLESS_RR) ~= 0)) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">VerbIsMeaningful</span><span class="plain"> </span><span class="identifier">vb</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">BlkValueCompare</span><span class="plain">(</span><span class="identifier">vb</span><span class="plain">(</span><span class="identifier">CV_MEANING</span><span class="plain">), </span><span class="identifier">MEANINGLESS_RR</span><span class="plain">) ~= </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ VerbIsModal vb;</span>
-        <span class="plain">if ((vb) &amp;&amp; (vb(CV_MODAL))) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">VerbIsModal</span><span class="plain"> </span><span class="identifier">vb</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vb</span><span class="plain">(</span><span class="identifier">CV_MODAL</span><span class="plain">))) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -205,10 +205,10 @@ of course, in a state of sin" (von Neumann).
 
 
 <pre class="display">
-    <span class="plain">[ SEED_RANDOM_NUMBER_GENERATOR_R i;</span>
-        <span class="plain">if (RNG_SEED_AT_START_OF_PLAY) VM_Seed_RNG(RNG_SEED_AT_START_OF_PLAY);</span>
-        <span class="plain">for (i=1: i&lt;=100: i++) random(i);</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">SEED_RANDOM_NUMBER_GENERATOR_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RNG_SEED_AT_START_OF_PLAY</span><span class="plain">) </span><span class="identifier">VM_Seed_RNG</span><span class="plain">(</span><span class="identifier">RNG_SEED_AT_START_OF_PLAY</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1: </span><span class="identifier">i</span><span class="plain">&lt;=100: </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -232,15 +232,15 @@ routine was added to concentrate lookups of this field in one place.
 
 
 <pre class="display">
-    <span class="plain">[ DictionaryWordToVerbNum dword verbnum;</span>
-    <span class="plain">#Ifdef TARGET_ZCODE;</span>
-        <span class="plain">verbnum = $ff-(dword-&gt;#dict_par2);</span>
-    <span class="plain">#Ifnot; ! GLULX</span>
-        <span class="plain">dword = dword + #dict_par2 - 1;</span>
-        <span class="plain">@aloads dword 0 verbnum;</span>
-        <span class="plain">verbnum = $ffff-verbnum;</span>
-    <span class="plain">#Endif;</span>
-        <span class="plain">return verbnum;</span>
+    <span class="plain">[ </span><span class="identifier">DictionaryWordToVerbNum</span><span class="plain"> </span><span class="identifier">dword</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
+        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ff-</span><span class="plain">(</span><span class="identifier">dword</span><span class="plain">-&gt;#</span><span class="identifier">dict_par2</span><span class="plain">);</span>
+    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">! GLULX</span>
+        <span class="identifier">dword</span><span class="plain"> = </span><span class="identifier">dword</span><span class="plain"> + #</span><span class="identifier">dict_par2</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">aloads</span><span class="plain"> </span><span class="identifier">dword</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
+        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ffff-</span><span class="identifier">verbnum</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
     <span class="plain">];</span>
 
 </pre>

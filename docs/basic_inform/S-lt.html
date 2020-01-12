@@ -23,9 +23,9 @@ by one word for each item.
 
 
 <pre class="display">
-    <span class="plain">Constant LIST_ITEM_KOV_F = 0; ! The kind of the items</span>
-    <span class="plain">Constant LIST_LENGTH_F = 1;   ! The number of items</span>
-    <span class="plain">Constant LIST_ITEM_BASE = 2;  ! List items begin at this entry</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! The kind of the items</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LIST_LENGTH_F</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;   </span><span class="comment">! The number of items</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;  </span><span class="comment">! List items begin at this entry</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -36,24 +36,24 @@ routines.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Support task arg1 arg2 arg3;</span>
-        <span class="plain">switch(task) {</span>
-            <span class="plain">CREATE_KOVS:      return LIST_OF_TY_Create(arg1, arg2);</span>
-            <span class="plain">DESTROY_KOVS:     LIST_OF_TY_Destroy(arg1);</span>
-            <span class="plain">MAKEMUTABLE_KOVS: return 1;</span>
-            <span class="plain">COPYKIND_KOVS:    return LIST_OF_TY_CopyKind(arg1, arg2);</span>
-            <span class="plain">COPYQUICK_KOVS:   return LIST_OF_TY_QuickCopy(arg1, arg2);</span>
-            <span class="plain">COPYSB_KOVS:	  BlkValueCopySB1(arg1, arg2);</span>
-            <span class="plain">KINDDATA_KOVS:    return LIST_OF_TY_KindData(arg1, arg2);</span>
-            <span class="plain">EXTENT_KOVS:      return BlkValueRead(arg1, LIST_LENGTH_F) + LIST_ITEM_BASE;</span>
-            <span class="plain">COPY_KOVS:        LIST_OF_TY_Copy(arg1, arg2, arg3);</span>
-            <span class="plain">COMPARE_KOVS:     return LIST_OF_TY_Compare(arg1, arg2);</span>
-            <span class="plain">HASH_KOVS:        return LIST_OF_TY_Hash(arg1);</span>
-            <span class="plain">DEBUG_KOVS:       print " = {", (LIST_OF_TY_Say) arg1, "} of kind ",</span>
-                                <span class="plain">BlkValueRead(arg1, LIST_ITEM_KOV_F);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Support</span><span class="plain"> </span><span class="identifier">task</span><span class="plain"> </span><span class="identifier">arg1</span><span class="plain"> </span><span class="identifier">arg2</span><span class="plain"> </span><span class="identifier">arg3</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
+            <span class="identifier">CREATE_KOVS</span><span class="plain">:      </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_Create</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">DESTROY_KOVS</span><span class="plain">:     </span><span class="identifier">LIST_OF_TY_Destroy</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
+            <span class="identifier">MAKEMUTABLE_KOVS</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">COPYKIND_KOVS</span><span class="plain">:    </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_CopyKind</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">COPYQUICK_KOVS</span><span class="plain">:   </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_QuickCopy</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">COPYSB_KOVS</span><span class="plain">:	  </span><span class="identifier">BlkValueCopySB1</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">KINDDATA_KOVS</span><span class="plain">:    </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_KindData</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">EXTENT_KOVS</span><span class="plain">:      </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">) + </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">;</span>
+            <span class="identifier">COPY_KOVS</span><span class="plain">:        </span><span class="identifier">LIST_OF_TY_Copy</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">, </span><span class="identifier">arg3</span><span class="plain">);</span>
+            <span class="identifier">COMPARE_KOVS</span><span class="plain">:     </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_Compare</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
+            <span class="identifier">HASH_KOVS</span><span class="plain">:        </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_Hash</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
+            <span class="identifier">DEBUG_KOVS</span><span class="plain">:       </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" = {"</span><span class="plain">, (</span><span class="identifier">LIST_OF_TY_Say</span><span class="plain">) </span><span class="identifier">arg1</span><span class="plain">, </span><span class="string">"} of kind "</span><span class="plain">,</span>
+                                <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS</span>
-        <span class="plain">rfalse;</span>
+        <span class="comment">! We choose not to respond to: CAST_KOVS, READ_FILE_KOVS, WRITE_FILE_KOVS</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -67,13 +67,13 @@ list metadata entries below.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Create skov sb list;</span>
-        <span class="plain">skov = KindBaseTerm(skov, 0);</span>
-        <span class="plain">list = FlexAllocate(27*WORDSIZE, LIST_OF_TY, BLK_FLAG_MULTIPLE + BLK_FLAG_WORD);</span>
-        <span class="plain">BlkValueWrite(list, LIST_ITEM_KOV_F, skov, true);</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, 0, true);</span>
-        <span class="plain">sb = BlkValueCreateSB1(sb, list);</span>
-        <span class="plain">return sb;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Create</span><span class="plain"> </span><span class="identifier">skov</span><span class="plain"> </span><span class="identifier">sb</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="identifier">skov</span><span class="plain"> = </span><span class="identifier">KindBaseTerm</span><span class="plain">(</span><span class="identifier">skov</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">list</span><span class="plain"> = </span><span class="identifier">FlexAllocate</span><span class="plain">(27*</span><span class="identifier">WORDSIZE</span><span class="plain">, </span><span class="identifier">LIST_OF_TY</span><span class="plain">, </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain"> + </span><span class="identifier">BLK_FLAG_WORD</span><span class="plain">);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">skov</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+        <span class="identifier">sb</span><span class="plain"> = </span><span class="identifier">BlkValueCreateSB1</span><span class="plain">(</span><span class="identifier">sb</span><span class="plain">, </span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sb</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -85,11 +85,11 @@ the list itself can be freed.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Destroy list no_items i k;</span>
-        <span class="plain">k = BlkValueRead(list, LIST_ITEM_KOV_F);</span>
-        <span class="plain">if (KOVIsBlockValue(k)) {</span>
-            <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++) BlkValueFree(BlkValueRead(list, i+LIST_ITEM_BASE));</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Destroy</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
+        <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">)) {</span>
+            <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -110,35 +110,35 @@ things.)
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_CopyKind to from;</span>
-        <span class="plain">BlkValueWrite(to, LIST_ITEM_KOV_F, BlkValueRead(from, LIST_ITEM_KOV_F));</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_CopyKind</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_QuickCopy to from;</span>
-        <span class="plain">if (BlkValueRead(to, LIST_ITEM_KOV_F) ~= BlkValueRead(from, LIST_ITEM_KOV_F))</span>
-            <span class="plain">rfalse;</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_QuickCopy</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">) ~= </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">))</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_KindData list;</span>
-        <span class="plain">return BlkValueRead(list, LIST_ITEM_KOV_F);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_KindData</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_Copy lto lfrom  precopied_list_kov no_items i nv bk val splk;</span>
-        <span class="plain">no_items = BlkValueRead(lfrom, LIST_LENGTH_F);</span>
-        <span class="plain">bk = BlkValueRead(lfrom, LIST_ITEM_KOV_F);</span>
-        <span class="plain">if (precopied_list_kov ~= 0 or UNKNOWN_TY)</span>
-            <span class="plain">BlkValueWrite(lto, LIST_ITEM_KOV_F, precopied_list_kov);</span>
-        <span class="plain">else BlkValueWrite(lto, LIST_ITEM_KOV_F, bk);</span>
-        <span class="plain">if (KOVIsBlockValue(bk)) {</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++) {</span>
-                <span class="plain">val = BlkValueRead(lfrom, i+LIST_ITEM_BASE);</span>
-                <span class="plain">if (precopied_list_kov ~= 0 or UNKNOWN_TY)</span>
-                    <span class="plain">nv = BlkValueCreate(precopied_list_kov);</span>
-                <span class="plain">else</span>
-                    <span class="plain">nv = BlkValueCreate(bk);</span>
-                <span class="plain">BlkValueCopy(nv, val);</span>
-                <span class="plain">BlkValueWrite(lto, i+LIST_ITEM_BASE, nv);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Copy</span><span class="plain"> </span><span class="identifier">lto</span><span class="plain"> </span><span class="identifier">lfrom</span><span class="plain">  </span><span class="identifier">precopied_list_kov</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">nv</span><span class="plain"> </span><span class="identifier">bk</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">splk</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">lfrom</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">bk</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">lfrom</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">precopied_list_kov</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UNKNOWN_TY</span><span class="plain">)</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">lto</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">precopied_list_kov</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">lto</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">bk</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">bk</span><span class="plain">)) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">lfrom</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">precopied_list_kov</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UNKNOWN_TY</span><span class="plain">)</span>
+                    <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">precopied_list_kov</span><span class="plain">);</span>
+                <span class="reserved">else</span>
+                    <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">bk</span><span class="plain">);</span>
+                <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">nv</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">lto</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">nv</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -163,38 +163,38 @@ don't want to incur the overhead of translating KOV to comparison function.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Compare listleft listright delta no_items i cf;</span>
-        <span class="plain">delta = BlkValueRead(listleft, LIST_LENGTH_F) - BlkValueRead(listright, LIST_LENGTH_F);</span>
-        <span class="plain">if (delta) return delta;</span>
-        <span class="plain">no_items = BlkValueRead(listleft, LIST_LENGTH_F);</span>
-        <span class="plain">if (no_items == 0) return 0;</span>
-        <span class="plain">delta = BlkValueRead(listleft, LIST_ITEM_KOV_F) - BlkValueRead(listright, LIST_ITEM_KOV_F);</span>
-        <span class="plain">if (delta) return delta;</span>
-        <span class="plain">cf = LIST_OF_TY_ComparisonFn(listleft);</span>
-        <span class="plain">if (cf == 0 or UnsignedCompare) {</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++) {</span>
-                <span class="plain">delta = BlkValueRead(listleft, i+LIST_ITEM_BASE) -</span>
-                    <span class="plain">BlkValueRead(listright, i+LIST_ITEM_BASE);</span>
-                <span class="plain">if (delta) return delta;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Compare</span><span class="plain"> </span><span class="identifier">listleft</span><span class="plain"> </span><span class="identifier">listright</span><span class="plain"> </span><span class="identifier">delta</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain">;</span>
+        <span class="identifier">delta</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listright</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">delta</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">delta</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">delta</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listright</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">delta</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">delta</span><span class="plain">;</span>
+        <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UnsignedCompare</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="identifier">delta</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">) </span><span class="constant">-</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listright</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">delta</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">delta</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++) {</span>
-                <span class="plain">delta = cf(BlkValueRead(listleft, i+LIST_ITEM_BASE),</span>
-                    <span class="plain">BlkValueRead(listright, i+LIST_ITEM_BASE));</span>
-                <span class="plain">if (delta) return delta;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="identifier">delta</span><span class="plain"> = </span><span class="identifier">cf</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listleft</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">),</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">listright</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">delta</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">delta</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_ComparisonFn list;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;</span>
-        <span class="plain">return KOVComparisonFunction(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">KOVComparisonFunction</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_Distinguish txb1 txb2;</span>
-        <span class="plain">if (LIST_OF_TY_Compare(txb1, txb2) == 0) rfalse;</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Distinguish</span><span class="plain"> </span><span class="identifier">txb1</span><span class="plain"> </span><span class="identifier">txb2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LIST_OF_TY_Compare</span><span class="plain">(</span><span class="identifier">txb1</span><span class="plain">, </span><span class="identifier">txb2</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -204,13 +204,13 @@ don't want to incur the overhead of translating KOV to comparison function.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Hash list  len kov rv i;</span>
-        <span class="plain">rv = 0;</span>
-        <span class="plain">len = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">kov = BlkValueRead(list, LIST_ITEM_KOV_F);</span>
-        <span class="plain">for (i=0: i&lt;len: i++)</span>
-            <span class="plain">rv = rv * 33 + GetHashValue(kov, BlkValueRead(list, i+LIST_ITEM_BASE));</span>
-        <span class="plain">return rv;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Hash</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">  </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="identifier">rv</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">kov</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">rv</span><span class="plain"> * </span><span class="constant">33</span><span class="plain"> + </span><span class="identifier">GetHashValue</span><span class="plain">(</span><span class="identifier">kov</span><span class="plain">, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -227,36 +227,36 @@ use the "listing contents of..." activity in any circumstances.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Say list format no_items v i bk;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">bk = KindAtomic(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
-        <span class="plain">! print no_items, " of kov=", BlkValueRead(list, LIST_ITEM_KOV_F), ":";</span>
-        <span class="plain">if (format == 1) print "{";</span>
-        <span class="plain">for (i=0:i&lt;no_items:i++) {</span>
-            <span class="plain">v = BlkValueRead(list, i+LIST_ITEM_BASE);</span>
-            <span class="plain">switch (format) {</span>
-                <span class="plain">2: print (the) v;</span>
-                <span class="plain">3: print (a) v;</span>
-                <span class="plain">default:</span>
-                    <span class="plain">if (bk == LIST_OF_TY) LIST_OF_TY_Say(v, 1);</span>
-                    <span class="plain">else if ((bk == TEXT_TY) &amp;&amp; (format == 1)) {</span>
-                        <span class="plain">print "~"; PrintKindValuePair(bk, v); print "~";</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Say</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">format</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">bk</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">bk</span><span class="plain"> = </span><span class="identifier">KindAtomic</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
+        <span class="comment">! print no_items, " of kov=", BlkValueRead(list, LIST_ITEM_KOV_F), ":";</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"{"</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
+                <span class="constant">2</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">v</span><span class="plain">;</span>
+                <span class="constant">3</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain">) </span><span class="identifier">v</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bk</span><span class="plain"> == </span><span class="identifier">LIST_OF_TY</span><span class="plain">) </span><span class="identifier">LIST_OF_TY_Say</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bk</span><span class="plain"> == </span><span class="identifier">TEXT_TY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">format</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)) {</span>
+                        <span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">; </span><span class="identifier">PrintKindValuePair</span><span class="plain">(</span><span class="identifier">bk</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">); </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">;</span>
                     <span class="plain">}</span>
-                    <span class="plain">else PrintKindValuePair(bk, v);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">PrintKindValuePair</span><span class="plain">(</span><span class="identifier">bk</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="plain">if (i&lt;no_items-2) print ", ";</span>
-            <span class="plain">if (i==no_items-2) {</span>
-                <span class="plain">if (format == 1) print ", "; else {</span>
-                    <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; SERIAL_COMMA_TCBIT) {</span>
-                        <span class="plain">if (no_items ~= 2) print ",";</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">-2) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", "</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==</span><span class="identifier">no_items</span><span class="plain">-2) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", "</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">SERIAL_COMMA_TCBIT</span><span class="plain">) {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> ~= </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">","</span><span class="plain">;</span>
                     <span class="plain">}</span>
-                    <span class="plain">LIST_WRITER_INTERNAL_RM('C');</span>
+                    <span class="identifier">LIST_WRITER_INTERNAL_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">if (format == 1) print "}";</span>
-        <span class="plain">prior_named_list = no_items; prior_named_list_gender = -1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"}"</span><span class="plain">;</span>
+        <span class="identifier">prior_named_list</span><span class="plain"> = </span><span class="identifier">no_items</span><span class="plain">; </span><span class="identifier">prior_named_list_gender</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -277,24 +277,24 @@ then to transcribe them.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Desc list desc kov obj no_items ex len i;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">ex = BlkValueLBCapacity(list);</span>
-        <span class="plain">len = desc(-3);</span>
-        <span class="plain">if (len+LIST_ITEM_BASE &gt; ex) {</span>
-            <span class="plain">if (BlkValueSetLBCapacity(list, len+LIST_ITEM_BASE) == false)</span>
-                <span class="plain">return 0;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Desc</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">desc</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">ex</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">desc</span><span class="plain">(-3);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain"> &gt; </span><span class="identifier">ex</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">len</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (kov) BlkValueWrite(list, LIST_ITEM_KOV_F, kov);</span>
-        <span class="plain">else BlkValueWrite(list, LIST_ITEM_KOV_F, OBJECT_TY);</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, len);</span>
-        <span class="plain">obj = 0;</span>
-        <span class="plain">for (i=0: i&lt;len: i++) {</span>
-            <span class="plain">obj = desc(-2, obj, i);</span>
-            <span class="plain">! print "i = ", i, " and obj = ", obj, "^";</span>
-            <span class="plain">BlkValueWrite(list, i+LIST_ITEM_BASE, obj);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kov</span><span class="plain">) </span><span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">, </span><span class="identifier">OBJECT_TY</span><span class="plain">);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">len</span><span class="plain">);</span>
+        <span class="identifier">obj</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">desc</span><span class="plain">(-2, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="comment">! print "i = ", i, " and obj = ", obj, "^";</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return list;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -308,18 +308,18 @@ performed. In other words, one copy of "Alert" is equal to another.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_FindItem list v i no_items cf;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;</span>
-        <span class="plain">cf = LIST_OF_TY_ComparisonFn(list);</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (cf == 0 or UnsignedCompare) {</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++)</span>
-                <span class="plain">if (v == BlkValueRead(list, i+LIST_ITEM_BASE)) rtrue;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">for (i=0: i&lt;no_items: i++)</span>
-                <span class="plain">if (cf(v, BlkValueRead(list, i+LIST_ITEM_BASE)) == 0) rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_FindItem</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UnsignedCompare</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">)) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -344,40 +344,40 @@ where N is the number of items in the list at present.
 </li></ul>
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_InsertItem list v posnflag posn nodups i no_items ex nv contents_kind;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">if (nodups &amp;&amp; (LIST_OF_TY_FindItem(list, v))) return list;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable</span>
-        <span class="plain">contents_kind = BlkValueRead(list, LIST_ITEM_KOV_F);</span>
-        <span class="plain">if ((posnflag) &amp;&amp; ((posn&lt;1) || (posn &gt; no_items+1))) {</span>
-            <span class="plain">print "*** Couldn't add at entry ", posn, " in the list ";</span>
-            <span class="plain">LIST_OF_TY_Say(list, true);</span>
-            <span class="plain">print ", which has entries in the range 1 to ", no_items, " ***^";</span>
-            <span class="plain">RunTimeProblem(RTP_LISTRANGEERROR);</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_InsertItem</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">posnflag</span><span class="plain"> </span><span class="identifier">posn</span><span class="plain"> </span><span class="identifier">nodups</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">ex</span><span class="plain"> </span><span class="identifier">nv</span><span class="plain"> </span><span class="identifier">contents_kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nodups</span><span class="plain"> &amp;&amp; (</span><span class="identifier">LIST_OF_TY_FindItem</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">); </span><span class="comment">! Forces the list to be mutable</span>
+        <span class="identifier">contents_kind</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">posnflag</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">posn</span><span class="plain">&lt;1) || (</span><span class="identifier">posn</span><span class="plain"> &gt; </span><span class="identifier">no_items</span><span class="plain">+1))) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't add at entry "</span><span class="plain">, </span><span class="identifier">posn</span><span class="plain">, </span><span class="string">" in the list "</span><span class="plain">;</span>
+            <span class="identifier">LIST_OF_TY_Say</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">", which has entries in the range 1 to "</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
+            <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">ex = BlkValueLBCapacity(list);</span>
-        <span class="plain">if (no_items+LIST_ITEM_BASE+1 &gt; ex) {</span>
-            <span class="plain">if (BlkValueSetLBCapacity(list, ex+16) == false) return 0;</span>
+        <span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+1 &gt; </span><span class="identifier">ex</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">ex</span><span class="plain">+16) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (KOVIsBlockValue(contents_kind)) {</span>
-            <span class="plain">nv = BlkValueCreate(contents_kind);</span>
-            <span class="plain">BlkValueCopy(nv, v);</span>
-            <span class="plain">v = nv;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">contents_kind</span><span class="plain">)) {</span>
+            <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">contents_kind</span><span class="plain">);</span>
+            <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">nv</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">nv</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (posnflag) {</span>
-            <span class="plain">posn--;</span>
-            <span class="plain">for (i=no_items:i&gt;posn:i--) {</span>
-                <span class="plain">BlkValueWrite(list, i+LIST_ITEM_BASE,</span>
-                    <span class="plain">BlkValueRead(list, i-1+LIST_ITEM_BASE));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">posnflag</span><span class="plain">) {</span>
+            <span class="identifier">posn</span><span class="plain">--;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">no_items</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">posn</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">--) {</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">,</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="plain">BlkValueWrite(list, posn+LIST_ITEM_BASE, v);</span>
-        <span class="plain">} else {</span>
-            <span class="plain">BlkValueWrite(list, no_items+LIST_ITEM_BASE, v);</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">posn</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items+1);</span>
-        <span class="plain">return list;</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">+1);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -392,56 +392,56 @@ value <code class="display"><span class="extract">v</span></code> to insert, the
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_AppendList list more posnflag posn nodups v i j no_items msize ex nv;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">if ((more==0) || (BlkValueWeakKind(more) ~= LIST_OF_TY)) return list;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable</span>
-        <span class="plain">if ((posnflag) &amp;&amp; ((posn&lt;1) || (posn &gt; no_items+1))) {</span>
-            <span class="plain">print "*** Couldn't add at entry ", posn, " in the list ";</span>
-            <span class="plain">LIST_OF_TY_Say(list, true);</span>
-            <span class="plain">print ", which has entries in the range 1 to ", no_items, " ***^";</span>
-            <span class="plain">RunTimeProblem(RTP_LISTRANGEERROR);</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_AppendList</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">more</span><span class="plain"> </span><span class="identifier">posnflag</span><span class="plain"> </span><span class="identifier">posn</span><span class="plain"> </span><span class="identifier">nodups</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">msize</span><span class="plain"> </span><span class="identifier">ex</span><span class="plain"> </span><span class="identifier">nv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">more</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">more</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">); </span><span class="comment">! Forces the list to be mutable</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">posnflag</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">posn</span><span class="plain">&lt;1) || (</span><span class="identifier">posn</span><span class="plain"> &gt; </span><span class="identifier">no_items</span><span class="plain">+1))) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't add at entry "</span><span class="plain">, </span><span class="identifier">posn</span><span class="plain">, </span><span class="string">" in the list "</span><span class="plain">;</span>
+            <span class="identifier">LIST_OF_TY_Say</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">", which has entries in the range 1 to "</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
+            <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">msize = BlkValueRead(more, LIST_LENGTH_F);</span>
-        <span class="plain">ex = BlkValueLBCapacity(list);</span>
-        <span class="plain">if (no_items+msize+LIST_ITEM_BASE &gt; ex) {</span>
-            <span class="plain">if (BlkValueSetLBCapacity(list, no_items+msize+LIST_ITEM_BASE+8) == false)</span>
-                <span class="plain">return 0;</span>
+        <span class="identifier">msize</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">more</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">msize</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain"> &gt; </span><span class="identifier">ex</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">msize</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+8) == </span><span class="reserved">false</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (posnflag) {</span>
-            <span class="plain">posn--;</span>
-            <span class="plain">for (i=no_items+msize:i&gt;=posn+msize:i--) {</span>
-                <span class="plain">BlkValueWrite(list, i+LIST_ITEM_BASE,</span>
-                    <span class="plain">BlkValueRead(list, i-msize+LIST_ITEM_BASE));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">posnflag</span><span class="plain">) {</span>
+            <span class="identifier">posn</span><span class="plain">--;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">msize</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">&gt;=</span><span class="identifier">posn</span><span class="plain">+</span><span class="identifier">msize</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">--) {</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">,</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-</span><span class="identifier">msize</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="plain">! BlkValueWrite(list, posn, v);</span>
-            <span class="plain">for (j=0: j&lt;msize: j++) {</span>
-                <span class="plain">v = BlkValueRead(more, j+LIST_ITEM_BASE);</span>
-                <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {</span>
-                    <span class="plain">nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
-                    <span class="plain">BlkValueCopy(nv, v);</span>
-                    <span class="plain">v = nv;</span>
+            <span class="comment">! BlkValueWrite(list, posn, v);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0: </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">msize</span><span class="plain">: </span><span class="identifier">j</span><span class="plain">++) {</span>
+                <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">more</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">))) {</span>
+                    <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
+                    <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">nv</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+                    <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">nv</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">BlkValueWrite(list, posn+j+LIST_ITEM_BASE, v);</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">posn</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">for (i=0, j=0: i&lt;msize: i++) {</span>
-                <span class="plain">v = BlkValueRead(more, i+LIST_ITEM_BASE);</span>
-                <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {</span>
-                    <span class="plain">nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
-                    <span class="plain">BlkValueCopy(nv, v);</span>
-                    <span class="plain">v = nv;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">j</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">msize</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">more</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">))) {</span>
+                    <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
+                    <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">nv</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+                    <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">nv</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">if ((nodups == 0) || (LIST_OF_TY_FindItem(list, v) == false)) {</span>
-                    <span class="plain">BlkValueWrite(list, no_items+j+LIST_ITEM_BASE, v);</span>
-                    <span class="plain">j++;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nodups</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">LIST_OF_TY_FindItem</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">)) {</span>
+                    <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+                    <span class="identifier">j</span><span class="plain">++;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items+j);</span>
-        <span class="plain">return list;</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -458,35 +458,35 @@ destroyed with <code class="display"><span class="extract">BlkValueFree</span></
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_RemoveValue list v forgive i j no_items odsize f cf delendum;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;</span>
-        <span class="plain">cf = LIST_OF_TY_ComparisonFn(list);</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items); ! Forces the list to be mutable</span>
-        <span class="plain">for (i=0: i&lt;no_items: i++) {</span>
-            <span class="plain">delendum = BlkValueRead(list, i+LIST_ITEM_BASE);</span>
-            <span class="plain">if (cf == 0 or UnsignedCompare)</span>
-                <span class="plain">f = (v == delendum);</span>
-            <span class="plain">else</span>
-                <span class="plain">f = (cf(v, delendum) == 0);</span>
-            <span class="plain">if (f) {</span>
-                <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))</span>
-                    <span class="plain">BlkValueFree(delendum);</span>
-                <span class="plain">for (j=i+1: j&lt;no_items: j++)</span>
-                    <span class="plain">BlkValueWrite(list, j-1+LIST_ITEM_BASE,</span>
-                        <span class="plain">BlkValueRead(list, j+LIST_ITEM_BASE));</span>
-                <span class="plain">no_items--; i--;</span>
-                <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_RemoveValue</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">forgive</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">odsize</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain"> </span><span class="identifier">delendum</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">); </span><span class="identifier">odsize</span><span class="plain"> = </span><span class="identifier">no_items</span><span class="plain">;</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">); </span><span class="comment">! Forces the list to be mutable</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">delendum</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UnsignedCompare</span><span class="plain">)</span>
+                <span class="identifier">f</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">delendum</span><span class="plain">);</span>
+            <span class="reserved">else</span>
+                <span class="identifier">f</span><span class="plain"> = (</span><span class="identifier">cf</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">delendum</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">)))</span>
+                    <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">delendum</span><span class="plain">);</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+1: </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">j</span><span class="plain">++)</span>
+                    <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">-1+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">,</span>
+                        <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+                <span class="identifier">no_items</span><span class="plain">--; </span><span class="identifier">i</span><span class="plain">--;</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">if (odsize ~= no_items) rfalse;</span>
-        <span class="plain">if (forgive) rfalse;</span>
-        <span class="plain">print "*** Couldn't remove: the value ";</span>
-        <span class="plain">PrintKindValuePair(BlkValueRead(list, LIST_ITEM_KOV_F), v);</span>
-        <span class="plain">print " was not present in the list ";</span>
-        <span class="plain">LIST_OF_TY_Say(list, true);</span>
-        <span class="plain">print " ***^";</span>
-        <span class="plain">RunTimeProblem(RTP_LISTRANGEERROR);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">odsize</span><span class="plain"> ~= </span><span class="identifier">no_items</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">forgive</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't remove: the value "</span><span class="plain">;</span>
+        <span class="identifier">PrintKindValuePair</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">), </span><span class="identifier">v</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">" was not present in the list "</span><span class="plain">;</span>
+        <span class="identifier">LIST_OF_TY_Say</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">" ***^"</span><span class="plain">;</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -505,32 +505,32 @@ as the list shuffles down to fill the void.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_RemoveItemRange list from to forgive i d no_items;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if ((from &gt; to) || (from &lt;= 0) || (to &gt; no_items)) {</span>
-            <span class="plain">if (forgive) {</span>
-                <span class="plain">if (from &lt;= 0) from = 1;</span>
-                <span class="plain">if (to &gt;= no_items) to = no_items;</span>
-                <span class="plain">if (from &gt; to) return list;</span>
-            <span class="plain">} else {</span>
-                <span class="plain">print "*** Couldn't remove entries ", from, " to ", to, " from the list ";</span>
-                <span class="plain">LIST_OF_TY_Say(list, true);</span>
-                <span class="plain">print ", which has entries in the range 1 to ", no_items, " ***^";</span>
-                <span class="plain">RunTimeProblem(RTP_LISTRANGEERROR);</span>
-                <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_RemoveItemRange</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">forgive</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from</span><span class="plain"> &gt; </span><span class="reserved">to</span><span class="plain">) || (</span><span class="identifier">from</span><span class="plain"> &lt;= </span><span class="constant">0</span><span class="plain">) || (</span><span class="reserved">to</span><span class="plain"> &gt; </span><span class="identifier">no_items</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">forgive</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> &lt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">from</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> &gt;= </span><span class="identifier">no_items</span><span class="plain">) </span><span class="reserved">to</span><span class="plain"> = </span><span class="identifier">no_items</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> &gt; </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't remove entries "</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="string">" from the list "</span><span class="plain">;</span>
+                <span class="identifier">LIST_OF_TY_Say</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">", which has entries in the range 1 to "</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
+                <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
+                <span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">to--; from--;</span>
-        <span class="plain">d = to-from+1;</span>
-        <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))</span>
-            <span class="plain">for (i=0: i&lt;d: i++)</span>
-                <span class="plain">BlkValueFree(BlkValueRead(list, from+i+LIST_ITEM_BASE));</span>
-        <span class="plain">for (i=from: i&lt;no_items-d: i++)</span>
-            <span class="plain">BlkValueWrite(list, i+LIST_ITEM_BASE,</span>
-                <span class="plain">BlkValueRead(list, i+d+LIST_ITEM_BASE));</span>
-        <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items-d);</span>
-        <span class="plain">return list;</span>
+        <span class="reserved">to</span><span class="plain">--; </span><span class="identifier">from</span><span class="plain">--;</span>
+        <span class="identifier">d</span><span class="plain"> = </span><span class="reserved">to</span><span class="plain">-</span><span class="identifier">from</span><span class="plain">+1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">)))</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">d</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">from</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">-</span><span class="identifier">d</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">,</span>
+                <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">d</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">-</span><span class="identifier">d</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -551,32 +551,32 @@ happened in this situation to be unhelpful.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Remove_List list rlist i j k v w no_items odsize rsize cf f;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F); odsize = no_items;</span>
-        <span class="plain">rsize = BlkValueRead(rlist, LIST_LENGTH_F);</span>
-        <span class="plain">cf = LIST_OF_TY_ComparisonFn(list);</span>
-        <span class="plain">for (i=0: i&lt;no_items: i++) {</span>
-            <span class="plain">v = BlkValueRead(list, i+LIST_ITEM_BASE);</span>
-            <span class="plain">for (k=0: k&lt;rsize: k++) {</span>
-                <span class="plain">w = BlkValueRead(rlist, k+LIST_ITEM_BASE);</span>
-                <span class="plain">if (cf == 0 or UnsignedCompare)</span>
-                    <span class="plain">f = (v == w);</span>
-                <span class="plain">else</span>
-                    <span class="plain">f = (cf(v, w) == 0);</span>
-                <span class="plain">if (f) {</span>
-                    <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))</span>
-                        <span class="plain">BlkValueFree(v);</span>
-                    <span class="plain">for (j=i+1: j&lt;no_items: j++)</span>
-                        <span class="plain">BlkValueWrite(list, j+LIST_ITEM_BASE-1,</span>
-                            <span class="plain">BlkValueRead(list, j+LIST_ITEM_BASE));</span>
-                    <span class="plain">no_items--; i--;</span>
-                    <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, no_items);</span>
-                    <span class="plain">break;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Remove_List</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">rlist</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">w</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">odsize</span><span class="plain"> </span><span class="identifier">rsize</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">); </span><span class="identifier">odsize</span><span class="plain"> = </span><span class="identifier">no_items</span><span class="plain">;</span>
+        <span class="identifier">rsize</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">rlist</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain">=0: </span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">rsize</span><span class="plain">: </span><span class="identifier">k</span><span class="plain">++) {</span>
+                <span class="identifier">w</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">rlist</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UnsignedCompare</span><span class="plain">)</span>
+                    <span class="identifier">f</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">w</span><span class="plain">);</span>
+                <span class="reserved">else</span>
+                    <span class="identifier">f</span><span class="plain"> = (</span><span class="identifier">cf</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">w</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">)))</span>
+                        <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">);</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+1: </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">j</span><span class="plain">++)</span>
+                        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">-1,</span>
+                            <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">));</span>
+                    <span class="identifier">no_items</span><span class="plain">--; </span><span class="identifier">i</span><span class="plain">--;</span>
+                    <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -586,15 +586,15 @@ happened in this situation to be unhelpful.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_GetLength list;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;</span>
-        <span class="plain">return BlkValueRead(list, LIST_LENGTH_F);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_GetLength</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ LIST_OF_TY_Empty list;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) rfalse;</span>
-        <span class="plain">if (BlkValueRead(list, LIST_LENGTH_F) == 0) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Empty</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -619,40 +619,40 @@ if <code class="display"><span class="extract">truncation_end</span></code> is 1
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_SetLength list newsize this_way_only truncation_end no_items ex i dv;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;</span>
-        <span class="plain">if (newsize &lt; 0) return RunTimeProblem(RTP_LISTSIZENEGATIVE, newsize);</span>
-        <span class="plain">BlkMakeMutable(list);</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (no_items &lt; newsize) {</span>
-            <span class="plain">if (this_way_only == -1) return list;</span>
-            <span class="plain">ex = BlkValueLBCapacity(list);</span>
-            <span class="plain">if (newsize+LIST_ITEM_BASE &gt; ex) {</span>
-                <span class="plain">if (BlkValueSetLBCapacity(list, newsize+LIST_ITEM_BASE) == false)</span>
-                    <span class="plain">return 0;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_SetLength</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">newsize</span><span class="plain"> </span><span class="identifier">this_way_only</span><span class="plain"> </span><span class="identifier">truncation_end</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">ex</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">dv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newsize</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTSIZENEGATIVE</span><span class="plain">, </span><span class="identifier">newsize</span><span class="plain">);</span>
+        <span class="identifier">BlkMakeMutable</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &lt; </span><span class="identifier">newsize</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_way_only</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+            <span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newsize</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain"> &gt; </span><span class="identifier">ex</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">newsize</span><span class="plain">+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">dv = DefaultValueOfKOV(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
-            <span class="plain">for (i=no_items: i&lt;newsize: i++)</span>
-                <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i, dv);</span>
-            <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, newsize);</span>
+            <span class="identifier">dv</span><span class="plain"> = </span><span class="identifier">DefaultValueOfKOV</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">newsize</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">dv</span><span class="plain">);</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">newsize</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (no_items &gt; newsize) {</span>
-            <span class="plain">if (this_way_only == 1) return list;</span>
-            <span class="plain">if (truncation_end == -1) {</span>
-                <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))</span>
-                    <span class="plain">for (i=0: i&lt;no_items-newsize: i++)</span>
-                        <span class="plain">BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));</span>
-                <span class="plain">for (i=0: i&lt;newsize: i++)</span>
-                    <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i,</span>
-                        <span class="plain">BlkValueRead(list, LIST_ITEM_BASE+no_items-newsize+i));</span>
-            <span class="plain">} else {</span>
-                <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F)))</span>
-                    <span class="plain">for (i=newsize: i&lt;no_items: i++)</span>
-                        <span class="plain">BlkValueFree(BlkValueRead(list, LIST_ITEM_BASE+i));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &gt; </span><span class="identifier">newsize</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_way_only</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">truncation_end</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">)))</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">-</span><span class="identifier">newsize</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                        <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">));</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">newsize</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                    <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">,</span>
+                        <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">no_items</span><span class="plain">-</span><span class="identifier">newsize</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">));</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">)))</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">newsize</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
+                        <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="plain">BlkValueWrite(list, LIST_LENGTH_F, newsize);</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">, </span><span class="identifier">newsize</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return list;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -662,22 +662,22 @@ if <code class="display"><span class="extract">truncation_end</span></code> is 1
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_GetItem list i forgive no_items;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if ((i&lt;=0) || (i&gt;no_items)) {</span>
-            <span class="plain">if (forgive) return false;</span>
-            <span class="plain">print "*** Couldn't read from entry ", i, " of a list which";</span>
-            <span class="plain">switch (no_items) {</span>
-                <span class="plain">0: print " is empty ***^";</span>
-                <span class="plain">1: print " has only one entry, numbered 1 ***^";</span>
-                <span class="plain">default: print " has entries numbered from 1 to ", no_items, " ***^";</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_GetItem</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">forgive</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&lt;=0) || (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">no_items</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">forgive</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't read from entry "</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="string">" of a list which"</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain">) {</span>
+                <span class="constant">0</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" is empty ***^"</span><span class="plain">;</span>
+                <span class="constant">1</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" has only one entry, numbered 1 ***^"</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" has entries numbered from 1 to "</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">RunTimeProblem(RTP_LISTRANGEERROR);</span>
-            <span class="plain">if (no_items &gt;= 1) i = 1;</span>
-            <span class="plain">else return false;</span>
+            <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return BlkValueRead(list, LIST_ITEM_BASE+i-1);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -690,19 +690,19 @@ to convert an rvalue such as <code class="display"><span class="extract">LIST_OF
 
 
 <pre class="display">
-    <span class="plain">[ WriteLIST_OF_TY_GetItem list i val no_items;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if ((i&lt;=0) || (i&gt;no_items)) {</span>
-            <span class="plain">print "*** Couldn't write to list entry ", i, " of a list which";</span>
-            <span class="plain">switch (no_items) {</span>
-                <span class="plain">0: print " is empty ***^";</span>
-                <span class="plain">1: print " has only one entry, numbered 1 ***^";</span>
-                <span class="plain">default: print " has entries numbered from 1 to ", no_items, " ***^";</span>
+    <span class="plain">[ </span><span class="identifier">WriteLIST_OF_TY_GetItem</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&lt;=0) || (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">no_items</span><span class="plain">)) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Couldn't write to list entry "</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="string">" of a list which"</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain">) {</span>
+                <span class="constant">0</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" is empty ***^"</span><span class="plain">;</span>
+                <span class="constant">1</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" has only one entry, numbered 1 ***^"</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" has entries numbered from 1 to "</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">return RunTimeProblem(RTP_LISTRANGEERROR);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LISTRANGEERROR</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i-1, val);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1, </span><span class="identifier">val</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -715,16 +715,16 @@ used instead.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_PutItem list i v  no_items nv;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return false;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (KOVIsBlockValue(BlkValueRead(list, LIST_ITEM_KOV_F))) {</span>
-            <span class="plain">nv = BlkValueCreate(BlkValueRead(list, LIST_ITEM_KOV_F));</span>
-            <span class="plain">BlkValueCopy(nv, v);</span>
-            <span class="plain">v = nv;</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_PutItem</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">  </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">nv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">))) {</span>
+            <span class="identifier">nv</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_KOV_F</span><span class="plain">));</span>
+            <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">nv</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">nv</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if ((i&lt;=0) || (i&gt;no_items)) return false;</span>
-        <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i-1, v);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&lt;=0) || (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">no_items</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1, </span><span class="identifier">v</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -738,17 +738,17 @@ block-values and simply move them around like any other data.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Reverse list no_items i v;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (no_items &lt; 2) return list;</span>
-        <span class="plain">for (i=0:i*2&lt;no_items:i++) {</span>
-            <span class="plain">v = BlkValueRead(list, LIST_ITEM_BASE+i);</span>
-            <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i,</span>
-                <span class="plain">BlkValueRead(list, LIST_ITEM_BASE+no_items-1-i));</span>
-            <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+no_items-1-i, v);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Reverse</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0:</span><span class="identifier">i</span><span class="plain">*2&lt;</span><span class="identifier">no_items</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">,</span>
+                <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">no_items</span><span class="plain">-1-</span><span class="identifier">i</span><span class="plain">));</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">no_items</span><span class="plain">-1-</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return list;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -760,24 +760,24 @@ end of the list, "backwards" means towards the start.
 
 
 <pre class="display">
-    <span class="plain">[ LIST_OF_TY_Rotate list backwards  no_items i v;</span>
-        <span class="plain">if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (no_items &lt; 2) return list;</span>
-        <span class="plain">if (backwards) {</span>
-            <span class="plain">v = BlkValueRead(list, LIST_ITEM_BASE);</span>
-            <span class="plain">for (i=0:i&lt;no_items-1:i++)</span>
-                <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i,</span>
-                    <span class="plain">BlkValueRead(list, LIST_ITEM_BASE+i+1));</span>
-            <span class="plain">BlkValueWrite(list, no_items-1+LIST_ITEM_BASE, v);</span>
-        <span class="plain">} else {</span>
-            <span class="plain">v = BlkValueRead(list, no_items-1+LIST_ITEM_BASE);</span>
-            <span class="plain">for (i=no_items-1:i&gt;0:i--)</span>
-                <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i,</span>
-                    <span class="plain">BlkValueRead(list, LIST_ITEM_BASE+i-1));</span>
-            <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE, v);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Rotate</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">backwards</span><span class="plain">  </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list</span><span class="plain">==0) || (</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">) ~= </span><span class="identifier">LIST_OF_TY</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">backwards</span><span class="plain">) {</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">-1:</span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">,</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">+1));</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">-1+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">-1+</span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">no_items</span><span class="plain">-1:</span><span class="identifier">i</span><span class="plain">&gt;0:</span><span class="identifier">i</span><span class="plain">--)</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">,</span>
+                    <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1));</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return list;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -799,51 +799,51 @@ we sort based not on the item values but on their values for the property
 
 
 <pre class="display">
-    <span class="plain">Global LIST_OF_TY_Sort_cf;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_Sort_cf</span><span class="plain">;</span>
 
-    <span class="plain">[ LIST_OF_TY_Sort list dir prop cf  i j no_items v;</span>
-        <span class="plain">BlkMakeMutable(list);</span>
-        <span class="plain">no_items = BlkValueRead(list, LIST_LENGTH_F);</span>
-        <span class="plain">if (dir == 2) {</span>
-            <span class="plain">if (no_items &lt; 2) return;</span>
-            <span class="plain">for (i=1:i&lt;no_items:i++) {</span>
-                <span class="plain">j = random(i+1) - 1;</span>
-                <span class="plain">v = BlkValueRead(list, LIST_ITEM_BASE+i);</span>
-                <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i, BlkValueRead(list, LIST_ITEM_BASE+j));</span>
-                <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+j, v);</span>
+    <span class="plain">[ </span><span class="identifier">LIST_OF_TY_Sort</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain">  </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">no_items</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="identifier">BlkMakeMutable</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
+        <span class="identifier">no_items</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_LENGTH_F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_items</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_items</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="identifier">j</span><span class="plain"> = </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">+1) </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">);</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">));</span>
+                <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="plain">return;</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">SetSortDomain(ListSwapEntries, ListCompareEntries);</span>
-        <span class="plain">if (cf) LIST_OF_TY_Sort_cf = BlkValueCompare;</span>
-        <span class="plain">else LIST_OF_TY_Sort_cf = 0;</span>
-        <span class="plain">SortArray(list, prop, dir, no_items, false, 0);</span>
+        <span class="identifier">SetSortDomain</span><span class="plain">(</span><span class="identifier">ListSwapEntries</span><span class="plain">, </span><span class="identifier">ListCompareEntries</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain">) </span><span class="identifier">LIST_OF_TY_Sort_cf</span><span class="plain"> = </span><span class="identifier">BlkValueCompare</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LIST_OF_TY_Sort_cf</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">SortArray</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">, </span><span class="identifier">no_items</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ListSwapEntries list i j v;</span>
-        <span class="plain">if (i==j) return;</span>
-        <span class="plain">v = BlkValueRead(list, LIST_ITEM_BASE+i-1);</span>
-        <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+i-1, BlkValueRead(list, LIST_ITEM_BASE+j-1));</span>
-        <span class="plain">BlkValueWrite(list, LIST_ITEM_BASE+j-1, v);</span>
+    <span class="plain">[ </span><span class="identifier">ListSwapEntries</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==</span><span class="identifier">j</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1);</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">-1));</span>
+        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">-1, </span><span class="identifier">v</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ListCompareEntries list col i j d cf;</span>
-        <span class="plain">if (i==j) return 0;</span>
-        <span class="plain">i = BlkValueRead(list, LIST_ITEM_BASE+i-1);</span>
-        <span class="plain">j = BlkValueRead(list, LIST_ITEM_BASE+j-1);</span>
-        <span class="plain">if (I7S_Col) {</span>
-            <span class="plain">if (i provides I7S_Col) i=i.I7S_Col; else i=0;</span>
-            <span class="plain">if (j provides I7S_Col) j=j.I7S_Col; else j=0;</span>
-            <span class="plain">cf = LIST_OF_TY_Sort_cf;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">cf = LIST_OF_TY_ComparisonFn(list);</span>
+    <span class="plain">[ </span><span class="identifier">ListCompareEntries</span><span class="plain"> </span><span class="identifier">list</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==</span><span class="identifier">j</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">-1);</span>
+        <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">, </span><span class="identifier">LIST_ITEM_BASE</span><span class="plain">+</span><span class="identifier">j</span><span class="plain">-1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I7S_Col</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">I7S_Col</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">.</span><span class="identifier">I7S_Col</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">I7S_Col</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">j</span><span class="plain">.</span><span class="identifier">I7S_Col</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0;</span>
+            <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_Sort_cf</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">LIST_OF_TY_ComparisonFn</span><span class="plain">(</span><span class="identifier">list</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (cf == 0) {</span>
-            <span class="plain">if (i &gt; j) return 1;</span>
-            <span class="plain">if (i &lt; j) return -1;</span>
-            <span class="plain">return 0;</span>
-        <span class="plain">} else</span>
-            <span class="plain">return cf(i, j);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cf</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="identifier">j</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">j</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 

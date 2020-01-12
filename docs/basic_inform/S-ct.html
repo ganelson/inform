@@ -21,30 +21,30 @@ ZSCII for the Z-machine and Unicode for Glulx.
 
 
 <pre class="display">
-    <span class="plain">[ CharIsOfCase c case</span>
-        <span class="plain">i tab min max len par;</span>
-        <span class="plain">if (c&lt;'A') rfalse;</span>
-        <span class="plain">if (case == 0) {</span>
-            <span class="plain">if ((c &gt;= 'a') &amp;&amp; (c &lt;= 'z')) rtrue;</span>
-            <span class="plain">tab = CharCasingChart0;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if ((c &gt;= 'A') &amp;&amp; (c &lt;= 'Z')) rtrue;</span>
-            <span class="plain">tab = CharCasingChart1;</span>
+    <span class="plain">[ </span><span class="identifier">CharIsOfCase</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">case</span>
+        <span class="identifier">i</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">min</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">par</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">&lt;</span><span class="character">'A'</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">case</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="identifier">tab</span><span class="plain"> = </span><span class="identifier">CharCasingChart0</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="identifier">tab</span><span class="plain"> = </span><span class="identifier">CharCasingChart1</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (c&lt;128) rfalse;</span>
-        <span class="plain">while (tab--&gt;i) {</span>
-            <span class="plain">min = tab--&gt;i; i++;</span>
-            <span class="plain">len = tab--&gt;i; i++;</span>
-            <span class="plain">i++;</span>
-            <span class="plain">par = 0;</span>
-            <span class="plain">if (len&lt;0) { par = 1; len = -len; }</span>
-            <span class="plain">if (c &lt; min) rfalse;</span>
-            <span class="plain">if (c &lt; min+len) {</span>
-                <span class="plain">if (par) { if ((c-min) % 2 == 0) rtrue; }</span>
-                <span class="plain">else { rtrue; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">&lt;128) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) {</span>
+            <span class="identifier">min</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">par</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain">&lt;0) { </span><span class="identifier">par</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">len</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">len</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">min</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">min</span><span class="plain">+</span><span class="identifier">len</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">par</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain">-</span><span class="identifier">min</span><span class="plain">) % </span><span class="constant">2</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+                <span class="reserved">else</span><span class="plain"> { </span><span class="reserved">rtrue</span><span class="plain">; }</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -56,35 +56,35 @@ it unchanged if it is not a letter with variant casings.
 
 
 <pre class="display">
-    <span class="plain">[ CharToCase c case</span>
-        <span class="plain">i tab min max len par del f;</span>
-        <span class="plain">if (c&lt;'A') return c;</span>
-        <span class="plain">if (case == 1) {</span>
-            <span class="plain">if ((c &gt;= 'a') &amp;&amp; (c &lt;= 'z')) return c-32;</span>
-            <span class="plain">tab = CharCasingChart0;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if ((c &gt;= 'A') &amp;&amp; (c &lt;= 'Z')) return c+32;</span>
-            <span class="plain">tab = CharCasingChart1;</span>
+    <span class="plain">[ </span><span class="identifier">CharToCase</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">case</span>
+        <span class="identifier">i</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">min</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">par</span><span class="plain"> </span><span class="identifier">del</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">&lt;</span><span class="character">'A'</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">case</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">-32;</span>
+            <span class="identifier">tab</span><span class="plain"> = </span><span class="identifier">CharCasingChart0</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">+32;</span>
+            <span class="identifier">tab</span><span class="plain"> = </span><span class="identifier">CharCasingChart1</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (c&lt;128) return c;</span>
-        <span class="plain">while (tab--&gt;i) {</span>
-            <span class="plain">min = tab--&gt;i; i++;</span>
-            <span class="plain">len = tab--&gt;i; i++;</span>
-            <span class="plain">del = tab--&gt;i; i++;</span>
-            <span class="plain">par = 0;</span>
-            <span class="plain">if (len&lt;0) { par = 1; len = -len; }</span>
-            <span class="plain">if (c &lt; min) return c;</span>
-            <span class="plain">if (c &lt; min+len) {</span>
-                <span class="plain">f = false;</span>
-                <span class="plain">if (par) { if ((c-min) % 2 == 0) f = true; }</span>
-                <span class="plain">else { f = true; }</span>
-                <span class="plain">if (f) {</span>
-                    <span class="plain">if (del == UNIC_NCT) return c;</span>
-                    <span class="plain">return c+del;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">&lt;128) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) {</span>
+            <span class="identifier">min</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">del</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+            <span class="identifier">par</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain">&lt;0) { </span><span class="identifier">par</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">len</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">len</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">min</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">min</span><span class="plain">+</span><span class="identifier">len</span><span class="plain">) {</span>
+                <span class="identifier">f</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">par</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain">-</span><span class="identifier">min</span><span class="plain">) % </span><span class="constant">2</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">f</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; }</span>
+                <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">f</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">del</span><span class="plain"> == </span><span class="identifier">UNIC_NCT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">+</span><span class="identifier">del</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return c;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -97,49 +97,49 @@ expression matching (see "RegExp.i6t").
 
 
 <pre class="display">
-    <span class="plain">#IFDEF TARGET_ZCODE;</span>
-    <span class="plain">[ TEXT_TY_RevCase ch;</span>
-        <span class="plain">if (ch&lt;'A') return ch;</span>
-        <span class="plain">if ((ch &gt;= 'a') &amp;&amp; (ch &lt;= 'z')) return ch-'a'+'A';</span>
-        <span class="plain">if ((ch &gt;= 'A') &amp;&amp; (ch &lt;= 'Z')) return ch-'A'+'a';</span>
-        <span class="plain">if (ch&lt;128) return ch;</span>
-        <span class="plain">if ((ch &gt;= 155) &amp;&amp; (ch &lt;= 157)) return ch+3; ! a, o, u umlaut in ZSCII</span>
-        <span class="plain">if ((ch &gt;= 158) &amp;&amp; (ch &lt;= 160)) return ch-3; ! A, O, U umlaut</span>
-        <span class="plain">if ((ch &gt;= 164) &amp;&amp; (ch &lt;= 165)) return ch+3; ! e, i umlaut</span>
-        <span class="plain">if ((ch &gt;= 167) &amp;&amp; (ch &lt;= 168)) return ch-3; ! E, I umlaut</span>
-        <span class="plain">if ((ch &gt;= 169) &amp;&amp; (ch &lt;= 174)) return ch+6; ! a, e, i, o, u, y acute</span>
-        <span class="plain">if ((ch &gt;= 175) &amp;&amp; (ch &lt;= 180)) return ch-6; ! A, E, I, O, U, Y acute</span>
-        <span class="plain">if ((ch &gt;= 181) &amp;&amp; (ch &lt;= 185)) return ch+5; ! a, e, i, o, u grave</span>
-        <span class="plain">if ((ch &gt;= 186) &amp;&amp; (ch &lt;= 190)) return ch-5; ! A, E, I, O, U grave</span>
-        <span class="plain">if ((ch &gt;= 191) &amp;&amp; (ch &lt;= 195)) return ch+5; ! a, e, i, o, u circumflex</span>
-        <span class="plain">if ((ch &gt;= 196) &amp;&amp; (ch &lt;= 200)) return ch-5; ! A, E, I, O, U circumflex</span>
-        <span class="plain">if (ch == 201) return 202; ! a circle</span>
-        <span class="plain">if (ch == 202) return 201; ! A circle</span>
-        <span class="plain">if (ch == 203) return 204; ! o slash</span>
-        <span class="plain">if (ch == 204) return 203; ! O slash</span>
-        <span class="plain">if ((ch &gt;= 205) &amp;&amp; (ch &lt;= 207)) return ch+3; ! a, n, o tilde</span>
-        <span class="plain">if ((ch &gt;= 208) &amp;&amp; (ch &lt;= 210)) return ch-3; ! A, N, O tilde</span>
-        <span class="plain">if (ch == 211) return 212; ! ae ligature</span>
-        <span class="plain">if (ch == 212) return 211; ! AE ligature</span>
-        <span class="plain">if (ch == 213) return 214; ! c cedilla</span>
-        <span class="plain">if (ch == 214) return 213; ! C cedilla</span>
-        <span class="plain">if (ch == 215 or 216) return ch+2; ! thorn, eth</span>
-        <span class="plain">if (ch == 217 or 218) return ch-2; ! Thorn, Eth</span>
-        <span class="plain">if (ch == 220) return 221; ! oe ligature</span>
-        <span class="plain">if (ch == 221) return 220; ! OE ligature</span>
-        <span class="plain">return ch;</span>
+    <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">TEXT_TY_RevCase</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain">&lt;</span><span class="character">'A'</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'a'</span><span class="plain">+</span><span class="character">'A'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'A'</span><span class="plain">+</span><span class="character">'a'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain">&lt;128) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">155</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">157</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+3; </span><span class="comment">! a, o, u umlaut in ZSCII</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">158</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">160</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-3; </span><span class="comment">! A, O, U umlaut</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">164</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">165</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+3; </span><span class="comment">! e, i umlaut</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">167</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">168</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-3; </span><span class="comment">! E, I umlaut</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">169</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">174</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+6; </span><span class="comment">! a, e, i, o, u, y acute</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">175</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">180</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-6; </span><span class="comment">! A, E, I, O, U, Y acute</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">181</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">185</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+5; </span><span class="comment">! a, e, i, o, u grave</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">186</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">190</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-5; </span><span class="comment">! A, E, I, O, U grave</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">191</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">195</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+5; </span><span class="comment">! a, e, i, o, u circumflex</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">196</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">200</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-5; </span><span class="comment">! A, E, I, O, U circumflex</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">201</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">202</span><span class="plain">; </span><span class="comment">! a circle</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">202</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">201</span><span class="plain">; </span><span class="comment">! A circle</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">203</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">204</span><span class="plain">; </span><span class="comment">! o slash</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">204</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">203</span><span class="plain">; </span><span class="comment">! O slash</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">205</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">207</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+3; </span><span class="comment">! a, n, o tilde</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="constant">208</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="constant">210</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-3; </span><span class="comment">! A, N, O tilde</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">211</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">212</span><span class="plain">; </span><span class="comment">! ae ligature</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">212</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">211</span><span class="plain">; </span><span class="comment">! AE ligature</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">213</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">214</span><span class="plain">; </span><span class="comment">! c cedilla</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">214</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">213</span><span class="plain">; </span><span class="comment">! C cedilla</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">215</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">216</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">+2; </span><span class="comment">! thorn, eth</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">217</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">218</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-2; </span><span class="comment">! Thorn, Eth</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">220</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">221</span><span class="plain">; </span><span class="comment">! oe ligature</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">221</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">220</span><span class="plain">; </span><span class="comment">! OE ligature</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">#IFNOT;</span>
-    <span class="plain">[ TEXT_TY_RevCase ch;</span>
-        <span class="plain">if (ch&lt;'A') return ch;</span>
-        <span class="plain">if ((ch &gt;= 'a') &amp;&amp; (ch &lt;= 'z')) return ch-'a'+'A';</span>
-        <span class="plain">if ((ch &gt;= 'A') &amp;&amp; (ch &lt;= 'Z')) return ch-'A'+'a';</span>
-        <span class="plain">if (ch&lt;128) return ch;</span>
-        <span class="plain">if (CharIsOfCase(ch, 0)) return CharToCase(ch, 1);</span>
-        <span class="plain">if (CharIsOfCase(ch, 1)) return CharToCase(ch, 0);</span>
-        <span class="plain">return ch;</span>
+    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">TEXT_TY_RevCase</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain">&lt;</span><span class="character">'A'</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'a'</span><span class="plain">+</span><span class="character">'A'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'A'</span><span class="plain">+</span><span class="character">'a'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain">&lt;128) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CharIsOfCase</span><span class="plain">(</span><span class="identifier">ch</span><span class="plain">, </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">CharToCase</span><span class="plain">(</span><span class="identifier">ch</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CharIsOfCase</span><span class="plain">(</span><span class="identifier">ch</span><span class="plain">, </span><span class="constant">1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">CharToCase</span><span class="plain">(</span><span class="identifier">ch</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">#ENDIF;</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -150,10 +150,10 @@ or returns -1 if it isn't a digit.
 
 
 <pre class="display">
-    <span class="plain">[ DigitToValue c n;</span>
-        <span class="plain">n = c-'0';</span>
-        <span class="plain">if ((n&lt;0) || (n&gt;9)) return -1;</span>
-        <span class="plain">return n;</span>
+    <span class="plain">[ </span><span class="identifier">DigitToValue</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">-</span><span class="character">'0'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain">&lt;0) || (</span><span class="identifier">n</span><span class="plain">&gt;9)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -164,15 +164,15 @@ or returns -1 if it isn't a digit.
 
 
 <pre class="display">
-    <span class="plain">[ CharTestCases case i j;</span>
-        <span class="plain">for (i=32: i&lt;$E0: i++) {</span>
-            <span class="plain">if ((i&gt;=127) &amp;&amp; (i&lt;155)) continue;</span>
-            <span class="plain">print i, " - ", (char) i, " -";</span>
-            <span class="plain">if (CharIsOfCase(i, 0)) print "  lower";</span>
-            <span class="plain">if (CharIsOfCase(i, 1)) print "  upper";</span>
-            <span class="plain">j = CharToCase(i, 0); if (j ~= i) print "  tolower: ", (char) j;</span>
-            <span class="plain">j = CharToCase(i, 1); if (j ~= i) print "  toupper: ", (char) j;</span>
-            <span class="plain">print "^";</span>
+    <span class="plain">[ </span><span class="identifier">CharTestCases</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=32: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">$E0</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;=127) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;155)) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="string">" - "</span><span class="plain">, (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">, </span><span class="string">" -"</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CharIsOfCase</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  lower"</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CharIsOfCase</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="constant">1</span><span class="plain">)) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  upper"</span><span class="plain">;</span>
+            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">CharToCase</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> ~= </span><span class="identifier">i</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  tolower: "</span><span class="plain">, (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">;</span>
+            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">CharToCase</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> ~= </span><span class="identifier">i</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  toupper: "</span><span class="plain">, (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>

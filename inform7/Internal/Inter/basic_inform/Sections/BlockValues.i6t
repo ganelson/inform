@@ -729,12 +729,9 @@ is the value given us by |KINDDATA_KOVS|.
 		no_entries_to_copy = kovs(EXTENT_KOVS, from_bv);
 		if (no_entries_to_copy == -1) no_entries_to_copy = BlkValueLBCapacity(from_bv);
 		BlkValueMassCopyEntries(to_bv, from_bv, no_entries_to_copy);
-!print "So to: "; BlkValueDebug(to_bv); print "^";
-
 	}
 
 	kovs(COPY_KOVS, to_bv, from_bv, k);
-!print "Whence to: "; BlkValueDebug(to_bv); print "^";
 ];
 
 @h Copy.

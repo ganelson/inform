@@ -11,6 +11,20 @@ int box_mode = FALSE, printing_mode = FALSE;
 void CodeGen::CL::prepare(code_generation *gen) {
 	the_quartet_found = FALSE;
 	box_mode = FALSE; printing_mode = FALSE;
+	Inter::Tree::traverse(gen->from, CodeGen::CL::quartet_visitor, NULL, NULL, CONSTANT_IST);
+}
+
+void CodeGen::CL::quartet_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	if ((Str::eq(con_name->symbol_name, I"thedark")) ||
+		(Str::eq(con_name->symbol_name, I"InformLibrary")) ||
+		(Str::eq(con_name->symbol_name, I"InformParser")) ||
+		(Str::eq(con_name->symbol_name, I"Compass")))
+		the_quartet_found = TRUE;
+}
+
+int CodeGen::CL::quartet_present(void) {
+	return the_quartet_found;
 }
 
 @
@@ -75,15 +89,6 @@ is 20. We instead compile this as
 	|Array X --> 1 20;|
 
 =
-int CodeGen::CL::quartet_present(void) {
-	#ifdef CORE_MODULE
-	return TRUE;
-	#endif
-	#ifndef CORE_MODULE
-	return the_quartet_found;
-	#endif	
-}
-
 void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_symbol *con_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
@@ -110,22 +115,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		(Str::eq(con_name->symbol_name, I"cap_short_name")))
 		ifndef_me = TRUE;
 
-	if (Str::eq(con_name->symbol_name, I"thedark")) {
-		the_quartet_found = TRUE;
-		return;
-	}
-	if (Str::eq(con_name->symbol_name, I"InformLibrary")) {
-		the_quartet_found = TRUE;
-		return;
-	}
-	if (Str::eq(con_name->symbol_name, I"InformParser")) {
-		the_quartet_found = TRUE;
-		return;
-	}
-	if (Str::eq(con_name->symbol_name, I"Compass")) {
-		the_quartet_found = TRUE;
-		return;
-	}
+	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) return;
 	
 	if (Str::eq(con_name->symbol_name, I"Release")) {
 		inter_t val1 = P->W.data[DATA_CONST_IFLD];
@@ -211,10 +201,11 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 		case CONSTANT_PRODUCT_LIST:
 		case CONSTANT_DIFFERENCE_LIST:
 		case CONSTANT_QUOTIENT_LIST: {
-			int depth = CodeGen::CL::constant_depth(con_name, FALSE);
+			int depth = CodeGen::CL::constant_depth(con_name);
 			if (depth > 1) {
-				LOG("Con %S has depth %d\n", con_name->symbol_name, depth);
-				CodeGen::CL::constant_depth(con_name, TRUE);
+				LOGIF(CONSTANT_DEPTH_CALCULATION,
+					"Con %S has depth %d\n", con_name->symbol_name, depth);
+				CodeGen::CL::constant_depth(con_name);
 			}
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
 			text_stream *OUT = CodeGen::current(gen);
@@ -237,8 +228,9 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			break;
 		}
 		case CONSTANT_DIRECT: {
-			int depth = CodeGen::CL::constant_depth(con_name, FALSE);
-			if (depth > 1) LOG("Con %S has depth %d\n", con_name->symbol_name, depth);
+			int depth = CodeGen::CL::constant_depth(con_name);
+			if (depth > 1) LOGIF(CONSTANT_DEPTH_CALCULATION,
+				"Con %S has depth %d\n", con_name->symbol_name, depth);
 			generated_segment *saved = CodeGen::select(gen, CodeGen::Targets::basic_constant_segment(gen, depth));
 			text_stream *OUT = CodeGen::current(gen);
 			if (ifndef_me) WRITE("#ifndef %S;\n", CodeGen::CL::name(con_name));
@@ -255,14 +247,14 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 }
 
-int CodeGen::CL::constant_depth(inter_symbol *con, int trace) {
+int CodeGen::CL::constant_depth(inter_symbol *con) {
 	LOG_INDENT;
-	int d = CodeGen::CL::constant_depth_inner(con, trace);
-	if (trace) LOG("%S has depth %d\n", con->symbol_name, d);
+	int d = CodeGen::CL::constant_depth_inner(con);
+	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", con->symbol_name, d);
 	LOG_OUTDENT;
 	return d;
 }
-int CodeGen::CL::constant_depth_inner(inter_symbol *con, int trace) {
+int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 	if (con == NULL) return 1;
 	inter_tree_node *D = Inter::Symbols::definition(con);
 	if (D->W.data[ID_IFLD] != CONSTANT_IST) return 1;
@@ -273,7 +265,7 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con, int trace) {
 			inter_symbol *alias =
 				Inter::SymbolsTables::symbol_from_data_pair_and_table(
 					val1, val2, Inter::Packages::scope(D->package));
-			return CodeGen::CL::constant_depth(alias, trace) + 1;
+			return CodeGen::CL::constant_depth(alias) + 1;
 		}
 		return 1;
 	}
@@ -289,7 +281,7 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con, int trace) {
 				inter_symbol *alias =
 					Inter::SymbolsTables::symbol_from_data_pair_and_table(
 						val1, val2, Inter::Packages::scope(D->package));
-				total += CodeGen::CL::constant_depth(alias, trace);
+				total += CodeGen::CL::constant_depth(alias);
 			} else total++;
 		}
 		return 1 + total;

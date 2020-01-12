@@ -26,11 +26,11 @@ auxiliary storage.
 
 
 <pre class="display">
-    <span class="plain">Global I7S_Tab; ! The array to be sorted, which can have almost any format</span>
-    <span class="plain">Global I7S_Col; ! The "column number" in the array, if any</span>
-    <span class="plain">Global I7S_Dir; ! The direction of sorting: ascending (1) or descending (-1)</span>
-    <span class="plain">Global I7S_Swap; ! The current routine for swapping two fields</span>
-    <span class="plain">Global I7S_Comp; ! The current routine for comparing two fields</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7S_Tab</span><span class="plain">; </span><span class="comment">! The array to be sorted, which can have almost any format</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7S_Col</span><span class="plain">; </span><span class="comment">! The "column number" in the array, if any</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7S_Dir</span><span class="plain">; </span><span class="comment">! The direction of sorting: ascending (1) or descending (-1)</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7S_Swap</span><span class="plain">; </span><span class="comment">! The current routine for swapping two fields</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7S_Comp</span><span class="plain">; </span><span class="comment">! The current routine for comparing two fields</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -52,16 +52,16 @@ greater in value.
 
 
 <pre class="display">
-    <span class="plain">[ SetSortDomain swapf compf;</span>
-        <span class="plain">I7S_Swap = swapf;</span>
-        <span class="plain">I7S_Comp = compf;</span>
+    <span class="plain">[ </span><span class="identifier">SetSortDomain</span><span class="plain"> </span><span class="identifier">swapf</span><span class="plain"> </span><span class="identifier">compf</span><span class="plain">;</span>
+        <span class="identifier">I7S_Swap</span><span class="plain"> = </span><span class="identifier">swapf</span><span class="plain">;</span>
+        <span class="identifier">I7S_Comp</span><span class="plain"> = </span><span class="identifier">compf</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ SortArray tab col dir size test_flag algorithm;</span>
-        <span class="plain">I7S_Tab = tab;</span>
-        <span class="plain">I7S_Col = col;</span>
-        <span class="plain">I7S_Dir = dir;</span>
-        <span class="plain">SortRange(0, size, algorithm);</span>
+    <span class="plain">[ </span><span class="identifier">SortArray</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">test_flag</span><span class="plain"> </span><span class="identifier">algorithm</span><span class="plain">;</span>
+        <span class="identifier">I7S_Tab</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">;</span>
+        <span class="identifier">I7S_Col</span><span class="plain"> = </span><span class="identifier">col</span><span class="plain">;</span>
+        <span class="identifier">I7S_Dir</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain">;</span>
+        <span class="identifier">SortRange</span><span class="plain">(0, </span><span class="identifier">size</span><span class="plain">, </span><span class="identifier">algorithm</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -75,12 +75,12 @@ sort is used by default.
 
 
 <pre class="display">
-    <span class="plain">[ SortRange x y algorithm;</span>
-        <span class="plain">if (y - x &lt; 2) return;</span>
-        <span class="plain">if (algorithm) {</span>
-            <span class="plain">(algorithm)(x, y);</span>
-        <span class="plain">} else {</span>
-            <span class="plain">InPlaceMergeSortAlgorithm(x, y);</span>
+    <span class="plain">[ </span><span class="identifier">SortRange</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">algorithm</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">algorithm</span><span class="plain">) {</span>
+            <span class="plain">(</span><span class="identifier">algorithm</span><span class="plain">)(</span><span class="identifier">x</span><span class="plain">, </span><span class="identifier">y</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">InPlaceMergeSortAlgorithm</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">, </span><span class="identifier">y</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -96,13 +96,13 @@ algorithms have to the actual data being sorted is through these routines.
 
 
 <pre class="display">
-    <span class="plain">[ CompareFields x y;</span>
-        <span class="plain">return I7S_Dir*I7S_Comp(I7S_Tab, I7S_Col, x+1, y+1, I7S_Dir);</span>
+    <span class="plain">[ </span><span class="identifier">CompareFields</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I7S_Dir</span><span class="plain">*</span><span class="identifier">I7S_Comp</span><span class="plain">(</span><span class="identifier">I7S_Tab</span><span class="plain">, </span><span class="identifier">I7S_Col</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">+1, </span><span class="identifier">y</span><span class="plain">+1, </span><span class="identifier">I7S_Dir</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ExchangeFields x y r;</span>
-        <span class="plain">r = I7S_Swap(I7S_Tab, x+1, y+1);</span>
-        <span class="plain">return r;</span>
+    <span class="plain">[ </span><span class="identifier">ExchangeFields</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
+        <span class="identifier">r</span><span class="plain"> = </span><span class="identifier">I7S_Swap</span><span class="plain">(</span><span class="identifier">I7S_Tab</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">+1, </span><span class="identifier">y</span><span class="plain">+1);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -119,16 +119,16 @@ to resurrect a very early I7 project.
 
 
 <pre class="display">
-    <span class="plain">[ OldSortAlgorithm x y</span>
-        <span class="plain">f i j;</span>
-        <span class="plain">if (y - x &lt; 2) return;</span>
-        <span class="plain">f = true;</span>
-        <span class="plain">while (f) {</span>
-            <span class="plain">f = false;</span>
-            <span class="plain">for (i=x:i&lt;y:i++)</span>
-                <span class="plain">for (j=i+1:j&lt;y:j++)</span>
-                    <span class="plain">if (CompareFields(i, j) &gt; 0) {</span>
-                        <span class="plain">ExchangeFields(i, j); f = true; break;</span>
+    <span class="plain">[ </span><span class="identifier">OldSortAlgorithm</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span>
+        <span class="identifier">f</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">f</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) {</span>
+            <span class="identifier">f</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">y</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+1:</span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">y</span><span class="plain">:</span><span class="identifier">j</span><span class="plain">++)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CompareFields</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                        <span class="identifier">ExchangeFields</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">); </span><span class="identifier">f</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -143,14 +143,14 @@ and which has very low overhead.
 
 
 <pre class="display">
-    <span class="plain">[ InsertionSortAlgorithm from to</span>
-        <span class="plain">i j;</span>
-        <span class="plain">if (to &gt; from+1) {</span>
-            <span class="plain">for (i = from+1: i &lt; to: i++) {</span>
-                <span class="plain">for (j = i: j &gt; from: j--) {</span>
-                    <span class="plain">if (CompareFields(j, j-1) &lt; 0)</span>
-                        <span class="plain">ExchangeFields(j, j-1);</span>
-                    <span class="plain">else break;</span>
+    <span class="plain">[ </span><span class="identifier">InsertionSortAlgorithm</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span>
+        <span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> &gt; </span><span class="identifier">from</span><span class="plain">+1) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">+1: </span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="reserved">to</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">: </span><span class="identifier">j</span><span class="plain"> &gt; </span><span class="identifier">from</span><span class="plain">: </span><span class="identifier">j</span><span class="plain">--) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CompareFields</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">-1) &lt; </span><span class="constant">0</span><span class="plain">)</span>
+                        <span class="identifier">ExchangeFields</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">-1);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -167,86 +167,86 @@ implementation, which in turn follows the <code class="display"><span class="ext
 
 
 <pre class="display">
-    <span class="plain">[ InPlaceMergeSortAlgorithm from to</span>
-        <span class="plain">middle;</span>
-        <span class="plain">if (to - from &lt; 12) {</span>
-            <span class="plain">if (to - from &lt; 2) return;</span>
-            <span class="plain">InsertionSortAlgorithm(from, to);</span>
-            <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">InPlaceMergeSortAlgorithm</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span>
+        <span class="identifier">middle</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> &lt; </span><span class="constant">12</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="identifier">InsertionSortAlgorithm</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">middle = (from + to)/2;</span>
-        <span class="plain">InPlaceMergeSortAlgorithm(from, middle);</span>
-        <span class="plain">InPlaceMergeSortAlgorithm(middle, to);</span>
-        <span class="plain">IPMS_Merge(from, middle, to, middle-from, to - middle);</span>
+        <span class="identifier">middle</span><span class="plain"> = (</span><span class="identifier">from</span><span class="plain"> + </span><span class="reserved">to</span><span class="plain">)/2;</span>
+        <span class="identifier">InPlaceMergeSortAlgorithm</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">middle</span><span class="plain">);</span>
+        <span class="identifier">InPlaceMergeSortAlgorithm</span><span class="plain">(</span><span class="identifier">middle</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">);</span>
+        <span class="identifier">IPMS_Merge</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">middle</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">middle</span><span class="plain">-</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">middle</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IPMS_Lower from to val</span>
-        <span class="plain">len half mid;</span>
-        <span class="plain">len = to - from;</span>
-        <span class="plain">while (len &gt; 0) {</span>
-            <span class="plain">half = len/2;</span>
-            <span class="plain">mid = from + half;</span>
-            <span class="plain">if (CompareFields(mid, val) &lt; 0) {</span>
-                <span class="plain">from = mid + 1;</span>
-                <span class="plain">len = len - half -1;</span>
-            <span class="plain">} else len = half;</span>
+    <span class="plain">[ </span><span class="identifier">IPMS_Lower</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">val</span>
+        <span class="identifier">len</span><span class="plain"> </span><span class="identifier">half</span><span class="plain"> </span><span class="identifier">mid</span><span class="plain">;</span>
+        <span class="identifier">len</span><span class="plain"> = </span><span class="reserved">to</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">half</span><span class="plain"> = </span><span class="identifier">len</span><span class="plain">/2;</span>
+            <span class="identifier">mid</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain"> + </span><span class="identifier">half</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CompareFields</span><span class="plain">(</span><span class="identifier">mid</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">from</span><span class="plain"> = </span><span class="identifier">mid</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">len</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">half</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> = </span><span class="identifier">half</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return from;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IPMS_Upper from to val</span>
-        <span class="plain">len half mid;</span>
-        <span class="plain">len = to - from;</span>
-        <span class="plain">while (len &gt; 0) {</span>
-            <span class="plain">half = len/2;</span>
-            <span class="plain">mid = from + half;</span>
-            <span class="plain">if (CompareFields(val, mid) &lt; 0)</span>
-                <span class="plain">len = half;</span>
-            <span class="plain">else {</span>
-                <span class="plain">from = mid + 1;</span>
-                <span class="plain">len = len - half -1;</span>
+    <span class="plain">[ </span><span class="identifier">IPMS_Upper</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">val</span>
+        <span class="identifier">len</span><span class="plain"> </span><span class="identifier">half</span><span class="plain"> </span><span class="identifier">mid</span><span class="plain">;</span>
+        <span class="identifier">len</span><span class="plain"> = </span><span class="reserved">to</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">half</span><span class="plain"> = </span><span class="identifier">len</span><span class="plain">/2;</span>
+            <span class="identifier">mid</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain"> + </span><span class="identifier">half</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CompareFields</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">mid</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">half</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">from</span><span class="plain"> = </span><span class="identifier">mid</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">len</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">half</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return from;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IPMS_Reverse from to;</span>
-        <span class="plain">while (from &lt; to) {</span>
-            <span class="plain">ExchangeFields(from++, to--);</span>
+    <span class="plain">[ </span><span class="identifier">IPMS_Reverse</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> &lt; </span><span class="reserved">to</span><span class="plain">) {</span>
+            <span class="identifier">ExchangeFields</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">++, </span><span class="reserved">to</span><span class="plain">--);</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IPMS_Rotate from mid to</span>
-        <span class="plain">n val shift p1 p2;</span>
-        <span class="plain">if ((from==mid) || (mid==to)) return;</span>
-        <span class="plain">IPMS_Reverse(from, mid-1);</span>
-        <span class="plain">IPMS_Reverse(mid, to-1);</span>
-        <span class="plain">IPMS_Reverse(from, to-1);</span>
+    <span class="plain">[ </span><span class="identifier">IPMS_Rotate</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="identifier">mid</span><span class="plain"> </span><span class="reserved">to</span>
+        <span class="identifier">n</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">shift</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from</span><span class="plain">==</span><span class="identifier">mid</span><span class="plain">) || (</span><span class="identifier">mid</span><span class="plain">==</span><span class="reserved">to</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">IPMS_Reverse</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">mid</span><span class="plain">-1);</span>
+        <span class="identifier">IPMS_Reverse</span><span class="plain">(</span><span class="identifier">mid</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">-1);</span>
+        <span class="identifier">IPMS_Reverse</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">-1);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IPMS_Merge from pivot to len1 len2</span>
-        <span class="plain">first_cut second_cut len11 len22 new_mid;</span>
-        <span class="plain">if ((len1 == 0) || (len2 == 0)) return;</span>
-        <span class="plain">if (len1+len2 == 2) {</span>
-            <span class="plain">if (CompareFields(pivot, from) &lt; 0)</span>
-            <span class="plain">ExchangeFields(pivot, from);</span>
-            <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">IPMS_Merge</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="identifier">pivot</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">len1</span><span class="plain"> </span><span class="identifier">len2</span>
+        <span class="identifier">first_cut</span><span class="plain"> </span><span class="identifier">second_cut</span><span class="plain"> </span><span class="identifier">len11</span><span class="plain"> </span><span class="identifier">len22</span><span class="plain"> </span><span class="identifier">new_mid</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">len1</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">len2</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len1</span><span class="plain">+</span><span class="identifier">len2</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CompareFields</span><span class="plain">(</span><span class="identifier">pivot</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">ExchangeFields</span><span class="plain">(</span><span class="identifier">pivot</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (len1 &gt; len2) {</span>
-            <span class="plain">len11 = len1/2;</span>
-            <span class="plain">first_cut = from + len11;</span>
-            <span class="plain">second_cut = IPMS_Lower(pivot, to, first_cut);</span>
-            <span class="plain">len22 = second_cut - pivot;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">len22 = len2/2;</span>
-            <span class="plain">second_cut = pivot + len22;</span>
-            <span class="plain">first_cut = IPMS_Upper(from, pivot, second_cut);</span>
-            <span class="plain">len11 = first_cut - from;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len1</span><span class="plain"> &gt; </span><span class="identifier">len2</span><span class="plain">) {</span>
+            <span class="identifier">len11</span><span class="plain"> = </span><span class="identifier">len1</span><span class="plain">/2;</span>
+            <span class="identifier">first_cut</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain"> + </span><span class="identifier">len11</span><span class="plain">;</span>
+            <span class="identifier">second_cut</span><span class="plain"> = </span><span class="identifier">IPMS_Lower</span><span class="plain">(</span><span class="identifier">pivot</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">first_cut</span><span class="plain">);</span>
+            <span class="identifier">len22</span><span class="plain"> = </span><span class="identifier">second_cut</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">pivot</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">len22</span><span class="plain"> = </span><span class="identifier">len2</span><span class="plain">/2;</span>
+            <span class="identifier">second_cut</span><span class="plain"> = </span><span class="identifier">pivot</span><span class="plain"> + </span><span class="identifier">len22</span><span class="plain">;</span>
+            <span class="identifier">first_cut</span><span class="plain"> = </span><span class="identifier">IPMS_Upper</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">pivot</span><span class="plain">, </span><span class="identifier">second_cut</span><span class="plain">);</span>
+            <span class="identifier">len11</span><span class="plain"> = </span><span class="identifier">first_cut</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">IPMS_Rotate(first_cut, pivot, second_cut);</span>
-        <span class="plain">new_mid = first_cut + len22;</span>
-        <span class="plain">IPMS_Merge(from, first_cut, new_mid, len11, len22);</span>
-        <span class="plain">IPMS_Merge(new_mid, second_cut, to, len1 - len11, len2 - len22);</span>
+        <span class="identifier">IPMS_Rotate</span><span class="plain">(</span><span class="identifier">first_cut</span><span class="plain">, </span><span class="identifier">pivot</span><span class="plain">, </span><span class="identifier">second_cut</span><span class="plain">);</span>
+        <span class="identifier">new_mid</span><span class="plain"> = </span><span class="identifier">first_cut</span><span class="plain"> + </span><span class="identifier">len22</span><span class="plain">;</span>
+        <span class="identifier">IPMS_Merge</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">first_cut</span><span class="plain">, </span><span class="identifier">new_mid</span><span class="plain">, </span><span class="identifier">len11</span><span class="plain">, </span><span class="identifier">len22</span><span class="plain">);</span>
+        <span class="identifier">IPMS_Merge</span><span class="plain">(</span><span class="identifier">new_mid</span><span class="plain">, </span><span class="identifier">second_cut</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">len1</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">len11</span><span class="plain">, </span><span class="identifier">len2</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">len22</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 

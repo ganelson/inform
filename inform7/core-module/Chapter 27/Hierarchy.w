@@ -465,7 +465,7 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, VERB_DIRECTIVE_SLASH_HL, I"VERB_DIRECTIVE_SLASH", Translation::same(), synoptic_grammar);
 	HierarchyLocations::con(I, VERB_DIRECTIVE_SPECIAL_HL, I"VERB_DIRECTIVE_SPECIAL", Translation::same(), synoptic_grammar);
 	HierarchyLocations::con(I, VERB_DIRECTIVE_TOPIC_HL, I"VERB_DIRECTIVE_TOPIC", Translation::same(), synoptic_grammar);
-	HierarchyLocations::func(I, TESTSCRIPTSUB_HL, I"action_fn", Translation::to(I"TestScriptSub"), synoptic_grammar);
+	HierarchyLocations::func(I, TESTSCRIPTSUB_HL, I"TestScriptSub_fn", Translation::to(I"TestScriptSub"), synoptic_grammar);
 	HierarchyLocations::func(I, INTERNALTESTCASES_HL, I"run_tests_fn", Translation::to(I"InternalTestCases"), synoptic_grammar);
 	HierarchyLocations::ap(I, COMMANDS_HAP, synoptic_grammar, I"command", I"_command");
 		location_requirement in_command = HierarchyLocations::any_package_of_type(I"_command");

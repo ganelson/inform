@@ -2,7 +2,7 @@ Constant Grammar__Version 2;
 Global debug_flag;
 Global reason_code = NULL;
 Constant life = NULL;
-Array KindHierarchy --> K0_kind (0);
+Array KindHierarchy --> (0) (0);
 [ MyRoutine x y;
     return x;
     return (x + y);

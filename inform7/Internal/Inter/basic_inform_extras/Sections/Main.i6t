@@ -39,10 +39,7 @@ before it is known how they will be used.
 	print "^";
 	INITIALISE_MEMORY_R();
 	SEED_RANDOM_NUMBER_GENERATOR_R();
-	ClearRTP();
-	FollowRulebook(STARTUP_RB);
 	Submain();
-	FollowRulebook(SHUTDOWN_RB);
 ];
 
 Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
@@ -66,6 +63,18 @@ Constant FBNA_PROP_NUMBER = MAX_POSITIVE_NUMBER;
 
 =
 #Ifdef TARGET_ZCODE;
+[ VM_Initialise i;
+	standard_interpreter = HDR_TERPSTANDARD-->0;
+	top_object = #largest_object-255;
+
+	if (TEMPLATE_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
+		@random 10000 -> i;
+		i = -i-2000;
+		print "[Random number generator seed is ", i, "]^";
+		@random i -> i;
+	}
+];
+
 [ OC__Cl obj cla j a n objflag;
 
 	@jl obj 1 ?NotObj;

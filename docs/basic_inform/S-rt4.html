@@ -34,21 +34,21 @@ words 2 and 3 are meaningless.
 </li></ul>
 
 <pre class="display">
-    <span class="plain">Constant RS_NEITHER		= 0;</span>
-    <span class="plain">Constant RS_SUCCEEDS	= 1;</span>
-    <span class="plain">Constant RS_FAILS		= 2;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_NEITHER</span><span class="plain">		= </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">	= </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_FAILS</span><span class="plain">		= </span><span class="constant">2</span><span class="plain">;</span>
 
-    <span class="plain">Array latest_rule_result --&gt; 3;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">latest_rule_result</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">3</span><span class="plain">;</span>
 
-    <span class="plain">[ RecordRuleOutcome usage rule1 rule2;</span>
-        <span class="plain">if ((latest_rule_result--&gt;0 == RS_SUCCEEDS or RS_FAILS) &amp;&amp;</span>
-            <span class="plain">(KOVIsBlockValue(latest_rule_result--&gt;1)))</span>
-            <span class="plain">BlkValueFree(latest_rule_result--&gt;2);</span>
-        <span class="plain">if ((usage == RS_SUCCEEDS or RS_FAILS) &amp;&amp; (KOVIsBlockValue(rule1)))</span>
-            <span class="plain">rule2 = BlkValueCopy(BlkValueCreate(rule1), rule2);</span>
-        <span class="plain">latest_rule_result--&gt;0 = usage;</span>
-        <span class="plain">latest_rule_result--&gt;1 = rule1;</span>
-        <span class="plain">latest_rule_result--&gt;2 = rule2;</span>
+    <span class="plain">[ </span><span class="identifier">RecordRuleOutcome</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> </span><span class="identifier">rule1</span><span class="plain"> </span><span class="identifier">rule2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">RS_FAILS</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;1)))</span>
+            <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;2);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">usage</span><span class="plain"> == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">RS_FAILS</span><span class="plain">) &amp;&amp; (</span><span class="identifier">KOVIsBlockValue</span><span class="plain">(</span><span class="identifier">rule1</span><span class="plain">)))</span>
+            <span class="identifier">rule2</span><span class="plain"> = </span><span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">rule1</span><span class="plain">), </span><span class="identifier">rule2</span><span class="plain">);</span>
+        <span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 = </span><span class="identifier">usage</span><span class="plain">;</span>
+        <span class="identifier">latest_rule_result</span><span class="plain">--&gt;1 = </span><span class="identifier">rule1</span><span class="plain">;</span>
+        <span class="identifier">latest_rule_result</span><span class="plain">--&gt;2 = </span><span class="identifier">rule2</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -113,65 +113,65 @@ or failed if &mdash;
 
 
 <pre class="display">
-    <span class="plain">Global process_rulebook_count; ! Depth of processing recursion</span>
-    <span class="plain">Global debugging_rules = false; ! Are we tracing rule invocations?</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">process_rulebook_count</span><span class="plain">; </span><span class="comment">! Depth of processing recursion</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="comment">! Are we tracing rule invocations?</span>
 
-    <span class="plain">[ FollowRulebook rulebook parameter no_paragraph_skips</span>
-        <span class="plain">rv ss spv;</span>
-        <span class="plain">ss = self;</span>
-        <span class="plain">if ((Protect_I7_Arrays--&gt;0 ~= 16339) || (Protect_I7_Arrays--&gt;1 ~= 12345)) {</span>
-            <span class="plain">print "^^*** Fatal programming error: I7 arrays corrupted ***^^";</span>
-            <span class="plain">@quit;</span>
+    <span class="plain">[ </span><span class="identifier">FollowRulebook</span><span class="plain"> </span><span class="identifier">rulebook</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain"> </span><span class="identifier">no_paragraph_skips</span>
+        <span class="identifier">rv</span><span class="plain"> </span><span class="identifier">ss</span><span class="plain"> </span><span class="identifier">spv</span><span class="plain">;</span>
+        <span class="identifier">ss</span><span class="plain"> = </span><span class="identifier">self</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Protect_I7_Arrays</span><span class="plain">--&gt;0 ~= </span><span class="constant">16339</span><span class="plain">) || (</span><span class="identifier">Protect_I7_Arrays</span><span class="plain">--&gt;1 ~= </span><span class="constant">12345</span><span class="plain">)) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^^*** Fatal programming error: I7 arrays corrupted ***^^"</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="reserved">quit</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (parameter) { self = parameter; parameter_object = parameter; }</span>
-        <span class="plain">spv = parameter_value; parameter_value = parameter;</span>
-        <span class="plain">! we won't need parameter again, so can reuse it</span>
-        <span class="plain">parameter = debugging_rules;</span>
-        <span class="plain">#ifndef MEMORY_ECONOMY;</span>
-        <span class="plain">if (debugging_rules) {</span>
-            <span class="plain">DebugRulebooks(rulebook, parameter);</span>
-            <span class="plain">process_rulebook_count = process_rulebook_count + debugging_rules;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter</span><span class="plain">) { </span><span class="identifier">self</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">; </span><span class="identifier">parameter_object</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">; }</span>
+        <span class="identifier">spv</span><span class="plain"> = </span><span class="identifier">parameter_value</span><span class="plain">; </span><span class="identifier">parameter_value</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">;</span>
+        <span class="comment">! we won't need parameter again, so can reuse it</span>
+        <span class="identifier">parameter</span><span class="plain"> = </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">) {</span>
+            <span class="identifier">DebugRulebooks</span><span class="plain">(</span><span class="identifier">rulebook</span><span class="plain">, </span><span class="identifier">parameter</span><span class="plain">);</span>
+            <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> + </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">#endif;</span>
-        <span class="plain">if ((rulebook &gt;= 0) &amp;&amp; (rulebook &lt; NUMBER_RULEBOOKS_CREATED)) {</span>
-            <span class="plain">rv = rulebooks_array--&gt;rulebook;</span>
-            <span class="plain">if (rv ~= EMPTY_RULEBOOK) {</span>
-                <span class="plain">if (rulebook ~= ACTION_PROCESSING_RB) MStack_CreateRBVars(rulebook);</span>
-                <span class="plain">if (say__p) RulebookParBreak(no_paragraph_skips);</span>
-                <span class="plain">rv = rv(no_paragraph_skips);</span>
-                <span class="plain">if (rulebook ~= ACTION_PROCESSING_RB) MStack_DestroyRBVars(rulebook);</span>
-            <span class="plain">} else {</span>
-                <span class="plain">rv = 0;</span>
+        <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rulebook</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">rulebook</span><span class="plain"> &lt; </span><span class="identifier">NUMBER_RULEBOOKS_CREATED</span><span class="plain">)) {</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">rulebooks_array</span><span class="plain">--&gt;</span><span class="identifier">rulebook</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> ~= </span><span class="identifier">EMPTY_RULEBOOK</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rulebook</span><span class="plain"> ~= </span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">) </span><span class="identifier">MStack_CreateRBVars</span><span class="plain">(</span><span class="identifier">rulebook</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) </span><span class="identifier">RulebookParBreak</span><span class="plain">(</span><span class="identifier">no_paragraph_skips</span><span class="plain">);</span>
+                <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">rv</span><span class="plain">(</span><span class="identifier">no_paragraph_skips</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rulebook</span><span class="plain"> ~= </span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">) </span><span class="identifier">MStack_DestroyRBVars</span><span class="plain">(</span><span class="identifier">rulebook</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">rv</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if (say__p) RulebookParBreak(no_paragraph_skips);</span>
-            <span class="plain">rv = indirect(rulebook);</span>
-            <span class="plain">if (rv == 2) rv = reason_the_action_failed;</span>
-            <span class="plain">else if (rv) rv = rulebook;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) </span><span class="identifier">RulebookParBreak</span><span class="plain">(</span><span class="identifier">no_paragraph_skips</span><span class="plain">);</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="reserved">indirect</span><span class="plain">(</span><span class="identifier">rulebook</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">reason_the_action_failed</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">rulebook</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (rv) {</span>
-            <span class="plain">#ifndef MEMORY_ECONOMY;</span>
-            <span class="plain">if (debugging_rules) {</span>
-                <span class="plain">process_rulebook_count = process_rulebook_count - debugging_rules;</span>
-                <span class="plain">if (process_rulebook_count &lt; 0) process_rulebook_count = 0;</span>
-                <span class="plain">spaces(2*process_rulebook_count);</span>
-                <span class="plain">if (latest_rule_result--&gt;0 == RS_SUCCEEDS) print "[stopped: success]^";</span>
-                <span class="plain">if (latest_rule_result--&gt;0 == RS_FAILS) print "[stopped: fail]^";</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) {</span>
+            <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">) {</span>
+                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">process_rulebook_count</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">spaces</span><span class="plain">(2*</span><span class="identifier">process_rulebook_count</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[stopped: success]^"</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_FAILS</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[stopped: fail]^"</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">#endif;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if (debugging_rules)</span>
-                <span class="plain">process_rulebook_count = process_rulebook_count - debugging_rules;</span>
-            <span class="plain">latest_rule_result--&gt;0 = RS_NEITHER;</span>
+            <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">)</span>
+                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
+            <span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 = </span><span class="identifier">RS_NEITHER</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">debugging_rules = parameter;</span>
-        <span class="plain">self = ss; parameter_value = spv;</span>
-        <span class="plain">return rv;</span>
+        <span class="identifier">debugging_rules</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">;</span>
+        <span class="identifier">self</span><span class="plain"> = </span><span class="identifier">ss</span><span class="plain">; </span><span class="identifier">parameter_value</span><span class="plain"> = </span><span class="identifier">spv</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RulebookParBreak no_paragraph_skips;</span>
-        <span class="plain">if ((no_paragraph_skips == false) &amp;&amp; (say__pc &amp; PARA_NORULEBOOKBREAKS == 0))</span>
-            <span class="plain">DivideParagraphPoint();</span>
+    <span class="plain">[ </span><span class="identifier">RulebookParBreak</span><span class="plain"> </span><span class="identifier">no_paragraph_skips</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_paragraph_skips</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_NORULEBOOKBREAKS</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">))</span>
+            <span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
     <span class="plain">];</span>
 </pre>
 
@@ -189,30 +189,30 @@ call it.)
 
 
 <pre class="display">
-    <span class="plain">[ ActRulebookSucceeds rule_id;</span>
-        <span class="plain">if (rule_id) reason_the_action_failed = rule_id;</span>
-        <span class="plain">RulebookSucceeds();</span>
+    <span class="plain">[ </span><span class="identifier">ActRulebookSucceeds</span><span class="plain"> </span><span class="identifier">rule_id</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rule_id</span><span class="plain">) </span><span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">rule_id</span><span class="plain">;</span>
+        <span class="identifier">RulebookSucceeds</span><span class="plain">();</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ActRulebookFails rule_id;</span>
-        <span class="plain">if (rule_id) reason_the_action_failed = rule_id;</span>
-        <span class="plain">RulebookFails();</span>
+    <span class="plain">[ </span><span class="identifier">ActRulebookFails</span><span class="plain"> </span><span class="identifier">rule_id</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rule_id</span><span class="plain">) </span><span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">rule_id</span><span class="plain">;</span>
+        <span class="identifier">RulebookFails</span><span class="plain">();</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RulebookSucceeds weak_kind value;</span>
-        <span class="plain">RecordRuleOutcome(RS_SUCCEEDS, weak_kind, value);</span>
+    <span class="plain">[ </span><span class="identifier">RulebookSucceeds</span><span class="plain"> </span><span class="identifier">weak_kind</span><span class="plain"> </span><span class="identifier">value</span><span class="plain">;</span>
+        <span class="identifier">RecordRuleOutcome</span><span class="plain">(</span><span class="identifier">RS_SUCCEEDS</span><span class="plain">, </span><span class="identifier">weak_kind</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RulebookFails weak_kind value;</span>
-        <span class="plain">RecordRuleOutcome(RS_FAILS, weak_kind, value);</span>
+    <span class="plain">[ </span><span class="identifier">RulebookFails</span><span class="plain"> </span><span class="identifier">weak_kind</span><span class="plain"> </span><span class="identifier">value</span><span class="plain">;</span>
+        <span class="identifier">RecordRuleOutcome</span><span class="plain">(</span><span class="identifier">RS_FAILS</span><span class="plain">, </span><span class="identifier">weak_kind</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RuleHasNoOutcome;</span>
-        <span class="plain">RecordRuleOutcome(RS_NEITHER, 0, 0);</span>
+    <span class="plain">[ </span><span class="identifier">RuleHasNoOutcome</span><span class="plain">;</span>
+        <span class="identifier">RecordRuleOutcome</span><span class="plain">(</span><span class="identifier">RS_NEITHER</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ SetRulebookOutcome a;</span>
-        <span class="plain">latest_rule_result--&gt;0 = a;</span>
+    <span class="plain">[ </span><span class="identifier">SetRulebookOutcome</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">;</span>
+        <span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 = </span><span class="identifier">a</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -223,29 +223,29 @@ call it.)
 
 
 <pre class="display">
-    <span class="plain">[ RulebookOutcome a;</span>
-        <span class="plain">a = latest_rule_result--&gt;0;</span>
-        <span class="plain">if ((a == RS_FAILS) || (a == RS_SUCCEEDS)) return a;</span>
-        <span class="plain">return RS_NEITHER;</span>
+    <span class="plain">[ </span><span class="identifier">RulebookOutcome</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">;</span>
+        <span class="identifier">a</span><span class="plain"> = </span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">RS_FAILS</span><span class="plain">) || (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RS_NEITHER</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RulebookFailed;</span>
-        <span class="plain">if (latest_rule_result--&gt;0 == RS_FAILS) rtrue; rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">RulebookFailed</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_FAILS</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RulebookSucceeded;</span>
-        <span class="plain">if (latest_rule_result--&gt;0 == RS_SUCCEEDS) rtrue; rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">RulebookSucceeded</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ResultOfRule RB V F K a;</span>
-        <span class="plain">if (RB) FollowRulebook(RB, V, F);</span>
-        <span class="plain">a = latest_rule_result--&gt;0;</span>
-        <span class="plain">if ((a == RS_FAILS) || (a == RS_SUCCEEDS)) {</span>
-            <span class="plain">a = latest_rule_result--&gt;1;</span>
-            <span class="plain">if (a) return latest_rule_result--&gt;2;</span>
+    <span class="plain">[ </span><span class="identifier">ResultOfRule</span><span class="plain"> </span><span class="identifier">RB</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RB</span><span class="plain">) </span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">RB</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">a</span><span class="plain"> = </span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">RS_FAILS</span><span class="plain">) || (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">)) {</span>
+            <span class="identifier">a</span><span class="plain"> = </span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;2;</span>
         <span class="plain">}</span>
-        <span class="plain">if (K) return DefaultValueOfKOV(K);</span>
-        <span class="plain">return 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">DefaultValueOfKOV</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -268,8 +268,8 @@ precious readable memory on the Z-machine.)
 
 
 <pre class="display">
-    <span class="plain">[ RULEBOOK_TY_to_RULE_TY r;</span>
-        <span class="plain">return r;</span>
+    <span class="plain">[ </span><span class="identifier">RULEBOOK_TY_to_RULE_TY</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -281,24 +281,24 @@ occur, in so far as memory economy allows this.
 
 
 <pre class="display">
-    <span class="plain">[ DebugRulebooks subs parameter i;</span>
-        <span class="plain">spaces(2*process_rulebook_count);</span>
-        <span class="plain">print "[", (RulePrintingRule) subs;</span>
-        <span class="plain">if (parameter) print " / on O", parameter;</span>
-        <span class="plain">print "]^";</span>
+    <span class="plain">[ </span><span class="identifier">DebugRulebooks</span><span class="plain"> </span><span class="identifier">subs</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">spaces</span><span class="plain">(2*</span><span class="identifier">process_rulebook_count</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"["</span><span class="plain">, (</span><span class="identifier">RulePrintingRule</span><span class="plain">) </span><span class="identifier">subs</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" / on O"</span><span class="plain">, </span><span class="identifier">parameter</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"]^"</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DB_Rule R N blocked;</span>
-        <span class="plain">if (R==0) return;</span>
-        <span class="plain">print "[Rule ~", (RulePrintingRule) R, "~ ";</span>
-        <span class="plain">#ifdef NUMBERED_RULES; print "(", N, ") "; #endif;</span>
-        <span class="plain">if (blocked == false) "applies.]";</span>
-        <span class="plain">print "does not apply (wrong ";</span>
-        <span class="plain">if (blocked == 1) print "scene";</span>
-        <span class="plain">if (blocked == 2) print "action";</span>
-        <span class="plain">if (blocked == 3) print "actor";</span>
-        <span class="plain">if (blocked == 4) print "context";</span>
-        <span class="plain">print ").]^";</span>
+    <span class="plain">[ </span><span class="identifier">DB_Rule</span><span class="plain"> </span><span class="identifier">R</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> </span><span class="identifier">blocked</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">==0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"[Rule ~"</span><span class="plain">, (</span><span class="identifier">RulePrintingRule</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">, </span><span class="string">"~ "</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NUMBERED_RULES</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"("</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="string">") "</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blocked</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="string">"applies.]"</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"does not apply (wrong "</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blocked</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"scene"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blocked</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"action"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blocked</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"actor"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blocked</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"context"</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">").]^"</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

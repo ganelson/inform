@@ -8,4 +8,4 @@ Constant Bodger = 157;
 Constant Budger = 32738;
 Constant Danza = 2 + 34;
 Constant Sahara = Danza + Bidger + 1;
-Array KindHierarchy --> K0_kind (0);
+Array KindHierarchy --> (0) (0);

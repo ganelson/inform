@@ -366,12 +366,14 @@ with "Output.i6t".
 	}
 	COMPILATION_STEP(NewVerbs::ConjugateVerb, I"NewVerbs::ConjugateVerb")
 	COMPILATION_STEP(Adjectives::Meanings::agreements, I"Adjectives::Meanings::agreements")
-	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-		COMPILATION_STEP(PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
-		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
-		COMPILATION_STEP(PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
-	} else {
-		COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
+	if (basic_mode == FALSE) {
+		if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+			COMPILATION_STEP(PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
+			COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
+			COMPILATION_STEP(PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
+		} else {
+			COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
+		}
 	}
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
@@ -574,7 +576,9 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		}
 
 		/* Useful pathnames */
-		case PROJECT_CLSW: Locations::set_project(arg); break;
+		case PROJECT_CLSW:
+			if (Str::includes(arg, I"#2oetMiq9bqxoxY")) basic_mode = TRUE;
+			Locations::set_project(arg); break;
 		case INTERNAL_CLSW: Locations::set_internal(arg); break;
 		case EXTERNAL_CLSW: Locations::set_external(arg); break;
 		case TRANSIENT_CLSW: Locations::set_transient(arg); break;

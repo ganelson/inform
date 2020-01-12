@@ -19,7 +19,7 @@ element is part of Inform's current definition, so:
 
 
 <pre class="display">
-    <span class="plain">#IFDEF PLUGIN_FILES;</span>
+    <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">PLUGIN_FILES</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -36,18 +36,18 @@ during his formative years.)
 
 
 <pre class="display">
-    <span class="plain">Constant AUXF_MAGIC = 0; ! First word holds a safety constant</span>
-    <span class="plain">Constant AUXF_MAGIC_VALUE = 16339; ! Should be first word of any valid file structure</span>
-    <span class="plain">Constant AUXF_STATUS = 1; ! One of the following:</span>
-        <span class="plain">Constant AUXF_STATUS_IS_CLOSED = 1; ! Currently closed, or perhaps doesn't exist</span>
-        <span class="plain">Constant AUXF_STATUS_IS_OPEN_FOR_READ = 2;</span>
-        <span class="plain">Constant AUXF_STATUS_IS_OPEN_FOR_WRITE = 3;</span>
-        <span class="plain">Constant AUXF_STATUS_IS_OPEN_FOR_APPEND = 4;</span>
-    <span class="plain">Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary</span>
-    <span class="plain">Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)</span>
-    <span class="plain">Constant AUXF_FILENAME = 4; ! Packed address of constant string</span>
-    <span class="plain">Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or</span>
-        <span class="plain">! string array of IFID of owner wrapped in //...//, or NULL to leave open</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! First word holds a safety constant</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain"> = </span><span class="constant">16339</span><span class="plain">; </span><span class="comment">! Should be first word of any valid file structure</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! One of the following:</span>
+        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! Currently closed, or perhaps doesn't exist</span>
+        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">;</span>
+        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_BINARY</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! False for text files (I7 default), true for binary</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STREAM</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Stream for an open file (meaningless otherwise)</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_FILENAME</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">! Packed address of constant string</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_IFID_OF_OWNER</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">! UUID_ARRAY if owned by this project, or</span>
+        <span class="comment">! string array of IFID of owner wrapped in //...//, or NULL to leave open</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -64,17 +64,17 @@ Z-machine.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_Error extf err_text  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES)) {</span>
-            <span class="plain">print "^*** Error on unknown file: ", (string) err_text, " ***^";</span>
-        <span class="plain">} else {</span>
-            <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-            <span class="plain">print "^*** Error on file '",</span>
-                <span class="plain">(string) struc--&gt;AUXF_FILENAME, "': ",</span>
-                <span class="plain">(string) err_text, " ***^";</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Error</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">err_text</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^*** Error on unknown file: "</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">err_text</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^*** Error on file '"</span><span class="plain">,</span>
+                <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">, </span><span class="string">"': "</span><span class="plain">,</span>
+                <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">err_text</span><span class="plain">, </span><span class="string">" ***^"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">RunTimeProblem(RTP_FILEIOERROR);</span>
-        <span class="plain">return 0;</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_FILEIOERROR</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -84,7 +84,7 @@ Z-machine.
 
 
 <pre class="display">
-    <span class="plain">#IFDEF TARGET_GLULX;</span>
+    <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -101,17 +101,17 @@ alongside the Inform project file.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_Exists extf  fref struc rv usage;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES)) rfalse;</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if ((struc == 0) || (struc--&gt;AUXF_MAGIC ~= AUXF_MAGIC_VALUE)) rfalse;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY) usage = fileusage_BinaryMode;</span>
-        <span class="plain">else usage = fileusage_TextMode;</span>
-        <span class="plain">fref = glk_fileref_create_by_name(fileusage_Data + usage,</span>
-            <span class="plain">Glulx_ChangeAnyToCString(struc--&gt;AUXF_FILENAME), 0);</span>
-        <span class="plain">rv = glk_fileref_does_file_exist(fref);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
-        <span class="plain">return rv;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Exists</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">struc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_MAGIC</span><span class="plain"> ~= </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">) </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_BinaryMode</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_TextMode</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_name</span><span class="plain">(</span><span class="identifier">fileusage_Data</span><span class="plain"> + </span><span class="identifier">usage</span><span class="plain">,</span>
+            <span class="identifier">Glulx_ChangeAnyToCString</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">), </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -143,49 +143,49 @@ asterisk or hyphen into the initial character as needed.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_Ready extf  struc fref usage str ch;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES)) rfalse;</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if ((struc == 0) || (struc--&gt;AUXF_MAGIC ~= AUXF_MAGIC_VALUE)) rfalse;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY) usage = fileusage_BinaryMode;</span>
-        <span class="plain">else usage = fileusage_TextMode;</span>
-        <span class="plain">fref = glk_fileref_create_by_name(fileusage_Data + usage,</span>
-            <span class="plain">Glulx_ChangeAnyToCString(struc--&gt;AUXF_FILENAME), 0);</span>
-        <span class="plain">if (glk_fileref_does_file_exist(fref) == false) {</span>
-            <span class="plain">glk_fileref_destroy(fref);</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Ready</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">struc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_MAGIC</span><span class="plain"> ~= </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">) </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_BinaryMode</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_TextMode</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_name</span><span class="plain">(</span><span class="identifier">fileusage_Data</span><span class="plain"> + </span><span class="identifier">usage</span><span class="plain">,</span>
+            <span class="identifier">Glulx_ChangeAnyToCString</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">), </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) {</span>
+            <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">str = glk_stream_open_file(fref, filemode_Read, 0);</span>
-        <span class="plain">ch = glk_get_char_stream(str);</span>
-        <span class="plain">glk_stream_close(str, 0);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
-        <span class="plain">if (ch ~= '*') rfalse;</span>
-        <span class="plain">rtrue;</span>
+        <span class="identifier">str</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="identifier">filemode_Read</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">glk_get_char_stream</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">);</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">'*'</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ FileIO_MarkReady extf readiness  struc fref str ch usage;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to open a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if ((struc == 0) || (struc--&gt;AUXF_MAGIC ~= AUXF_MAGIC_VALUE)) rfalse;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY) usage = fileusage_BinaryMode;</span>
-        <span class="plain">else usage = fileusage_TextMode;</span>
-        <span class="plain">fref = glk_fileref_create_by_name(fileusage_Data + usage,</span>
-            <span class="plain">Glulx_ChangeAnyToCString(struc--&gt;AUXF_FILENAME), 0);</span>
-        <span class="plain">if (glk_fileref_does_file_exist(fref) == false) {</span>
-            <span class="plain">glk_fileref_destroy(fref);</span>
-            <span class="plain">return FileIO_Error(extf, "only existing files can be marked");</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_MarkReady</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">readiness</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">struc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_MAGIC</span><span class="plain"> ~= </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">) </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_BinaryMode</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_TextMode</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_name</span><span class="plain">(</span><span class="identifier">fileusage_Data</span><span class="plain"> + </span><span class="identifier">usage</span><span class="plain">,</span>
+            <span class="identifier">Glulx_ChangeAnyToCString</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">), </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) {</span>
+            <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"only existing files can be marked"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ~= AUXF_STATUS_IS_CLOSED) {</span>
-            <span class="plain">glk_fileref_destroy(fref);</span>
-            <span class="plain">return FileIO_Error(extf, "only closed files can be marked");</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~= </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">) {</span>
+            <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"only closed files can be marked"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">str = glk_stream_open_file(fref, filemode_ReadWrite, 0);</span>
-        <span class="plain">glk_stream_set_position(str, 0, 0); ! seek start</span>
-        <span class="plain">if (readiness) ch = '*'; else ch = '-';</span>
-        <span class="plain">glk_put_char_stream(str, ch); ! mark as complete</span>
-        <span class="plain">glk_stream_close(str, 0);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
+        <span class="identifier">str</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="identifier">filemode_ReadWrite</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! seek start</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">readiness</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="character">'*'</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> = </span><span class="character">'-'</span><span class="plain">;</span>
+        <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">); </span><span class="comment">! mark as complete</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -195,90 +195,90 @@ asterisk or hyphen into the initial character as needed.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_Open extf write_flag append_flag</span>
-        <span class="plain">struc fref str mode ix ch not_this_ifid owner force_header usage;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to open a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if ((struc == 0) || (struc--&gt;AUXF_MAGIC ~= AUXF_MAGIC_VALUE)) rfalse;</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ~= AUXF_STATUS_IS_CLOSED)</span>
-            <span class="plain">return FileIO_Error(extf, "tried to open a file already open");</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY) usage = fileusage_BinaryMode;</span>
-        <span class="plain">else usage = fileusage_TextMode;</span>
-        <span class="plain">fref = glk_fileref_create_by_name(fileusage_Data + usage,</span>
-            <span class="plain">Glulx_ChangeAnyToCString(struc--&gt;AUXF_FILENAME), 0);</span>
-        <span class="plain">if (write_flag) {</span>
-            <span class="plain">if (append_flag) {</span>
-                <span class="plain">mode = filemode_WriteAppend;</span>
-                <span class="plain">if (glk_fileref_does_file_exist(fref) == false)</span>
-                    <span class="plain">force_header = true;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Open</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">write_flag</span><span class="plain"> </span><span class="identifier">append_flag</span>
+        <span class="identifier">struc</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">mode</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">not_this_ifid</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain"> </span><span class="identifier">force_header</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">struc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_MAGIC</span><span class="plain"> ~= </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~= </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a file already open"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">) </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_BinaryMode</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> = </span><span class="identifier">fileusage_TextMode</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_name</span><span class="plain">(</span><span class="identifier">fileusage_Data</span><span class="plain"> + </span><span class="identifier">usage</span><span class="plain">,</span>
+            <span class="identifier">Glulx_ChangeAnyToCString</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">), </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">write_flag</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">append_flag</span><span class="plain">) {</span>
+                <span class="identifier">mode</span><span class="plain"> = </span><span class="identifier">filemode_WriteAppend</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">)</span>
+                    <span class="identifier">force_header</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">else mode = filemode_Write;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">mode = filemode_Read;</span>
-            <span class="plain">if (glk_fileref_does_file_exist(fref) == false) {</span>
-                <span class="plain">glk_fileref_destroy(fref);</span>
-                <span class="plain">return FileIO_Error(extf, "tried to open a file which does not exist");</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="plain">str = glk_stream_open_file(fref, mode, 0);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
-        <span class="plain">if (str == 0) return FileIO_Error(extf, "tried to open a file but failed");</span>
-        <span class="plain">struc--&gt;AUXF_STREAM = str;</span>
-        <span class="plain">if (write_flag) {</span>
-            <span class="plain">if (append_flag)</span>
-                <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_APPEND;</span>
-            <span class="plain">else</span>
-                <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_WRITE;</span>
-            <span class="plain">glk_stream_set_current(str);</span>
-            <span class="plain">if ((append_flag == false) || (force_header)) {</span>
-                <span class="plain">print "- ";</span>
-                <span class="plain">for (ix=6: ix &lt;= UUID_ARRAY-&gt;0: ix++) print (char) UUID_ARRAY-&gt;ix;</span>
-                <span class="plain">print " ", (string) struc--&gt;AUXF_FILENAME, "^";</span>
-            <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;</span>
-            <span class="plain">ch = FileIO_GetC(extf);</span>
-            <span class="plain">if (ch ~= '-' or '*') { jump BadFile; }</span>
-            <span class="plain">if (ch == '-')</span>
-                <span class="plain">return FileIO_Error(extf, "tried to open a file which was incomplete");</span>
-            <span class="plain">ch = FileIO_GetC(extf);</span>
-            <span class="plain">if (ch ~= ' ') { jump BadFile; }</span>
-            <span class="plain">ch = FileIO_GetC(extf);</span>
-            <span class="plain">if (ch ~= '/') { jump BadFile; }</span>
-            <span class="plain">ch = FileIO_GetC(extf);</span>
-            <span class="plain">if (ch ~= '/') { jump BadFile; }</span>
-            <span class="plain">owner = struc--&gt;AUXF_IFID_OF_OWNER;</span>
-            <span class="plain">ix = 3;</span>
-            <span class="plain">if (owner == UUID_ARRAY) ix = 8;</span>
-            <span class="plain">if (owner ~= NULL) {</span>
-                <span class="plain">for (: ix &lt;= owner-&gt;0: ix++) {</span>
-                    <span class="plain">ch = FileIO_GetC(extf);</span>
-                    <span class="plain">if (ch == -1) { jump BadFile; }</span>
-                    <span class="plain">if (ch ~= owner-&gt;ix) not_this_ifid = true;</span>
-                    <span class="plain">if (ch == ' ') break;</span>
-                <span class="plain">}</span>
-                <span class="plain">if (not_this_ifid == false) {</span>
-                    <span class="plain">ch = FileIO_GetC(extf);</span>
-                    <span class="plain">if (ch ~= ' ') { jump BadFile; }</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="plain">while (ch ~= -1) {</span>
-                <span class="plain">ch = FileIO_GetC(extf);</span>
-                <span class="plain">if (ch == 10 or 13) break;</span>
-            <span class="plain">}</span>
-            <span class="plain">if (not_this_ifid) {</span>
-                <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_CLOSED;</span>
-                <span class="plain">glk_stream_close(str, 0);</span>
-                <span class="plain">return FileIO_Error(extf,</span>
-                    <span class="plain">"tried to open a file owned by another project");</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">mode</span><span class="plain"> = </span><span class="identifier">filemode_Write</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">mode</span><span class="plain"> = </span><span class="identifier">filemode_Read</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) {</span>
+                <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a file which does not exist"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return struc--&gt;AUXF_STREAM;</span>
-        <span class="plain">.BadFile;</span>
-        <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_CLOSED;</span>
-        <span class="plain">glk_stream_close(str, 0);</span>
-        <span class="plain">return FileIO_Error(extf, "tried to open a file which seems to be malformed");</span>
+        <span class="identifier">str</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="identifier">mode</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">str</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a file but failed"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain"> = </span><span class="identifier">str</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">write_flag</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">append_flag</span><span class="plain">)</span>
+                <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain">;</span>
+            <span class="reserved">else</span>
+                <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain">;</span>
+            <span class="identifier">glk_stream_set_current</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">append_flag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) || (</span><span class="identifier">force_header</span><span class="plain">)) {</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"- "</span><span class="plain">;</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=6: </span><span class="identifier">ix</span><span class="plain"> &lt;= </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;0: </span><span class="identifier">ix</span><span class="plain">++) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_FILENAME</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
+            <span class="plain">}</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain">;</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'*'</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a file which was incomplete"</span><span class="plain">);</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">' '</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">'/'</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">'/'</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+            <span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_IFID_OF_OWNER</span><span class="plain">;</span>
+            <span class="identifier">ix</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">UUID_ARRAY</span><span class="plain">) </span><span class="identifier">ix</span><span class="plain"> = </span><span class="constant">8</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="reserved">for</span><span class="plain"> (: </span><span class="identifier">ix</span><span class="plain"> &lt;= </span><span class="identifier">owner</span><span class="plain">-&gt;0: </span><span class="identifier">ix</span><span class="plain">++) {</span>
+                    <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="identifier">owner</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">) </span><span class="identifier">not_this_ifid</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_this_ifid</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
+                    <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">' '</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain">) {</span>
+                <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_this_ifid</span><span class="plain">) {</span>
+                <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">;</span>
+                <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">,</span>
+                    <span class="string">"tried to open a file owned by another project"</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">BadFile</span><span class="plain">;</span>
+        <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">;</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a file which seems to be malformed"</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -291,23 +291,23 @@ Glk errors.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_Close extf  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to open a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ~=</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_READ or</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_WRITE or</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_APPEND)</span>
-            <span class="plain">return FileIO_Error(extf, "tried to close a file which is not open");</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ==</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_WRITE or</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_APPEND) {</span>
-            <span class="plain">glk_stream_set_position(struc--&gt;AUXF_STREAM, 0, 0); ! seek start</span>
-            <span class="plain">glk_put_char_stream(struc--&gt;AUXF_STREAM, '*'); ! mark as complete</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Close</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to open a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~=</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain"> </span><span class="reserved">or</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> </span><span class="reserved">or</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to close a file which is not open"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ==</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> </span><span class="reserved">or</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain">) {</span>
+            <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! seek start</span>
+            <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="character">'*'</span><span class="plain">); </span><span class="comment">! mark as complete</span>
         <span class="plain">}</span>
-        <span class="plain">glk_stream_close(struc--&gt;AUXF_STREAM, 0);</span>
-        <span class="plain">struc--&gt;AUXF_STATUS = AUXF_STATUS_IS_CLOSED;</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -317,11 +317,11 @@ Glk errors.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_GetC extf  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES)) return -1;</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ~= AUXF_STATUS_IS_OPEN_FOR_READ) return -1;</span>
-        <span class="plain">return glk_get_char_stream(struc--&gt;AUXF_STREAM);</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~= </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">glk_get_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -331,16 +331,16 @@ Glk errors.
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_PutC extf char  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES)) return -1;</span>
-            <span class="plain">return FileIO_Error(extf, "tried to write to a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_STATUS ~=</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_WRITE or</span>
-            <span class="plain">AUXF_STATUS_IS_OPEN_FOR_APPEND)</span>
-            <span class="plain">return FileIO_Error(extf,</span>
-                <span class="plain">"tried to write to a file which is not open for writing");</span>
-        <span class="plain">return glk_put_char_stream(struc--&gt;AUXF_STREAM, char);</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PutC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">char</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to write to a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~=</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> </span><span class="reserved">or</span>
+            <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">,</span>
+                <span class="string">"tried to write to a file which is not open for writing"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="identifier">char</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -353,15 +353,15 @@ single <code class="display"><span class="extract">0d</span></code>.) Each chara
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_PrintLine extf ch  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to write to a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">for (::) {</span>
-            <span class="plain">ch = FileIO_GetC(extf);</span>
-            <span class="plain">if (ch == -1) rfalse;</span>
-            <span class="plain">if (ch == 10 or 13) { print "^"; rtrue; }</span>
-            <span class="plain">print (char) ch;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PrintLine</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to write to a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (::) {</span>
+            <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+            <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -376,16 +376,16 @@ which case we have a copy utility.)
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_PrintContents extf tab  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to access a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY)</span>
-            <span class="plain">return FileIO_Error(extf, "printing text will not work with binary files");</span>
-        <span class="plain">if (FileIO_Open(extf, false) == 0) rfalse;</span>
-        <span class="plain">while (FileIO_PrintLine(extf)) ;</span>
-        <span class="plain">FileIO_Close(extf);</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PrintContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to access a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"printing text will not work with binary files"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FileIO_Open</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">FileIO_PrintLine</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">)) ;</span>
+        <span class="identifier">FileIO_Close</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -398,22 +398,22 @@ end (if true).
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_PutContents extf text append_flag  struc str ch oldstream;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to access a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY)</span>
-            <span class="plain">return FileIO_Error(extf, "writing text will not work with binary files");</span>
-        <span class="plain">oldstream = glk_stream_get_current();</span>
-        <span class="plain">str = FileIO_Open(extf, true, append_flag);</span>
-        <span class="plain">if (str == 0) rfalse;</span>
-        <span class="plain">@push say__p; @push say__pc;</span>
-        <span class="plain">ClearParagraphing(19);</span>
-        <span class="plain">TEXT_TY_Say(text);</span>
-        <span class="plain">FileIO_Close(extf);</span>
-        <span class="plain">if (oldstream) glk_stream_set_current(oldstream);</span>
-        <span class="plain">@pull say__pc; @pull say__p;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PutContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">text</span><span class="plain"> </span><span class="identifier">append_flag</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">oldstream</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to access a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"writing text will not work with binary files"</span><span class="plain">);</span>
+        <span class="identifier">oldstream</span><span class="plain"> = </span><span class="identifier">glk_stream_get_current</span><span class="plain">();</span>
+        <span class="identifier">str</span><span class="plain"> = </span><span class="identifier">FileIO_Open</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">append_flag</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">str</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">;</span>
+        <span class="identifier">ClearParagraphing</span><span class="plain">(19);</span>
+        <span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">FileIO_Close</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldstream</span><span class="plain">) </span><span class="identifier">glk_stream_set_current</span><span class="plain">(</span><span class="identifier">oldstream</span><span class="plain">);</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -427,31 +427,31 @@ actual translations are in "Tables.i6t".
 
 
 <pre class="display">
-    <span class="plain">[ FileIO_PutTable extf tab rv  struc oldstream;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to write table to a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY)</span>
-            <span class="plain">return FileIO_Error(extf, "writing a table will not work with binary files");</span>
-        <span class="plain">oldstream = glk_stream_get_current();</span>
-        <span class="plain">if (FileIO_Open(extf, true) == 0) rfalse;</span>
-        <span class="plain">rv = TablePrint(tab);</span>
-        <span class="plain">FileIO_Close(extf);</span>
-        <span class="plain">if (oldstream) glk_stream_set_current(oldstream);</span>
-        <span class="plain">if (rv) return RunTimeProblem(RTP_TABLE_CANTSAVE, tab);</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PutTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">oldstream</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to write table to a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"writing a table will not work with binary files"</span><span class="plain">);</span>
+        <span class="identifier">oldstream</span><span class="plain"> = </span><span class="identifier">glk_stream_get_current</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FileIO_Open</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">TablePrint</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">);</span>
+        <span class="identifier">FileIO_Close</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldstream</span><span class="plain">) </span><span class="identifier">glk_stream_set_current</span><span class="plain">(</span><span class="identifier">oldstream</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_CANTSAVE</span><span class="plain">, </span><span class="identifier">tab</span><span class="plain">);</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ FileIO_GetTable extf tab  struc;</span>
-        <span class="plain">if ((extf &lt; 1) || (extf &gt; NO_EXTERNAL_FILES))</span>
-            <span class="plain">return FileIO_Error(extf, "tried to read table from a non-file");</span>
-        <span class="plain">struc = TableOfExternalFiles--&gt;extf;</span>
-        <span class="plain">if (struc--&gt;AUXF_BINARY)</span>
-            <span class="plain">return FileIO_Error(extf, "reading a table will not work with binary files");</span>
-        <span class="plain">if (FileIO_Open(extf, false) == 0) rfalse;</span>
-        <span class="plain">TableRead(tab, extf);</span>
-        <span class="plain">FileIO_Close(extf);</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to read table from a non-file"</span><span class="plain">);</span>
+        <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_BINARY</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"reading a table will not work with binary files"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FileIO_Open</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">TableRead</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">extf</span><span class="plain">);</span>
+        <span class="identifier">FileIO_Close</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -463,18 +463,18 @@ run-time problem when there is no alternative.
 
 
 <pre class="display">
-    <span class="plain">#IFNOT; ! TARGET_GLULX</span>
-    <span class="plain">[ FileIO_Exists extf; rfalse; ];</span>
-    <span class="plain">[ FileIO_Ready extf; rfalse; ];</span>
-    <span class="plain">[ FileIO_GetC extf; return -1; ];</span>
-    <span class="plain">[ FileIO_PutTable extf tab;</span>
-        <span class="plain">return FileIO_Error(extf, "external files can only be used under Glulx");</span>
+    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Exists</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_Ready</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PutTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"external files can only be used under Glulx"</span><span class="plain">);</span>
     <span class="plain">];</span>
-    <span class="plain">[ FileIO_MarkReady extf status; FileIO_PutTable(extf); ];</span>
-    <span class="plain">[ FileIO_GetTable extf tab; FileIO_PutTable(extf); ];</span>
-    <span class="plain">[ FileIO_PrintContents extf; FileIO_PutTable(extf); ];</span>
-    <span class="plain">[ FileIO_PutContents extf; FileIO_PutTable(extf); ];</span>
-    <span class="plain">#ENDIF; ! TARGET_GLULX</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_MarkReady</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">status</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PrintContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_PutContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -483,9 +483,9 @@ run-time problem when there is no alternative.
 
 
 <pre class="display">
-    <span class="plain">#IFNOT; ! PLUGIN_FILES</span>
-    <span class="plain">[ FileIO_GetC extf; return -1; ];</span>
-    <span class="plain">#ENDIF; ! PLUGIN_FILES</span>
+    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">! PLUGIN_FILES</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">; ];</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">! PLUGIN_FILES</span>
 </pre>
 
 <p class="inwebparagraph"></p>

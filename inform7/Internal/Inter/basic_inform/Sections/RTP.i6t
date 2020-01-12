@@ -19,7 +19,7 @@ message; |ln| is an optional parameter specifying a paragraph number in the
 original source text (though in fact I7 does not use this at present).
 
 =
-Array RTP_Buffer --> 7;
+Array RTP_Buffer --> (-1) 0 0 0 0 0 0;
 [ RunTimeProblem n par1 par2 par3 ln file;
 	if (RTP_Buffer-->0 == -1) {
 		RTP_Buffer-->0 = n;
@@ -63,24 +63,11 @@ Array RTP_Buffer --> 7;
 	}
 	print ": ";
 	switch(n) {
-		RTP_BACKDROP:
-			print "Tried to move ", (the) par1, " (a backdrop) to ", (the) par2,
-				", which is not a region.^";
-		RTP_CANTCHANGE:
-			print "Tried to change player to ", (the) par1, ", which is not a person.^";
-		RTP_NOEXIT:
-		    print "Tried to change ", (the) par2, " exit of ", (the) par1,
-		    	", but it didn't seem to have such an exit to change.^";
-		RTP_EXITDOOR:
-		    print "Tried to change ", (the) par2, " exit of ", (the) par1,
-		    	", but it led to a door, not a room.^";
 		RTP_IMPREL:
 			print "Tried to access an inappropriate relation for ", (the) par1,
 				", violating '", (string) RlnGetF(par2, RR_DESCRIPTION), "'.^";
 		RTP_TOOMANYRULEBOOKS:
 			print "Too many rulebooks in simultaneous use.^";
-		RTP_TOOMANYEVENTS:
-			print "Too many timed events are going on at once.^";
 		RTP_BADPROPERTY:
 			print "Tried to access non-existent property for ", (the) par1, ".^";
 		RTP_UNPROVIDED:
@@ -95,18 +82,11 @@ Array RTP_Buffer --> 7;
 			print "Tried to abandon an activity which wasn't going on.^";
 		RTP_CANTEND:
 			print "Tried to end an activity which wasn't going on.^";
-		RTP_CANTMOVENOTHING:
-			print "You can't move nothing.^";
-		RTP_CANTREMOVENOTHING:
-			print "You can't remove nothing from play.^";
 		RTP_DIVZERO:
 			print "You can't divide by zero.^";
 		RTP_BADVALUEPROPERTY:
 			print "Tried to access property for a value which didn't fit: ",
 				"if this were a number it would be ", par1, ".^";
-		RTP_NOTBACKDROP:
-			print "Tried to move ", (the) par1, " (not a backdrop) to ", (the) par2,
-				", which is a region.^";
 		RTP_TABLE_NOCOL:
 			print "Attempt to look up a non-existent column in the table '",
 				(PrintTableName) par1, "'.^";
@@ -145,12 +125,6 @@ Array RTP_Buffer --> 7;
 		RTP_TABLE_BADFILE:
 			print "File being read is not a previously saved table: table '",
 				(PrintTableName) par1, "'.^";
-		RTP_NOTINAROOM:
-			print "Attempt to test if the current location is '",
-				(the) par1, "', which is not a room or region.^";
-		RTP_BADTOPIC:
-			print "Attempt to see if a snippet of text matches something which
-				is not a topic.^";
 		RTP_ROUTELESS:
 			print "Attempt to find route or count steps through an implicit
 				relation.^";
@@ -163,27 +137,8 @@ Array RTP_Buffer --> 7;
 			print "Attempt to 'decide on nothing'.^";
 		RTP_LOWLEVELERROR:
 			print "Low level error.^";
-		RTP_DONTIGNORETURNSEQUENCE:
-			print "Attempt to ignore the turn sequence rules.^";
-		RTP_SAYINVALIDSNIPPET:
-			print "Attempt to say a snippet value which is currently invalid: words ",
-				par1, " to ", par2, ".^";
-		RTP_SPLICEINVALIDSNIPPET:
-			print "Attempt to splice a snippet value which is currently invalid: words ",
-				par1, " to ", par2, ".^";
-		RTP_INCLUDEINVALIDSNIPPET:
-			print "Attempt to match a snippet value which is currently invalid: words ",
-				par1, " to ", par2, ".^";
 		RTP_LISTWRITERMEMORY:
 			print "The list-writer has run out of memory.^";
-		RTP_CANTREMOVEPLAYER:
-			print "Attempt to remove the player from play.^";
-		RTP_CANTBEOFFSTAGE:
-			print "Attempt to move the player off-stage.^";
-		RTP_CANTREMOVEDOORS:
-			print "Attempt to remove a door from play.^";
-		RTP_CANTCHANGEOFFSTAGE:
-			print "Attempt to change the player to a person off-stage.^";
 		RTP_MSTACKMEMORY:
 			print "The memory stack is exhausted.^";
 		RTP_TYPECHECK:
@@ -201,11 +156,6 @@ Array RTP_Buffer --> 7;
 			print "Syntax error in regular expression.^";
 		RTP_NOGLULXUNICODE:
 			print "This interpreter does not support Unicode.^";
-		RTP_BACKDROPONLY:
-			print "Only backdrops can be moved to multiple places.^";
-		RTP_NOTTHING:
-			print "Tried to move ", (the) par1, " (not a thing) to ", (the) par2,
-				", but only things can move around.^";
 		RTP_NEGATIVEROOT:
 			print "You can't take the square root of a negative number.^";
 		RTP_CANTITERATE:
@@ -220,9 +170,6 @@ Array RTP_Buffer --> 7;
 			print "Tried to change a relation for objects with the wrong kinds: ",
 				(string) RlnGetF(par3, RR_DESCRIPTION), ", but you tried to ",
 				"relate (or unrelate) ", (the) par1, " to ", (the) par2, ".^";
-		RTP_CANTMAKEPART:
-			print "Tried to make the player part of something: ",
-				(the) par1, ".^";
 		RTP_TEXTTOKENTOOHARD:
 			print "This use of '[text]' is too complicated.^";
 		RTP_RELATIONCHANGEIMPOSSIBLE:
@@ -230,9 +177,6 @@ Array RTP_Buffer --> 7;
 		RTP_RELMINIMAL:
 			print "This operation can't be done with the relation '",
 				(string) RlnGetF(par3, RR_DESCRIPTION), "'.^";
-		RTP_REGIONSNOTADJACENT:
-			print "You can't test whether something is adjacent to a region: ",
-				"such as, in this case, ", (the) par1, ".^";
 	}
 	RunTimeProblemShowWM(n, par1, par2, par3);
 	print "^";

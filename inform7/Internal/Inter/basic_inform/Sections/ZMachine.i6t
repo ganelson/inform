@@ -31,36 +31,6 @@ Global dict_start;
 Global dict_entry_size;
 Global dict_end;
 
-@h Starting Up.
-|VM_Initialise()| is almost the first routine called, except that the
-"starting the virtual machine" activity is allowed to go first.
-
-=
-[ VM_Initialise i;
-	standard_interpreter = HDR_TERPSTANDARD-->0;
-	transcript_mode = ((HDR_GAMEFLAGS-->0) & 1);
-
-	dict_start = HDR_DICTIONARY-->0;
-	dict_entry_size = dict_start->(dict_start->0 + 1);
-	dict_start = dict_start + dict_start->0 + 4;
-	dict_end = dict_start + ((dict_start - 2)-->0) * dict_entry_size;
-
-	buffer->0  = INPUT_BUFFER_LEN;
-	buffer2->0 = INPUT_BUFFER_LEN;
-	buffer3->0 = INPUT_BUFFER_LEN;
-	parse->0   = 15;
-	parse2->0  = 15;
-
-	top_object = #largest_object-255;
-
-	if (TEMPLATE_CONFIGURATION_BITMAP & FIX_RNG_TCBIT) {
-		@random 10000 -> i;
-		i = -i-2000;
-		print "[Random number generator seed is ", i, "]^";
-		@random i -> i;
-	}
-];
-
 @h Enable Acceleration.
 This rule enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files, so for the Z-machine it has no effect.
