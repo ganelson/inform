@@ -72,6 +72,12 @@ To say the/-- complete list of extension credits
 To say the/-- player's surroundings
 	(documented at phs_surroundings):
 	(- SL_Location(true); -).
+To say run paragraph on with special look spacing -- running on
+	(documented at phs_runparaonsls):
+	(- SpecialLookSpacingBreak(); -).
+To say command clarification break -- running on
+	(documented at phs_clarifbreak):
+	(- CommandClarificationBreak(); -).
 
 @h Using the list-writer.
 The I7 list-writer resembles the old I6 library one, but has been reimplemented
@@ -570,17 +576,6 @@ To decide which K is the first value of (name of kind of enumerated value K)
 To decide which K is the last value of (name of kind of enumerated value K)
 	(documented at ph_enumlast):
 	decide on K before the default value of K.
-
-@ The following exists only to convert a condition to a value, and is
-needed because I7 does not silently cast from one to the other in the way
-that C would.
-
-=
-Section SR5/2/6 - Values - Truth states
-
-To decide what truth state is whether or not (C - condition)
-	(documented at ph_whether):
-	(- ({C}) -).
 
 @ Random numbers and random items chosen from sets of objects matching a
 given description ("a random closed door").

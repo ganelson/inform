@@ -61,9 +61,6 @@ It follows that running |intest -from inform7 BIP-%c+| will test all of
 these phrases on all platforms, since this regular expression matches all
 test case names beginning with "BIP-".
 
-=
-Part Two - Phrasebook
-
 @h Say phrases.
 We begin with saying phrases: the very first phrase to exist is the one
 printing a single value -- literal text, a number, a time, an object, or
@@ -96,6 +93,8 @@ template library, which is also where |say__n| is defined.
 See test case |BIP-Say|.
 
 =
+Part Two - Phrasebook
+
 Section 1 - Saying Values
 
 To say (val - sayable value of kind K)
@@ -157,6 +156,56 @@ To say The (something - object)
 	(documented at phs_The):
 	(- print (The) {something}; -).
 
+@ Now some text substitutions which are the equivalent of escape characters.
+(In double-quoted I6 text, the notation for a literal quotation mark is a
+tilde |~|.) Note the use of the "-- running on" annotation, which tells Inform
+that a text substitution should not cause a new-line.
+
+See test case |BIP-SaySpecial|.
+
+=
+Section 3 - Saying Special Characters
+
+To say bracket -- running on
+	(documented at phs_bracket):
+	(- print "["; -).
+To say close bracket -- running on
+	(documented at phs_closebracket):
+	(- print "]"; -).
+To say apostrophe/' -- running on
+	(documented at phs_apostrophe):
+	(- print "'"; -).
+To say quotation mark -- running on
+	(documented at phs_quotemark):
+	(- print "~"; -).
+
+@ For an explanation of the paragraph breaking algorithm, see the template
+file "Printing.i6t".
+
+See test case |BIP-SayParagraphing|.
+
+=
+Section 4 - Saying Line and Paragraph Breaks
+
+To say line break -- running on
+	(documented at phs_linebreak):
+	(- new_line; -).
+To say no line break -- running on
+	(documented at phs_nolinebreak):
+	do nothing.
+To say conditional paragraph break -- running on
+	(documented at phs_condparabreak):
+	(- DivideParagraphPoint(); -).
+To say paragraph break -- running on
+	(documented at phs_parabreak):
+	(- DivideParagraphPoint(); new_line; -).
+To say run paragraph on -- running on
+	(documented at phs_runparaon):
+	(- RunParagraphOn(); -).
+To decide if a paragraph break is pending
+	(documented at ph_breakpending):
+	(- (say__p) -).
+
 @ Now for "[if ...]", which expands into a rather assembly-language-like
 usage of |jump| statements, I6's form of goto. For instance, the text
 "[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
@@ -200,8 +249,10 @@ the start of the next block, and that the next say exit label number is always
 the one at the end of the current construct. This is true because NI does
 not allow "say if" to be nested.
 
+See test case |BIP-SayIf|.
+
 =
-Section SR5/1/3 - Saying - Say if and otherwise
+Section 5 - Saying If and Otherwise
 
 To say if (c - condition)
 	(documented at phs_if): (-
@@ -237,18 +288,20 @@ To say end unless
 		-).
 
 @ The other control structure: the random variations form of saying. This
-part of the Standard Rules was in effect contributed by the community: it
+part of the Inform design was in effect contributed by the community: it
 reimplements a form of Jon Ingold's former extension Text Variations, which
 itself built on code going back to the days of I6.
 
-The head phrase here has one of the most complicated definitions in the SR,
-but is actually documented fairly explicitly in the Extensions chapter
-of "Writing with Inform", so we won't repeat all that here. Essentially
-it uses its own allocated cell of storage in an array to remember a state
-between uses, and compiles as a switch statement based on the current state.
+The head phrase has one of the most complicated definitions suppled with
+Inform, but is actually documented fairly explicitly in the Extensions chapter
+of "Writing with Inform", so we won't repeat all that here. Essentially it
+uses its own allocated cell of storage in an array to remember a state between
+uses, and compiles as a switch statement based on the current state.
+
+See test case |BIP-SayOneOf|.
 
 =
-Section SR5/1/4 - Saying - Say one of
+Section 6 - Saying one of
 
 To say one of -- beginning say_one_of (documented at phs_oneof): (-
 	{-counter-makes-array:say_one_of}
@@ -289,61 +342,14 @@ To say first time -- beginning say_first_time (documented at phs_firsttime):
 To say only -- ending say_first_time (documented at phs_firsttime):
 	(- {-close-brace} -).
 
-@ For an explanation of the paragraph breaking algorithm, see the template
-file "Printing.i6t".
-
-=
-Section SR5/1/5 - Saying - Paragraph control
-
-To say line break -- running on
-	(documented at phs_linebreak):
-	(- new_line; -).
-To say no line break -- running on
-	(documented at phs_nolinebreak): do nothing.
-To say conditional paragraph break -- running on
-	(documented at phs_condparabreak):
-	(- DivideParagraphPoint(); -).
-To say command clarification break -- running on
-	(documented at phs_clarifbreak):
-	(- CommandClarificationBreak(); -).
-To say paragraph break -- running on
-	(documented at phs_parabreak):
-	(- DivideParagraphPoint(); new_line; -).
-To say run paragraph on -- running on
-	(documented at phs_runparaon):
-	(- RunParagraphOn(); -).
-To say run paragraph on with special look spacing -- running on
-	(documented at phs_runparaonsls):
-	(- SpecialLookSpacingBreak(); -).
-To decide if a paragraph break is pending
-	(documented at ph_breakpending):
-	(- (say__p) -).
-
-@ Now some text substitutions which are the equivalent of escape characters.
-(In double-quoted I6 text, the notation for a literal quotation mark is a
-tilde |~|.)
-
-=
-Section SR5/1/6 - Saying - Special characters
-
-To say bracket -- running on
-	(documented at phs_bracket):
-	(- print "["; -).
-To say close bracket -- running on
-	(documented at phs_closebracket):
-	(- print "]"; -).
-To say apostrophe/' -- running on
-	(documented at phs_apostrophe):
-	(- print "'"; -).
-To say quotation mark -- running on
-	(documented at phs_quotemark):
-	(- print "~"; -).
-
 @ Now some visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
 
+See test case |BIP-SayOneOf|, though since |intest| runs on plain text only,
+you may need to run this in the Inform application to be convinced.
+
 =
-Section SR5/1/7 - Saying - Fonts and visual effects
+Section 7 - Saying Fonts and Visual Effects
 
 To say bold type -- running on
 	(documented at phs_bold):
@@ -383,6 +389,17 @@ See test case |Showme|.
 To decide what K is the default value of (V - name of kind of value of kind K)
 	(documented at ph_defaultvalue):
 	(- {-new:K} -).
+
+@ The following exists only to convert a condition to a value, and is
+needed because I7 does not silently cast from one to the other in the way
+that C would.
+
+=
+Section SR5/2/6 - Values - Truth states
+
+To decide what truth state is whether or not (C - condition)
+	(documented at ph_whether):
+	(- ({C}) -).
 
 @ And so, at last...
 

@@ -1,4 +1,4 @@
-Version 1/191002 of Basic Inform by Graham Nelson begins here.
+Version 1 of Basic Inform by Graham Nelson begins here.
 
 "Basic Inform, included in every project, defines the basic framework
 of Inform as a programming language."
@@ -176,7 +176,43 @@ To say The (something - object)
 	(documented at phs_The):
 	(- print (The) {something}; -).
 
-Section SR5/1/3 - Saying - Say if and otherwise
+Section 3 - Saying Special Characters
+
+To say bracket -- running on
+	(documented at phs_bracket):
+	(- print "["; -).
+To say close bracket -- running on
+	(documented at phs_closebracket):
+	(- print "]"; -).
+To say apostrophe/' -- running on
+	(documented at phs_apostrophe):
+	(- print "'"; -).
+To say quotation mark -- running on
+	(documented at phs_quotemark):
+	(- print "~"; -).
+
+Section 4 - Saying Line and Paragraph Breaks
+
+To say line break -- running on
+	(documented at phs_linebreak):
+	(- new_line; -).
+To say no line break -- running on
+	(documented at phs_nolinebreak):
+	do nothing.
+To say conditional paragraph break -- running on
+	(documented at phs_condparabreak):
+	(- DivideParagraphPoint(); -).
+To say paragraph break -- running on
+	(documented at phs_parabreak):
+	(- DivideParagraphPoint(); new_line; -).
+To say run paragraph on -- running on
+	(documented at phs_runparaon):
+	(- RunParagraphOn(); -).
+To decide if a paragraph break is pending
+	(documented at ph_breakpending):
+	(- (say__p) -).
+
+Section 5 - Saying If and Otherwise
 
 To say if (c - condition)
 	(documented at phs_if): (-
@@ -211,7 +247,7 @@ To say end unless
 	.{-label:Say}{-counter-up:Say}; .{-label:SayX}{-counter-up:SayX};
 		-).
 
-Section SR5/1/4 - Saying - Say one of
+Section 6 - Saying one of
 
 To say one of -- beginning say_one_of (documented at phs_oneof): (-
 	{-counter-makes-array:say_one_of}
@@ -252,48 +288,7 @@ To say first time -- beginning say_first_time (documented at phs_firsttime):
 To say only -- ending say_first_time (documented at phs_firsttime):
 	(- {-close-brace} -).
 
-Section SR5/1/5 - Saying - Paragraph control
-
-To say line break -- running on
-	(documented at phs_linebreak):
-	(- new_line; -).
-To say no line break -- running on
-	(documented at phs_nolinebreak): do nothing.
-To say conditional paragraph break -- running on
-	(documented at phs_condparabreak):
-	(- DivideParagraphPoint(); -).
-To say command clarification break -- running on
-	(documented at phs_clarifbreak):
-	(- CommandClarificationBreak(); -).
-To say paragraph break -- running on
-	(documented at phs_parabreak):
-	(- DivideParagraphPoint(); new_line; -).
-To say run paragraph on -- running on
-	(documented at phs_runparaon):
-	(- RunParagraphOn(); -).
-To say run paragraph on with special look spacing -- running on
-	(documented at phs_runparaonsls):
-	(- SpecialLookSpacingBreak(); -).
-To decide if a paragraph break is pending
-	(documented at ph_breakpending):
-	(- (say__p) -).
-
-Section SR5/1/6 - Saying - Special characters
-
-To say bracket -- running on
-	(documented at phs_bracket):
-	(- print "["; -).
-To say close bracket -- running on
-	(documented at phs_closebracket):
-	(- print "]"; -).
-To say apostrophe/' -- running on
-	(documented at phs_apostrophe):
-	(- print "'"; -).
-To say quotation mark -- running on
-	(documented at phs_quotemark):
-	(- print "~"; -).
-
-Section SR5/1/7 - Saying - Fonts and visual effects
+Section 7 - Saying Fonts and Visual Effects
 
 To say bold type -- running on
 	(documented at phs_bold):
@@ -321,6 +316,12 @@ To stop (documented at ph_stop):
 To decide what K is the default value of (V - name of kind of value of kind K)
 	(documented at ph_defaultvalue):
 	(- {-new:K} -).
+
+Section SR5/2/6 - Values - Truth states
+
+To decide what truth state is whether or not (C - condition)
+	(documented at ph_whether):
+	(- ({C}) -).
 
 Basic Inform ends here.
 

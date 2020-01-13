@@ -1,0 +1,14 @@
+  
+  This has a
+  sudden line break.
+  There's no skipped line above this one. And we didn't break a line just then.
+  But here's a paragraph break.
+  
+  And here I resume.
+  There wasn't a para break before this line.
+  
+  But there was before this line.
+  
+  
+  "whether or not a paragraph break is pending" = truth state: false
+  Now I say something, and "whether or not a paragraph break is pending" = truth state: true
