@@ -22,6 +22,8 @@ Version [[Version Number]] of Basic Inform by Graham Nelson begins here.
 "Basic Inform, included in every project, defines the basic framework
 of Inform as a programming language."
 
+Part One - Preamble
+
 @h Starting up.
 The first task is to create the verbs which enable us to do everything
 else. The first sentence should really read "The verb to mean means the
@@ -182,6 +184,38 @@ Use MAX_LOCAL_VARIABLES of 256.
 =
 An object has a value called variable initial value.
 
+@h Naming properties.
+Certain properties used for names are held in common by all objects, of
+whatever kind. "Specification" is special: it isn't compiled, but holds
+text used to annotate the Kinds index. "Variable initial value" is
+likewise special; internally, knowledge about the initial value of a
+global variable is stored as knowledge about this property. It can't be
+used for anything else. "Indefinite appearance text" is also an internal
+property (it holds the text sometimes given in double-quotes immediately
+after an object is created).
+
+=
+An object has a text called specification.
+An object has a text called indefinite appearance text.
+An object has a text called list grouping key.
+
+@ These, on the other hand, are quite genuine:
+
+=
+An object has a text called printed name.
+An object has a text called printed plural name.
+An object has a text called an indefinite article.
+An object can be plural-named or singular-named. An object is usually singular-named.
+An object can be proper-named or improper-named. An object is usually improper-named.
+An object can be ambiguously plural.
+
+The indefinite article property translates into I6 as "article".
+The printed plural name property translates into I6 as "plural".
+The printed name property translates into I6 as "short_name".
+The plural-named property translates into I6 as "pluralname".
+The ambiguously plural property translates into I6 as "ambigpluralname".
+The proper-named property translates into I6 as "proper".
+
 A natural language is a kind of value.
 The language of play is a natural language that varies.
 
@@ -189,12 +223,18 @@ Startup rules is a rulebook. [0]
 Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook. [1]
 
-To say (val - sayable value of kind K)
-	(documented at ph_say):
-	(- {-say:val:K} -).
+Starting the virtual machine (documented at act_startvm) is an activity.
 
-@h Endpiece.
-Every Inform 7 extension ends along these lines:
+The enable Glulx acceleration rule is listed first in for starting the virtual machine.
 
-=
-Basic Inform ends here.
+The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
+
+Printing the name of something (documented at act_pn) is an activity. [0]
+
+The standard name printing rule is listed last in the for printing the name rulebook.
+The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
+
+Printing the plural name of something (documented at act_ppn) is an activity. [1]
+
+The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
+The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".

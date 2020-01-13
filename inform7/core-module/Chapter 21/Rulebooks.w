@@ -94,7 +94,7 @@ typedef struct placement_affecting {
 a small array: that way, we can always obtain a pointer to, say, the
 turn sequence rules by looking up |built_in_rulebooks[TURN_SEQUENCE_RB]|.
 
-@d MAX_BUILT_IN_RULEBOOKS 32
+@d MAX_BUILT_IN_RULEBOOKS 64
 
 = (early code)
 rulebook *built_in_rulebooks[MAX_BUILT_IN_RULEBOOKS];
@@ -110,36 +110,36 @@ in the Standard Rules file.
 
 @d STARTUP_RB 0 /* Startup rules */
 @d SHUTDOWN_RB 1 /* Shutdown rules */
-@d TURN_SEQUENCE_RB 2 /* Turn sequence rules */
-@d SCENE_CHANGING_RB 3 /* Scene changing rules */
-@d WHEN_PLAY_BEGINS_RB 4 /* When play begins */
-@d WHEN_PLAY_ENDS_RB 5 /* When play ends */
-@d WHEN_SCENE_BEGINS_RB 6 /* When play begins */
-@d WHEN_SCENE_ENDS_RB 7 /* When play ends */
-@d EVERY_TURN_RB 8 /* Every turn */
+@d TURN_SEQUENCE_RB 11 /* Turn sequence rules */
+@d SCENE_CHANGING_RB 12 /* Scene changing rules */
+@d WHEN_PLAY_BEGINS_RB 13 /* When play begins */
+@d WHEN_PLAY_ENDS_RB 14 /* When play ends */
+@d WHEN_SCENE_BEGINS_RB 15 /* When scene begins */
+@d WHEN_SCENE_ENDS_RB 16 /* When scene ends */
+@d EVERY_TURN_RB 17 /* Every turn */
 
-@d ACTION_PROCESSING_RB 9 /* Action-processing rules */
-@d SETTING_ACTION_VARIABLES_RB 10 /* Setting action variables rules */
-@d SPECIFIC_ACTION_PROCESSING_RB 11 /* Specific action-processing rules */
-@d PLAYERS_ACTION_AWARENESS_RB 12 /* Player's action awareness rules */
+@d ACTION_PROCESSING_RB 18 /* Action-processing rules */
+@d SETTING_ACTION_VARIABLES_RB 19 /* Setting action variables rules */
+@d SPECIFIC_ACTION_PROCESSING_RB 20 /* Specific action-processing rules */
+@d PLAYERS_ACTION_AWARENESS_RB 21 /* Player's action awareness rules */
 
-@d ACCESSIBILITY_RB 13 /* Accessibility rules */
-@d REACHING_INSIDE_RB 14 /* Reaching inside rules */
-@d REACHING_OUTSIDE_RB 15 /* Reaching outside rules */
-@d VISIBILITY_RB 16 /* Visibility rules */
+@d ACCESSIBILITY_RB 22 /* Accessibility rules */
+@d REACHING_INSIDE_RB 23 /* Reaching inside rules */
+@d REACHING_OUTSIDE_RB 24 /* Reaching outside rules */
+@d VISIBILITY_RB 25 /* Visibility rules */
 
-@d PERSUASION_RB 17 /* Persuasion rules */
-@d UNSUCCESSFUL_ATTEMPT_BY_RB 18 /* Unsuccessful attempt by */
+@d PERSUASION_RB 26 /* Persuasion rules */
+@d UNSUCCESSFUL_ATTEMPT_BY_RB 27 /* Unsuccessful attempt by */
 
-@d BEFORE_RB 19 /* Before rules */
-@d INSTEAD_RB 20 /* Instead rules */
-@d CHECK_RB 21 /* Check */
-@d CARRY_OUT_RB 22 /* Carry out rules */
-@d AFTER_RB 23 /* After rules */
-@d REPORT_RB 24 /* Report */
+@d BEFORE_RB 28 /* Before rules */
+@d INSTEAD_RB 29 /* Instead rules */
+@d CHECK_RB 30 /* Check */
+@d CARRY_OUT_RB 31 /* Carry out rules */
+@d AFTER_RB 32 /* After rules */
+@d REPORT_RB 33 /* Report */
 
-@d DOES_THE_PLAYER_MEAN_RB 25 /* Does the player mean...? rules */
-@d MULTIPLE_ACTION_PROCESSING_RB 26 /* For changing or reordering multiple actions */
+@d DOES_THE_PLAYER_MEAN_RB 34 /* Does the player mean...? rules */
+@d MULTIPLE_ACTION_PROCESSING_RB 35 /* For changing or reordering multiple actions */
 
 @h Construction.
 When a rulebook is to be created, we do a little treatment on its name. We
@@ -209,7 +209,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	Hierarchy::markup_wording(R, RULEBOOK_NAME_HMD, W);
 
 	rulebook *rb = CREATE(rulebook);
-
+LOG("Wording %W. ID is %d.\n", W, rb->allocation_id);
 	<new-rulebook-name>(W);
 	W = GET_RW(<new-rulebook-name>, 1);
 

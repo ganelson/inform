@@ -217,18 +217,6 @@ prior named list number and gender for everything matching a description.
 	return;
 ];
 
-[ RegardingSingleObject obj;
-	prior_named_list = 1;
-	prior_named_list_gender = -1;
-	prior_named_noun = obj;
-];
-
-[ RegardingNumber n;
-	prior_named_list = n;
-	prior_named_list_gender = -1;
-	prior_named_noun = nothing;
-];
-
 [ PNToVP gna;
 	if (prior_named_noun == player) return story_viewpoint;
 	if (prior_named_noun) gna = GetGNAOfObject(prior_named_noun);

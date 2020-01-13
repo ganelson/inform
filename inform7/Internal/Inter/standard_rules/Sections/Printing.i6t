@@ -3,16 +3,6 @@ Printing Template.
 To manage the line skips which space paragraphs out, and to handle
 the printing of names of objects, pieces of text and numbers.
 
-@h Say Number.
-The global variable |say__n| is set to the numerical value of any quantity
-printed, and this is used for the text substitution "[s]", so that
-"You have been awake for [turn count] turn[s]." will expand correctly.
-
-=
-[ STextSubstitution;
-	if (say__n ~= 1) print "s";
-];
-
 @h Prompt.
 This is the text printed just before we wait for the player's command: it
 prompts him to type.
@@ -288,14 +278,9 @@ Global caps_mode = false;
     print (object) obj;
 ];
 
-@h Standard Response Issuing Rule.
-To print a response, we trigger off the response issuing activity. The following
-is the default "for" rule for that activity:
-
-=
-[ STANDARD_RESPONSE_ISSUING_R;
-	RegardingSingleObject();
-	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
+[ STANDARD_PLURAL_NAME_PRINTING_R obj;
+	obj = parameter_value;
+	PrintOrRun(obj, plural, true);
 ];
 
 @h Internal Rule.
@@ -345,22 +330,15 @@ Global short_name_case;
     artform = LanguageArticles
         + 3*WORDSIZE*LanguageContractionForms*(short_name_case + i*LanguageCases);
 
-    #Iftrue (LanguageContractionForms == 2);
-    if (artform-->acode ~= artform-->(acode+3)) findout = true;
-    #Endif; ! LanguageContractionForms
-    #Iftrue (LanguageContractionForms == 3);
-    if (artform-->acode ~= artform-->(acode+3)) findout = true;
-    if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
-    #Endif; ! LanguageContractionForms
-    #Iftrue (LanguageContractionForms == 4);
-    if (artform-->acode ~= artform-->(acode+3)) findout = true;
-    if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
-    if (artform-->(acode+6) ~= artform-->(acode+9)) findout = true;
-    #Endif; ! LanguageContractionForms
-    #Iftrue (LanguageContractionForms > 4);
-    findout = true;
-    #Endif; ! LanguageContractionForms
-
+    switch (LanguageContractionForms) {
+    	2: if (artform-->acode ~= artform-->(acode+3)) findout = true;
+    	3: if (artform-->acode ~= artform-->(acode+3)) findout = true;
+	       if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
+		4: if (artform-->acode ~= artform-->(acode+3)) findout = true;
+    	   if (artform-->(acode+3) ~= artform-->(acode+6)) findout = true;
+    	   if (artform-->(acode+6) ~= artform-->(acode+9)) findout = true;
+		default: findout = true;
+    }
     #Ifdef TARGET_ZCODE;
     if (standard_interpreter ~= 0 && findout) {
         StorageForShortName-->0 = 160;
@@ -383,13 +361,6 @@ Global short_name_case;
     if (pluralise) return;
     print (PSN__) obj;
 ];
-
-@h Print English Number.
-Another traditional name, this: in fact it prints the number as text in
-whatever is the current language of play.
-
-=
-[ EnglishNumber n; LanguageNumber(n); ];
 
 @h Object Names III.
 The routines accessible from outside this segment.
@@ -448,6 +419,16 @@ The routines accessible from outside this segment.
         return;
     }
     PrefaceByArticle(obj, 0); indef_mode = i;
+];
+
+@h Standard Response Issuing Rule.
+To print a response, we trigger off the response issuing activity. The following
+is the default "for" rule for that activity:
+
+=
+[ STANDARD_RESPONSE_ISSUING_R;
+	RegardingSingleObject();
+	TEXT_TY_Say(ResponseTexts-->(parameter_value - 1));
 ];
 
 @h Say One Of.

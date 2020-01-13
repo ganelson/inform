@@ -3,6 +3,8 @@ Version 1/191002 of Basic Inform by Graham Nelson begins here.
 "Basic Inform, included in every project, defines the basic framework
 of Inform as a programming language."
 
+Part One - Preamble
+
 The verb to be means the built-in new-verb meaning.
 The verb to be means the built-in new-plural meaning.
 The verb to be means the built-in new-activity meaning.
@@ -94,6 +96,24 @@ Use MAX_LOCAL_VARIABLES of 256.
 
 An object has a value called variable initial value.
 
+An object has a text called specification.
+An object has a text called indefinite appearance text.
+An object has a text called list grouping key.
+
+An object has a text called printed name.
+An object has a text called printed plural name.
+An object has a text called an indefinite article.
+An object can be plural-named or singular-named. An object is usually singular-named.
+An object can be proper-named or improper-named. An object is usually improper-named.
+An object can be ambiguously plural.
+
+The indefinite article property translates into I6 as "article".
+The printed plural name property translates into I6 as "plural".
+The printed name property translates into I6 as "short_name".
+The plural-named property translates into I6 as "pluralname".
+The ambiguously plural property translates into I6 as "ambigpluralname".
+The proper-named property translates into I6 as "proper".
+
 A natural language is a kind of value.
 The language of play is a natural language that varies.
 
@@ -101,9 +121,212 @@ Startup rules is a rulebook. [0]
 Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook. [1]
 
+Starting the virtual machine (documented at act_startvm) is an activity.
+
+The enable Glulx acceleration rule is listed first in for starting the virtual machine.
+
+The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
+
+Printing the name of something (documented at act_pn) is an activity. [0]
+
+The standard name printing rule is listed last in the for printing the name rulebook.
+The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
+
+Printing the plural name of something (documented at act_ppn) is an activity. [1]
+
+The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
+The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
+
+Part Two - Phrasebook
+
+Section 1 - Saying Values
+
 To say (val - sayable value of kind K)
 	(documented at ph_say):
 	(- {-say:val:K} -).
+To say (something - number) in words
+	(documented at phs_numwords):
+	(- print (number) say__n=({something}); -).
+To say s
+	(documented at phs_s):
+	(- STextSubstitution(); -).
+
+To showme (val - value)
+	(documented at ph_showme):
+	(- {-show-me:val} -).
+
+Section 2 - Saying Names
+
+To say a (something - object)
+	(documented at phs_a):
+	(- print (a) {something}; -).
+To say an (something - object)
+	(documented at phs_a):
+	(- print (a) {something}; -).
+To say A (something - object)
+	(documented at phs_A):
+	(- CIndefArt({something}); -).
+To say An (something - object)
+	(documented at phs_A):
+	(- CIndefArt({something}); -).
+To say the (something - object)
+	(documented at phs_the):
+	(- print (the) {something}; -).
+To say The (something - object)
+	(documented at phs_The):
+	(- print (The) {something}; -).
+
+Section SR5/1/3 - Saying - Say if and otherwise
+
+To say if (c - condition)
+	(documented at phs_if): (-
+	if (~~({c})) jump {-label:Say};
+		-).
+To say unless (c - condition)
+	(documented at phs_unless): (-
+	if ({c}) jump {-label:Say};
+		-).
+To say otherwise/else if (c - condition)
+	(documented at phs_elseif): (-
+	jump {-label:SayX}; .{-label:Say}{-counter-up:Say}; if (~~({c})) jump {-label:Say};
+		-).
+To say otherwise/else unless (c - condition)
+	(documented at phs_elseunless): (-
+	jump {-label:SayX}; .{-label:Say}{-counter-up:Say}; if ({c}) jump {-label:Say};
+		-).
+To say otherwise
+	(documented at phs_otherwise): (-
+	jump {-label:SayX}; .{-label:Say}{-counter-up:Say};
+		-).
+To say else
+	(documented at phs_otherwise): (-
+	jump {-label:SayX}; .{-label:Say}{-counter-up:Say};
+		-).
+To say end if
+	(documented at phs_endif): (-
+	.{-label:Say}{-counter-up:Say}; .{-label:SayX}{-counter-up:SayX};
+		-).
+To say end unless
+	(documented at phs_endunless): (-
+	.{-label:Say}{-counter-up:Say}; .{-label:SayX}{-counter-up:SayX};
+		-).
+
+Section SR5/1/4 - Saying - Say one of
+
+To say one of -- beginning say_one_of (documented at phs_oneof): (-
+	{-counter-makes-array:say_one_of}
+	{-counter-makes-array:say_one_flag}
+	if ({-counter-storage:say_one_flag}-->{-counter:say_one_flag} == false) {
+		{-counter-storage:say_one_of}-->{-counter:say_one_of} = {-final-segment-marker}({-counter-storage:say_one_of}-->{-counter:say_one_of}, {-segment-count});
+	 	{-counter-storage:say_one_flag}-->{-counter:say_one_flag} = true;
+	}
+	if (say__comp == false) {-counter-storage:say_one_flag}-->{-counter:say_one_flag}{-counter-up:say_one_flag} = false;
+	switch (({-counter-storage:say_one_of}-->{-counter:say_one_of}{-counter-up:say_one_of})%({-segment-count}+1)-1)
+{-open-brace}
+		0: -).
+To say or -- continuing say_one_of (documented at phs_or):
+	(- @nop; {-segment-count}: -).
+To say at random -- ending say_one_of with marker I7_SOO_RAN (documented at phs_random):
+	(- {-close-brace} -).
+To say purely at random -- ending say_one_of with marker I7_SOO_PAR (documented at phs_purelyrandom):
+	(- {-close-brace} -).
+To say then at random -- ending say_one_of with marker I7_SOO_TRAN (documented at phs_thenrandom):
+	(- {-close-brace} -).
+To say then purely at random -- ending say_one_of with marker I7_SOO_TPAR (documented at phs_thenpurelyrandom):
+	(- {-close-brace} -).
+To say sticky random -- ending say_one_of with marker I7_SOO_STI (documented at phs_sticky):
+	(- {-close-brace} -).
+To say as decreasingly likely outcomes -- ending say_one_of with marker I7_SOO_TAP (documented at phs_decreasing):
+	(- {-close-brace} -).
+To say in random order -- ending say_one_of with marker I7_SOO_SHU (documented at phs_order):
+	(- {-close-brace} -).
+To say cycling -- ending say_one_of with marker I7_SOO_CYC (documented at phs_cycling):
+	(- {-close-brace} -).
+To say stopping -- ending say_one_of with marker I7_SOO_STOP (documented at phs_stopping):
+	(- {-close-brace} -).
+
+To say first time -- beginning say_first_time (documented at phs_firsttime):
+	(- {-counter-makes-array:say_first_time}
+	if ((say__comp == false) && (({-counter-storage:say_first_time}-->{-counter:say_first_time}{-counter-up:say_first_time})++ == 0)) {-open-brace}
+		-).
+To say only -- ending say_first_time (documented at phs_firsttime):
+	(- {-close-brace} -).
+
+Section SR5/1/5 - Saying - Paragraph control
+
+To say line break -- running on
+	(documented at phs_linebreak):
+	(- new_line; -).
+To say no line break -- running on
+	(documented at phs_nolinebreak): do nothing.
+To say conditional paragraph break -- running on
+	(documented at phs_condparabreak):
+	(- DivideParagraphPoint(); -).
+To say command clarification break -- running on
+	(documented at phs_clarifbreak):
+	(- CommandClarificationBreak(); -).
+To say paragraph break -- running on
+	(documented at phs_parabreak):
+	(- DivideParagraphPoint(); new_line; -).
+To say run paragraph on -- running on
+	(documented at phs_runparaon):
+	(- RunParagraphOn(); -).
+To say run paragraph on with special look spacing -- running on
+	(documented at phs_runparaonsls):
+	(- SpecialLookSpacingBreak(); -).
+To decide if a paragraph break is pending
+	(documented at ph_breakpending):
+	(- (say__p) -).
+
+Section SR5/1/6 - Saying - Special characters
+
+To say bracket -- running on
+	(documented at phs_bracket):
+	(- print "["; -).
+To say close bracket -- running on
+	(documented at phs_closebracket):
+	(- print "]"; -).
+To say apostrophe/' -- running on
+	(documented at phs_apostrophe):
+	(- print "'"; -).
+To say quotation mark -- running on
+	(documented at phs_quotemark):
+	(- print "~"; -).
+
+Section SR5/1/7 - Saying - Fonts and visual effects
+
+To say bold type -- running on
+	(documented at phs_bold):
+	(- style bold; -).
+To say italic type -- running on
+	(documented at phs_italic):
+	(- style underline; -).
+To say roman type -- running on
+	(documented at phs_roman):
+	(- style roman; -).
+To say fixed letter spacing -- running on
+	(documented at phs_fixedspacing):
+	(- font off; -).
+To say variable letter spacing -- running on
+	(documented at phs_varspacing):
+	(- font on; -).
+
+Section SR5/3/8 - Control phrases - Stop or go
+
+To do nothing (documented at ph_nothing):
+	(- ; -).
+To stop (documented at ph_stop):
+	(- rtrue; -) - in to only.
+
+To decide what K is the default value of (V - name of kind of value of kind K)
+	(documented at ph_defaultvalue):
+	(- {-new:K} -).
 
 Basic Inform ends here.
+
+---- DOCUMENTATION ----
+
+Unlike other extensions, the Standard Rules are compulsorily included
+with every project. They define the phrases, kinds and relations which
+are basic to Inform, and which are described throughout the documentation.
 

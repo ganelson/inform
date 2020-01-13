@@ -248,16 +248,6 @@ of language definitions, this needs to come first.
 =
 Object Compass "compass" has concealed;
 
-@h Language of Play.
-The equivalent of I6's language definition file, though here the idea is
-that a translation should have an inclusion to replace the "Language.i6t"
-segment, which contains the English definition.
-
-=
-{-segment:Language.i6t}
-
-Default LanguageCases 1;
-
 @h VM-Specific Code.
 These sections of code contain different definitions of the same routines,
 and in some cases the same arrays, to handle low-level functions in the

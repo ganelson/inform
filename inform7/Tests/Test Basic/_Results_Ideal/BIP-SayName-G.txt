@@ -1,0 +1,4 @@
+object: planet Mars
+Look! It's planet Mars. Yes, the planet Mars; not just a planet Mars. The planet Mars. A planet Mars? Nope.
+object: asteroid Ceres
+Look! It's asteroid Ceres. Yes, the asteroid Ceres; not just an asteroid Ceres, or an asteroid Ceres. The asteroid Ceres. An asteroid Ceres? Nope. An asteroid Ceres? Seriously not.

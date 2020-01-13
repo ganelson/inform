@@ -190,3 +190,15 @@ routine was added to concentrate lookups of this field in one place.
 	return verbnum;
 ];
 
+
+[ RegardingSingleObject obj;
+	prior_named_list = 1;
+	prior_named_list_gender = -1;
+	prior_named_noun = obj;
+];
+
+[ RegardingNumber n;
+	prior_named_list = n;
+	prior_named_list_gender = -1;
+	prior_named_noun = nothing;
+];

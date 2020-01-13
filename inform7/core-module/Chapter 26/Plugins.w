@@ -272,7 +272,8 @@ void Plugins::Manage::plug_in(wording W) {
 	#endif
 	if (basic_mode) {
 		LOOP_OVER(P, plugin)
-			if (P->set_number == IF_PLUGIN_NAME)
+			if ((P->set_number == IF_PLUGIN_NAME) &&
+				(P->plugin_number != NAMING_PLUGIN_NAME))
 				P->now_plugged_in = FALSE;
 	}
 	#ifndef MULTIMEDIA_MODULE

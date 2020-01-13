@@ -49,11 +49,23 @@ Global statuswin_size = 1;
 Global debug_rules = 0;
 Global debug_rule_nesting;
 Global reason_the_action_failed; ! = I7 "reason the action failed"
+Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
+                                    ! is in this mode
 
 ! [3]
 Global standard_interpreter = 0;
 
 Array LocalParking --> 64;
+
+@h Language of Play.
+The equivalent of I6's language definition file, though here the idea is
+that a translation should have an inclusion to replace the "Language.i6t"
+segment, which contains the English definition.
+
+=
+{-segment:Language.i6t}
+
+Default LanguageCases 1;
 
 
 @h VM-Specific Code.
@@ -172,4 +184,3 @@ allows us to divide the paragraph or not accordingly.
 
 [ DA_Number n; print n; ];
 [ DA_TruthState n; if (n==0) print "false"; else print "true"; ];
-

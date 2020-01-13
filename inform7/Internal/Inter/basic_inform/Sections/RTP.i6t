@@ -282,6 +282,7 @@ it doesn't mean it actually does have.
 			l = KindHierarchy-->(a+1);
 		}
 	}
+	if (ScanPropertyMetadata(K0_kind, off)) jump PermissionFound;
 	if (issue_rtp) RunTimeProblem(RTP_UNPROVIDED, obj, textual);
 	rfalse;
 

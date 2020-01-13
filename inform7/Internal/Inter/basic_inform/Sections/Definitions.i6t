@@ -293,10 +293,11 @@ creation sequence in the Standard Rules.)
 
 =
 Constant STARTING_VIRTUAL_MACHINE_ACT    = 0;
-Constant PRINTING_RESPONSE_ACT           = 1;
+Constant PRINTING_THE_NAME_ACT           = 1;
+Constant PRINTING_THE_PLURAL_NAME_ACT    = 2;
 
-Constant PRINTING_THE_NAME_ACT           = 2;
-Constant PRINTING_THE_PLURAL_NAME_ACT    = 3;
+Constant PRINTING_RESPONSE_ACT           = 3;
+
 Constant PRINTING_A_NUMBER_OF_ACT        = 4;
 Constant PRINTING_ROOM_DESC_DETAILS_ACT  = 5;
 Constant PRINTING_INVENTORY_DETAILS_ACT  = 6;
@@ -343,29 +344,42 @@ Rulebooks are created in a similar way, and again are numbered upwards from
 Constant STARTUP_RB                      = 0;
 Constant SHUTDOWN_RB                     = 1;
 
-Constant TURN_SEQUENCE_RB                = 2;
+! 2, 3, 4 are used by the "Printing the name of something" activity
+! 5, 6, 7 are used by the "Printing the plural name of something" activity
 
-Constant WHEN_PLAY_BEGINS_RB             = 4;
-Constant WHEN_PLAY_ENDS_RB               = 5;
-Constant WHEN_SCENE_BEGINS_RB            = 6;
-Constant WHEN_SCENE_ENDS_RB              = 7;
+Constant TURN_SEQUENCE_RB                = 11;
 
-Constant ACTION_PROCESSING_RB            = 9;
-Constant SETTING_ACTION_VARIABLES_RB     = 10;
-Constant SPECIFIC_ACTION_PROCESSING_RB   = 11;
+! 9 is the Scene changing rules
 
-Constant ACCESSIBILITY_RB                = 13;
-Constant REACHING_INSIDE_RB              = 14;
-Constant REACHING_OUTSIDE_RB             = 15;
-Constant VISIBLE_RB                      = 16;
+Constant WHEN_PLAY_BEGINS_RB             = 13;
+Constant WHEN_PLAY_ENDS_RB               = 14;
+Constant WHEN_SCENE_BEGINS_RB            = 15;
+Constant WHEN_SCENE_ENDS_RB              = 16;
 
-Constant PERSUADE_RB                     = 17;
-Constant UNSUCCESSFUL_ATTEMPT_RB         = 18;
+! 14 is Every turn
 
-Constant AFTER_RB                        = 23;
-Constant REPORT_RB                       = 24;
+Constant ACTION_PROCESSING_RB            = 18;
+Constant SETTING_ACTION_VARIABLES_RB     = 19;
+Constant SPECIFIC_ACTION_PROCESSING_RB   = 20;
 
-Constant MULTIPLE_ACTION_PROCESSING_RB   = 26;
+! 18 is player's action awareness rules
+
+Constant ACCESSIBILITY_RB                = 22;
+Constant REACHING_INSIDE_RB              = 23;
+Constant REACHING_OUTSIDE_RB             = 24;
+Constant VISIBLE_RB                      = 25;
+
+Constant PERSUADE_RB                     = 26;
+Constant UNSUCCESSFUL_ATTEMPT_RB         = 27;
+
+! 25 is before, 26 is instead, 27 is check, 28 is carry out
+
+Constant AFTER_RB                        = 32;
+Constant REPORT_RB                       = 33;
+
+! 31 is does the player mean
+
+Constant MULTIPLE_ACTION_PROCESSING_RB   = 35;
 
 @h Kind IDs.
 These are filled in automatically by NI, and have the same names as are used

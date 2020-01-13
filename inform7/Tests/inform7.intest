@@ -240,6 +240,8 @@
 	step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
 	or: 'unable to run $INTNAME (do you need to make interpreters?)'
 
+	show transcript: $A
+
 	exists: $I
 	or: 'translated successfully but no ideal transcript existed'
 	if: $VM G

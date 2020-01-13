@@ -78,8 +78,6 @@ Global multi_wanted;                ! Number of things needed in multitude
 Global multi_had;                   ! Number of things actually found
 Global multi_context;               ! What token the multi-obj was accepted for
 
-Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
-                                    ! is in this mode
 Global indef_type;                  ! Bit-map holding types of specification
 Global indef_wanted;                ! Number of items wanted (INDEF_ALL_WANTED for all)
 Constant INDEF_ALL_WANTED = 32767;
@@ -541,11 +539,9 @@ Get the input, do OOPS and AGAIN.
     num_words = WordCount(); players_command = 100 + num_words;
     wn = 1; inferred_go = false;
 
-    #Ifdef LanguageToInformese;
     LanguageToInformese();
     ! Re-tokenise:
     VM_Tokenise(buffer,parse);
-    #Endif; ! LanguageToInformese
 
     num_words = WordCount(); players_command = 100 + num_words;
 

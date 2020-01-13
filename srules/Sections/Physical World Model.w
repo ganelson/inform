@@ -163,31 +163,6 @@ Although further kinds will be created later ("vehicle", for instance),
 those are merely design choices, and NI would not be troubled by their
 absence.
 
-@h Naming properties.
-Certain properties used for names are held in common by all objects, of
-whatever kind. "Specification" is special: it isn't compiled, but holds
-text used to annotate the Kinds index. "Variable initial value" is
-likewise special; internally, knowledge about the initial value of a
-global variable is stored as knowledge about this property. It can't be
-used for anything else. "Indefinite appearance text" is also an internal
-property (it holds the text sometimes given in double-quotes immediately
-after an object is created).
-
-=
-An object has a text called specification.
-An object has a text called indefinite appearance text.
-An object has a text called list grouping key.
-
-@ These, on the other hand, are quite genuine:
-
-=
-An object has a text called printed name.
-An object has a text called printed plural name.
-An object has a text called an indefinite article.
-An object can be plural-named or singular-named. An object is usually singular-named.
-An object can be proper-named or improper-named. An object is usually improper-named.
-An object can be ambiguously plural.
-
 @h Rooms.
 We now detail each of the fundamental kinds in turn, in order of their
 declaration, and thus beginning with rooms.
@@ -1036,9 +1011,6 @@ The switched on property translates into I6 as "on".
 The open property translates into I6 as "open".
 The openable property translates into I6 as "openable".
 The privately-named property translates into I6 as "privately_named".
-The plural-named property translates into I6 as "pluralname".
-The ambiguously plural property translates into I6 as "ambigpluralname".
-The proper-named property translates into I6 as "proper".
 The pushable between rooms property translates into I6 as "pushable".
 The scenery property translates into I6 as "scenery".
 The fixed in place property translates into I6 as "static".
@@ -1052,13 +1024,10 @@ The list grouping key property translates into I6 as "list_together".
 And see also "other side", which is translated above for timing reasons.
 
 =
-The indefinite article property translates into I6 as "article".
 The carrying capacity property translates into I6 as "capacity".
 The description property translates into I6 as "description".
 The initial appearance property translates into I6 as "initial".
 The map region property translates into I6 as "map_region".
-The printed plural name property translates into I6 as "plural".
-The printed name property translates into I6 as "short_name".
 The matching key property translates into I6 as "with_key".
 
 @ =

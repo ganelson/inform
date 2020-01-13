@@ -39,244 +39,11 @@ of a misread phrase.
 =
 Part SR5 - Phrasebook
 
-Section SR5/1/1 - Saying - Values
-
-@ Three little grace-notes for printing values: we can have numbers or
-times of day "in words", rather than given as digits, and we can produce
-an optional "s" where a number not equal to 1 has recently been printed.
-This is how "You see [X] balloon[s]." is handled: the printing of the value
-$X$ sets the I6 variable |say__n| as a side-effect (see definition above) and
-the routine handling "[s]" looks at this variable to see whether to print
-an "s" or not.
-
-=
-To say (something - number) in words
-	(documented at phs_numwords):
-	(- print (number) say__n=({something}); -).
-To say s
-	(documented at phs_s):
-	(- STextSubstitution(); -).
-
 Section SR5/1/1a - Saying - Time Values (for interactive fiction language element only)
 
 To say (something - time) in words
 	(documented at phs_timewords):
 	(- print (PrintTimeOfDayEnglish) {something}; -).
-
-@ Now we come to the fourth and last of the "say (something - $K$)"
-definitions in the SR, followed by six close variations. Note that say phrases
-are case sensitive on the first word, so that "to say a something" and "to
-say A something" are different.
-
-A curiosity of the original I6 design, arising I think mostly from the need to
-save property memory in "Curses" (1993), the work of IF for which Inform 1
-had been created, is that it lacks the |print (A) ...| syntax to match the
-other forms. The omission is made good by using a routine in the I6 library
-instead.
-
-=
-Section SR5/1/2 - Saying - Names with articles
-
-To say a (something - object)
-	(documented at phs_a):
-	(- print (a) {something}; -).
-To say an (something - object)
-	(documented at phs_a):
-	(- print (a) {something}; -).
-To say A (something - object)
-	(documented at phs_A):
-	(- CIndefArt({something}); -).
-To say An (something - object)
-	(documented at phs_A):
-	(- CIndefArt({something}); -).
-To say the (something - object)
-	(documented at phs_the):
-	(- print (the) {something}; -).
-To say The (something - object)
-	(documented at phs_The):
-	(- print (The) {something}; -).
-
-@ Now for "[if ...]", which expands into a rather assembly-language-like
-usage of |jump| statements, I6's form of goto. For instance, the text
-"[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
-thus:
-
-	|if (~~(score == 10)) jump L_Say3;|
-	|    ...|
-	|jump L_SayX2; .L_Say3;|
-	|    ...|
-	|.L_Say4; .L_SayX2;|
-
-Though labels actually have local namespaces in I6 routines, we use
-globally unique labels throughout the whole program: compiling the same
-phrase again would involve say labels 5 and 6 and "say exit" label 3.
-This example text demonstrates the reason we |jump| about, rather than
-making use of |if... else...| and bracing groups of statements: it is legal
-in I7 either to conclude with or to omit the "[end if]". (If statements
-in I6 compile to jump instructions in any event, and on our virtual
-machines there is no speed penalty for branches.) We also need the same
-definitions to accommodate what amounts to a switch statement. The trickier
-text "[if the score is 10]It's ten![otherwise if the score is 8]It's
-eight?[otherwise]It's not ten, alas." comes out as:
-
-	|if (~~(score == 10)) jump L_Say5;|
-	|    ...|
-	|jump L_SayX3; .L_Say5; if (~~(score == 8)) jump L_Say6;|
-	|    ...|
-	|jump L_SayX3; .L_Say6;|
-	|    ...|
-	|.L_Say7; .L_SayX3;|
-
-In either form of the construct, control passes into at most one of the
-pieces of text. The terminal labels (the two on the final line) are
-automatically generated; often -- when there is a simple "otherwise" or
-"end if" to conclude the construct -- they are not needed, but labels are
-quick to process in I6, are soon discarded from I6's memory when not needed
-any more, and compile no code.
-
-We assume in each case that the next say label number to be free is always
-the start of the next block, and that the next say exit label number is always
-the one at the end of the current construct. This is true because NI does
-not allow "say if" to be nested.
-
-=
-Section SR5/1/3 - Saying - Say if and otherwise
-
-To say if (c - condition)
-	(documented at phs_if): (-
-	if (~~({c})) jump {-label:Say};
-		-).
-To say unless (c - condition)
-	(documented at phs_unless): (-
-	if ({c}) jump {-label:Say};
-		-).
-To say otherwise/else if (c - condition)
-	(documented at phs_elseif): (-
-	jump {-label:SayX}; .{-label:Say}{-counter-up:Say}; if (~~({c})) jump {-label:Say};
-		-).
-To say otherwise/else unless (c - condition)
-	(documented at phs_elseunless): (-
-	jump {-label:SayX}; .{-label:Say}{-counter-up:Say}; if ({c}) jump {-label:Say};
-		-).
-To say otherwise
-	(documented at phs_otherwise): (-
-	jump {-label:SayX}; .{-label:Say}{-counter-up:Say};
-		-).
-To say else
-	(documented at phs_otherwise): (-
-	jump {-label:SayX}; .{-label:Say}{-counter-up:Say};
-		-).
-To say end if
-	(documented at phs_endif): (-
-	.{-label:Say}{-counter-up:Say}; .{-label:SayX}{-counter-up:SayX};
-		-).
-To say end unless
-	(documented at phs_endunless): (-
-	.{-label:Say}{-counter-up:Say}; .{-label:SayX}{-counter-up:SayX};
-		-).
-
-@ The other control structure: the random variations form of saying. This
-part of the Standard Rules was in effect contributed by the community: it
-reimplements a form of Jon Ingold's former extension Text Variations, which
-itself built on code going back to the days of I6.
-
-The head phrase here has one of the most complicated definitions in the SR,
-but is actually documented fairly explicitly in the Extensions chapter
-of "Writing with Inform", so we won't repeat all that here. Essentially
-it uses its own allocated cell of storage in an array to remember a state
-between uses, and compiles as a switch statement based on the current state.
-
-=
-Section SR5/1/4 - Saying - Say one of
-
-To say one of -- beginning say_one_of (documented at phs_oneof): (-
-	{-counter-makes-array:say_one_of}
-	{-counter-makes-array:say_one_flag}
-	if ({-counter-storage:say_one_flag}-->{-counter:say_one_flag} == false) {
-		{-counter-storage:say_one_of}-->{-counter:say_one_of} = {-final-segment-marker}({-counter-storage:say_one_of}-->{-counter:say_one_of}, {-segment-count});
-	 	{-counter-storage:say_one_flag}-->{-counter:say_one_flag} = true;
-	}
-	if (say__comp == false) {-counter-storage:say_one_flag}-->{-counter:say_one_flag}{-counter-up:say_one_flag} = false;
-	switch (({-counter-storage:say_one_of}-->{-counter:say_one_of}{-counter-up:say_one_of})%({-segment-count}+1)-1)
-{-open-brace}
-		0: -).
-To say or -- continuing say_one_of (documented at phs_or):
-	(- @nop; {-segment-count}: -).
-To say at random -- ending say_one_of with marker I7_SOO_RAN (documented at phs_random):
-	(- {-close-brace} -).
-To say purely at random -- ending say_one_of with marker I7_SOO_PAR (documented at phs_purelyrandom):
-	(- {-close-brace} -).
-To say then at random -- ending say_one_of with marker I7_SOO_TRAN (documented at phs_thenrandom):
-	(- {-close-brace} -).
-To say then purely at random -- ending say_one_of with marker I7_SOO_TPAR (documented at phs_thenpurelyrandom):
-	(- {-close-brace} -).
-To say sticky random -- ending say_one_of with marker I7_SOO_STI (documented at phs_sticky):
-	(- {-close-brace} -).
-To say as decreasingly likely outcomes -- ending say_one_of with marker I7_SOO_TAP (documented at phs_decreasing):
-	(- {-close-brace} -).
-To say in random order -- ending say_one_of with marker I7_SOO_SHU (documented at phs_order):
-	(- {-close-brace} -).
-To say cycling -- ending say_one_of with marker I7_SOO_CYC (documented at phs_cycling):
-	(- {-close-brace} -).
-To say stopping -- ending say_one_of with marker I7_SOO_STOP (documented at phs_stopping):
-	(- {-close-brace} -).
-
-To say first time -- beginning say_first_time (documented at phs_firsttime):
-	(- {-counter-makes-array:say_first_time}
-	if ((say__comp == false) && (({-counter-storage:say_first_time}-->{-counter:say_first_time}{-counter-up:say_first_time})++ == 0)) {-open-brace}
-		-).
-To say only -- ending say_first_time (documented at phs_firsttime):
-	(- {-close-brace} -).
-
-@ For an explanation of the paragraph breaking algorithm, see the template
-file "Printing.i6t".
-
-=
-Section SR5/1/5 - Saying - Paragraph control
-
-To say line break -- running on
-	(documented at phs_linebreak):
-	(- new_line; -).
-To say no line break -- running on
-	(documented at phs_nolinebreak): do nothing.
-To say conditional paragraph break -- running on
-	(documented at phs_condparabreak):
-	(- DivideParagraphPoint(); -).
-To say command clarification break -- running on
-	(documented at phs_clarifbreak):
-	(- CommandClarificationBreak(); -).
-To say paragraph break -- running on
-	(documented at phs_parabreak):
-	(- DivideParagraphPoint(); new_line; -).
-To say run paragraph on -- running on
-	(documented at phs_runparaon):
-	(- RunParagraphOn(); -).
-To say run paragraph on with special look spacing -- running on
-	(documented at phs_runparaonsls):
-	(- SpecialLookSpacingBreak(); -).
-To decide if a paragraph break is pending
-	(documented at ph_breakpending):
-	(- (say__p) -).
-
-@ Now some text substitutions which are the equivalent of escape characters.
-(In double-quoted I6 text, the notation for a literal quotation mark is a
-tilde |~|.)
-
-=
-Section SR5/1/6 - Saying - Special characters
-
-To say bracket -- running on
-	(documented at phs_bracket):
-	(- print "["; -).
-To say close bracket -- running on
-	(documented at phs_closebracket):
-	(- print "]"; -).
-To say apostrophe/' -- running on
-	(documented at phs_apostrophe):
-	(- print "'"; -).
-To say quotation mark -- running on
-	(documented at phs_quotemark):
-	(- print "~"; -).
 
 @ Now some visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
@@ -284,21 +51,6 @@ hopes: that's partly up to the virtual machine, unfortunately.
 =
 Section SR5/1/7 - Saying - Fonts and visual effects
 
-To say bold type -- running on
-	(documented at phs_bold):
-	(- style bold; -).
-To say italic type -- running on
-	(documented at phs_italic):
-	(- style underline; -).
-To say roman type -- running on
-	(documented at phs_roman):
-	(- style roman; -).
-To say fixed letter spacing -- running on
-	(documented at phs_fixedspacing):
-	(- font off; -).
-To say variable letter spacing -- running on
-	(documented at phs_varspacing):
-	(- font on; -).
 To display the boxed quotation (Q - text)
 	(documented at ph_boxed):
 	(- DisplayBoxedQuotation({-box-quotation-text:Q}); -).
@@ -1434,14 +1186,6 @@ To decide what list of K is the filter to (criterion - description of Ks) of
 			add the item to the filtered list;
 	decide on the filtered list.
 
-To showme (V - value)
-	(documented at ph_showme):
-	(- {-show-me:V} -).
-
-To decide what K is the default value of (V - name of kind of value of kind K)
-	(documented at ph_defaultvalue):
-	(- {-new:K} -).
-
 @h Using external resources.
 The following all refer to "FileIO.i6t" and work only on Glulx.
 
@@ -1653,20 +1397,6 @@ a value at all, so an "in... only" clause is not needed.
 To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
-
-@ "Do nothing" is useful mainly when other syntax has backed us into
-something clumsy, but it can't be dispensed with. (In the examples, it used
-to be used when conditions were awkward to negate -- if condition, do nothing,
-otherwise blah blah blah -- but the creation of "unless" made it possible
-to remove most of the "do nothing"s.)
-
-=
-Section SR5/3/8 - Control phrases - Stop or go
-
-To do nothing (documented at ph_nothing):
-	(- ; -).
-To stop (documented at ph_stop):
-	(- rtrue; -) - in to only.
 
 @h Actions, activities and rules.
 We begin with the firing off of new actions. The current action runs silently

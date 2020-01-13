@@ -813,6 +813,7 @@ linearly with the size of the source text, even though $N$ does.
 		LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 			inter_symbol *owner_name = Inter::SymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
 			if (owner_name == object_kind_symbol) {
+				WRITE("K0_kind "); pos++;
 				for (int k=0; k<no_kind_frames; k++) {
 					inter_symbol *kind_name = kinds_in_source_order[k];
 					if (Inter::Kind::super(kind_name) == object_kind_symbol) {

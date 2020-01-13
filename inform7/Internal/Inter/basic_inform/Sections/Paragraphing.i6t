@@ -229,3 +229,85 @@ below.
 	DivideParagraphPoint(13);
 	say__pc = 0;
 ];
+
+@h Say Number.
+The global variable |say__n| is set to the numerical value of any quantity
+printed, and this is used for the text substitution "[s]", so that
+"You have been awake for [turn count] turn[s]." will expand correctly.
+
+=
+[ STextSubstitution;
+	if (say__n ~= 1) print "s";
+];
+
+@h Print English Number.
+Another traditional name, this: in fact it prints the number as text in
+whatever is the current language of play.
+
+=
+[ EnglishNumber n; LanguageNumber(n); ];
+
+
+[ LanguageNumber n f;
+    if (n == 0)    { print "zero"; rfalse; }
+    if (n < 0)     { print "minus "; n = -n; }
+#Iftrue (WORDSIZE == 4);
+    if (n >= 1000000000) {
+        if (f == 1) print ", ";
+    	print (LanguageNumber) n/1000000000, " billion"; n = n%1000000000; f = 1;
+    }
+    if (n >= 1000000) {
+        if (f == 1) print ", ";
+    	print (LanguageNumber) n/1000000, " million"; n = n%1000000; f = 1;
+    }
+#Endif;
+    if (n >= 1000) {
+        if (f == 1) print ", ";
+    	print (LanguageNumber) n/1000, " thousand"; n = n%1000; f = 1;
+    }
+    if (n >= 100)  {
+        if (f == 1) print ", ";
+        print (LanguageNumber) n/100, " hundred"; n = n%100; f = 1;
+    }
+    if (n == 0) rfalse;
+    if (TEMPLATE_CONFIGURATION_BITMAP & DIALECT_US_TCBIT) {
+	    if (f == 1) print " ";
+    } else {
+	    if (f == 1) print " and ";
+    }
+    if ((n >= 20) && (n<100)) {
+		switch (n/10) {
+			2:  print "twenty";
+			3:  print "thirty";
+			4:  print "forty";
+			5:  print "fifty";
+			6:  print "sixty";
+			7:  print "seventy";
+			8:  print "eighty";
+			9:  print "ninety";
+		}
+		if (n%10 ~= 0) print "-", (LanguageNumber) n%10;
+    } else {
+		switch (n) {
+		  1:    print "one";
+		  2:    print "two";
+		  3:    print "three";
+		  4:    print "four";
+		  5:    print "five";
+		  6:    print "six";
+		  7:    print "seven";
+		  8:    print "eight";
+		  9:    print "nine";
+		  10:   print "ten";
+		  11:   print "eleven";
+		  12:   print "twelve";
+		  13:   print "thirteen";
+		  14:   print "fourteen";
+		  15:   print "fifteen";
+		  16:   print "sixteen";
+		  17:   print "seventeen";
+		  18:   print "eighteen";
+		  19:   print "nineteen";
+		}
+	}
+];

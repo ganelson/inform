@@ -7,6 +7,7 @@ Web Syntax Version: 2
 
 Sections
 	Main
+	Activities
 	BlockValues
 	Char
 	Combinations

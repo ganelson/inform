@@ -29,13 +29,14 @@ the virtual machine is starting up. We need this hook, really, for the Glulx
 VM, which requires various styles to be created.
 
 =
-Part SR3a - Basic Activities
+Part SR3 - Activities (for interactive fiction language element only)
 
-Starting the virtual machine (documented at act_startvm) is an activity. [26]
+Section SR3/1 - Definitions
 
-The enable Glulx acceleration rule is listed first in for starting the virtual machine.
-
-The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
+Before printing the name of a thing (called the item being printed)
+	(this is the make named things mentioned rule):
+	if expanding text for comparison purposes, continue the activity;
+	now the item being printed is mentioned.
 
 @h Issuing Responses.
 
@@ -48,29 +49,6 @@ response text.
 
 The standard issuing the response text rule translates into I6 as
 "STANDARD_RESPONSE_ISSUING_R".
-
-@ =
-Part SR3 - Activities (for interactive fiction language element only)
-
-Section SR3/1 - Definitions
-
-Printing the name of something (documented at act_pn) is an activity. [0]
-
-Before printing the name of a thing (called the item being printed)
-	(this is the make named things mentioned rule):
-	if expanding text for comparison purposes, continue the activity;
-	now the item being printed is mentioned.
-
-The standard name printing rule is listed last in the for printing the name rulebook.
-The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
-
-Printing the plural name of something (documented at act_ppn) is an activity. [1]
-
-Rule for printing the plural name of something (called the item) (this is the standard
-	printing the plural name rule):
-	say the printed plural name of the item.
-The standard printing the plural name rule is listed last in the for printing
-the plural name rulebook.
 
 Printing a number of something (documented at act_pan) is an activity. [2]
 
