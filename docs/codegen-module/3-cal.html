@@ -21,12 +21,30 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::prepare</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">box_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">printing_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::quartet_visitor</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">CONSTANT_IST</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::quartet_visitor</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"thedark"</span><span class="plain">)) ||</span>
+            <span class="plain">(</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformLibrary"</span><span class="plain">)) ||</span>
+            <span class="plain">(</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformParser"</span><span class="plain">)) ||</span>
+            <span class="plain">(</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Compass"</span><span class="plain">)))</span>
+            <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::quartet_present</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::CL::prepare is used in 3/cg (<a href="3-cg.html#SP8_1">&#167;8.1</a>).</p>
+
+<p class="endnote">The function CodeGen::CL::quartet_visitor appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::CL::quartet_present is used in 3/iap (<a href="3-iap.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -113,15 +131,6 @@ is 20. We instead compile this as
 
 <pre class="display">
         <span class="plain">Array X --&gt; 1 20;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::quartet_present</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">the_quartet_found</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>
@@ -148,22 +157,7 @@ is 20. We instead compile this as
             <span class="plain">(</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cap_short_name"</span><span class="plain">)))</span>
             <span class="identifier">ifndef_me</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"thedark"</span><span class="plain">)) {</span>
-            <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformLibrary"</span><span class="plain">)) {</span>
-            <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"InformParser"</span><span class="plain">)) {</span>
-            <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Compass"</span><span class="plain">)) {</span>
-            <span class="identifier">the_quartet_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">OBJECT_IANN</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release"</span><span class="plain">)) {</span>
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">];</span>
@@ -249,10 +243,11 @@ is 20. We instead compile this as
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_PRODUCT_LIST</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_DIFFERENCE_LIST</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_QUOTIENT_LIST</span><span class="plain">: {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; 1) {</span>
-                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Con %S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
-                    <span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                    <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTANT_DEPTH_CALCULATION</span><span class="plain">,</span>
+                        <span class="string">"Con %S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+                    <span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::basic_constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">));</span>
                 <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
@@ -275,8 +270,9 @@ is 20. We instead compile this as
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTANT_DIRECT</span><span class="plain">: {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; 1) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Con %S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; 1) </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTANT_DEPTH_CALCULATION</span><span class="plain">,</span>
+                    <span class="string">"Con %S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
                 <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::basic_constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">));</span>
                 <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifndef_me</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#ifndef %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">con_name</span><span class="plain">));</span>
@@ -293,14 +289,14 @@ is 20. We instead compile this as
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">trace</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="identifier">LOG_INDENT</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth_inner</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">trace</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">d</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::constant_depth_inner</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTANT_DEPTH_CALCULATION</span><span class="plain">, </span><span class="string">"%S has depth %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">d</span><span class="plain">);</span>
         <span class="identifier">LOG_OUTDENT</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth_inner</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">trace</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth_inner</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
         <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::definition</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">ID_IFLD</span><span class="plain">] != </span><span class="identifier">CONSTANT_IST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
@@ -311,7 +307,7 @@ is 20. We instead compile this as
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">alias</span><span class="plain"> =</span>
                     <span class="identifier">Inter::SymbolsTables::symbol_from_data_pair_and_table</span><span class="plain">(</span>
                         <span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="identifier">package</span><span class="plain">));</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">alias</span><span class="plain">, </span><span class="identifier">trace</span><span class="plain">) + 1;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">alias</span><span class="plain">) + 1;</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain"> 1;</span>
         <span class="plain">}</span>
@@ -327,7 +323,7 @@ is 20. We instead compile this as
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">alias</span><span class="plain"> =</span>
                         <span class="identifier">Inter::SymbolsTables::symbol_from_data_pair_and_table</span><span class="plain">(</span>
                             <span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="identifier">package</span><span class="plain">));</span>
-                    <span class="identifier">total</span><span class="plain"> += </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">alias</span><span class="plain">, </span><span class="identifier">trace</span><span class="plain">);</span>
+                    <span class="identifier">total</span><span class="plain"> += </span><span class="functiontext">CodeGen::CL::constant_depth</span><span class="plain">(</span><span class="identifier">alias</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">++;</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain"> 1 + </span><span class="identifier">total</span><span class="plain">;</span>
@@ -461,8 +457,6 @@ is 20. We instead compile this as
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function CodeGen::CL::quartet_present is used in 3/iap (<a href="3-iap.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function CodeGen::CL::constant is used in 3/fc (<a href="3-fc.html#SP1">&#167;1</a>).</p>
 

@@ -20,52 +20,52 @@ for "real" users, but it's probably worth keeping just the same.
 
 
 <pre class="display">
-    <span class="plain">#Ifdef DEBUG;</span>
-    <span class="plain">[ GlkListSub id val;</span>
-        <span class="plain">id = glk_window_iterate(0, gg_arguments);</span>
-        <span class="plain">while (id) {</span>
-            <span class="plain">print "Window ", id, " (", gg_arguments--&gt;0, "): ";</span>
-            <span class="plain">val = glk_window_get_type(id);</span>
-            <span class="plain">switch (val) {</span>
-            <span class="plain">1: print "pair";</span>
-            <span class="plain">2: print "blank";</span>
-            <span class="plain">3: print "textbuffer";</span>
-            <span class="plain">4: print "textgrid";</span>
-            <span class="plain">5: print "graphics";</span>
-            <span class="plain">default: print "unknown";</span>
+    <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">GlkListSub</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_window_iterate</span><span class="plain">(0, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"Window "</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">--&gt;0, </span><span class="string">"): "</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">glk_window_get_type</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) {</span>
+            <span class="constant">1</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"pair"</span><span class="plain">;</span>
+            <span class="constant">2</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"blank"</span><span class="plain">;</span>
+            <span class="constant">3</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"textbuffer"</span><span class="plain">;</span>
+            <span class="constant">4</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"textgrid"</span><span class="plain">;</span>
+            <span class="constant">5</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"graphics"</span><span class="plain">;</span>
+            <span class="reserved">default</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"unknown"</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">val = glk_window_get_parent(id);</span>
-            <span class="plain">if (val) print ", parent is window ", val;</span>
-            <span class="plain">else     print ", no parent (root)";</span>
-            <span class="plain">val = glk_window_get_stream(id);</span>
-            <span class="plain">print ", stream ", val;</span>
-            <span class="plain">val = glk_window_get_echo_stream(id);</span>
-            <span class="plain">if (val) print ", echo stream ", val;</span>
-            <span class="plain">print "^";</span>
-            <span class="plain">id = glk_window_iterate(id, gg_arguments);</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">glk_window_get_parent</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", parent is window "</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain">     </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", no parent (root)"</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">glk_window_get_stream</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">", stream "</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">;</span>
+            <span class="identifier">val</span><span class="plain"> = </span><span class="identifier">glk_window_get_echo_stream</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", echo stream "</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
+            <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_window_iterate</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">id = glk_stream_iterate(0, gg_arguments);</span>
-        <span class="plain">while (id) {</span>
-            <span class="plain">print "Stream ", id, " (", gg_arguments--&gt;0, ")^";</span>
-            <span class="plain">id = glk_stream_iterate(id, gg_arguments);</span>
+        <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_stream_iterate</span><span class="plain">(0, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"Stream "</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">--&gt;0, </span><span class="string">")^"</span><span class="plain">;</span>
+            <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_stream_iterate</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">id = glk_fileref_iterate(0, gg_arguments);</span>
-        <span class="plain">while (id) {</span>
-            <span class="plain">print "Fileref ", id, " (", gg_arguments--&gt;0, ")^";</span>
-            <span class="plain">id = glk_fileref_iterate(id, gg_arguments);</span>
+        <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_fileref_iterate</span><span class="plain">(0, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"Fileref "</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">--&gt;0, </span><span class="string">")^"</span><span class="plain">;</span>
+            <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_fileref_iterate</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (glk_gestalt(gestalt_Sound, 0)) {</span>
-            <span class="plain">id = glk_schannel_iterate(0, gg_arguments);</span>
-            <span class="plain">while (id) {</span>
-                <span class="plain">print "Soundchannel ", id, " (", gg_arguments--&gt;0, ")^";</span>
-                <span class="plain">id = glk_schannel_iterate(id, gg_arguments);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">glk_gestalt</span><span class="plain">(</span><span class="identifier">gestalt_Sound</span><span class="plain">, </span><span class="constant">0</span><span class="plain">)) {</span>
+            <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_schannel_iterate</span><span class="plain">(0, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
+                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Soundchannel "</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">--&gt;0, </span><span class="string">")^"</span><span class="plain">;</span>
+                <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">glk_schannel_iterate</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 
-    <span class="plain">Verb meta 'glklist'</span>
-        <span class="plain">*                                           -&gt; GlkList;</span>
-    <span class="plain">#Endif;</span>
+    <span class="identifier">Verb</span><span class="plain"> </span><span class="identifier">meta</span><span class="plain"> </span><span class="character">'glklist'</span>
+        <span class="plain">*                                           </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">GlkList</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -77,15 +77,15 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 
 <pre class="display">
-    <span class="plain">[ VM_Undo result_code;</span>
-        <span class="plain">@restoreundo result_code;</span>
-        <span class="plain">return (~~result_code);</span>
+    <span class="plain">[ </span><span class="identifier">VM_Undo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">restoreundo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> (~~</span><span class="identifier">result_code</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ VM_Save_Undo result_code;</span>
-        <span class="plain">@saveundo result_code;</span>
-        <span class="plain">if (result_code == -1) { GGRecoverObjects(); return 2; }</span>
-        <span class="plain">return (~~result_code);</span>
+    <span class="plain">[ </span><span class="identifier">VM_Save_Undo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">saveundo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result_code</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) { </span><span class="identifier">GGRecoverObjects</span><span class="plain">(); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; }</span>
+        <span class="reserved">return</span><span class="plain"> (~~</span><span class="identifier">result_code</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -95,11 +95,11 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 
 <pre class="display">
-    <span class="plain">[ QUIT_THE_GAME_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if ((actor == player) &amp;&amp; (untouchable_silence == false))</span>
-            <span class="plain">QUIT_THE_GAME_RM('A');</span>
-        <span class="plain">if (YesOrNo()~=0) quit;</span>
+    <span class="plain">[ </span><span class="identifier">QUIT_THE_GAME_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) &amp;&amp; (</span><span class="identifier">untouchable_silence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">))</span>
+            <span class="identifier">QUIT_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">YesOrNo</span><span class="plain">()~=0) </span><span class="reserved">quit</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -109,12 +109,12 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 
 <pre class="display">
-    <span class="plain">[ RESTART_THE_GAME_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">RESTART_THE_GAME_RM('A');</span>
-        <span class="plain">if (YesOrNo()~=0) {</span>
-            <span class="plain">@restart;</span>
-            <span class="plain">RESTART_THE_GAME_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">RESTART_THE_GAME_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">RESTART_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">YesOrNo</span><span class="plain">()~=0) {</span>
+            <span class="plain">@</span><span class="identifier">restart</span><span class="plain">;</span>
+            <span class="identifier">RESTART_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -125,18 +125,18 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 
 <pre class="display">
-    <span class="plain">[ RESTORE_THE_GAME_R res fref;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">fref = glk_fileref_create_by_prompt($01, $02, 0);</span>
-        <span class="plain">if (fref == 0) jump RFailed;</span>
-        <span class="plain">gg_savestr = glk_stream_open_file(fref, $02, GG_SAVESTR_ROCK);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
-        <span class="plain">if (gg_savestr == 0) jump RFailed;</span>
-        <span class="plain">@restore gg_savestr res;</span>
-        <span class="plain">glk_stream_close(gg_savestr, 0);</span>
-        <span class="plain">gg_savestr = 0;</span>
-        <span class="plain">.RFailed;</span>
-        <span class="plain">RESTORE_THE_GAME_RM('A'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">RESTORE_THE_GAME_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_prompt</span><span class="plain">(</span><span class="constant">$01</span><span class="plain">, </span><span class="constant">$02</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fref</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">RFailed</span><span class="plain">;</span>
+        <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="constant">$02</span><span class="plain">, </span><span class="identifier">GG_SAVESTR_ROCK</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_savestr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">RFailed</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">restore</span><span class="plain"> </span><span class="identifier">gg_savestr</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">RFailed</span><span class="plain">;</span>
+        <span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -146,28 +146,28 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 
 <pre class="display">
-    <span class="plain">[ SAVE_THE_GAME_R res fref;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">fref = glk_fileref_create_by_prompt($01, $01, 0);</span>
-        <span class="plain">if (fref == 0) jump SFailed;</span>
-        <span class="plain">gg_savestr = glk_stream_open_file(fref, $01, GG_SAVESTR_ROCK);</span>
-        <span class="plain">glk_fileref_destroy(fref);</span>
-        <span class="plain">if (gg_savestr == 0) jump SFailed;</span>
-        <span class="plain">@save gg_savestr res;</span>
-        <span class="plain">if (res == -1) {</span>
-            <span class="plain">! The player actually just typed "restore". We first have to recover</span>
-            <span class="plain">! all the Glk objects; the values in our global variables are all wrong.</span>
-            <span class="plain">GGRecoverObjects();</span>
-            <span class="plain">glk_stream_close(gg_savestr, 0); ! stream_close</span>
-            <span class="plain">gg_savestr = 0;</span>
-            <span class="plain">RESTORE_THE_GAME_RM('B'); new_line;</span>
-            <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">SAVE_THE_GAME_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">fref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_prompt</span><span class="plain">(</span><span class="constant">$01</span><span class="plain">, </span><span class="constant">$01</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fref</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">SFailed</span><span class="plain">;</span>
+        <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="constant">$01</span><span class="plain">, </span><span class="identifier">GG_SAVESTR_ROCK</span><span class="plain">);</span>
+        <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_savestr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">SFailed</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">save</span><span class="plain"> </span><span class="identifier">gg_savestr</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) {</span>
+            <span class="comment">! The player actually just typed "restore". We first have to recover</span>
+            <span class="comment">! all the Glk objects; the values in our global variables are all wrong.</span>
+            <span class="identifier">GGRecoverObjects</span><span class="plain">();</span>
+            <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+            <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+            <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">glk_stream_close(gg_savestr, 0); ! stream_close</span>
-        <span class="plain">gg_savestr = 0;</span>
-        <span class="plain">if (res == 0) { SAVE_THE_GAME_RM('B'); new_line; rtrue; }</span>
-        <span class="plain">.SFailed;</span>
-        <span class="plain">SAVE_THE_GAME_RM('A'); new_line;</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+        <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SAVE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="plain">.</span><span class="identifier">SFailed</span><span class="plain">;</span>
+        <span class="identifier">SAVE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -188,11 +188,11 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ VERIFY_THE_STORY_FILE_R res;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">@verify res;</span>
-        <span class="plain">if (res == 0) { VERIFY_THE_STORY_FILE_RM('A'); new_line; rtrue; }</span>
-        <span class="plain">VERIFY_THE_STORY_FILE_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">VERIFY_THE_STORY_FILE_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">verify</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">VERIFY_THE_STORY_FILE_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="identifier">VERIFY_THE_STORY_FILE_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -202,22 +202,22 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_TRANSCRIPT_ON_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (gg_scriptstr ~= 0) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }</span>
-        <span class="plain">if (gg_scriptfref == 0) {</span>
-            <span class="plain">gg_scriptfref = glk_fileref_create_by_prompt($102, $05, GG_SCRIPTFREF_ROCK);</span>
-            <span class="plain">if (gg_scriptfref == 0) jump S1Failed;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_ON_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptstr</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptfref</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">gg_scriptfref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_prompt</span><span class="plain">(</span><span class="constant">$102</span><span class="plain">, </span><span class="constant">$05</span><span class="plain">, </span><span class="identifier">GG_SCRIPTFREF_ROCK</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptfref</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">S1Failed</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">! stream_open_file</span>
-        <span class="plain">gg_scriptstr = glk_stream_open_file(gg_scriptfref, $05, GG_SCRIPTSTR_ROCK);</span>
-        <span class="plain">if (gg_scriptstr == 0) jump S1Failed;</span>
-        <span class="plain">glk_window_set_echo_stream(gg_mainwin, gg_scriptstr);</span>
-        <span class="plain">SWITCH_TRANSCRIPT_ON_RM('B'); new_line;</span>
-        <span class="plain">VersionSub();</span>
-        <span class="plain">return;</span>
-        <span class="plain">.S1Failed;</span>
-        <span class="plain">SWITCH_TRANSCRIPT_ON_RM('C'); new_line;</span>
+        <span class="comment">! stream_open_file</span>
+        <span class="identifier">gg_scriptstr</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">gg_scriptfref</span><span class="plain">, </span><span class="constant">$05</span><span class="plain">, </span><span class="identifier">GG_SCRIPTSTR_ROCK</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptstr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">S1Failed</span><span class="plain">;</span>
+        <span class="identifier">glk_window_set_echo_stream</span><span class="plain">(</span><span class="identifier">gg_mainwin</span><span class="plain">, </span><span class="identifier">gg_scriptstr</span><span class="plain">);</span>
+        <span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="identifier">VersionSub</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">S1Failed</span><span class="plain">;</span>
+        <span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -227,12 +227,12 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_TRANSCRIPT_OFF_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (gg_scriptstr == 0) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }</span>
-        <span class="plain">SWITCH_TRANSCRIPT_OFF_RM('B'); new_line;</span>
-        <span class="plain">glk_stream_close(gg_scriptstr, 0); ! stream_close</span>
-        <span class="plain">gg_scriptstr = 0;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptstr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_scriptstr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+        <span class="identifier">gg_scriptstr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -242,19 +242,19 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ ANNOUNCE_STORY_FILE_VERSION_R ix;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">Banner();</span>
-        <span class="plain">print "Identification number: ";</span>
-        <span class="plain">for (ix=6: ix &lt;= UUID_ARRAY-&gt;0: ix++) print (char) UUID_ARRAY-&gt;ix;</span>
-        <span class="plain">print "^";</span>
-        <span class="plain">@gestalt 1 0 ix;</span>
-        <span class="plain">print "Interpreter version ", ix / $10000, ".", (ix &amp; $FF00) / $100,</span>
-        <span class="plain">".", ix &amp; $FF, " / ";</span>
-        <span class="plain">@gestalt 0 0 ix;</span>
-        <span class="plain">print "VM ", ix / $10000, ".", (ix &amp; $FF00) / $100, ".", ix &amp; $FF, "^";</span>
-        <span class="plain">ShowExtensionVersions();</span>
-        <span class="plain">say__p = 1;</span>
+    <span class="plain">[ </span><span class="identifier">ANNOUNCE_STORY_FILE_VERSION_R</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">Banner</span><span class="plain">();</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"Identification number: "</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=6: </span><span class="identifier">ix</span><span class="plain"> &lt;= </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;0: </span><span class="identifier">ix</span><span class="plain">++) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">gestalt</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"Interpreter version "</span><span class="plain">, </span><span class="identifier">ix</span><span class="plain"> / </span><span class="constant">$10000</span><span class="plain">, </span><span class="string">"."</span><span class="plain">, (</span><span class="identifier">ix</span><span class="plain"> &amp; </span><span class="constant">$FF00</span><span class="plain">) / </span><span class="constant">$100</span><span class="plain">,</span>
+        <span class="string">"."</span><span class="plain">, </span><span class="identifier">ix</span><span class="plain"> &amp; </span><span class="constant">$FF</span><span class="plain">, </span><span class="string">" / "</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">gestalt</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"VM "</span><span class="plain">, </span><span class="identifier">ix</span><span class="plain"> / </span><span class="constant">$10000</span><span class="plain">, </span><span class="string">"."</span><span class="plain">, (</span><span class="identifier">ix</span><span class="plain"> &amp; </span><span class="constant">$FF00</span><span class="plain">) / </span><span class="constant">$100</span><span class="plain">, </span><span class="string">"."</span><span class="plain">, </span><span class="identifier">ix</span><span class="plain"> &amp; </span><span class="constant">$FF</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
+        <span class="identifier">ShowExtensionVersions</span><span class="plain">();</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -275,16 +275,16 @@ compared to the Z-machine's: hence the <code class="display"><span class="extrac
 
 
 <pre class="display">
-    <span class="plain">[ DESCEND_TO_SPECIFIC_ACTION_R;</span>
-        <span class="plain">indirect(#actions_table--&gt;(action+1));</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">DESCEND_TO_SPECIFIC_ACTION_R</span><span class="plain">;</span>
+        <span class="reserved">indirect</span><span class="plain">(#</span><span class="identifier">actions_table</span><span class="plain">--&gt;(</span><span class="identifier">action</span><span class="plain">+1));</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="S-ft.html">Back to 'Figures Template'</a></li><li><a href="S-lt.html">Continue with 'Language Template'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-ft.html">Back to 'Figures Template'</a></li><li><a href="S-lt.html">Continue with 'Light Template'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

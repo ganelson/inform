@@ -93,9 +93,9 @@ calm down again and we come to another chronology point.
 
 
 <pre class="display">
-    <span class="plain">[ ChronologyPoint pt;</span>
-        <span class="plain">for (pt=0:pt&lt;NO_PAST_TENSE_CONDS:pt++)</span>
-            <span class="plain">past_chronological_record--&gt;pt = present_chronological_record--&gt;pt;</span>
+    <span class="plain">[ </span><span class="identifier">ChronologyPoint</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">=0:</span><span class="identifier">pt</span><span class="plain">&lt;</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">:</span><span class="identifier">pt</span><span class="plain">++)</span>
+            <span class="identifier">past_chronological_record</span><span class="plain">--&gt;</span><span class="identifier">pt</span><span class="plain"> = </span><span class="identifier">present_chronological_record</span><span class="plain">--&gt;</span><span class="identifier">pt</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -109,10 +109,10 @@ been found true, and so on.
 
 
 <pre class="display">
-    <span class="plain">[ UPDATE_CHRONOLOGICAL_RECORDS_R pt;</span>
-        <span class="plain">for (pt=0: pt&lt;NO_PAST_TENSE_CONDS: pt++) TestSinglePastState(false, pt, true, -1);</span>
-        <span class="plain">ChronologyPoint();</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">UPDATE_CHRONOLOGICAL_RECORDS_R</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">=0: </span><span class="identifier">pt</span><span class="plain">&lt;</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">: </span><span class="identifier">pt</span><span class="plain">++) </span><span class="identifier">TestSinglePastState</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="identifier">ChronologyPoint</span><span class="plain">();</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -275,24 +275,24 @@ can it zero the turns count for another action.
 
 
 <pre class="display">
-    <span class="plain">[ TrackActions readjust oow i;</span>
-        <span class="plain">for (i=0: PastActionsI6Routines--&gt;i: i++) {</span>
-            <span class="plain">if ((PastActionsI6Routines--&gt;i).call()) {</span>
-                <span class="plain">! Yes, the current action matches action pattern i:</span>
-                <span class="plain">if (readjust) continue;</span>
-                <span class="plain">(TimesActionHasHappened--&gt;i)++;</span>
-                <span class="plain">if (LastTurnActionHappenedOn--&gt;i ~= turns + 5) {</span>
-                    <span class="plain">LastTurnActionHappenedOn--&gt;i = turns + 5;</span>
-                    <span class="plain">ActionCurrentlyHappeningFlag-&gt;i = 1;</span>
-                    <span class="plain">if (keep_silent == false)</span>
-                        <span class="plain">(TurnsActionHasBeenHappening--&gt;i)++;</span>
+    <span class="plain">[ </span><span class="identifier">TrackActions</span><span class="plain"> </span><span class="identifier">readjust</span><span class="plain"> </span><span class="identifier">oow</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">PastActionsI6Routines</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PastActionsI6Routines</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">).</span><span class="identifier">call</span><span class="plain">()) {</span>
+                <span class="comment">! Yes, the current action matches action pattern i:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">readjust</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="plain">(</span><span class="identifier">TimesActionHasHappened</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> ~= </span><span class="identifier">turns</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">) {</span>
+                    <span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">turns</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">;</span>
+                    <span class="identifier">ActionCurrentlyHappeningFlag</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">keep_silent</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)</span>
+                        <span class="plain">(</span><span class="identifier">TurnsActionHasBeenHappening</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
                 <span class="plain">}</span>
-            <span class="plain">} else {</span>
-                <span class="plain">! No, the current action doesn't match action pattern i:</span>
-                <span class="plain">if (oow == false) {</span>
-                    <span class="plain">if (keep_silent == false) { TurnsActionHasBeenHappening--&gt;i = 0; }</span>
-                    <span class="plain">if (LastTurnActionHappenedOn--&gt;i ~= turns + 5)</span>
-                        <span class="plain">ActionCurrentlyHappeningFlag-&gt;i = 0;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="comment">! No, the current action doesn't match action pattern i:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oow</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">keep_silent</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) { </span><span class="identifier">TurnsActionHasBeenHappening</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> ~= </span><span class="identifier">turns</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">)</span>
+                        <span class="identifier">ActionCurrentlyHappeningFlag</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -306,13 +306,13 @@ can it zero the turns count for another action.
 
 
 <pre class="display">
-    <span class="plain">Array TimesActionHasHappened--&gt;(NO_PAST_TENSE_ACTIONS+1);</span>
-    <span class="plain">Array TurnsActionHasBeenHappening--&gt;(NO_PAST_TENSE_ACTIONS+1);</span>
-    <span class="plain">Array LastTurnActionHappenedOn--&gt;(NO_PAST_TENSE_ACTIONS+1);</span>
-    <span class="plain">Array ActionCurrentlyHappeningFlag-&gt;(NO_PAST_TENSE_ACTIONS+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TimesActionHasHappened</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_ACTIONS</span><span class="plain">+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TurnsActionHasBeenHappening</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_ACTIONS</span><span class="plain">+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_ACTIONS</span><span class="plain">+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">ActionCurrentlyHappeningFlag</span><span class="plain">-&gt;(</span><span class="identifier">NO_PAST_TENSE_ACTIONS</span><span class="plain">+1);</span>
 
-    <span class="plain">Array past_chronological_record--&gt;(NO_PAST_TENSE_CONDS+1);</span>
-    <span class="plain">Array present_chronological_record--&gt;(NO_PAST_TENSE_CONDS+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">past_chronological_record</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">+1);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">present_chronological_record</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">+1);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

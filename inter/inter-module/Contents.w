@@ -1,6 +1,6 @@
 Title: inter
 Author: Graham Nelson
-Purpose: Code for dealing with intermediate-level Inform
+Purpose: Code for dealing with intermediate-level Inform.
 Language: InC
 Licence: Artistic License 2.0
 

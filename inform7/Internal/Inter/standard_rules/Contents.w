@@ -12,7 +12,6 @@ Sections
 	Chronology
 	Figures
 	Glulx
-	Language
 	Light
 	ListWriter
 	MapRouteFinding

@@ -17,63 +17,88 @@
 
 
 <pre class="display">
-    <span class="plain">[ OC__Cl obj cla j a n objflag;</span>
+    <span class="plain">[ </span><span class="identifier">VM_Initialise</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="identifier">standard_interpreter</span><span class="plain"> = </span><span class="identifier">HDR_TERPSTANDARD</span><span class="plain">--&gt;0;</span>
+        <span class="identifier">transcript_mode</span><span class="plain"> = ((</span><span class="identifier">HDR_GAMEFLAGS</span><span class="plain">--&gt;0) &amp; </span><span class="constant">1</span><span class="plain">);</span>
 
-        <span class="plain">@jl obj 1 ?NotObj;</span>
-        <span class="plain">@jg obj max_z_object ?NotObj;</span>
-        <span class="plain">@inc objflag;</span>
-        <span class="plain">@je cla K1_room ?~NotRoom;</span>
-        <span class="plain">@test_attr obj mark_as_room ?rtrue;</span>
-        <span class="plain">@rfalse;</span>
-        <span class="plain">.NotRoom;</span>
-        <span class="plain">@je cla K2_thing ?~NotObj;</span>
-        <span class="plain">@test_attr obj mark_as_thing ?rtrue;</span>
-        <span class="plain">@rfalse;</span>
-        <span class="plain">.NotObj;</span>
+        <span class="identifier">dict_start</span><span class="plain"> = </span><span class="identifier">HDR_DICTIONARY</span><span class="plain">--&gt;0;</span>
+        <span class="identifier">dict_entry_size</span><span class="plain"> = </span><span class="identifier">dict_start</span><span class="plain">-&gt;(</span><span class="identifier">dict_start</span><span class="plain">-&gt;0 + </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="identifier">dict_start</span><span class="plain"> = </span><span class="identifier">dict_start</span><span class="plain"> + </span><span class="identifier">dict_start</span><span class="plain">-&gt;0 + </span><span class="constant">4</span><span class="plain">;</span>
+        <span class="identifier">dict_end</span><span class="plain"> = </span><span class="identifier">dict_start</span><span class="plain"> + ((</span><span class="identifier">dict_start</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">2</span><span class="plain">)--&gt;0) * </span><span class="identifier">dict_entry_size</span><span class="plain">;</span>
 
-        <span class="plain">@je cla Object Class ?ObjOrClass;</span>
-        <span class="plain">@je cla Routine String ?RoutOrStr;</span>
+        <span class="identifier">buffer</span><span class="plain">-&gt;0  = </span><span class="identifier">INPUT_BUFFER_LEN</span><span class="plain">;</span>
+        <span class="identifier">buffer2</span><span class="plain">-&gt;0 = </span><span class="identifier">INPUT_BUFFER_LEN</span><span class="plain">;</span>
+        <span class="identifier">buffer3</span><span class="plain">-&gt;0 = </span><span class="identifier">INPUT_BUFFER_LEN</span><span class="plain">;</span>
+        <span class="identifier">parse</span><span class="plain">-&gt;0   = </span><span class="constant">15</span><span class="plain">;</span>
+        <span class="identifier">parse2</span><span class="plain">-&gt;0  = </span><span class="constant">15</span><span class="plain">;</span>
 
-        <span class="plain">@jin cla 1 ?~Mistake;</span>
+        <span class="identifier">top_object</span><span class="plain"> = #</span><span class="identifier">largest_object</span><span class="plain">-255;</span>
 
-        <span class="plain">@jz objflag ?rfalse;</span>
-        <span class="plain">@get_prop_addr obj 2 -&gt; a;</span>
-        <span class="plain">@jz a ?rfalse;</span>
-        <span class="plain">@get_prop_len a -&gt; n;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">FIX_RNG_TCBIT</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="reserved">random</span><span class="plain"> </span><span class="constant">10000</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">i</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">i</span><span class="plain">-2000;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"[Random number generator seed is "</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="string">"]^"</span><span class="plain">;</span>
+            <span class="plain">@</span><span class="reserved">random</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="plain">}</span>
+    <span class="plain">];</span>
 
-        <span class="plain">@div n 2 -&gt; n;</span>
-        <span class="plain">.Loop;</span>
-        <span class="plain">@loadw a j -&gt; sp;</span>
-        <span class="plain">@je sp cla ?rtrue;</span>
-        <span class="plain">@inc j;</span>
-        <span class="plain">@jl j n ?Loop;</span>
-        <span class="plain">@rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">OC__Cl</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">objflag</span><span class="plain">;</span>
 
-        <span class="plain">.ObjOrClass;</span>
-        <span class="plain">@jz objflag ?rfalse;</span>
-        <span class="plain">@je cla Object ?JustObj;</span>
+        <span class="plain">@</span><span class="identifier">jl</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> ?</span><span class="identifier">NotObj</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jg</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">max_z_object</span><span class="plain"> ?</span><span class="identifier">NotObj</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">inc</span><span class="plain"> </span><span class="identifier">objflag</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain"> ?~</span><span class="identifier">NotRoom</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">test_attr</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain"> ?</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">NotRoom</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain"> ?~</span><span class="identifier">NotObj</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">test_attr</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">mark_as_thing</span><span class="plain"> ?</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">NotObj</span><span class="plain">;</span>
 
-        <span class="plain">! So now cla is Class</span>
-        <span class="plain">@jg obj String ?~rtrue;</span>
-        <span class="plain">@jin obj Class ?rtrue;</span>
-        <span class="plain">@rfalse;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">Object</span><span class="plain"> </span><span class="identifier">Class</span><span class="plain"> ?</span><span class="identifier">ObjOrClass</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">Routine</span><span class="plain"> </span><span class="identifier">String</span><span class="plain"> ?</span><span class="identifier">RoutOrStr</span><span class="plain">;</span>
 
-        <span class="plain">.JustObj;</span>
-        <span class="plain">! So now cla is Object</span>
-        <span class="plain">@jg obj String ?~rfalse;</span>
-        <span class="plain">@jin obj Class ?rfalse;</span>
-        <span class="plain">@rtrue;</span>
+        <span class="plain">@</span><span class="identifier">jin</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> ?~</span><span class="identifier">Mistake</span><span class="plain">;</span>
 
-        <span class="plain">.RoutOrStr;</span>
-        <span class="plain">@jz objflag ?~rfalse;</span>
-        <span class="plain">@call_2s Z__Region obj -&gt; sp;</span>
-        <span class="plain">@inc sp;</span>
-        <span class="plain">@je sp cla ?rtrue;</span>
-        <span class="plain">@rfalse;</span>
+        <span class="plain">@</span><span class="identifier">jz</span><span class="plain"> </span><span class="identifier">objflag</span><span class="plain"> ?</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">get_prop_addr</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">a</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jz</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> ?</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">get_prop_len</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">n</span><span class="plain">;</span>
 
-        <span class="plain">.Mistake;</span>
-        <span class="plain">RT__Err("apply 'ofclass' for", cla, -1);</span>
-        <span class="plain">rfalse;</span>
+        <span class="plain">@</span><span class="identifier">div</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">Loop</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">loadw</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> ?</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">inc</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jl</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> ?</span><span class="identifier">Loop</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rfalse</span><span class="plain">;</span>
+
+        <span class="plain">.</span><span class="identifier">ObjOrClass</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jz</span><span class="plain"> </span><span class="identifier">objflag</span><span class="plain"> ?</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> </span><span class="identifier">Object</span><span class="plain"> ?</span><span class="identifier">JustObj</span><span class="plain">;</span>
+
+        <span class="comment">! So now cla is Class</span>
+        <span class="plain">@</span><span class="identifier">jg</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">String</span><span class="plain"> ?~</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jin</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">Class</span><span class="plain"> ?</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rfalse</span><span class="plain">;</span>
+
+        <span class="plain">.</span><span class="identifier">JustObj</span><span class="plain">;</span>
+        <span class="comment">! So now cla is Object</span>
+        <span class="plain">@</span><span class="identifier">jg</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">String</span><span class="plain"> ?~</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jin</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">Class</span><span class="plain"> ?</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rtrue</span><span class="plain">;</span>
+
+        <span class="plain">.</span><span class="identifier">RoutOrStr</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">jz</span><span class="plain"> </span><span class="identifier">objflag</span><span class="plain"> ?~</span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">call_2s</span><span class="plain"> </span><span class="identifier">Z__Region</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">inc</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">je</span><span class="plain"> </span><span class="identifier">sp</span><span class="plain"> </span><span class="identifier">cla</span><span class="plain"> ?</span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">rfalse</span><span class="plain">;</span>
+
+        <span class="plain">.</span><span class="identifier">Mistake</span><span class="plain">;</span>
+        <span class="identifier">RT__Err</span><span class="plain">(</span><span class="string">"apply 'ofclass' for"</span><span class="plain">, </span><span class="identifier">cla</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -83,10 +108,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ QUIT_THE_GAME_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">QUIT_THE_GAME_RM('A');</span>
-        <span class="plain">if (YesOrNo()~=0) quit;</span>
+    <span class="plain">[ </span><span class="identifier">QUIT_THE_GAME_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">QUIT_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">YesOrNo</span><span class="plain">()~=0) </span><span class="reserved">quit</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -96,12 +121,12 @@
 
 
 <pre class="display">
-    <span class="plain">[ RESTART_THE_GAME_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">RESTART_THE_GAME_RM('A');</span>
-        <span class="plain">if (YesOrNo()~=0) {</span>
-            <span class="plain">@restart;</span>
-            <span class="plain">RESTART_THE_GAME_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">RESTART_THE_GAME_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">RESTART_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">YesOrNo</span><span class="plain">()~=0) {</span>
+            <span class="plain">@</span><span class="identifier">restart</span><span class="plain">;</span>
+            <span class="identifier">RESTART_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -112,12 +137,12 @@
 
 
 <pre class="display">
-    <span class="plain">[ RESTORE_THE_GAME_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">restore RMaybe;</span>
-        <span class="plain">RESTORE_THE_GAME_RM('A'); new_line;</span>
-        <span class="plain">rtrue;</span>
-        <span class="plain">.RMaybe; RESTORE_THE_GAME_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">RESTORE_THE_GAME_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">restore</span><span class="plain"> </span><span class="identifier">RMaybe</span><span class="plain">;</span>
+        <span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">RMaybe</span><span class="plain">; </span><span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -127,13 +152,13 @@
 
 
 <pre class="display">
-    <span class="plain">[ SAVE_THE_GAME_R flag;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">@save -&gt; flag;</span>
-        <span class="plain">switch (flag) {</span>
-            <span class="plain">0: SAVE_THE_GAME_RM('A'); new_line;</span>
-            <span class="plain">1: SAVE_THE_GAME_RM('B'); new_line;</span>
-            <span class="plain">2: RESTORE_THE_GAME_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">SAVE_THE_GAME_R</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="reserved">save</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">flag</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain">) {</span>
+            <span class="constant">0</span><span class="plain">: </span><span class="identifier">SAVE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+            <span class="constant">1</span><span class="plain">: </span><span class="identifier">SAVE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+            <span class="constant">2</span><span class="plain">: </span><span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -155,13 +180,13 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ VERIFY_THE_STORY_FILE_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">@verify ?Vmaybe;</span>
-        <span class="plain">jump Vwrong;</span>
-        <span class="plain">.Vmaybe; VERIFY_THE_STORY_FILE_RM('A'); new_line; rtrue;</span>
-        <span class="plain">.Vwrong;</span>
-        <span class="plain">VERIFY_THE_STORY_FILE_RM('B'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">VERIFY_THE_STORY_FILE_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">verify</span><span class="plain"> ?</span><span class="identifier">Vmaybe</span><span class="plain">;</span>
+        <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">Vwrong</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">Vmaybe</span><span class="plain">; </span><span class="identifier">VERIFY_THE_STORY_FILE_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">.</span><span class="identifier">Vwrong</span><span class="plain">;</span>
+        <span class="identifier">VERIFY_THE_STORY_FILE_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -171,14 +196,14 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_TRANSCRIPT_ON_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">transcript_mode = ((0--&gt;8) &amp; 1);</span>
-        <span class="plain">if (transcript_mode) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }</span>
-        <span class="plain">@output_stream 2;</span>
-        <span class="plain">if (((0--&gt;8) &amp; 1) == 0) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }</span>
-        <span class="plain">SWITCH_TRANSCRIPT_ON_RM('B'); new_line; VersionSub();</span>
-        <span class="plain">transcript_mode = true;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_ON_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">transcript_mode</span><span class="plain"> = ((0--&gt;8) &amp; </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">transcript_mode</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (((0--&gt;8) &amp; </span><span class="constant">1</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="identifier">VersionSub</span><span class="plain">();</span>
+        <span class="identifier">transcript_mode</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -188,14 +213,14 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_TRANSCRIPT_OFF_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">transcript_mode = ((0--&gt;8) &amp; 1);</span>
-        <span class="plain">if (transcript_mode == false) { SWITCH_TRANSCRIPT_OFF_RM('A'); new_line; rtrue; }</span>
-        <span class="plain">SWITCH_TRANSCRIPT_OFF_RM('B'); new_line;</span>
-        <span class="plain">@output_stream -2;</span>
-        <span class="plain">if ((0--&gt;8) &amp; 1) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }</span>
-        <span class="plain">transcript_mode = false;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">transcript_mode</span><span class="plain"> = ((0--&gt;8) &amp; </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">transcript_mode</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> </span><span class="constant">-2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((0--&gt;8) &amp; </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_ON_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="identifier">transcript_mode</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -205,26 +230,26 @@ opcode, and so Glulx followed suit.
 
 
 <pre class="display">
-    <span class="plain">[ ANNOUNCE_STORY_FILE_VERSION_R ix;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">Banner();</span>
-        <span class="plain">print "Identification number: ";</span>
-        <span class="plain">for (ix=6: ix &lt;= UUID_ARRAY-&gt;0: ix++) print (char) UUID_ARRAY-&gt;ix;</span>
-        <span class="plain">print "^";</span>
-        <span class="plain">ix = 0; ! shut up compiler warning</span>
-        <span class="plain">if (standard_interpreter &gt; 0) {</span>
-            <span class="plain">print "Standard interpreter ",</span>
-                <span class="plain">standard_interpreter/256, ".", standard_interpreter%256,</span>
-                <span class="plain">" (", HDR_TERPNUMBER-&gt;0;</span>
-            <span class="plain">print (char) HDR_TERPVERSION-&gt;0;</span>
-            <span class="plain">print ")^";</span>
-        <span class="plain">} else {</span>
-            <span class="plain">print "Interpreter ", HDR_TERPNUMBER-&gt;0, " Version ";</span>
-            <span class="plain">print (char) HDR_TERPVERSION-&gt;0;</span>
-            <span class="plain">print "^";</span>
+    <span class="plain">[ </span><span class="identifier">ANNOUNCE_STORY_FILE_VERSION_R</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">Banner</span><span class="plain">();</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"Identification number: "</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ix</span><span class="plain">=6: </span><span class="identifier">ix</span><span class="plain"> &lt;= </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;0: </span><span class="identifier">ix</span><span class="plain">++) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">UUID_ARRAY</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
+        <span class="identifier">ix</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! shut up compiler warning</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">standard_interpreter</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"Standard interpreter "</span><span class="plain">,</span>
+                <span class="identifier">standard_interpreter</span><span class="plain">/256, </span><span class="string">"."</span><span class="plain">, </span><span class="identifier">standard_interpreter</span><span class="plain">%256,</span>
+                <span class="string">" ("</span><span class="plain">, </span><span class="identifier">HDR_TERPNUMBER</span><span class="plain">-&gt;0;</span>
+            <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">HDR_TERPVERSION</span><span class="plain">-&gt;0;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">")^"</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"Interpreter "</span><span class="plain">, </span><span class="identifier">HDR_TERPNUMBER</span><span class="plain">-&gt;0, </span><span class="string">" Version "</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">HDR_TERPVERSION</span><span class="plain">-&gt;0;</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">ShowExtensionVersions();</span>
-        <span class="plain">say__p = 1;</span>
+        <span class="identifier">ShowExtensionVersions</span><span class="plain">();</span>
+        <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -245,9 +270,9 @@ compared to the Z-machine's: hence the <code class="display"><span class="extrac
 
 
 <pre class="display">
-    <span class="plain">[ DESCEND_TO_SPECIFIC_ACTION_R;</span>
-        <span class="plain">indirect(#actions_table--&gt;action);</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">DESCEND_TO_SPECIFIC_ACTION_R</span><span class="plain">;</span>
+        <span class="reserved">indirect</span><span class="plain">(#</span><span class="identifier">actions_table</span><span class="plain">--&gt;</span><span class="identifier">action</span><span class="plain">);</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

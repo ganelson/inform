@@ -4,300 +4,12 @@
 		<title>Booklet Title</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css"><style type="text/css">
-/* This is a CSS file for pages woven by the literate programming tool inweb */
-
-/* We'll start with syntax colouring, since everyone likes to toy with this: */
-
-.cwebmacrotext { color: #000000; font-weight: bold; } /* The name of a web macro */
-.functiontext  { color: #C00000; } /* When a C function is being defined */
-.string        { color: #408040; } /* A double-quoted C literal string */
-.character     { color: #204020; } /* A single-quoted C literal character */
-.constant     { color: #204020; } /* A named constant */
-.element    { color: #40407f; } /* A C structure element */
-.identifier    { color: #4040ff; } /* An identifier */
-.reserved      { color: #600000; } /* A reserved word */
-
-/* Comments at the end of lines are rendered like so: */
-
-.comment {
-	font: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	color: #404040;
-	font-style:italic;
-}
-
-/* The name of a web macro when being used: */
-
-.cwebmacro {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	text-decoration: none;
-	color: #000000; font-weight: bold;
-}
-
-.cwebmacronumber {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	font-size: 80%;
-	text-decoration: none;
-	color: #000000;
-}
-
-/* And when being defined: */
-
-.cwebmacrodefn {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	text-decoration: none;
-	color: #000000; font-weight: bold;
-	font-weight:bold;
-}
-
-/* Now some generalities: */
-
-body {
-	background-color: #ffffff;
-	margin: 8px;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	font-size: 16px;
-	line-height: 24px;
-	background-color: transparent;
-	-webkit-font-smoothing: antialiased;
-}
-
-/* Forms of paragraph: */
-
-p {
-	margin: 0;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	clear: both;
-}
-
-/* Where an inweb paragraph begins: */
-
-p.inwebparagraph {
-	padding-top: 15px;
-	padding-bottom: 5px;
-}
-
-/* If a web macro definition begins in its own paragraph, this is it: */
-
-p.macrodefinition {
-	padding-top: 0px;
-	padding-bottom: 0px;
-	margin-left: 30px;
-}
-
-/* The endnotes at the foot of code: "The function foo_bar is used in ..." */
-
-p.endnote {
-	font-size: 0.8em;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	margin-left: 30px;
-	text-decoration:none;
-	color: #000000;
-}
-
-/* The Purpose slug: */
-
-p.purpose {
-	font-size: 1em;
-	font-style:italic;	
-	margin-left: 15px;
-}
-
-/* Blocks of code appear in these */
-
-pre {
-	font-family: Monaco, monospace;
-}
-
-pre.display {
-	padding: 3px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-left: 30px;
-	margin-right: 10px;
-	background: #f8f8f8;
-	border-width: 1px;
-	border-style: solid solid solid solid;
-	border-color: #ccc;
-	word-wrap: break-word;
-	white-space: pre-wrap;
-}
-
-pre.displaydefn {
-	padding: 3px;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 10px;
-	background: #f8f8f8;
-	border-width: 1px;
-	border-style: solid solid solid solid;
-	border-color: #ccc;
-	word-wrap: break-word;
-	white-space: pre-wrap;
-}
-
-pre.definitions {
-	padding-top: 0px;
-	margin-top: 0px;
-	margin-left: 0px;
-	margin-right: 10px;
-	word-wrap: break-word;
-	white-space: pre-wrap;
-}
-
-/* The following are for breadcrumbs of links: */
-
-ul, li {
-	list-style-type:none;
-	padding:0;
-	margin:0;
-}
-
-.crumbs {
-	border:1px solid #dedede;
-	height:3.45em;
-}
-
-.crumbs li {
-	float:left;
-	line-height:2.3em;
-	padding-left:.75em;
-	color:#333;
-	font-size: 1.5em;
-}
-
-.crumbs li a {
-	display:block;
-	padding:0 15px 0 0;
-	background:url(crumbs.gif) no-repeat right center;
-}
-
-.crumbs li a:link, #crumbs li a:visited {
-	text-decoration:none;
-	color:#333;
-}
-
-.crumbs li a:hover, #crumbs li a:focus {
-	color:#dd2c0d;
-}
-
-/* This is for items in lists from inweb source: */
-
-ul.items {
-	margin-top: 3px;
-	margin-bottom: 3px;
-}
-
-ul.items li {
-	margin-top: 1px;
-	margin-bottom: 1px;
-	margin-left: 15px;
-}
-
-/* And this is for each section's table of contents: */
-
-ul.toc {
-	margin-top: 3px;
-	margin-bottom: 3px;
-}
-
-ul.toc li {
-	float:left;
-	margin-left: 15px;
-	color:#000;
-}
-
-ul.toc li a {
-	display:block;
-}
-
-ul.toc li a:link, ul.toc li a:visited {
-	text-decoration:none;
-	color:#000;
-}
-
-ul.toc li a:hover, ul.toc li a:focus {
-	color:#dd2c0d;
-}
-
-hr.tocbar {
-	clear: both;
-	margin-top:3px;
-	margin-bottom:3px;
-	color:#333;
-	border:0
-	background-color:#333;
-}
-
-/* This is for cross-reference links ("This code is used in ...") */
-
-p.endnote:link, p.endnote:visited, p.endnote:hover, p.endnote:focus {
-	text-decoration:none;
-	color:#000;
-}
-
-p.endnote a:link, p.endnote a:visited {
-	text-decoration:none;
-	color:#000;
-}
-
-p.endnote a:hover, p.endnote a:focus {
-	text-decoration:none;
-	color:#dd2c0d;
-}
-
-/* Now for the index page */
-
-p.heading {
-	margin-top: 2px;
-	margin-bottom: 2px;
-	font-size: 20
-}
-p.chapter {
-	font-size: 14
-}
-p.tight {
-	font-size: 12
-}
-p.tightin {
-	padding-left: 25px;
-	font-size: 12
-}
-.chapterlist li {
-	padding-top: 8px;
-	padding-left: 16px;
-}
-.chaptertitle {
-	font-weight: bold;
-}
-.chapterlist .sectionlist li {
-	padding-left: 48px;
-}
-span.definitionkeyword {
-	color:#801010;
-	font-weight:bold;
-}
-span.extract {
-	font-size: 15px;
-	border: 1px solid #e8e8e8;
-	border-radius: 3px;
-	background-color: #eef;
-	width: 100%;
-	padding: 3px;
-}
-
-
-
-</style>
-
+		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
 	</head>
 	<body>
 
 <!--Weave of 'S/prm' generated by 7-->
-<ul class="crumbs"><li><b>basicinform</b></li></ul><p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>Basic Inform is like a boot program for a computer that is
+<ul class="crumbs"><li><a href="../webs.html">&#9733;</a></li><li><a href="index.html">basicinform 1</a></li><li><b>Preamble</b></li></ul><p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>Basic Inform is like a boot program for a computer that is
 starting up: at the beginning, the process is delicate, and the computer
 needs a fairly exact sequence of things to be done; halfway through, the
 essential work is done, but the system is still too primitive to be much
@@ -320,6 +32,8 @@ rubric text, and this are no exception:
 
     <span class="plain">"Basic Inform, included in every project, defines the basic framework</span>
     <span class="plain">of Inform as a programming language."</span>
+
+    <span class="plain">Part One - Preamble</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -533,6 +247,47 @@ to the Z-machine, because it's only legal in I6 when compiling to Glulx.
 
 <pre class="display">
     <span class="plain">An object has a value called variable initial value.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Naming properties. </b>Certain properties used for names are held in common by all objects, of
+whatever kind. "Specification" is special: it isn't compiled, but holds
+text used to annotate the Kinds index. "Variable initial value" is
+likewise special; internally, knowledge about the initial value of a
+global variable is stored as knowledge about this property. It can't be
+used for anything else. "Indefinite appearance text" is also an internal
+property (it holds the text sometimes given in double-quotes immediately
+after an object is created).
+</p>
+
+
+<pre class="display">
+    <span class="plain">An object has a text called specification.</span>
+    <span class="plain">An object has a text called indefinite appearance text.</span>
+    <span class="plain">An object has a text called list grouping key.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>These, on the other hand, are quite genuine:
+</p>
+
+
+<pre class="display">
+    <span class="plain">An object has a text called printed name.</span>
+    <span class="plain">An object has a text called printed plural name.</span>
+    <span class="plain">An object has a text called an indefinite article.</span>
+    <span class="plain">An object can be plural-named or singular-named. An object is usually singular-named.</span>
+    <span class="plain">An object can be proper-named or improper-named. An object is usually improper-named.</span>
+    <span class="plain">An object can be ambiguously plural.</span>
+
+    <span class="plain">The indefinite article property translates into I6 as "article".</span>
+    <span class="plain">The printed plural name property translates into I6 as "plural".</span>
+    <span class="plain">The printed name property translates into I6 as "short_name".</span>
+    <span class="plain">The plural-named property translates into I6 as "pluralname".</span>
+    <span class="plain">The ambiguously plural property translates into I6 as "ambigpluralname".</span>
+    <span class="plain">The proper-named property translates into I6 as "proper".</span>
 
     <span class="plain">A natural language is a kind of value.</span>
     <span class="plain">The language of play is a natural language that varies.</span>
@@ -541,25 +296,27 @@ to the Z-machine, because it's only legal in I6 when compiling to Glulx.
     <span class="plain">Startup rules have outcomes allow startup (success) and deny startup (failure).</span>
     <span class="plain">Shutdown rules is a rulebook. [1]</span>
 
-    <span class="plain">To say (val - sayable value of kind K)</span>
-        <span class="plain">(documented at ph_say):</span>
-        <span class="plain">(- {-say:val:K} -).</span>
-</pre>
+    <span class="plain">Starting the virtual machine (documented at act_startvm) is an activity.</span>
 
-<p class="inwebparagraph"></p>
+    <span class="plain">The enable Glulx acceleration rule is listed first in for starting the virtual machine.</span>
 
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Endpiece. </b>Every Inform 7 extension ends along these lines:
-</p>
+    <span class="plain">The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".</span>
 
+    <span class="plain">Printing the name of something (documented at act_pn) is an activity. [0]</span>
 
-<pre class="display">
-    <span class="plain">Basic Inform ends here.</span>
+    <span class="plain">The standard name printing rule is listed last in the for printing the name rulebook.</span>
+    <span class="plain">The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".</span>
+
+    <span class="plain">Printing the plural name of something (documented at act_ppn) is an activity. [1]</span>
+
+    <span class="plain">The standard printing the plural name rule is listed last in the for printing the plural name rulebook.</span>
+    <span class="plain">The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <hr class="tocbar">
-<ul class="toc"><li><i>(This section begins Sections.)</i></li><li><i>(This section ends Sections.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Sections.)</i></li><li><a href="S-pd.html">Continue with 'Phrase Definitions'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

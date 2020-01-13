@@ -7,7 +7,6 @@ Web Syntax Version: 2
 
 Sections
 	Main
-	Activities
 	BlockValues
 	Char
 	Combinations
@@ -15,6 +14,7 @@ Sections
 	FileIO
 	Flex
 	Glulx
+	Language
 	Lists
 	Mathematics
 	MStack

@@ -360,7 +360,8 @@ with the following.
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) {</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> != </span><span class="constant">NAMING_PLUGIN_NAME</span><span class="plain">))</span>
                     <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MULTIMEDIA_MODULE</span>

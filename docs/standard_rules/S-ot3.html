@@ -17,14 +17,14 @@
 
 
 <pre class="display">
-    <span class="plain">[ Perform_Undo;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; PREVENT_UNDO_TCBIT) {</span>
-            <span class="plain">IMMEDIATELY_UNDO_RM('A'); new_line; return;</span>
+    <span class="plain">[ </span><span class="identifier">Perform_Undo</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">PREVENT_UNDO_TCBIT</span><span class="plain">) {</span>
+            <span class="identifier">IMMEDIATELY_UNDO_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (IterationsOfTurnSequence == 0) { IMMEDIATELY_UNDO_RM('B'); new_line; return; }</span>
-        <span class="plain">if (undo_flag == 0) { IMMEDIATELY_UNDO_RM('C'); new_line; return; }</span>
-        <span class="plain">if (undo_flag == 1) { IMMEDIATELY_UNDO_RM('D'); new_line; return; }</span>
-        <span class="plain">if (VM_Undo() == 0) { IMMEDIATELY_UNDO_RM('F'); new_line; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IterationsOfTurnSequence</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">IMMEDIATELY_UNDO_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">undo_flag</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">IMMEDIATELY_UNDO_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">undo_flag</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">IMMEDIATELY_UNDO_RM</span><span class="plain">(</span><span class="character">'D'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VM_Undo</span><span class="plain">() == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">IMMEDIATELY_UNDO_RM</span><span class="plain">(</span><span class="character">'F'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
     <span class="plain">];</span>
 </pre>
 
@@ -34,12 +34,12 @@
 
 
 <pre class="display">
-    <span class="plain">[ ANNOUNCE_SCORE_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT == 0) {</span>
-            <span class="plain">ANNOUNCE_SCORE_RM('C'); new_line;</span>
-        <span class="plain">} else {</span>
-            <span class="plain">ANNOUNCE_SCORE_RM('A'); PrintRank();</span>
+    <span class="plain">[ </span><span class="identifier">ANNOUNCE_SCORE_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">ANNOUNCE_SCORE_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">ANNOUNCE_SCORE_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="identifier">PrintRank</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -50,10 +50,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_SCORE_NOTIFY_ON_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();</span>
-        <span class="plain">else notify_mode=1;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_SCORE_NOTIFY_ON_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">ANNOUNCE_SCORE_R</span><span class="plain">();</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">notify_mode</span><span class="plain">=1;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -63,10 +63,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ REP_SWITCH_NOTIFY_ON_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT) {</span>
-            <span class="plain">REP_SWITCH_NOTIFY_ON_RM('A'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">REP_SWITCH_NOTIFY_ON_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain">) {</span>
+            <span class="identifier">REP_SWITCH_NOTIFY_ON_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -77,10 +77,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ SWITCH_SCORE_NOTIFY_OFF_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT == 0) ANNOUNCE_SCORE_R();</span>
-        <span class="plain">else notify_mode=0;</span>
+    <span class="plain">[ </span><span class="identifier">SWITCH_SCORE_NOTIFY_OFF_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">ANNOUNCE_SCORE_R</span><span class="plain">();</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">notify_mode</span><span class="plain">=0;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -90,10 +90,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ REP_SWITCH_NOTIFY_OFF_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT) {</span>
-            <span class="plain">REP_SWITCH_NOTIFY_OFF_RM('A'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">REP_SWITCH_NOTIFY_OFF_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain">) {</span>
+            <span class="identifier">REP_SWITCH_NOTIFY_OFF_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -104,10 +104,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ PREFER_SOMETIMES_ABBREVIATED_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">lookmode=1;</span>
-    <span class="plain">]; ! Brief</span>
+    <span class="plain">[ </span><span class="identifier">PREFER_SOMETIMES_ABBREVIATED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">lookmode</span><span class="plain">=1;</span>
+    <span class="plain">]; </span><span class="comment">! Brief</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -116,10 +116,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ REP_PREFER_SOMETIMES_ABBR_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">print (TEXT_TY_Say) Story; REP_PREFER_SOMETIMES_ABBR_RM('A'); new_line;</span>
-    <span class="plain">]; ! Brief</span>
+    <span class="plain">[ </span><span class="identifier">REP_PREFER_SOMETIMES_ABBR_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">TEXT_TY_Say</span><span class="plain">) </span><span class="identifier">Story</span><span class="plain">; </span><span class="identifier">REP_PREFER_SOMETIMES_ABBR_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+    <span class="plain">]; </span><span class="comment">! Brief</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -128,10 +128,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ PREFER_UNABBREVIATED_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">lookmode=2;</span>
-    <span class="plain">]; ! Verbose</span>
+    <span class="plain">[ </span><span class="identifier">PREFER_UNABBREVIATED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">lookmode</span><span class="plain">=2;</span>
+    <span class="plain">]; </span><span class="comment">! Verbose</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -140,10 +140,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ REP_PREFER_UNABBREVIATED_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">print (TEXT_TY_Say) Story; REP_PREFER_UNABBREVIATED_RM('A'); new_line;</span>
-    <span class="plain">]; ! Verbose</span>
+    <span class="plain">[ </span><span class="identifier">REP_PREFER_UNABBREVIATED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">TEXT_TY_Say</span><span class="plain">) </span><span class="identifier">Story</span><span class="plain">; </span><span class="identifier">REP_PREFER_UNABBREVIATED_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+    <span class="plain">]; </span><span class="comment">! Verbose</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -152,10 +152,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ PREFER_ABBREVIATED_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">lookmode=3;</span>
-    <span class="plain">]; ! Superbrief</span>
+    <span class="plain">[ </span><span class="identifier">PREFER_ABBREVIATED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">lookmode</span><span class="plain">=3;</span>
+    <span class="plain">]; </span><span class="comment">! Superbrief</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -164,10 +164,10 @@
 
 
 <pre class="display">
-    <span class="plain">[ REP_PREFER_ABBREVIATED_R;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">print (TEXT_TY_Say) Story; REP_PREFER_ABBREVIATED_RM('A'); new_line;</span>
-    <span class="plain">]; ! Superbrief</span>
+    <span class="plain">[ </span><span class="identifier">REP_PREFER_ABBREVIATED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">TEXT_TY_Say</span><span class="plain">) </span><span class="identifier">Story</span><span class="plain">; </span><span class="identifier">REP_PREFER_ABBREVIATED_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+    <span class="plain">]; </span><span class="comment">! Superbrief</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -176,33 +176,33 @@
 
 
 <pre class="display">
-    <span class="plain">[ ANNOUNCE_PRONOUN_MEANINGS_R x y c d;</span>
-        <span class="plain">if (actor ~= player) rfalse;</span>
-        <span class="plain">ANNOUNCE_PRONOUN_MEANINGS_RM('A');</span>
+    <span class="plain">[ </span><span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_R</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
 
-        <span class="plain">c = (LanguagePronouns--&gt;0)/3;</span>
-        <span class="plain">if (player ~= selfobj) c++;</span>
+        <span class="identifier">c</span><span class="plain"> = (</span><span class="identifier">LanguagePronouns</span><span class="plain">--&gt;0)/3;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> ~= </span><span class="identifier">selfobj</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">++;</span>
 
-        <span class="plain">if (c==0) { ANNOUNCE_PRONOUN_MEANINGS_RM('D'); rtrue; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">==0) { </span><span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_RM</span><span class="plain">(</span><span class="character">'D'</span><span class="plain">); </span><span class="reserved">rtrue</span><span class="plain">; }</span>
 
-        <span class="plain">for (x = 1, d = 0 : x &lt;= LanguagePronouns--&gt;0: x = x+3) {</span>
-            <span class="plain">print "~", (address) LanguagePronouns--&gt;x, "~ ";</span>
-            <span class="plain">y = LanguagePronouns--&gt;(x+2);</span>
-            <span class="plain">if (y == NULL) ANNOUNCE_PRONOUN_MEANINGS_RM('C');</span>
-            <span class="plain">else { ANNOUNCE_PRONOUN_MEANINGS_RM('B'); print (the) y; }</span>
-            <span class="plain">d++;</span>
-            <span class="plain">if (d &lt; c-1) print ", ";</span>
-            <span class="plain">if (d == c-1) {</span>
-                <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; SERIAL_COMMA_TCBIT) print ",";</span>
-                <span class="plain">LIST_WRITER_INTERNAL_RM('C');</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">d</span><span class="plain"> = </span><span class="constant">0</span><span class="plain"> : </span><span class="identifier">x</span><span class="plain"> &lt;= </span><span class="identifier">LanguagePronouns</span><span class="plain">--&gt;0: </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">+3) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">, (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">LanguagePronouns</span><span class="plain">--&gt;</span><span class="identifier">x</span><span class="plain">, </span><span class="string">"~ "</span><span class="plain">;</span>
+            <span class="identifier">y</span><span class="plain"> = </span><span class="identifier">LanguagePronouns</span><span class="plain">--&gt;(</span><span class="identifier">x</span><span class="plain">+2);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">y</span><span class="plain">; }</span>
+            <span class="identifier">d</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="identifier">c</span><span class="plain">-1) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", "</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> == </span><span class="identifier">c</span><span class="plain">-1) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">SERIAL_COMMA_TCBIT</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">","</span><span class="plain">;</span>
+                <span class="identifier">LIST_WRITER_INTERNAL_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">if (player ~= selfobj) {</span>
-            <span class="plain">print "~", (address) ME1__WD, "~ "; ANNOUNCE_PRONOUN_MEANINGS_RM('B');</span>
-            <span class="plain">c = player; player = selfobj;</span>
-            <span class="plain">print (the) c; player = c;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> ~= </span><span class="identifier">selfobj</span><span class="plain">) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">, (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">ME1__WD</span><span class="plain">, </span><span class="string">"~ "</span><span class="plain">; </span><span class="identifier">ANNOUNCE_PRONOUN_MEANINGS_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">);</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="identifier">player</span><span class="plain"> = </span><span class="identifier">selfobj</span><span class="plain">;</span>
+            <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">; </span><span class="identifier">player</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">".";</span>
+        <span class="string">"."</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

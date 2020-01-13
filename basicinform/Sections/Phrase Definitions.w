@@ -31,7 +31,7 @@ using the |(-| and |-)| notation. Non-inline phrases are compiled as
 functions, which are then called when they need to be used. For example,
 "To say the magic number: say 17." compiles to a function, and when
 another phrase includes the instruction "say the magic number", that
-instruction compiles to call to this function. But an inline phrase
+instruction compiles a call to this function. But an inline phrase
 instead generates Inter instructions to do something directly. (That
 something may in fact still be just a function call, but not always.)
 The Inter code to be generated is expressed by the contents of the

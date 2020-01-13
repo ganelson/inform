@@ -78,28 +78,28 @@ means "the current action".
 
 
 <pre class="display">
-    <span class="plain">Constant AD_ACTION = 0; ! The I6 action number (0 to 4095)</span>
-    <span class="plain">Constant AD_REQUIREMENTS = 1; ! Such as requiring light; a bitmap, see below</span>
-    <span class="plain">Constant AD_NOUN_KOV = 2; ! Kind of value of the first noun</span>
-    <span class="plain">Constant AD_SECOND_KOV = 3; ! Kind of value of the second noun</span>
-    <span class="plain">Constant AD_VARIABLES_CREATOR = 4; ! Routine to initialise variables owned</span>
-    <span class="plain">Constant AD_VARIABLES_ID = 5; ! Frame ID for variables owned by action</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_ACTION</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! The I6 action number (0 to 4095)</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_REQUIREMENTS</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! Such as requiring light; a bitmap, see below</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_NOUN_KOV</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! Kind of value of the first noun</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_SECOND_KOV</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Kind of value of the second noun</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">! Routine to initialise variables owned</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_VARIABLES_ID</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">! Frame ID for variables owned by action</span>
 
-    <span class="plain">Constant AD_RECORD_SIZE = 6;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AD_RECORD_SIZE</span><span class="plain"> = </span><span class="constant">6</span><span class="plain">;</span>
 
-    <span class="plain">[ FindAction fa t;</span>
-        <span class="plain">if (fa == -1) fa = action;</span>
-        <span class="plain">t = 1;</span>
-        <span class="plain">while (t &lt;= ActionData--&gt;0) {</span>
-            <span class="plain">if (fa == ActionData--&gt;t) return t;</span>
-            <span class="plain">t = t + AD_RECORD_SIZE;</span>
+    <span class="plain">[ </span><span class="identifier">FindAction</span><span class="plain"> </span><span class="identifier">fa</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fa</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="identifier">fa</span><span class="plain"> = </span><span class="identifier">action</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> &lt;= </span><span class="identifier">ActionData</span><span class="plain">--&gt;0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fa</span><span class="plain"> == </span><span class="identifier">ActionData</span><span class="plain">--&gt;</span><span class="identifier">t</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">;</span>
+            <span class="identifier">t</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain"> + </span><span class="identifier">AD_RECORD_SIZE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ActionNumberIndexed i;</span>
-        <span class="plain">if ((i&gt;=0) &amp;&amp; (i &lt; AD_RECORDS)) return ActionData--&gt;(i*AD_RECORD_SIZE + AD_ACTION + 1);</span>
-        <span class="plain">return 0;</span>
+    <span class="plain">[ </span><span class="identifier">ActionNumberIndexed</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;=0) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">AD_RECORDS</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">i</span><span class="plain">*</span><span class="identifier">AD_RECORD_SIZE</span><span class="plain"> + </span><span class="identifier">AD_ACTION</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -111,27 +111,27 @@ various possible action requirements:
 
 
 <pre class="display">
-    <span class="plain">Constant TOUCH_NOUN_ABIT   = $$00000001;</span>
-    <span class="plain">Constant TOUCH_SECOND_ABIT = $$00000010;</span>
-    <span class="plain">Constant LIGHT_ABIT        = $$00000100;</span>
-    <span class="plain">Constant NEED_NOUN_ABIT    = $$00001000;</span>
-    <span class="plain">Constant NEED_SECOND_ABIT  = $$00010000;</span>
-    <span class="plain">Constant OUT_OF_WORLD_ABIT = $$00100000;</span>
-    <span class="plain">Constant CARRY_NOUN_ABIT   = $$01000000;</span>
-    <span class="plain">Constant CARRY_SECOND_ABIT = $$10000000;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TOUCH_NOUN_ABIT</span><span class="plain">   = </span><span class="constant">$$00000001</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TOUCH_SECOND_ABIT</span><span class="plain"> = </span><span class="constant">$$00000010</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LIGHT_ABIT</span><span class="plain">        = </span><span class="constant">$$00000100</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NEED_NOUN_ABIT</span><span class="plain">    = </span><span class="constant">$$00001000</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NEED_SECOND_ABIT</span><span class="plain">  = </span><span class="constant">$$00010000</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OUT_OF_WORLD_ABIT</span><span class="plain"> = </span><span class="constant">$$00100000</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CARRY_NOUN_ABIT</span><span class="plain">   = </span><span class="constant">$$01000000</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CARRY_SECOND_ABIT</span><span class="plain"> = </span><span class="constant">$$10000000</span><span class="plain">;</span>
 
-    <span class="plain">[ NeedToCarryNoun;       return TestActionMask(CARRY_NOUN_ABIT); ];</span>
-    <span class="plain">[ NeedToCarrySecondNoun; return TestActionMask(CARRY_SECOND_ABIT); ];</span>
-    <span class="plain">[ NeedToTouchNoun;       return TestActionMask(TOUCH_NOUN_ABIT); ];</span>
-    <span class="plain">[ NeedToTouchSecondNoun; return TestActionMask(TOUCH_SECOND_ABIT); ];</span>
-    <span class="plain">[ NeedLightForAction;    return TestActionMask(LIGHT_ABIT); ];</span>
+    <span class="plain">[ </span><span class="identifier">NeedToCarryNoun</span><span class="plain">;       </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestActionMask</span><span class="plain">(</span><span class="identifier">CARRY_NOUN_ABIT</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">NeedToCarrySecondNoun</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestActionMask</span><span class="plain">(</span><span class="identifier">CARRY_SECOND_ABIT</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">NeedToTouchNoun</span><span class="plain">;       </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestActionMask</span><span class="plain">(</span><span class="identifier">TOUCH_NOUN_ABIT</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">NeedToTouchSecondNoun</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestActionMask</span><span class="plain">(</span><span class="identifier">TOUCH_SECOND_ABIT</span><span class="plain">); ];</span>
+    <span class="plain">[ </span><span class="identifier">NeedLightForAction</span><span class="plain">;    </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestActionMask</span><span class="plain">(</span><span class="identifier">LIGHT_ABIT</span><span class="plain">); ];</span>
 
-    <span class="plain">[ TestActionMask match mask at;</span>
-        <span class="plain">at = FindAction(-1);</span>
-        <span class="plain">if (at == 0) rfalse;</span>
-        <span class="plain">mask = ActionData--&gt;(at+AD_REQUIREMENTS);</span>
-        <span class="plain">if (mask &amp; match) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">TestActionMask</span><span class="plain"> </span><span class="identifier">match</span><span class="plain"> </span><span class="identifier">mask</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">;</span>
+        <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(-1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">mask</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_REQUIREMENTS</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">match</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -142,49 +142,49 @@ various possible action requirements:
 
 
 <pre class="display">
-    <span class="plain">[ TryAction req by ac n s stora smeta tbits saved_command text_of_command;</span>
-        <span class="plain">if (stora) return STORED_ACTION_TY_New(ac, n, s, by, req, stora);</span>
-        <span class="plain">tbits = req &amp; (16+32);</span>
-        <span class="plain">req = req &amp; 1;</span>
-        <span class="plain">@push actor; @push act_requester; @push inp1; @push inp2;</span>
-        <span class="plain">@push parsed_number; smeta = meta;</span>
-        <span class="plain">actor = by; if (req) act_requester = player; else act_requester = 0;</span>
+    <span class="plain">[ </span><span class="identifier">TryAction</span><span class="plain"> </span><span class="identifier">req</span><span class="plain"> </span><span class="identifier">by</span><span class="plain"> </span><span class="identifier">ac</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">stora</span><span class="plain"> </span><span class="identifier">smeta</span><span class="plain"> </span><span class="identifier">tbits</span><span class="plain"> </span><span class="identifier">saved_command</span><span class="plain"> </span><span class="identifier">text_of_command</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stora</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">STORED_ACTION_TY_New</span><span class="plain">(</span><span class="identifier">ac</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">by</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">stora</span><span class="plain">);</span>
+        <span class="identifier">tbits</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain"> &amp; (16+32);</span>
+        <span class="identifier">req</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain"> &amp; </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">inp1</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">inp2</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">parsed_number</span><span class="plain">; </span><span class="identifier">smeta</span><span class="plain"> = </span><span class="identifier">meta</span><span class="plain">;</span>
+        <span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">by</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">) </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="plain">by = FindAction(ac);</span>
-        <span class="plain">if (by) {</span>
-            <span class="plain">if (ActionData--&gt;(by+AD_NOUN_KOV) == OBJECT_TY) inp1 = n;</span>
-            <span class="plain">else { inp1 = 1; parsed_number = n; }</span>
-            <span class="plain">if (ActionData--&gt;(by+AD_SECOND_KOV) == OBJECT_TY) inp2 = s;</span>
-            <span class="plain">else { inp2 = 1; parsed_number = s; }</span>
-            <span class="plain">if (((ActionData--&gt;(by+AD_NOUN_KOV) == UNDERSTANDING_TY) ||</span>
-                <span class="plain">(ActionData--&gt;(by+AD_SECOND_KOV) == UNDERSTANDING_TY)) &amp;&amp; (tbits)) {</span>
-                <span class="plain">saved_command = BlkValueCreate(TEXT_TY);</span>
-                <span class="plain">BlkValueCast(saved_command, SNIPPET_TY, players_command);</span>
-                <span class="plain">text_of_command = BlkValueCreate(TEXT_TY);</span>
-                <span class="plain">BlkValueCopy(text_of_command, parsed_number);</span>
-                <span class="plain">SetPlayersCommand(text_of_command);</span>
-                <span class="plain">if (tbits == 16) {</span>
-                    <span class="plain">n = players_command; inp1 = 1; parsed_number = players_command;</span>
-                <span class="plain">} else {</span>
-                    <span class="plain">s = players_command; inp2 = 1; parsed_number = players_command;</span>
+        <span class="identifier">by</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(</span><span class="identifier">ac</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">by</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">by</span><span class="plain">+</span><span class="identifier">AD_NOUN_KOV</span><span class="plain">) == </span><span class="identifier">OBJECT_TY</span><span class="plain">) </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">by</span><span class="plain">+</span><span class="identifier">AD_SECOND_KOV</span><span class="plain">) == </span><span class="identifier">OBJECT_TY</span><span class="plain">) </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">by</span><span class="plain">+</span><span class="identifier">AD_NOUN_KOV</span><span class="plain">) == </span><span class="identifier">UNDERSTANDING_TY</span><span class="plain">) ||</span>
+                <span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">by</span><span class="plain">+</span><span class="identifier">AD_SECOND_KOV</span><span class="plain">) == </span><span class="identifier">UNDERSTANDING_TY</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">tbits</span><span class="plain">)) {</span>
+                <span class="identifier">saved_command</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">TEXT_TY</span><span class="plain">);</span>
+                <span class="identifier">BlkValueCast</span><span class="plain">(</span><span class="identifier">saved_command</span><span class="plain">, </span><span class="identifier">SNIPPET_TY</span><span class="plain">, </span><span class="identifier">players_command</span><span class="plain">);</span>
+                <span class="identifier">text_of_command</span><span class="plain"> = </span><span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">TEXT_TY</span><span class="plain">);</span>
+                <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">text_of_command</span><span class="plain">, </span><span class="identifier">parsed_number</span><span class="plain">);</span>
+                <span class="identifier">SetPlayersCommand</span><span class="plain">(</span><span class="identifier">text_of_command</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tbits</span><span class="plain"> == </span><span class="constant">16</span><span class="plain">) {</span>
+                    <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">players_command</span><span class="plain">; </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">players_command</span><span class="plain">;</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">s</span><span class="plain"> = </span><span class="identifier">players_command</span><span class="plain">; </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">players_command</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">BlkValueFree(text_of_command);</span>
-                <span class="plain">@push consult_from; @push consult_words;</span>
-                <span class="plain">consult_from = 1; consult_words = parsed_number - 100;</span>
+                <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">text_of_command</span><span class="plain">);</span>
+                <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">consult_from</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">consult_words</span><span class="plain">;</span>
+                <span class="identifier">consult_from</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">consult_words</span><span class="plain"> = </span><span class="identifier">parsed_number</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">100</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">BeginAction(ac, n, s, 0, true);</span>
+        <span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">ac</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
 
-        <span class="plain">if (saved_command) {</span>
-            <span class="plain">@pull consult_words; @pull consult_from;</span>
-            <span class="plain">SetPlayersCommand(saved_command);</span>
-            <span class="plain">BlkValueFree(saved_command);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">saved_command</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">consult_words</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">consult_from</span><span class="plain">;</span>
+            <span class="identifier">SetPlayersCommand</span><span class="plain">(</span><span class="identifier">saved_command</span><span class="plain">);</span>
+            <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">saved_command</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="plain">meta = smeta; @pull parsed_number;</span>
-        <span class="plain">@pull inp2; @pull inp1; @pull act_requester; @pull actor;</span>
-        <span class="plain">TrackActions(true, smeta);</span>
+        <span class="identifier">meta</span><span class="plain"> = </span><span class="identifier">smeta</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">parsed_number</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">inp2</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">inp1</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">;</span>
+        <span class="identifier">TrackActions</span><span class="plain">(</span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">smeta</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -198,10 +198,10 @@ compiler.
 
 
 <pre class="display">
-    <span class="plain">[ R_Process a i j;</span>
-        <span class="plain">@push inp1; @push inp2;</span>
-        <span class="plain">inp1 = i; inp2 = j; BeginAction(a, i, j);</span>
-        <span class="plain">@pull inp2; @pull inp1;</span>
+    <span class="plain">[ </span><span class="identifier">R_Process</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">inp1</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">inp2</span><span class="plain">;</span>
+        <span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">; </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">a</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">inp2</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">inp1</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -212,33 +212,33 @@ compiler.
 
 
 <pre class="display">
-    <span class="plain">Global converted_action_outcome = -1;</span>
-    <span class="plain">[ GVS_Convert ac n s;</span>
-        <span class="plain">converted_action_outcome = BeginAction(ac, n, s);</span>
-        <span class="plain">if (converted_action_outcome == true) FollowRulebook(AFTER_RB, nothing, true );</span>
-        <span class="plain">rtrue;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">converted_action_outcome</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">GVS_Convert</span><span class="plain"> </span><span class="identifier">ac</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="identifier">converted_action_outcome</span><span class="plain"> = </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">ac</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">converted_action_outcome</span><span class="plain"> == </span><span class="reserved">true</span><span class="plain">) </span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">AFTER_RB</span><span class="plain">, </span><span class="reserved">nothing</span><span class="plain">, </span><span class="reserved">true</span><span class="plain"> );</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ConvertToRequest X AN Y Z;</span>
-        <span class="plain">WORK_OUT_DETAILS_OF_SPECIFIC_R();</span>
-        <span class="plain">if (X == player) TryAction(false, X, AN, Y, Z);</span>
-        <span class="plain">else TryAction(true, X, AN, Y, Z);</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">ConvertToRequest</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> </span><span class="identifier">AN</span><span class="plain"> </span><span class="identifier">Y</span><span class="plain"> </span><span class="identifier">Z</span><span class="plain">;</span>
+        <span class="identifier">WORK_OUT_DETAILS_OF_SPECIFIC_R</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) </span><span class="identifier">TryAction</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">AN</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">Z</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">TryAction</span><span class="plain">(</span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">AN</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">Z</span><span class="plain">);</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ConvertToGoingWithPush i oldrm newrm infl;</span>
-        <span class="plain">i=noun;</span>
-        <span class="plain">if (IndirectlyContains(noun, actor) == false) { move i to actor; infl = true; }</span>
-        <span class="plain">move_pushing = i;</span>
-        <span class="plain">oldrm = LocationOf(noun);</span>
-        <span class="plain">BeginAction(##Go, second);</span>
-        <span class="plain">newrm = LocationOf(actor);</span>
-        <span class="plain">move_pushing = nothing; move i to newrm;</span>
-        <span class="plain">if (newrm ~= oldrm) {</span>
-            <span class="plain">if (IndirectlyContains(i, player)) TryAction(0, player, ##Look, 0, 0);</span>
-            <span class="plain">RulebookSucceeds();</span>
-        <span class="plain">} else RulebookFails();</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">ConvertToGoingWithPush</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">oldrm</span><span class="plain"> </span><span class="identifier">newrm</span><span class="plain"> </span><span class="identifier">infl</span><span class="plain">;</span>
+        <span class="identifier">i</span><span class="plain">=</span><span class="identifier">noun</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) { </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">; </span><span class="identifier">infl</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; }</span>
+        <span class="identifier">move_pushing</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="identifier">oldrm</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain">);</span>
+        <span class="identifier">BeginAction</span><span class="plain">(##</span><span class="identifier">Go</span><span class="plain">, </span><span class="identifier">second</span><span class="plain">);</span>
+        <span class="identifier">newrm</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">actor</span><span class="plain">);</span>
+        <span class="identifier">move_pushing</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">newrm</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newrm</span><span class="plain"> ~= </span><span class="identifier">oldrm</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">player</span><span class="plain">)) </span><span class="identifier">TryAction</span><span class="plain">(0, </span><span class="identifier">player</span><span class="plain">, ##</span><span class="identifier">Look</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">RulebookSucceeds</span><span class="plain">();</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">RulebookFails</span><span class="plain">();</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -249,20 +249,20 @@ compiler.
 
 
 <pre class="display">
-    <span class="plain">[ ImplicitTake obj ks;</span>
-        <span class="plain">if (actor == player) { STANDARD_IMPLICIT_TAKING_RM('A', obj); }</span>
-        <span class="plain">else {</span>
-            <span class="plain">if (TestVisibility(player, actor))</span>
-                <span class="plain">STANDARD_IMPLICIT_TAKING_RM('B', obj, actor);</span>
+    <span class="plain">[ </span><span class="identifier">ImplicitTake</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">ks</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">STANDARD_IMPLICIT_TAKING_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">); }</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TestVisibility</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">))</span>
+                <span class="identifier">STANDARD_IMPLICIT_TAKING_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">ClearParagraphing(3);</span>
-        <span class="plain">@push keep_silent; keep_silent = true;</span>
-        <span class="plain">@push say__p; @push say__pc; ClearParagraphing(4);</span>
-        <span class="plain">if (act_requester) TryAction(true, actor, ##Take, obj, nothing);</span>
-        <span class="plain">else TryAction(false, actor, ##Take, obj, nothing);</span>
-        <span class="plain">DivideParagraphPoint(); @pull say__pc; @pull say__p; AdjustParagraphPoint(); @pull keep_silent;</span>
-        <span class="plain">if (obj in actor) rtrue;</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">ClearParagraphing</span><span class="plain">(3);</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">keep_silent</span><span class="plain">; </span><span class="identifier">keep_silent</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">; </span><span class="identifier">ClearParagraphing</span><span class="plain">(4);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act_requester</span><span class="plain">) </span><span class="identifier">TryAction</span><span class="plain">(</span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">, ##</span><span class="identifier">Take</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="reserved">nothing</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">TryAction</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">, ##</span><span class="identifier">Take</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="reserved">nothing</span><span class="plain">);</span>
+        <span class="identifier">DivideParagraphPoint</span><span class="plain">(); @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">; </span><span class="identifier">AdjustParagraphPoint</span><span class="plain">(); @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">keep_silent</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -280,9 +280,9 @@ SUPERBRIEF mode set.
 
 
 <pre class="display">
-    <span class="plain">[ LookAfterGoing;</span>
-        <span class="plain">GoingLookBreak();</span>
-        <span class="plain">AbbreviatedRoomDescription();</span>
+    <span class="plain">[ </span><span class="identifier">LookAfterGoing</span><span class="plain">;</span>
+        <span class="identifier">GoingLookBreak</span><span class="plain">();</span>
+        <span class="identifier">AbbreviatedRoomDescription</span><span class="plain">();</span>
     <span class="plain">];</span>
 </pre>
 
@@ -326,22 +326,22 @@ runs through the specific action processing stage.
 
 
 <pre class="display">
-    <span class="plain">[ AbbreviatedRoomDescription  prior_action pos frame_id;</span>
-        <span class="plain">prior_action = action;</span>
+    <span class="plain">[ </span><span class="identifier">AbbreviatedRoomDescription</span><span class="plain">  </span><span class="identifier">prior_action</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">frame_id</span><span class="plain">;</span>
+        <span class="identifier">prior_action</span><span class="plain"> = </span><span class="identifier">action</span><span class="plain">;</span>
 
-        <span class="plain">action = ##Look;</span>
-        <span class="plain">pos = FindAction(##Look);</span>
-        <span class="plain">if ((pos) &amp;&amp; (ActionData--&gt;(pos+AD_VARIABLES_CREATOR))) {</span>
-            <span class="plain">frame_id = ActionData--&gt;(pos+AD_VARIABLES_ID);</span>
-            <span class="plain">Mstack_Create_Frame(ActionData--&gt;(pos+AD_VARIABLES_CREATOR), frame_id);</span>
-            <span class="plain">FollowRulebook(SETTING_ACTION_VARIABLES_RB);</span>
-            <span class="plain">(MStack--&gt;MstVO(frame_id, 0)) = prior_action; ! "room-describing action"</span>
-            <span class="plain">(MStack--&gt;MstVO(frame_id, 1)) = true; ! "abbreviated form allowed"</span>
+        <span class="identifier">action</span><span class="plain"> = ##</span><span class="identifier">Look</span><span class="plain">;</span>
+        <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(##</span><span class="identifier">Look</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">))) {</span>
+            <span class="identifier">frame_id</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_ID</span><span class="plain">);</span>
+            <span class="identifier">Mstack_Create_Frame</span><span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">), </span><span class="identifier">frame_id</span><span class="plain">);</span>
+            <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">SETTING_ACTION_VARIABLES_RB</span><span class="plain">);</span>
+            <span class="plain">(</span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">frame_id</span><span class="plain">, </span><span class="constant">0</span><span class="plain">)) = </span><span class="identifier">prior_action</span><span class="plain">; </span><span class="comment">! "room-describing action"</span>
+            <span class="plain">(</span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">frame_id</span><span class="plain">, </span><span class="constant">1</span><span class="plain">)) = </span><span class="reserved">true</span><span class="plain">; </span><span class="comment">! "abbreviated form allowed"</span>
         <span class="plain">}</span>
-        <span class="plain">LookSub(); ! The I6 verb routine for "looking"</span>
-        <span class="plain">if (frame_id) Mstack_Destroy_Frame(ActionData--&gt;(pos+AD_VARIABLES_CREATOR), frame_id);</span>
+        <span class="identifier">LookSub</span><span class="plain">(); </span><span class="comment">! The I6 verb routine for "looking"</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">frame_id</span><span class="plain">) </span><span class="identifier">Mstack_Destroy_Frame</span><span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">), </span><span class="identifier">frame_id</span><span class="plain">);</span>
 
-        <span class="plain">action = prior_action;</span>
+        <span class="identifier">action</span><span class="plain"> = </span><span class="identifier">prior_action</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -362,18 +362,18 @@ and then call <code class="display"><span class="extract">ActionPrimitive</span>
 
 
 <pre class="display">
-    <span class="plain">[ BeginAction a n s moi notrack  rv;</span>
-        <span class="plain">ChronologyPoint();</span>
+    <span class="plain">[ </span><span class="identifier">BeginAction</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">moi</span><span class="plain"> </span><span class="identifier">notrack</span><span class="plain">  </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="identifier">ChronologyPoint</span><span class="plain">();</span>
 
-        <span class="plain">@push action; @push noun; @push second; @push self; @push multiple_object_item;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">action</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">second</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">self</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">multiple_object_item</span><span class="plain">;</span>
 
-        <span class="plain">action = a; noun = n; second = s; self = noun; multiple_object_item = moi;</span>
-        <span class="plain">if (action &lt; 4096) rv = ActionPrimitive();</span>
+        <span class="identifier">action</span><span class="plain"> = </span><span class="identifier">a</span><span class="plain">; </span><span class="identifier">noun</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">second</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">; </span><span class="identifier">self</span><span class="plain"> = </span><span class="identifier">noun</span><span class="plain">; </span><span class="identifier">multiple_object_item</span><span class="plain"> = </span><span class="identifier">moi</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action</span><span class="plain"> &lt; </span><span class="constant">4096</span><span class="plain">) </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">ActionPrimitive</span><span class="plain">();</span>
 
-        <span class="plain">@pull multiple_object_item; @pull self; @pull second; @pull noun; @pull action;</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">multiple_object_item</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">self</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">second</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">action</span><span class="plain">;</span>
 
-        <span class="plain">if (notrack == false) TrackActions(true, meta);</span>
-        <span class="plain">return rv;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">notrack</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">TrackActions</span><span class="plain">(</span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">meta</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -399,68 +399,68 @@ more discussion of this.
 
 
 <pre class="display">
-    <span class="plain">[ ActionPrimitive  rv p1 p2 p3 p4 p5 frame_id;</span>
-        <span class="plain">MStack_CreateRBVars(ACTION_PROCESSING_RB);</span>
+    <span class="plain">[ </span><span class="identifier">ActionPrimitive</span><span class="plain">  </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain"> </span><span class="identifier">p3</span><span class="plain"> </span><span class="identifier">p4</span><span class="plain"> </span><span class="identifier">p5</span><span class="plain"> </span><span class="identifier">frame_id</span><span class="plain">;</span>
+        <span class="identifier">MStack_CreateRBVars</span><span class="plain">(</span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">);</span>
 
-        <span class="plain">if ((keep_silent == false) &amp;&amp; (multiflag == false)) DivideParagraphPoint();</span>
-        <span class="plain">reason_the_action_failed = 0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">keep_silent</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">multiflag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
+        <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="plain">frame_id = -1;</span>
-        <span class="plain">p1 = FindAction(action);</span>
-        <span class="plain">if ((p1) &amp;&amp; (ActionData--&gt;(p1+AD_VARIABLES_CREATOR))) {</span>
-            <span class="plain">frame_id = ActionData--&gt;(p1+AD_VARIABLES_ID);</span>
-            <span class="plain">Mstack_Create_Frame(ActionData--&gt;(p1+AD_VARIABLES_CREATOR), frame_id);</span>
+        <span class="identifier">frame_id</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">p1</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">))) {</span>
+            <span class="identifier">frame_id</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">p1</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_ID</span><span class="plain">);</span>
+            <span class="identifier">Mstack_Create_Frame</span><span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">p1</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">), </span><span class="identifier">frame_id</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (ActionVariablesNotTypeSafe()) {</span>
-            <span class="plain">if (actor ~= player) { ACTION_PROCESSING_INTERNAL_RM('K'); new_line; }</span>
-            <span class="plain">if (frame_id ~= -1)</span>
-                <span class="plain">Mstack_Destroy_Frame(ActionData--&gt;(p1+AD_VARIABLES_CREATOR), frame_id);</span>
-            <span class="plain">MStack_DestroyRBVars(ACTION_PROCESSING_RB);</span>
-            <span class="plain">return;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ActionVariablesNotTypeSafe</span><span class="plain">()) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'K'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">frame_id</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain">)</span>
+                <span class="identifier">Mstack_Destroy_Frame</span><span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">p1</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">), </span><span class="identifier">frame_id</span><span class="plain">);</span>
+            <span class="identifier">MStack_DestroyRBVars</span><span class="plain">(</span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">FollowRulebook(SETTING_ACTION_VARIABLES_RB);</span>
+        <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">SETTING_ACTION_VARIABLES_RB</span><span class="plain">);</span>
 
-        <span class="plain">#IFDEF DEBUG;</span>
-        <span class="plain">if ((trace_actions) &amp;&amp; (FindAction(-1))) {</span>
-            <span class="plain">print "["; p1=actor; p2=act_requester; p3=action; p4=noun; p5=second;</span>
-            <span class="plain">DB_Action(p1,p2,p3,p4,p5);</span>
-            <span class="plain">print "]^"; ClearParagraphing(5);</span>
+        <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">trace_actions</span><span class="plain">) &amp;&amp; (</span><span class="identifier">FindAction</span><span class="plain">(-1))) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"["</span><span class="plain">; </span><span class="identifier">p1</span><span class="plain">=</span><span class="identifier">actor</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain">=</span><span class="identifier">act_requester</span><span class="plain">; </span><span class="identifier">p3</span><span class="plain">=</span><span class="identifier">action</span><span class="plain">; </span><span class="identifier">p4</span><span class="plain">=</span><span class="identifier">noun</span><span class="plain">; </span><span class="identifier">p5</span><span class="plain">=</span><span class="identifier">second</span><span class="plain">;</span>
+            <span class="identifier">DB_Action</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">,</span><span class="identifier">p2</span><span class="plain">,</span><span class="identifier">p3</span><span class="plain">,</span><span class="identifier">p4</span><span class="plain">,</span><span class="identifier">p5</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"]^"</span><span class="plain">; </span><span class="identifier">ClearParagraphing</span><span class="plain">(5);</span>
         <span class="plain">}</span>
-        <span class="plain">++debug_rule_nesting;</span>
-        <span class="plain">#ENDIF;</span>
-        <span class="plain">TrackActions(false, meta);</span>
-        <span class="plain">if ((meta) &amp;&amp; (actor ~= player)) {</span>
-            <span class="plain">ACTION_PROCESSING_INTERNAL_RM('A', actor); new_line; rv = RS_FAILS; }</span>
-        <span class="plain">else if (meta) { DESCEND_TO_SPECIFIC_ACTION_R(); rv = RulebookOutcome(); }</span>
-        <span class="plain">else { FollowRulebook(ACTION_PROCESSING_RB); rv = RulebookOutcome(); }</span>
-        <span class="plain">#IFDEF DEBUG;</span>
-        <span class="plain">--debug_rule_nesting;</span>
-        <span class="plain">if ((trace_actions) &amp;&amp; (FindAction(-1))) {</span>
-            <span class="plain">print "["; DB_Action(p1,p2,p3,p4,p5); print " - ";</span>
-            <span class="plain">switch (rv) {</span>
-                <span class="plain">RS_SUCCEEDS: print "succeeded";</span>
-                <span class="plain">RS_FAILS: print "failed";</span>
-                    <span class="plain">#IFNDEF MEMORY_ECONOMY;</span>
-                    <span class="plain">if (reason_the_action_failed)</span>
-                        <span class="plain">print " the ",</span>
-                            <span class="plain">(RulePrintingRule) reason_the_action_failed;</span>
-                    <span class="plain">#ENDIF;</span>
-                <span class="plain">default: print "ended without result";</span>
+        <span class="plain">++</span><span class="identifier">debug_rule_nesting</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
+        <span class="identifier">TrackActions</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">meta</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">meta</span><span class="plain">) &amp;&amp; (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">)) {</span>
+            <span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">RS_FAILS</span><span class="plain">; }</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meta</span><span class="plain">) { </span><span class="identifier">DESCEND_TO_SPECIFIC_ACTION_R</span><span class="plain">(); </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">RulebookOutcome</span><span class="plain">(); }</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">); </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">RulebookOutcome</span><span class="plain">(); }</span>
+        <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
+        <span class="constant">--</span><span class="identifier">debug_rule_nesting</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">trace_actions</span><span class="plain">) &amp;&amp; (</span><span class="identifier">FindAction</span><span class="plain">(-1))) {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"["</span><span class="plain">; </span><span class="identifier">DB_Action</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">,</span><span class="identifier">p2</span><span class="plain">,</span><span class="identifier">p3</span><span class="plain">,</span><span class="identifier">p4</span><span class="plain">,</span><span class="identifier">p5</span><span class="plain">); </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" - "</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) {</span>
+                <span class="identifier">RS_SUCCEEDS</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"succeeded"</span><span class="plain">;</span>
+                <span class="identifier">RS_FAILS</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"failed"</span><span class="plain">;</span>
+                    <span class="plain">#</span><span class="identifier">IFNDEF</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reason_the_action_failed</span><span class="plain">)</span>
+                        <span class="reserved">print</span><span class="plain"> </span><span class="string">" the "</span><span class="plain">,</span>
+                            <span class="plain">(</span><span class="identifier">RulePrintingRule</span><span class="plain">) </span><span class="identifier">reason_the_action_failed</span><span class="plain">;</span>
+                    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
+                <span class="reserved">default</span><span class="plain">: </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"ended without result"</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">print "]^"; say__p = 1;</span>
-            <span class="plain">SetRulebookOutcome(rv); ! In case disturbed by printing activities</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"]^"</span><span class="plain">; </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">SetRulebookOutcome</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">); </span><span class="comment">! In case disturbed by printing activities</span>
         <span class="plain">}</span>
-        <span class="plain">#ENDIF;</span>
-        <span class="plain">if (rv == RS_SUCCEEDS) UpdateActionBitmap();</span>
-        <span class="plain">if (frame_id ~= -1) {</span>
-            <span class="plain">p1 = FindAction(action);</span>
-            <span class="plain">Mstack_Destroy_Frame(ActionData--&gt;(p1+AD_VARIABLES_CREATOR), frame_id);</span>
+        <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">) </span><span class="identifier">UpdateActionBitmap</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">frame_id</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain">) {</span>
+            <span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">);</span>
+            <span class="identifier">Mstack_Destroy_Frame</span><span class="plain">(</span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">p1</span><span class="plain">+</span><span class="identifier">AD_VARIABLES_CREATOR</span><span class="plain">), </span><span class="identifier">frame_id</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">MStack_DestroyRBVars(ACTION_PROCESSING_RB);</span>
-        <span class="plain">if ((keep_silent == false) &amp;&amp; (multiflag == false)) DivideParagraphPoint();</span>
-        <span class="plain">if (rv == RS_SUCCEEDS) rtrue;</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">MStack_DestroyRBVars</span><span class="plain">(</span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">keep_silent</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">multiflag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -471,7 +471,7 @@ more discussion of this.
 
 
 <pre class="display">
-    <span class="plain">[ ACTION_PROCESSING_INTERNAL_R; ];</span>
+    <span class="plain">[ </span><span class="identifier">ACTION_PROCESSING_INTERNAL_R</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -503,85 +503,85 @@ or "supplying a missing second noun" activities to fill the void.
 
 
 <pre class="display">
-    <span class="plain">[ ActionVariablesNotTypeSafe mask noun_kova second_kova at;</span>
-        <span class="plain">at = FindAction(-1); if (at == 0) rfalse; ! For any I6-defined actions</span>
+    <span class="plain">[ </span><span class="identifier">ActionVariablesNotTypeSafe</span><span class="plain"> </span><span class="identifier">mask</span><span class="plain"> </span><span class="identifier">noun_kova</span><span class="plain"> </span><span class="identifier">second_kova</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">;</span>
+        <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(-1); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! For any I6-defined actions</span>
 
-        <span class="plain">noun_kova = ActionData--&gt;(at+AD_NOUN_KOV);</span>
-        <span class="plain">second_kova = ActionData--&gt;(at+AD_SECOND_KOV);</span>
+        <span class="identifier">noun_kova</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_NOUN_KOV</span><span class="plain">);</span>
+        <span class="identifier">second_kova</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_SECOND_KOV</span><span class="plain">);</span>
 
-        <span class="plain">!print "at = ", at, " nst = ", noun_kova, "^";</span>
-        <span class="plain">!print "consult_from = ", consult_from, " consult_words = ", consult_from, "^";</span>
-        <span class="plain">!print "inp1 = ", inp1, " noun = ", noun, "^";</span>
-        <span class="plain">!print "inp2 = ", inp2, " second = ", second, "^";</span>
-        <span class="plain">!print "sst = ", second_kova, "^";</span>
+        <span class="comment">!print "at = ", at, " nst = ", noun_kova, "^";</span>
+        <span class="comment">!print "consult_from = ", consult_from, " consult_words = ", consult_from, "^";</span>
+        <span class="comment">!print "inp1 = ", inp1, " noun = ", noun, "^";</span>
+        <span class="comment">!print "inp2 = ", inp2, " second = ", second, "^";</span>
+        <span class="comment">!print "sst = ", second_kova, "^";</span>
 
-        <span class="plain">if (noun_kova == SNIPPET_TY or UNDERSTANDING_TY) {</span>
-            <span class="plain">if (inp1 ~= 1) { inp2 = inp1; second = noun; }</span>
-            <span class="plain">parsed_number = 100*consult_from + consult_words;</span>
-            <span class="plain">inp1 = 1; noun = nothing; ! noun = parsed_number;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun_kova</span><span class="plain"> == </span><span class="identifier">SNIPPET_TY</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UNDERSTANDING_TY</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">inp1</span><span class="plain">; </span><span class="identifier">second</span><span class="plain"> = </span><span class="identifier">noun</span><span class="plain">; }</span>
+            <span class="identifier">parsed_number</span><span class="plain"> = </span><span class="constant">100</span><span class="plain">*</span><span class="identifier">consult_from</span><span class="plain"> + </span><span class="identifier">consult_words</span><span class="plain">;</span>
+            <span class="identifier">inp1</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">noun</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="comment">! noun = parsed_number;</span>
         <span class="plain">}</span>
-        <span class="plain">if (second_kova == SNIPPET_TY or UNDERSTANDING_TY) {</span>
-            <span class="plain">parsed_number = 100*consult_from + consult_words;</span>
-            <span class="plain">inp2 = 1; second = nothing; ! second = parsed_number;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second_kova</span><span class="plain"> == </span><span class="identifier">SNIPPET_TY</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UNDERSTANDING_TY</span><span class="plain">) {</span>
+            <span class="identifier">parsed_number</span><span class="plain"> = </span><span class="constant">100</span><span class="plain">*</span><span class="identifier">consult_from</span><span class="plain"> + </span><span class="identifier">consult_words</span><span class="plain">;</span>
+            <span class="identifier">inp2</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">second</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="comment">! second = parsed_number;</span>
         <span class="plain">}</span>
 
-        <span class="plain">mask = ActionData--&gt;(at+AD_REQUIREMENTS);</span>
-        <span class="plain">if (mask &amp; OUT_OF_WORLD_ABIT) { meta = 1; rfalse; }</span>
-        <span class="plain">meta = 0;</span>
+        <span class="identifier">mask</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_REQUIREMENTS</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">OUT_OF_WORLD_ABIT</span><span class="plain">) { </span><span class="identifier">meta</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; }</span>
+        <span class="identifier">meta</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="plain">if (inp1 == 1) {</span>
-            <span class="plain">if (noun_kova == OBJECT_TY) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('B'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun_kova</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if (noun_kova ~= OBJECT_TY) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('C'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun_kova</span><span class="plain"> ~= </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if ((mask &amp; NEED_NOUN_ABIT) &amp;&amp; (noun == nothing)) {</span>
-                <span class="plain">@push act_requester; act_requester = nothing;</span>
-                <span class="plain">CarryOutActivity(SUPPLYING_A_MISSING_NOUN_ACT);</span>
-                <span class="plain">@pull act_requester;</span>
-                <span class="plain">if (noun == nothing) {</span>
-                    <span class="plain">if (say__p) rtrue;</span>
-                    <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('D'); new_line; }</span>
-                    <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">NEED_NOUN_ABIT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">noun</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">)) {</span>
+                <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">; </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+                <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">SUPPLYING_A_MISSING_NOUN_ACT</span><span class="plain">);</span>
+                <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'D'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                    <span class="reserved">rtrue</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="plain">if (((mask &amp; NEED_NOUN_ABIT) == 0) &amp;&amp; (noun ~= nothing)) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('E'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">NEED_NOUN_ABIT</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">noun</span><span class="plain"> ~= </span><span class="reserved">nothing</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'E'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">if (inp2 == 1) {</span>
-            <span class="plain">if (second_kova == OBJECT_TY) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('F'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp2</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second_kova</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'F'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} else {</span>
-            <span class="plain">if (second_kova ~= OBJECT_TY) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('G'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second_kova</span><span class="plain"> ~= </span><span class="identifier">OBJECT_TY</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'G'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if ((mask &amp; NEED_SECOND_ABIT) &amp;&amp; (second == nothing)) {</span>
-                <span class="plain">@push act_requester; act_requester = nothing;</span>
-                <span class="plain">CarryOutActivity(SUPPLYING_A_MISSING_SECOND_ACT);</span>
-                <span class="plain">@pull act_requester;</span>
-                <span class="plain">if (second == nothing) {</span>
-                    <span class="plain">if (say__p) rtrue;</span>
-                    <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('H'); new_line; }</span>
-                    <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">NEED_SECOND_ABIT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">second</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">)) {</span>
+                <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">; </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+                <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">SUPPLYING_A_MISSING_SECOND_ACT</span><span class="plain">);</span>
+                <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'H'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                    <span class="reserved">rtrue</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="plain">if (((mask &amp; NEED_SECOND_ABIT) == 0) &amp;&amp; (second ~= nothing)) {</span>
-                <span class="plain">if (actor == player) { ACTION_PROCESSING_INTERNAL_RM('I'); new_line; }</span>
-                <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">NEED_SECOND_ABIT</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">second</span><span class="plain"> ~= </span><span class="reserved">nothing</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'I'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -598,22 +598,22 @@ so that it would be unfair to apply the rule to any other person.
 
 
 <pre class="display">
-    <span class="plain">[ BASIC_VISIBILITY_R;</span>
-        <span class="plain">if (act_requester) rfalse;</span>
-        <span class="plain">if ((NeedLightForAction()) &amp;&amp;</span>
-            <span class="plain">(actor == player) &amp;&amp;</span>
-            <span class="plain">(FollowRulebook(VISIBLE_RB)) &amp;&amp;</span>
-            <span class="plain">(RulebookSucceeded())) {</span>
-            <span class="plain">BeginActivity(REFUSAL_TO_ACT_IN_DARK_ACT);</span>
-            <span class="plain">if (ForActivity(REFUSAL_TO_ACT_IN_DARK_ACT)==false) {</span>
-                <span class="plain">BASIC_VISIBILITY_RM('A'); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">BASIC_VISIBILITY_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act_requester</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">NeedLightForAction</span><span class="plain">()) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">VISIBLE_RB</span><span class="plain">)) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">RulebookSucceeded</span><span class="plain">())) {</span>
+            <span class="identifier">BeginActivity</span><span class="plain">(</span><span class="identifier">REFUSAL_TO_ACT_IN_DARK_ACT</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ForActivity</span><span class="plain">(</span><span class="identifier">REFUSAL_TO_ACT_IN_DARK_ACT</span><span class="plain">)==</span><span class="reserved">false</span><span class="plain">) {</span>
+                <span class="identifier">BASIC_VISIBILITY_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">EndActivity(REFUSAL_TO_ACT_IN_DARK_ACT);</span>
-            <span class="plain">reason_the_action_failed = BASIC_VISIBILITY_R;</span>
-            <span class="plain">RulebookFails();</span>
-            <span class="plain">rtrue;</span>
+            <span class="identifier">EndActivity</span><span class="plain">(</span><span class="identifier">REFUSAL_TO_ACT_IN_DARK_ACT</span><span class="plain">);</span>
+            <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_VISIBILITY_R</span><span class="plain">;</span>
+            <span class="identifier">RulebookFails</span><span class="plain">();</span>
+            <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -625,46 +625,46 @@ see the account in the Standard Rules for details.
 
 
 <pre class="display">
-    <span class="plain">[ BASIC_ACCESSIBILITY_R mask at;</span>
-        <span class="plain">if (act_requester) rfalse;</span>
-        <span class="plain">at = FindAction(-1);</span>
-        <span class="plain">if (at == 0) rfalse;</span>
-        <span class="plain">mask = ActionData--&gt;(at+AD_REQUIREMENTS);</span>
+    <span class="plain">[ </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain"> </span><span class="identifier">mask</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act_requester</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(-1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">mask</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_REQUIREMENTS</span><span class="plain">);</span>
 
-        <span class="plain">if ((mask &amp; TOUCH_NOUN_ABIT) &amp;&amp; noun &amp;&amp; (inp1 ~= 1)) {</span>
-            <span class="plain">if (noun ofclass K3_direction) {</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">if (actor~=player) rtrue;</span>
-                <span class="plain">BASIC_ACCESSIBILITY_RM('A'); new_line;</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">TOUCH_NOUN_ABIT</span><span class="plain">) &amp;&amp; </span><span class="identifier">noun</span><span class="plain"> &amp;&amp; (</span><span class="identifier">inp1</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) {</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain">~=</span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                <span class="identifier">BASIC_ACCESSIBILITY_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if (ObjectIsUntouchable(noun, (actor~=player), actor)) {</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ObjectIsUntouchable</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain">, (</span><span class="identifier">actor</span><span class="plain">~=</span><span class="identifier">player</span><span class="plain">), </span><span class="identifier">actor</span><span class="plain">)) {</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">if ((mask &amp; TOUCH_SECOND_ABIT) &amp;&amp; second &amp;&amp; (inp2 ~= 1)) {</span>
-            <span class="plain">if (second ofclass K3_direction) {</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">if (actor~=player) rtrue;</span>
-                <span class="plain">BASIC_ACCESSIBILITY_RM('A'); new_line;</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">TOUCH_SECOND_ABIT</span><span class="plain">) &amp;&amp; </span><span class="identifier">second</span><span class="plain"> &amp;&amp; (</span><span class="identifier">inp2</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) {</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain">~=</span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                <span class="identifier">BASIC_ACCESSIBILITY_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if (ObjectIsUntouchable(second, (actor~=player), actor)) {</span>
-                <span class="plain">RulebookFails();</span>
-                <span class="plain">reason_the_action_failed = BASIC_ACCESSIBILITY_R;</span>
-                <span class="plain">rtrue;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ObjectIsUntouchable</span><span class="plain">(</span><span class="identifier">second</span><span class="plain">, (</span><span class="identifier">actor</span><span class="plain">~=</span><span class="identifier">player</span><span class="plain">), </span><span class="identifier">actor</span><span class="plain">)) {</span>
+                <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">BASIC_ACCESSIBILITY_R</span><span class="plain">;</span>
+                <span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -676,34 +676,34 @@ see the account in the Standard Rules for details.
 
 
 <pre class="display">
-    <span class="plain">[ CARRYING_REQUIREMENTS_R mask at;</span>
+    <span class="plain">[ </span><span class="identifier">CARRYING_REQUIREMENTS_R</span><span class="plain"> </span><span class="identifier">mask</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">;</span>
 
-        <span class="plain">at = FindAction(-1);</span>
-        <span class="plain">if (at == 0) rfalse;</span>
-        <span class="plain">mask = ActionData--&gt;(at+AD_REQUIREMENTS);</span>
+        <span class="identifier">at</span><span class="plain"> = </span><span class="identifier">FindAction</span><span class="plain">(-1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">mask</span><span class="plain"> = </span><span class="identifier">ActionData</span><span class="plain">--&gt;(</span><span class="identifier">at</span><span class="plain">+</span><span class="identifier">AD_REQUIREMENTS</span><span class="plain">);</span>
 
-        <span class="plain">if ((mask &amp; TOUCH_NOUN_ABIT) &amp;&amp; noun &amp;&amp; (inp1 ~= 1)) {</span>
-            <span class="plain">if ((mask &amp; CARRY_NOUN_ABIT) &amp;&amp; (noun notin actor)) {</span>
-                <span class="plain">CarryOutActivity(IMPLICITLY_TAKING_ACT, noun);</span>
-                <span class="plain">if (noun notin actor) {</span>
-                    <span class="plain">RulebookFails();</span>
-                    <span class="plain">reason_the_action_failed = CARRYING_REQUIREMENTS_R;</span>
-                    <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">TOUCH_NOUN_ABIT</span><span class="plain">) &amp;&amp; </span><span class="identifier">noun</span><span class="plain"> &amp;&amp; (</span><span class="identifier">inp1</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">CARRY_NOUN_ABIT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">noun</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">)) {</span>
+                <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">IMPLICITLY_TAKING_ACT</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">noun</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">) {</span>
+                    <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                    <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">CARRYING_REQUIREMENTS_R</span><span class="plain">;</span>
+                    <span class="reserved">rtrue</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">if ((mask &amp; TOUCH_SECOND_ABIT) &amp;&amp; second &amp;&amp; (inp2 ~= 1)) {</span>
-            <span class="plain">if ((mask &amp; CARRY_SECOND_ABIT) &amp;&amp; (second notin actor)) {</span>
-                <span class="plain">CarryOutActivity(IMPLICITLY_TAKING_ACT, second);</span>
-                <span class="plain">if (second notin actor) {</span>
-                    <span class="plain">RulebookFails();</span>
-                    <span class="plain">reason_the_action_failed = CARRYING_REQUIREMENTS_R;</span>
-                    <span class="plain">rtrue;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">TOUCH_SECOND_ABIT</span><span class="plain">) &amp;&amp; </span><span class="identifier">second</span><span class="plain"> &amp;&amp; (</span><span class="identifier">inp2</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mask</span><span class="plain"> &amp; </span><span class="identifier">CARRY_SECOND_ABIT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">second</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">)) {</span>
+                <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">IMPLICITLY_TAKING_ACT</span><span class="plain">, </span><span class="identifier">second</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">) {</span>
+                    <span class="identifier">RulebookFails</span><span class="plain">();</span>
+                    <span class="identifier">reason_the_action_failed</span><span class="plain"> = </span><span class="identifier">CARRYING_REQUIREMENTS_R</span><span class="plain">;</span>
+                    <span class="reserved">rtrue</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -713,9 +713,9 @@ see the account in the Standard Rules for details.
 
 
 <pre class="display">
-    <span class="plain">[ STANDARD_IMPLICIT_TAKING_R;</span>
-        <span class="plain">ImplicitTake(parameter_value);</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">STANDARD_IMPLICIT_TAKING_R</span><span class="plain">;</span>
+        <span class="identifier">ImplicitTake</span><span class="plain">(</span><span class="identifier">parameter_value</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -727,21 +727,21 @@ see the account in the Standard Rules for details.
 
 
 <pre class="display">
-    <span class="plain">[ REQUESTED_ACTIONS_REQUIRE_R rv;</span>
-        <span class="plain">if ((actor ~= player) &amp;&amp; (act_requester)) {</span>
-            <span class="plain">@push say__p;</span>
-            <span class="plain">say__p = 0;</span>
-            <span class="plain">rv = FollowRulebook(PERSUADE_RB);</span>
-            <span class="plain">if (RulebookSucceeded() == false) {</span>
-                <span class="plain">if ((deadflag == false) &amp;&amp; (say__p == false)) {</span>
-                    <span class="plain">REQUESTED_ACTIONS_REQUIRE_RM('A', actor);</span>
-                    <span class="plain">new_line;</span>
+    <span class="plain">[ </span><span class="identifier">REQUESTED_ACTIONS_REQUIRE_R</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) &amp;&amp; (</span><span class="identifier">act_requester</span><span class="plain">)) {</span>
+            <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">;</span>
+            <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">PERSUADE_RB</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RulebookSucceeded</span><span class="plain">() == </span><span class="reserved">false</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">say__p</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) {</span>
+                    <span class="identifier">REQUESTED_ACTIONS_REQUIRE_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">);</span>
+                    <span class="reserved">new_line</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">ActRulebookFails(rv); rtrue;</span>
+                <span class="identifier">ActRulebookFails</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">); </span><span class="reserved">rtrue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">@pull say__p;</span>
+            <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -753,21 +753,21 @@ see the account in the Standard Rules for details.
 
 
 <pre class="display">
-    <span class="plain">[ CARRY_OUT_REQUESTED_ACTIONS_R rv;</span>
-        <span class="plain">if ((actor ~= player) &amp;&amp; (act_requester)) {</span>
-            <span class="plain">@push act_requester; act_requester = nothing;</span>
-            <span class="plain">rv = BeginAction(action, noun, second);</span>
-            <span class="plain">if (((meta) || (rv == false)) &amp;&amp; (deadflag == false)) {</span>
-                <span class="plain">if (FollowRulebook(UNSUCCESSFUL_ATTEMPT_RB) == false) {</span>
-                    <span class="plain">CARRY_OUT_REQUESTED_ACTIONS_RM('A', actor); new_line;</span>
+    <span class="plain">[ </span><span class="identifier">CARRY_OUT_REQUESTED_ACTIONS_R</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) &amp;&amp; (</span><span class="identifier">act_requester</span><span class="plain">)) {</span>
+            <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">; </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">, </span><span class="identifier">second</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">meta</span><span class="plain">) || (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">UNSUCCESSFUL_ATTEMPT_RB</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) {</span>
+                    <span class="identifier">CARRY_OUT_REQUESTED_ACTIONS_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="plain">@pull act_requester;</span>
-            <span class="plain">FollowRulebook(AFTER_RB);</span>
-            <span class="plain">ActRulebookSucceeds();</span>
-            <span class="plain">rtrue;</span>
+            <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">;</span>
+            <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">AFTER_RB</span><span class="plain">);</span>
+            <span class="identifier">ActRulebookSucceeds</span><span class="plain">();</span>
+            <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -784,24 +784,24 @@ carry out and report rulebooks.
 
 
 <pre class="display">
-    <span class="plain">Array Details_of_Specific_Action--&gt;5;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;5;</span>
 
-    <span class="plain">[ GenericVerbSub ch co re vis rv;</span>
-        <span class="plain">@push converted_action_outcome;</span>
-        <span class="plain">converted_action_outcome = -1;</span>
+    <span class="plain">[ </span><span class="identifier">GenericVerbSub</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">co</span><span class="plain"> </span><span class="identifier">re</span><span class="plain"> </span><span class="identifier">vis</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">converted_action_outcome</span><span class="plain">;</span>
+        <span class="identifier">converted_action_outcome</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
 
-        <span class="plain">Details_of_Specific_Action--&gt;0 = true;</span>
-        <span class="plain">if (meta) Details_of_Specific_Action--&gt;0 = false;</span>
-        <span class="plain">Details_of_Specific_Action--&gt;1 = keep_silent;</span>
-        <span class="plain">Details_of_Specific_Action--&gt;2 = ch; ! Check rules for the action</span>
-        <span class="plain">Details_of_Specific_Action--&gt;3 = co; ! Carry out rules for the action</span>
-        <span class="plain">Details_of_Specific_Action--&gt;4 = re; ! Report rules for the action</span>
+        <span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;0 = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meta</span><span class="plain">) </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;0 = </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;1 = </span><span class="identifier">keep_silent</span><span class="plain">;</span>
+        <span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;2 = </span><span class="identifier">ch</span><span class="plain">; </span><span class="comment">! Check rules for the action</span>
+        <span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;3 = </span><span class="identifier">co</span><span class="plain">; </span><span class="comment">! Carry out rules for the action</span>
+        <span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;4 = </span><span class="identifier">re</span><span class="plain">; </span><span class="comment">! Report rules for the action</span>
 
-        <span class="plain">FollowRulebook(SPECIFIC_ACTION_PROCESSING_RB, 0, true);</span>
-        <span class="plain">if ((RulebookFailed()) &amp;&amp; (converted_action_outcome == 1)) ActRulebookSucceeds();</span>
+        <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">RulebookFailed</span><span class="plain">()) &amp;&amp; (</span><span class="identifier">converted_action_outcome</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)) </span><span class="identifier">ActRulebookSucceeds</span><span class="plain">();</span>
 
-        <span class="plain">@pull converted_action_outcome;</span>
-        <span class="plain">rtrue;</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">converted_action_outcome</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -817,13 +817,13 @@ flags, plus the three specific rulebooks needed to process the action.
 
 
 <pre class="display">
-    <span class="plain">[ WORK_OUT_DETAILS_OF_SPECIFIC_R;</span>
-        <span class="plain">MStack--&gt;MstVO(SPECIFIC_ACTION_PROCESSING_RB, 0) = Details_of_Specific_Action--&gt;0;</span>
-        <span class="plain">MStack--&gt;MstVO(SPECIFIC_ACTION_PROCESSING_RB, 1) = Details_of_Specific_Action--&gt;1;</span>
-        <span class="plain">MStack--&gt;MstVO(SPECIFIC_ACTION_PROCESSING_RB, 2) = Details_of_Specific_Action--&gt;2;</span>
-        <span class="plain">MStack--&gt;MstVO(SPECIFIC_ACTION_PROCESSING_RB, 3) = Details_of_Specific_Action--&gt;3;</span>
-        <span class="plain">MStack--&gt;MstVO(SPECIFIC_ACTION_PROCESSING_RB, 4) = Details_of_Specific_Action--&gt;4;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">WORK_OUT_DETAILS_OF_SPECIFIC_R</span><span class="plain">;</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) = </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;0;</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">1</span><span class="plain">) = </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;1;</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">2</span><span class="plain">) = </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;2;</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">3</span><span class="plain">) = </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;3;</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MstVO</span><span class="plain">(</span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">, </span><span class="constant">4</span><span class="plain">) = </span><span class="identifier">Details_of_Specific_Action</span><span class="plain">--&gt;4;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -840,39 +840,39 @@ to what the user might expect, which is unfortunate.
 
 
 <pre class="display">
-    <span class="plain">[ TestActionBitmap obj act i j k bitmap;</span>
-        <span class="plain">if (obj == nothing) bitmap = ActionHappened;</span>
-        <span class="plain">else {</span>
-            <span class="plain">if (~~(obj provides action_bitmap)) rfalse;</span>
-            <span class="plain">bitmap = obj.&amp;action_bitmap;</span>
+    <span class="plain">[ </span><span class="identifier">TestActionBitmap</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">act</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> = </span><span class="identifier">ActionHappened</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">action_bitmap</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="identifier">bitmap</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">.&amp;</span><span class="identifier">action_bitmap</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (act == -1) return (((bitmap-&gt;0) &amp; 1) ~= 0);</span>
-        <span class="plain">for (i=0, k=2: i&lt;ActionCount: i++) {</span>
-            <span class="plain">if (act == ActionCoding--&gt;i) {</span>
-                <span class="plain">return (((bitmap-&gt;j) &amp; k) ~= 0);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (((</span><span class="identifier">bitmap</span><span class="plain">-&gt;0) &amp; </span><span class="constant">1</span><span class="plain">) ~= </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">k</span><span class="plain">=2: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ActionCount</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act</span><span class="plain"> == </span><span class="identifier">ActionCoding</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) {</span>
+                <span class="reserved">return</span><span class="plain"> (((</span><span class="identifier">bitmap</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain">) &amp; </span><span class="identifier">k</span><span class="plain">) ~= </span><span class="constant">0</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="plain">k = k*2; if (k == 256) { k = 1; j++; }</span>
+            <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">*2; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">256</span><span class="plain">) { </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++; }</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ UpdateActionBitmap;</span>
-        <span class="plain">SetActionBitmap(noun, action);</span>
-        <span class="plain">if (action == ##Go) SetActionBitmap(location, ##Enter);</span>
+    <span class="plain">[ </span><span class="identifier">UpdateActionBitmap</span><span class="plain">;</span>
+        <span class="identifier">SetActionBitmap</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain">, </span><span class="identifier">action</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action</span><span class="plain"> == ##</span><span class="identifier">Go</span><span class="plain">) </span><span class="identifier">SetActionBitmap</span><span class="plain">(</span><span class="identifier">location</span><span class="plain">, ##</span><span class="identifier">Enter</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ SetActionBitmap obj act i j k bitmap;</span>
-        <span class="plain">for (i=0, k=2: i&lt;ActionCount: i++) {</span>
-            <span class="plain">if (act == ActionCoding--&gt;i) {</span>
-                <span class="plain">if (obj provides action_bitmap) {</span>
-                    <span class="plain">bitmap = obj.&amp;action_bitmap;</span>
-                    <span class="plain">bitmap-&gt;0 = (bitmap-&gt;0) | 1;</span>
-                    <span class="plain">bitmap-&gt;j = (bitmap-&gt;j) | k;</span>
+    <span class="plain">[ </span><span class="identifier">SetActionBitmap</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">act</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">k</span><span class="plain">=2: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ActionCount</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">act</span><span class="plain"> == </span><span class="identifier">ActionCoding</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">action_bitmap</span><span class="plain">) {</span>
+                    <span class="identifier">bitmap</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">.&amp;</span><span class="identifier">action_bitmap</span><span class="plain">;</span>
+                    <span class="identifier">bitmap</span><span class="plain">-&gt;0 = (</span><span class="identifier">bitmap</span><span class="plain">-&gt;0) | </span><span class="constant">1</span><span class="plain">;</span>
+                    <span class="identifier">bitmap</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain"> = (</span><span class="identifier">bitmap</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain">) | </span><span class="identifier">k</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">ActionHappened-&gt;0 = (ActionHappened-&gt;0) | 1;</span>
-                <span class="plain">ActionHappened-&gt;j = (ActionHappened-&gt;j) | k;</span>
+                <span class="identifier">ActionHappened</span><span class="plain">-&gt;0 = (</span><span class="identifier">ActionHappened</span><span class="plain">-&gt;0) | </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="identifier">ActionHappened</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain"> = (</span><span class="identifier">ActionHappened</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain">) | </span><span class="identifier">k</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">k = k*2; if (k == 256) { k = 1; j++; }</span>
+            <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">*2; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">256</span><span class="plain">) { </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++; }</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -887,30 +887,30 @@ a whole action might produce "Henry taking the grapefruit".)
 
 
 <pre class="display">
-    <span class="plain">[ SayActionName act; DB_Action(0, 0, act, 0, 0, 2); ];</span>
+    <span class="plain">[ </span><span class="identifier">SayActionName</span><span class="plain"> </span><span class="identifier">act</span><span class="plain">; </span><span class="identifier">DB_Action</span><span class="plain">(0, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">act</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">2</span><span class="plain">); ];</span>
 
-    <span class="plain">[ DA_Name n; if (n ofclass K3_direction) print (name) n; else print (the) n; ];</span>
-    <span class="plain">[ DA_Topic x a b c d i cf cw;</span>
-        <span class="plain">cw = x%100; cf = x/100;</span>
-        <span class="plain">print "~";</span>
-        <span class="plain">for (a=cf:d&lt;cw:d++,a++) {</span>
-            <span class="plain">wn = a; b = WordAddress(a); c = WordLength(a);</span>
-            <span class="plain">for (i=b:i&lt;b+c:i++) {</span>
-                <span class="plain">print (char) 0-&gt;i;</span>
+    <span class="plain">[ </span><span class="identifier">DA_Name</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">DA_Topic</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">b</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">cf</span><span class="plain"> </span><span class="identifier">cw</span><span class="plain">;</span>
+        <span class="identifier">cw</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">%100; </span><span class="identifier">cf</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">/100;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain">=</span><span class="identifier">cf</span><span class="plain">:</span><span class="identifier">d</span><span class="plain">&lt;</span><span class="identifier">cw</span><span class="plain">:</span><span class="identifier">d</span><span class="plain">++,</span><span class="identifier">a</span><span class="plain">++) {</span>
+            <span class="identifier">wn</span><span class="plain"> = </span><span class="identifier">a</span><span class="plain">; </span><span class="identifier">b</span><span class="plain"> = </span><span class="identifier">WordAddress</span><span class="plain">(</span><span class="identifier">a</span><span class="plain">); </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">WordLength</span><span class="plain">(</span><span class="identifier">a</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">b</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">b</span><span class="plain">+</span><span class="identifier">c</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) {</span>
+                <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="constant">0-</span><span class="plain">&gt;</span><span class="identifier">i</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">if (d&lt;cw-1) print " ";</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain">&lt;</span><span class="identifier">cw</span><span class="plain">-1) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">print "~";</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"~"</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ DB_Action ac acr act n s for_say t at l j v c clc;</span>
-        <span class="plain">if ((for_say == 0) &amp;&amp; (debug_rule_nesting &gt; 0))</span>
-            <span class="plain">print "(", debug_rule_nesting, ") ";</span>
-        <span class="plain">if ((ac ~= player) &amp;&amp; (for_say ~= 2)) {</span>
-            <span class="plain">if (acr) print "asking ", (the) ac, " to try ";</span>
-            <span class="plain">else print (the) ac, " ";</span>
+    <span class="plain">[ </span><span class="identifier">DB_Action</span><span class="plain"> </span><span class="identifier">ac</span><span class="plain"> </span><span class="identifier">acr</span><span class="plain"> </span><span class="identifier">act</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">for_say</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> </span><span class="identifier">clc</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">for_say</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">debug_rule_nesting</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">"("</span><span class="plain">, </span><span class="identifier">debug_rule_nesting</span><span class="plain">, </span><span class="string">") "</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ac</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) &amp;&amp; (</span><span class="identifier">for_say</span><span class="plain"> ~= </span><span class="constant">2</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acr</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"asking "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">ac</span><span class="plain">, </span><span class="string">" to try "</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">ac</span><span class="plain">, </span><span class="string">" "</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">DB_Action_Details(act, n, s, for_say);</span>
-        <span class="plain">if ((keep_silent) &amp;&amp; (for_say == 0)) print " - silently";</span>
+        <span class="identifier">DB_Action_Details</span><span class="plain">(</span><span class="identifier">act</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">for_say</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">keep_silent</span><span class="plain">) &amp;&amp; (</span><span class="identifier">for_say</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" - silently"</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

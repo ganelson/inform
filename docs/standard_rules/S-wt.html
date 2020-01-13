@@ -57,28 +57,28 @@ case. So we return <code class="display"><span class="extract">thedark</span></c
 
 
 <pre class="display">
-    <span class="plain">[ HolderOf o;</span>
-        <span class="plain">if (InitialSituation--&gt;DONE_INIS == false) return thedark;</span>
-        <span class="plain">if (o &amp;&amp; (o.component_parent)) return o.component_parent;</span>
-        <span class="plain">if (o &amp;&amp; (parent(o))) return parent(o);</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">HolderOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">DONE_INIS</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">thedark</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ParentOf o;</span>
-        <span class="plain">if (o) o = parent(o);</span>
-        <span class="plain">return o;</span>
+    <span class="plain">[ </span><span class="identifier">ParentOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain">) </span><span class="identifier">o</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ CoreOf o;</span>
-        <span class="plain">while (o &amp;&amp; (o provides component_parent) &amp;&amp; (o.component_parent)) o = o.component_parent;</span>
-        <span class="plain">return o;</span>
+    <span class="plain">[ </span><span class="identifier">CoreOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">component_parent</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">)) </span><span class="identifier">o</span><span class="plain"> = </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ CoreOfParentOfCoreOf o;</span>
-        <span class="plain">while (o &amp;&amp; (o provides component_parent) &amp;&amp; (o.component_parent)) o = o.component_parent;</span>
-        <span class="plain">if (o) o = parent(o);</span>
-        <span class="plain">while (o &amp;&amp; (o provides component_parent) &amp;&amp; (o.component_parent)) o = o.component_parent;</span>
-        <span class="plain">return o;</span>
+    <span class="plain">[ </span><span class="identifier">CoreOfParentOfCoreOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">component_parent</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">)) </span><span class="identifier">o</span><span class="plain"> = </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain">) </span><span class="identifier">o</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">component_parent</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">)) </span><span class="identifier">o</span><span class="plain"> = </span><span class="identifier">o</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -99,44 +99,44 @@ of <code class="display"><span class="extract">CommonAncestor</span></code> from
 
 
 <pre class="display">
-    <span class="plain">[ LocationOf o;</span>
-        <span class="plain">if (~~(o ofclass K1_room or K2_thing)) return nothing;</span>
-        <span class="plain">if (o ofclass K4_door) {</span>
-            <span class="plain">if (parent(o) == real_location) return real_location;</span>
-            <span class="plain">return FrontSideOfDoor(o);</span>
+    <span class="plain">[ </span><span class="identifier">LocationOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">) == </span><span class="identifier">real_location</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FrontSideOfDoor</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (o ofclass K7_backdrop) {</span>
-            <span class="plain">! print "(deciding ", (the) O, " is at ", (the) BackdropLocation(o), ") ";</span>
-            <span class="plain">return BackdropLocation(o);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) {</span>
+            <span class="comment">! print "(deciding ", (the) O, " is at ", (the) BackdropLocation(o), ") ";</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BackdropLocation</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">while (o) {</span>
-            <span class="plain">if (o ofclass K1_room) return o;</span>
-            <span class="plain">o = CoreOfParentOfCoreOf(o);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+            <span class="identifier">o</span><span class="plain"> = </span><span class="identifier">CoreOfParentOfCoreOf</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ CommonAncestor o1 o2 i j;</span>
-        <span class="plain">o1 = CoreOf(o1);</span>
-        <span class="plain">o2 = CoreOf(o2);</span>
+    <span class="plain">[ </span><span class="identifier">CommonAncestor</span><span class="plain"> </span><span class="identifier">o1</span><span class="plain"> </span><span class="identifier">o2</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="identifier">o1</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">o1</span><span class="plain">);</span>
+        <span class="identifier">o2</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">o2</span><span class="plain">);</span>
 
-        <span class="plain">for (i=o1: i: i = CoreOfParentOfCoreOf(i))</span>
-            <span class="plain">for (j=o2: j: j = CoreOfParentOfCoreOf(j))</span>
-                <span class="plain">if (j == i) return j;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">o1</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">CoreOfParentOfCoreOf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">))</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">o2</span><span class="plain">: </span><span class="identifier">j</span><span class="plain">: </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">CoreOfParentOfCoreOf</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> == </span><span class="identifier">i</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
 
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ IndirectlyContains o1 o2;</span>
-        <span class="plain">if ((o1 == nothing) || (o2 == nothing)) rfalse;</span>
-        <span class="plain">if ((o1 ofclass K1_room) &amp;&amp; (o2 ofclass K4_door)) {</span>
-            <span class="plain">if (o1 == FrontSideOfDoor(o2)) rtrue;</span>
-            <span class="plain">if (o1 == BackSideOfDoor(o2)) rtrue;</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">IndirectlyContains</span><span class="plain"> </span><span class="identifier">o1</span><span class="plain"> </span><span class="identifier">o2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">o1</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) || (</span><span class="identifier">o2</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">o1</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o2</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> == </span><span class="identifier">FrontSideOfDoor</span><span class="plain">(</span><span class="identifier">o2</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> == </span><span class="identifier">BackSideOfDoor</span><span class="plain">(</span><span class="identifier">o2</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (o2 ofclass K7_backdrop) rfalse;</span>
-        <span class="plain">for (o2 = HolderOf(o2) : o2 &amp;&amp; o2 ~= thedark : o2 = HolderOf(o2)) if (o2 == o1) rtrue;</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o2</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">o2</span><span class="plain"> = </span><span class="identifier">HolderOf</span><span class="plain">(</span><span class="identifier">o2</span><span class="plain">) : </span><span class="identifier">o2</span><span class="plain"> &amp;&amp; </span><span class="identifier">o2</span><span class="plain"> ~= </span><span class="identifier">thedark</span><span class="plain"> : </span><span class="identifier">o2</span><span class="plain"> = </span><span class="identifier">HolderOf</span><span class="plain">(</span><span class="identifier">o2</span><span class="plain">)) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o2</span><span class="plain"> == </span><span class="identifier">o1</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -159,18 +159,18 @@ laundry-basket in the Hall.
 
 
 <pre class="display">
-    <span class="plain">[ WhetherIn obj;</span>
-        <span class="plain">if (obj has enterable) {</span>
-            <span class="plain">if (IndirectlyContains(obj, player)) rtrue;</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">WhetherIn</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">enterable</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">player</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (obj ofclass K9_region) return TestRegionalContainment(real_location, obj);</span>
-        <span class="plain">if (obj ofclass K1_room) {</span>
-            <span class="plain">if (obj == real_location) rtrue;</span>
-            <span class="plain">rfalse;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestRegionalContainment</span><span class="plain">(</span><span class="identifier">real_location</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="identifier">real_location</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">RunTimeProblem(RTP_NOTINAROOM, obj);</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NOTINAROOM</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -196,27 +196,27 @@ would get the wrong result when B is a region.
 
 
 <pre class="display">
-    <span class="plain">[ ContainerOf A p;</span>
-        <span class="plain">if (A ofclass K1_room) return A.map_region;</span>
-        <span class="plain">p = parent(A);</span>
-        <span class="plain">if (p == nothing) return nothing;</span>
-        <span class="plain">if (p ofclass K5_container) return p;</span>
-        <span class="plain">if (p ofclass K1_room) return p;</span>
-        <span class="plain">if (p ofclass K9_region) return p;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">ContainerOf</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">.</span><span class="identifier">map_region</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K5_container</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ TestContainmentRange obj e f;</span>
-        <span class="plain">if (obj ofclass K9_region) {</span>
-            <span class="plain">objectloop (f ofclass K1_room &amp;&amp; f.map_region == obj)</span>
-                <span class="plain">if (f &gt; e) return f;</span>
-            <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">TestContainmentRange</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) {</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain"> &amp;&amp; </span><span class="identifier">f</span><span class="plain">.</span><span class="identifier">map_region</span><span class="plain"> == </span><span class="identifier">obj</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> &gt; </span><span class="identifier">e</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (obj ofclass K5_container or K1_room) {</span>
-            <span class="plain">if (e == nothing) return child(obj);</span>
-            <span class="plain">return sibling(e);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K5_container</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">e</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">child</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="reserved">sibling</span><span class="plain">(</span><span class="identifier">e</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -227,11 +227,11 @@ would get the wrong result when B is a region.
 
 
 <pre class="display">
-    <span class="plain">[ SupporterOf obj p;</span>
-        <span class="plain">p = parent(obj);</span>
-        <span class="plain">if (p == nothing) return nothing;</span>
-        <span class="plain">if (p ofclass K6_supporter) return p;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">SupporterOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K6_supporter</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -242,10 +242,10 @@ would get the wrong result when B is a region.
 
 
 <pre class="display">
-    <span class="plain">[ CarrierOf obj p;</span>
-        <span class="plain">p = parent(obj);</span>
-        <span class="plain">if (p &amp;&amp; (p ofclass K8_person) &amp;&amp; (obj hasnt worn)) return p;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">CarrierOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &amp;&amp; (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K8_person</span><span class="plain">) &amp;&amp; (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">worn</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -256,10 +256,10 @@ would get the wrong result when B is a region.
 
 
 <pre class="display">
-    <span class="plain">[ WearerOf obj p;</span>
-        <span class="plain">p = parent(obj);</span>
-        <span class="plain">if (p &amp;&amp; (p ofclass K8_person) &amp;&amp; (obj has worn)) return p;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">WearerOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &amp;&amp; (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K8_person</span><span class="plain">) &amp;&amp; (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">worn</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -270,10 +270,10 @@ would get the wrong result when B is a region.
 
 
 <pre class="display">
-    <span class="plain">[ OwnerOf obj p;</span>
-        <span class="plain">p = parent(obj);</span>
-        <span class="plain">if (p &amp;&amp; (p ofclass K8_person)) return p;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">OwnerOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &amp;&amp; (</span><span class="identifier">p</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K8_person</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -285,27 +285,27 @@ attaching it: it cannot, of course, be the core of the resulting object.
 
 
 <pre class="display">
-    <span class="plain">[ MakePart P Of First;</span>
-        <span class="plain">if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);</span>
-        <span class="plain">if (parent(P)) remove P; give P ~worn;</span>
-        <span class="plain">if (Of == nothing) { DetachPart(P); return; }</span>
-        <span class="plain">if (P.component_parent) DetachPart(P);</span>
-        <span class="plain">P.component_parent = Of;</span>
-        <span class="plain">First = Of.component_child;</span>
-        <span class="plain">Of.component_child = P; P.component_sibling = First;</span>
+    <span class="plain">[ </span><span class="identifier">MakePart</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> </span><span class="identifier">Of</span><span class="plain"> </span><span class="identifier">First</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTMAKEPART</span><span class="plain">, </span><span class="identifier">Of</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) </span><span class="reserved">remove</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">; </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> ~</span><span class="identifier">worn</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Of</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) { </span><span class="identifier">DetachPart</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">) </span><span class="identifier">DetachPart</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain"> = </span><span class="identifier">Of</span><span class="plain">;</span>
+        <span class="identifier">First</span><span class="plain"> = </span><span class="identifier">Of</span><span class="plain">.</span><span class="identifier">component_child</span><span class="plain">;</span>
+        <span class="identifier">Of</span><span class="plain">.</span><span class="identifier">component_child</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">; </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> = </span><span class="identifier">First</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DetachPart P From Daddy O;</span>
-        <span class="plain">Daddy = P.component_parent; P.component_parent = nothing;</span>
-        <span class="plain">if (Daddy == nothing) { P.component_sibling = nothing; return; }</span>
-        <span class="plain">if (Daddy.component_child == P) {</span>
-            <span class="plain">Daddy.component_child = P.component_sibling;</span>
-            <span class="plain">P.component_sibling = nothing; return;</span>
+    <span class="plain">[ </span><span class="identifier">DetachPart</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> </span><span class="identifier">From</span><span class="plain"> </span><span class="identifier">Daddy</span><span class="plain"> </span><span class="identifier">O</span><span class="plain">;</span>
+        <span class="identifier">Daddy</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">; </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Daddy</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) { </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Daddy</span><span class="plain">.</span><span class="identifier">component_child</span><span class="plain"> == </span><span class="identifier">P</span><span class="plain">) {</span>
+            <span class="identifier">Daddy</span><span class="plain">.</span><span class="identifier">component_child</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain">;</span>
+            <span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">for (O = Daddy.component_child: O: O = O.component_sibling)</span>
-            <span class="plain">if (O.component_sibling == P) {</span>
-                <span class="plain">O.component_sibling = P.component_sibling;</span>
-                <span class="plain">P.component_sibling = nothing; return;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> = </span><span class="identifier">Daddy</span><span class="plain">.</span><span class="identifier">component_child</span><span class="plain">: </span><span class="identifier">O</span><span class="plain">: </span><span class="identifier">O</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> == </span><span class="identifier">P</span><span class="plain">) {</span>
+                <span class="identifier">O</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain">;</span>
+                <span class="identifier">P</span><span class="plain">.</span><span class="identifier">component_sibling</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -318,53 +318,53 @@ when moved.
 
 
 <pre class="display">
-    <span class="plain">[ MoveObject F T opt going_mode was L;</span>
-        <span class="plain">if (F == nothing) return RunTimeProblem(RTP_CANTMOVENOTHING);</span>
-        <span class="plain">if (F ofclass K7_backdrop) {</span>
-            <span class="plain">if (T ofclass K9_region) {</span>
-                <span class="plain">give F ~absent; F.found_in = T.regional_found_in;</span>
-                <span class="plain">if (TestRegionalContainment(LocationOf(player), T)) move F to LocationOf(player);</span>
-                <span class="plain">else remove F;</span>
-                <span class="plain">return; }</span>
-            <span class="plain">if (T == FoundEverywhere) {</span>
-                <span class="plain">give F ~absent; F.found_in = FoundEverywhere;</span>
-                <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">MoveObject</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">T</span><span class="plain"> </span><span class="identifier">opt</span><span class="plain"> </span><span class="identifier">going_mode</span><span class="plain"> </span><span class="identifier">was</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTMOVENOTHING</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) {</span>
+                <span class="reserved">give</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> ~</span><span class="identifier">absent</span><span class="plain">; </span><span class="identifier">F</span><span class="plain">.</span><span class="identifier">found_in</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">.</span><span class="identifier">regional_found_in</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TestRegionalContainment</span><span class="plain">(</span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">), </span><span class="identifier">T</span><span class="plain">)) </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">remove</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain"> == </span><span class="identifier">FoundEverywhere</span><span class="plain">) {</span>
+                <span class="reserved">give</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> ~</span><span class="identifier">absent</span><span class="plain">; </span><span class="identifier">F</span><span class="plain">.</span><span class="identifier">found_in</span><span class="plain"> = </span><span class="identifier">FoundEverywhere</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="plain">return RunTimeProblem(RTP_BACKDROP, F, T);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BACKDROP</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">if (T ofclass K9_region) return RunTimeProblem(RTP_NOTBACKDROP, F, T);</span>
-        <span class="plain">if (T == FoundEverywhere) return RunTimeProblem(RTP_BACKDROPONLY, F);</span>
-        <span class="plain">if (~~(F ofclass K2_thing)) return RunTimeProblem(RTP_NOTTHING, F, T);</span>
-        <span class="plain">if (F has worn) {</span>
-            <span class="plain">give F ~worn;</span>
-            <span class="plain">if (F in T) return;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NOTBACKDROP</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain"> == </span><span class="identifier">FoundEverywhere</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BACKDROPONLY</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NOTTHING</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">worn</span><span class="plain">) {</span>
+            <span class="reserved">give</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> ~</span><span class="identifier">worn</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">DetachPart(F);</span>
-        <span class="plain">if (going_mode == false) {</span>
-            <span class="plain">if (F == player) { PlayerTo(T, opt); return; }</span>
-            <span class="plain">if (IndirectlyContains(F, player)) {</span>
-                <span class="plain">L = LocationOf(T);</span>
-                <span class="plain">if (L == nothing) return RunTimeProblem(RTP_CANTBEOFFSTAGE);</span>
-                <span class="plain">if (LocationOf(player) ~= L) {</span>
-                    <span class="plain">was = parent(player);</span>
-                    <span class="plain">move player to real_location;</span>
-                    <span class="plain">move F to T;</span>
-                    <span class="plain">PlayerTo(was, true);</span>
-                    <span class="plain">return;</span>
+        <span class="identifier">DetachPart</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">going_mode</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">PlayerTo</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">opt</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">player</span><span class="plain">)) {</span>
+                <span class="identifier">L</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTBEOFFSTAGE</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">) ~= </span><span class="identifier">L</span><span class="plain">) {</span>
+                    <span class="identifier">was</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">);</span>
+                    <span class="reserved">move</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">;</span>
+                    <span class="reserved">move</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
+                    <span class="identifier">PlayerTo</span><span class="plain">(</span><span class="identifier">was</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+                    <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">move F to T;</span>
+        <span class="reserved">move</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RemoveFromPlay F;</span>
-        <span class="plain">if (F == nothing) return RunTimeProblem(RTP_CANTREMOVENOTHING);</span>
-        <span class="plain">if (F == player) return RunTimeProblem(RTP_CANTREMOVEPLAYER);</span>
-        <span class="plain">if (F ofclass K4_door) return RunTimeProblem(RTP_CANTREMOVEDOORS);</span>
-        <span class="plain">if (IndirectlyContains(F, player)) return RunTimeProblem(RTP_CANTBEOFFSTAGE);</span>
-        <span class="plain">give F ~worn; DetachPart(F);</span>
-        <span class="plain">if (F ofclass K7_backdrop) give F absent;</span>
-        <span class="plain">remove F;</span>
+    <span class="plain">[ </span><span class="identifier">RemoveFromPlay</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTREMOVENOTHING</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTREMOVEPLAYER</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTREMOVEDOORS</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">player</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTBEOFFSTAGE</span><span class="plain">);</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> ~</span><span class="identifier">worn</span><span class="plain">; </span><span class="identifier">DetachPart</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">;</span>
+        <span class="reserved">remove</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -379,23 +379,23 @@ are allowed to be removed from play.
 
 
 <pre class="display">
-    <span class="plain">[ OnStage O set x;</span>
-        <span class="plain">if (O ofclass K1_room) rfalse;</span>
-        <span class="plain">if (set &lt; 0) {</span>
-            <span class="plain">while (metaclass(O) == Object) {</span>
-                <span class="plain">if (O ofclass K1_room) rtrue;</span>
-                <span class="plain">if (O ofclass K9_region) rfalse;</span>
-                <span class="plain">if (O ofclass K4_door) rtrue;</span>
-                <span class="plain">if (O ofclass K7_backdrop) { if (O has absent) rfalse; rtrue; }</span>
-                <span class="plain">x = O.component_parent; if (x) { O = x; continue; }</span>
-                <span class="plain">x = parent(O); if (x) { O = x; continue; }</span>
-                <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">OnStage</span><span class="plain"> </span><span class="identifier">O</span><span class="plain"> </span><span class="identifier">set</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">set</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">metaclass</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">) == </span><span class="identifier">Object</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+                <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">) { </span><span class="identifier">O</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; }</span>
+                <span class="identifier">x</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">) { </span><span class="identifier">O</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; }</span>
+                <span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">x = OnStage(O, -1);</span>
-        <span class="plain">if ((x) &amp;&amp; (set == false)) RemoveFromPlay(O);</span>
-        <span class="plain">if ((x == false) &amp;&amp; (set)) MoveObject(O, real_location);</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">x</span><span class="plain">) &amp;&amp; (</span><span class="identifier">set</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">RemoveFromPlay</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">x</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">set</span><span class="plain">)) </span><span class="identifier">MoveObject</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">real_location</span><span class="plain">);</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -409,20 +409,20 @@ witnessed where they need to be.
 
 
 <pre class="display">
-    <span class="plain">[ PlayerTo newplace flag L;</span>
-        <span class="plain">L = LocationOf(newplace);</span>
-        <span class="plain">if (L == nothing) return RunTimeProblem(RTP_CANTBEOFFSTAGE);</span>
-        <span class="plain">@push actor; actor = player;</span>
-        <span class="plain">move player to newplace;</span>
-        <span class="plain">location = L;</span>
-        <span class="plain">real_location = location;</span>
-        <span class="plain">MoveFloatingObjects();</span>
-        <span class="plain">SilentlyConsiderLight();</span>
-        <span class="plain">DivideParagraphPoint();</span>
-        <span class="plain">if (flag == 0) R_Process(##Look);</span>
-        <span class="plain">if (flag == 1) give location visited;</span>
-        <span class="plain">if (flag == 2) AbbreviatedRoomDescription();</span>
-        <span class="plain">@pull actor;</span>
+    <span class="plain">[ </span><span class="identifier">PlayerTo</span><span class="plain"> </span><span class="identifier">newplace</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="identifier">L</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">newplace</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTBEOFFSTAGE</span><span class="plain">);</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">; </span><span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">;</span>
+        <span class="reserved">move</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">newplace</span><span class="plain">;</span>
+        <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="identifier">real_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
+        <span class="identifier">MoveFloatingObjects</span><span class="plain">();</span>
+        <span class="identifier">SilentlyConsiderLight</span><span class="plain">();</span>
+        <span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">R_Process</span><span class="plain">(##</span><span class="identifier">Look</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">location</span><span class="plain"> </span><span class="identifier">visited</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">AbbreviatedRoomDescription</span><span class="plain">();</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -438,11 +438,11 @@ increase the flexibility of the system.)
 
 
 <pre class="display">
-    <span class="plain">[ MoveDuringGoing F T;</span>
-        <span class="plain">MoveObject(F, T, 0, true);</span>
-        <span class="plain">if (actor == player) {</span>
-            <span class="plain">location = LocationOf(player);</span>
-            <span class="plain">real_location = location;</span>
+    <span class="plain">[ </span><span class="identifier">MoveDuringGoing</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
+        <span class="identifier">MoveObject</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) {</span>
+            <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">);</span>
+            <span class="identifier">real_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -455,7 +455,7 @@ increase the flexibility of the system.)
 
 
 <pre class="display">
-    <span class="plain">[ FoundEverywhere; rtrue; ];</span>
+    <span class="plain">[ </span><span class="identifier">FoundEverywhere</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -464,12 +464,12 @@ increase the flexibility of the system.)
 
 
 <pre class="display">
-    <span class="plain">[ BackdropEverywhere O;</span>
-        <span class="plain">if (O ofclass K7_backdrop) {</span>
-            <span class="plain">if (O has absent) rfalse;</span>
-            <span class="plain">if (O.found_in == FoundEverywhere) rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">BackdropEverywhere</span><span class="plain"> </span><span class="identifier">O</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain">.</span><span class="identifier">found_in</span><span class="plain"> == </span><span class="identifier">FoundEverywhere</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -501,29 +501,29 @@ etc. &mdash; in the source text.
 </li></ul>
 
 <pre class="display">
-    <span class="plain">[ ChangePlayer obj flag;</span>
-        <span class="plain">if (~~(obj ofclass K8_person)) return RunTimeProblem(RTP_CANTCHANGE, obj);</span>
-        <span class="plain">if (~~(OnStage(obj, -1))) return RunTimeProblem(RTP_CANTCHANGEOFFSTAGE, obj);</span>
-        <span class="plain">if (obj.component_parent) return RunTimeProblem(RTP_CANTMAKEPART, obj);</span>
-        <span class="plain">if (obj == player) return;</span>
+    <span class="plain">[ </span><span class="identifier">ChangePlayer</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K8_person</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTCHANGE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTCHANGEOFFSTAGE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTMAKEPART</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="plain">give player ~concealed;</span>
-        <span class="plain">if (player has remove_proper) give player ~proper;</span>
-        <span class="plain">if (player == selfobj) {</span>
-            <span class="plain">player.saved_short_name = player.short_name;</span>
-            <span class="plain">player.short_name = PRINT_PROTAGONIST_INTERNAL_RM('c');</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> ~</span><span class="identifier">concealed</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">remove_proper</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> ~</span><span class="identifier">proper</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> == </span><span class="identifier">selfobj</span><span class="plain">) {</span>
+            <span class="identifier">player</span><span class="plain">.</span><span class="identifier">saved_short_name</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">.</span><span class="identifier">short_name</span><span class="plain">;</span>
+            <span class="identifier">player</span><span class="plain">.</span><span class="identifier">short_name</span><span class="plain"> = </span><span class="identifier">PRINT_PROTAGONIST_INTERNAL_RM</span><span class="plain">(</span><span class="character">'c'</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">player = obj;</span>
-        <span class="plain">if (player == selfobj) {</span>
-            <span class="plain">player.short_name = player.saved_short_name;</span>
+        <span class="identifier">player</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> == </span><span class="identifier">selfobj</span><span class="plain">) {</span>
+            <span class="identifier">player</span><span class="plain">.</span><span class="identifier">short_name</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">.</span><span class="identifier">saved_short_name</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (player hasnt proper) give player remove_proper; ! when changing out again</span>
-        <span class="plain">give player concealed;</span>
-        <span class="plain">give player proper;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">remove_proper</span><span class="plain">; </span><span class="comment">! when changing out again</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">concealed</span><span class="plain">;</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">;</span>
 
-        <span class="plain">location = LocationOf(player); real_location = location;</span>
-        <span class="plain">MoveFloatingObjects();</span>
-        <span class="plain">SilentlyConsiderLight();</span>
+        <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">); </span><span class="identifier">real_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
+        <span class="identifier">MoveFloatingObjects</span><span class="plain">();</span>
+        <span class="identifier">SilentlyConsiderLight</span><span class="plain">();</span>
     <span class="plain">];</span>
 </pre>
 
@@ -565,44 +565,44 @@ are a bit more careful about the senses.
 
 
 <pre class="display">
-    <span class="plain">[ MoveFloatingObjects toroom i k l m address flag;</span>
-        <span class="plain">if (toroom == nothing) toroom = real_location;</span>
-        <span class="plain">if (toroom == nothing) return;</span>
-        <span class="plain">objectloop (i) {</span>
-            <span class="plain">address = i.&amp;found_in;</span>
-            <span class="plain">if (address ~= 0 &amp;&amp; i hasnt absent) {</span>
-                <span class="plain">if (ZRegion(address--&gt;0) == 2) {</span>
-                    <span class="plain">m = address--&gt;0;</span>
-                    <span class="plain">.TestPropositionally;</span>
-                    <span class="plain">if (m.call(toroom) ~= 0) move i to toroom;</span>
-                    <span class="plain">else { if (i in toroom) remove i; }</span>
-                <span class="plain">} else {</span>
-                    <span class="plain">k = i.#found_in;</span>
-                    <span class="plain">for (l=0 : l&lt;k/WORDSIZE : l++) {</span>
-                        <span class="plain">m = address--&gt;l;</span>
-                        <span class="plain">if (ZRegion(m) == 2) jump TestPropositionally;</span>
-                        <span class="plain">if (m == toroom || m in toroom) {</span>
-                            <span class="plain">if (i notin toroom) move i to toroom;</span>
-                            <span class="plain">flag = true;</span>
+    <span class="plain">[ </span><span class="identifier">MoveFloatingObjects</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">address</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">toroom</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="identifier">toroom</span><span class="plain"> = </span><span class="identifier">real_location</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">toroom</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">) {</span>
+            <span class="identifier">address</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> &amp;&amp; </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ZRegion</span><span class="plain">(</span><span class="identifier">address</span><span class="plain">--&gt;0) == </span><span class="constant">2</span><span class="plain">) {</span>
+                    <span class="identifier">m</span><span class="plain"> = </span><span class="identifier">address</span><span class="plain">--&gt;0;</span>
+                    <span class="plain">.</span><span class="identifier">TestPropositionally</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain">.</span><span class="identifier">call</span><span class="plain">(</span><span class="identifier">toroom</span><span class="plain">) ~= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">;</span>
+                    <span class="reserved">else</span><span class="plain"> { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">) </span><span class="reserved">remove</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">; }</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">.#</span><span class="identifier">found_in</span><span class="plain">;</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=0 : </span><span class="identifier">l</span><span class="plain">&lt;</span><span class="identifier">k</span><span class="plain">/</span><span class="identifier">WORDSIZE</span><span class="plain"> : </span><span class="identifier">l</span><span class="plain">++) {</span>
+                        <span class="identifier">m</span><span class="plain"> = </span><span class="identifier">address</span><span class="plain">--&gt;</span><span class="identifier">l</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ZRegion</span><span class="plain">(</span><span class="identifier">m</span><span class="plain">) == </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">TestPropositionally</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="identifier">toroom</span><span class="plain"> || </span><span class="identifier">m</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">) {</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">) </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">;</span>
+                            <span class="identifier">flag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
-                    <span class="plain">if (flag == false) { if (i in toroom) remove i; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain">) </span><span class="reserved">remove</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">; }</span>
                 <span class="plain">}</span>
-                <span class="plain">if ((i ofclass K4_door) &amp;&amp; (parent(i) == nothing)) {</span>
-                    <span class="plain">move i to ((i.door_to).call());</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) &amp;&amp; (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="reserved">nothing</span><span class="plain">)) {</span>
+                    <span class="reserved">move</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">).</span><span class="identifier">call</span><span class="plain">());</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ MoveBackdrop bd D x address;</span>
-        <span class="plain">if (~~(bd ofclass K7_backdrop)) return RunTimeProblem(RTP_BACKDROPONLY, bd);</span>
-        <span class="plain">if (bd.#found_in &gt; WORDSIZE) {</span>
-            <span class="plain">address = bd.&amp;found_in;</span>
-            <span class="plain">address--&gt;0 = D;</span>
-        <span class="plain">} else bd.found_in = D;</span>
-        <span class="plain">give bd ~absent;</span>
-        <span class="plain">MoveFloatingObjects();</span>
+    <span class="plain">[ </span><span class="identifier">MoveBackdrop</span><span class="plain"> </span><span class="identifier">bd</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">address</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">bd</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BACKDROPONLY</span><span class="plain">, </span><span class="identifier">bd</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bd</span><span class="plain">.#</span><span class="identifier">found_in</span><span class="plain"> &gt; </span><span class="identifier">WORDSIZE</span><span class="plain">) {</span>
+            <span class="identifier">address</span><span class="plain"> = </span><span class="identifier">bd</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">;</span>
+            <span class="identifier">address</span><span class="plain">--&gt;0 = </span><span class="identifier">D</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">bd</span><span class="plain">.</span><span class="identifier">found_in</span><span class="plain"> = </span><span class="identifier">D</span><span class="plain">;</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">bd</span><span class="plain"> ~</span><span class="identifier">absent</span><span class="plain">;</span>
+        <span class="identifier">MoveFloatingObjects</span><span class="plain">();</span>
     <span class="plain">];</span>
 </pre>
 
@@ -615,42 +615,42 @@ that this routine also works for two-sided doors, despite its name.
 
 
 <pre class="display">
-    <span class="plain">[ BackdropLocation O target address m x i k l r sl;</span>
-        <span class="plain">if (O has absent) return nothing;</span>
-        <span class="plain">if ((target == nothing or real_location) &amp;&amp; (parent(O) == real_location))</span>
-            <span class="plain">return real_location;</span>
-        <span class="plain">address = O.&amp;found_in;</span>
-        <span class="plain">if (address ~= 0) {</span>
-            <span class="plain">k = O.#found_in;</span>
-            <span class="plain">for (l=0 : l&lt;k/WORDSIZE : l++) {</span>
-                <span class="plain">m = address--&gt;l;</span>
-                <span class="plain">if (ZRegion(m) == 2) {</span>
-                    <span class="plain">sl = location;</span>
-                    <span class="plain">if (target) {</span>
-                        <span class="plain">location = target;</span>
-                        <span class="plain">r = m.call();</span>
-                        <span class="plain">if (r ~= 0) { location = sl; return target; }</span>
-                    <span class="plain">} else {</span>
-                        <span class="plain">objectloop (x ofclass K1_room) {</span>
-                            <span class="plain">location = x;</span>
-                            <span class="plain">r = m.call();</span>
-                            <span class="plain">if (r ~= 0) { location = sl; return x; }</span>
+    <span class="plain">[ </span><span class="identifier">BackdropLocation</span><span class="plain"> </span><span class="identifier">O</span><span class="plain"> </span><span class="identifier">target</span><span class="plain"> </span><span class="identifier">address</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">target</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">) &amp;&amp; (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">) == </span><span class="identifier">real_location</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">;</span>
+        <span class="identifier">address</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">.#</span><span class="identifier">found_in</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=0 : </span><span class="identifier">l</span><span class="plain">&lt;</span><span class="identifier">k</span><span class="plain">/</span><span class="identifier">WORDSIZE</span><span class="plain"> : </span><span class="identifier">l</span><span class="plain">++) {</span>
+                <span class="identifier">m</span><span class="plain"> = </span><span class="identifier">address</span><span class="plain">--&gt;</span><span class="identifier">l</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ZRegion</span><span class="plain">(</span><span class="identifier">m</span><span class="plain">) == </span><span class="constant">2</span><span class="plain">) {</span>
+                    <span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain">) {</span>
+                        <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">target</span><span class="plain">;</span>
+                        <span class="identifier">r</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">.</span><span class="identifier">call</span><span class="plain">();</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">target</span><span class="plain">; }</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) {</span>
+                            <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">;</span>
+                            <span class="identifier">r</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">.</span><span class="identifier">call</span><span class="plain">();</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; }</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
-                    <span class="plain">location = sl;</span>
-                <span class="plain">} else {</span>
-                    <span class="plain">if (m ofclass K9_region) {</span>
-                        <span class="plain">objectloop (x ofclass K1_room)</span>
-                            <span class="plain">if (TestRegionalContainment(x, m))</span>
-                                <span class="plain">if (target == nothing or x)</span>
-                                    <span class="plain">return x;</span>
-                    <span class="plain">} else {</span>
-                        <span class="plain">if (target == nothing or m) return m;</span>
+                    <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) {</span>
+                        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">)</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TestRegionalContainment</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">, </span><span class="identifier">m</span><span class="plain">))</span>
+                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">)</span>
+                                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -665,10 +665,10 @@ from play, then <code class="display"><span class="extract">worn</span></code> i
 
 
 <pre class="display">
-    <span class="plain">[ WearObject X P opt;</span>
-        <span class="plain">if (X == false) rfalse;</span>
-        <span class="plain">if (X notin P) MoveObject(X, P, opt);</span>
-        <span class="plain">give X worn;</span>
+    <span class="plain">[ </span><span class="identifier">WearObject</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> </span><span class="identifier">opt</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> </span><span class="reserved">notin</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) </span><span class="identifier">MoveObject</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">opt</span><span class="plain">);</span>
+        <span class="reserved">give</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> </span><span class="identifier">worn</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -696,64 +696,64 @@ but <code class="display"><span class="extract">nothing</span></code> is not a t
 
 
 <pre class="display">
-    <span class="plain">[ MapConnection from_room dir</span>
-        <span class="plain">in_direction through_door;</span>
-        <span class="plain">if ((from_room ofclass K1_room) &amp;&amp; (dir ofclass K3_direction)) {</span>
-            <span class="plain">in_direction = Map_Storage--&gt;</span>
-                <span class="plain">((from_room.IK1_Count)*No_Directions + dir.IK3_Count);</span>
-            <span class="plain">if (in_direction ofclass K1_room) return in_direction;</span>
-            <span class="plain">if (in_direction ofclass K4_door) {</span>
-                <span class="plain">@push location;</span>
-                <span class="plain">location = from_room;</span>
-                <span class="plain">through_door = in_direction.door_to();</span>
-                <span class="plain">@pull location;</span>
-                <span class="plain">if (through_door ofclass K1_room) return through_door;</span>
+    <span class="plain">[ </span><span class="identifier">MapConnection</span><span class="plain"> </span><span class="identifier">from_room</span><span class="plain"> </span><span class="identifier">dir</span>
+        <span class="identifier">in_direction</span><span class="plain"> </span><span class="identifier">through_door</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from_room</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">dir</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">)) {</span>
+            <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;</span>
+                <span class="plain">((</span><span class="identifier">from_room</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+                <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
+                <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">from_room</span><span class="plain">;</span>
+                <span class="identifier">through_door</span><span class="plain"> = </span><span class="identifier">in_direction</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">();</span>
+                <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">through_door</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">through_door</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DoorFrom obj dir rv;</span>
-        <span class="plain">rv = RoomOrDoorFrom(obj, dir);</span>
-        <span class="plain">if (rv ofclass K4_door) return rv;</span>
-        <span class="plain">return nothing;</span>
+    <span class="plain">[ </span><span class="identifier">DoorFrom</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">RoomOrDoorFrom</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ RoomOrDoorFrom obj dir use_doors in_direction sl through_door;</span>
-        <span class="plain">if ((obj ofclass K1_room) &amp;&amp; (dir ofclass K3_direction)) {</span>
-            <span class="plain">in_direction = Map_Storage--&gt;</span>
-                <span class="plain">((obj.IK1_Count)*No_Directions + dir.IK3_Count);</span>
-            <span class="plain">if (in_direction ofclass K1_room or K4_door) return in_direction;</span>
+    <span class="plain">[ </span><span class="identifier">RoomOrDoorFrom</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> </span><span class="identifier">through_door</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">dir</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">)) {</span>
+            <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;</span>
+                <span class="plain">((</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ AssertMapConnection r1 dir r2 in_direction;</span>
-        <span class="plain">SignalMapChange();</span>
-        <span class="plain">in_direction = Map_Storage--&gt;</span>
-            <span class="plain">((r1.IK1_Count)*No_Directions + dir.IK3_Count);</span>
-        <span class="plain">if ((in_direction == 0) || (in_direction ofclass K1_room)) {</span>
-            <span class="plain">Map_Storage--&gt;((r1.IK1_Count)*No_Directions + dir.IK3_Count) = r2;</span>
-            <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">AssertMapConnection</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain">;</span>
+        <span class="identifier">SignalMapChange</span><span class="plain">();</span>
+        <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;</span>
+            <span class="plain">((</span><span class="identifier">r1</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">in_direction</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">)) {</span>
+            <span class="identifier">Map_Storage</span><span class="plain">--&gt;((</span><span class="identifier">r1</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">) = </span><span class="identifier">r2</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (in_direction ofclass K4_door) {</span>
-            <span class="plain">RunTimeProblem(RTP_EXITDOOR, r1, dir);</span>
-            <span class="plain">return;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_EXITDOOR</span><span class="plain">, </span><span class="identifier">r1</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">RunTimeProblem(RTP_NOEXIT, r1, dir);</span>
+        <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NOEXIT</span><span class="plain">, </span><span class="identifier">r1</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">);</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ AssertMapUnconnection r1 dir r2 in_direction;</span>
-        <span class="plain">SignalMapChange();</span>
-        <span class="plain">in_direction = Map_Storage--&gt;</span>
-            <span class="plain">((r1.IK1_Count)*No_Directions + dir.IK3_Count);</span>
-        <span class="plain">if (r1 ofclass K4_door) {</span>
-            <span class="plain">RunTimeProblem(RTP_EXITDOOR, r1, dir);</span>
-            <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">AssertMapUnconnection</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain">;</span>
+        <span class="identifier">SignalMapChange</span><span class="plain">();</span>
+        <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;</span>
+            <span class="plain">((</span><span class="identifier">r1</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r1</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_EXITDOOR</span><span class="plain">, </span><span class="identifier">r1</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (in_direction == r2)</span>
-            <span class="plain">Map_Storage--&gt;((r1.IK1_Count)*No_Directions + dir.IK3_Count) = 0;</span>
-        <span class="plain">return;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> == </span><span class="identifier">r2</span><span class="plain">)</span>
+            <span class="identifier">Map_Storage</span><span class="plain">--&gt;((</span><span class="identifier">r1</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">) = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -765,13 +765,13 @@ doors.
 
 
 <pre class="display">
-    <span class="plain">[ TestAdjacency R1 R2 i row;</span>
-        <span class="plain">if (R1 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R1);</span>
-        <span class="plain">else if (R2 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R2);</span>
-        <span class="plain">row = (R1.IK1_Count)*No_Directions;</span>
-        <span class="plain">for (i=0: i&lt;No_Directions: i++, row++)</span>
-            <span class="plain">if (Map_Storage--&gt;row == R2) rtrue;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">TestAdjacency</span><span class="plain"> </span><span class="identifier">R1</span><span class="plain"> </span><span class="identifier">R2</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">row</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R1</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_REGIONSNOTADJACENT</span><span class="plain">, </span><span class="identifier">R1</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R2</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_REGIONSNOTADJACENT</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">);</span>
+        <span class="identifier">row</span><span class="plain"> = (</span><span class="identifier">R1</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">No_Directions</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++, </span><span class="identifier">row</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Map_Storage</span><span class="plain">--&gt;</span><span class="identifier">row</span><span class="plain"> == </span><span class="identifier">R2</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -789,24 +789,24 @@ must either completely contain another region, or else have no overlap with it.)
 
 
 <pre class="display">
-    <span class="plain">[ TestRegionalContainment obj region o;</span>
-        <span class="plain">if ((obj == nothing) || (region == nothing)) rfalse;</span>
-        <span class="plain">if (obj ofclass K7_backdrop or K4_door) {</span>
-            <span class="plain">if (obj has absent) rfalse;</span>
-            <span class="plain">objectloop (o ofclass K1_room)</span>
-                <span class="plain">if (TestRegionalContainment(o, region))</span>
-                    <span class="plain">if (BackdropLocation(obj, o))</span>
-                        <span class="plain">rtrue;</span>
-            <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">TestRegionalContainment</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">region</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) || (</span><span class="identifier">region</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TestRegionalContainment</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">, </span><span class="identifier">region</span><span class="plain">))</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BackdropLocation</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">o</span><span class="plain">))</span>
+                        <span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (~~(obj ofclass K1_room)) obj = LocationOf(obj);</span>
-        <span class="plain">if (obj == nothing) rfalse;</span>
-        <span class="plain">o = obj.map_region;</span>
-        <span class="plain">while (o) {</span>
-            <span class="plain">if (o == region) rtrue;</span>
-            <span class="plain">o = parent(o);</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">)) </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="identifier">o</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">map_region</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="identifier">region</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="identifier">o</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -830,34 +830,34 @@ I7's template it returns the direction object (<code class="display"><span class
 
 
 <pre class="display">
-    <span class="plain">[ FrontSideOfDoor D; if (~~(D ofclass K4_door)) rfalse;</span>
-        <span class="plain">if (D provides found_in) return (D.&amp;found_in)--&gt;0; ! Two-sided</span>
-        <span class="plain">return parent(D); ! One-sided</span>
+    <span class="plain">[ </span><span class="identifier">FrontSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;0; </span><span class="comment">! Two-sided</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">); </span><span class="comment">! One-sided</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ BackSideOfDoor D; if (~~(D ofclass K4_door)) rfalse;</span>
-        <span class="plain">if (D provides found_in) return (D.&amp;found_in)--&gt;1; ! Two-sided</span>
-        <span class="plain">return nothing; ! One-sided</span>
+    <span class="plain">[ </span><span class="identifier">BackSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;1; </span><span class="comment">! Two-sided</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">; </span><span class="comment">! One-sided</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ OtherSideOfDoor D from_room rv;</span>
-        <span class="plain">if (D ofclass K4_door) {</span>
-            <span class="plain">@push location;</span>
-            <span class="plain">location = LocationOf(from_room);</span>
-            <span class="plain">rv = D.door_to();</span>
-            <span class="plain">@pull location;</span>
+    <span class="plain">[ </span><span class="identifier">OtherSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> </span><span class="identifier">from_room</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
+            <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">from_room</span><span class="plain">);</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">D</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">();</span>
+            <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return rv;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ DirectionDoorLeadsIn D from_room rv dir;</span>
-        <span class="plain">if (D ofclass K4_door) {</span>
-            <span class="plain">@push location;</span>
-            <span class="plain">location = LocationOf(from_room);</span>
-            <span class="plain">rv = D.door_dir();</span>
-            <span class="plain">@pull location;</span>
+    <span class="plain">[ </span><span class="identifier">DirectionDoorLeadsIn</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> </span><span class="identifier">from_room</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
+            <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">from_room</span><span class="plain">);</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">D</span><span class="plain">.</span><span class="identifier">door_dir</span><span class="plain">();</span>
+            <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return rv;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -869,10 +869,10 @@ it's a relation which cannot be asserted true or false.
 
 
 <pre class="display">
-    <span class="plain">[ TestVisibility A B;</span>
-        <span class="plain">if (~~OffersLight(parent(CoreOf(A)))) rfalse;</span>
-        <span class="plain">if (suppress_scope_loops) rtrue;</span>
-        <span class="plain">return TestScope(B, A);</span>
+    <span class="plain">[ </span><span class="identifier">TestVisibility</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (~~</span><span class="identifier">OffersLight</span><span class="plain">(</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">)))) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">suppress_scope_loops</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TestScope</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -884,14 +884,14 @@ A to B; it's a relation which cannot be asserted true or false.
 
 
 <pre class="display">
-    <span class="plain">[ TestTouchability A B rv;</span>
-        <span class="plain">if (A ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(B));</span>
-        <span class="plain">if (B ofclass K4_door or K7_backdrop) MoveFloatingObjects(LocationOf(A));</span>
-        <span class="plain">if (TestScope(B,A) == false) rv = true;</span>
-        <span class="plain">else rv = ObjectIsUntouchable(B, true, A);</span>
-        <span class="plain">if (A ofclass K4_door or K7_backdrop) MoveFloatingObjects();</span>
-        <span class="plain">if (rv) rfalse;</span>
-        <span class="plain">rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">TestTouchability</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) </span><span class="identifier">MoveFloatingObjects</span><span class="plain">(</span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) </span><span class="identifier">MoveFloatingObjects</span><span class="plain">(</span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TestScope</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">,</span><span class="identifier">A</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">rv</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">ObjectIsUntouchable</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) </span><span class="identifier">MoveFloatingObjects</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -903,12 +903,12 @@ which cannot be asserted true or false.
 
 
 <pre class="display">
-    <span class="plain">[ TestConcealment A B;</span>
-        <span class="plain">if (A ofclass K2_thing &amp;&amp; B ofclass K2_thing) {</span>
-            <span class="plain">particular_possession = B;</span>
-            <span class="plain">if (CarryOutActivity(DECIDING_CONCEALED_POSSESS_ACT, A)) rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">TestConcealment</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain"> &amp;&amp; </span><span class="identifier">B</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain">) {</span>
+            <span class="identifier">particular_possession</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">DECIDING_CONCEALED_POSSESS_ACT</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">)) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

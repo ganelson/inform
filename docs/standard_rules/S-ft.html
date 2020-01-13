@@ -29,7 +29,7 @@ value "figure of cover".
 
 
 <pre class="display">
-    <span class="plain">Array ResourceUsageFlags -&gt; (ICOUNT_FIGURE_NAME + ICOUNT_SOUND_NAME + 5);</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">ResourceUsageFlags</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; (</span><span class="identifier">ICOUNT_FIGURE_NAME</span><span class="plain"> + </span><span class="identifier">ICOUNT_SOUND_NAME</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -38,10 +38,10 @@ value "figure of cover".
 
 
 <pre class="display">
-    <span class="plain">[ DisplayFigure resource_ID one_time;</span>
-        <span class="plain">if ((one_time) &amp;&amp; (ResourceUsageFlags-&gt;resource_ID)) return;</span>
-        <span class="plain">ResourceUsageFlags-&gt;resource_ID = true;</span>
-        <span class="plain">print "^"; VM_Picture(resource_ID); print "^";</span>
+    <span class="plain">[ </span><span class="identifier">DisplayFigure</span><span class="plain"> </span><span class="identifier">resource_ID</span><span class="plain"> </span><span class="identifier">one_time</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">one_time</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ResourceUsageFlags</span><span class="plain">-&gt;</span><span class="identifier">resource_ID</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">ResourceUsageFlags</span><span class="plain">-&gt;</span><span class="identifier">resource_ID</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">; </span><span class="identifier">VM_Picture</span><span class="plain">(</span><span class="identifier">resource_ID</span><span class="plain">); </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -51,11 +51,11 @@ value "figure of cover".
 
 
 <pre class="display">
-    <span class="plain">[ PlaySound resource_ID one_time;</span>
-        <span class="plain">if (resource_ID == 0) return; ! The "silence" non-sound effect</span>
-        <span class="plain">if ((one_time) &amp;&amp; (ResourceUsageFlags-&gt;resource_ID)) return;</span>
-        <span class="plain">ResourceUsageFlags-&gt;resource_ID = true;</span>
-        <span class="plain">VM_SoundEffect(resource_ID);</span>
+    <span class="plain">[ </span><span class="identifier">PlaySound</span><span class="plain"> </span><span class="identifier">resource_ID</span><span class="plain"> </span><span class="identifier">one_time</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resource_ID</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">! The "silence" non-sound effect</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">one_time</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ResourceUsageFlags</span><span class="plain">-&gt;</span><span class="identifier">resource_ID</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">ResourceUsageFlags</span><span class="plain">-&gt;</span><span class="identifier">resource_ID</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="identifier">VM_SoundEffect</span><span class="plain">(</span><span class="identifier">resource_ID</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 

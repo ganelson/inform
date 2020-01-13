@@ -29,23 +29,22 @@ explained in the Standard Rules.
 
 
 <pre class="display">
-    <span class="plain">Global EarlyInTurnSequence;</span>
-    <span class="plain">Global IterationsOfTurnSequence;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">EarlyInTurnSequence</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">IterationsOfTurnSequence</span><span class="plain">;</span>
 
-    <span class="plain">[ Main;</span>
-        <span class="plain">#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;</span>
-        <span class="plain">ClearRTP();</span>
-        <span class="plain">FollowRulebook(STARTUP_RB);</span>
-        <span class="plain">#ifdef DEBUG; InternalTestCases(); #endif;</span>
-        <span class="plain">while (true) {</span>
-            <span class="plain">while (deadflag == false) {</span>
-                <span class="plain">EarlyInTurnSequence = true;</span>
-                <span class="plain">action = ##Wait; meta = false; noun = nothing; second = nothing;</span>
-                <span class="plain">actor = player;</span>
-                <span class="plain">FollowRulebook(TURN_SEQUENCE_RB);</span>
-                <span class="plain">IterationsOfTurnSequence++;</span>
+    <span class="plain">[ </span><span class="identifier">Main</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">; </span><span class="identifier">max_z_object</span><span class="plain"> = #</span><span class="identifier">largest_object</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">255</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">STARTUP_RB</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">; </span><span class="identifier">InternalTestCases</span><span class="plain">(); #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
+                <span class="identifier">EarlyInTurnSequence</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="identifier">action</span><span class="plain"> = ##</span><span class="identifier">Wait</span><span class="plain">; </span><span class="identifier">meta</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="identifier">noun</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="identifier">second</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+                <span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">;</span>
+                <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">TURN_SEQUENCE_RB</span><span class="plain">);</span>
+                <span class="identifier">IterationsOfTurnSequence</span><span class="plain">++;</span>
             <span class="plain">}</span>
-            <span class="plain">if (FollowRulebook(SHUTDOWN_RB) == false) return;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">SHUTDOWN_RB</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -61,11 +60,11 @@ space the opening text better.
 
 
 <pre class="display">
-    <span class="plain">[ VIRTUAL_MACHINE_STARTUP_R;</span>
-        <span class="plain">CarryOutActivity(STARTING_VIRTUAL_MACHINE_ACT);</span>
-        <span class="plain">VM_Initialise();</span>
-        <span class="plain">print "^^^";</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">VIRTUAL_MACHINE_STARTUP_R</span><span class="plain">;</span>
+        <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">STARTING_VIRTUAL_MACHINE_ACT</span><span class="plain">);</span>
+        <span class="identifier">VM_Initialise</span><span class="plain">();</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^^^"</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -128,23 +127,23 @@ where he is, the surprise will not be spoiled.
 
 
 <pre class="display">
-    <span class="plain">[ INITIALISE_MEMORY_R;</span>
-        <span class="plain">#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;</span>
-        <span class="plain">#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;</span>
+    <span class="plain">[ </span><span class="identifier">INITIALISE_MEMORY_R</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">; </span><span class="identifier">VM_PreInitialise</span><span class="plain">(); #</span><span class="identifier">Endif</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">LanguageInitialise</span><span class="plain">; </span><span class="identifier">LanguageInitialise</span><span class="plain">(); #</span><span class="identifier">Endif</span><span class="plain">;</span>
 
-        <span class="plain">not_yet_in_play = true;</span>
-        <span class="plain">lookmode = TEMPLATE_CONFIGURATION_LOOKMODE;</span>
-        <span class="plain">player = InitialSituation--&gt;PLAYER_OBJECT_INIS;</span>
-        <span class="plain">the_time = InitialSituation--&gt;START_TIME_INIS;</span>
-        <span class="plain">real_location = nothing;</span>
-        <span class="plain">location = nothing;</span>
+        <span class="identifier">not_yet_in_play</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="identifier">lookmode</span><span class="plain"> = </span><span class="identifier">TEMPLATE_CONFIGURATION_LOOKMODE</span><span class="plain">;</span>
+        <span class="identifier">player</span><span class="plain"> = </span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">PLAYER_OBJECT_INIS</span><span class="plain">;</span>
+        <span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">START_TIME_INIS</span><span class="plain">;</span>
+        <span class="identifier">real_location</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="identifier">location</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
 
-        <span class="plain">CreatePropertyOffsets();</span>
-        <span class="plain">HeapInitialise(); ! Create a completely unused memory allocation heap</span>
-        <span class="plain">StackFramingInitialise(); ! Create an empty stack</span>
-        <span class="plain">CreateDynamicRelations(); ! Create relation structures on the heap</span>
+        <span class="identifier">CreatePropertyOffsets</span><span class="plain">();</span>
+        <span class="identifier">HeapInitialise</span><span class="plain">(); </span><span class="comment">! Create a completely unused memory allocation heap</span>
+        <span class="identifier">StackFramingInitialise</span><span class="plain">(); </span><span class="comment">! Create an empty stack</span>
+        <span class="identifier">CreateDynamicRelations</span><span class="plain">(); </span><span class="comment">! Create relation structures on the heap</span>
 
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -202,28 +201,28 @@ to behave predictably and without type-unsafe values entering code.)
 
 
 <pre class="display">
-    <span class="plain">[ POSITION_PLAYER_IN_MODEL_R player_to_be;</span>
+    <span class="plain">[ </span><span class="identifier">POSITION_PLAYER_IN_MODEL_R</span><span class="plain"> </span><span class="identifier">player_to_be</span><span class="plain">;</span>
 
-        <span class="plain">player = selfobj;</span>
-        <span class="plain">player_to_be = InitialSituation--&gt;PLAYER_OBJECT_INIS;</span>
+        <span class="identifier">player</span><span class="plain"> = </span><span class="identifier">selfobj</span><span class="plain">;</span>
+        <span class="identifier">player_to_be</span><span class="plain"> = </span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">PLAYER_OBJECT_INIS</span><span class="plain">;</span>
 
-        <span class="plain">location = LocationOf(player_to_be);</span>
-        <span class="plain">if (location == 0) {</span>
-            <span class="plain">location = InitialSituation--&gt;START_ROOM_INIS;</span>
-            <span class="plain">if (InitialSituation--&gt;START_OBJECT_INIS)</span>
-                <span class="plain">move player_to_be to InitialSituation--&gt;START_OBJECT_INIS;</span>
-            <span class="plain">else move player_to_be to location;</span>
+        <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">LocationOf</span><span class="plain">(</span><span class="identifier">player_to_be</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">location</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">START_ROOM_INIS</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">START_OBJECT_INIS</span><span class="plain">)</span>
+                <span class="reserved">move</span><span class="plain"> </span><span class="identifier">player_to_be</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">START_OBJECT_INIS</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">move</span><span class="plain"> </span><span class="identifier">player_to_be</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">if (player_to_be ~= player) { remove selfobj; ChangePlayer(player_to_be); }</span>
-        <span class="plain">else { real_location = location; SilentlyConsiderLight(); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player_to_be</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) { </span><span class="reserved">remove</span><span class="plain"> </span><span class="identifier">selfobj</span><span class="plain">; </span><span class="identifier">ChangePlayer</span><span class="plain">(</span><span class="identifier">player_to_be</span><span class="plain">); }</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">real_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">; </span><span class="identifier">SilentlyConsiderLight</span><span class="plain">(); }</span>
 
-        <span class="plain">NOTE_OBJECT_ACQUISITIONS_R(); MoveFloatingObjects();</span>
+        <span class="identifier">NOTE_OBJECT_ACQUISITIONS_R</span><span class="plain">(); </span><span class="identifier">MoveFloatingObjects</span><span class="plain">();</span>
 
-        <span class="plain">actor = player; act_requester = nothing; actors_location = real_location; action = ##Wait;</span>
+        <span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="identifier">actors_location</span><span class="plain"> = </span><span class="identifier">real_location</span><span class="plain">; </span><span class="identifier">action</span><span class="plain"> = ##</span><span class="identifier">Wait</span><span class="plain">;</span>
 
-        <span class="plain">InitialSituation--&gt;DONE_INIS = true;</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">InitialSituation</span><span class="plain">--&gt;</span><span class="identifier">DONE_INIS</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -306,18 +305,18 @@ developed gradually over about a decade.
 
 
 <pre class="display">
-    <span class="plain">Constant ACTION_PRES = 0;</span>
-    <span class="plain">Constant NO_INPS_PRES = 1;</span>
-    <span class="plain">Constant INP1_PRES = 2;</span>
-    <span class="plain">Constant INP2_PRES = 3; ! Parser.i6t code assumes this is INP1_PRES + 1</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACTION_PRES</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NO_INPS_PRES</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">INP1_PRES</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">INP2_PRES</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Parser.i6t code assumes this is INP1_PRES + 1</span>
 
-    <span class="plain">[ PARSE_COMMAND_R;</span>
-        <span class="plain">if (EarlyInTurnSequence == false) rfalse; ! Prevent use outside top level</span>
-        <span class="plain">not_yet_in_play = false;</span>
+    <span class="plain">[ </span><span class="identifier">PARSE_COMMAND_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! Prevent use outside top level</span>
+        <span class="identifier">not_yet_in_play</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
-        <span class="plain">Parser__parse();</span>
-        <span class="plain">TreatParserResults();</span>
-        <span class="plain">rfalse;</span>
+        <span class="identifier">Parser__parse</span><span class="plain">();</span>
+        <span class="identifier">TreatParserResults</span><span class="plain">();</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -343,13 +342,13 @@ is converted to <code class="display"><span class="extract">##Ask</span></code> 
 </li></ul>
 
 <pre class="display">
-    <span class="plain">[ TreatParserResults;</span>
-        <span class="plain">if (parser_results--&gt;ACTION_PRES == ##MistakeAction) meta = true;</span>
+    <span class="plain">[ </span><span class="identifier">TreatParserResults</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain"> == ##</span><span class="identifier">MistakeAction</span><span class="plain">) </span><span class="identifier">meta</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
 
-        <span class="plain">if (parser_results--&gt;ACTION_PRES == ##Tell &amp;&amp;</span>
-            <span class="plain">parser_results--&gt;INP1_PRES == player &amp;&amp; actor ~= player) {</span>
-            <span class="plain">parser_results--&gt;ACTION_PRES = ##Ask;</span>
-            <span class="plain">parser_results--&gt;INP1_PRES = actor; actor = player;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain"> == ##</span><span class="identifier">Tell</span><span class="plain"> &amp;&amp;</span>
+            <span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">INP1_PRES</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain"> &amp;&amp; </span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) {</span>
+            <span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain"> = ##</span><span class="identifier">Ask</span><span class="plain">;</span>
+            <span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">INP1_PRES</span><span class="plain"> = </span><span class="identifier">actor</span><span class="plain">; </span><span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -421,54 +420,54 @@ every turn rules from firing, and so forth &mdash; see the Standard Rules.
 
 
 <pre class="display">
-    <span class="plain">[ GENERATE_ACTION_R i;</span>
-        <span class="plain">if (EarlyInTurnSequence == false) rfalse; ! Prevent use outside top level</span>
-        <span class="plain">EarlyInTurnSequence = false;</span>
+    <span class="plain">[ </span><span class="identifier">GENERATE_ACTION_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! Prevent use outside top level</span>
+        <span class="identifier">EarlyInTurnSequence</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
-        <span class="plain">action = parser_results--&gt;ACTION_PRES;</span>
-        <span class="plain">act_requester = nothing; if (actor ~= player) act_requester = player;</span>
+        <span class="identifier">action</span><span class="plain"> = </span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain">;</span>
+        <span class="identifier">act_requester</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">;</span>
 
-        <span class="plain">inp1 = 0; inp2 = 0; multiflag = false;</span>
-        <span class="plain">if (parser_results--&gt;NO_INPS_PRES &gt;= 1) {</span>
-            <span class="plain">inp1 = parser_results--&gt;INP1_PRES; if (inp1 == 0) multiflag = true;</span>
+        <span class="identifier">inp1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">multiflag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">NO_INPS_PRES</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">INP1_PRES</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">multiflag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (parser_results--&gt;NO_INPS_PRES &gt;= 2) {</span>
-            <span class="plain">inp2 = parser_results--&gt;INP2_PRES; if (inp2 == 0) multiflag = true;</span>
-        <span class="plain">}</span>
-
-        <span class="plain">if (inp1 == 1) noun = nothing; else noun = inp1;</span>
-        <span class="plain">if (inp2 == 1) second = nothing; else second = inp2;</span>
-
-        <span class="plain">if (multiflag) {</span>
-            <span class="plain">if (multiple_object--&gt;0 == 0) {</span>
-                <span class="plain">if (actor == player) { GENERATE_ACTION_RM('B'); new_line; }</span>
-                <span class="plain">return;</span>
-            <span class="plain">}</span>
-            <span class="plain">if (toomany_flag) {</span>
-                <span class="plain">toomany_flag = false;</span>
-                <span class="plain">if (actor == player) { GENERATE_ACTION_RM('A'); }</span>
-            <span class="plain">}</span>
-            <span class="plain">i = multiple_object--&gt;0;</span>
-            <span class="plain">FollowRulebook(MULTIPLE_ACTION_PROCESSING_RB);</span>
-            <span class="plain">if ((multiple_object--&gt;0 == 1) &amp;&amp; (i &gt; 1)) {</span>
-                <span class="plain">multiflag = false;</span>
-                <span class="plain">if (inp1 == 0) noun = multiple_object--&gt;1;</span>
-                <span class="plain">if ((inp2 == 0) &amp;&amp; (parser_results--&gt;NO_INPS_PRES &gt;= 2))</span>
-                    <span class="plain">second = multiple_object--&gt;1;</span>
-            <span class="plain">}</span>
-            <span class="plain">if (multiple_object--&gt;0 == 0) rfalse;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">NO_INPS_PRES</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">INP2_PRES</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp2</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">multiflag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="plain">if (multiflag) {</span>
-            <span class="plain">GenerateMultipleActions();</span>
-            <span class="plain">multiflag = false;</span>
-        <span class="plain">} else BeginAction(action, noun, second);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">noun</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> = </span><span class="identifier">inp1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp2</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">second</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">second</span><span class="plain"> = </span><span class="identifier">inp2</span><span class="plain">;</span>
 
-        <span class="plain">if ((actor ~= player) || (act_requester)) action = ##Wait;</span>
-        <span class="plain">actor = player; act_requester = 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiflag</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple_object</span><span class="plain">--&gt;0 == </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">GENERATE_ACTION_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">return</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">toomany_flag</span><span class="plain">) {</span>
+                <span class="identifier">toomany_flag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) { </span><span class="identifier">GENERATE_ACTION_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); }</span>
+            <span class="plain">}</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;0;</span>
+            <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">multiple_object</span><span class="plain">--&gt;0 == </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)) {</span>
+                <span class="identifier">multiflag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">noun</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;1;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">inp2</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">NO_INPS_PRES</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">))</span>
+                    <span class="identifier">second</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;1;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple_object</span><span class="plain">--&gt;0 == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">}</span>
 
-        <span class="plain">if (meta) { RulebookSucceeds(); rtrue; }</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiflag</span><span class="plain">) {</span>
+            <span class="identifier">GenerateMultipleActions</span><span class="plain">();</span>
+            <span class="identifier">multiflag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">, </span><span class="identifier">second</span><span class="plain">);</span>
+
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) || (</span><span class="identifier">act_requester</span><span class="plain">)) </span><span class="identifier">action</span><span class="plain"> = ##</span><span class="identifier">Wait</span><span class="plain">;</span>
+        <span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="identifier">act_requester</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meta</span><span class="plain">) { </span><span class="identifier">RulebookSucceeds</span><span class="plain">(); </span><span class="reserved">rtrue</span><span class="plain">; }</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -490,17 +489,17 @@ up reports from a list and delivering them later in some processed way.
 
 
 <pre class="display">
-    <span class="plain">[ GenerateMultipleActions initial_location k item;</span>
-        <span class="plain">initial_location = location;</span>
-        <span class="plain">for (k=1: k&lt;=multiple_object--&gt;0: k++) {</span>
-            <span class="plain">item = multiple_object--&gt;k;</span>
-            <span class="plain">RunParagraphOn();</span>
-            <span class="plain">if (inp1 == 0) { inp1 = item; BeginAction(action, item, second, item); inp1 = 0; }</span>
-            <span class="plain">else { inp2 = item; BeginAction(action, noun, item, item); inp2 = 0; }</span>
-            <span class="plain">if (deadflag) return;</span>
-            <span class="plain">if (location ~= initial_location) {</span>
-                <span class="plain">if (player == actor) { ACTION_PROCESSING_INTERNAL_RM('J'); new_line; }</span>
-                <span class="plain">return;</span>
+    <span class="plain">[ </span><span class="identifier">GenerateMultipleActions</span><span class="plain"> </span><span class="identifier">initial_location</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">item</span><span class="plain">;</span>
+        <span class="identifier">initial_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain">=1: </span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">multiple_object</span><span class="plain">--&gt;0: </span><span class="identifier">k</span><span class="plain">++) {</span>
+            <span class="identifier">item</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">k</span><span class="plain">;</span>
+            <span class="identifier">RunParagraphOn</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inp1</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">item</span><span class="plain">; </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">, </span><span class="identifier">item</span><span class="plain">, </span><span class="identifier">second</span><span class="plain">, </span><span class="identifier">item</span><span class="plain">); </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; }</span>
+            <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">item</span><span class="plain">; </span><span class="identifier">BeginAction</span><span class="plain">(</span><span class="identifier">action</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">, </span><span class="identifier">item</span><span class="plain">, </span><span class="identifier">item</span><span class="plain">); </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">location</span><span class="plain"> ~= </span><span class="identifier">initial_location</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> == </span><span class="identifier">actor</span><span class="plain">) { </span><span class="identifier">ACTION_PROCESSING_INTERNAL_RM</span><span class="plain">(</span><span class="character">'J'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; }</span>
+                <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -534,23 +533,23 @@ because we have just blanked one.
 
 
 <pre class="display">
-    <span class="plain">[ TIMED_EVENTS_R i d event_timer fire rule;</span>
-        <span class="plain">for (i=1: i&lt;=(TimedEventsTable--&gt;0): i++)</span>
-            <span class="plain">if ((rule=TimedEventsTable--&gt;i) ~= 0) {</span>
-                <span class="plain">event_timer = TimedEventTimesTable--&gt;i; fire = false;</span>
-                <span class="plain">if (event_timer&lt;0) {</span>
-                    <span class="plain">(TimedEventTimesTable--&gt;i)++;</span>
-                    <span class="plain">if (TimedEventTimesTable--&gt;i == 0) fire = true;</span>
-                <span class="plain">} else {</span>
-                    <span class="plain">d = (the_time - event_timer + TWENTY_FOUR_HOURS) % TWENTY_FOUR_HOURS;</span>
-                    <span class="plain">if ((d &gt;= 0) &amp;&amp; (d &lt; 30)) fire = true;</span>
+    <span class="plain">[ </span><span class="identifier">TIMED_EVENTS_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">event_timer</span><span class="plain"> </span><span class="identifier">fire</span><span class="plain"> </span><span class="identifier">rule</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1: </span><span class="identifier">i</span><span class="plain">&lt;=(</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;0): </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rule</span><span class="plain">=</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) ~= </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">event_timer</span><span class="plain"> = </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">fire</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">event_timer</span><span class="plain">&lt;0) {</span>
+                    <span class="plain">(</span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">fire</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">d</span><span class="plain"> = (</span><span class="identifier">the_time</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">event_timer</span><span class="plain"> + </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">) % </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="constant">30</span><span class="plain">)) </span><span class="identifier">fire</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">if (fire) {</span>
-                    <span class="plain">TimedEventsTable--&gt;i = 0;</span>
-                    <span class="plain">FollowRulebook(rule);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fire</span><span class="plain">) {</span>
+                    <span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                    <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">rule</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -571,15 +570,15 @@ that events always fire.)
 
 
 <pre class="display">
-    <span class="plain">[ SetTimedEvent rule event_time absolute_time i b;</span>
-        <span class="plain">for (i=1: i&lt;=(TimedEventsTable--&gt;0): i++) {</span>
-            <span class="plain">if (rule == TimedEventsTable--&gt;i) { b=i; break; }</span>
-            <span class="plain">if ((b==0) &amp;&amp; (TimedEventsTable--&gt;i == 0)) b=i;</span>
+    <span class="plain">[ </span><span class="identifier">SetTimedEvent</span><span class="plain"> </span><span class="identifier">rule</span><span class="plain"> </span><span class="identifier">event_time</span><span class="plain"> </span><span class="identifier">absolute_time</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1: </span><span class="identifier">i</span><span class="plain">&lt;=(</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;0): </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rule</span><span class="plain"> == </span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">) { </span><span class="identifier">b</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">b</span><span class="plain">==0) &amp;&amp; (</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">b</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">if (b==0) return RunTimeProblem(RTP_TOOMANYEVENTS);</span>
-        <span class="plain">TimedEventsTable--&gt;b = rule;</span>
-        <span class="plain">if (absolute_time) TimedEventTimesTable--&gt;b = event_time;</span>
-        <span class="plain">else TimedEventTimesTable--&gt;b = -event_time;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">b</span><span class="plain">==0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TOOMANYEVENTS</span><span class="plain">);</span>
+        <span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="identifier">rule</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">absolute_time</span><span class="plain">) </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="identifier">event_time</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">event_time</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -591,11 +590,11 @@ at present; but might be, some day.
 
 
 <pre class="display">
-    <span class="plain">Global time_step;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">time_step</span><span class="plain">;</span>
 
-    <span class="plain">[ SetTime t s;</span>
-        <span class="plain">the_time = t; time_rate = s; time_step = 0;</span>
-        <span class="plain">if (s &lt; 0) time_step = 0-s;</span>
+    <span class="plain">[ </span><span class="identifier">SetTime</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">; </span><span class="identifier">time_rate</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">; </span><span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">0-</span><span class="identifier">s</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -607,20 +606,20 @@ at present; but might be, some day.
 
 
 <pre class="display">
-    <span class="plain">[ ADVANCE_TIME_R;</span>
-        <span class="plain">turns++;</span>
-        <span class="plain">if (the_time ~= NULL) {</span>
-            <span class="plain">if (time_rate &gt;= 0) the_time = the_time+time_rate;</span>
-            <span class="plain">else {</span>
-                <span class="plain">time_step--;</span>
-                <span class="plain">if (time_step == 0) {</span>
-                    <span class="plain">the_time++;</span>
-                    <span class="plain">time_step = -time_rate;</span>
+    <span class="plain">[ </span><span class="identifier">ADVANCE_TIME_R</span><span class="plain">;</span>
+        <span class="identifier">turns</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_time</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">time_rate</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">the_time</span><span class="plain">+</span><span class="identifier">time_rate</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> {</span>
+                <span class="identifier">time_step</span><span class="plain">--;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">time_step</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="identifier">the_time</span><span class="plain">++;</span>
+                    <span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">time_rate</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="plain">the_time = the_time % TWENTY_FOUR_HOURS;</span>
+            <span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">the_time</span><span class="plain"> % </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -631,19 +630,19 @@ at present; but might be, some day.
 
 
 <pre class="display">
-    <span class="plain">[ NOTE_OBJECT_ACQUISITIONS_R obj;</span>
-        <span class="plain">objectloop (obj in player) give obj moved;</span>
-        <span class="plain">objectloop (obj has concealed)</span>
-            <span class="plain">if (IndirectlyContains(player, obj)) give obj ~concealed;</span>
-        <span class="plain">#Ifdef RUCKSACK_CLASS;</span>
-        <span class="plain">objectloop (obj in player)</span>
-            <span class="plain">if (obj ofclass RUCKSACK_CLASS)</span>
-                <span class="plain">SACK_OBJECT = obj;</span>
-        <span class="plain">objectloop (obj ofclass RUCKSACK_CLASS &amp;&amp; obj provides component_parent</span>
-            <span class="plain">&amp;&amp; obj.component_parent == player)</span>
-            <span class="plain">SACK_OBJECT = obj;</span>
-        <span class="plain">#Endif;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">NOTE_OBJECT_ACQUISITIONS_R</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">moved</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">concealed</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">IndirectlyContains</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">)) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> ~</span><span class="identifier">concealed</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">RUCKSACK_CLASS</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">player</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">RUCKSACK_CLASS</span><span class="plain">)</span>
+                <span class="identifier">SACK_OBJECT</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">RUCKSACK_CLASS</span><span class="plain"> &amp;&amp; </span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">component_parent</span>
+            <span class="plain">&amp;&amp; </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">)</span>
+            <span class="identifier">SACK_OBJECT</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -657,12 +656,12 @@ sequence.
 
 
 <pre class="display">
-    <span class="plain">[ RESURRECT_PLAYER_IF_ASKED_R;</span>
-        <span class="plain">if (resurrect_please) {</span>
-            <span class="plain">RulebookSucceeds(); resurrect_please = false;</span>
-            <span class="plain">deadflag = 0; story_complete = false; rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">RESURRECT_PLAYER_IF_ASKED_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resurrect_please</span><span class="plain">) {</span>
+            <span class="identifier">RulebookSucceeds</span><span class="plain">(); </span><span class="identifier">resurrect_please</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="identifier">deadflag</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">story_complete</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -677,12 +676,12 @@ which is defined in I7 source text in the Standard Rules.
 
 
 <pre class="display">
-    <span class="plain">[ ASK_FINAL_QUESTION_R;</span>
-        <span class="plain">print "^";</span>
-        <span class="plain">while (true) {</span>
-            <span class="plain">CarryOutActivity(DEALING_WITH_FINAL_QUESTION_ACT);</span>
-            <span class="plain">DivideParagraphPoint();</span>
-            <span class="plain">if (resurrect_please) rtrue;</span>
+    <span class="plain">[ </span><span class="identifier">ASK_FINAL_QUESTION_R</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
+            <span class="identifier">CarryOutActivity</span><span class="plain">(</span><span class="identifier">DEALING_WITH_FINAL_QUESTION_ACT</span><span class="plain">);</span>
+            <span class="identifier">DivideParagraphPoint</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resurrect_please</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -696,13 +695,13 @@ same buffers for the final question as for game commands.
 
 
 <pre class="display">
-    <span class="plain">[ READ_FINAL_ANSWER_R;</span>
-        <span class="plain">DrawStatusLine();</span>
-        <span class="plain">KeyboardPrimitive(buffer, parse);</span>
-        <span class="plain">players_command = 100 + WordCount();</span>
-        <span class="plain">num_words = WordCount();</span>
-        <span class="plain">wn = 1;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">READ_FINAL_ANSWER_R</span><span class="plain">;</span>
+        <span class="identifier">DrawStatusLine</span><span class="plain">();</span>
+        <span class="identifier">KeyboardPrimitive</span><span class="plain">(</span><span class="identifier">buffer</span><span class="plain">, </span><span class="identifier">parse</span><span class="plain">);</span>
+        <span class="identifier">players_command</span><span class="plain"> = </span><span class="constant">100</span><span class="plain"> + </span><span class="identifier">WordCount</span><span class="plain">();</span>
+        <span class="identifier">num_words</span><span class="plain"> = </span><span class="identifier">WordCount</span><span class="plain">();</span>
+        <span class="identifier">wn</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -713,7 +712,7 @@ same buffers for the final question as for game commands.
 
 
 <pre class="display">
-    <span class="plain">[ IMMEDIATELY_RESTART_VM_R; @restart; ];</span>
+    <span class="plain">[ </span><span class="identifier">IMMEDIATELY_RESTART_VM_R</span><span class="plain">; @</span><span class="identifier">restart</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -727,7 +726,7 @@ be carried out that way, but again, it's a precaution.)
 
 
 <pre class="display">
-    <span class="plain">[ IMMEDIATELY_RESTORE_SAVED_R; actor = player; RESTORE_THE_GAME_R(); ];</span>
+    <span class="plain">[ </span><span class="identifier">IMMEDIATELY_RESTORE_SAVED_R</span><span class="plain">; </span><span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="identifier">RESTORE_THE_GAME_R</span><span class="plain">(); ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -736,7 +735,7 @@ be carried out that way, but again, it's a precaution.)
 
 
 <pre class="display">
-    <span class="plain">[ IMMEDIATELY_QUIT_R; @quit; ];</span>
+    <span class="plain">[ </span><span class="identifier">IMMEDIATELY_QUIT_R</span><span class="plain">; @</span><span class="reserved">quit</span><span class="plain">; ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -745,7 +744,7 @@ be carried out that way, but again, it's a precaution.)
 
 
 <pre class="display">
-    <span class="plain">[ IMMEDIATELY_UNDO_R; Perform_Undo(); ];</span>
+    <span class="plain">[ </span><span class="identifier">IMMEDIATELY_UNDO_R</span><span class="plain">; </span><span class="identifier">Perform_Undo</span><span class="plain">(); ];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -756,22 +755,22 @@ obituary" activity.
 
 
 <pre class="display">
-    <span class="plain">[ PRINT_OBITUARY_HEADLINE_R;</span>
-        <span class="plain">print "^^    ";</span>
-        <span class="plain">VM_Style(ALERT_VMSTY);</span>
-        <span class="plain">print "***";</span>
-        <span class="plain">if (deadflag == 1) PRINT_OBITUARY_HEADLINE_RM('A');</span>
-        <span class="plain">if (deadflag == 2) PRINT_OBITUARY_HEADLINE_RM('B');</span>
-        <span class="plain">if (deadflag == 3) PRINT_OBITUARY_HEADLINE_RM('C');</span>
-        <span class="plain">if (deadflag ~= 0 or 1 or 2 or 3)  {</span>
-            <span class="plain">print " ";</span>
-            <span class="plain">TEXT_TY_Say(deadflag);</span>
-            <span class="plain">print " ";</span>
+    <span class="plain">[ </span><span class="identifier">PRINT_OBITUARY_HEADLINE_R</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^^    "</span><span class="plain">;</span>
+        <span class="identifier">VM_Style</span><span class="plain">(</span><span class="identifier">ALERT_VMSTY</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"***"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">PRINT_OBITUARY_HEADLINE_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">PRINT_OBITUARY_HEADLINE_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="identifier">PRINT_OBITUARY_HEADLINE_RM</span><span class="plain">(</span><span class="character">'C'</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deadflag</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">3</span><span class="plain">)  {</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
+            <span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">deadflag</span><span class="plain">);</span>
+            <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">print "***";</span>
-        <span class="plain">VM_Style(NORMAL_VMSTY);</span>
-        <span class="plain">print "^^^";</span>
-        <span class="plain">rfalse;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"***"</span><span class="plain">;</span>
+        <span class="identifier">VM_Style</span><span class="plain">(</span><span class="identifier">NORMAL_VMSTY</span><span class="plain">);</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"^^^"</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -781,9 +780,9 @@ obituary" activity.
 
 
 <pre class="display">
-    <span class="plain">[ PRINT_FINAL_SCORE_R;</span>
-        <span class="plain">if (TEMPLATE_CONFIGURATION_BITMAP &amp; USE_SCORING_TCBIT) ANNOUNCE_SCORE_R();</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">PRINT_FINAL_SCORE_R</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain">) </span><span class="identifier">ANNOUNCE_SCORE_R</span><span class="plain">();</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -793,9 +792,9 @@ obituary" activity.
 
 
 <pre class="display">
-    <span class="plain">[ DISPLAY_FINAL_STATUS_LINE_R;</span>
-        <span class="plain">sline1 = score; sline2 = turns;</span>
-        <span class="plain">rfalse;</span>
+    <span class="plain">[ </span><span class="identifier">DISPLAY_FINAL_STATUS_LINE_R</span><span class="plain">;</span>
+        <span class="identifier">sline1</span><span class="plain"> = </span><span class="identifier">score</span><span class="plain">; </span><span class="identifier">sline2</span><span class="plain"> = </span><span class="identifier">turns</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

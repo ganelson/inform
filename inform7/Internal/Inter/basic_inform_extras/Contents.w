@@ -7,3 +7,4 @@ Web Syntax Version: 2
 
 Sections
 	Main
+	Activities

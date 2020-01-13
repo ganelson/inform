@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>S/lt3</title>
+		<title>S/lt2</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -63,15 +63,15 @@ due to a disagreement between extensions &mdash; "fast" wins.
 
 
 <pre class="display">
-    <span class="plain">#ifndef FAST_ROUTE_FINDING;</span>
-    <span class="plain">#ifndef SLOW_ROUTE_FINDING;</span>
-    <span class="plain">#ifdef TARGET_GLULX;</span>
-    <span class="plain">Constant FAST_ROUTE_FINDING;</span>
-    <span class="plain">#ifnot;</span>
-    <span class="plain">Constant SLOW_ROUTE_FINDING;</span>
-    <span class="plain">#endif;</span>
-    <span class="plain">#endif;</span>
-    <span class="plain">#endif;</span>
+    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">SLOW_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SLOW_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -103,53 +103,53 @@ by enumerating them in the property <code class="display"><span class="extract">
 
 
 <pre class="display">
-    <span class="plain">Constant NUM_DOORS = ICOUNT_DOOR;</span>
-    <span class="plain">Constant NUM_ROOMS = ICOUNT_ROOM;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NUM_DOORS</span><span class="plain"> = </span><span class="identifier">ICOUNT_DOOR</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NUM_ROOMS</span><span class="plain"> = </span><span class="identifier">ICOUNT_ROOM</span><span class="plain">;</span>
 
-    <span class="plain">Array DoorRoutingViable -&gt; NUM_DOORS+1;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">DoorRoutingViable</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">NUM_DOORS</span><span class="plain">+1;</span>
 
-    <span class="plain">Global map_has_changed = true;</span>
-    <span class="plain">Global last_filter; Global last_use_doors;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_filter</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_use_doors</span><span class="plain">;</span>
 
-    <span class="plain">[ SignalMapChange; map_has_changed = true; ];</span>
+    <span class="plain">[ </span><span class="identifier">SignalMapChange</span><span class="plain">; </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; ];</span>
 
-    <span class="plain">[ MapRouteTo from to filter use_doors count  oy oyi ds;</span>
-        <span class="plain">if (from == nothing) return nothing;</span>
-        <span class="plain">if (to == nothing) return nothing;</span>
-        <span class="plain">if (from == to) return nothing;</span>
-        <span class="plain">if ((filter) &amp;&amp; (filter(from) == 0)) return nothing;</span>
-        <span class="plain">if ((filter) &amp;&amp; (filter(to) == 0)) return nothing;</span>
-        <span class="plain">if ((last_filter ~= filter) || (last_use_doors ~= use_doors)) map_has_changed = true;</span>
-        <span class="plain">oyi = 0;</span>
-        <span class="plain">objectloop (oy has mark_as_room) {</span>
-            <span class="plain">if ((filter == 0) || (filter(oy))) {</span>
-                <span class="plain">if (oy.room_index == -1) map_has_changed = true;</span>
-                <span class="plain">oy.room_index = oyi++;</span>
-            <span class="plain">} else {</span>
-                <span class="plain">if (oy.room_index &gt;= 0) map_has_changed = true;</span>
-                <span class="plain">oy.room_index = -1;</span>
+    <span class="plain">[ </span><span class="identifier">MapRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">  </span><span class="identifier">oy</span><span class="plain"> </span><span class="identifier">oyi</span><span class="plain"> </span><span class="identifier">ds</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain">) &amp;&amp; (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain">) &amp;&amp; (</span><span class="identifier">filter</span><span class="plain">(</span><span class="reserved">to</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">last_filter</span><span class="plain"> ~= </span><span class="identifier">filter</span><span class="plain">) || (</span><span class="identifier">last_use_doors</span><span class="plain"> ~= </span><span class="identifier">use_doors</span><span class="plain">)) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+        <span class="identifier">oyi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">oy</span><span class="plain">))) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> = </span><span class="identifier">oyi</span><span class="plain">++;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="plain">oyi = 0;</span>
-        <span class="plain">objectloop (oy ofclass K4_door) {</span>
-            <span class="plain">ds = false;</span>
-            <span class="plain">if ((use_doors &amp; 2) ||</span>
-                <span class="plain">(oy has open) || ((oy has openable) &amp;&amp; (oy hasnt locked))) ds = true;</span>
-            <span class="plain">if (DoorRoutingViable-&gt;oyi ~= ds) map_has_changed = true;</span>
-            <span class="plain">DoorRoutingViable-&gt;oyi = ds;</span>
-            <span class="plain">oyi++;</span>
+        <span class="identifier">oyi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) {</span>
+            <span class="identifier">ds</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">use_doors</span><span class="plain"> &amp; </span><span class="constant">2</span><span class="plain">) ||</span>
+                <span class="plain">(</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">open</span><span class="plain">) || ((</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">openable</span><span class="plain">) &amp;&amp; (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">locked</span><span class="plain">))) </span><span class="identifier">ds</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DoorRoutingViable</span><span class="plain">-&gt;</span><span class="identifier">oyi</span><span class="plain"> ~= </span><span class="identifier">ds</span><span class="plain">) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+            <span class="identifier">DoorRoutingViable</span><span class="plain">-&gt;</span><span class="identifier">oyi</span><span class="plain"> = </span><span class="identifier">ds</span><span class="plain">;</span>
+            <span class="identifier">oyi</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="plain">if (map_has_changed) {</span>
-            <span class="plain">#ifdef FAST_ROUTE_FINDING; ComputeFWMatrix(filter, use_doors); #endif;</span>
-            <span class="plain">map_has_changed = false; last_filter = filter; last_use_doors = use_doors;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">map_has_changed</span><span class="plain">) {</span>
+            <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">; </span><span class="identifier">ComputeFWMatrix</span><span class="plain">(</span><span class="identifier">filter</span><span class="plain">, </span><span class="identifier">use_doors</span><span class="plain">); #</span><span class="identifier">endif</span><span class="plain">;</span>
+            <span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="identifier">last_filter</span><span class="plain"> = </span><span class="identifier">filter</span><span class="plain">; </span><span class="identifier">last_use_doors</span><span class="plain"> = </span><span class="identifier">use_doors</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">#ifdef FAST_ROUTE_FINDING;</span>
-        <span class="plain">if (count) return FastCountRouteTo(from, to, filter, use_doors);</span>
-        <span class="plain">return FastRouteTo(from, to, filter, use_doors);</span>
-        <span class="plain">#ifnot;</span>
-        <span class="plain">if (count) return SlowCountRouteTo(from, to, filter, use_doors);</span>
-        <span class="plain">return SlowRouteTo(from, to, filter, use_doors);</span>
-        <span class="plain">#endif;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FastCountRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">filter</span><span class="plain">, </span><span class="identifier">use_doors</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FastRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">filter</span><span class="plain">, </span><span class="identifier">use_doors</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">SlowCountRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">filter</span><span class="plain">, </span><span class="identifier">use_doors</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">SlowRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="identifier">filter</span><span class="plain">, </span><span class="identifier">use_doors</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -205,77 +205,77 @@ cache is useful for all future routes whatever their endpoints.
 
 
 <pre class="display">
-    <span class="plain">#ifdef FAST_ROUTE_FINDING;</span>
-    <span class="plain">Array FWMatrix --&gt; NUM_ROOMS*NUM_ROOMS;</span>
+    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">FWMatrix</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">NUM_ROOMS</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain">;</span>
 
-    <span class="plain">[ FastRouteTo from to filter use_doors diri i dir oy;</span>
-        <span class="plain">if (from == to) return nothing;</span>
-        <span class="plain">i = (FWMatrix--&gt;(from.room_index*NUM_ROOMS + to.room_index))/No_Directions;</span>
-        <span class="plain">if (i == 0) return nothing;</span>
-        <span class="plain">diri = (FWMatrix--&gt;(from.room_index*NUM_ROOMS + to.room_index))%No_Directions;</span>
-        <span class="plain">i=0; objectloop (dir ofclass K3_direction) {</span>
-            <span class="plain">if (i == diri) return dir;</span>
-            <span class="plain">i++;</span>
+    <span class="plain">[ </span><span class="identifier">FastRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">diri</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">oy</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="identifier">i</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="reserved">to</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="identifier">diri</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="reserved">to</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))%</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+        <span class="identifier">i</span><span class="plain">=0; </span><span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">diri</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="plain">return nothing;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ FastCountRouteTo from to filter use_doors  k;</span>
-        <span class="plain">if (from == to) return 0;</span>
-        <span class="plain">k = (FWMatrix--&gt;(from.room_index*NUM_ROOMS + to.room_index))/No_Directions;</span>
-        <span class="plain">if (k == 0) return -1;</span>
-        <span class="plain">return k;</span>
+    <span class="plain">[ </span><span class="identifier">FastCountRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain">  </span><span class="identifier">k</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">k</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="reserved">to</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ ComputeFWMatrix filter use_doors  oy ox oj axy ayj axj dir diri nd row;</span>
-        <span class="plain">objectloop (oy has mark_as_room) if (oy.room_index &gt;= 0)</span>
-            <span class="plain">objectloop (ox has mark_as_room) if (ox.room_index &gt;= 0)</span>
-                <span class="plain">FWMatrix--&gt;(oy.room_index*NUM_ROOMS + ox.room_index) = 0;</span>
+    <span class="plain">[ </span><span class="identifier">ComputeFWMatrix</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain">  </span><span class="identifier">oy</span><span class="plain"> </span><span class="identifier">ox</span><span class="plain"> </span><span class="identifier">oj</span><span class="plain"> </span><span class="identifier">axy</span><span class="plain"> </span><span class="identifier">ayj</span><span class="plain"> </span><span class="identifier">axj</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">diri</span><span class="plain"> </span><span class="identifier">nd</span><span class="plain"> </span><span class="identifier">row</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">ox</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">) = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="plain">objectloop (oy has mark_as_room) if (oy.room_index &gt;= 0) {</span>
-            <span class="plain">row = (oy.IK1_Count)*No_Directions;</span>
-            <span class="plain">for (diri=0: diri&lt;No_Directions: diri++) {</span>
-                <span class="plain">ox = Map_Storage--&gt;(row+diri);</span>
-                <span class="plain">if ((ox) &amp;&amp; (ox has mark_as_room) &amp;&amp; (ox.room_index &gt;= 0)) {</span>
-                    <span class="plain">FWMatrix--&gt;(oy.room_index*NUM_ROOMS + ox.room_index) = No_Directions + diri;</span>
-                    <span class="plain">continue;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">row</span><span class="plain"> = (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">diri</span><span class="plain">=0: </span><span class="identifier">diri</span><span class="plain">&lt;</span><span class="identifier">No_Directions</span><span class="plain">: </span><span class="identifier">diri</span><span class="plain">++) {</span>
+                <span class="identifier">ox</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;(</span><span class="identifier">row</span><span class="plain">+</span><span class="identifier">diri</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ox</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ox</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
+                    <span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">) = </span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">diri</span><span class="plain">;</span>
+                    <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="plain">if (use_doors &amp;&amp; (ox ofclass K4_door) &amp;&amp;</span>
-                    <span class="plain">((use_doors &amp; 2) || (DoorRoutingViable-&gt;(ox.IK4_Count)))) {</span>
-                    <span class="plain">@push location; location = oy;</span>
-                    <span class="plain">ox = ox.door_to();</span>
-                    <span class="plain">@pull location;</span>
-                    <span class="plain">if ((ox) &amp;&amp; (ox has mark_as_room) &amp;&amp; (ox.room_index &gt;= 0)) {</span>
-                        <span class="plain">FWMatrix--&gt;(oy.room_index*NUM_ROOMS + ox.room_index) = No_Directions + diri;</span>
-                        <span class="plain">continue;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_doors</span><span class="plain"> &amp;&amp; (</span><span class="identifier">ox</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">((</span><span class="identifier">use_doors</span><span class="plain"> &amp; </span><span class="constant">2</span><span class="plain">) || (</span><span class="identifier">DoorRoutingViable</span><span class="plain">-&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">IK4_Count</span><span class="plain">)))) {</span>
+                    <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">; </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">oy</span><span class="plain">;</span>
+                    <span class="identifier">ox</span><span class="plain"> = </span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">();</span>
+                    <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">location</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ox</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ox</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
+                        <span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">) = </span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">diri</span><span class="plain">;</span>
+                        <span class="reserved">continue</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="plain">objectloop (oy has mark_as_room) if (oy.room_index &gt;= 0)</span>
-            <span class="plain">objectloop (ox has mark_as_room) if (ox.room_index &gt;= 0) {</span>
-                <span class="plain">axy = (FWMatrix--&gt;(ox.room_index*NUM_ROOMS + oy.room_index))/No_Directions;</span>
-                <span class="plain">if (axy &gt; 0)</span>
-                    <span class="plain">objectloop (oj has mark_as_room) if (oj.room_index &gt;= 0) {</span>
-                        <span class="plain">ayj = (FWMatrix--&gt;(oy.room_index*NUM_ROOMS + oj.room_index))/No_Directions;</span>
-                        <span class="plain">if (ayj &gt; 0) {</span>
-                            <span class="plain">!print "Is it faster to go from ", (name) ox, " to ",</span>
-                            <span class="plain">!   (name) oj, " via ", (name) oy, "?^";</span>
-                            <span class="plain">axj = (FWMatrix--&gt;(ox.room_index*NUM_ROOMS + oj.room_index))/</span>
-                                <span class="plain">No_Directions;</span>
-                            <span class="plain">if ((axj == 0) || (axy + ayj &lt; axj)) {</span>
-                                <span class="plain">!print "Yes^";</span>
-                                <span class="plain">FWMatrix--&gt;(ox.room_index*NUM_ROOMS + oj.room_index) =</span>
-                                    <span class="plain">(axy + ayj)*No_Directions +</span>
-                                    <span class="plain">(FWMatrix--&gt;(ox.room_index*NUM_ROOMS + oy.room_index))%</span>
-                                        <span class="plain">No_Directions;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">ox</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">axy</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">axy</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+                    <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+                        <span class="identifier">ayj</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ayj</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                            <span class="comment">!print "Is it faster to go from ", (name) ox, " to ",</span>
+                            <span class="comment">!   (name) oj, " via ", (name) oy, "?^";</span>
+                            <span class="identifier">axj</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span>
+                                <span class="identifier">No_Directions</span><span class="plain">;</span>
+                            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">axj</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">axy</span><span class="plain"> + </span><span class="identifier">ayj</span><span class="plain"> &lt; </span><span class="identifier">axj</span><span class="plain">)) {</span>
+                                <span class="comment">!print "Yes^";</span>
+                                <span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">) =</span>
+                                    <span class="plain">(</span><span class="identifier">axy</span><span class="plain"> + </span><span class="identifier">ayj</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> +</span>
+                                    <span class="plain">(</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))%</span>
+                                        <span class="identifier">No_Directions</span><span class="plain">;</span>
                             <span class="plain">}</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
             <span class="plain">}</span>
     <span class="plain">];</span>
-    <span class="plain">#ENDIF;</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -334,79 +334,79 @@ the direction of the shortest path from there to R_y.
 
 
 <pre class="display">
-    <span class="plain">#ifndef FAST_ROUTE_FINDING;</span>
-    <span class="plain">[ SlowRouteTo from to filter use_doors  obj dir in_direction progressed sl through_door;</span>
-        <span class="plain">if (from == nothing) return nothing;</span>
-        <span class="plain">if (to == nothing) return nothing;</span>
-        <span class="plain">if (from == to) return nothing;</span>
-        <span class="plain">objectloop (obj has mark_as_room) obj.vector = 0;</span>
-        <span class="plain">to.vector = 1;</span>
-        <span class="plain">!print "Routing from ", (the) from, " to ", (the) to, "^";</span>
-        <span class="plain">while (true) {</span>
-            <span class="plain">progressed = false;</span>
-            <span class="plain">!print "Pass begins^";</span>
-            <span class="plain">objectloop (obj has mark_as_room)</span>
-                <span class="plain">if ((filter == 0) || (filter(obj)))</span>
-                    <span class="plain">if (obj.vector == 0)</span>
-                        <span class="plain">objectloop (dir ofclass K3_direction) {</span>
-                            <span class="plain">in_direction = Map_Storage--&gt;((obj.IK1_Count)*No_Directions + dir.IK3_Count);</span>
-                            <span class="plain">if (in_direction == nothing) continue;</span>
-                            <span class="plain">!print (the) obj, " &gt; ", (the) dir, " &gt; ", (the) in_direction, "^";</span>
-                            <span class="plain">if ((in_direction)</span>
-                                <span class="plain">&amp;&amp; (in_direction has mark_as_room)</span>
-                                <span class="plain">&amp;&amp; (in_direction.vector &gt; 0)</span>
-                                <span class="plain">&amp;&amp; ((filter == 0) || (filter(in_direction)))) {</span>
-                                <span class="plain">obj.vector = dir | WORD_HIGHBIT;</span>
-                                <span class="plain">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
-                                <span class="plain">progressed = true;</span>
-                                <span class="plain">continue;</span>
+    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
+    <span class="plain">[ </span><span class="identifier">SlowRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain">  </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain"> </span><span class="identifier">progressed</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> </span><span class="identifier">through_door</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
+        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">to</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="comment">!print "Routing from ", (the) from, " to ", (the) to, "^";</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
+            <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="comment">!print "Pass begins^";</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">)))</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+                        <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) {</span>
+                            <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;((</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                            <span class="comment">!print (the) obj, " &gt; ", (the) dir, " &gt; ", (the) in_direction, "^";</span>
+                            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">in_direction</span><span class="plain">)</span>
+                                <span class="plain">&amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
+                                <span class="plain">&amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+                                <span class="plain">&amp;&amp; ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">in_direction</span><span class="plain">)))) {</span>
+                                <span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain"> | </span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
+                                <span class="comment">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
+                                <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                                <span class="reserved">continue</span><span class="plain">;</span>
                             <span class="plain">}</span>
-                            <span class="plain">if (use_doors &amp;&amp; (in_direction ofclass K4_door) &amp;&amp;</span>
-                                <span class="plain">((use_doors &amp; 2) ||</span>
-                                <span class="plain">(in_direction has open) ||</span>
-                                <span class="plain">((in_direction has openable) &amp;&amp; (in_direction hasnt locked)))) {</span>
-                                <span class="plain">sl = location; location = obj;</span>
-                                <span class="plain">through_door = in_direction.door_to();</span>
-                                <span class="plain">location = sl;</span>
-                                <span class="plain">!print "Through door is ", (the) through_door, "^";</span>
-                                <span class="plain">if ((through_door)</span>
-                                    <span class="plain">&amp;&amp; (through_door has mark_as_room)</span>
-                                    <span class="plain">&amp;&amp; (through_door.vector &gt; 0)</span>
-                                    <span class="plain">&amp;&amp; ((filter == 0) || (filter(through_door)))) {</span>
-                                    <span class="plain">obj.vector = dir | WORD_HIGHBIT;</span>
-                                    <span class="plain">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
-                                    <span class="plain">progressed = true;</span>
-                                    <span class="plain">continue;</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_doors</span><span class="plain"> &amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">) &amp;&amp;</span>
+                                <span class="plain">((</span><span class="identifier">use_doors</span><span class="plain"> &amp; </span><span class="constant">2</span><span class="plain">) ||</span>
+                                <span class="plain">(</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">open</span><span class="plain">) ||</span>
+                                <span class="plain">((</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">openable</span><span class="plain">) &amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">locked</span><span class="plain">)))) {</span>
+                                <span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">; </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
+                                <span class="identifier">through_door</span><span class="plain"> = </span><span class="identifier">in_direction</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">();</span>
+                                <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
+                                <span class="comment">!print "Through door is ", (the) through_door, "^";</span>
+                                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">through_door</span><span class="plain">)</span>
+                                    <span class="plain">&amp;&amp; (</span><span class="identifier">through_door</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
+                                    <span class="plain">&amp;&amp; (</span><span class="identifier">through_door</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+                                    <span class="plain">&amp;&amp; ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">through_door</span><span class="plain">)))) {</span>
+                                    <span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain"> | </span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
+                                    <span class="comment">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
+                                    <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                                    <span class="reserved">continue</span><span class="plain">;</span>
                                 <span class="plain">}</span>
                             <span class="plain">}</span>
                         <span class="plain">}</span>
-            <span class="plain">objectloop (obj has mark_as_room) obj.vector = obj.vector &amp;~ WORD_HIGHBIT;</span>
-            <span class="plain">if (from.vector) return from.vector;</span>
-            <span class="plain">if (progressed == false) return from.vector;</span>
+            <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> &amp;~ </span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">progressed</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ SlowCountRouteTo from to filter use_doors obj i;</span>
-        <span class="plain">if (from == nothing) return -1;</span>
-        <span class="plain">if (to == nothing) return -1;</span>
-        <span class="plain">if (from == to) return 0;</span>
-        <span class="plain">if (from has mark_as_room &amp;&amp; to has mark_as_room) {</span>
-            <span class="plain">obj = MapRouteTo(from,to,filter,use_doors);</span>
-            <span class="plain">if (obj == nothing) return -1;</span>
-            <span class="plain">i = 0; obj = from;</span>
-            <span class="plain">while ((obj ~= to) &amp;&amp; (i&lt;NUM_ROOMS)) { i++; obj = MapConnection(obj,obj.vector); }</span>
-            <span class="plain">return i;</span>
+    <span class="plain">[ </span><span class="identifier">SlowCountRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain"> &amp;&amp; </span><span class="reserved">to</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) {</span>
+            <span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">MapRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">,</span><span class="reserved">to</span><span class="plain">,</span><span class="identifier">filter</span><span class="plain">,</span><span class="identifier">use_doors</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">obj</span><span class="plain"> ~= </span><span class="reserved">to</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NUM_ROOMS</span><span class="plain">)) { </span><span class="identifier">i</span><span class="plain">++; </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">MapConnection</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">,</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain">); }</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">return -1;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">#ENDIF;</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
 
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="S-lt3.html">Back to 'ListWriter Template'</a></li><li><a href="S-nt.html">Continue with 'Number Template'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-lt2.html">Back to 'ListWriter Template'</a></li><li><a href="S-nt.html">Continue with 'Number Template'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

@@ -114,7 +114,7 @@ This repository is where development is done on the following executables:
 @end
 @primaryd(inform7, 'Web of InC', 'P-cu')
 	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
-	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html), [&#9733;&nbsp;core-test](docs/core-test/index.html)
+	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
 @primaryd(inblorb, 'Web of InC', 'P-ui')
 @primaryd(indoc, 'Web of InC', 'P-iti')
 @primaryd(inpolicy, 'Web of InC', 'P-ui')
@@ -237,18 +237,24 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 	<li>
 		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
-		- <span class="purpose">@purpose(@program)</span>.</p>
+		- <span class="purpose">@purpose(@program)</span></p>
 	</li>
 @end
 @define subweb(owner, program)
 	<li>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
-		<span class="purpose">@purpose(@owner/@program)</span></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		<span class="purpose"><i>@purpose(@owner/@program) (Not compiled in Inform itself.)</i></span></p>
 	</li>
 @end
 @define mod(owner, module)
 	<li>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module of inform7) -
+		<span class="purpose">@purpose(@owner/@module-module)</span></p>
+	</li>
+@end
+@define modi(owner, module)
+	<li>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module of both inform7 and inter) -
 		<span class="purpose">@purpose(@owner/@module-module)</span></p>
 	</li>
 @end
@@ -296,20 +302,26 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@mod('inform7', 'kinds')
 			@subweb('inform7', 'kinds-test')
 			@mod('inform7', 'core')
-			@subweb('inform7', 'core-test')
 			@mod('inform7', 'if')
 			@mod('inform7', 'multimedia')
 			@mod('inform7', 'index')
 			@web('inter', 'P-ui')
-			@mod('inter', 'inter')
-			@mod('inter', 'codegen')
+			@modi('inter', 'inter')
+			@modi('inter', 'building')
+			@modi('inter', 'codegen')
 		</ul>
 		<hr>
-		<p class="chapter">The Template libraries of run-time support code:</p>
+		<p class="chapter">The two extensions (though their use is compulsory) which, though themselves written in Inform, create the Inform language:</p>
 		<ul class="sectionlist">
-			@webt('basic_inform', 'support for Inform as a programming language')
-			@webt('standard_rules', 'support for Inform as an interactive fiction tool')
-			@webt('basic_inform_extras', 'additional support needed only if the Standard Rules are not used')
+			@xweb('basicinform')
+			@xweb('srules')
+		</ul>
+		<hr>
+		<p class="chapter">The template libraries of run-time code which support these extensions:</p>
+		<ul class="sectionlist">
+			@webt('basic_inform', 'support for Inform as a programming language.')
+			@webt('standard_rules', 'support for Inform as an interactive fiction tool.')
+			@webt('basic_inform_extras', 'additional support needed only if the Standard Rules are not used.')
 		</ul>
 		<hr>
 		<p class="chapter">Other webs in this repository:</p>
@@ -318,7 +330,6 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@web('indoc', 'P-iti')
 			@web('inpolicy', 'P-ui')
 			@web('inrtps', 'P-ui')
-			@xweb('srules')
 		</ul>
 		<hr>
 		<p class="chapter">Rekated webs in other repositories:</p>

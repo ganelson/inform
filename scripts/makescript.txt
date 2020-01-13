@@ -107,20 +107,6 @@ INFORM6X = inform6/Tangled/inform6
 
 # While these are also executables, they only provide unit tests for modules:
 
-#{tool} CORETEST core-test inform7/core-test
-#{dep} CORETEST on FOUNDATION
-#{dep} CORETEST on WORDS
-#{dep} CORETEST on INFLECTIONS
-#{dep} CORETEST on SYNTAX
-#{dep} CORETEST on LINGUISTICS
-#{dep} CORETEST on KINDS
-#{dep} CORETEST on PROBLEMS
-#{dep} CORETEST on CORE
-#{dep} CORETEST on INDEX
-#{dep} CORETEST on INTER
-#{dep} CORETEST on BUILDING
-#{dep} CORETEST on CODEGEN
-
 {tool} INFLECTIONSTEST inflections-test inform7/inflections-test
 {dep} INFLECTIONSTEST on FOUNDATION
 {dep} INFLECTIONSTEST on WORDS
@@ -412,7 +398,6 @@ pages:
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
 	$(INWEBX) inform7/core-module -weave-docs -weave-into docs/core-module
-	$(INWEBX) inform7/core-test -weave-docs -weave-into docs/core-test
 	$(INWEBX) inform7/if-module -weave-docs -weave-into docs/if-module
 	$(INWEBX) inform7/index-module -weave-docs -weave-into docs/index-module
 	$(INWEBX) inform7/inflections-module -weave-docs -weave-into docs/inflections-module

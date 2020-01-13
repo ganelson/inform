@@ -31,7 +31,7 @@ original source text (though in fact I7 does not use this at present).
 
 
 <pre class="display">
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">RTP_Buffer</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">7</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">RTP_Buffer</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; (-1) </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">RunTimeProblem</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain"> </span><span class="identifier">par3</span><span class="plain"> </span><span class="identifier">ln</span><span class="plain"> </span><span class="identifier">file</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == </span><span class="constant">-1</span><span class="plain">) {</span>
             <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="identifier">n</span><span class="plain">;</span>
@@ -75,24 +75,11 @@ original source text (though in fact I7 does not use this at present).
         <span class="plain">}</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">": "</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">) {</span>
-            <span class="identifier">RTP_BACKDROP</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (a backdrop) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
-                    <span class="string">", which is not a region.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTCHANGE</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change player to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">", which is not a person.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_NOEXIT</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">" exit of "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
-                    <span class="string">", but it didn't seem to have such an exit to change.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_EXITDOOR</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">" exit of "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
-                    <span class="string">", but it led to a door, not a room.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_IMPREL</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access an inappropriate relation for "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">,</span>
                     <span class="string">", violating '"</span><span class="plain">, (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par2</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">"'.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_TOOMANYRULEBOOKS</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many rulebooks in simultaneous use.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_TOOMANYEVENTS</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many timed events are going on at once.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_BADPROPERTY</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access non-existent property for "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
             <span class="identifier">RTP_UNPROVIDED</span><span class="plain">:</span>
@@ -107,18 +94,11 @@ original source text (though in fact I7 does not use this at present).
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to abandon an activity which wasn't going on.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_CANTEND</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to end an activity which wasn't going on.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTMOVENOTHING</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't move nothing.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTREMOVENOTHING</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't remove nothing from play.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_DIVZERO</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't divide by zero.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_BADVALUEPROPERTY</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to access property for a value which didn't fit: "</span><span class="plain">,</span>
                     <span class="string">"if this were a number it would be "</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_NOTBACKDROP</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (not a backdrop) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
-                    <span class="string">", which is a region.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_TABLE_NOCOL</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to look up a non-existent column in the table '"</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
@@ -157,12 +137,6 @@ original source text (though in fact I7 does not use this at present).
             <span class="identifier">RTP_TABLE_BADFILE</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"File being read is not a previously saved table: table '"</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_NOTINAROOM</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to test if the current location is '"</span><span class="plain">,</span>
-                    <span class="plain">(</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"', which is not a room or region.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_BADTOPIC</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to see if a snippet of text matches something which</span>
-                    <span class="identifier">is</span><span class="plain"> </span><span class="identifier">not</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">topic</span><span class="plain">.^</span><span class="string">";</span>
             <span class="identifier">RTP_ROUTELESS</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to find route or count steps through an implicit</span>
                     <span class="identifier">relation</span><span class="plain">.^</span><span class="string">";</span>
@@ -175,27 +149,8 @@ original source text (though in fact I7 does not use this at present).
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to 'decide on nothing'.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_LOWLEVELERROR</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Low level error.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_DONTIGNORETURNSEQUENCE</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to ignore the turn sequence rules.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_SAYINVALIDSNIPPET</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to say a snippet value which is currently invalid: words "</span><span class="plain">,</span>
-                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_SPLICEINVALIDSNIPPET</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to splice a snippet value which is currently invalid: words "</span><span class="plain">,</span>
-                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_INCLUDEINVALIDSNIPPET</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to match a snippet value which is currently invalid: words "</span><span class="plain">,</span>
-                    <span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
             <span class="identifier">RTP_LISTWRITERMEMORY</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"The list-writer has run out of memory.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTREMOVEPLAYER</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to remove the player from play.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTBEOFFSTAGE</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to move the player off-stage.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTREMOVEDOORS</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to remove a door from play.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTCHANGEOFFSTAGE</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to change the player to a person off-stage.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_MSTACKMEMORY</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"The memory stack is exhausted.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_TYPECHECK</span><span class="plain">:</span>
@@ -213,11 +168,6 @@ original source text (though in fact I7 does not use this at present).
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Syntax error in regular expression.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_NOGLULXUNICODE</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"This interpreter does not support Unicode.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_BACKDROPONLY</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Only backdrops can be moved to multiple places.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_NOTTHING</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to move "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" (not a thing) to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">,</span>
-                    <span class="string">", but only things can move around.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_NEGATIVEROOT</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't take the square root of a negative number.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_CANTITERATE</span><span class="plain">:</span>
@@ -232,9 +182,6 @@ original source text (though in fact I7 does not use this at present).
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to change a relation for objects with the wrong kinds: "</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par3</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">", but you tried to "</span><span class="plain">,</span>
                     <span class="string">"relate (or unrelate) "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">" to "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_CANTMAKEPART</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"Tried to make the player part of something: "</span><span class="plain">,</span>
-                    <span class="plain">(</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
             <span class="identifier">RTP_TEXTTOKENTOOHARD</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"This use of '[text]' is too complicated.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_RELATIONCHANGEIMPOSSIBLE</span><span class="plain">:</span>
@@ -242,9 +189,6 @@ original source text (though in fact I7 does not use this at present).
             <span class="identifier">RTP_RELMINIMAL</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"This operation can't be done with the relation '"</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">RlnGetF</span><span class="plain">(</span><span class="identifier">par3</span><span class="plain">, </span><span class="identifier">RR_DESCRIPTION</span><span class="plain">), </span><span class="string">"'.^"</span><span class="plain">;</span>
-            <span class="identifier">RTP_REGIONSNOTADJACENT</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"You can't test whether something is adjacent to a region: "</span><span class="plain">,</span>
-                    <span class="string">"such as, in this case, "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">".^"</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">RunTimeProblemShowWM</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">par1</span><span class="plain">, </span><span class="identifier">par2</span><span class="plain">, </span><span class="identifier">par3</span><span class="plain">);</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
@@ -367,6 +311,7 @@ it doesn't mean it actually does have.
                 <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">KindHierarchy</span><span class="plain">--&gt;(</span><span class="identifier">a</span><span class="plain">+1);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ScanPropertyMetadata</span><span class="plain">(</span><span class="identifier">K0_kind</span><span class="plain">, </span><span class="identifier">off</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">PermissionFound</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_rtp</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_UNPROVIDED</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">textual</span><span class="plain">);</span>
         <span class="reserved">rfalse</span><span class="plain">;</span>
 

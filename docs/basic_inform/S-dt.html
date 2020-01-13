@@ -340,10 +340,11 @@ creation sequence in the Standard Rules.)
 
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">STARTING_VIRTUAL_MACHINE_ACT</span><span class="plain">    = </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_RESPONSE_ACT</span><span class="plain">           = </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_THE_NAME_ACT</span><span class="plain">           = </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_THE_PLURAL_NAME_ACT</span><span class="plain">    = </span><span class="constant">2</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_THE_NAME_ACT</span><span class="plain">           = </span><span class="constant">2</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_THE_PLURAL_NAME_ACT</span><span class="plain">    = </span><span class="constant">3</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_RESPONSE_ACT</span><span class="plain">           = </span><span class="constant">3</span><span class="plain">;</span>
+
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_A_NUMBER_OF_ACT</span><span class="plain">        = </span><span class="constant">4</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_ROOM_DESC_DETAILS_ACT</span><span class="plain">  = </span><span class="constant">5</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PRINTING_INVENTORY_DETAILS_ACT</span><span class="plain">  = </span><span class="constant">6</span><span class="plain">;</span>
@@ -394,29 +395,42 @@ and to the creation sequence in the Standard Rules.)
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">STARTUP_RB</span><span class="plain">                      = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SHUTDOWN_RB</span><span class="plain">                     = </span><span class="constant">1</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TURN_SEQUENCE_RB</span><span class="plain">                = </span><span class="constant">2</span><span class="plain">;</span>
+    <span class="comment">! 2, 3, 4 are used by the "Printing the name of something" activity</span>
+    <span class="comment">! 5, 6, 7 are used by the "Printing the plural name of something" activity</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_PLAY_BEGINS_RB</span><span class="plain">             = </span><span class="constant">4</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_PLAY_ENDS_RB</span><span class="plain">               = </span><span class="constant">5</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_SCENE_BEGINS_RB</span><span class="plain">            = </span><span class="constant">6</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_SCENE_ENDS_RB</span><span class="plain">              = </span><span class="constant">7</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TURN_SEQUENCE_RB</span><span class="plain">                = </span><span class="constant">11</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">            = </span><span class="constant">9</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SETTING_ACTION_VARIABLES_RB</span><span class="plain">     = </span><span class="constant">10</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">   = </span><span class="constant">11</span><span class="plain">;</span>
+    <span class="comment">! 9 is the Scene changing rules</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACCESSIBILITY_RB</span><span class="plain">                = </span><span class="constant">13</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REACHING_INSIDE_RB</span><span class="plain">              = </span><span class="constant">14</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REACHING_OUTSIDE_RB</span><span class="plain">             = </span><span class="constant">15</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">VISIBLE_RB</span><span class="plain">                      = </span><span class="constant">16</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_PLAY_BEGINS_RB</span><span class="plain">             = </span><span class="constant">13</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_PLAY_ENDS_RB</span><span class="plain">               = </span><span class="constant">14</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_SCENE_BEGINS_RB</span><span class="plain">            = </span><span class="constant">15</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WHEN_SCENE_ENDS_RB</span><span class="plain">              = </span><span class="constant">16</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PERSUADE_RB</span><span class="plain">                     = </span><span class="constant">17</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UNSUCCESSFUL_ATTEMPT_RB</span><span class="plain">         = </span><span class="constant">18</span><span class="plain">;</span>
+    <span class="comment">! 14 is Every turn</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AFTER_RB</span><span class="plain">                        = </span><span class="constant">23</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REPORT_RB</span><span class="plain">                       = </span><span class="constant">24</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACTION_PROCESSING_RB</span><span class="plain">            = </span><span class="constant">18</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SETTING_ACTION_VARIABLES_RB</span><span class="plain">     = </span><span class="constant">19</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain">   = </span><span class="constant">20</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain">   = </span><span class="constant">26</span><span class="plain">;</span>
+    <span class="comment">! 18 is player's action awareness rules</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACCESSIBILITY_RB</span><span class="plain">                = </span><span class="constant">22</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REACHING_INSIDE_RB</span><span class="plain">              = </span><span class="constant">23</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REACHING_OUTSIDE_RB</span><span class="plain">             = </span><span class="constant">24</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">VISIBLE_RB</span><span class="plain">                      = </span><span class="constant">25</span><span class="plain">;</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PERSUADE_RB</span><span class="plain">                     = </span><span class="constant">26</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UNSUCCESSFUL_ATTEMPT_RB</span><span class="plain">         = </span><span class="constant">27</span><span class="plain">;</span>
+
+    <span class="comment">! 25 is before, 26 is instead, 27 is check, 28 is carry out</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AFTER_RB</span><span class="plain">                        = </span><span class="constant">32</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REPORT_RB</span><span class="plain">                       = </span><span class="constant">33</span><span class="plain">;</span>
+
+    <span class="comment">! 31 is does the player mean</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain">   = </span><span class="constant">35</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>

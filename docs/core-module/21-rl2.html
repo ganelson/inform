@@ -129,7 +129,7 @@ turn sequence rules by looking up <code class="display"><span class="extract">bu
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_BUILT_IN_RULEBOOKS</span><span class="plain"> 32</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_BUILT_IN_RULEBOOKS</span><span class="plain"> 64</span>
 </pre>
 
 <pre class="display">
@@ -152,31 +152,31 @@ in the Standard Rules file.
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">STARTUP_RB</span><span class="plain"> 0 </span>    <span class="comment">Startup rules</span>
     <span class="definitionkeyword">define</span> <span class="constant">SHUTDOWN_RB</span><span class="plain"> 1 </span>    <span class="comment">Shutdown rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TURN_SEQUENCE_RB</span><span class="plain"> 2 </span>    <span class="comment">Turn sequence rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SCENE_CHANGING_RB</span><span class="plain"> 3 </span>    <span class="comment">Scene changing rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WHEN_PLAY_BEGINS_RB</span><span class="plain"> 4 </span>    <span class="comment">When play begins</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WHEN_PLAY_ENDS_RB</span><span class="plain"> 5 </span>    <span class="comment">When play ends</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WHEN_SCENE_BEGINS_RB</span><span class="plain"> 6 </span>    <span class="comment">When play begins</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WHEN_SCENE_ENDS_RB</span><span class="plain"> 7 </span>    <span class="comment">When play ends</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EVERY_TURN_RB</span><span class="plain"> 8 </span>    <span class="comment">Every turn</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ACTION_PROCESSING_RB</span><span class="plain"> 9 </span>    <span class="comment">Action-processing rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SETTING_ACTION_VARIABLES_RB</span><span class="plain"> 10 </span>    <span class="comment">Setting action variables rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain"> 11 </span>    <span class="comment">Specific action-processing rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PLAYERS_ACTION_AWARENESS_RB</span><span class="plain"> 12 </span>    <span class="comment">Player's action awareness rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ACCESSIBILITY_RB</span><span class="plain"> 13 </span>    <span class="comment">Accessibility rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REACHING_INSIDE_RB</span><span class="plain"> 14 </span>    <span class="comment">Reaching inside rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REACHING_OUTSIDE_RB</span><span class="plain"> 15 </span>    <span class="comment">Reaching outside rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VISIBILITY_RB</span><span class="plain"> 16 </span>    <span class="comment">Visibility rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PERSUASION_RB</span><span class="plain"> 17 </span>    <span class="comment">Persuasion rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNSUCCESSFUL_ATTEMPT_BY_RB</span><span class="plain"> 18 </span>    <span class="comment">Unsuccessful attempt by</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BEFORE_RB</span><span class="plain"> 19 </span>    <span class="comment">Before rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INSTEAD_RB</span><span class="plain"> 20 </span>    <span class="comment">Instead rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CHECK_RB</span><span class="plain"> 21 </span>    <span class="comment">Check</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CARRY_OUT_RB</span><span class="plain"> 22 </span>    <span class="comment">Carry out rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AFTER_RB</span><span class="plain"> 23 </span>    <span class="comment">After rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REPORT_RB</span><span class="plain"> 24 </span>    <span class="comment">Report</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DOES_THE_PLAYER_MEAN_RB</span><span class="plain"> 25 </span>    <span class="comment">Does the player mean...? rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain"> 26 </span>    <span class="comment">For changing or reordering multiple actions</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TURN_SEQUENCE_RB</span><span class="plain"> 11 </span>    <span class="comment">Turn sequence rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SCENE_CHANGING_RB</span><span class="plain"> 12 </span>    <span class="comment">Scene changing rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WHEN_PLAY_BEGINS_RB</span><span class="plain"> 13 </span>    <span class="comment">When play begins</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WHEN_PLAY_ENDS_RB</span><span class="plain"> 14 </span>    <span class="comment">When play ends</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WHEN_SCENE_BEGINS_RB</span><span class="plain"> 15 </span>    <span class="comment">When scene begins</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WHEN_SCENE_ENDS_RB</span><span class="plain"> 16 </span>    <span class="comment">When scene ends</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EVERY_TURN_RB</span><span class="plain"> 17 </span>    <span class="comment">Every turn</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ACTION_PROCESSING_RB</span><span class="plain"> 18 </span>    <span class="comment">Action-processing rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SETTING_ACTION_VARIABLES_RB</span><span class="plain"> 19 </span>    <span class="comment">Setting action variables rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain"> 20 </span>    <span class="comment">Specific action-processing rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PLAYERS_ACTION_AWARENESS_RB</span><span class="plain"> 21 </span>    <span class="comment">Player's action awareness rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ACCESSIBILITY_RB</span><span class="plain"> 22 </span>    <span class="comment">Accessibility rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REACHING_INSIDE_RB</span><span class="plain"> 23 </span>    <span class="comment">Reaching inside rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REACHING_OUTSIDE_RB</span><span class="plain"> 24 </span>    <span class="comment">Reaching outside rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VISIBILITY_RB</span><span class="plain"> 25 </span>    <span class="comment">Visibility rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PERSUASION_RB</span><span class="plain"> 26 </span>    <span class="comment">Persuasion rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNSUCCESSFUL_ATTEMPT_BY_RB</span><span class="plain"> 27 </span>    <span class="comment">Unsuccessful attempt by</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BEFORE_RB</span><span class="plain"> 28 </span>    <span class="comment">Before rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INSTEAD_RB</span><span class="plain"> 29 </span>    <span class="comment">Instead rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CHECK_RB</span><span class="plain"> 30 </span>    <span class="comment">Check</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CARRY_OUT_RB</span><span class="plain"> 31 </span>    <span class="comment">Carry out rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AFTER_RB</span><span class="plain"> 32 </span>    <span class="comment">After rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REPORT_RB</span><span class="plain"> 33 </span>    <span class="comment">Report</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DOES_THE_PLAYER_MEAN_RB</span><span class="plain"> 34 </span>    <span class="comment">Does the player mean...? rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain"> 35 </span>    <span class="comment">For changing or reordering multiple actions</span>
 </pre>
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Construction. </b>When a rulebook is to be created, we do a little treatment on its name. We
 remove any article, and also strip off the suffix "rules" or "rulebook"
@@ -287,7 +287,7 @@ built (for instance, scene endings).
         <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">RULEBOOK_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rulebook</span><span class="plain">);</span>
-
+    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wording %W. ID is %d.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
         <span class="plain">&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;, 1);</span>
 
