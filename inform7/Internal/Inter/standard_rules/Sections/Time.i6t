@@ -2,17 +2,6 @@ Time Template.
 
 Support for parsing and printing times of day.
 
-@h Rounding.
-The following rounds a numerical value |t1| to the nearest unit of |t2|;
-for instance, if |t2| is 5 then it rounds to the nearest 5. The name is an
-anachronism, as it's used for all kinds of value.
-
-=
-[ RoundOffTime t1 t2;
-	if (t1 >= 0) return ((t1+t2/2)/t2)*t2;
-	return -((-t1+t2/2)/t2)*t2;
-];
-
 @h Conversion To Number.
 
 =

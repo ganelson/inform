@@ -1,0 +1,16 @@
+  
+  "total raised" = number: 900
+  "total raised" = number: 910
+  "total raised" = number: 911
+  "total raised" = number: 901
+  "total raised" = number: 900
+  "target" = number: 1000
+  "target" = number: 1010
+  "target" = number: 1011
+  "target" = number: 1001
+  "target" = number: 1000
+  "size of the apple" = length: 7cm
+  "size of the apple" = length: 17cm
+  "size of the apple" = length: 18cm
+  "size of the apple" = length: 8cm
+  "size of the apple" = length: 7cm

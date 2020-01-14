@@ -1223,7 +1223,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e RLIST_ALL_X_HL
 @e RLIST_ALL_Y_HL
 @e RLNGETF_HL
-@e ROUNDOFFTIME_HL
+@e ROUNDOFFVALUE_HL
 @e ROUTINEFILTER_TT_HL
 @e RR_STORAGE_HL
 @e RTP_RELKINDVIOLATION_HL
@@ -1465,7 +1465,7 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, RLIST_ALL_X_HL, I"RLIST_ALL_X", Translation::same(), template);
 	HierarchyLocations::con(I, RLIST_ALL_Y_HL, I"RLIST_ALL_Y", Translation::same(), template);
 	HierarchyLocations::con(I, RLNGETF_HL, I"RlnGetF", Translation::same(), template);
-	HierarchyLocations::con(I, ROUNDOFFTIME_HL, I"RoundOffTime", Translation::same(), template);
+	HierarchyLocations::con(I, ROUNDOFFVALUE_HL, I"RoundOffValue", Translation::same(), template);
 	HierarchyLocations::con(I, ROUTINEFILTER_TT_HL, I"ROUTINE_FILTER_TT", Translation::same(), template);
 	HierarchyLocations::con(I, RR_STORAGE_HL, I"RR_STORAGE", Translation::same(), template);
 	HierarchyLocations::con(I, RTP_RELKINDVIOLATION_HL, I"RTP_RELKINDVIOLATION", Translation::same(), template);

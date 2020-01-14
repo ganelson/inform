@@ -1,0 +1,9 @@
+  
+  "tally" = number: 0
+  "tally" = number: 7
+  "whether or not the apple is ripe" = truth state: false
+  "whether or not the pear is ripe" = truth state: false
+  "whether or not the orange is ripe" = truth state: false
+  "whether or not the apple is ripe" = truth state: true
+  "whether or not the pear is ripe" = truth state: true
+  "whether or not the orange is ripe" = truth state: true

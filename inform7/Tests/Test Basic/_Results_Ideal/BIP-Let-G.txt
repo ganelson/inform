@@ -1,0 +1,7 @@
+"paint colour" = text: Cerulean Blue
+"colour number" = number: 117
+"colour number" = number: 41
+"palette" = list of numbers: {}
+"Q" = number: 4
+"Q" = number: 2
+"correspondence" = relation of numbers to texts: anonymous relation

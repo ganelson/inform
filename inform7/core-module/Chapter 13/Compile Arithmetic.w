@@ -186,7 +186,7 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Produce::up(Emit::tree());
 	} else {
-		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ROUNDOFFTIME_HL));
+		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ROUNDOFFVALUE_HL));
 		Produce::down(Emit::tree());
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;

@@ -232,24 +232,6 @@ To omit contents in listing
 	(documented at ph_omit):
 	(- c_style = c_style &~ (RECURSE_BIT+FULLINV_BIT+PARTINV_BIT); -).
 
-@h Lists written but not by the list-writer.
-These are lists in the sense of the "list of" kind of value constructor, and
-they might contain any values, not just objects. They're printed by code in
-"Lists.i6t".
-
-=
-Section SR5/1/11 - Saying - Lists of values
-
-To say (L - a list of values) in brace notation
-	(documented at phs_listbraced):
-	(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
-To say (L - a list of objects) with definite articles
-	(documented at phs_listdef):
-	(- LIST_OF_TY_Say({-by-reference:L}, 2); -).
-To say (L - a list of objects) with indefinite articles
-	(documented at phs_listindef):
-	(- LIST_OF_TY_Say({-by-reference:L}, 3); -).
-
 @h Filtering in the list-writer.
 Something of a last resort, which is intentionally not documented.
 It's needed by the Standard Rules to tidy up an implementation and
@@ -279,159 +261,6 @@ To say text of (R - response)
 To begin with, the magic "now".
 
 =
-Section SR5/2/1 - Values - Making conditions true
-
-To now (cn - condition)
-	(documented at ph_now):
-	(- {cn} -).
-
-@ Assignment is probably the most difficult thing the type-checker has to
-cope with, since "let" has to work when applied to both unknown names (it
-creates a new variable) and existing ones (kind of value permitting). There
-are also four different ways to create with "let", and two to use
-existing variables. Note that the "given by" forms are not strictly
-speaking assignments at all; the value placed in |t| is found by solving
-the equation |Q|. This does require special typechecking, but of a
-different kind to that requested by "(assignment operation)".
-All of which makes the "To let" section here only slightly shorter
-than John Galsworthy's Forsyte novel of the same name:
-
-=
-Section SR5/2/2 - Values - Giving values temporary names
-
-To let (t - nonexisting variable) be (u - value)
-	(assignment operation)
-	(documented at ph_let): (-
-		{-unprotect:t}
-		{-copy:t:u}
-	-).
-To let (t - nonexisting variable) be (u - name of kind of value)
-	(assignment operation)
-	(documented at ph_letdefault): (-
-		{-unprotect:t}
-		{-initialise:t}
-	-).
-To let (t - nonexisting variable) be (u - description of relations of values
-	of kind K to values of kind L)
-	(assignment operation)
-	(documented at ph_letrelation): (-
-		{-unprotect:t}
-		{-initialise:t}
-		{-now-matches-description:t:u};
-	-).
-To let (t - nonexisting variable) be given by (Q - equation name)
-	(documented at ph_letequation): (-
-		{-unprotect:t}
-		{-primitive-definition:solve-equation};
-	-).
-
-To let (t - existing variable) be (u - value)
-	(assignment operation)
-	(documented at ph_let): (-
-	 	{-copy:t:u}
-	-).
-To let (t - existing variable) be given by (Q - equation name)
-	(documented at ph_letequation): (-
-		{-primitive-definition:solve-equation};
-	-).
-
-@ It is not explicit in the following definitions that Inform should typecheck
-that the values held by these storage objects can be incremented or decremented
-(as a room, say, cannot, but a number or a height can): Inform nevertheless
-contains code which does this.
-
-=
-To increase (S - storage) by (w - value)
-	(assignment operation)
-	(documented at ph_increase): (-
-		{-copy:S:+w};
-	-).
-To decrease (S - storage) by (w - value)
-	(assignment operation)
-	(documented at ph_decrease): (-
-		{-copy:S:-w};
-	-).
-To increment (S - storage)
-	(documented at ph_increment): (-
-		{-copy:S:+};
-	-).
-To decrement (S - storage)
-	(documented at ph_decrement): (-
-		{-copy:S:-};
-	-).
-
-@ There are nine arithmetic operations, internally numbered 0 to 8, and
-given verbal forms below. These are handled unusually in the type-checker
-because they need to be more polymorphic than most phrases: Inform uses
-dimension-checking to determine the kind of value resulting. (Thus a
-height times a number is another height, and so on.)
-
-The totalling code (12) is not structly to do with arithmetic in the same
-way, but it's needed to flag the phrase for the Inform typechecker's special
-attention.
-
-=
-Section SR5/2/4 - Values - Arithmetic
-
-To decide which arithmetic value is (X - arithmetic value) + (Y - arithmetic value)
-	(arithmetic operation 0)
-	(documented at ph_plus):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) plus (Y - arithmetic value)
-	(arithmetic operation 0)
-	(documented at ph_plus):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) - (Y - arithmetic value)
-	(arithmetic operation 1)
-	(documented at ph_minus):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) minus (Y - arithmetic value)
-	(arithmetic operation 1)
-	(documented at ph_minus):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) * (Y - arithmetic value)
-	(arithmetic operation 2)
-	(documented at ph_times):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) times (Y - arithmetic value)
-	(arithmetic operation 2)
-	(documented at ph_times):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) multiplied by (Y - arithmetic value)
-	(arithmetic operation 2)
-	(documented at ph_times):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) / (Y - arithmetic value)
-	(arithmetic operation 3)
-	(documented at ph_divide):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) divided by (Y - arithmetic value)
-	(arithmetic operation 3)
-	(documented at ph_divide):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is remainder after dividing (X - arithmetic value)
-	by (Y - arithmetic value)
-	(arithmetic operation 4)
-	(documented at ph_remainder):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is (X - arithmetic value) to the nearest (Y - arithmetic value)
-	(arithmetic operation 5)
-	(documented at ph_nearest):
-	(- ({-arithmetic-operation:X:Y}) -).
-To decide which arithmetic value is the square root of (X - arithmetic value)
-	(arithmetic operation 6)
-	(documented at ph_squareroot):
-	(- ({-arithmetic-operation:X}) -).
-To decide which arithmetic value is the cube root of (X - arithmetic value)
-	(arithmetic operation 8)
-	(documented at ph_cuberoot):
-	(- ({-arithmetic-operation:X}) -).
-To decide which arithmetic value is total (p - arithmetic value valued property)
-	of (S - description of values)
-	(arithmetic operation 12)
-	(documented at ph_total):
-	(- {-primitive-definition:total-of} -).
-
 Section SR5/2/4a - Values - Real Arithmetic (for Glulx only)
 
 To say (R - a real number) to (N - number) decimal places
@@ -554,6 +383,12 @@ To decide which real number is the hyperbolic arctangent of (R - a real number)
 	(this is the arctanh function inverse to tanh):
 	let x be given by x = 0.5*(log(1+R) - log(1-R)) where x is a real number;
 	decide on x.
+
+
+
+
+
+
 
 @ Some of the things we can do with enumerations, others being listed under
 randomness below.

@@ -139,6 +139,8 @@ The standard printing the plural name rule translates into I6 as "STANDARD_PLURA
 
 Part Two - Phrasebook
 
+Chapter 1 - Saying
+
 Section 1 - Saying Values
 
 To say (val - sayable value of kind K)
@@ -305,6 +307,148 @@ To say fixed letter spacing -- running on
 To say variable letter spacing -- running on
 	(documented at phs_varspacing):
 	(- font on; -).
+
+Section 8 - Saying Lists of Values
+
+To say (L - a list of values) in brace notation
+	(documented at phs_listbraced):
+	(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
+To say (L - a list of objects) with definite articles
+	(documented at phs_listdef):
+	(- LIST_OF_TY_Say({-by-reference:L}, 2); -).
+To say (L - a list of objects) with indefinite articles
+	(documented at phs_listindef):
+	(- LIST_OF_TY_Say({-by-reference:L}, 3); -).
+
+Chapter 2
+
+Section 1 - Making Conditions True
+
+To now (cn - condition)
+	(documented at ph_now):
+	(- {cn} -).
+
+Section 2 - Assigning Temporary Variables
+
+To let (t - nonexisting variable) be (u - value)
+	(assignment operation)
+	(documented at ph_let): (-
+		{-unprotect:t}
+		{-copy:t:u}
+	-).
+To let (t - nonexisting variable) be (u - name of kind of value)
+	(assignment operation)
+	(documented at ph_letdefault): (-
+		{-unprotect:t}
+		{-initialise:t}
+	-).
+To let (t - nonexisting variable) be (u - description of relations of values
+	of kind K to values of kind L)
+	(assignment operation)
+	(documented at ph_letrelation): (-
+		{-unprotect:t}
+		{-initialise:t}
+		{-now-matches-description:t:u};
+	-).
+To let (t - nonexisting variable) be given by (Q - equation name)
+	(documented at ph_letequation): (-
+		{-unprotect:t}
+		{-primitive-definition:solve-equation};
+	-).
+
+To let (t - existing variable) be (u - value)
+	(assignment operation)
+	(documented at ph_let): (-
+	 	{-copy:t:u}
+	-).
+To let (t - existing variable) be given by (Q - equation name)
+	(documented at ph_letequation): (-
+		{-primitive-definition:solve-equation};
+	-).
+
+To increase (S - storage) by (w - value)
+	(assignment operation)
+	(documented at ph_increase): (-
+		{-copy:S:+w};
+	-).
+To decrease (S - storage) by (w - value)
+	(assignment operation)
+	(documented at ph_decrease): (-
+		{-copy:S:-w};
+	-).
+To increment (S - storage)
+	(documented at ph_increment): (-
+		{-copy:S:+};
+	-).
+To decrement (S - storage)
+	(documented at ph_decrement): (-
+		{-copy:S:-};
+	-).
+
+
+Chapter 2 - Arithmetic
+
+Section 1 - Integer Operations
+
+To decide which arithmetic value is (X - arithmetic value) + (Y - arithmetic value)
+	(arithmetic operation 0)
+	(documented at ph_plus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) plus (Y - arithmetic value)
+	(arithmetic operation 0)
+	(documented at ph_plus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) - (Y - arithmetic value)
+	(arithmetic operation 1)
+	(documented at ph_minus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) minus (Y - arithmetic value)
+	(arithmetic operation 1)
+	(documented at ph_minus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) * (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) times (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) multiplied by (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) / (Y - arithmetic value)
+	(arithmetic operation 3)
+	(documented at ph_divide):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) divided by (Y - arithmetic value)
+	(arithmetic operation 3)
+	(documented at ph_divide):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is remainder after dividing (X - arithmetic value)
+	by (Y - arithmetic value)
+	(arithmetic operation 4)
+	(documented at ph_remainder):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) to the nearest (Y - arithmetic value)
+	(arithmetic operation 5)
+	(documented at ph_nearest):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is the square root of (X - arithmetic value)
+	(arithmetic operation 6)
+	(documented at ph_squareroot):
+	(- ({-arithmetic-operation:X}) -).
+To decide which arithmetic value is the cube root of (X - arithmetic value)
+	(arithmetic operation 8)
+	(documented at ph_cuberoot):
+	(- ({-arithmetic-operation:X}) -).
+To decide which arithmetic value is total (p - arithmetic value valued property)
+	of (S - description of values)
+	(arithmetic operation 12)
+	(documented at ph_total):
+	(- {-primitive-definition:total-of} -).
+
 
 Section SR5/3/8 - Control phrases - Stop or go
 

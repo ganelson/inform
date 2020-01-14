@@ -95,6 +95,8 @@ See test case |BIP-Say|.
 =
 Part Two - Phrasebook
 
+Chapter 1 - Saying
+
 Section 1 - Saying Values
 
 To say (val - sayable value of kind K)
@@ -367,6 +369,199 @@ To say variable letter spacing -- running on
 	(documented at phs_varspacing):
 	(- font on; -).
 	
+@ These are lists in the sense of the "list of" kind of value constructor, and
+the first two phrases here might list any values, not just objects.
+
+See test case |BIP-SayLists|.
+
+=
+Section 8 - Saying Lists of Values
+
+To say (L - a list of values) in brace notation
+	(documented at phs_listbraced):
+	(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
+To say (L - a list of objects) with definite articles
+	(documented at phs_listdef):
+	(- LIST_OF_TY_Say({-by-reference:L}, 2); -).
+To say (L - a list of objects) with indefinite articles
+	(documented at phs_listindef):
+	(- LIST_OF_TY_Say({-by-reference:L}, 3); -).
+
+@h Variables.
+The "now" phrase can do an extraordinary range of things, and is more or
+less a genie granting one wish.
+
+See test case |BIP-Now|.
+
+=
+Chapter 2
+
+Section 1 - Making Conditions True
+
+To now (cn - condition)
+	(documented at ph_now):
+	(- {cn} -).
+
+@ Assignment is probably the most difficult thing the type-checker has to
+cope with, since "let" has to work when applied to both unknown names (it
+creates a new variable) and existing ones (kind of value permitting). There
+are also four different ways to create with "let", and two to use
+existing variables. Note that the "given by" forms are not strictly
+speaking assignments at all; the value placed in |t| is found by solving
+the equation |Q|. This does require special typechecking, but of a
+different kind to that requested by "(assignment operation)". All of which
+makes the "To let" section here only slightly shorter than John Galsworthy's
+Forsyte novel of the same name.
+
+See test case |BIP-Let|.
+
+=
+Section 2 - Assigning Temporary Variables
+
+To let (t - nonexisting variable) be (u - value)
+	(assignment operation)
+	(documented at ph_let): (-
+		{-unprotect:t}
+		{-copy:t:u}
+	-).
+To let (t - nonexisting variable) be (u - name of kind of value)
+	(assignment operation)
+	(documented at ph_letdefault): (-
+		{-unprotect:t}
+		{-initialise:t}
+	-).
+To let (t - nonexisting variable) be (u - description of relations of values
+	of kind K to values of kind L)
+	(assignment operation)
+	(documented at ph_letrelation): (-
+		{-unprotect:t}
+		{-initialise:t}
+		{-now-matches-description:t:u};
+	-).
+To let (t - nonexisting variable) be given by (Q - equation name)
+	(documented at ph_letequation): (-
+		{-unprotect:t}
+		{-primitive-definition:solve-equation};
+	-).
+
+To let (t - existing variable) be (u - value)
+	(assignment operation)
+	(documented at ph_let): (-
+	 	{-copy:t:u}
+	-).
+To let (t - existing variable) be given by (Q - equation name)
+	(documented at ph_letequation): (-
+		{-primitive-definition:solve-equation};
+	-).
+
+@ It is not explicit in the following definitions that Inform should typecheck
+that the values held by these storage objects can be incremented or decremented
+(as an object, say, cannot, but a number can): Inform nevertheless contains
+code which does this.
+
+See test case |BIP-Increase|.
+
+=
+Section 3 - Increase and Decrease
+
+To increase (S - storage) by (w - value)
+	(assignment operation)
+	(documented at ph_increase): (-
+		{-copy:S:+w};
+	-).
+To decrease (S - storage) by (w - value)
+	(assignment operation)
+	(documented at ph_decrease): (-
+		{-copy:S:-w};
+	-).
+To increment (S - storage)
+	(documented at ph_increment): (-
+		{-copy:S:+};
+	-).
+To decrement (S - storage)
+	(documented at ph_decrement): (-
+		{-copy:S:-};
+	-).
+
+
+@h Arithmetic.
+There are nine arithmetic operations, internally numbered 0 upwards, and
+given verbal forms below. These are handled unusually in the type-checker
+because they need to be more polymorphic than most phrases: Inform uses
+dimension-checking to determine the kind of value resulting. (Thus a
+height times a number is another height, and so on.)
+
+The totalling code (12) is not structly to do with arithmetic in the same
+way, but it's needed to flag the phrase for the Inform typechecker's special
+attention.
+
+See test case |BIP-IntegerArithmetic|.
+
+=
+Chapter 2 - Arithmetic
+
+Section 1 - Integer Operations
+
+To decide which arithmetic value is (X - arithmetic value) + (Y - arithmetic value)
+	(arithmetic operation 0)
+	(documented at ph_plus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) plus (Y - arithmetic value)
+	(arithmetic operation 0)
+	(documented at ph_plus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) - (Y - arithmetic value)
+	(arithmetic operation 1)
+	(documented at ph_minus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) minus (Y - arithmetic value)
+	(arithmetic operation 1)
+	(documented at ph_minus):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) * (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) times (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) multiplied by (Y - arithmetic value)
+	(arithmetic operation 2)
+	(documented at ph_times):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) / (Y - arithmetic value)
+	(arithmetic operation 3)
+	(documented at ph_divide):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) divided by (Y - arithmetic value)
+	(arithmetic operation 3)
+	(documented at ph_divide):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is remainder after dividing (X - arithmetic value)
+	by (Y - arithmetic value)
+	(arithmetic operation 4)
+	(documented at ph_remainder):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is (X - arithmetic value) to the nearest (Y - arithmetic value)
+	(arithmetic operation 5)
+	(documented at ph_nearest):
+	(- ({-arithmetic-operation:X:Y}) -).
+To decide which arithmetic value is the square root of (X - arithmetic value)
+	(arithmetic operation 6)
+	(documented at ph_squareroot):
+	(- ({-arithmetic-operation:X}) -).
+To decide which arithmetic value is the cube root of (X - arithmetic value)
+	(arithmetic operation 8)
+	(documented at ph_cuberoot):
+	(- ({-arithmetic-operation:X}) -).
+To decide which arithmetic value is total (p - arithmetic value valued property)
+	of (S - description of values)
+	(arithmetic operation 12)
+	(documented at ph_total):
+	(- {-primitive-definition:total-of} -).
+
+
 @ "Do nothing" is useful mainly when other syntax has backed us into
 something clumsy, but it can't be dispensed with. (In the examples, it used
 to be used when conditions were awkward to negate -- if condition, do nothing,

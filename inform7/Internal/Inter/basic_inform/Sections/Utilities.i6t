@@ -247,3 +247,15 @@ Array I7_SOO_SHUF->32;
 	!print "Return ", v + ct*base + ssd*base*base, "^";
 	return v + ct*base + ssd*base*base;
 ];
+
+@h Rounding.
+The following rounds a numerical value |t1| to the nearest unit of |t2|;
+for instance, if |t2| is 5 then it rounds to the nearest 5. The name is an
+anachronism, as it's used for all kinds of value.
+
+=
+[ RoundOffValue t1 t2;
+	if (t1 >= 0) return ((t1+t2/2)/t2)*t2;
+	return -((-t1+t2/2)/t2)*t2;
+];
+
