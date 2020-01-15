@@ -1,0 +1,5 @@
+Consider: 3.1416.
+Consider: 312.0.
+Consider: 123456.0.
+Consider: 1.23456 × 10^5.
+Consider: 1.235 × 10^5.

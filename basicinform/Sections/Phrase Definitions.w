@@ -495,12 +495,12 @@ The totalling code (12) is not structly to do with arithmetic in the same
 way, but it's needed to flag the phrase for the Inform typechecker's special
 attention.
 
-See test case |BIP-IntegerArithmetic|.
+See test case |BIP-ArithmeticOperations|.
 
 =
 Chapter 2 - Arithmetic
 
-Section 1 - Integer Operations
+Section 1 - Arithmetic Operations
 
 To decide which arithmetic value is (X - arithmetic value) + (Y - arithmetic value)
 	(arithmetic operation 0)
@@ -561,6 +561,191 @@ To decide which arithmetic value is total (p - arithmetic value valued property)
 	(documented at ph_total):
 	(- {-primitive-definition:total-of} -).
 
+@ Real numbers are not available in the Z-machine, but they are likely to
+be available everywhere else, i.e., on any other platform Inform may target
+in future.
+
+See test case |BIP-SayRealNumbers-G|, which has no Z-machine counterpart.
+
+=
+Section 2 - Saying Real Numbers (not for Z-machine)
+
+To say (R - a real number) to (N - number) decimal places
+	(documented at phs_realplaces):
+	(- Float({R}, {N}); -).
+To say (R - a real number) in decimal notation
+	(documented at phs_decimal):
+	(- FloatDec({R}); -).
+To say (R - a real number) to (N - number) decimal places in decimal notation
+	(documented at phs_decimalplaces):
+	(- FloatDec({R}, {N}); -).
+To say (R - a real number) in scientific notation
+	(documented at phs_scientific):
+	(- FloatExp({R}); -).
+To say (R - a real number) to (N - number) decimal places in scientific notation
+	(documented at phs_scientificplaces):
+	(- FloatExp({R}, {N}); -).
+
+@ A number of miscellaneous mathematical functions follow, for real
+numbers only; these are tested as part of |BIP-ArithmeticOperations-G|,
+already mentioned above. Note that we do not need to define real versions
+of addition, multiplication and so on: the above definitions are polymorphic
+enough to have done that already.
+
+=
+Section 3 - Real Arithmetic (not for Z-machine)
+
+To decide which real number is the reciprocal of (R - a real number)
+	(documented at ph_reciprocal):
+	(- REAL_NUMBER_TY_Reciprocal({R}) -).
+To decide which real number is the absolute value of (R - a real number)
+	(documented at ph_absolutevalue)
+	(this is the abs function):
+	(- REAL_NUMBER_TY_Abs({R}) -).
+To decide which real number is the real square root of (R - a real number)
+	(arithmetic operation 7)
+	(documented at ph_realsquareroot)
+	(this is the root function inverse to rsqr):
+	(- REAL_NUMBER_TY_Root({R}) -).
+To decide which real number is the real square of (R - a real number)
+	(this is the rsqr function inverse to root):
+	let x be given by x = R^2 where x is a real number;
+	decide on x.
+To decide which real number is the ceiling of (R - a real number)
+	(documented at ph_ceiling)
+	(this is the ceiling function):
+	(- REAL_NUMBER_TY_Ceiling({R}) -).
+To decide which real number is the floor of (R - a real number)
+	(documented at ph_floor)
+	(this is the floor function):
+	(- REAL_NUMBER_TY_Floor({R}) -).
+To decide which number is (R - a real number) to the nearest whole number
+	(documented at ph_nearestwholenumber)
+	(this is the int function):
+	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
+
+@ And these are tested in |BIP-Exponentials-G|.
+
+=
+Section 4 - Exponential Functions (not for Z-machine)
+
+To decide which real number is the natural/-- logarithm of (R - a real number)
+	(documented at ph_logarithm)
+	(this is the log function inverse to exp):
+	(- REAL_NUMBER_TY_Log({R}) -).
+To decide which real number is the logarithm to base (N - a number) of (R - a real number)
+	(documented at ph_logarithmto):
+	(- REAL_NUMBER_TY_BLog({R}, {N}) -).
+To decide which real number is the exponential of (R - a real number)
+	(documented at ph_exp)
+	(this is the exp function inverse to log):
+	(- REAL_NUMBER_TY_Exp({R}) -).
+To decide which real number is (R - a real number) to the power (P - a real number)
+	(documented at ph_power):
+	(- REAL_NUMBER_TY_Pow({R}, {P}) -).
+
+@ And these are tested in |BIP-Trigonometry-G|.
+
+=
+Section 5 - Trigonometric Functions (not for Z-machine)
+
+To decide which real number is (R - a real number) degrees
+	(documented at ph_degrees):
+	(- REAL_NUMBER_TY_Times({R}, $+0.0174532925) -).
+
+To decide which real number is the sine of (R - a real number)
+	(documented at ph_sine)
+	(this is the sin function inverse to arcsin):
+	(- REAL_NUMBER_TY_Sin({R}) -).
+To decide which real number is the cosine of (R - a real number)
+	(documented at ph_cosine)
+	(this is the cos function inverse to arccos):
+	(- REAL_NUMBER_TY_Cos({R}) -).
+To decide which real number is the tangent of (R - a real number)
+	(documented at ph_tangent)
+	(this is the tan function inverse to arctan):
+	(- REAL_NUMBER_TY_Tan({R}) -).
+To decide which real number is the arcsine of (R - a real number)
+	(documented at ph_arcsine)
+	(this is the arcsin function inverse to sin):
+	(- REAL_NUMBER_TY_Arcsin({R}) -).
+To decide which real number is the arccosine of (R - a real number)
+	(documented at ph_arccosine)
+	(this is the arccos function inverse to cos):
+	(- REAL_NUMBER_TY_Arccos({R}) -).
+To decide which real number is the arctangent of (R - a real number)
+	(documented at ph_arctangent)
+	(this is the arctan function inverse to tan):
+	(- REAL_NUMBER_TY_Arctan({R}) -).
+
+@ And these are tested in |BIP-Hyperbolics-G|.
+
+=
+Section 6 - Trigonometric Functions (not for Z-machine)
+
+To decide which real number is the hyperbolic sine of (R - a real number)
+	(documented at ph_hyperbolicsine)
+	(this is the sinh function inverse to arcsinh):
+	(- REAL_NUMBER_TY_Sinh({R}) -).
+To decide which real number is the hyperbolic cosine of (R - a real number)
+	(documented at ph_hyperboliccosine)
+	(this is the cosh function inverse to arccosh):
+	(- REAL_NUMBER_TY_Cosh({R}) -).
+To decide which real number is the hyperbolic tangent of (R - a real number)
+	(documented at ph_hyperbolictangent)
+	(this is the tanh function inverse to arctanh):
+	(- REAL_NUMBER_TY_Tanh({R}) -).
+To decide which real number is the hyperbolic arcsine of (R - a real number)
+	(documented at ph_hyperbolicarcsine)
+	(this is the arcsinh function inverse to sinh):
+	let x be given by x = log(R + root(R^2 + 1)) where x is a real number;
+	decide on x.
+To decide which real number is the hyperbolic arccosine of (R - a real number)
+	(documented at ph_hyperbolicarccosine)
+	(this is the arccosh function inverse to cosh):
+	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
+	decide on x.
+To decide which real number is the hyperbolic arctangent of (R - a real number)
+	(documented at ph_hyperbolicarctangent)
+	(this is the arctanh function inverse to tanh):
+	let x be given by x = 0.5*(log(1+R) - log(1-R)) where x is a real number;
+	decide on x.
+
+@h Control structures.
+The term "control structure" conjures up the thought of conditionals and loops,
+and we'll get to those, but we'll begin with the equivalent of the C language's
+|return| statement: ending a function call with some value as an outcome.
+Inform calls this "deciding" something, since in Inform programs functions
+returning values are usually quite functional: that is, their point is what
+value they return, rather than the side-effects of what they did.
+
+Note that returning a value has to invoke the type-checker to ensure that
+the return value matches the kind of value expected. This certainly rejects
+the phrase if it's used in a definition which isn't meant to be deciding
+a value at all, so an "in... only" clause is not needed.
+
+The IF-form of Inform allows the antique syntaxes "yes" and "no" as
+synonyms for "decide yes" and "decide no"; these are not present in Basic
+Inform, and are defined in the Standard Rules (and only to keep old source
+text working).
+
+See test case |BIP-Decide|.
+
+=
+Chapter 3 - Control
+
+Section 1 - Deciding Outcomes
+
+To decide yes
+	(documented at ph_yes):
+	(- rtrue; -) - in to decide if only.
+To decide no
+	(documented at ph_no):
+	(- rfalse; -) - in to decide if only.
+
+To decide on (something - value)
+	(documented at ph_decideon):
+	(- return {-return-value:something}; -).
 
 @ "Do nothing" is useful mainly when other syntax has backed us into
 something clumsy, but it can't be dispensed with. (In the examples, it used

@@ -627,7 +627,8 @@ char *Lvalues::interpret_store(node_type_t storage_class, kind *left, kind *righ
 	}
 	int reduce = FALSE;
 	#ifdef IF_MODULE
-	if (Kinds::Compare::eq(left, PL::TimesOfDay::kind())) reduce = TRUE;
+	kind *KT = PL::TimesOfDay::kind();
+	if ((KT) && (Kinds::Compare::eq(left, KT))) reduce = TRUE;
 	#endif
 	return Lvalues::storage_class_schema(storage_class, form, reduce);
 }

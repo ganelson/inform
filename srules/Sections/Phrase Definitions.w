@@ -257,133 +257,6 @@ To say text of (R - response)
 	(documented at phs_response):
 	carry out the issuing the response text activity with R.
 
-@h Values.
-To begin with, the magic "now".
-
-=
-Section SR5/2/4a - Values - Real Arithmetic (for Glulx only)
-
-To say (R - a real number) to (N - number) decimal places
-	(documented at phs_realplaces):
-	(- Float({R}, {N}); -).
-To say (R - a real number) in decimal notation
-	(documented at phs_decimal):
-	(- FloatDec({R}); -).
-To say (R - a real number) to (N - number) decimal places in decimal notation
-	(documented at phs_decimalplaces):
-	(- FloatDec({R}, {N}); -).
-To say (R - a real number) in scientific notation
-	(documented at phs_scientific):
-	(- FloatExp({R}); -).
-To say (R - a real number) to (N - number) decimal places in scientific notation
-	(documented at phs_scientificplaces):
-	(- FloatExp({R}, {N}); -).
-
-To decide which real number is the reciprocal of (R - a real number)
-	(documented at ph_reciprocal):
-	(- REAL_NUMBER_TY_Reciprocal({R}) -).
-To decide which real number is the absolute value of (R - a real number)
-	(documented at ph_absolutevalue)
-	(this is the abs function):
-	(- REAL_NUMBER_TY_Abs({R}) -).
-To decide which real number is the real square root of (R - a real number)
-	(arithmetic operation 7)
-	(documented at ph_realsquareroot)
-	(this is the root function inverse to rsqr):
-	(- REAL_NUMBER_TY_Root({R}) -).
-To decide which real number is the real square of (R - a real number)
-	(this is the rsqr function inverse to root):
-	let x be given by x = R^2 where x is a real number;
-	decide on x.
-To decide which real number is the ceiling of (R - a real number)
-	(documented at ph_ceiling)
-	(this is the ceiling function):
-	(- REAL_NUMBER_TY_Ceiling({R}) -).
-To decide which real number is the floor of (R - a real number)
-	(documented at ph_floor)
-	(this is the floor function):
-	(- REAL_NUMBER_TY_Floor({R}) -).
-To decide which number is (R - a real number) to the nearest whole number
-	(documented at ph_nearestwholenumber)
-	(this is the int function):
-	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
-
-To decide which real number is the natural/-- logarithm of (R - a real number)
-	(documented at ph_logarithm)
-	(this is the log function inverse to exp):
-	(- REAL_NUMBER_TY_Log({R}) -).
-To decide which real number is the logarithm to base (N - a number) of (R - a real number)
-	(documented at ph_logarithmto):
-	(- REAL_NUMBER_TY_BLog({R}, {N}) -).
-To decide which real number is the exponential of (R - a real number)
-	(documented at ph_exp)
-	(this is the exp function inverse to log):
-	(- REAL_NUMBER_TY_Exp({R}) -).
-To decide which real number is (R - a real number) to the power (P - a real number)
-	(documented at ph_power):
-	(- REAL_NUMBER_TY_Pow({R}, {P}) -).
-
-Section SR5/2/4a - Values - Trigonometry (for Glulx only)
-
-To decide which real number is (R - a real number) degrees
-	(documented at ph_degrees):
-	(- REAL_NUMBER_TY_Times({R}, $+0.0174532925) -).
-
-To decide which real number is the sine of (R - a real number)
-	(documented at ph_sine)
-	(this is the sin function inverse to arcsin):
-	(- REAL_NUMBER_TY_Sin({R}) -).
-To decide which real number is the cosine of (R - a real number)
-	(documented at ph_cosine)
-	(this is the cos function inverse to arccos):
-	(- REAL_NUMBER_TY_Cos({R}) -).
-To decide which real number is the tangent of (R - a real number)
-	(documented at ph_tangent)
-	(this is the tan function inverse to arctan):
-	(- REAL_NUMBER_TY_Tan({R}) -).
-To decide which real number is the arcsine of (R - a real number)
-	(documented at ph_arcsine)
-	(this is the arcsin function inverse to sin):
-	(- REAL_NUMBER_TY_Arcsin({R}) -).
-To decide which real number is the arccosine of (R - a real number)
-	(documented at ph_arccosine)
-	(this is the arccos function inverse to cos):
-	(- REAL_NUMBER_TY_Arccos({R}) -).
-To decide which real number is the arctangent of (R - a real number)
-	(documented at ph_arctangent)
-	(this is the arctan function inverse to tan):
-	(- REAL_NUMBER_TY_Arctan({R}) -).
-
-Section SR5/2/4a - Values - Hyperbolic functions (for Glulx only)
-
-To decide which real number is the hyperbolic sine of (R - a real number)
-	(documented at ph_hyperbolicsine)
-	(this is the sinh function inverse to arcsinh):
-	(- REAL_NUMBER_TY_Sinh({R}) -).
-To decide which real number is the hyperbolic cosine of (R - a real number)
-	(documented at ph_hyperboliccosine)
-	(this is the cosh function inverse to arccosh):
-	(- REAL_NUMBER_TY_Cosh({R}) -).
-To decide which real number is the hyperbolic tangent of (R - a real number)
-	(documented at ph_hyperbolictangent)
-	(this is the tanh function inverse to arctanh):
-	(- REAL_NUMBER_TY_Tanh({R}) -).
-To decide which real number is the hyperbolic arcsine of (R - a real number)
-	(documented at ph_hyperbolicarcsine)
-	(this is the arcsinh function inverse to sinh):
-	let x be given by x = log(R + root(R^2 + 1)) where x is a real number;
-	decide on x.
-To decide which real number is the hyperbolic arccosine of (R - a real number)
-	(documented at ph_hyperbolicarccosine)
-	(this is the arccosh function inverse to cosh):
-	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
-	decide on x.
-To decide which real number is the hyperbolic arctangent of (R - a real number)
-	(documented at ph_hyperbolicarctangent)
-	(this is the arctanh function inverse to tanh):
-	let x be given by x = 0.5*(log(1+R) - log(1-R)) where x is a real number;
-	decide on x.
-
 
 
 
@@ -1194,11 +1067,7 @@ To next -- in loop
 	(documented at ph_next):
 	(- continue; -).
 
-@ The following certainly aren't loops and aren't quite conditionals either,
-but they reflect the use of rules within rulebooks as being a form of
-control structure, and they have to be indexed somewhere.
-
-The antique forms "yes" and "no" are now somewhat to be regretted, with
+@ The antique forms "yes" and "no" are now somewhat to be regretted, with
 "decide yes" and "decide no" being clearer ways to write the same thing.
 But we seem to be stuck with them.
 
@@ -1208,25 +1077,9 @@ Section SR5/3/7 - Control phrases - Deciding outcomes
 To yes
 	(documented at ph_yes):
 	(- rtrue; -) - in to decide if only.
-To decide yes
-	(documented at ph_yes):
-	(- rtrue; -) - in to decide if only.
 To no
 	(documented at ph_no):
 	(- rfalse; -) - in to decide if only.
-To decide no
-	(documented at ph_no):
-	(- rfalse; -) - in to decide if only.
-
-@ Note that returning a value has to invoke the type-checker to ensure that
-the return value matches the kind of value expected. This certainly rejects
-the phrase if it's used in a definition which isn't meant to be deciding
-a value at all, so an "in... only" clause is not needed.
-
-=
-To decide on (something - value)
-	(documented at ph_decideon):
-	(- return {-return-value:something}; -).
 
 @h Actions, activities and rules.
 We begin with the firing off of new actions. The current action runs silently

@@ -14,7 +14,8 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 	if ((KX) && (KY)) {
 		#ifdef IF_MODULE
 		kind *KR = Kinds::Dimensions::arithmetic_on_kinds(KX, KY, op);
-		if (Kinds::Compare::eq(KR, PL::TimesOfDay::kind())) reduce_modulo_1440 = TRUE;
+		kind *KT = PL::TimesOfDay::kind();
+		if ((KT) && (Kinds::Compare::eq(KR, KT))) reduce_modulo_1440 = TRUE;
 		#endif
 	}
 	@<Choose which form of arithmetic and promotion@>;

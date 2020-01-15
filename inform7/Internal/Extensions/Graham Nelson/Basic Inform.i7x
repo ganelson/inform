@@ -366,6 +366,8 @@ To let (t - existing variable) be given by (Q - equation name)
 		{-primitive-definition:solve-equation};
 	-).
 
+Section 3 - Increase and Decrease
+
 To increase (S - storage) by (w - value)
 	(assignment operation)
 	(documented at ph_increase): (-
@@ -388,7 +390,7 @@ To decrement (S - storage)
 
 Chapter 2 - Arithmetic
 
-Section 1 - Integer Operations
+Section 1 - Arithmetic Operations
 
 To decide which arithmetic value is (X - arithmetic value) + (Y - arithmetic value)
 	(arithmetic operation 0)
@@ -449,6 +451,143 @@ To decide which arithmetic value is total (p - arithmetic value valued property)
 	(documented at ph_total):
 	(- {-primitive-definition:total-of} -).
 
+Section 2 - Real Arithmetic (not for Z-machine)
+
+To say (R - a real number) to (N - number) decimal places
+	(documented at phs_realplaces):
+	(- Float({R}, {N}); -).
+To say (R - a real number) in decimal notation
+	(documented at phs_decimal):
+	(- FloatDec({R}); -).
+To say (R - a real number) to (N - number) decimal places in decimal notation
+	(documented at phs_decimalplaces):
+	(- FloatDec({R}, {N}); -).
+To say (R - a real number) in scientific notation
+	(documented at phs_scientific):
+	(- FloatExp({R}); -).
+To say (R - a real number) to (N - number) decimal places in scientific notation
+	(documented at phs_scientificplaces):
+	(- FloatExp({R}, {N}); -).
+
+To decide which real number is the reciprocal of (R - a real number)
+	(documented at ph_reciprocal):
+	(- REAL_NUMBER_TY_Reciprocal({R}) -).
+To decide which real number is the absolute value of (R - a real number)
+	(documented at ph_absolutevalue)
+	(this is the abs function):
+	(- REAL_NUMBER_TY_Abs({R}) -).
+To decide which real number is the real square root of (R - a real number)
+	(arithmetic operation 7)
+	(documented at ph_realsquareroot)
+	(this is the root function inverse to rsqr):
+	(- REAL_NUMBER_TY_Root({R}) -).
+To decide which real number is the real square of (R - a real number)
+	(this is the rsqr function inverse to root):
+	let x be given by x = R^2 where x is a real number;
+	decide on x.
+To decide which real number is the ceiling of (R - a real number)
+	(documented at ph_ceiling)
+	(this is the ceiling function):
+	(- REAL_NUMBER_TY_Ceiling({R}) -).
+To decide which real number is the floor of (R - a real number)
+	(documented at ph_floor)
+	(this is the floor function):
+	(- REAL_NUMBER_TY_Floor({R}) -).
+To decide which number is (R - a real number) to the nearest whole number
+	(documented at ph_nearestwholenumber)
+	(this is the int function):
+	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
+
+To decide which real number is the natural/-- logarithm of (R - a real number)
+	(documented at ph_logarithm)
+	(this is the log function inverse to exp):
+	(- REAL_NUMBER_TY_Log({R}) -).
+To decide which real number is the logarithm to base (N - a number) of (R - a real number)
+	(documented at ph_logarithmto):
+	(- REAL_NUMBER_TY_BLog({R}, {N}) -).
+To decide which real number is the exponential of (R - a real number)
+	(documented at ph_exp)
+	(this is the exp function inverse to log):
+	(- REAL_NUMBER_TY_Exp({R}) -).
+To decide which real number is (R - a real number) to the power (P - a real number)
+	(documented at ph_power):
+	(- REAL_NUMBER_TY_Pow({R}, {P}) -).
+
+Section 3 - Trigonometry (not for Z-machine)
+
+To decide which real number is (R - a real number) degrees
+	(documented at ph_degrees):
+	(- REAL_NUMBER_TY_Times({R}, $+0.0174532925) -).
+
+To decide which real number is the sine of (R - a real number)
+	(documented at ph_sine)
+	(this is the sin function inverse to arcsin):
+	(- REAL_NUMBER_TY_Sin({R}) -).
+To decide which real number is the cosine of (R - a real number)
+	(documented at ph_cosine)
+	(this is the cos function inverse to arccos):
+	(- REAL_NUMBER_TY_Cos({R}) -).
+To decide which real number is the tangent of (R - a real number)
+	(documented at ph_tangent)
+	(this is the tan function inverse to arctan):
+	(- REAL_NUMBER_TY_Tan({R}) -).
+To decide which real number is the arcsine of (R - a real number)
+	(documented at ph_arcsine)
+	(this is the arcsin function inverse to sin):
+	(- REAL_NUMBER_TY_Arcsin({R}) -).
+To decide which real number is the arccosine of (R - a real number)
+	(documented at ph_arccosine)
+	(this is the arccos function inverse to cos):
+	(- REAL_NUMBER_TY_Arccos({R}) -).
+To decide which real number is the arctangent of (R - a real number)
+	(documented at ph_arctangent)
+	(this is the arctan function inverse to tan):
+	(- REAL_NUMBER_TY_Arctan({R}) -).
+
+Section 4 - Hyperbolic Functions (not for Z-machine)
+
+To decide which real number is the hyperbolic sine of (R - a real number)
+	(documented at ph_hyperbolicsine)
+	(this is the sinh function inverse to arcsinh):
+	(- REAL_NUMBER_TY_Sinh({R}) -).
+To decide which real number is the hyperbolic cosine of (R - a real number)
+	(documented at ph_hyperboliccosine)
+	(this is the cosh function inverse to arccosh):
+	(- REAL_NUMBER_TY_Cosh({R}) -).
+To decide which real number is the hyperbolic tangent of (R - a real number)
+	(documented at ph_hyperbolictangent)
+	(this is the tanh function inverse to arctanh):
+	(- REAL_NUMBER_TY_Tanh({R}) -).
+To decide which real number is the hyperbolic arcsine of (R - a real number)
+	(documented at ph_hyperbolicarcsine)
+	(this is the arcsinh function inverse to sinh):
+	let x be given by x = log(R + root(R^2 + 1)) where x is a real number;
+	decide on x.
+To decide which real number is the hyperbolic arccosine of (R - a real number)
+	(documented at ph_hyperbolicarccosine)
+	(this is the arccosh function inverse to cosh):
+	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
+	decide on x.
+To decide which real number is the hyperbolic arctangent of (R - a real number)
+	(documented at ph_hyperbolicarctangent)
+	(this is the arctanh function inverse to tanh):
+	let x be given by x = 0.5*(log(1+R) - log(1-R)) where x is a real number;
+	decide on x.
+
+Chapter 3 - Control
+
+Section 1 - Deciding Outcomes
+
+To decide yes
+	(documented at ph_yes):
+	(- rtrue; -) - in to decide if only.
+To decide no
+	(documented at ph_no):
+	(- rfalse; -) - in to decide if only.
+
+To decide on (something - value)
+	(documented at ph_decideon):
+	(- return {-return-value:something}; -).
 
 Section SR5/3/8 - Control phrases - Stop or go
 

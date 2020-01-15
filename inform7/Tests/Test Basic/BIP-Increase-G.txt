@@ -37,3 +37,11 @@ To begin:
 	showme the size of the apple;
 	decrement the size of the apple;
 	showme the size of the apple;
+	let M be pi;
+	showme M;
+	increase M by pi;
+	showme M;
+	decrease M by pi;
+	showme M;
+	let M be 4;
+	showme M;
