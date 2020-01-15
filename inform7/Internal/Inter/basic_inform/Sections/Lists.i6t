@@ -707,7 +707,7 @@ Global LIST_OF_TY_Sort_cf;
 	SetSortDomain(ListSwapEntries, ListCompareEntries);
 	if (cf) LIST_OF_TY_Sort_cf = BlkValueCompare;
 	else LIST_OF_TY_Sort_cf = 0;
-	SortArray(list, prop, dir, no_items, false, 0);
+	SortArray(list, prop, dir, no_items, 0);
 ];
 
 [ ListSwapEntries list i j v;

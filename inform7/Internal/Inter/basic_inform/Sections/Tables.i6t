@@ -765,7 +765,7 @@ will perform a loop of valid row numbers in order of column |C|.
 This is really only a front-end: it calls the sorting code at "Sort.i6t".
 
 =
-[ TableSort tab col dir test_flag algorithm i j k f;
+[ TableSort tab col dir algorithm i j k f;
 	for (i=1:i<=tab-->0:i++) {
 		j = tab-->i; ! Address of column table
 		if ((j-->1) & TB_COLUMN_DONTSORTME)
@@ -774,16 +774,9 @@ This is really only a front-end: it calls the sorting code at "Sort.i6t".
 	if (col >= 100) col=TableFindCol(tab, col, false);
 	k = TableRows(tab);
 	k = TableMoveBlanksToBack(tab, 1, k);
-	if (test_flag) {
-		print "After moving blanks to back:^"; TableColumnDebug(tab, col);
-	}
 
 	SetSortDomain(TableSwapRows, TableCompareRows);
-	SortArray(tab, col, dir, k, test_flag, algorithm);
-
-	if (test_flag) {
-		print "Final state:^"; TableColumnDebug(tab, col);
-	}
+	SortArray(tab, col, dir, k, algorithm);
 ];
 
 @h Print Table to File.

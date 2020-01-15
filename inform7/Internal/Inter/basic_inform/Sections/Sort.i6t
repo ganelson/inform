@@ -39,7 +39,7 @@ greater in value.
 	I7S_Comp = compf;
 ];
 
-[ SortArray tab col dir size test_flag algorithm;
+[ SortArray tab col dir size algorithm;
 	I7S_Tab = tab;
 	I7S_Col = col;
 	I7S_Dir = dir;

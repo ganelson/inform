@@ -747,6 +747,157 @@ To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
 
+@h Values.
+Some of the things we can do with enumerations, others being listed under
+randomness below.
+
+See test case |BIP-Enumerations|.
+
+=
+Chapter 4 - Values
+
+Section 1 - Enumerations
+
+To decide which number is number of (S - description of values)
+	(documented at ph_numberof):
+	(- {-primitive-definition:number-of} -).
+To decide which K is (name of kind of enumerated value K) after (X - K)
+	(documented at ph_enumafter):
+	(- {-next-routine:K}({X}) -).
+To decide which K is (name of kind of enumerated value K) before (X - K)
+	(documented at ph_enumbefore):
+	(- {-previous-routine:K}({X}) -).
+To decide which K is the first value of (name of kind of enumerated value K)
+	(documented at ph_enumfirst):
+	decide on the default value of K.
+To decide which K is the last value of (name of kind of enumerated value K)
+	(documented at ph_enumlast):
+	decide on K before the default value of K.
+
+@ Random numbers and random items chosen from sets of objects matching a
+given description ("a random closed door").
+
+See test case |BIP-Randomness|.
+
+=
+Section 2 - Randomness
+
+To decide which K is a/-- random (S - description of values of kind K)
+	(documented at ph_randomdesc):
+	(- {-primitive-definition:random-of} -).
+To decide which K is a random (name of kind of arithmetic value K) between (first value - K) and (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of arithmetic value K) from (first value - K) to (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of enumerated value K) between (first value - K) and (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of enumerated value K) from (first value - K) to (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide whether a random chance of (N - number) in (M - number) succeeds
+	(documented at ph_randomchance):
+	(- (GenerateRandomNumber(1, {M}) <= {N}) -).
+To seed the random-number generator with (N - number)
+	(documented at ph_seed):
+	(- VM_Seed_RNG({N}); -).
+
+@h Data Structures.
+Inform provides three main data structures: tables, lists, and relations,
+which we will take in that order.
+
+Tables mimic tables of data as seen in books or scientific papers. Note that
+changing a table entry is not something defined here as a phrase: the
+ever-powerful "now" can do that. But changing something to a non-value --
+or "blanking" it -- requires specialist phrases.
+
+See test case |BIP-Tables|.
+
+=
+Chapter 5 - Data Structures
+
+Section 1 - Tables
+
+To choose a/the/-- row (N - number) in/from (T - table name)
+	(documented at ph_chooserow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = {N}; -).
+To choose a/the/-- row with (TC - K valued table column) of (w - value of kind K)
+	in/from (T - table name)
+	(documented at ph_chooserowwith):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableRowCorr(ct_0, {TC}, {w}); -).
+To choose a/the/-- blank row in/from (T - table name)
+	(documented at ph_chooseblankrow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableBlankRow(ct_0); -).
+To choose a/the/-- random row in/from (T - table name)
+	(documented at ph_chooserandomrow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableRandomRow(ct_0); -).
+To decide which number is number of rows in/from (T - table name)
+	(documented at ph_numrows):
+	(- TableRows({T}) -).
+To decide which number is number of blank rows in/from (T - table name)
+	(documented at ph_numblank):
+	(- TableBlankRows({T}) -).
+To decide which number is number of filled rows in/from (T - table name)
+	(documented at ph_numfilled):
+	(- TableFilledRows({T}) -).
+To decide if there is (TR - table-reference)
+	(documented at ph_thereis):
+	(- ({-reference-exists:TR}) -).
+To decide if there is no (TR - table-reference)
+	(documented at ph_thereisno):
+	(- ({-reference-exists:TR} == false) -).
+To blank out (tr - table-reference)
+	(documented at ph_blankout):
+	(- {-by-reference-blank-out:tr}; -).
+To blank out the whole row
+	(documented at ph_blankoutrow):
+	(- TableBlankOutRow({-my:ct_0}, {-my:ct_1}); -).
+To blank out the whole (TC - table column) in/from/of (T - table name)
+	(documented at ph_blankoutcol):
+	(- TableBlankOutColumn({T}, {TC}); -).
+To blank out the whole of (T - table name)
+	(documented at ph_blankouttable):
+	(- TableBlankOutAll({T}); -).
+
+@ These four are for debugging purposes only, and are used in the same test
+case. "Showme the contents of ..." is not a text substitution, for efficiency
+reasons: for a large table it could produce a gargantuan output, and in a
+story file with memory constraints, one might not want to store that in a
+text variable.
+
+=
+To showme the contents of (T - table name)
+	(documented at ph_showmetable):
+	(- TableDebug({T}); -).
+To say the/-- current table row
+	(documented at phs_currenttablerow):
+	(- TableRowDebug({-my:ct_0}, {-my:ct_1}); -).
+To say row (N - number) in/from (T - table name)
+	(documented at phs_tablerow):
+	(- TableRowDebug({T}, {N}); -).
+To say (TC - table column) in/from (T - table name)
+	(documented at phs_tablecolumn):
+	(- TableColumnDebug({T}, {TC}); -).
+
+@ Sorting.
+
+See test case |BIP-TableSort|.
+
+=
+Section 2 - Sorting Tables
+
+To sort (T - table name) in/into random order
+	(documented at ph_sortrandom):
+	(- TableShuffle({T}); -).
+To sort (T - table name) in/into (TC - table column) order
+	(documented at ph_sortcolumn):
+	(- TableSort({T}, {TC}, 1); -).
+To sort (T - table name) in/into reverse (TC - table column) order
+	(documented at ph_sortcolumnreverse):
+	(- TableSort({T}, {TC}, -1); -).
+
 @ "Do nothing" is useful mainly when other syntax has backed us into
 something clumsy, but it can't be dispensed with. (In the examples, it used
 to be used when conditions were awkward to negate -- if condition, do nothing,

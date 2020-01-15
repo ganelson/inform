@@ -451,7 +451,7 @@ To decide which arithmetic value is total (p - arithmetic value valued property)
 	(documented at ph_total):
 	(- {-primitive-definition:total-of} -).
 
-Section 2 - Real Arithmetic (not for Z-machine)
+Section 2 - Saying Real Numbers (not for Z-machine)
 
 To say (R - a real number) to (N - number) decimal places
 	(documented at phs_realplaces):
@@ -468,6 +468,8 @@ To say (R - a real number) in scientific notation
 To say (R - a real number) to (N - number) decimal places in scientific notation
 	(documented at phs_scientificplaces):
 	(- FloatExp({R}, {N}); -).
+
+Section 3 - Real Arithmetic (not for Z-machine)
 
 To decide which real number is the reciprocal of (R - a real number)
 	(documented at ph_reciprocal):
@@ -498,6 +500,8 @@ To decide which number is (R - a real number) to the nearest whole number
 	(this is the int function):
 	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
 
+Section 4 - Exponential Functions (not for Z-machine)
+
 To decide which real number is the natural/-- logarithm of (R - a real number)
 	(documented at ph_logarithm)
 	(this is the log function inverse to exp):
@@ -513,7 +517,7 @@ To decide which real number is (R - a real number) to the power (P - a real numb
 	(documented at ph_power):
 	(- REAL_NUMBER_TY_Pow({R}, {P}) -).
 
-Section 3 - Trigonometry (not for Z-machine)
+Section 5 - Trigonometric Functions (not for Z-machine)
 
 To decide which real number is (R - a real number) degrees
 	(documented at ph_degrees):
@@ -544,7 +548,7 @@ To decide which real number is the arctangent of (R - a real number)
 	(this is the arctan function inverse to tan):
 	(- REAL_NUMBER_TY_Arctan({R}) -).
 
-Section 4 - Hyperbolic Functions (not for Z-machine)
+Section 6 - Trigonometric Functions (not for Z-machine)
 
 To decide which real number is the hyperbolic sine of (R - a real number)
 	(documented at ph_hyperbolicsine)
@@ -588,6 +592,120 @@ To decide no
 To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
+
+Chapter 4 - Values
+
+Section 1 - Enumerations
+
+To decide which number is number of (S - description of values)
+	(documented at ph_numberof):
+	(- {-primitive-definition:number-of} -).
+To decide which K is (name of kind of enumerated value K) after (X - K)
+	(documented at ph_enumafter):
+	(- {-next-routine:K}({X}) -).
+To decide which K is (name of kind of enumerated value K) before (X - K)
+	(documented at ph_enumbefore):
+	(- {-previous-routine:K}({X}) -).
+To decide which K is the first value of (name of kind of enumerated value K)
+	(documented at ph_enumfirst):
+	decide on the default value of K.
+To decide which K is the last value of (name of kind of enumerated value K)
+	(documented at ph_enumlast):
+	decide on K before the default value of K.
+
+Section 2 - Randomness
+
+To decide which K is a/-- random (S - description of values of kind K)
+	(documented at ph_randomdesc):
+	(- {-primitive-definition:random-of} -).
+To decide which K is a random (name of kind of arithmetic value K) between (first value - K) and (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of arithmetic value K) from (first value - K) to (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of enumerated value K) between (first value - K) and (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide which K is a random (name of kind of enumerated value K) from (first value - K) to (second value - K)
+	(documented at ph_randombetween):
+	(- {-ranger-routine:K}({first value}, {second value}) -).
+To decide whether a random chance of (N - number) in (M - number) succeeds
+	(documented at ph_randomchance):
+	(- (GenerateRandomNumber(1, {M}) <= {N}) -).
+To seed the random-number generator with (N - number)
+	(documented at ph_seed):
+	(- VM_Seed_RNG({N}); -).
+
+Chapter 5 - Data Structures
+
+Section 1 - Tables
+
+To choose a/the/-- row (N - number) in/from (T - table name)
+	(documented at ph_chooserow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = {N}; -).
+To choose a/the/-- row with (TC - K valued table column) of (w - value of kind K)
+	in/from (T - table name)
+	(documented at ph_chooserowwith):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableRowCorr(ct_0, {TC}, {w}); -).
+To choose a/the/-- blank row in/from (T - table name)
+	(documented at ph_chooseblankrow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableBlankRow(ct_0); -).
+To choose a/the/-- random row in/from (T - table name)
+	(documented at ph_chooserandomrow):
+	(- {-my:ct_0} = {T}; {-my:ct_1} = TableRandomRow(ct_0); -).
+To decide which number is number of rows in/from (T - table name)
+	(documented at ph_numrows):
+	(- TableRows({T}) -).
+To decide which number is number of blank rows in/from (T - table name)
+	(documented at ph_numblank):
+	(- TableBlankRows({T}) -).
+To decide which number is number of filled rows in/from (T - table name)
+	(documented at ph_numfilled):
+	(- TableFilledRows({T}) -).
+To decide if there is (TR - table-reference)
+	(documented at ph_thereis):
+	(- ({-reference-exists:TR}) -).
+To decide if there is no (TR - table-reference)
+	(documented at ph_thereisno):
+	(- ({-reference-exists:TR} == false) -).
+To blank out (tr - table-reference)
+	(documented at ph_blankout):
+	(- {-by-reference-blank-out:tr}; -).
+To blank out the whole row
+	(documented at ph_blankoutrow):
+	(- TableBlankOutRow({-my:ct_0}, {-my:ct_1}); -).
+To blank out the whole (TC - table column) in/from/of (T - table name)
+	(documented at ph_blankoutcol):
+	(- TableBlankOutColumn({T}, {TC}); -).
+To blank out the whole of (T - table name)
+	(documented at ph_blankouttable):
+	(- TableBlankOutAll({T}); -).
+
+To showme the contents of (T - table name)
+	(documented at ph_showmetable):
+	(- TableDebug({T}); -).
+To say the/-- current table row
+	(documented at phs_currenttablerow):
+	(- TableRowDebug({-my:ct_0}, {-my:ct_1}); -).
+To say row (N - number) in/from (T - table name)
+	(documented at phs_tablerow):
+	(- TableRowDebug({T}, {N}); -).
+To say (TC - table column) in/from (T - table name)
+	(documented at phs_tablecolumn):
+	(- TableColumnDebug({T}, {TC}); -).
+
+Section 2 - Sorting Tables
+
+To sort (T - table name) in/into random order
+	(documented at ph_sortrandom):
+	(- TableShuffle({T}); -).
+To sort (T - table name) in/into (TC - table column) order
+	(documented at ph_sortcolumn):
+	(- TableSort({T}, {TC}, 1); -).
+To sort (T - table name) in/into reverse (TC - table column) order
+	(documented at ph_sortcolumnreverse):
+	(- TableSort({T}, {TC}, -1); -).
 
 Section SR5/3/8 - Control phrases - Stop or go
 

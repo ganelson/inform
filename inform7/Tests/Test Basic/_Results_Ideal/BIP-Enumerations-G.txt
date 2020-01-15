@@ -1,0 +1,7 @@
+"number of fruits" = number: 3
+"fruit after the pear" = fruit: orange
+"fruit after the orange" = fruit: apple
+"fruit before the pear" = fruit: apple
+"fruit before the apple" = fruit: orange
+"first value of fruit" = fruit: apple
+"last value of fruit" = fruit: orange

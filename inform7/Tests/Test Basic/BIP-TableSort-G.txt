@@ -1,7 +1,46 @@
-"Test" by Graham Nelson
+Table of Selected Numbers
+numeric		alphabetic
+4			"four"
+3			"three"
+154			"one hundred and fifty-four"
+27			"twenty-seven"
+9			"nine"
+with 4 blank rows
+
+Table of Somewhat Blanked Numbers
+numeric
+--
+3
+--
+-647
+1
+32739
+--
+4
+2
+
+[32739 is the "blank cell probable indicator" value, on the Z-machine]
+
+Table of Indices
+index	correspondence
+12 	 "twelve"
+57 	 "fifty-seven"
+81 	 "eighty-one"
+99 	 "ninety-nine"
+65	 "sixty-five"
+-- 	 "blank 1"
+16	 "sixteen"
+
+Table of Indices (continued)
+index	correspondence
+21	 "twenty-one"
+-- 	 "blank 2"
+1000 	 "one thousand"
+--  	"blank 3"
+17  	"seventeen"
 
 Table of Original Numbers
-Number
+numeric
 --
 3
 --
@@ -211,10 +250,9 @@ Number
 --
 4
 2
-
 
 Table of Duplicate Numbers
-Number
+numeric
 --
 3
 --
@@ -425,18 +463,37 @@ Number
 4
 2
 
-Use sort performance tracing translates as (- Constant MEASURE_SORT_PERFORMANCE; -).
-
-Use sort performance tracing.
-
-Testroom is a room.
-
 To insertion-sort (T - table name) in (TC - table column) order:
-	(- TableSort({T}, {TC}, 1, true, InsertionSortAlgorithm); -).
+	(- TableSort({T}, {TC}, 1, InsertionSortAlgorithm); -).
 
 To in-place-merge-sort (T - table name) in (TC - table column) order:
-	(- TableSort({T}, {TC}, 1, true, InPlaceMergeSortAlgorithm); -).
+	(- TableSort({T}, {TC}, 1, InPlaceMergeSortAlgorithm); -).
 
-When play begins:
-	insertion-sort the Table of Original Numbers in number order;
-	in-place-merge-sort the Table of Duplicate Numbers in number order.
+Table of Zoggle
+zog
+3.5
+-2.6
+4.4
+-1.1
+
+To begin:
+	sort the Table of Selected Numbers in numeric order;
+	showme the contents of the Table of Selected Numbers;
+	sort the Table of Selected Numbers in reverse alphabetic order;
+	showme the contents of the Table of Selected Numbers;
+	sort the Table of Somewhat Blanked Numbers in numeric order;
+	showme the contents of the Table of Somewhat Blanked Numbers;
+	sort the Table of Somewhat Blanked Numbers in reverse numeric order;
+	showme the contents of the Table of Somewhat Blanked Numbers;
+    sort the Table of Indices in index order;
+	showme the contents of the Table of Indices;
+    sort the Table of Indices in reverse index order;
+	showme the contents of the Table of Indices;
+	insertion-sort the Table of Original Numbers in numeric order;
+	showme the contents of the Table of Original Numbers;
+	in-place-merge-sort the Table of Duplicate Numbers in numeric order;
+	showme the contents of the Table of Duplicate Numbers;
+	sort Table of Zoggle in zog order;
+	showme the contents of Table of Zoggle;
+	sort the Table of Selected Numbers in random order;
+	showme the contents of the Table of Selected Numbers;
