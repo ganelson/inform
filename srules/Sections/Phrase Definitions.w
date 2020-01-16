@@ -482,68 +482,11 @@ To say now
 The following are all for adding and removing values to dynamic lists:
 
 =
-Section SR5/2/15 - Values - Lists
 
-To add (new entry - K) to (L - list of values of kind K), if absent
-	(documented at ph_addtolist):
-	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); -).
-
-To add (new entry - K) at entry (E - number) in (L - list of values of kind K), if absent
-	(documented at ph_addatentry):
-	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); -).
-
-To add (LX - list of Ks) to (L - list of values of kind K), if absent
-	(documented at ph_addlisttolist):
-	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); -).
-
-To add (LX - list of Ks) at entry (E - number) in (L - list of values of kind K)
-	(documented at ph_addlistatentry):
-	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); -).
-
-To remove (existing entry - K) from (L - list of values of kind K), if present
-	(documented at ph_remfromlist):
-	(- LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); -).
-
-To remove (N - list of Ks) from (L - list of values of kind K), if present
-	(documented at ph_remlistfromlist):
-	(- LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); -).
-
-To remove entry (N - number) from (L - list of values), if present
-	(documented at ph_rementry):
-	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); -).
-
-To remove entries (N - number) to (N2 - number) from (L - list of values), if present
-	(documented at ph_rementries):
-	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).
-
-@ Searching a list is implemented in a somewhat crude way at present, and the
-following syntax may later be replaced with a suitable verb "to be listed
-in", so that there's no need to imitate.
-
-=
-To decide if (N - K) is listed in (L - list of values of kind K)
-	(documented at ph_islistedin):
-	(- (LIST_OF_TY_FindItem({-by-reference:L}, {N})) -).
-
-To decide if (N - K) is not listed in (L - list of values of kind K)
-	(documented at ph_isnotlistedin):
-	(- (LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) -).
-
-@ The following are casts to and from other kinds or objects. Lists
-are not the only I7 way to hold list-like data, because sometimes the memory
-requirements for dynamic lists are beyond what the virtual machine can sustain.
-
-(a) A description is a representation of a set of objects by means of a
-predicate (e.g., "open unlocked doors"), and it converts into a list of
-current members (in creation order), but there's no reverse process.
-
-(b) The multiple object list is a data structure used in the parser when
+@ The multiple object list is a data structure used in the parser when
 processing commands like TAKE ALL.
 
 =
-To decide what list of Ks is the list of (D - description of values of kind K)
-	(documented at ph_listofdesc):
-	(- {-new-list-of:list of K} -).
 To decide what list of objects is the multiple object list
 	(documented at ph_multipleobjectlist):
 	(- LIST_OF_TY_Mol({-new:list of objects}) -).

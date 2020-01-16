@@ -707,6 +707,52 @@ To sort (T - table name) in/into reverse (TC - table column) order
 	(documented at ph_sortcolumnreverse):
 	(- TableSort({T}, {TC}, -1); -).
 
+Section SR5/2/15 - Values - Lists
+
+To add (new entry - K) to (L - list of values of kind K), if absent
+	(documented at ph_addtolist):
+	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); -).
+
+To add (new entry - K) at entry (E - number) in (L - list of values of kind K), if absent
+	(documented at ph_addatentry):
+	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); -).
+
+To add (LX - list of Ks) to (L - list of values of kind K), if absent
+	(documented at ph_addlisttolist):
+	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); -).
+
+To add (LX - list of Ks) at entry (E - number) in (L - list of values of kind K)
+	(documented at ph_addlistatentry):
+	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); -).
+
+To remove (existing entry - K) from (L - list of values of kind K), if present
+	(documented at ph_remfromlist):
+	(- LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); -).
+
+To remove (N - list of Ks) from (L - list of values of kind K), if present
+	(documented at ph_remlistfromlist):
+	(- LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); -).
+
+To remove entry (N - number) from (L - list of values), if present
+	(documented at ph_rementry):
+	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); -).
+
+To remove entries (N - number) to (N2 - number) from (L - list of values), if present
+	(documented at ph_rementries):
+	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).
+
+To decide if (N - K) is listed in (L - list of values of kind K)
+	(documented at ph_islistedin):
+	(- (LIST_OF_TY_FindItem({-by-reference:L}, {N})) -).
+
+To decide if (N - K) is not listed in (L - list of values of kind K)
+	(documented at ph_isnotlistedin):
+	(- (LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) -).
+
+To decide what list of Ks is the list of (D - description of values of kind K)
+	(documented at ph_listofdesc):
+	(- {-new-list-of:list of K} -).
+
 Section SR5/3/8 - Control phrases - Stop or go
 
 To do nothing (documented at ph_nothing):
