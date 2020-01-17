@@ -747,6 +747,131 @@ To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
 
+@h Control phrases.
+While "unless" is supposed to be exactly like "if" but with the reversed
+sense of the condition, that isn't quite true. For example, there is no
+"unless ... then ...": logical it might be, English it is not.
+
+=
+Section SR5/3/1 - Control phrases - If and unless
+
+To if (c - condition) begin -- end conditional
+	(documented at ph_if):
+	(- {c}  -).
+To unless (c - condition) begin -- end conditional
+	(documented at ph_unless):
+	(- (~~{c})  -).
+
+@ The switch form of "if" is subtly different, and here again "unless" is
+not allowed in its place.
+
+The begin and end markers here are in a sense bogus, in that the end
+user isn't supposed to type them: they are inserted automatically in
+the sentence subtree maker, which converts indentation into block
+structure.
+
+=
+To if (V - value) is begin -- end conditional
+	(documented at ph_switch):
+	(-  -).
+
+@ After all that, the while loop is simplicity itself. Perhaps the presence
+of "unless" for "if" argues for a similarly negated form, "until" for
+"while", but users haven't yet petitioned for this.
+
+=
+Section SR5/3/2 - Control phrases - While
+
+To while (c - condition) begin -- end loop
+	(documented at ph_while):
+	(- while {c}  -).
+
+@ The repeat loop looks like a single construction, but isn't, because the
+range can be given in four fundamentally different ways (and the loop variable
+then has a different kind of value accordingly). First, the equivalents of
+BASIC's |for| loop and of Inform 6's |objectloop|, respectively:
+
+=
+Section SR5/3/3 - Control phrases - Repeat
+
+To repeat with (loopvar - nonexisting K variable)
+	running from (v - arithmetic value of kind K) to (w - K) begin -- end loop
+	(documented at ph_repeat):
+		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
+To repeat with (loopvar - nonexisting K variable)
+	running from (v - enumerated value of kind K) to (w - K) begin -- end loop
+	(documented at ph_repeat):
+		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
+To repeat with (loopvar - nonexisting K variable)
+	running through (OS - description of values of kind K) begin -- end loop
+	(documented at ph_runthrough):
+		(- {-primitive-definition:repeat-through} -).
+To repeat with (loopvar - nonexisting object variable)
+	running through (L - list of values) begin -- end loop
+	(documented at ph_repeatlist):
+		(- {-primitive-definition:repeat-through-list} -).
+
+@ The following are all repeats where the range is the set of rows of a table,
+taken in some order, and the repeat variable -- though it does exist -- is
+never specified since the relevant row is instead the one selected during
+each iteration of the loop.
+
+=
+To repeat through (T - table name) begin -- end loop
+	(documented at ph_repeattable): (-
+		@push {-my:ct_0}; @push {-my:ct_1};
+		for ({-my:1}={T}, {-my:2}=1, ct_0={-my:1}, ct_1={-my:2}:
+			{-my:2}<=TableRows({-my:1}):
+			{-my:2}++, ct_0={-my:1}, ct_1={-my:2})
+			if (TableRowIsBlank(ct_0, ct_1)==false)
+				{-block}
+		@pull {-my:ct_1}; @pull {-my:ct_0};
+	-).
+To repeat through (T - table name) in reverse order begin -- end loop
+	(documented at ph_repeattablereverse): (-
+		@push {-my:ct_0}; @push {-my:ct_1};
+		for ({-my:1}={T}, {-my:2}=TableRows({-my:1}), ct_0={-my:1}, ct_1={-my:2}:
+			{-my:2}>=1:
+			{-my:2}--, ct_0={-my:1}, ct_1={-my:2})
+			if (TableRowIsBlank(ct_0, ct_1)==false)
+				{-block}
+		@pull {-my:ct_1}; @pull {-my:ct_0};
+	-).
+To repeat through (T - table name) in (TC - table column) order begin -- end loop
+	(documented at ph_repeattablecol): (-
+		@push {-my:ct_0}; @push {-my:ct_1};
+		for ({-my:1}={T}, {-my:2}=TableNextRow({-my:1}, {TC}, 0, 1), ct_0={-my:1}, ct_1={-my:2}:
+			{-my:2}~=0:
+			{-my:2}=TableNextRow({-my:1}, {TC}, {-my:2}, 1), ct_0={-my:1}, ct_1={-my:2})
+				{-block}
+		@pull {-my:ct_1}; @pull {-my:ct_0};
+	-).
+To repeat through (T - table name) in reverse (TC - table column) order begin -- end loop
+	(documented at ph_repeattablecolreverse): (-
+		@push {-my:ct_0}; @push {-my:ct_1};
+		for ({-my:1}={T}, {-my:2}=TableNextRow({-my:1}, {TC}, 0, -1), ct_0={-my:1}, ct_1={-my:2}:
+			{-my:2}~=0:
+			{-my:2}=TableNextRow({-my:1}, {TC}, {-my:2}, -1), ct_0={-my:1}, ct_1={-my:2})
+				{-block}
+		@pull {-my:ct_1}; @pull {-my:ct_0};
+	-).
+
+@ The equivalent of |break| or |continue| in C or I6, or of |last| or |next|
+in Perl. Here "in loop" means "in any of the forms of while or repeat".
+
+=
+Section SR5/3/6 - Control phrases - Changing the flow of loops
+
+To break -- in loop
+	(documented at ph_break):
+	(- {-primitive-definition:break} -).
+To next -- in loop
+	(documented at ph_next):
+	(- continue; -).
+
+
+
+
 @h Values.
 Some of the things we can do with enumerations, others being listed under
 randomness below.
@@ -816,7 +941,7 @@ structural levels of text (character, word, punctuated word, etc.).
 See test case |BIP-Texts|.
 
 =
-Chapter 5
+Chapter 5 - Text
 
 Section 1 - Breaking down text
 
@@ -868,8 +993,10 @@ To decide what text is the substituted form of (T - text)
 
 @ A common matching engine is used for matching plain text...
 
+See test case |BIP-TextReplacement|.
+
 =
-Section SR5/2/11 - Values - Matching text
+Section 2 - Matching and Replacing
 
 To decide if (T - text) exactly matches the text (find - text),
 	case insensitively
@@ -884,46 +1011,10 @@ To decide what number is number of times (T - text) matches the text
 	(documented at ph_nummatches):
 	(- TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) -).
 
-@ ...and for regular expressions, though here we also have access to the
-exact text which matched (not interesting in the plain text case since it's
-the same as the search text, up to case at least), and the values of matched
-subexpressions (which the plain text case doesn't have).
-
-=
-To decide if (T - text) exactly matches the regular expression (find - text),
-	case insensitively
-	(documented at ph_exactlymatchesre):
-	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) -).
-To decide if (T - text) matches the regular expression (find - text),
-	case insensitively
-	(documented at ph_matchesre):
-	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) -).
-To decide what text is text matching regular expression
-	(documented at ph_matchtext):
-	(- TEXT_TY_RE_GetMatchVar(0) -).
-To decide what text is text matching subexpression (N - a number)
-	(documented at ph_subexpressiontext):
-	(- TEXT_TY_RE_GetMatchVar({N}) -).
-To decide what number is number of times (T - text) matches the regular expression
-	(find - text),case insensitively
-	(documented at ph_nummatchesre):
-	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) -).
-
-@h Replacing text.
-The same engine, in "RegExp.i6t", handles replacement.
-
-=
-Section SR5/2/12 - Values - Replacing text
-
 To replace the text (find - text) in (T - text) with (replace - text),
 	case insensitively
 	(documented at ph_replace):
 	(- TEXT_TY_Replace_RE(CHR_BLOB, {-lvalue-by-reference:T}, {-by-reference:find},
-		{-by-reference:replace}, {phrase options}); -).
-To replace the regular expression (find - text) in (T - text) with
-	(replace - text), case insensitively
-	(documented at ph_replacere):
-	(- TEXT_TY_Replace_RE(REGEXP_BLOB, {-lvalue-by-reference:T}, {-by-reference:find},
 		{-by-reference:replace}, {phrase options}); -).
 To replace the word (find - text) in (T - text) with
 	(replace - text)
@@ -957,10 +1048,46 @@ To replace paragraph number (N - a number) in (T - text) with (replace - text)
 	(documented at ph_replacepara):
 	(- TEXT_TY_ReplaceBlob(PARA_BLOB, {-lvalue-by-reference:T}, {N}, {-by-reference:replace}); -).
 
-@h Casing of text.
+@ ...and for regular expressions, though here we also have access to the
+exact text which matched (not interesting in the plain text case since it's
+the same as the search text, up to case at least), and the values of matched
+subexpressions (which the plain text case doesn't have).
+
+See test case |BIP-RegExp|.
 
 =
-Section SR5/2/13 - Values - Casing of text
+Section 3 - Regular Expressions
+
+To decide if (T - text) exactly matches the regular expression (find - text),
+	case insensitively
+	(documented at ph_exactlymatchesre):
+	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) -).
+To decide if (T - text) matches the regular expression (find - text),
+	case insensitively
+	(documented at ph_matchesre):
+	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) -).
+To decide what text is text matching regular expression
+	(documented at ph_matchtext):
+	(- TEXT_TY_RE_GetMatchVar(0) -).
+To decide what text is text matching subexpression (N - a number)
+	(documented at ph_subexpressiontext):
+	(- TEXT_TY_RE_GetMatchVar({N}) -).
+To decide what number is number of times (T - text) matches the regular expression
+	(find - text),case insensitively
+	(documented at ph_nummatchesre):
+	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) -).
+To replace the regular expression (find - text) in (T - text) with
+	(replace - text), case insensitively
+	(documented at ph_replacere):
+	(- TEXT_TY_Replace_RE(REGEXP_BLOB, {-lvalue-by-reference:T}, {-by-reference:find},
+		{-by-reference:replace}, {phrase options}); -).
+
+@ Casing of text.
+
+See test case |BIP-TextCasing|.
+
+=
+Section 4 - Casing of Text
 
 To decide what text is (T - text) in lower case
 	(documented at ph_lowercase):
@@ -983,8 +1110,10 @@ To decide if (T - text) is in upper case
 
 @h Adaptive text.
 
+See test case |BIP-AdaptiveText|.
+
 =
-Section SR5/2/14 - Values - Adaptive text
+Section 5 - Adaptive Text
 
 To say infinitive of (V - a verb)
 	(documented at phs_infinitive):
@@ -1022,16 +1151,6 @@ To say negate (V - verb) in (T - grammatical tense) from (P - narrative viewpoin
 	(- {V}(CV_NEG, {P}, {T}); -).
 
 To decide which relation of objects is meaning of (V - a verb): (- {V}(CV_MEANING) -).
-
-To say here
-	(documented at phs_here):
-	say "[if story tense is present tense]here[otherwise]there".
-To say now
-	(documented at phs_now):
-	say "[if story tense is present tense]now[otherwise]then".
-
-
-
 
 @h Data Structures.
 Inform provides three main data structures: tables, lists, and relations,

@@ -1,0 +1,18 @@
+  
+  "whether or not "fish" exactly matches the text "FIsH"" = truth state: false
+  "whether or not "fish" exactly matches the text "FIsH", case insensitively" = truth state: true
+  "whether or not "Go fish!" matches the text "fish"" = truth state: true
+  "whether or not "I WANT MY FISH" matches the text "fish", case insensitively" = truth state: true
+  "number of times "Bananagrams to Alpaca" matches the text "a"" = number: 6
+  "number of times "Bananagrams to Alpaca" matches the text "a", case insensitively" = number: 7
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The capture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The capture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  The intermediate text: The zapture of Triton may explain banana number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The zapture of Triton may explain banana number o(abcdef) features of the Neptunian system, including the extremely eccentric orbit of Neptune's pineapple daiquiri Nereid and the scarcity of moons as compared to the other gas giants.
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The capture of Triton may explain a number of features of potato Neptunian system, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato opotator gas turtles?
+  The original text: the capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: potato capture of Triton may explain a number of features of potato Neptunian frog, including potato extremely eccentric orbit of Neptune's moon Nereid and potato scarcity of moons as compared to potato other gas giants.
+  The original text: The capture of Triton may explain a number of features of the Neptunian system, including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants.
+  The redacted text: The capture of Triton may explain a number of features of the Neptunian toad including the extremely eccentric orbit of Neptune's moon Nereid and the scarcity of moons as compared to the other gas giants!

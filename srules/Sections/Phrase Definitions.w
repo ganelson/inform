@@ -45,6 +45,14 @@ To say (something - time) in words
 	(documented at phs_timewords):
 	(- print (PrintTimeOfDayEnglish) {something}; -).
 
+
+To say here
+	(documented at phs_here):
+	say "[if story tense is present tense]here[otherwise]there".
+To say now
+	(documented at phs_now):
+	say "[if story tense is present tense]now[otherwise]then".
+
 @ Now some visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
 
@@ -403,128 +411,6 @@ To play (SFX - sound name), one time only
 To decide which number is the Glulx resource ID of (SFX - sound name)
 	(documented at ph_soundid):
 	(- ResourceIDsOfSounds-->{SFX} -).
-
-@h Control phrases.
-While "unless" is supposed to be exactly like "if" but with the reversed
-sense of the condition, that isn't quite true. For example, there is no
-"unless ... then ...": logical it might be, English it is not.
-
-=
-Section SR5/3/1 - Control phrases - If and unless
-
-To if (c - condition) begin -- end conditional
-	(documented at ph_if):
-	(- {c}  -).
-To unless (c - condition) begin -- end conditional
-	(documented at ph_unless):
-	(- (~~{c})  -).
-
-@ The switch form of "if" is subtly different, and here again "unless" is
-not allowed in its place.
-
-The begin and end markers here are in a sense bogus, in that the end
-user isn't supposed to type them: they are inserted automatically in
-the sentence subtree maker, which converts indentation into block
-structure.
-
-=
-To if (V - value) is begin -- end conditional
-	(documented at ph_switch):
-	(-  -).
-
-@ After all that, the while loop is simplicity itself. Perhaps the presence
-of "unless" for "if" argues for a similarly negated form, "until" for
-"while", but users haven't yet petitioned for this.
-
-=
-Section SR5/3/2 - Control phrases - While
-
-To while (c - condition) begin -- end loop
-	(documented at ph_while):
-	(- while {c}  -).
-
-@ The repeat loop looks like a single construction, but isn't, because the
-range can be given in four fundamentally different ways (and the loop variable
-then has a different kind of value accordingly). First, the equivalents of
-BASIC's |for| loop and of Inform 6's |objectloop|, respectively:
-
-=
-Section SR5/3/3 - Control phrases - Repeat
-
-To repeat with (loopvar - nonexisting K variable)
-	running from (v - arithmetic value of kind K) to (w - K) begin -- end loop
-	(documented at ph_repeat):
-		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
-To repeat with (loopvar - nonexisting K variable)
-	running from (v - enumerated value of kind K) to (w - K) begin -- end loop
-	(documented at ph_repeat):
-		(- for ({loopvar}={v}: {loopvar}<={w}: {loopvar}++)  -).
-To repeat with (loopvar - nonexisting K variable)
-	running through (OS - description of values of kind K) begin -- end loop
-	(documented at ph_runthrough):
-		(- {-primitive-definition:repeat-through} -).
-To repeat with (loopvar - nonexisting object variable)
-	running through (L - list of values) begin -- end loop
-	(documented at ph_repeatlist):
-		(- {-primitive-definition:repeat-through-list} -).
-
-@ The following are all repeats where the range is the set of rows of a table,
-taken in some order, and the repeat variable -- though it does exist -- is
-never specified since the relevant row is instead the one selected during
-each iteration of the loop.
-
-=
-To repeat through (T - table name) begin -- end loop
-	(documented at ph_repeattable): (-
-		@push {-my:ct_0}; @push {-my:ct_1};
-		for ({-my:1}={T}, {-my:2}=1, ct_0={-my:1}, ct_1={-my:2}:
-			{-my:2}<=TableRows({-my:1}):
-			{-my:2}++, ct_0={-my:1}, ct_1={-my:2})
-			if (TableRowIsBlank(ct_0, ct_1)==false)
-				{-block}
-		@pull {-my:ct_1}; @pull {-my:ct_0};
-	-).
-To repeat through (T - table name) in reverse order begin -- end loop
-	(documented at ph_repeattablereverse): (-
-		@push {-my:ct_0}; @push {-my:ct_1};
-		for ({-my:1}={T}, {-my:2}=TableRows({-my:1}), ct_0={-my:1}, ct_1={-my:2}:
-			{-my:2}>=1:
-			{-my:2}--, ct_0={-my:1}, ct_1={-my:2})
-			if (TableRowIsBlank(ct_0, ct_1)==false)
-				{-block}
-		@pull {-my:ct_1}; @pull {-my:ct_0};
-	-).
-To repeat through (T - table name) in (TC - table column) order begin -- end loop
-	(documented at ph_repeattablecol): (-
-		@push {-my:ct_0}; @push {-my:ct_1};
-		for ({-my:1}={T}, {-my:2}=TableNextRow({-my:1}, {TC}, 0, 1), ct_0={-my:1}, ct_1={-my:2}:
-			{-my:2}~=0:
-			{-my:2}=TableNextRow({-my:1}, {TC}, {-my:2}, 1), ct_0={-my:1}, ct_1={-my:2})
-				{-block}
-		@pull {-my:ct_1}; @pull {-my:ct_0};
-	-).
-To repeat through (T - table name) in reverse (TC - table column) order begin -- end loop
-	(documented at ph_repeattablecolreverse): (-
-		@push {-my:ct_0}; @push {-my:ct_1};
-		for ({-my:1}={T}, {-my:2}=TableNextRow({-my:1}, {TC}, 0, -1), ct_0={-my:1}, ct_1={-my:2}:
-			{-my:2}~=0:
-			{-my:2}=TableNextRow({-my:1}, {TC}, {-my:2}, -1), ct_0={-my:1}, ct_1={-my:2})
-				{-block}
-		@pull {-my:ct_1}; @pull {-my:ct_0};
-	-).
-
-@ The equivalent of |break| or |continue| in C or I6, or of |last| or |next|
-in Perl. Here "in loop" means "in any of the forms of while or repeat".
-
-=
-Section SR5/3/6 - Control phrases - Changing the flow of loops
-
-To break -- in loop
-	(documented at ph_break):
-	(- {-primitive-definition:break} -).
-To next -- in loop
-	(documented at ph_next):
-	(- continue; -).
 
 @ The antique forms "yes" and "no" are now somewhat to be regretted, with
 "decide yes" and "decide no" being clearer ways to write the same thing.

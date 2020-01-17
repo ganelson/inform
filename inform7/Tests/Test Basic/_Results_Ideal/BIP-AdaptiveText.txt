@@ -1,0 +1,438 @@
+  
+  verb imply has infinitive "imply".
+  verb imply has past participle "implied".
+  verb imply has present participle "implying".
+  He implies something.
+  He does not imply something.
+  present tense: implies.
+  present tense: does not imply.
+  past tense: implied.
+  past tense: did not imply.
+  perfect tense: has implied.
+  perfect tense: has not implied.
+  past perfect tense: had implied.
+  past perfect tense: had not implied.
+  future tense: will imply.
+  future tense: will not imply.
+  first person singular: imply.
+  first person singular: do not imply.
+  second person singular: imply.
+  second person singular: do not imply.
+  third person singular: implies.
+  third person singular: does not imply.
+  first person plural: imply.
+  first person plural: do not imply.
+  second person plural: imply.
+  second person plural: do not imply.
+  third person plural: imply.
+  third person plural: do not imply.
+  present tense, first person singular: imply.
+  present tense, first person singular: do not imply.
+  present tense, second person singular: imply.
+  present tense, second person singular: do not imply.
+  present tense, third person singular: implies.
+  present tense, third person singular: does not imply.
+  present tense, first person plural: imply.
+  present tense, first person plural: do not imply.
+  present tense, second person plural: imply.
+  present tense, second person plural: do not imply.
+  present tense, third person plural: imply.
+  present tense, third person plural: do not imply.
+  past tense, first person singular: implied.
+  past tense, first person singular: did not imply.
+  past tense, second person singular: implied.
+  past tense, second person singular: did not imply.
+  past tense, third person singular: implied.
+  past tense, third person singular: did not imply.
+  past tense, first person plural: implied.
+  past tense, first person plural: did not imply.
+  past tense, second person plural: implied.
+  past tense, second person plural: did not imply.
+  past tense, third person plural: implied.
+  past tense, third person plural: did not imply.
+  perfect tense, first person singular: have implied.
+  perfect tense, first person singular: have not implied.
+  perfect tense, second person singular: have implied.
+  perfect tense, second person singular: have not implied.
+  perfect tense, third person singular: has implied.
+  perfect tense, third person singular: has not implied.
+  perfect tense, first person plural: have implied.
+  perfect tense, first person plural: have not implied.
+  perfect tense, second person plural: have implied.
+  perfect tense, second person plural: have not implied.
+  perfect tense, third person plural: have implied.
+  perfect tense, third person plural: have not implied.
+  past perfect tense, first person singular: had implied.
+  past perfect tense, first person singular: had not implied.
+  past perfect tense, second person singular: had implied.
+  past perfect tense, second person singular: had not implied.
+  past perfect tense, third person singular: had implied.
+  past perfect tense, third person singular: had not implied.
+  past perfect tense, first person plural: had implied.
+  past perfect tense, first person plural: had not implied.
+  past perfect tense, second person plural: had implied.
+  past perfect tense, second person plural: had not implied.
+  past perfect tense, third person plural: had implied.
+  past perfect tense, third person plural: had not implied.
+  future tense, first person singular: will imply.
+  future tense, first person singular: will not imply.
+  future tense, second person singular: will imply.
+  future tense, second person singular: will not imply.
+  future tense, third person singular: will imply.
+  future tense, third person singular: will not imply.
+  future tense, first person plural: will imply.
+  future tense, first person plural: will not imply.
+  future tense, second person plural: will imply.
+  future tense, second person plural: will not imply.
+  future tense, third person plural: will imply.
+  future tense, third person plural: will not imply.
+  verb carry has infinitive "carry".
+  verb carry has past participle "carried".
+  verb carry has present participle "carrying".
+  He carries something.
+  He does not carry something.
+  present tense: carries.
+  present tense: does not carry.
+  past tense: carried.
+  past tense: did not carry.
+  perfect tense: has carried.
+  perfect tense: has not carried.
+  past perfect tense: had carried.
+  past perfect tense: had not carried.
+  future tense: will carry.
+  future tense: will not carry.
+  first person singular: carry.
+  first person singular: do not carry.
+  second person singular: carry.
+  second person singular: do not carry.
+  third person singular: carries.
+  third person singular: does not carry.
+  first person plural: carry.
+  first person plural: do not carry.
+  second person plural: carry.
+  second person plural: do not carry.
+  third person plural: carry.
+  third person plural: do not carry.
+  present tense, first person singular: carry.
+  present tense, first person singular: do not carry.
+  present tense, second person singular: carry.
+  present tense, second person singular: do not carry.
+  present tense, third person singular: carries.
+  present tense, third person singular: does not carry.
+  present tense, first person plural: carry.
+  present tense, first person plural: do not carry.
+  present tense, second person plural: carry.
+  present tense, second person plural: do not carry.
+  present tense, third person plural: carry.
+  present tense, third person plural: do not carry.
+  past tense, first person singular: carried.
+  past tense, first person singular: did not carry.
+  past tense, second person singular: carried.
+  past tense, second person singular: did not carry.
+  past tense, third person singular: carried.
+  past tense, third person singular: did not carry.
+  past tense, first person plural: carried.
+  past tense, first person plural: did not carry.
+  past tense, second person plural: carried.
+  past tense, second person plural: did not carry.
+  past tense, third person plural: carried.
+  past tense, third person plural: did not carry.
+  perfect tense, first person singular: have carried.
+  perfect tense, first person singular: have not carried.
+  perfect tense, second person singular: have carried.
+  perfect tense, second person singular: have not carried.
+  perfect tense, third person singular: has carried.
+  perfect tense, third person singular: has not carried.
+  perfect tense, first person plural: have carried.
+  perfect tense, first person plural: have not carried.
+  perfect tense, second person plural: have carried.
+  perfect tense, second person plural: have not carried.
+  perfect tense, third person plural: have carried.
+  perfect tense, third person plural: have not carried.
+  past perfect tense, first person singular: had carried.
+  past perfect tense, first person singular: had not carried.
+  past perfect tense, second person singular: had carried.
+  past perfect tense, second person singular: had not carried.
+  past perfect tense, third person singular: had carried.
+  past perfect tense, third person singular: had not carried.
+  past perfect tense, first person plural: had carried.
+  past perfect tense, first person plural: had not carried.
+  past perfect tense, second person plural: had carried.
+  past perfect tense, second person plural: had not carried.
+  past perfect tense, third person plural: had carried.
+  past perfect tense, third person plural: had not carried.
+  future tense, first person singular: will carry.
+  future tense, first person singular: will not carry.
+  future tense, second person singular: will carry.
+  future tense, second person singular: will not carry.
+  future tense, third person singular: will carry.
+  future tense, third person singular: will not carry.
+  future tense, first person plural: will carry.
+  future tense, first person plural: will not carry.
+  future tense, second person plural: will carry.
+  future tense, second person plural: will not carry.
+  future tense, third person plural: will carry.
+  future tense, third person plural: will not carry.
+  verb whinge has infinitive "whinge".
+  verb whinge has past participle "whinged".
+  verb whinge has present participle "whingeing".
+  He whinges something.
+  He does not whinge something.
+  present tense: whinges.
+  present tense: does not whinge.
+  past tense: whinged.
+  past tense: did not whinge.
+  perfect tense: has whinged.
+  perfect tense: has not whinged.
+  past perfect tense: had whinged.
+  past perfect tense: had not whinged.
+  future tense: will whinge.
+  future tense: will not whinge.
+  first person singular: whinge.
+  first person singular: do not whinge.
+  second person singular: whinge.
+  second person singular: do not whinge.
+  third person singular: whinges.
+  third person singular: does not whinge.
+  first person plural: whinge.
+  first person plural: do not whinge.
+  second person plural: whinge.
+  second person plural: do not whinge.
+  third person plural: whinge.
+  third person plural: do not whinge.
+  present tense, first person singular: whinge.
+  present tense, first person singular: do not whinge.
+  present tense, second person singular: whinge.
+  present tense, second person singular: do not whinge.
+  present tense, third person singular: whinges.
+  present tense, third person singular: does not whinge.
+  present tense, first person plural: whinge.
+  present tense, first person plural: do not whinge.
+  present tense, second person plural: whinge.
+  present tense, second person plural: do not whinge.
+  present tense, third person plural: whinge.
+  present tense, third person plural: do not whinge.
+  past tense, first person singular: whinged.
+  past tense, first person singular: did not whinge.
+  past tense, second person singular: whinged.
+  past tense, second person singular: did not whinge.
+  past tense, third person singular: whinged.
+  past tense, third person singular: did not whinge.
+  past tense, first person plural: whinged.
+  past tense, first person plural: did not whinge.
+  past tense, second person plural: whinged.
+  past tense, second person plural: did not whinge.
+  past tense, third person plural: whinged.
+  past tense, third person plural: did not whinge.
+  perfect tense, first person singular: have whinged.
+  perfect tense, first person singular: have not whinged.
+  perfect tense, second person singular: have whinged.
+  perfect tense, second person singular: have not whinged.
+  perfect tense, third person singular: has whinged.
+  perfect tense, third person singular: has not whinged.
+  perfect tense, first person plural: have whinged.
+  perfect tense, first person plural: have not whinged.
+  perfect tense, second person plural: have whinged.
+  perfect tense, second person plural: have not whinged.
+  perfect tense, third person plural: have whinged.
+  perfect tense, third person plural: have not whinged.
+  past perfect tense, first person singular: had whinged.
+  second person plural: whinge.
+  past perfect tense, first person singular: had not whinged.
+  past perfect tense, second person singular: had whinged.
+  past perfect tense, second person singular: had not whinged.
+  past perfect tense, third person singular: had whinged.
+  past perfect tense, third person singular: had not whinged.
+  past perfect tense, first person plural: had whinged.
+  past perfect tense, first person plural: had not whinged.
+  past perfect tense, second person plural: had whinged.
+  past perfect tense, second person plural: had not whinged.
+  past perfect tense, third person plural: had whinged.
+  past perfect tense, third person plural: had not whinged.
+  future tense, first person singular: will whinge.
+  future tense, first person singular: will not whinge.
+  future tense, second person singular: will whinge.
+  future tense, second person singular: will not whinge.
+  future tense, third person singular: will whinge.
+  future tense, third person singular: will not whinge.
+  future tense, first person plural: will whinge.
+  future tense, first person plural: will not whinge.
+  future tense, second person plural: will whinge.
+  future tense, second person plural: will not whinge.
+  future tense, third person plural: will whinge.
+  future tense, third person plural: will not whinge.
+  verb give has infinitive "give".
+  verb give has past participle "given".
+  verb give has present participle "giving".
+  He gives something.
+  He does not give something.
+  present tense: gives.
+  present tense: does not give.
+  past tense: gave.
+  past tense: did not give.
+  perfect tense: has given.
+  perfect tense: has not given.
+  past perfect tense: had given.
+  past perfect tense: had not given.
+  future tense: will give.
+  future tense: will not give.
+  first person singular: give.
+  first person singular: do not give.
+  second person singular: give.
+  second person singular: do not give.
+  third person singular: gives.
+  third person singular: does not give.
+  first person plural: give.
+  first person plural: do not give.
+  second person plural: give.
+  second person plural: do not give.
+  third person plural: give.
+  third person plural: do not give.
+  present tense, first person singular: give.
+  present tense, first person singular: do not give.
+  present tense, second person singular: give.
+  present tense, second person singular: do not give.
+  present tense, third person singular: gives.
+  present tense, third person singular: does not give.
+  present tense, first person plural: give.
+  present tense, first person plural: do not give.
+  present tense, second person plural: give.
+  present tense, second person plural: do not give.
+  present tense, third person plural: give.
+  present tense, third person plural: do not give.
+  past tense, first person singular: gave.
+  past tense, first person singular: did not give.
+  past tense, second person singular: gave.
+  past tense, second person singular: did not give.
+  past tense, third person singular: gave.
+  past tense, third person singular: did not give.
+  past tense, first person plural: gave.
+  past tense, first person plural: did not give.
+  past tense, second person plural: gave.
+  past tense, second person plural: did not give.
+  past tense, third person plural: gave.
+  past tense, third person plural: did not give.
+  perfect tense, first person singular: have given.
+  perfect tense, first person singular: have not given.
+  perfect tense, second person singular: have given.
+  perfect tense, second person singular: have not given.
+  perfect tense, third person singular: has given.
+  perfect tense, third person singular: has not given.
+  perfect tense, first person plural: have given.
+  perfect tense, first person plural: have not given.
+  perfect tense, second person plural: have given.
+  perfect tense, second person plural: have not given.
+  perfect tense, third person plural: have given.
+  perfect tense, third person plural: have not given.
+  past perfect tense, first person singular: had given.
+  past perfect tense, first person singular: had not given.
+  past perfect tense, second person singular: had given.
+  past perfect tense, second person singular: had not given.
+  past perfect tense, third person singular: had given.
+  past perfect tense, third person singular: had not given.
+  past perfect tense, first person plural: had given.
+  past perfect tense, first person plural: had not given.
+  past perfect tense, second person plural: had given.
+  past perfect tense, second person plural: had not given.
+  past perfect tense, third person plural: had given.
+  past perfect tense, third person plural: had not given.
+  future tense, first person singular: will give.
+  future tense, first person singular: will not give.
+  future tense, second person singular: will give.
+  future tense, second person singular: will not give.
+  future tense, third person singular: will give.
+  future tense, third person singular: will not give.
+  future tense, first person plural: will give.
+  future tense, first person plural: will not give.
+  future tense, second person plural: will give.
+  future tense, second person plural: will not give.
+  future tense, third person plural: will give.
+  future tense, third person plural: will not give.
+  verb have has infinitive "have".
+  verb have has past participle "had".
+  verb have has present participle "having".
+  He has something.
+  He does not have something.
+  present tense: has.
+  present tense: does not have.
+  past tense: had.
+  past tense: did not have.
+  perfect tense: has had.
+  perfect tense: has not had.
+  past perfect tense: had had.
+  past perfect tense: had not had.
+  future tense: will have.
+  future tense: will not have.
+  first person singular: have.
+  first person singular: do not have.
+  second person singular: have.
+  second person singular: do not have.
+  third person singular: has.
+  third person singular: does not have.
+  first person plural: have.
+  first person plural: do not have.
+  second person plural: have.
+  second person plural: do not have.
+  third person plural: have.
+  third person plural: do not have.
+  present tense, first person singular: have.
+  present tense, first person singular: do not have.
+  present tense, second person singular: have.
+  present tense, second person singular: do not have.
+  present tense, third person singular: has.
+  present tense, third person singular: does not have.
+  present tense, first person plural: have.
+  present tense, first person plural: do not have.
+  present tense, second person plural: have.
+  present tense, second person plural: do not have.
+  present tense, third person plural: have.
+  present tense, third person plural: do not have.
+  past tense, first person singular: had.
+  past tense, first person singular: did not have.
+  past tense, second person singular: had.
+  past tense, second person singular: did not have.
+  past tense, third person singular: had.
+  past tense, third person singular: did not have.
+  past tense, first person plural: had.
+  past tense, first person plural: did not have.
+  past tense, second person plural: had.
+  past tense, second person plural: did not have.
+  past tense, third person plural: had.
+  past tense, third person plural: did not have.
+  perfect tense, first person singular: have had.
+  perfect tense, first person singular: have not had.
+  perfect tense, second person singular: have had.
+  perfect tense, second person singular: have not had.
+  perfect tense, third person singular: has had.
+  perfect tense, third person singular: has not had.
+  perfect tense, first person plural: have had.
+  perfect tense, first person plural: have not had.
+  perfect tense, second person plural: have had.
+  perfect tense, second person plural: have not had.
+  perfect tense, third person plural: have had.
+  perfect tense, third person plural: have not had.
+  past perfect tense, first person singular: had had.
+  past perfect tense, first person singular: had not had.
+  past perfect tense, second person singular: had had.
+  past perfect tense, second person singular: had not had.
+  past perfect tense, third person singular: had had.
+  past perfect tense, third person singular: had not had.
+  past perfect tense, first person plural: had had.
+  past perfect tense, first person plural: had not had.
+  past perfect tense, second person plural: had had.
+  past perfect tense, second person plural: had not had.
+  past perfect tense, third person plural: had had.
+  past perfect tense, third person plural: had not had.
+  future tense, first person singular: will have.
+  future tense, first person singular: will not have.
+  future tense, second person singular: will have.
+  future tense, second person singular: will not have.
+  future tense, third person singular: will have.
+  future tense, third person singular: will not have.
+  future tense, first person plural: will have.
+  future tense, first person plural: will not have.
+  future tense, second person plural: will have.
+  future tense, second person plural: will not have.
+  future tense, third person plural: will have.
+  future tense, third person plural: will not have.
+  "meaning of the verb carry" = relation of objects: equality relation

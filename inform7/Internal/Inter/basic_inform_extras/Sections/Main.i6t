@@ -371,3 +371,10 @@ The routines accessible from outside this segment.
 ];
 
 {-segment:Activities.i6t}
+
+[ PNToVP gna;
+!	if (prior_named_noun == player) return story_viewpoint;
+	if (prior_named_noun) gna = GetGNAOfObject(prior_named_noun);
+	if (((gna%6)/3 == 1) || (prior_named_list >= 2)) return 6;
+	return 3;
+];

@@ -99,18 +99,6 @@ Definition: Something is on-stage rather than off-stage if I6 routine "OnStage"
 	makes it so (it is indirectly in one of the rooms).
 Definition: Something is offstage if it is off-stage.
 
-@h Verbal descriptions of numerical comparisons.
-We might as well declare these now, too, though they're not needed for
-any of the world-building work. (The verbal usages |<|, |>|, |<=| and |>=|
-are built into NI; those would be the same in any language, and are unlike
-other verbs since they have no inflected forms for non-present tenses.)
-
-=
-The verb to be greater than means the numerically-greater-than relation.
-The verb to be less than means the numerically-less-than relation.
-The verb to be at least means the numerically-greater-than-or-equal-to relation.
-The verb to be at most means the numerically-less-than-or-equal-to relation.
-
 @h Creating the world model.
 The 0th kind, "kind", is not created here but by NI itself. The first
 through to ninth kinds created now follow: they must not be reordered or moved.

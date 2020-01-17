@@ -238,3 +238,16 @@ Printing the plural name of something (documented at act_ppn) is an activity. [1
 
 The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
 The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
+
+@h Verbal descriptions of numerical comparisons.
+We might as well declare these now, too, though they're not needed for
+any of the world-building work. (The verbal usages |<|, |>|, |<=| and |>=|
+are built into NI; those would be the same in any language, and are unlike
+other verbs since they have no inflected forms for non-present tenses.)
+
+=
+The verb to be greater than means the numerically-greater-than relation.
+The verb to be less than means the numerically-less-than relation.
+The verb to be at least means the numerically-greater-than-or-equal-to relation.
+The verb to be at most means the numerically-less-than-or-equal-to relation.
+
