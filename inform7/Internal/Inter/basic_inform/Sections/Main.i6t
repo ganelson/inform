@@ -39,6 +39,7 @@ Global clr_fgstatus = 1; ! foreground colour of statusline
 Global clr_bgstatus = 1; ! background colour of statusline
 Global clr_on; ! has colour been enabled by the player?
 Global statuswin_current; ! if writing to top window
+Global suppress_text_substitution = false;
 
 ! [14]
 Global statuswin_cursize = 0;

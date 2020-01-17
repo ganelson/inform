@@ -1,0 +1,6 @@
+  
+  Extending M to 5 entries should not change it: {2, 3, 5, 7, 11}.
+  Extending M to 7 entries should add two 0s: {2, 3, 5, 7, 11, 0, 0}.
+  Truncating M to 8 entries should make no difference: {2, 3, 5, 7, 11, 0, 0}.
+  Truncating M to 4 entries should change it: {2, 3, 5, 7}.
+  Truncating M to the last 2 entries should certainly change it: {5, 7}.

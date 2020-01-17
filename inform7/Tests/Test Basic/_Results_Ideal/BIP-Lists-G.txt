@@ -24,3 +24,5 @@ Removing entries 2 to 4 gives {2, 11, 16}.
 "whether or not 16 is listed in M" = truth state: true
 "whether or not 71 is not listed in M" = truth state: true
 "whether or not 16 is not listed in M" = truth state: false
+"list of fruits" = list of fruits: {apple, pear, orange}
+"list of dull fruits" = list of fruits: {apple, pear}

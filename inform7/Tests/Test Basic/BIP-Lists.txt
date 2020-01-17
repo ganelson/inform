@@ -1,3 +1,9 @@
+A fruit is a kind of object.
+
+An apple, a pear and an orange are fruits.
+
+A fruit can be bright or dull. An orange is bright.
+
 To begin:
 	let L be a list of numbers;
 	say "L is initially [L in brace notation].";
@@ -46,4 +52,6 @@ To begin:
 	showme whether or not 16 is listed in M;
 	showme whether or not 71 is not listed in M;
 	showme whether or not 16 is not listed in M;
+	showme the list of fruits;
+	showme the list of dull fruits;
 	

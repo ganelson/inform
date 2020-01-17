@@ -255,7 +255,7 @@ has the marble and the box as its children, the relationship being containment.
 		Assertions::Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
 		binary_predicate *bp = ParseTree::get_relationship(p);
-		if (bp) {
+		if ((bp) && (basic_mode == FALSE)) {
 			instance *dir = PL::MapDirections::get_mapping_direction(BinaryPredicates::get_reversal(bp));
 			if (dir == NULL) dir = PL::MapDirections::get_mapping_direction(bp);
 			if (dir) @<Make the relation one which refers to a map direction@>;

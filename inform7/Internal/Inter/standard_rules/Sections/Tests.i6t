@@ -88,7 +88,6 @@ RELATIONS lists the current state of the mutable relations.
 RESPONSES lists the known responses.
 
 =
-Global suppress_text_substitution = false;
 [ ShowResponsesSub a i j reg wd set_mode;
 	if (NO_RESPONSES == 0) "There are no lettered responses.";
 	wn = 2;

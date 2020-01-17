@@ -1,0 +1,13 @@
+relation of fruits: affinity relation
+Affinity relates various fruits to various fruits:
+  The apple  >=>  the orange
+  The pear  >=>  the orange
+"list of fruits that the affinity relation relates" = list of fruits: {apple, pear}
+"list of fruits that the affinity relation relates to" = list of fruits: {orange}
+"list of fruits that relate to the orange by the affinity relation" = list of fruits: {apple, pear}
+"list of fruits that relate to the pear by the affinity relation" = list of fruits: {}
+"list of fruits that the pear relates to by the affinity relation" = list of fruits: {orange}
+"whether or not the apple relates to a fruit by the affinity relation" = truth state: true
+"whether or not a fruit relates to the apple by the affinity relation" = truth state: false
+"fruit that the apple relates to by the affinity relation" = fruit: orange
+"fruit that relates to the orange by the affinity relation" = fruit: apple
