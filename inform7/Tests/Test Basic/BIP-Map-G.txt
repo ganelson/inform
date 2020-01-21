@@ -1,5 +1,3 @@
-The Brahms Conservatoire is a room.
-
 Colour is a kind of value. The colours are red, indigo and chartreuse.
 
 Weight is a kind of value. 5kg specifies a weight.
@@ -31,10 +29,11 @@ Joint magnitude relates a number (called N) to a number (called M) when N plus M
 
 Definition: an text (called T) is lengthy if the number of characters in it is greater than 6.
 
-When play begins:
+To decide which number is the length of (T - an text) (this is length extraction):
+	decide on the number of characters in T.
+
+To begin:
 	showme joint magnitude relation;
-	showme the location;
-	showme the list of colours;
 	showme txtng;
 	showme maximizing;
 	showme doubling applied to 2;
@@ -46,10 +45,4 @@ When play begins:
 	showme the concatenation reduction of spelling out applied to { 3, 8, 4, 19, 7 };
 	showme the filter to lengthy texts of spelling out applied to { 3, 8, 4, 19, 7 };
 	showme filter to lengthy texts of spelling out applied to {15, 2, 20, 29, -4};
-
-To decide which number is the length of (T - an text) (this is length extraction):
-	decide on the number of characters in T.
-
-When play begins:
-	showme length extraction applied to "Hello world!";
-	showme the length of "podgorny".
+	showme the filter to negative numbers of {-2, -1, 0, 1, 2, 4, 7}.

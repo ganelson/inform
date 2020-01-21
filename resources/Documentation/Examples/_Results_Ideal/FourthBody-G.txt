@@ -1,0 +1,13 @@
+
+
+
+The Fourth Body
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+
+Damp Hillside
+It is just after dawn: among the trees there is misty and pale blue light. The only saturated color in view is the orange-and-yellow jacket of Detective Havers. She is trying unsuccessfully to light a cigarette. 
+
+The body itself is further down, closer to the bottom of the ravine. It would be foolish to speculate before seeing it, but the odds are that the corpse was rolled down after death. The ground is not steep enough for the fall itself to be deadly.
+
+>Are you sure you want to quit? 

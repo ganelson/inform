@@ -13,7 +13,6 @@ property *P_action_bitmap = NULL;
 
 nonlocal_variable *real_location_VAR = NULL;
 nonlocal_variable *actor_location_VAR = NULL;
-nonlocal_variable *parameter_object_VAR = NULL;
 
 nonlocal_variable *I6_noun_VAR = NULL;
 nonlocal_variable *I6_second_VAR = NULL;
@@ -90,8 +89,7 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 	actor-location |				==> 3
 	second noun |					==> 4
 	person asked |					==> 5
-	maximum score |					==> 6
-	parameter-object				==> 7
+	maximum score					==> 6
 
 @ =
 int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var) {
@@ -113,7 +111,6 @@ int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var)
 			case 5: I6_actor_VAR = var; break;
 			case 6: max_score_VAR = var;
 				NonlocalVariables::make_initalisable(var); break;
-			case 7: parameter_object_VAR = var; break;
 		}
 	}
 	return FALSE;

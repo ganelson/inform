@@ -1,4 +1,0 @@
-Home is a room.
-
-When play begins:
-	showme the filter to negative numbers of {-2, -1, 0, 1, 2, 4, 7}.

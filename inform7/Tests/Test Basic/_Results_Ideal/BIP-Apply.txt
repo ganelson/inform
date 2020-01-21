@@ -1,0 +1,6 @@
+  
+  phrase number -> number: doubling
+  "doubling applied to 2" = number: 4
+  phrase text -> number: length extraction
+  "length extraction applied to "Hello world!"" = number: 12
+  "length of "Hello world!"" = number: 12

@@ -1,0 +1,13 @@
+  
+  "M" = number: 1
+  "M" = number: 2
+  "M" = number: 3
+  "M" = number: 4
+  "M" = number: 6
+  "M" = number: 7
+  "K" = number: 1
+  "K" = number: 2
+  "K" = number: 3
+  "K" = number: 4
+  "K" = number: 6
+  "K" = number: 7

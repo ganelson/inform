@@ -391,16 +391,23 @@ To say (L - a list of objects) with indefinite articles
 The "now" phrase can do an extraordinary range of things, and is more or
 less a genie granting one wish.
 
+The "whether or not" phrase exists only to convert a condition to a value,
+and is needed because I7 does not silently cast from one to the other in
+the way that C would.
+
 See test case |BIP-Now|.
 
 =
-Chapter 2
+Chapter 2 - Conditions and Variables
 
-Section 1 - Making Conditions True
+Section 1 - Conditions
 
 To now (cn - condition)
 	(documented at ph_now):
 	(- {cn} -).
+To decide what truth state is whether or not (C - condition)
+	(documented at ph_whether):
+	(- ({C}) -).
 
 @ Assignment is probably the most difficult thing the type-checker has to
 cope with, since "let" has to work when applied to both unknown names (it
@@ -482,7 +489,6 @@ To decrement (S - storage)
 	(documented at ph_decrement): (-
 		{-copy:S:-};
 	-).
-
 
 @h Arithmetic.
 There are nine arithmetic operations, internally numbered 0 upwards, and
@@ -743,17 +749,28 @@ To decide no
 	(documented at ph_no):
 	(- rfalse; -) - in to decide if only.
 
+To stop (documented at ph_stop):
+	(- rtrue; -) - in to only.
+
 To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
 
-@h Control phrases.
-While "unless" is supposed to be exactly like "if" but with the reversed
+@ While "unless" is supposed to be exactly like "if" but with the reversed
 sense of the condition, that isn't quite true. For example, there is no
 "unless ... then ...": logical it might be, English it is not.
 
+The switch form of "if" is subtly different, and here again "unless" is
+not allowed in its place.
+
+As with some other control structures, the definitions here are somewhat
+partial, and made up for by direct code in the compiler. (There's a limit to
+how much a general syntax for phrases can encode control phrases.)
+
+See test case |BIP-If|.
+
 =
-Section SR5/3/1 - Control phrases - If and unless
+Section 2 - If and Unless
 
 To if (c - condition) begin -- end conditional
 	(documented at ph_if):
@@ -761,26 +778,30 @@ To if (c - condition) begin -- end conditional
 To unless (c - condition) begin -- end conditional
 	(documented at ph_unless):
 	(- (~~{c})  -).
-
-@ The switch form of "if" is subtly different, and here again "unless" is
-not allowed in its place.
-
-The begin and end markers here are in a sense bogus, in that the end
-user isn't supposed to type them: they are inserted automatically in
-the sentence subtree maker, which converts indentation into block
-structure.
-
-=
 To if (V - value) is begin -- end conditional
 	(documented at ph_switch):
 	(-  -).
+
+@ "Do nothing" is a curious feature for a high-level programming language (C,
+for example, does not have a NOP function); it entered Inform in the earliest
+days, when it was useful mainly when natural language syntax had painted users
+into a corner. (In the examples, it used to be used when conditions were
+awkward to negate -- if condition, do nothing, otherwise blah blah blah -- but
+the creation of "unless" made it possible to remove most of the "do
+nothing"s.) It is now hardly ever useful.
+
+=
+To do nothing (documented at ph_nothing):
+	(- ; -).
 
 @ After all that, the while loop is simplicity itself. Perhaps the presence
 of "unless" for "if" argues for a similarly negated form, "until" for
 "while", but users haven't yet petitioned for this.
 
+See test case |BIP-Loops|.
+
 =
-Section SR5/3/2 - Control phrases - While
+Section 3 - While and Repeat
 
 To while (c - condition) begin -- end loop
 	(documented at ph_while):
@@ -792,8 +813,6 @@ then has a different kind of value accordingly). First, the equivalents of
 BASIC's |for| loop and of Inform 6's |objectloop|, respectively:
 
 =
-Section SR5/3/3 - Control phrases - Repeat
-
 To repeat with (loopvar - nonexisting K variable)
 	running from (v - arithmetic value of kind K) to (w - K) begin -- end loop
 	(documented at ph_repeat):
@@ -859,8 +878,10 @@ To repeat through (T - table name) in reverse (TC - table column) order begin --
 @ The equivalent of |break| or |continue| in C or I6, or of |last| or |next|
 in Perl. Here "in loop" means "in any of the forms of while or repeat".
 
+See test case |BIP-Break|.
+
 =
-Section SR5/3/6 - Control phrases - Changing the flow of loops
+Section 4 - Loop Flow
 
 To break -- in loop
 	(documented at ph_break):
@@ -868,9 +889,6 @@ To break -- in loop
 To next -- in loop
 	(documented at ph_next):
 	(- continue; -).
-
-
-
 
 @h Values.
 Some of the things we can do with enumerations, others being listed under
@@ -928,6 +946,20 @@ To decide whether a random chance of (N - number) in (M - number) succeeds
 To seed the random-number generator with (N - number)
 	(documented at ph_seed):
 	(- VM_Seed_RNG({N}); -).
+
+@ A novel feature of Inform is that there is a default value of any kind: fpr
+example, it is 0 for a number, or the empty text for text. When Inform compiles
+a value of a given kind but isn't told what value to compile, it always
+chooses the default, which is why the following definition works.
+
+See test case |BIP-DefaultValues|.
+
+=
+Section 3 - Default Values
+
+To decide what K is the default value of (V - name of kind of value of kind K)
+	(documented at ph_defaultvalue):
+	(- {-new:K} -).
 
 @h Text.
 Inform programs swim in a sea of texts, and most of the ways to make text
@@ -1445,39 +1477,198 @@ To decide which L is (name of kind of value L) that/which/whom (X - K)
 	(documented at ph_rightlookup):
 	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]
 
-@ "Do nothing" is useful mainly when other syntax has backed us into
-something clumsy, but it can't be dispensed with. (In the examples, it used
-to be used when conditions were awkward to negate -- if condition, do nothing,
-otherwise blah blah blah -- but the creation of "unless" made it possible
-to remove most of the "do nothing"s.)
+@h Functional Programming.
+Here we have the ability to use the name of a function as a value, and to
+apply such a function.
+
+See test case |BIP-Apply|.
 
 =
-Section SR5/3/8 - Control phrases - Stop or go
+Chapter 7 - Functional Programming
 
-To do nothing (documented at ph_nothing):
-	(- ; -).
-To stop (documented at ph_stop):
-	(- rtrue; -) - in to only.
+Section 1 - Applying Functions
 
-@
+To decide whether (val - K) matches (desc - description of values of kind K)
+	(documented at ph_valuematch):
+	(- {-primitive-definition:description-application} -).
 
-See test case |Showme|.
+To decide what K is (function - phrase nothing -> value of kind K) applied
+	(documented at ph_applied0):
+	(- {-primitive-definition:function-application} -).
+
+To decide what L is (function - phrase value of kind K -> value of kind L)
+	applied to (input - K)
+	(documented at ph_applied1):
+	(- {-primitive-definition:function-application} -).
+
+To decide what M is (function - phrase (value of kind K, value of kind L) -> value of kind M)
+	applied to (input - K) and (second input - L)
+	(documented at ph_applied2):
+	(- {-primitive-definition:function-application} -).
+
+To decide what N is (function - phrase (value of kind K, value of kind L, value of kind M) -> value of kind N)
+	applied to (input - K) and (second input - L) and (third input - M)
+	(documented at ph_applied3):
+	(- {-primitive-definition:function-application} -).
+
+To apply (function - phrase nothing -> nothing)
+	(documented at ph_apply0):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase value of kind K -> nothing)
+	to (input - K)
+	(documented at ph_apply1):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase (value of kind K, value of kind L) -> nothing)
+	to (input - K) and (second input - L)
+	(documented at ph_apply2):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase (value of kind K, value of kind L, value of kind M) -> nothing)
+	to (input - K) and (second input - L) and (third input - M)
+	(documented at ph_apply3):
+	(- {-primitive-definition:function-application}; -).
+
+@ The standard map, reduce and filter operations found in most functional
+programming languages also have Inform analogues.
+
+See test case |BIP-Map|.
 
 =
-To decide what K is the default value of (V - name of kind of value of kind K)
-	(documented at ph_defaultvalue):
-	(- {-new:K} -).
+Section 2 - Working with Lists
 
-@ The following exists only to convert a condition to a value, and is
-needed because I7 does not silently cast from one to the other in the way
-that C would.
+To decide what list of L is (function - phrase K -> value of kind L) applied to (original list - list of values of kind K)
+	(documented at ph_appliedlist):
+	let the result be a list of Ls;
+	repeat with item running through the original list:
+		let the mapped item be the function applied to the item;
+		add the mapped item to the result;
+	decide on the result.
+
+To decide what K is the (function - phrase (K, K) -> K) reduction of (original list - list of values of kind K)
+	(documented at ph_reduction):
+	let the total be a K;
+	let the count be 0;
+	repeat with item running through the original list:
+		increase the count by 1;
+		if the count is 1, now the total is the item;
+		otherwise now the total is the function applied to the total and the item;
+	decide on the total.
+
+To decide what list of K is the filter to (criterion - description of Ks) of
+	(full list - list of values of kind K)
+	(documented at ph_filter):
+	let the filtered list be a list of K;
+	repeat with item running through the full list:
+		if the item matches the criterion:
+			add the item to the filtered list;
+	decide on the filtered list.
+
+@h Rulebooks and Activities.
+
+Firing off activities:
+
+See test case |BIP-Activities|.
 
 =
-Section SR5/2/6 - Values - Truth states
+Section 1 - Carrying out Activities
 
-To decide what truth state is whether or not (C - condition)
-	(documented at ph_whether):
-	(- ({C}) -).
+To carry out the (A - activity on nothing) activity
+	(documented at ph_carryout):
+	(- CarryOutActivity({A}); -).
+To carry out the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_carryoutwith):
+	(- CarryOutActivity({A}, {val}); -).
+To continue the activity
+	(documented at ph_continueactivity):
+	(- rfalse; -) - in to only.
+
+@ Advanced activity phrases: for setting up one's own activities structured
+around I7 source text. People tend not to use this much, and perhaps that's
+a good thing, but it does open up possibilities, and it's good for
+retro-fitting onto extensions to make them more customisable.
+
+=
+Section 2 - Advanced Activities
+
+To begin the (A - activity on nothing) activity
+	(documented at ph_beginactivity):
+	(- BeginActivity({A}); -).
+To begin the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_beginactivitywith):
+	(- BeginActivity({A}, {val}); -).
+To decide whether handling (A - activity) activity
+	(documented at ph_handlingactivity):
+	(- (~~(ForActivity({A}))) -).
+To decide whether handling (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_handlingactivitywith):
+	(- (~~(ForActivity({A}, {val}))) -).
+To end the (A - activity on nothing) activity
+	(documented at ph_endactivity):
+	(- EndActivity({A}); -).
+To end the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_endactivitywith):
+	(- EndActivity({A}, {val}); -).
+To abandon the (A - activity on nothing) activity
+	(documented at ph_abandonactivity):
+	(- AbandonActivity({A}); -).
+To abandon the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_abandonactivitywith):
+	(- AbandonActivity({A}, {val}); -).
+
+@h External Files.
+Inform has a quirky level of support for file-handling, which comes out what
+the Glulx virtual machine will support.
+
+See test case |BIP-Files-G|, which has no Z-machine counterpart.
+
+=
+Chapter 9 - External Files (not for Z-machine)
+
+Section 1 - Files of Text
+
+To write (T - text) to (FN - external file)
+	(documented at ph_writetext):
+	(- FileIO_PutContents({FN}, {T}, false); -).
+To append (T - text) to (FN - external file)
+	(documented at ph_appendtext):
+	(- FileIO_PutContents({FN}, {T}, true); -).
+To say text of (FN - external file)
+	(documented at ph_saytext):
+	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+@ See test case |BIP-FilesOfTables-G|, which has no Z-machine counterpart.
+
+=
+Section 2 - Files of Data
+
+To read (filename - external file) into (T - table name)
+	(documented at ph_readtable):
+	(- FileIO_GetTable({filename}, {T}); -).
+To write (filename - external file) from (T - table name)
+	(documented at ph_writetable):
+	(- FileIO_PutTable({filename}, {T}); -).
+
+@ These are hardly used phrases which are difficult to test convincingly
+in our framework, since they defend against independent Inform programs
+simultaneously trying to access the same file.
+
+=
+Section 3 - File Handling
+
+To decide if (filename - external file) exists
+	(documented at ph_fileexists):
+	(- (FileIO_Exists({filename}, false)) -).
+To decide if ready to read (filename - external file)
+	(documented at ph_fileready):
+	(- (FileIO_Ready({filename}, false)) -).
+To mark (filename - external file) as ready to read
+	(documented at ph_markfileready):
+	(- FileIO_MarkReady({filename}, true); -).
+To mark (filename - external file) as not ready to read
+	(documented at ph_markfilenotready):
+	(- FileIO_MarkReady({filename}, false); -).
 
 @ And so, at last...
 
@@ -1493,6 +1684,6 @@ extension.
 =
 ---- DOCUMENTATION ----
 
-Unlike other extensions, the Standard Rules are compulsorily included
-with every project. They define the phrases, kinds and relations which
-are basic to Inform, and which are described throughout the documentation.
+Unlike other extensions, Basic Inform is compulsorily included with every
+project. It defines the phrases, kinds and relations which are basic to
+Inform, and which are described throughout the documentation.

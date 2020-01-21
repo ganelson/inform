@@ -1,0 +1,20 @@
+Table of Selected Numbers
+(row 1)  | 4 | four |
+(row 2)  | 3 | three |
+(row 3)  | 154 | one hundred and fifty-four |
+(row 4)  | 27 | twenty-seven |
+(row 5)  | 9 | nine |
+(row 6)  | --  -- 
+(row 7)  | --  -- 
+(row 8)  | --  -- 
+(row 9)  | --  -- 
+Table of Reselected Numbers
+(row 1)  | 4 | four |
+(row 2)  | 3 | three |
+(row 3)  | 154 | one hundred and fifty-four |
+(row 4)  | 27 | twenty-seven |
+(row 5)  | 9 | nine |
+(row 6)  | --  -- 
+(row 7)  | --  -- 
+(row 8)  | --  -- 
+(row 9)  | --  -- 

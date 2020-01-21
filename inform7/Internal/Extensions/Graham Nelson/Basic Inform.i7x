@@ -127,6 +127,9 @@ The enable Glulx acceleration rule is listed first in for starting the virtual m
 
 The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
 
+The parameter-object is an object that varies.
+The parameter-object variable translates into I6 as "parameter_value".
+
 Printing the name of something (documented at act_pn) is an activity. [0]
 
 The standard name printing rule is listed last in the for printing the name rulebook.
@@ -141,6 +144,13 @@ The verb to be greater than means the numerically-greater-than relation.
 The verb to be less than means the numerically-less-than relation.
 The verb to be at least means the numerically-greater-than-or-equal-to relation.
 The verb to be at most means the numerically-less-than-or-equal-to relation.
+
+Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
+Definition: a number is positive if it is greater than zero.
+Definition: a number is negative if it is less than zero.
+
+Definition: a text is empty rather than non-empty if I6 routine
+	"TEXT_TY_Empty" says so (it contains no characters).
 
 
 Part Two - Phrasebook
@@ -326,13 +336,16 @@ To say (L - a list of objects) with indefinite articles
 	(documented at phs_listindef):
 	(- LIST_OF_TY_Say({-by-reference:L}, 3); -).
 
-Chapter 2
+Chapter 2 - Conditions and Variables
 
-Section 1 - Making Conditions True
+Section 1 - Conditions
 
 To now (cn - condition)
 	(documented at ph_now):
 	(- {cn} -).
+To decide what truth state is whether or not (C - condition)
+	(documented at ph_whether):
+	(- ({C}) -).
 
 Section 2 - Assigning Temporary Variables
 
@@ -392,7 +405,6 @@ To decrement (S - storage)
 	(documented at ph_decrement): (-
 		{-copy:S:-};
 	-).
-
 
 Chapter 2 - Arithmetic
 
@@ -595,11 +607,14 @@ To decide no
 	(documented at ph_no):
 	(- rfalse; -) - in to decide if only.
 
+To stop (documented at ph_stop):
+	(- rtrue; -) - in to only.
+
 To decide on (something - value)
 	(documented at ph_decideon):
 	(- return {-return-value:something}; -).
 
-Section SR5/3/1 - Control phrases - If and unless
+Section 2 - If and Unless
 
 To if (c - condition) begin -- end conditional
 	(documented at ph_if):
@@ -607,18 +622,18 @@ To if (c - condition) begin -- end conditional
 To unless (c - condition) begin -- end conditional
 	(documented at ph_unless):
 	(- (~~{c})  -).
-
 To if (V - value) is begin -- end conditional
 	(documented at ph_switch):
 	(-  -).
 
-Section SR5/3/2 - Control phrases - While
+To do nothing (documented at ph_nothing):
+	(- ; -).
+
+Section 3 - While and Repeat
 
 To while (c - condition) begin -- end loop
 	(documented at ph_while):
 	(- while {c}  -).
-
-Section SR5/3/3 - Control phrases - Repeat
 
 To repeat with (loopvar - nonexisting K variable)
 	running from (v - arithmetic value of kind K) to (w - K) begin -- end loop
@@ -676,7 +691,7 @@ To repeat through (T - table name) in reverse (TC - table column) order begin --
 		@pull {-my:ct_1}; @pull {-my:ct_0};
 	-).
 
-Section SR5/3/6 - Control phrases - Changing the flow of loops
+Section 4 - Loop Flow
 
 To break -- in loop
 	(documented at ph_break):
@@ -684,9 +699,6 @@ To break -- in loop
 To next -- in loop
 	(documented at ph_next):
 	(- continue; -).
-
-
-
 
 Chapter 4 - Values
 
@@ -731,6 +743,12 @@ To decide whether a random chance of (N - number) in (M - number) succeeds
 To seed the random-number generator with (N - number)
 	(documented at ph_seed):
 	(- VM_Seed_RNG({N}); -).
+
+Section 3 - Default Values
+
+To decide what K is the default value of (V - name of kind of value of kind K)
+	(documented at ph_defaultvalue):
+	(- {-new:K} -).
 
 Chapter 5 - Text
 
@@ -915,9 +933,6 @@ To say negate (V - verb) in (T - grammatical tense) from (P - narrative viewpoin
 	(- {V}(CV_NEG, {P}, {T}); -).
 
 To decide which relation of objects is meaning of (V - a verb): (- {V}(CV_MEANING) -).
-
-
-
 
 Chapter 6 - Data Structures
 
@@ -1153,28 +1168,163 @@ To decide which L is (name of kind of value L) that/which/whom (X - K)
 	(documented at ph_rightlookup):
 	(- RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]
 
-Section SR5/3/8 - Control phrases - Stop or go
+Chapter 7 - Functional Programming
 
-To do nothing (documented at ph_nothing):
-	(- ; -).
-To stop (documented at ph_stop):
-	(- rtrue; -) - in to only.
+Section 1 - Applying Functions
 
-To decide what K is the default value of (V - name of kind of value of kind K)
-	(documented at ph_defaultvalue):
-	(- {-new:K} -).
+To decide whether (val - K) matches (desc - description of values of kind K)
+	(documented at ph_valuematch):
+	(- {-primitive-definition:description-application} -).
 
-Section SR5/2/6 - Values - Truth states
+To decide what K is (function - phrase nothing -> value of kind K) applied
+	(documented at ph_applied0):
+	(- {-primitive-definition:function-application} -).
 
-To decide what truth state is whether or not (C - condition)
-	(documented at ph_whether):
-	(- ({C}) -).
+To decide what L is (function - phrase value of kind K -> value of kind L)
+	applied to (input - K)
+	(documented at ph_applied1):
+	(- {-primitive-definition:function-application} -).
+
+To decide what M is (function - phrase (value of kind K, value of kind L) -> value of kind M)
+	applied to (input - K) and (second input - L)
+	(documented at ph_applied2):
+	(- {-primitive-definition:function-application} -).
+
+To decide what N is (function - phrase (value of kind K, value of kind L, value of kind M) -> value of kind N)
+	applied to (input - K) and (second input - L) and (third input - M)
+	(documented at ph_applied3):
+	(- {-primitive-definition:function-application} -).
+
+To apply (function - phrase nothing -> nothing)
+	(documented at ph_apply0):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase value of kind K -> nothing)
+	to (input - K)
+	(documented at ph_apply1):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase (value of kind K, value of kind L) -> nothing)
+	to (input - K) and (second input - L)
+	(documented at ph_apply2):
+	(- {-primitive-definition:function-application}; -).
+
+To apply (function - phrase (value of kind K, value of kind L, value of kind M) -> nothing)
+	to (input - K) and (second input - L) and (third input - M)
+	(documented at ph_apply3):
+	(- {-primitive-definition:function-application}; -).
+
+Section 2 - Working with Lists
+
+To decide what list of L is (function - phrase K -> value of kind L) applied to (original list - list of values of kind K)
+	(documented at ph_appliedlist):
+	let the result be a list of Ls;
+	repeat with item running through the original list:
+		let the mapped item be the function applied to the item;
+		add the mapped item to the result;
+	decide on the result.
+
+To decide what K is the (function - phrase (K, K) -> K) reduction of (original list - list of values of kind K)
+	(documented at ph_reduction):
+	let the total be a K;
+	let the count be 0;
+	repeat with item running through the original list:
+		increase the count by 1;
+		if the count is 1, now the total is the item;
+		otherwise now the total is the function applied to the total and the item;
+	decide on the total.
+
+To decide what list of K is the filter to (criterion - description of Ks) of
+	(full list - list of values of kind K)
+	(documented at ph_filter):
+	let the filtered list be a list of K;
+	repeat with item running through the full list:
+		if the item matches the criterion:
+			add the item to the filtered list;
+	decide on the filtered list.
+
+Section 1 - Carrying out Activities
+
+To carry out the (A - activity on nothing) activity
+	(documented at ph_carryout):
+	(- CarryOutActivity({A}); -).
+To carry out the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_carryoutwith):
+	(- CarryOutActivity({A}, {val}); -).
+To continue the activity
+	(documented at ph_continueactivity):
+	(- rfalse; -) - in to only.
+
+Section 2 - Advanced Activities
+
+To begin the (A - activity on nothing) activity
+	(documented at ph_beginactivity):
+	(- BeginActivity({A}); -).
+To begin the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_beginactivitywith):
+	(- BeginActivity({A}, {val}); -).
+To decide whether handling (A - activity) activity
+	(documented at ph_handlingactivity):
+	(- (~~(ForActivity({A}))) -).
+To decide whether handling (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_handlingactivitywith):
+	(- (~~(ForActivity({A}, {val}))) -).
+To end the (A - activity on nothing) activity
+	(documented at ph_endactivity):
+	(- EndActivity({A}); -).
+To end the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_endactivitywith):
+	(- EndActivity({A}, {val}); -).
+To abandon the (A - activity on nothing) activity
+	(documented at ph_abandonactivity):
+	(- AbandonActivity({A}); -).
+To abandon the (A - activity on value of kind K) activity with (val - K)
+	(documented at ph_abandonactivitywith):
+	(- AbandonActivity({A}, {val}); -).
+
+Chapter 9 - External Files (not for Z-machine)
+
+Section 1 - Files of Text
+
+To write (T - text) to (FN - external file)
+	(documented at ph_writetext):
+	(- FileIO_PutContents({FN}, {T}, false); -).
+To append (T - text) to (FN - external file)
+	(documented at ph_appendtext):
+	(- FileIO_PutContents({FN}, {T}, true); -).
+To say text of (FN - external file)
+	(documented at ph_saytext):
+	(- FileIO_PrintContents({FN}); say__p = 1; -).
+
+Section 2 - Files of Data
+
+To read (filename - external file) into (T - table name)
+	(documented at ph_readtable):
+	(- FileIO_GetTable({filename}, {T}); -).
+To write (filename - external file) from (T - table name)
+	(documented at ph_writetable):
+	(- FileIO_PutTable({filename}, {T}); -).
+
+Section 3 - File Handling
+
+To decide if (filename - external file) exists
+	(documented at ph_fileexists):
+	(- (FileIO_Exists({filename}, false)) -).
+To decide if ready to read (filename - external file)
+	(documented at ph_fileready):
+	(- (FileIO_Ready({filename}, false)) -).
+To mark (filename - external file) as ready to read
+	(documented at ph_markfileready):
+	(- FileIO_MarkReady({filename}, true); -).
+To mark (filename - external file) as not ready to read
+	(documented at ph_markfilenotready):
+	(- FileIO_MarkReady({filename}, false); -).
 
 Basic Inform ends here.
 
 ---- DOCUMENTATION ----
 
-Unlike other extensions, the Standard Rules are compulsorily included
-with every project. They define the phrases, kinds and relations which
-are basic to Inform, and which are described throughout the documentation.
+Unlike other extensions, Basic Inform is compulsorily included with every
+project. It defines the phrases, kinds and relations which are basic to
+Inform, and which are described throughout the documentation.
 

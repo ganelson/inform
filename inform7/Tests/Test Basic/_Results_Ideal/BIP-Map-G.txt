@@ -1,0 +1,13 @@
+relation of numbers: joint magnitude relation
+phrase text -> text: txtng
+phrase (number, number) -> number: maximizing
+"doubling applied to 2" = number: 4
+"txtng applied to spelling out applied to doubling applied to { 3, 8, 4, 19, 7 }" = list of texts: {"sx", "sxtn", "ght", "thrty-ght", "frtn"}
+"maximizing reduction of { 3, 8, 4, 19, 7 }" = number: 19
+"filter to even numbers of { 3, 8, 4, 19, 7 }" = list of numbers: {8, 4}
+"maximizing reduction of { -3, -8, -4, -19, -7 }" = number: -3
+"summing reduction of { 3, 8, 4, 19, 7 }" = number: 41
+"concatenation reduction of spelling out applied to { 3, 8, 4, 19, 7 }" = text: threeeightfournineteenseven
+"filter to lengthy texts of spelling out applied to { 3, 8, 4, 19, 7 }" = list of texts: {"nineteen"}
+"filter to lengthy texts of spelling out applied to { 15, 2, 20, 29, -4 }" = list of texts: {"fifteen", "twenty-nine", "minus four"}
+"filter to negative numbers of { -2, -1, 0, 1, 2, 4, 7 }" = list of numbers: {-2, -1}

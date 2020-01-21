@@ -1,7 +1,7 @@
 Inform 7.10.1 build 6Q21 has started.
 I've now read your source text, which is 84 words long.
-I've also read Basic Inform by Graham Nelson, which is 579 words long.
-I've also read Standard Rules by Graham Nelson, which is 42688 words long.
+I've also read Basic Inform by Graham Nelson, which is 6823 words long.
+I've also read Standard Rules by Graham Nelson, which is 36475 words long.
 I've also read English Language by Graham Nelson, which is 2328 words long.
 Problem__ PM_MasksRelation
   >--> I don't want you to define a phrase with the wording you've used in in
@@ -16,6 +16,6 @@ Problem__ PM_MasksRelation
     because it could be misunderstood. There is already a definition of what it
     means for something to be 'less than' something else, so this phrase
     definition would look too much like testing whether 'X is less than Y'.
-    ('The verb to be less than means the numerically-less-than relation' (the
-    Standard Rules, line 364).)
+    ('The verb to be less than means the numerically-less-than relation' (Basic
+    Inform, line 144).)
 Inform 7 has finished: 48 centiseconds used.

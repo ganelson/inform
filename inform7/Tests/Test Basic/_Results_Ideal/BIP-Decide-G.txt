@@ -2,3 +2,4 @@
 "whether or not 31 pleases us" = truth state: true
 "whether or not -417 displeases us" = truth state: false
 "whether or not a fruit is tasty" = truth state: true
+I begin.

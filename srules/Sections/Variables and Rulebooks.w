@@ -292,9 +292,6 @@ The item-pushed-between-rooms variable translates into I6 as "move_pushing".
 The actor-location is an object that varies. [*]
 The actor-location variable translates into I6 as "actor_location".
 
-The parameter-object is an object that varies. [*]
-The parameter-object variable translates into I6 as "parameter_value".
-
 The scene being changed is a scene that varies. [*]
 The scene being changed variable translates into I6 as "parameter_value".
 
@@ -1166,13 +1163,6 @@ There is a small stock of built-in adjectives for values.
 
 =
 Section SR2/12 - Adjectival definitions
-
-Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
-Definition: a number is positive if it is greater than zero.
-Definition: a number is negative if it is less than zero.
-
-Definition: a text is empty rather than non-empty if I6 routine
-	"TEXT_TY_Empty" says so (it contains no characters).
 
 Definition: a text is substituted rather than unsubstituted if I6 routine
 	"TEXT_TY_IsSubstituted" says so (any square-bracketed text substitutions

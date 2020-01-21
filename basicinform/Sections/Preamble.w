@@ -229,6 +229,9 @@ The enable Glulx acceleration rule is listed first in for starting the virtual m
 
 The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
 
+The parameter-object is an object that varies.
+The parameter-object variable translates into I6 as "parameter_value".
+
 Printing the name of something (documented at act_pn) is an activity. [0]
 
 The standard name printing rule is listed last in the for printing the name rulebook.
@@ -250,4 +253,14 @@ The verb to be greater than means the numerically-greater-than relation.
 The verb to be less than means the numerically-less-than relation.
 The verb to be at least means the numerically-greater-than-or-equal-to relation.
 The verb to be at most means the numerically-less-than-or-equal-to relation.
+
+@h Adjectival definitions.
+
+=
+Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
+Definition: a number is positive if it is greater than zero.
+Definition: a number is negative if it is less than zero.
+
+Definition: a text is empty rather than non-empty if I6 routine
+	"TEXT_TY_Empty" says so (it contains no characters).
 

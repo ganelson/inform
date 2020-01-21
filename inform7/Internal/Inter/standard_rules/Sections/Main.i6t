@@ -123,7 +123,6 @@ Global sline1; Global sline2;
 Global undo_flag;
 
 ! [4]
-Global deadflag = 0;
 Global story_complete = 0;
 Global resurrect_please = false;
 

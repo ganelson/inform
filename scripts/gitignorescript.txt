@@ -6,6 +6,8 @@ gameinfo.dbg
 
 makefile
 
+*.glkdata
+
 resources/Changes/Output/
 resources/Changes/Output/META-INF/
 resources/Changes/Output/OEBPS/

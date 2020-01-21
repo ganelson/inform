@@ -7,6 +7,11 @@ To decide if (N - number) pleases us:
 To decide if (N - number) displeases us:
 	decide no.
 
+To demonstrate stop:
+	say "I begin.";
+	stop;
+	say "I do not continue.";
+
 A fruit is a kind of object. An apple, a pear and an orange are fruits.
 
 Definition: a fruit is tasty:
@@ -17,3 +22,4 @@ To begin:
 	showme whether or not 31 pleases us;
 	showme whether or not -417 displeases us;
 	showme whether or not a fruit is tasty;
+	demonstrate stop;

@@ -56,6 +56,7 @@ variables mentioned below:
 nonlocal_variable *i6_glob_VAR = NULL;
 nonlocal_variable *i6_nothing_VAR = NULL; /* the I6 |nothing| constant */
 nonlocal_variable *command_prompt_VAR = NULL; /* the command prompt text */
+nonlocal_variable *parameter_object_VAR = NULL;
 
 @ We record the one most recently made:
 
@@ -71,7 +72,8 @@ hacky constructs which only the SR should ever refer to.
 <notable-variables> ::=
 	i6-varying-global |
 	i6-nothing-constant |
-	command prompt
+	command prompt |
+	parameter-object
 
 @ We can create a new variable provided we give its name, kind and scope.
 When the scope isn't global, the variable is said to be "stacked", which is a
@@ -123,6 +125,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, stacked_variable *
 			case 0: i6_glob_VAR = nlv; break;
 			case 1: i6_nothing_VAR = nlv; break;
 			case 2: command_prompt_VAR = nlv; break;
+			case 3: parameter_object_VAR = nlv; break;
 		}
 	}
 
