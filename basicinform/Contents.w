@@ -8,4 +8,6 @@ Licence: Artistic License 2.0
 
 Sections
 	Preamble
+	Miscellaneous Definitions
 	Phrase Definitions
+	Adjectival Definitions

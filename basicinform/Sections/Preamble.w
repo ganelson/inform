@@ -1,16 +1,9 @@
 Preamble.
 
-@ Basic Inform is like a boot program for a computer that is
-starting up: at the beginning, the process is delicate, and the computer
-needs a fairly exact sequence of things to be done; halfway through, the
-essential work is done, but the system is still too primitive to be much
-use, so we begin to create convenient intermediate-level code sitting on
-top of the basics; so that, by the end, we have a fully flexible machine
-ready to go in any number of directions. In this commentary, we try to
-distinguish between what must be done (or else Inform will crash, or fail in
-some other way) and what is done simply as a design decision (to make the
-Inform language come out the way we want it). Quite interesting hybrid
-Informs could be built by making different decisions.
+@ Basic Inform is like a boot program for a computer that is starting up: at
+the beginning, the process is delicate, and the computer needs a fairly exact
+sequence of things to be done; but by the end, we have a fully flexible
+machine ready to go in any number of directions.
 
 @h Title.
 Every Inform 7 extension begins with a standard titling line and a
@@ -24,7 +17,7 @@ of Inform as a programming language."
 
 Part One - Preamble
 
-@h Starting up.
+@h Verbs.
 The first task is to create the verbs which enable us to do everything
 else. The first sentence should really read "The verb to mean means the
 built-in verb-means meaning", but that would be circular. So Inform
@@ -88,7 +81,7 @@ The verb to translate into + as means the built-in translates-into-language mean
 
 The verb to translate as means the built-in use-translates meaning.
 
-@ Finally, the verbs used as imperatives: "Test ... with ...", for example.
+@ Next, the verbs used as imperatives:
 
 =
 The verb to use in the imperative means the built-in use meaning.
@@ -96,7 +89,20 @@ The verb to include + in in the imperative means the built-in include-in meaning
 The verb to omit + from in the imperative means the built-in omit-from meaning.
 The verb to document + at in the imperative means the built-in document-at meaning.
 
-@ The following has no effect, and exists only to be a default non-value for
+@ We might as well declare these numerical comparisons now, too, though
+they're not needed for any of the world-building work. (The verbal usages |<|,
+|>|, |<=| and |>=| are built into Inform; those would be the same in any
+language, and are unlike other verbs since they have no inflected forms for
+non-present tenses.)
+
+=
+The verb to be greater than means the numerically-greater-than relation.
+The verb to be less than means the numerically-less-than relation.
+The verb to be at least means the numerically-greater-than-or-equal-to relation.
+The verb to be at most means the numerically-less-than-or-equal-to relation.
+
+@h Use Options.
+The following has no effect, and exists only to be a default non-value for
 "use option" variables, should anyone ever create them:
 
 =
@@ -113,7 +119,6 @@ Use the serial comma translates as (- Constant SERIAL_COMMA; -).
 Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
 Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
 Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use command line echoing translates as (- Constant ECHO_COMMANDS; -).
 Use predictable randomisation translates as (- Constant FIX_RNG; -).
 Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
 Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
@@ -178,89 +183,3 @@ Use MAX_SYMBOLS of 20000.
 Use MAX_EXPRESSION_NODES of 256.
 Use MAX_LABELS of 200000.
 Use MAX_LOCAL_VARIABLES of 256.
-
-@ Experimental.
-
-=
-An object has a value called variable initial value.
-
-@h Naming properties.
-Certain properties used for names are held in common by all objects, of
-whatever kind. "Specification" is special: it isn't compiled, but holds
-text used to annotate the Kinds index. "Variable initial value" is
-likewise special; internally, knowledge about the initial value of a
-global variable is stored as knowledge about this property. It can't be
-used for anything else. "Indefinite appearance text" is also an internal
-property (it holds the text sometimes given in double-quotes immediately
-after an object is created).
-
-=
-An object has a text called specification.
-An object has a text called indefinite appearance text.
-An object has a text called list grouping key.
-
-@ These, on the other hand, are quite genuine:
-
-=
-An object has a text called printed name.
-An object has a text called printed plural name.
-An object has a text called an indefinite article.
-An object can be plural-named or singular-named. An object is usually singular-named.
-An object can be proper-named or improper-named. An object is usually improper-named.
-An object can be ambiguously plural.
-
-The indefinite article property translates into I6 as "article".
-The printed plural name property translates into I6 as "plural".
-The printed name property translates into I6 as "short_name".
-The plural-named property translates into I6 as "pluralname".
-The ambiguously plural property translates into I6 as "ambigpluralname".
-The proper-named property translates into I6 as "proper".
-
-A natural language is a kind of value.
-The language of play is a natural language that varies.
-
-Startup rules is a rulebook. [0]
-Startup rules have outcomes allow startup (success) and deny startup (failure).
-Shutdown rules is a rulebook. [1]
-
-Starting the virtual machine (documented at act_startvm) is an activity.
-
-The enable Glulx acceleration rule is listed first in for starting the virtual machine.
-
-The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
-
-The parameter-object is an object that varies.
-The parameter-object variable translates into I6 as "parameter_value".
-
-Printing the name of something (documented at act_pn) is an activity. [0]
-
-The standard name printing rule is listed last in the for printing the name rulebook.
-The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
-
-Printing the plural name of something (documented at act_ppn) is an activity. [1]
-
-The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
-The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
-
-@h Verbal descriptions of numerical comparisons.
-We might as well declare these now, too, though they're not needed for
-any of the world-building work. (The verbal usages |<|, |>|, |<=| and |>=|
-are built into NI; those would be the same in any language, and are unlike
-other verbs since they have no inflected forms for non-present tenses.)
-
-=
-The verb to be greater than means the numerically-greater-than relation.
-The verb to be less than means the numerically-less-than relation.
-The verb to be at least means the numerically-greater-than-or-equal-to relation.
-The verb to be at most means the numerically-less-than-or-equal-to relation.
-
-@h Adjectival definitions.
-
-=
-Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
-Definition: a number is positive if it is greater than zero.
-Definition: a number is negative if it is less than zero.
-
-Definition: a text is empty rather than non-empty if I6 routine
-	"TEXT_TY_Empty" says so (it contains no characters).
-

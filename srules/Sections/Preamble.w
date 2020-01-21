@@ -37,6 +37,7 @@ whose values are used in the I6 library or in the template layer, which is
 how they have effect.)
 
 =
+Use command line echoing translates as (- Constant ECHO_COMMANDS; -).
 Use full-length room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 2; #ENDIF; -).
 Use abbreviated room descriptions translates as (- #IFNDEF I7_LOOKMODE; Constant I7_LOOKMODE = 3; #ENDIF; -).
 Use scoring translates as (- #IFNDEF USE_SCORING; Constant USE_SCORING = 1; #ENDIF; -).

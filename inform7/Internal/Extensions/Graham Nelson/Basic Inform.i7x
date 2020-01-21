@@ -51,6 +51,11 @@ The verb to include + in in the imperative means the built-in include-in meaning
 The verb to omit + from in the imperative means the built-in omit-from meaning.
 The verb to document + at in the imperative means the built-in document-at meaning.
 
+The verb to be greater than means the numerically-greater-than relation.
+The verb to be less than means the numerically-less-than relation.
+The verb to be at least means the numerically-greater-than-or-equal-to relation.
+The verb to be at most means the numerically-less-than-or-equal-to relation.
+
 Use ineffectual translates as (- ! Use ineffectual does nothing. -).
 
 Use American dialect translates as (- Constant DIALECT_US; -).
@@ -58,7 +63,6 @@ Use the serial comma translates as (- Constant SERIAL_COMMA; -).
 Use memory economy translates as (- Constant MEMORY_ECONOMY; -).
 Use engineering notation translates as (- Constant USE_E_NOTATION = 0; -).
 Use unabbreviated object names translates as (- Constant UNABBREVIATED_OBJECT_NAMES = 0; -).
-Use command line echoing translates as (- Constant ECHO_COMMANDS; -).
 Use predictable randomisation translates as (- Constant FIX_RNG; -).
 Use fast route-finding translates as (- Constant FAST_ROUTE_FINDING; -).
 Use slow route-finding translates as (- Constant SLOW_ROUTE_FINDING; -).
@@ -94,12 +98,12 @@ Use MAX_EXPRESSION_NODES of 256.
 Use MAX_LABELS of 200000.
 Use MAX_LOCAL_VARIABLES of 256.
 
+Part Two - Miscellaneous Definitions
+
 An object has a value called variable initial value.
 
 An object has a text called specification.
 An object has a text called indefinite appearance text.
-An object has a text called list grouping key.
-
 An object has a text called printed name.
 An object has a text called printed plural name.
 An object has a text called an indefinite article.
@@ -117,40 +121,26 @@ The proper-named property translates into I6 as "proper".
 A natural language is a kind of value.
 The language of play is a natural language that varies.
 
-Startup rules is a rulebook. [0]
-Startup rules have outcomes allow startup (success) and deny startup (failure).
-Shutdown rules is a rulebook. [1]
-
-Starting the virtual machine (documented at act_startvm) is an activity.
-
-The enable Glulx acceleration rule is listed first in for starting the virtual machine.
-
-The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
-
 The parameter-object is an object that varies.
 The parameter-object variable translates into I6 as "parameter_value".
 
-Printing the name of something (documented at act_pn) is an activity. [0]
+Startup rules is a rulebook.
+Startup rules have outcomes allow startup (success) and deny startup (failure).
+Shutdown rules is a rulebook.
+
+Starting the virtual machine (documented at act_startvm) is an activity.
+The enable Glulx acceleration rule is listed first in for starting the virtual machine.
+The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
+
+Printing the name of something (documented at act_pn) is an activity.
 
 The standard name printing rule is listed last in the for printing the name rulebook.
 The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
 
-Printing the plural name of something (documented at act_ppn) is an activity. [1]
+Printing the plural name of something (documented at act_ppn) is an activity.
 
 The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
 The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
-
-The verb to be greater than means the numerically-greater-than relation.
-The verb to be less than means the numerically-less-than relation.
-The verb to be at least means the numerically-greater-than-or-equal-to relation.
-The verb to be at most means the numerically-less-than-or-equal-to relation.
-
-Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
-Definition: a number is positive if it is greater than zero.
-Definition: a number is negative if it is less than zero.
-
-Definition: a text is empty rather than non-empty if I6 routine
-	"TEXT_TY_Empty" says so (it contains no characters).
 
 
 Part Two - Phrasebook
@@ -1243,6 +1233,8 @@ To decide what list of K is the filter to (criterion - description of Ks) of
 			add the item to the filtered list;
 	decide on the filtered list.
 
+Chapter 8 - Rulebooks and Activities
+
 Section 1 - Carrying out Activities
 
 To carry out the (A - activity on nothing) activity
@@ -1282,6 +1274,60 @@ To abandon the (A - activity on value of kind K) activity with (val - K)
 	(documented at ph_abandonactivitywith):
 	(- AbandonActivity({A}, {val}); -).
 
+Section 3 - Following Rules
+
+To follow (RL - a rule)
+	(documented at ph_follow):
+	(- FollowRulebook({RL}); -).
+To follow (RL - value of kind K based rule producing a value) for (V - K)
+	(documented at ph_followfor):
+	(- FollowRulebook({RL}, {V}, true); -).
+To follow (RL - a nothing based rule)
+	(documented at ph_follow):
+	(- FollowRulebook({RL}); -).
+To decide what K is the (name of kind K) produced by (RL - rule producing a value of kind K)
+	(documented at ph_producedby):
+	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
+To decide what L is the (name of kind L) produced by (RL - value of kind K based rule
+	producing a value of kind L) for (V - K)
+	(documented at ph_producedbyfor):
+	(- ResultOfRule({RL}, {V}, true, {-strong-kind:L}) -).
+To decide what K is the (name of kind K) produced by (RL - nothing based rule producing a value of kind K)
+	(documented at ph_producedby):
+	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
+To abide by (RL - a rule)
+	(documented at ph_abide):
+	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
+To abide by (RL - value of kind K based rule producing a value) for (V - K)
+	(documented at ph_abidefor):
+	(- if (FollowRulebook({RL}, {V}, true)) rtrue; -) - in to only.
+To abide by (RL - a nothing based rule)
+	(documented at ph_abide):
+	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
+
+Section 4 - Success and Failure
+
+To make no decision
+	(documented at ph_nodecision): (- rfalse; -) - in to only.
+To rule succeeds
+	(documented at ph_succeeds):
+	(- RulebookSucceeds(); rtrue; -) - in to only.
+To rule fails
+	(documented at ph_fails):
+	(- RulebookFails(); rtrue; -) - in to only.
+To rule succeeds with result (val - a value)
+	(documented at ph_succeedswith):
+	(- RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
+To decide if rule succeeded
+	(documented at ph_succeeded):
+	(- (RulebookSucceeded()) -).
+To decide if rule failed
+	(documented at ph_failed):
+	(- (RulebookFailed()) -).
+To decide which rulebook outcome is the outcome of the rulebook
+	(documented at ph_rulebookoutcome):
+	(- (ResultOfRule()) -).
+
 Chapter 9 - External Files (not for Z-machine)
 
 Section 1 - Files of Text
@@ -1319,6 +1365,88 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
+
+Part Four - Adjectival Definitions
+
+Section 1 - Miscellaneous Useful Adjectives
+
+Definition: a number is even rather than odd if the remainder after dividing it by 2 is 0.
+Definition: a number is positive if it is greater than zero.
+Definition: a number is negative if it is less than zero.
+
+Definition: a text is empty rather than non-empty if I6 routine
+	"TEXT_TY_Empty" says so (it contains no characters).
+
+Definition: a text is substituted rather than unsubstituted if I6 routine
+	"TEXT_TY_IsSubstituted" says so (any square-bracketed text substitutions
+	in it have been made).
+
+Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
+Definition: a table name is full rather than non-full if the number of blank rows in it is 0.
+
+Definition: a rulebook is empty rather than non-empty if I6 routine "RulebookEmpty" says so (it
+	contains no rules, so that following it does nothing and makes no decision).
+
+Definition: an activity is empty rather than non-empty if I6 routine "ActivityEmpty" says so (its
+	before, for and after rulebooks are all empty).
+Definition: an activity is going on if I6 routine "TestActivity" says so (one
+	of its three rulebooks is currently being run).
+
+Definition: a list of values is empty rather than non-empty if I6 routine
+	"LIST_OF_TY_Empty" says so (it contains no entries).
+
+Definition: a use option is active rather than inactive if I6 routine
+	"TestUseOption" says so (it has been requested in the source text).
+
+Definition: a verb is modal rather than non-modal if I6 routine "VerbIsModal"
+	says so (it modifies the likelihood of another verb happening, rather than
+	being meaningful itself).
+
+Definition: a verb is meaningful rather than meaningless if I6 routine "VerbIsMeaningful"
+	says so (it has a meaning in Inform as a relation, rather than existing only to be
+	printed out).
+
+Section 2 - Adjectives for Relations
+
+Definition: a relation is equivalence if I6 routine
+	"RELATION_TY_EquivalenceAdjective" makes it so (it is an equivalence
+	relation, that is, it relates in groups).
+
+Definition: a relation is symmetric if I6 routine
+	"RELATION_TY_SymmetricAdjective" makes it so (it is a symmetric relation,
+	that is, it's always true that X is related to Y if and only if Y is
+	related to X).
+
+Definition: a relation is one-to-one if I6 routine
+	"RELATION_TY_OToOAdjective" makes it so (it is a one-to-one relation,
+	that is, any given X can relate to only one Y, and vice versa).
+
+Definition: a relation is one-to-various if I6 routine
+	"RELATION_TY_OToVAdjective" makes it so (it is a one-to-various
+	relation, that is, any given Y has only one X such that X relates to Y).
+
+Definition: a relation is various-to-one if I6 routine
+	"RELATION_TY_VToOAdjective" makes it so (it is a various-to-one
+	relation, that is, any given X relates to only one Y).
+
+Definition: a relation is various-to-various if I6 routine
+	"RELATION_TY_VToVAdjective" makes it so (it is a
+	various-to-various relation, that is, there are no limitations on how many
+	X can relate to a given Y, or vice versa).
+
+Definition: a relation is empty rather than non-empty if I6 routine
+	"RELATION_TY_Empty" makes it so (it does not relate any values, that is,
+	R(x,y) is false for all x and y).
+
+Section 3 - Adjectives for Real Numbers (not for Z-machine)
+
+Definition: a real number is positive if it is greater than zero.
+Definition: a real number is negative if it is less than zero.
+Definition: a real number is infinite rather than finite if it is plus infinity
+	or it is minus infinity.
+Definition: a real number is nonexistent rather than existent if I6 routine
+	"REAL_NUMBER_TY_Nan" says so (it results from an impossible calculation,
+	like the square root of minus one).
 
 Basic Inform ends here.
 

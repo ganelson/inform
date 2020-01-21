@@ -99,6 +99,9 @@ Definition: Something is on-stage rather than off-stage if I6 routine "OnStage"
 	makes it so (it is indirectly in one of the rooms).
 Definition: Something is offstage if it is off-stage.
 
+Definition: a scene is happening if I6 condition "scene_status-->(*1-1)==1"
+	says so (it is currently taking place).
+
 @h Creating the world model.
 The 0th kind, "kind", is not created here but by NI itself. The first
 through to ninth kinds created now follow: they must not be reordered or moved.

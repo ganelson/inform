@@ -209,7 +209,6 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	Hierarchy::markup_wording(R, RULEBOOK_NAME_HMD, W);
 
 	rulebook *rb = CREATE(rulebook);
-LOG("Wording %W. ID is %d.\n", W, rb->allocation_id);
 	<new-rulebook-name>(W);
 	W = GET_RW(<new-rulebook-name>, 1);
 

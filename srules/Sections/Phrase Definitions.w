@@ -362,6 +362,28 @@ To decide whether the action requires light
 	(documented at ph_requireslight):
 	(- (NeedLightForAction()) -).
 
+To anonymously abide by (RL - a rule)
+	(documented at ph_abideanon):
+	(- if (temporary_value = FollowRulebook({RL})) {
+		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
+		else ActRulebookFails(temporary_value);
+		return 2;
+	} -) - in to only.
+To anonymously abide by (RL - value of kind K based rule producing a value) for (V - K)
+	(documented at ph_abideanon):
+	(- if (temporary_value = FollowRulebook({RL}, {V}, true)) {
+		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
+		else ActRulebookFails(temporary_value);
+		return 2;
+	} -) - in to only.
+To anonymously abide by (RL - a nothing based rule)
+	(documented at ph_abideanon):
+	(- if (temporary_value = FollowRulebook({RL})) {
+		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
+		else ActRulebookFails(temporary_value);
+		return 2;
+	} -) - in to only.
+
 @ Within the rulebooks to do with an action, returning |true| from a rule
 is sufficient to stop the rulebook early: there is no need to specify
 success or failure because that is determined by the rulebook itself. (For
@@ -405,90 +427,6 @@ To decide what object is the second noun part of (act - a action)
 To decide what object is the actor part of (act - a action)
 	(documented at ph_actorpart):
 	(- (STORED_ACTION_TY_Part({-by-reference:act}, STORA_ACTOR_F)) -).
-
-@h Rules.
-Four different ways to invoke a rule or rulebook:
-
-=
-Section SR5/4/7 - Actions, activities and rules - Following rules
-
-To follow (RL - a rule)
-	(documented at ph_follow):
-	(- FollowRulebook({RL}); -).
-To follow (RL - value of kind K based rule producing a value) for (V - K)
-	(documented at ph_followfor):
-	(- FollowRulebook({RL}, {V}, true); -).
-To follow (RL - a nothing based rule)
-	(documented at ph_follow):
-	(- FollowRulebook({RL}); -).
-To decide what K is the (name of kind K) produced by (RL - rule producing a value of kind K)
-	(documented at ph_producedby):
-	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
-To decide what L is the (name of kind L) produced by (RL - value of kind K based rule
-	producing a value of kind L) for (V - K)
-	(documented at ph_producedbyfor):
-	(- ResultOfRule({RL}, {V}, true, {-strong-kind:L}) -).
-To decide what K is the (name of kind K) produced by (RL - nothing based rule producing a value of kind K)
-	(documented at ph_producedby):
-	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
-To abide by (RL - a rule)
-	(documented at ph_abide):
-	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
-To abide by (RL - value of kind K based rule producing a value) for (V - K)
-	(documented at ph_abidefor):
-	(- if (FollowRulebook({RL}, {V}, true)) rtrue; -) - in to only.
-To abide by (RL - a nothing based rule)
-	(documented at ph_abide):
-	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
-To anonymously abide by (RL - a rule)
-	(documented at ph_abideanon):
-	(- if (temporary_value = FollowRulebook({RL})) {
-		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
-		else ActRulebookFails(temporary_value);
-		return 2;
-	} -) - in to only.
-To anonymously abide by (RL - value of kind K based rule producing a value) for (V - K)
-	(documented at ph_abideanon):
-	(- if (temporary_value = FollowRulebook({RL}, {V}, true)) {
-		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
-		else ActRulebookFails(temporary_value);
-		return 2;
-	} -) - in to only.
-To anonymously abide by (RL - a nothing based rule)
-	(documented at ph_abideanon):
-	(- if (temporary_value = FollowRulebook({RL})) {
-		if (RulebookSucceeded()) ActRulebookSucceeds(temporary_value);
-		else ActRulebookFails(temporary_value);
-		return 2;
-	} -) - in to only.
-
-@ Rules return |true| to indicate a decision, which could be either a success
-or a failure, and optionally may also return a value. If they return |false|,
-there's no decision.
-
-=
-Section SR5/4/8 - Actions, activities and rules - Success and failure
-
-To make no decision
-	(documented at ph_nodecision): (- rfalse; -) - in to only.
-To rule succeeds
-	(documented at ph_succeeds):
-	(- RulebookSucceeds(); rtrue; -) - in to only.
-To rule fails
-	(documented at ph_fails):
-	(- RulebookFails(); rtrue; -) - in to only.
-To rule succeeds with result (val - a value)
-	(documented at ph_succeedswith):
-	(- RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
-To decide if rule succeeded
-	(documented at ph_succeeded):
-	(- (RulebookSucceeded()) -).
-To decide if rule failed
-	(documented at ph_failed):
-	(- (RulebookFailed()) -).
-To decide which rulebook outcome is the outcome of the rulebook
-	(documented at ph_rulebookoutcome):
-	(- (ResultOfRule()) -).
 
 @h The model world.
 Phrase definitions with wordings like "the story has ended" are a

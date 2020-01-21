@@ -1572,6 +1572,8 @@ Firing off activities:
 See test case |BIP-Activities|.
 
 =
+Chapter 8 - Rulebooks and Activities
+
 Section 1 - Carrying out Activities
 
 To carry out the (A - activity on nothing) activity
@@ -1588,6 +1590,9 @@ To continue the activity
 around I7 source text. People tend not to use this much, and perhaps that's
 a good thing, but it does open up possibilities, and it's good for
 retro-fitting onto extensions to make them more customisable.
+
+These are really only useful in an activity-rich environment, in any case.
+See the documentation example |AntSensitiveSunglasses|.
 
 =
 Section 2 - Advanced Activities
@@ -1616,6 +1621,72 @@ To abandon the (A - activity on nothing) activity
 To abandon the (A - activity on value of kind K) activity with (val - K)
 	(documented at ph_abandonactivitywith):
 	(- AbandonActivity({A}, {val}); -).
+
+@ Here are four different ways to invoke a rule or rulebook:
+
+See test case |BIP-Rules|.
+
+=
+Section 3 - Following Rules
+
+To follow (RL - a rule)
+	(documented at ph_follow):
+	(- FollowRulebook({RL}); -).
+To follow (RL - value of kind K based rule producing a value) for (V - K)
+	(documented at ph_followfor):
+	(- FollowRulebook({RL}, {V}, true); -).
+To follow (RL - a nothing based rule)
+	(documented at ph_follow):
+	(- FollowRulebook({RL}); -).
+To decide what K is the (name of kind K) produced by (RL - rule producing a value of kind K)
+	(documented at ph_producedby):
+	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
+To decide what L is the (name of kind L) produced by (RL - value of kind K based rule
+	producing a value of kind L) for (V - K)
+	(documented at ph_producedbyfor):
+	(- ResultOfRule({RL}, {V}, true, {-strong-kind:L}) -).
+To decide what K is the (name of kind K) produced by (RL - nothing based rule producing a value of kind K)
+	(documented at ph_producedby):
+	(- ResultOfRule({RL}, 0, true, {-strong-kind:K}) -).
+To abide by (RL - a rule)
+	(documented at ph_abide):
+	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
+To abide by (RL - value of kind K based rule producing a value) for (V - K)
+	(documented at ph_abidefor):
+	(- if (FollowRulebook({RL}, {V}, true)) rtrue; -) - in to only.
+To abide by (RL - a nothing based rule)
+	(documented at ph_abide):
+	(- if (FollowRulebook({RL})) rtrue; -) - in to only.
+
+@ Rules return |true| to indicate a decision, which could be either a success
+or a failure, and optionally may also return a value. If they return |false|,
+there's no decision.
+
+See test case |BIP-Rules| once again.
+
+=
+Section 4 - Success and Failure
+
+To make no decision
+	(documented at ph_nodecision): (- rfalse; -) - in to only.
+To rule succeeds
+	(documented at ph_succeeds):
+	(- RulebookSucceeds(); rtrue; -) - in to only.
+To rule fails
+	(documented at ph_fails):
+	(- RulebookFails(); rtrue; -) - in to only.
+To rule succeeds with result (val - a value)
+	(documented at ph_succeedswith):
+	(- RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
+To decide if rule succeeded
+	(documented at ph_succeeded):
+	(- (RulebookSucceeded()) -).
+To decide if rule failed
+	(documented at ph_failed):
+	(- (RulebookFailed()) -).
+To decide which rulebook outcome is the outcome of the rulebook
+	(documented at ph_rulebookoutcome):
+	(- (ResultOfRule()) -).
 
 @h External Files.
 Inform has a quirky level of support for file-handling, which comes out what
@@ -1669,21 +1740,3 @@ To mark (filename - external file) as ready to read
 To mark (filename - external file) as not ready to read
 	(documented at ph_markfilenotready):
 	(- FileIO_MarkReady({filename}, false); -).
-
-@ And so, at last...
-
-=
-Basic Inform ends here.
-
-@ ...except that this is not quite true, because like most extensions they
-then quote some documentation for Inform to weave into index pages: though
-here it's more of a polite refusal than a manual, since the entire system
-documentation is really the description of what was defined in this
-extension.
-
-=
----- DOCUMENTATION ----
-
-Unlike other extensions, Basic Inform is compulsorily included with every
-project. It defines the phrases, kinds and relations which are basic to
-Inform, and which are described throughout the documentation.

@@ -1,7 +1,7 @@
    Attic
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
   
   Attic
   You can see a CD entitled No Smoke Without Fire, a 70s photograph of an American winning Wimbledon, a fraxinus branch, an urn holding your late great-aunt's remains, a convention badge from the American Society of Hypertension, a ghost story by M R James, a shelf (on which are Of Mice And Men and The Girl From Ipanema), Sleeping Beauty and Beauty's croissant here.
@@ -28,10 +28,10 @@
   Sleeping Beauty - woman
   location: in the Attic
   singular-named, proper-named; unlit, inedible, portable; female, asleep
-  list grouping key: none
   printed name: "Sleeping Beauty"
   printed plural name: "women"
   indefinite article: none
+  list grouping key: none
   description: none
   initial appearance: none
   carrying capacity: 100
@@ -40,10 +40,10 @@
   Beauty's croissant - thing
   location: in the Attic
   singular-named, proper-named; unlit, edible, portable
-  list grouping key: none
   printed name: "Beauty's croissant"
   printed plural name: none
   indefinite article: none
+  list grouping key: none
   description: none
   initial appearance: none
   
