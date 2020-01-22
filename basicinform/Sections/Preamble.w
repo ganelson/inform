@@ -87,7 +87,6 @@ The verb to translate as means the built-in use-translates meaning.
 The verb to use in the imperative means the built-in use meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
-The verb to document + at in the imperative means the built-in document-at meaning.
 
 @ We might as well declare these numerical comparisons now, too, though
 they're not needed for any of the world-building work. (The verbal usages |<|,

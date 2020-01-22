@@ -74,6 +74,7 @@ filename *filename_of_SR_module = NULL;
 filename *filename_of_story_file = NULL;
 filename *filename_of_telemetry = NULL;
 filename *filename_of_uuid = NULL;
+filename *filename_of_xrefs = NULL;
 
 @h Command line settings.
 The following are called when the command line is parsed.
@@ -185,6 +186,8 @@ Inform". This is used to generate the Phrasebook index.
 
 	pathname_of_HTML_models = Pathnames::subfolder(pathname_of_area[INTERNAL_FS_AREA], I"HTML");
 	filename_of_cblorb_report_model = Filenames::in_folder(pathname_of_HTML_models, I"CblorbModel.html");
+
+	filename_of_xrefs = Filenames::in_folder(pathname_of_HTML_models, I"xrefs.txt");
 
 	filename_of_documentation_snippets = Filenames::in_folder(misc, I"definitions.html");
 

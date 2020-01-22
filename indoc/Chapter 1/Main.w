@@ -81,8 +81,8 @@ to go inside the Inform user interface application.
 @<Work out cross-references for the in-application documentation only@> =
 	Scanner::write_manifest_file(FIRST_OBJECT(volume));
 	if (indoc_settings->definitions_filename) Updater::write_definitions_file();
-	if (indoc_settings->standard_rules_filename)
-		Updater::rewrite_standard_rules_file(indoc_settings->standard_rules_filename);
+	if (indoc_settings->xrefs_filename)
+		Updater::write_xrefs_file(indoc_settings->xrefs_filename);
 
 @ These are automatically generated.
 

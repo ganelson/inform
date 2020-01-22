@@ -519,9 +519,9 @@ integration: \
 		$(INTERNAL)/Inter/basic_inform_extras/arch-32d.interb \
 		$(INTERNAL)/Inter/standard_rules/arch-32d.interb \
 		$(INTERNAL)/Inter/default.interpipeline \
+		$(DOCEXEMPLUM) \
 		$(INTERNALEXEMPLUM) \
 		$(IMAGESEXEMPLUM) \
-		$(DOCEXEMPLUM) \
 		$(RTPEXEMPLUM)
 
 .PHONY: forceintegration
@@ -597,6 +597,7 @@ $(SRULESINPLACE): $(SRULES)
 define transfer-standard-rules
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	cp $(SRULES) $(SRULESINPLACE)
+	$(call transfer-xefs)
 endef
 
 $(BINFORMINPLACE): $(BINFORM)
@@ -605,6 +606,12 @@ $(BINFORMINPLACE): $(BINFORM)
 define transfer-basic-inform
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	cp $(BINFORM) $(BINFORMINPLACE)
+	$(call transfer-xefs)
+endef
+
+define transfer-xefs
+	mkdir -p "$(INTERNAL)/HTML"
+	cp -f inform7/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
 endef
 
 # (d) Copying the I6 template into the app
@@ -759,22 +766,11 @@ endef
 $(DOCEXEMPLUM): resources/Documentation/*.txt resources/Documentation/Examples/*.txt
 	$(call make-inapp-documentation)
 
-ifdef BENEVOLENTOVERLORD
 define make-inapp-documentation
 	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -from resources/Documentation -rewrite-standard-rules 'srules/Sections/Preamble.w' $(INDOCOPTS)
-	$(INWEBX) srules -tangle-to $(SRULES)
-	$(call transfer-standard-rules)
-	$(INDOCX) -from resources/Documentation $(INDOCOPTS)
+	$(INDOCX) -from resources/Documentation -xrefs 'inform7/Internal/HTML/xrefs.txt' $(INDOCOPTS)
 endef
-else
-define make-inapp-documentation
-	mkdir -p "$(INTERNAL)/Documentation"
-	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -from resources/Documentation $(INDOCOPTS)
-endef
-endif
 
 # (h) Typesetting the HTML pages used to display run-time problem messages
 

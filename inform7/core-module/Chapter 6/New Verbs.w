@@ -632,7 +632,6 @@ void NewVerbs::bootstrap(void) {
 	#endif
 	NewVerbs::declare_sm(Sentences::VPs::include_in_SMF,					I"include-in", 4);
 	NewVerbs::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
-	NewVerbs::declare_sm(Index::DocReferences::document_at_SMF,				I"document-at", 4);
 
 	word_assemblage infinitive = Preform::Nonparsing::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, English_language);

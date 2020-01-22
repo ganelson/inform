@@ -38,7 +38,7 @@ typedef struct settings_block {
 	struct pathname *destination; /* path to the directory where documentation will be made */
 	int destination_modifiable; /* can |destination| still be changed by instructions? */
 	struct text_stream *manifest_leafname; /* within the |destination| directory */
-	struct filename *standard_rules_filename;
+	struct filename *xrefs_filename;
 	struct filename *insertion_filename;
 
 	struct pathname *book_folder;
@@ -101,7 +101,7 @@ settings_block *Instructions::clean_slate(void) {
 	settings->destination = NULL;
 	settings->destination_modifiable = TRUE;
 	settings->manifest_leafname = NULL;
-	settings->standard_rules_filename = NULL;
+	settings->xrefs_filename = NULL;
 	settings->insertion_filename = NULL;
 
 	settings->book_folder = Pathnames::from_text(I"Documentation");

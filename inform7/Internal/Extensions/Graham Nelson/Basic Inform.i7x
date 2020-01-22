@@ -49,7 +49,6 @@ The verb to translate as means the built-in use-translates meaning.
 The verb to use in the imperative means the built-in use meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
-The verb to document + at in the imperative means the built-in document-at meaning.
 
 The verb to be greater than means the numerically-greater-than relation.
 The verb to be less than means the numerically-less-than relation.

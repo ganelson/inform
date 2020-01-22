@@ -45,7 +45,7 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 
 @e VERBOSE_CLSW
 @e TEST_INDEX_CLSW
-@e REWRITE_CLSW
+@e XREFS_CLSW
 @e FROM_CLSW
 @e TO_CLSW
 @e INSERTION_CLSW
@@ -61,8 +61,8 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 		L"explain what indoc is doing");
 	CommandLine::declare_boolean_switch(TEST_INDEX_CLSW, L"test-index", 1,
 		L"test indexing");
-	CommandLine::declare_switch(REWRITE_CLSW, L"rewrite-standard-rules", 2,
-		L"amend source of Standard Rules to include documentation references");
+	CommandLine::declare_switch(XREFS_CLSW, L"xrefs", 2,
+		L"write a file of documentation cross-references to filename X");
 	CommandLine::declare_switch(FROM_CLSW, L"from", 2,
 		L"use documentation in directory X (instead of 'Documentation' in cwd)");
 	CommandLine::declare_switch(TO_CLSW, L"to", 2,
@@ -81,7 +81,7 @@ void Configuration::switch(int id, int val, text_stream *arg, void *v_cl_state) 
 	switch (id) {
 		case VERBOSE_CLSW: settings->verbose_mode = val; break;
 		case TEST_INDEX_CLSW: settings->test_index_mode = val; break;
-		case REWRITE_CLSW: settings->standard_rules_filename = Filenames::from_text(arg); break;
+		case XREFS_CLSW: settings->xrefs_filename = Filenames::from_text(arg); break;
 		case FROM_CLSW: settings->book_folder = Pathnames::from_text(arg); break;
 		case TO_CLSW: settings->destination = Pathnames::from_text(arg);
 			settings->destination_modifiable = FALSE; break;

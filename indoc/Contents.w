@@ -25,7 +25,7 @@ Chapter 2: Processing
 	Examples
 	Renderer
 	Rawtext Reader
-	Updating the Standard Rules
+	Updating the Cross-References
 	HTML and Javascript
 	CSS
 
