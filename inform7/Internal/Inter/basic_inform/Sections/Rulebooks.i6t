@@ -253,3 +253,8 @@ occur, in so far as memory economy allows this.
 	if (blocked == 4) print "context";
 	print ").]^";
 ];
+
+@h The Default Rule.
+
+=
+[ LITTLE_USED_DO_NOTHING_R; rfalse; ];

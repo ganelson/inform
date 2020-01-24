@@ -7,7 +7,7 @@ or domain-specific components.
 
 @
 
-@d MAX_PLUGINS 20
+@d MAX_PLUGINS 64
 
 =
 typedef struct plugin {
@@ -30,7 +30,7 @@ typedef struct plugin {
 plugin *core_plugin, *IF_plugin, *counting_plugin, *multimedia_plugin,
 	*naming_plugin, *parsing_plugin, *actions_plugin,
 	*spatial_plugin, *map_plugin, *player_plugin, *regions_plugin, *backdrops_plugin,
-	*showme_plugin,
+	*devices_plugin, *showme_plugin,
 	*times_plugin, *scenes_plugin, *scoring_plugin,
 	*figures_plugin, *sounds_plugin, *files_plugin,
 	*bibliographic_plugin;
@@ -72,6 +72,7 @@ For now, at least, these names should not be translated out of English.
 	player |
 	regions |
 	backdrops |
+	devices |
 	showme |
 	times of day |
 	scenes |
@@ -113,26 +114,27 @@ word_assemblage Plugins::Manage::wording(int N) {
 
 @
 
-@d CORE_PLUGIN_NAME 0
-@d INSTANCE_COUNTING_PLUGIN_NAME 1
-@d IF_PLUGIN_NAME 2
-@d MULTIMEDIA_PLUGIN_NAME 3
-@d NAMING_PLUGIN_NAME 4
-@d COMMAND_PLUGIN_NAME 5
-@d ACTIONS_PLUGIN_NAME 6
-@d SPATIAL_MODEL_PLUGIN_NAME 7
-@d MAPPING_PLUGIN_NAME 8
-@d PLAYER_PLUGIN_NAME 9
-@d REGIONS_PLUGIN_NAME 10
-@d BACKDROPS_PLUGIN_NAME 11
-@d SHOWME_PLUGIN_NAME 12
-@d TIMES_OF_DAY_PLUGIN_NAME 13
-@d SCENES_PLUGIN_NAME 14
-@d FIGURES_PLUGIN_NAME 15
-@d SOUNDS_PLUGIN_NAME 16
-@d GLULX_EXTERNAL_FILES_PLUGIN_NAME 17
-@d BIBLIOGRAPHIC_DATA_PLUGIN_NAME 18
-@d SCORE_PLUGIN_NAME 19
+@e CORE_PLUGIN_NAME from 0
+@e INSTANCE_COUNTING_PLUGIN_NAME
+@e IF_PLUGIN_NAME
+@e MULTIMEDIA_PLUGIN_NAME
+@e NAMING_PLUGIN_NAME
+@e COMMAND_PLUGIN_NAME
+@e ACTIONS_PLUGIN_NAME
+@e SPATIAL_MODEL_PLUGIN_NAME
+@e MAPPING_PLUGIN_NAME
+@e PLAYER_PLUGIN_NAME
+@e REGIONS_PLUGIN_NAME
+@e BACKDROPS_PLUGIN_NAME
+@e DEVICES_PLUGIN_NAME
+@e SHOWME_PLUGIN_NAME
+@e TIMES_OF_DAY_PLUGIN_NAME
+@e SCENES_PLUGIN_NAME
+@e FIGURES_PLUGIN_NAME
+@e SOUNDS_PLUGIN_NAME
+@e GLULX_EXTERNAL_FILES_PLUGIN_NAME
+@e BIBLIOGRAPHIC_DATA_PLUGIN_NAME
+@e SCORE_PLUGIN_NAME
 
 =
 void Plugins::Manage::start(void) {
@@ -164,6 +166,7 @@ void Plugins::Manage::start(void) {
 	CREATE_PLUGIN(scoring_plugin, PL::Score::start, FALSE, SCORE_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(regions_plugin, PL::Regions::start, TRUE, REGIONS_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(backdrops_plugin, PL::Backdrops::start, FALSE, BACKDROPS_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_PLUGIN(devices_plugin, PL::Devices::start, FALSE, DEVICES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(showme_plugin, PL::Showme::start, FALSE, SHOWME_PLUGIN_NAME, IF_PLUGIN_NAME);
 
 	CREATE_PLUGIN(times_plugin, PL::TimesOfDay::start, FALSE, TIMES_OF_DAY_PLUGIN_NAME, IF_PLUGIN_NAME);

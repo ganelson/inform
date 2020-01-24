@@ -543,10 +543,6 @@ Section SR2/8 - The Standard Rules
 
 The little-used do nothing rule translates into I6 as "LITTLE_USED_DO_NOTHING_R".
 
-Include (-
-[ LITTLE_USED_DO_NOTHING_R; rfalse; ];
--).
-
 @h Startup.
 Every rulebook contains a (possibly empty) run of "first" rules, then
 a (possibly empty) run of miscellaneous rules, then a (possibly empty)

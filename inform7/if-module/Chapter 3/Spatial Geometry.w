@@ -1,7 +1,6 @@
 [Geometry::] Spatial Geometry.
 
-To deal with vectors and cuboids in a three-dimensional integer
-lattice.
+To deal with vectors and cuboids in a three-dimensional integer lattice.
 
 @h Definitions.
 

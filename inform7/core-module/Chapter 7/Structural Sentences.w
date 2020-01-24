@@ -78,7 +78,10 @@ though: extensions, including the Standard Rules, have yet to be read.)
 =
 void StructuralSentences::break_source(void) {
 	int l = ParseTree::push_attachment_point(tree_root);
-	Sentences::break(Wordings::new(language_definition_top+1, lexer_wordcount-1), NULL);
+	int n = 0;
+	if (language_definition_top >= n) n = language_definition_top+1;
+	if (doc_references_top >= n) n = doc_references_top+1;
+	Sentences::break(Wordings::new(n, lexer_wordcount-1), NULL);
 	ParseTree::pop_attachment_point(l);
 	NaturalLanguages::include_required();
 	parse_node *implicit_heading = ParseTree::new(HEADING_NT);

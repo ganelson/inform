@@ -68,6 +68,7 @@ program all of that automatically, which is why these awkward multi-purpose
 I6 properties (|door_to|, |found_in|, etc.) have no direct I7 equivalents.
 
 = (early code)
+property *P_door = NULL; /* I6 only */
 property *P_door_dir = NULL; /* I6 only */
 property *P_door_to = NULL; /* I6 only */
 property *P_other_side = NULL; /* a value property for the other side of a door */
@@ -925,12 +926,16 @@ of how to compile one and two-sided doors in I6. Alternatively, take it on
 trust that there is nothing surprising here.
 
 @<Assert found-in, door-to and door-dir properties for doors@> =
+	P_door = Properties::EitherOr::new_nameless(L"door");
+	Properties::EitherOr::implement_as_attribute(P_door, TRUE);
 	P_door_dir = Properties::Valued::new_nameless(I"door_dir", K_value);
 	P_door_to = Properties::Valued::new_nameless(I"door_to", K_value);
 
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if (PL::Map::object_is_a_door(I)) {
+			Properties::EitherOr::assert(
+				P_door, Instances::as_subject(I), TRUE, CERTAIN_CE);
 			instance *R1 = PF_I(map, I)->map_connection_a;
 			instance *R2 = PF_I(map, I)->map_connection_b;
 			instance *D1 = PF_I(map, I)->map_direction_a;

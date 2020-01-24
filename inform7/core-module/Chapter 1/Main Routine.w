@@ -212,6 +212,8 @@ list is not exhaustive.
 	COMPILATION_STEP(Semantics::read_preform, I"Semantics::read_preform")
 	COMPILATION_STEP(Plugins::Manage::start, I"Plugins::Manage::start")
 	COMPILATION_STEP(InferenceSubjects::begin, I"InferenceSubjects::begin")
+	COMPILATION_STEP(Index::DocReferences::read_xrefs, I"Index::DocReferences::read_xrefs")
+	doc_references_top = lexer_wordcount - 1;
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);

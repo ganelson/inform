@@ -75,6 +75,8 @@ property *P_component_sibling = NULL;
 property *P_worn = NULL;
 property *P_mark_as_room = NULL;
 property *P_mark_as_thing = NULL;
+property *P_container = NULL;
+property *P_supporter = NULL;
 property *P_matching_key = NULL;
 
 @ We will also need constants to talk about the inference subjects which
@@ -1117,6 +1119,7 @@ the absence of other information.)
 @<Assert I6-level properties to express the spatial structure@> =
 	@<Assert an explicit default description value for the room kind@>;
 	@<Assert room and thing indicator properties@>;
+	@<Assert container and supporter indicator properties@>;
 	@<Assert incorporation tree properties@>;
 
 @ We need to make sure that every room does have an I6 |description| value
@@ -1159,6 +1162,21 @@ extensive maps.
 		if (Instances::of_kind(I, K_thing))
 			Properties::EitherOr::assert(
 				P_mark_as_thing, Instances::as_subject(I), TRUE, CERTAIN_CE);
+	}
+
+@<Assert container and supporter indicator properties@> =
+	P_container = Properties::EitherOr::new_nameless(L"container");
+	Properties::EitherOr::implement_as_attribute(P_container, TRUE);
+	P_supporter = Properties::EitherOr::new_nameless(L"supporter");
+	Properties::EitherOr::implement_as_attribute(P_supporter, TRUE);
+	instance *I;
+	LOOP_OVER_OBJECT_INSTANCES(I) {
+		if (Instances::of_kind(I, K_container))
+			Properties::EitherOr::assert(
+				P_container, Instances::as_subject(I), TRUE, CERTAIN_CE);
+		if (Instances::of_kind(I, K_supporter))
+			Properties::EitherOr::assert(
+				P_supporter, Instances::as_subject(I), TRUE, CERTAIN_CE);
 	}
 
 @ The main spatial tree is expressed in the compiled I6 code in an implicit

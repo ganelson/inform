@@ -46,6 +46,8 @@ The verb to translate into + as means the built-in translates-into-language mean
 
 The verb to translate as means the built-in use-translates meaning.
 
+The verb to provide means the provision relation.
+
 The verb to use in the imperative means the built-in use meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
@@ -142,7 +144,7 @@ The standard printing the plural name rule is listed last in the for printing th
 The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
 
 
-Part Two - Phrasebook
+Part Three - Phrasebook
 
 Chapter 1 - Saying
 

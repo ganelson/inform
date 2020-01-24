@@ -81,6 +81,8 @@ The verb to translate into + as means the built-in translates-into-language mean
 
 The verb to translate as means the built-in use-translates meaning.
 
+The verb to provide means the provision relation.
+
 @ Next, the verbs used as imperatives:
 
 =

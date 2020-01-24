@@ -1,6 +1,6 @@
 Skeleton Keys by Emily Short begins here.
 
-Section 1 - Multiple locking (in place of Section SR1/9 - Lockability in Standard Rules by Graham Nelson)
+Section 1 - Multiple locking (in place of Section 9 - Lockability in Standard Rules by Graham Nelson)
 
 A door can be lockable. A door is usually not lockable.
 A door can be locked or unlocked. A door is usually unlocked.

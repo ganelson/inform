@@ -3,13 +3,14 @@ Physical World Model.
 Verbal descriptions of spatial relationships; the hierarchy of
 kinds of object, and their properties.
 
-@ We first extend our suite of verbs and meanings to cover standard
+@h Verbs and Relations.
+We first extend our suite of verbs and meanings to cover standard
 world-modelling terms.
 
 =
-Part SR1 - The Physical World Model (for interactive fiction language element only)
+Part Two - The Physical World Model (for interactive fiction language element only)
 
-Section SR1/0 - Language
+Chapter 1 - Verbs and Relations
 
 The verb to be in means the reversed containment relation.
 The verb to be inside means the reversed containment relation.
@@ -102,15 +103,20 @@ Definition: Something is offstage if it is off-stage.
 Definition: a scene is happening if I6 condition "scene_status-->(*1-1)==1"
 	says so (it is currently taking place).
 
-@h Creating the world model.
-The 0th kind, "kind", is not created here but by NI itself. The first
-through to ninth kinds created now follow: they must not be reordered or moved.
+@h Kinds.
+Basic Imform provides the kind "object", but no specialisations of it. We
+will use objects to represent physical objects and locations, with the
+hierarchy given below. (The template code assumes these kinds will be
+declared in this order, so be careful rearranging them.)
+
 Note the two alterative plural definitions for the word "person", with
 "people" being defined earlier to make it the default: "persons" is
 correct, but "people" is more idiomatically usual.
 
 =
-Section SR1/1 - Primitive Kinds
+Chapter 2 - Kinds for the Physical World
+
+Section 1 - Kind Definitions
 
 A room is a kind. [1]
 A thing is a kind. [2]
@@ -136,22 +142,21 @@ A region is a kind. [9]
 	|    direction| [3]
 	|    region| [9]
 
-This framework is the minimum kit needed in order for NI to be able to
-manage the spatial relationships arising from its basic verbs. Room and
-thing are needed to distinguish places and objects; door and backdrop
-because they need to violate the basic rule that an object can only be in
-one place at once -- a door is "in" both of the rooms it faces onto --
-and this requires special handling by NI; region because it violates the
-rule that rooms are not themselves subject to being contained in other
-objects, and again this requires special handling. That leaves
-"direction", "container", "supporter" and "person", and these are
-needed to express the concepts inherent in the sentences "A is east of
-B", "A is in B", "A is on B" and "A is carried by B". (We also need
-room and person in order to make sense of the words "somewhere" and
-"someone", for instance.)
+This framework is the minimum kit needed in order for Inform to be able to
+manage the spatial relationships arising from its basic verbs. Room and thing
+are needed to distinguish places and objects; door and backdrop because they
+need to violate the basic rule that an object can only be in one place at once
+-- a door is "in" both of the rooms it faces onto -- and this requires special
+handling by Inform; region because it violates the rule that rooms are not
+themselves subject to being contained in other objects, and again this
+requires special handling. That leaves "direction", "container", "supporter"
+and "person", and these are needed to express the concepts inherent in the
+sentences "A is east of B", "A is in B", "A is on B" and "A is carried by B".
+(We also need room and person in order to make sense of the words "somewhere"
+and "someone", for instance.)
 
 Although further kinds will be created later ("vehicle", for instance),
-those are merely design choices, and NI would not be troubled by their
+those are merely design choices, and Inform would not be troubled by their
 absence.
 
 @h Rooms.
@@ -159,7 +164,7 @@ We now detail each of the fundamental kinds in turn, in order of their
 declaration, and thus beginning with rooms.
 
 =
-Section SR1/2 - Rooms
+Section 2 - Rooms
 
 The specification of room is "Represents geographical locations, both indoor
 and outdoor, which are not necessarily areas in a building. A player in one
@@ -217,7 +222,7 @@ A region can be privately-named or publicly-named. A region is usually publicly-
 Things are ubiquitous:
 
 =
-Section SR1/3 - Things
+Section 3 - Things
 
 The specification of thing is "Represents anything interactive in the model
 world that is not a room. People, pieces of scenery, furniture, doors and
@@ -310,20 +315,17 @@ singularity: there are three routes out of this location, all of them
 an Inform 7 work, too.) More concisely:
 
 =
-Section SR1/4 - Directions
+Section 4 - Directions
 
 The specification of direction is "Represents a direction of movement, such
 as northeast or down. They always occur in opposite, matched pairs: northeast
 and southwest, for instance; down and up."
 
-@ The only either/or property created for directions is used to allow them
-to be part of lists of objects:
-
-=
 A direction can be privately-named or publicly-named. A direction is usually
 publicly-named.
 A direction can be marked for listing or unmarked for listing. A direction is
 usually unmarked for listing.
+A direction can be scenery. A direction is always scenery.
 
 @ The following value property expresses that all directions in I7 come in
 matched, diametrically opposing pairs -- north/south, up/down and so on.
@@ -335,27 +337,6 @@ not "object": a value of 0, meaning "there's no opposite", is illegal.
 
 =
 A direction has a direction called an opposite.
-
-@ I6 historically began with no formal concept of "direction" and has
-no |direction| attribute marking some of its objects as directions (it looked
-instead for object-tree chidren of a pseudo-object called |compass|);
-by the time I6 did want such a formal concept, the use of attributes
-to encode what amounted to class membership was no longer thought to be
-good practice. So I6 directions are now expected to belong to a class
-called |CompassDirection|, and here we assert just that.
-
-Our I7 directions will be created just like any other I7 objects, but we
-want them to emerge with the traditional names which I6 direction objects
-had: so, because the I6 object for north was always called |n_obj|, we want
-to ensure that the I7 direction "north" also comes out as |n_obj| in the
-compiled code. Special translates-into-I6-as sentences are used to
-force the I7 object compiler to use a given I6 identifier to represent the
-object, rather inventing something like |O12_north| as it otherwise would.
-
-=
-Include (-
-	has scenery,
--) when defining a direction.
 
 @ The Standard Rules define only thirteen I7 objects, and here we go with
 twelve of them: the standard set of directions, which come in six pairs
@@ -450,7 +431,7 @@ make sense in the vertical model any more, because which object tree is it
 to be in?
 
 =
-Section SR1/5 - Doors
+Section 5 - Doors
 
 The specification of door is "Represents a conduit joining two rooms, most
 often a door or gate but sometimes a plank bridge, a slide or a hatchway.
@@ -472,7 +453,6 @@ if we allowed anybody to move them around during play. So:
 =
 A door is always fixed in place.
 A door is never pushable between rooms.
-Include (- has door, -) when defining a door.
 
 @ "Every exit is an entrance somewhere else," as Stoppard's play
 "Rosencrantz and Guildenstern are Dead" puts it: and though not all
@@ -485,7 +465,7 @@ stand. The awkward truth is that these expressions are undefined unless
 the player is in one of the (possibly) two rooms in which the green
 door is present; and then they are defined relative to him.
 
-The leading-through relation is built in to NI; the other side property,
+The leading-through relation is built in to Inform; the other side property,
 though, is merely a convenient name we give to the property in which
 the relation data is stored at run-time.
 
@@ -501,7 +481,7 @@ the qualitative nature of the world model: here for the first and only time
 we have a value which can be meaningfully compared.
 
 =
-Section SR1/6 - Containers
+Section 6 - Containers
 
 The specification of container is "Represents something into which portable
 things can be put, such as a teachest or a handbag. Something with a really
@@ -512,8 +492,6 @@ A container can be enterable.
 A container can be transparent or opaque. A container is usually opaque.
 A container has a number called carrying capacity.
 The carrying capacity of a container is usually 100.
-
-Include (- has container, -) when defining a container.
 
 @ The most interesting thing to note here (and we will see it again in the
 definition of "people") is that "transparent" the I7 property is not
@@ -529,7 +507,7 @@ beneath cloaks -- just that we no longer use I6's mechanism for hiding
 these things, and expect the user to write activity rules instead.
 
 =
-Section SR1/7 - Supporters
+Section 7 - Supporters
 
 The specification of supporter is "Represents a surface on which things can be
 placed, such as a table."
@@ -539,10 +517,7 @@ A supporter has a number called carrying capacity.
 The carrying capacity of a supporter is usually 100.
 
 A supporter is usually fixed in place.
-
-Include (-
-	has transparent supporter
--) when defining a supporter.
+A supporter can be transparent. A supporter is always transparent.
 
 @h Kinds vs patterns.
 A problem faced by all object-oriented systems is "fear of the diamond",
@@ -588,7 +563,7 @@ about the default values of these properties: but that doesn't mean they
 don't share the pattern.
 
 =
-Section SR1/8 - Openability
+Section 8 - Openability
 
 A door can be open or closed. A door is usually closed.
 A door can be openable or unopenable. A door is usually openable.
@@ -611,7 +586,7 @@ this is not essential to the functioning of lockability: it's only a graceful
 addition.
 
 =
-Section SR1/9 - Lockability
+Section 9 - Lockability
 
 A door can be lockable. A door is usually not lockable.
 A door can be locked or unlocked. A door is usually unlocked.
@@ -641,11 +616,11 @@ The verb to unlock means the lock-fitting relation.
 
 @h Backdrops.
 The true subtlety of backdrops is not visible in the brief description here:
-but they require careful handling both in NI and in the template layer code,
+but they require careful handling both in Inform and in the template layer code,
 because they can be in many rooms at once.
 
 =
-Section SR1/10 - Backdrops
+Section 10 - Backdrops
 
 The specification of backdrop is "Represents an aspect of the landscape
 or architecture which extends across more than one room: for instance,
@@ -676,11 +651,11 @@ we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
 =
-Section SR1/11 - People
+Section 11 - People
 
-The specification of person is "Despite the name, not necessarily
-a human being, but anything animate enough to envisage having a
-conversation with, or bartering with."
+The specification of person is "Despite the name, not necessarily a human
+being, but anything animate enough to envisage having a conversation with, or
+bartering with."
 
 A person can be female or male. A person is usually male.
 A person can be neuter. A person is usually not neuter.
@@ -700,7 +675,7 @@ more bytes of precious Z-machine array space than they necessarily would in
 I6. This is all part of the doctrine that in I7, all characters are equal
 in status: all can be the player, all can carry out actions. Anyway: here
 are all of those I6 properties, spatchcocked into the |Class| definition
-which NI will compile for "person" -- see section 21 of the DM4 for details
+which Inform will compile for "person" -- see section 21 of the DM4 for details
 of why these are needed and what they do.
 
 =
@@ -744,9 +719,9 @@ Include (-
  -) when defining yourself.
 
 @h Non-fundamental kinds.
-We have now finished defining the nine fundamental kinds which NI requires
+We have now finished defining the nine fundamental kinds which Inform requires
 in order for it to function. There are six more to define, but it's worth
-emphasising that none of these is required or assumed by either NI or
+emphasising that none of these is required or assumed by either Inform or
 its template layer of I6 code. So any of them could be changed drastically
 or got rid of entirely simply by amending the Standard Rules. (Like the
 "player-character" kind, born early 2003, died July 2007.)
@@ -776,7 +751,7 @@ An awkward point here is that, of course, most people would simply say "Jack
 is in the House." and expect us to infer that Jack is a person from the fact
 that this is more often a human name than, say, a proprietary brand of
 microphone plug; and that Jack is male, because relatively few girls called
-Jacqueline are nicknamed Jack. As it happens the NI compiler doesn't allow
+Jacqueline are nicknamed Jack. As it happens the Inform compiler doesn't allow
 for tentative statements about the kinds of objects (only about their
 property values), but it wouldn't be too hard to add such a system, with
 a little care. The trouble is that we would then need a large dictionary of
@@ -852,7 +827,6 @@ Section SR1/13 - Devices
 A device is a kind of thing.
 
 A device can be switched on or switched off. A device is usually switched off.
-Include (- has switchable, -) when defining a device.
 
 The specification of device is "Represents a machine or contrivance of some
 kind which can be switched on or off."
@@ -953,12 +927,12 @@ Include (-
 @h Correspondence between I6 and I7 property and attribute names.
 All of the kinds, objects and properties which make up the standard kit
 provided to every source text are now complete. We conclude Section SR1 by
-giving the NI compiler a dictionary to tell it how I7's names for
+giving the Inform compiler a dictionary to tell it how I7's names for
 properties -- some value properties, some either/or -- mesh with those
 in the I6 library.
 
 Ordinarily, a new value property such as "astral significance" would
-be compiled by NI into an I6 property called something like
+be compiled by Inform into an I6 property called something like
 
 	|P73_astral_significance|
 
@@ -971,8 +945,8 @@ source text, that's fine.
 
 But we want our "printed name" property, for instance, to be the text
 which the I6 library prints out whenever it uses the |short_name| of an
-object: so we want the NI compiler to use the I6 identifier |short_name|
-for "printed name", not to invent a new one. NI therefore maintains a
+object: so we want the Inform compiler to use the I6 identifier |short_name|
+for "printed name", not to invent a new one. Inform therefore maintains a
 dictionary of equivalents, and here it is. (Any I7 property not named is
 handled purely by I7 source text in the remainder of the Standard Rules.)
 

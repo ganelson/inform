@@ -80,10 +80,12 @@ with result 2.
 @h Implementation.
 We read the Preform file for English early in Inform's run, and since it
 goes through the standard lexer, it makes words. The following holds the
-word number of the last of these words.
+word number of the last of these words. (The same is also true for documentation
+cross-references, which are not really anything to do with Preform.)
 
 =
 int language_definition_top = -1;
+int doc_references_top = -1;
 
 @ Now for nonterminals. We must first clarify how word ranges, once matched in
 the parser, will be stored. Within each production, word ranges are numbered

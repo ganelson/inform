@@ -21,6 +21,7 @@ fiction, which provides for geography, spatial containment and scenes."
 	Spatial Model
 	Spatial Relations
 	The Player
+	Devices
 	Backdrops
 	Regions
 	The Map

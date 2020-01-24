@@ -1,4 +1,4 @@
-Inform 7 build 6L26 has started.
+Inform 7.10.1 build 6Q21 has started.
 Problem__ PM_WordTooLong
   >--> Word too long:
     Abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx.
@@ -11,5 +11,7 @@ Problem__ PM_WordTooLong
     bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk,
     creation's thunderclap from Finnegan's Wake. And both of those words are
     fine.)
-I've now read your source text, which is 4 words long.
-Inform 7 has finished: 3 centiseconds used.
+  >--> An internal error has occurred: one lexer feeder interrupted another.
+    The error was detected at line 568 of "inform7/words-module/Chapter
+    3/Lexer.w". This should never happen, and I am now halting in abject
+    failure.

@@ -93,7 +93,7 @@ template library, which is also where |say__n| is defined.
 See test case |BIP-Say|.
 
 =
-Part Two - Phrasebook
+Part Three - Phrasebook
 
 Chapter 1 - Saying
 
