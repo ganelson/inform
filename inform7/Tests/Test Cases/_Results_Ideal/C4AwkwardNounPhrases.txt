@@ -27,7 +27,7 @@
   >[2] showme beauty
   Sleeping Beauty - woman
   location: in the Attic
-  singular-named, proper-named; unlit, inedible, portable; female, asleep
+  singular-named, proper-named; unlit, inedible, portable; transparent, female, asleep
   printed name: "Sleeping Beauty"
   printed plural name: "women"
   indefinite article: none

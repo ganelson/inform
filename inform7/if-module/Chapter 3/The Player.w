@@ -15,6 +15,8 @@ instance *player_character_object = NULL; /* the player character object used in
 
 instance *I_yourself = NULL; /* the default player character object, |selfobj| in I6 */
 
+property *P_saved_short_name = NULL;
+
 @ Two variables are also special. The time of day might not look as if it belongs
 to this plugin, but the idea is to position the player in both space and time.
 
@@ -247,16 +249,24 @@ int PL::Player::player_refine_implicit_noun(parse_node *p) {
 }
 
 @h Model completion.
-We take no interest until stage IV, a point at which kinds of objects and the
-spatial model for them are both completely worked out. We won't change
-anything: all we will do is calculate the start object and the start room
-by looking at where the player sits in the spatial model.
+At stage III, we add a property to make things work out nicely in the event
+of a change of player.
+
+Otherwise we take no interest until stage IV, a point at which kinds of
+objects and the spatial model for them are both completely worked out. We
+won't change anything: all we will do is calculate the start object and the
+start room by looking at where the player sits in the spatial model.
 
 Very often, the source text doesn't specify where the player is, and then
 we assume he is freestanding in the earliest defined room.
 
 =
 int PL::Player::player_complete_model(int stage) {
+	if ((stage == 3) && (I_yourself)) {
+		P_saved_short_name = Properties::Valued::new_nameless(I"saved_short_name", K_text);
+		Properties::Valued::assert(P_saved_short_name, Instances::as_subject(I_yourself),
+			Rvalues::from_unescaped_wording(Feeds::feed_stream(I"yourself")), CERTAIN_CE);
+	}
 	if (stage == 4) {
 		@<Set the start room to the earliest room defined in the source text@>;
 		@<If the start room is still null, there's no room, so issue a problem@>;

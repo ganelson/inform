@@ -20,6 +20,7 @@ fiction, which provides for geography, spatial containment and scenes."
 	The Naming Thicket
 	Spatial Model
 	Spatial Relations
+	Persons
 	The Player
 	Devices
 	Backdrops

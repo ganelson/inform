@@ -29,7 +29,8 @@ typedef struct plugin {
 = (early code)
 plugin *core_plugin, *IF_plugin, *counting_plugin, *multimedia_plugin,
 	*naming_plugin, *parsing_plugin, *actions_plugin,
-	*spatial_plugin, *map_plugin, *player_plugin, *regions_plugin, *backdrops_plugin,
+	*spatial_plugin, *map_plugin, *persons_plugin,
+	*player_plugin, *regions_plugin, *backdrops_plugin,
 	*devices_plugin, *showme_plugin,
 	*times_plugin, *scenes_plugin, *scoring_plugin,
 	*figures_plugin, *sounds_plugin, *files_plugin,
@@ -69,6 +70,7 @@ For now, at least, these names should not be translated out of English.
 	actions |
 	spatial model |
 	mapping |
+	persons |
 	player |
 	regions |
 	backdrops |
@@ -123,6 +125,7 @@ word_assemblage Plugins::Manage::wording(int N) {
 @e ACTIONS_PLUGIN_NAME
 @e SPATIAL_MODEL_PLUGIN_NAME
 @e MAPPING_PLUGIN_NAME
+@e PERSONS_PLUGIN_NAME
 @e PLAYER_PLUGIN_NAME
 @e REGIONS_PLUGIN_NAME
 @e BACKDROPS_PLUGIN_NAME
@@ -162,6 +165,7 @@ void Plugins::Manage::start(void) {
 	actions_plugin->has_template_file = "Actions";
 	CREATE_PLUGIN(spatial_plugin, PL::Spatial::start, TRUE, SPATIAL_MODEL_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(map_plugin, PL::Map::start, FALSE, MAPPING_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_PLUGIN(persons_plugin, PL::Persons::start, FALSE, PERSONS_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(player_plugin, PL::Player::start, FALSE, PLAYER_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(scoring_plugin, PL::Score::start, FALSE, SCORE_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(regions_plugin, PL::Regions::start, TRUE, REGIONS_PLUGIN_NAME, IF_PLUGIN_NAME);

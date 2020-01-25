@@ -29,7 +29,7 @@
   >[4] showme eleanor
   Eleanor of Aquitaine - Queen of England
   location: in the Garden of the Duke of Clarence
-  singular-named, proper-named; unlit, inedible, portable; female
+  singular-named, proper-named; unlit, inedible, portable; transparent, female
   printed name: "Eleanor of Aquitaine"
   printed plural name: "Queen of Englands"
   indefinite article: none

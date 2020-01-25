@@ -545,6 +545,7 @@ void Hierarchy::establish(inter_tree *I) {
 @e K_UNCHECKED_FUNCTION_HL
 @e K_TYPELESS_INT_HL
 @e K_TYPELESS_STRING_HL
+@e RUCKSACK_CLASS_HL
 
 @e KIND_HAP
 @e KIND_NAME_HMD
@@ -597,6 +598,7 @@ void Hierarchy::establish(inter_tree *I) {
 	HierarchyLocations::con(I, K_UNCHECKED_FUNCTION_HL, I"K_unchecked_function", Translation::same(), generic_kinds);
 	HierarchyLocations::con(I, K_TYPELESS_INT_HL, I"K_typeless_int", Translation::same(), generic_kinds);
 	HierarchyLocations::con(I, K_TYPELESS_STRING_HL, I"K_typeless_string", Translation::same(), generic_kinds);
+	HierarchyLocations::con(I, RUCKSACK_CLASS_HL, I"RUCKSACK_CLASS", Translation::same(), generic_kinds);
 
 	location_requirement local_kinds = HierarchyLocations::local_submodule(kinds);
 	HierarchyLocations::ap(I, KIND_HAP, local_kinds, I"kind", I"_kind");

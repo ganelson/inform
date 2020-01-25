@@ -650,6 +650,11 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
+The Inform compiler automatically applies the either-or prpperty |animate|
+and the valued property |before| to a person, giving that value as just
+|NULL|. This allows any person to become the protagonist during play
+(using I6's |ChangePlayer| routine).
+
 =
 Section 11 - People
 
@@ -663,32 +668,12 @@ A person can be neuter. A person is usually not neuter.
 A person has a number called carrying capacity.
 The carrying capacity of a person is usually 100.
 
-@ I6 has a concept approximately equivalent to I7's "person" -- the I6
-library attribute |animate| -- but I6 allows only some of those objects
-to become the protagonist during play (using I6's |ChangePlayer| routine).
-To be eligible, an object must not only be |animate| but also provide a
-whole host of writeable properties.
+A person can be transparent. A person is always transparent.
 
-But I7 provides those I6 properties for every "person", for the sake of a
-clean, uniform design, and accepting the cost that people therefore take
-more bytes of precious Z-machine array space than they necessarily would in
-I6. This is all part of the doctrine that in I7, all characters are equal
-in status: all can be the player, all can carry out actions. Anyway: here
-are all of those I6 properties, spatchcocked into the |Class| definition
-which Inform will compile for "person" -- see section 21 of the DM4 for details
-of why these are needed and what they do.
-
-=
-Include (-
-	has transparent animate
-	with before NULL,
--) when defining a person.
-
-@ So to the thirteenth and final object created by the Standard Rules: the
-enigmatic default protagonist, whose name is not "player" but "yourself".
-(The I6 library requires this object to be created as |selfobj|, but that's
-not a name that is ever printed or parsed: it's a constant value used
-only in I6 source code.)
+@ One among the people is special: the enigmatic default protagonist, whose
+name is not "player" but "yourself". (The I6 library requires this object to
+be created as |selfobj|, but that's not a name that is ever printed or parsed:
+it's a constant value used only in I6 source code.)
 
 The |yourself| object has to be proper-named to prevent the I6 library
 from talking about "the yourself", as it otherwise might. "Undescribed"
@@ -702,7 +687,8 @@ instead. When this happens, the previous printed name (or |short_name| in
 I6 terms) is stored in |saved_short_name| so that it can recovered later.
 (We can't assume it was necessarily "yourself" because the source text
 might have overridden this with a sentence like "The printed name of the
-player is "your dreary self".")
+player is "your dreary self".") The Inform compiler automatically generates
+that property for the "yourself" object, so we need do nothing here.
 
 =
 The yourself is an undescribed person. The yourself is proper-named.
@@ -714,9 +700,6 @@ Understand "your former self" or "my former self" or "former self" or
 The description of yourself is usually "As good-looking as ever."
 
 The yourself object translates into I6 as "selfobj".
-Include (-
-	with saved_short_name (+ "yourself" +),
- -) when defining yourself.
 
 @h Non-fundamental kinds.
 We have now finished defining the nine fundamental kinds which Inform requires
@@ -771,7 +754,7 @@ Anyway, we set out the Anglo-Saxon plurals, and then declare these kinds
 purely in terms of gender: they have no distinguishing behaviour.
 
 =
-Section SR1/12 - Animals, men and women
+Section 12 - Animals, men and women
 
 The plural of man is men. The plural of woman is women.
 
@@ -822,7 +805,7 @@ an on/off switch -- and representing a pretty inchoate mass of concepts,
 from a mousetrap to a nuclear reactor.
 
 =
-Section SR1/13 - Devices
+Section 13 - Devices
 
 A device is a kind of thing.
 
@@ -869,7 +852,7 @@ we want to come and go during play, or that it's appropriate as an either/or
 property of (for instance) a door or a person.
 
 =
-Section SR1/14 - Vehicles
+Section 14 - Vehicles
 
 A vehicle is a kind of container.
 
@@ -901,7 +884,7 @@ of the I6 library whereby spare possessions are automatically cleared out
 of the player's way: it derives from the rucksack in the 1993 IF title "Curses".
 
 =
-Section SR1/15 - Player's holdall
+Section 15 - Player's holdall
 
 A player's holdall is a kind of container.
 
@@ -911,18 +894,6 @@ automatically stowed away."
 
 A player's holdall is always portable.
 A player's holdall is usually openable.
-
-@ To enable the use of player's holdalls, we must declare a constant
-|RUCKSACK_CLASS| to tell some code in the template layer to use possessions
-with this I6 class as the rucksack pro tem. This is all a bit of a hack, to retrofit
-a degree of generality onto the original I6 library feature, and even then
-it isn't really fully general: only the player has the benefit of a "player's
-holdall" (hence the name), with other actors oblivious.
-
-=
-Include (-
-	Constant RUCKSACK_CLASS = (+ player's holdall +);
--) after "Definitions.i6t".
 
 @h Correspondence between I6 and I7 property and attribute names.
 All of the kinds, objects and properties which make up the standard kit
@@ -958,7 +929,7 @@ this sort of reuse seemed sensible in the early 1990s, especially as the
 meanings were basically similar.
 
 =
-Section SR1/16 - Inform 6 equivalents
+Section 16 - Inform 6 equivalents
 
 The wearable property translates into I6 as "clothing".
 The undescribed property translates into I6 as "concealed".
@@ -994,10 +965,3 @@ The description property translates into I6 as "description".
 The initial appearance property translates into I6 as "initial".
 The map region property translates into I6 as "map_region".
 The matching key property translates into I6 as "with_key".
-
-@ =
-Part SR1a - Simplified (not for interactive fiction language element)
-
-An object has a text called specification.
-An object has a text called indefinite appearance text.
-An object has a value called variable initial value.

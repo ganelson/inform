@@ -65,6 +65,7 @@ kind *K_thing = NULL;
 kind *K_container = NULL;
 kind *K_supporter = NULL;
 kind *K_person = NULL;
+kind *K_players_holdall = NULL;
 property *P_initial_appearance = NULL;
 property *P_wearable = NULL;
 property *P_fixed_in_place = NULL;
@@ -235,7 +236,8 @@ Rules. (So there is no need to translate this to other languages.)
 	thing |
 	container |
 	supporter |
-	person
+	person |
+	player's holdall
 
 @ =
 int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
@@ -246,6 +248,7 @@ int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name,
 			case 2: K_container = new_base; return TRUE;
 			case 3: K_supporter = new_base; return TRUE;
 			case 4: K_person = new_base; return TRUE;
+			case 5: K_players_holdall = new_base; return TRUE;
 		}
 	}
 	return FALSE;
@@ -1015,6 +1018,7 @@ code it turns into. Here goes:
 =
 int PL::Spatial::spatial_stage_III(void) {
 	int well_founded = TRUE;
+	@<Define the Rucksack Class constant@>;
 	@<Check the well-foundedness of the hierarchy of the set of progenitors@>;
 	if (well_founded) @<Expand the progenitor data into the two object trees@>;
 	@<Assert the portability of any item carried or supported by a person@>;
@@ -1023,6 +1027,20 @@ int PL::Spatial::spatial_stage_III(void) {
 	if (Log::aspect_switched_on(OBJECT_TREE_DA)) PL::Spatial::log_object_tree();
 	return FALSE;
 }
+
+@ To enable the use of player's holdalls, we must declare a constant
+|RUCKSACK_CLASS| to tell some code in the template layer to use possessions
+with this I6 class as the rucksack pro tem. This is all a bit of a hack, to retrofit
+a degree of generality onto the original I6 library feature, and even then
+it isn't really fully general: only the player has the benefit of a "player's
+holdall" (hence the name), with other actors oblivious.
+
+@<Define the Rucksack Class constant@> =
+	if (K_players_holdall) {
+		inter_name *iname = Hierarchy::find(RUCKSACK_CLASS_HL);
+		Hierarchy::make_available(Emit::tree(), iname);
+		Emit::named_iname_constant(iname, K_value, Kinds::RunTime::I6_classname(K_players_holdall));
+	}
 
 @ The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
@@ -1033,10 +1051,9 @@ changed progenitors at Stage II.)
 	instance *I;
 	int max_loop = NUMBER_CREATED(instance) + 1;
 	LOOP_OVER_OBJECT_INSTANCES(I) {
-		instance *I2;
 		int k;
-		for (I2 = PL::Spatial::progenitor(I), k=0;
-			(I2) && (k<max_loop);
+		instance *I2;
+		for (I2 = PL::Spatial::progenitor(I), k=0; (I2) && (k<max_loop);
 			I2 = PL::Spatial::progenitor(I2), k++) {
 			if (I2 == I) {
 				@<Diagnose the ill-foundedness with a problem message@>;
