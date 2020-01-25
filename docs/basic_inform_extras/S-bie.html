@@ -410,6 +410,13 @@ indefinite singular depends on the text of the object's name.
     <span class="plain">];</span>
 
     <span class="plain">{-</span><span class="identifier">segment</span><span class="plain">:</span><span class="identifier">Activities</span><span class="plain">.</span><span class="identifier">i6t</span><span class="plain">}</span>
+
+    <span class="plain">[ </span><span class="identifier">PNToVP</span><span class="plain"> </span><span class="identifier">gna</span><span class="plain">;</span>
+    <span class="comment">!	if (prior_named_noun == player) return story_viewpoint;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prior_named_noun</span><span class="plain">) </span><span class="identifier">gna</span><span class="plain"> = </span><span class="identifier">GetGNAOfObject</span><span class="plain">(</span><span class="identifier">prior_named_noun</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">gna</span><span class="plain">%6)/3 == </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">prior_named_list</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">6</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">3</span><span class="plain">;</span>
+    <span class="plain">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>3/sr</title>
+		<title>3/prs</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -27,6 +27,8 @@ other such "constants" in the Inform source code.)
     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">player_character_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the player character object used in this run</span>
 
     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I_yourself</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the default player character object, <code class="display"><span class="extract">selfobj</span></code> in I6</span>
+
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_saved_short_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -367,10 +369,14 @@ and people still sometimes type it.
 
 <p class="endnote">The function PL::Player::player_refine_implicit_noun is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Model completion. </b>We take no interest until stage IV, a point at which kinds of objects and the
-spatial model for them are both completely worked out. We won't change
-anything: all we will do is calculate the start object and the start room
-by looking at where the player sits in the spatial model.
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Model completion. </b>At stage III, we add a property to make things work out nicely in the event
+of a change of player.
+</p>
+
+<p class="inwebparagraph">Otherwise we take no interest until stage IV, a point at which kinds of
+objects and the spatial model for them are both completely worked out. We
+won't change anything: all we will do is calculate the start object and the
+start room by looking at where the player sits in the spatial model.
 </p>
 
 <p class="inwebparagraph">Very often, the source text doesn't specify where the player is, and then
@@ -380,6 +386,11 @@ we assume he is freestanding in the earliest defined room.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stage</span><span class="plain"> == 3) &amp;&amp; (</span><span class="identifier">I_yourself</span><span class="plain">)) {</span>
+            <span class="identifier">P_saved_short_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"saved_short_name"</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
+            <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_saved_short_name</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I_yourself</span><span class="plain">),</span>
+                <span class="identifier">Rvalues::from_unescaped_wording</span><span class="plain">(</span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"yourself"</span><span class="plain">)), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 4) {</span>
             &lt;<span class="cwebmacro">Set the start room to the earliest room defined in the source text</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">If the start room is still null, there's no room, so issue a problem</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="character">;</span>
@@ -552,7 +563,7 @@ usually appear anywhere.
 <p class="endnote">The function PL::Player::player_annotate_in_World_index is used in <a href="#SP4">&#167;4</a>.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="3-sr.html">Back to 'Spatial Relations'</a></li><li><a href="3-bck.html">Continue with 'Backdrops'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-prs.html">Back to 'Persons'</a></li><li><a href="3-dvc.html">Continue with 'Devices'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

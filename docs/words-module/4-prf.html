@@ -114,12 +114,14 @@ with result 2.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Implementation. </b>We read the Preform file for English early in Inform's run, and since it
 goes through the standard lexer, it makes words. The following holds the
-word number of the last of these words.
+word number of the last of these words. (The same is also true for documentation
+cross-references, which are not really anything to do with Preform.)
 </p>
 
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">language_definition_top</span><span class="plain"> = -1;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">doc_references_top</span><span class="plain"> = -1;</span>
 </pre>
 
 <p class="inwebparagraph"></p>

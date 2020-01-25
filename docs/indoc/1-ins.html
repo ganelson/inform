@@ -47,7 +47,7 @@ and in particular into a global instance of this called <code class="display"><s
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">destination</span><span class="plain">; </span>    <span class="comment">path to the directory where documentation will be made</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">destination_modifiable</span><span class="plain">; </span>    <span class="comment">can <code class="display"><span class="extract">destination</span></code> still be changed by instructions?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">manifest_leafname</span><span class="plain">; </span>    <span class="comment">within the <code class="display"><span class="extract">destination</span></code> directory</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">standard_rules_filename</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">xrefs_filename</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">insertion_filename</span><span class="plain">;</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">book_folder</span><span class="plain">;</span>
@@ -102,7 +102,7 @@ and in particular into a global instance of this called <code class="display"><s
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure settings_block is accessed in 1/mn, 1/cnf, 2/ss, 2/exm, 2/rnd, 2/rr, 2/utsr, 2/haj, 2/css, 3/iu, 3/cai, 3/ei, 4/nd, 4/cm, 4/ca, 4/ct, 4/cr and here.</p>
+<p class="endnote">The structure settings_block is accessed in 1/mn, 1/cnf, 2/ss, 2/exm, 2/rnd, 2/rr, 2/utc, 2/haj, 2/css, 3/iu, 3/cai, 3/ei, 4/nd, 4/cm, 4/ca, 4/ct, 4/cr and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -116,7 +116,7 @@ and in particular into a global instance of this called <code class="display"><s
         <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;destination</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;destination_modifiable</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;manifest_leafname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;standard_rules_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;xrefs_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;insertion_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="identifier">settings</span><span class="plain">-</span><span class="element">&gt;book_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"Documentation"</span><span class="plain">);</span>

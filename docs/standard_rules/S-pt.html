@@ -4297,6 +4297,21 @@ is defined in the Standard Rules, not here.
         <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">result</span><span class="plain">;</span>
     <span class="plain">];</span>
+
+    <span class="plain">[ </span><span class="identifier">CheckDPMR</span><span class="plain"> </span><span class="identifier">result</span><span class="plain"> </span><span class="identifier">sinp1</span><span class="plain"> </span><span class="identifier">sinp2</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="identifier">sinp1</span><span class="plain"> = </span><span class="identifier">inp1</span><span class="plain">; </span><span class="identifier">sinp2</span><span class="plain"> = </span><span class="identifier">inp2</span><span class="plain">; </span><span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">noun</span><span class="plain">; </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">second</span><span class="plain">;</span>
+        <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">DOES_THE_PLAYER_MEAN_RB</span><span class="plain">);</span>
+        <span class="identifier">inp1</span><span class="plain"> = </span><span class="identifier">sinp1</span><span class="plain">; </span><span class="identifier">inp2</span><span class="plain"> = </span><span class="identifier">sinp2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rv</span><span class="plain">) &amp;&amp; </span><span class="identifier">RulebookSucceeded</span><span class="plain">()) {</span>
+            <span class="identifier">result</span><span class="plain"> = </span><span class="identifier">ResultOfRule</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">RBNO4_OUTCOME</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">4</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">RBNO3_OUTCOME</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">3</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">RBNO2_OUTCOME</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">RBNO1_OUTCOME</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">RBNO0_OUTCOME</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">;</span>
+    <span class="plain">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>

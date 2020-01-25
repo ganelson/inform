@@ -19,7 +19,7 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_PLUGINS</span><span class="plain"> 20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_PLUGINS</span><span class="plain"> 64</span>
 </pre>
 
 <pre class="display">
@@ -48,8 +48,9 @@
 <pre class="display">
     <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">core_plugin</span><span class="plain">, *</span><span class="identifier">IF_plugin</span><span class="plain">, *</span><span class="identifier">counting_plugin</span><span class="plain">, *</span><span class="identifier">multimedia_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">naming_plugin</span><span class="plain">, *</span><span class="identifier">parsing_plugin</span><span class="plain">, *</span><span class="identifier">actions_plugin</span><span class="plain">,</span>
-        <span class="plain">*</span><span class="identifier">spatial_plugin</span><span class="plain">, *</span><span class="identifier">map_plugin</span><span class="plain">, *</span><span class="identifier">player_plugin</span><span class="plain">, *</span><span class="identifier">regions_plugin</span><span class="plain">, *</span><span class="identifier">backdrops_plugin</span><span class="plain">,</span>
-        <span class="plain">*</span><span class="identifier">showme_plugin</span><span class="plain">,</span>
+        <span class="plain">*</span><span class="identifier">spatial_plugin</span><span class="plain">, *</span><span class="identifier">map_plugin</span><span class="plain">, *</span><span class="identifier">persons_plugin</span><span class="plain">,</span>
+        <span class="plain">*</span><span class="identifier">player_plugin</span><span class="plain">, *</span><span class="identifier">regions_plugin</span><span class="plain">, *</span><span class="identifier">backdrops_plugin</span><span class="plain">,</span>
+        <span class="plain">*</span><span class="identifier">devices_plugin</span><span class="plain">, *</span><span class="identifier">showme_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">times_plugin</span><span class="plain">, *</span><span class="identifier">scenes_plugin</span><span class="plain">, *</span><span class="identifier">scoring_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">figures_plugin</span><span class="plain">, *</span><span class="identifier">sounds_plugin</span><span class="plain">, *</span><span class="identifier">files_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">bibliographic_plugin</span><span class="plain">;</span>
@@ -95,9 +96,11 @@ the rest &mdash; using it uses all of them.
         <span class="identifier">actions</span><span class="plain"> |</span>
         <span class="identifier">spatial</span><span class="plain"> </span><span class="identifier">model</span><span class="plain"> |</span>
         <span class="identifier">mapping</span><span class="plain"> |</span>
+        <span class="identifier">persons</span><span class="plain"> |</span>
         <span class="identifier">player</span><span class="plain"> |</span>
         <span class="identifier">regions</span><span class="plain"> |</span>
         <span class="identifier">backdrops</span><span class="plain"> |</span>
+        <span class="identifier">devices</span><span class="plain"> |</span>
         <span class="identifier">showme</span><span class="plain"> |</span>
         <span class="identifier">times</span><span class="plain"> </span><span class="identifier">of</span><span class="plain"> </span><span class="identifier">day</span><span class="plain"> |</span>
         <span class="identifier">scenes</span><span class="plain"> |</span>
@@ -159,26 +162,28 @@ present.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">CORE_PLUGIN_NAME</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INSTANCE_COUNTING_PLUGIN_NAME</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IF_PLUGIN_NAME</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NAMING_PLUGIN_NAME</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMMAND_PLUGIN_NAME</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ACTIONS_PLUGIN_NAME</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SPATIAL_MODEL_PLUGIN_NAME</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAPPING_PLUGIN_NAME</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PLAYER_PLUGIN_NAME</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REGIONS_PLUGIN_NAME</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BACKDROPS_PLUGIN_NAME</span><span class="plain"> 11</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SHOWME_PLUGIN_NAME</span><span class="plain"> 12</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TIMES_OF_DAY_PLUGIN_NAME</span><span class="plain"> 13</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SCENES_PLUGIN_NAME</span><span class="plain"> 14</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FIGURES_PLUGIN_NAME</span><span class="plain"> 15</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SOUNDS_PLUGIN_NAME</span><span class="plain"> 16</span>
-    <span class="definitionkeyword">define</span> <span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain"> 17</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span><span class="plain"> 18</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SCORE_PLUGIN_NAME</span><span class="plain"> 19</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CORE_PLUGIN_NAME</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INSTANCE_COUNTING_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">IF_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MULTIMEDIA_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NAMING_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">COMMAND_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ACTIONS_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SPATIAL_MODEL_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MAPPING_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PERSONS_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">PLAYER_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">REGIONS_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BACKDROPS_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DEVICES_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SHOWME_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TIMES_OF_DAY_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SCENES_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">FIGURES_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SOUNDS_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SCORE_PLUGIN_NAME</span>
 </pre>
 
 <pre class="display">
@@ -207,10 +212,12 @@ present.
         <span class="identifier">actions_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Actions"</span><span class="plain">;</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">, </span><span class="identifier">PL::Spatial::start</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">SPATIAL_MODEL_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">map_plugin</span><span class="plain">, </span><span class="identifier">PL::Map::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">MAPPING_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">persons_plugin</span><span class="plain">, </span><span class="identifier">PL::Persons::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">PERSONS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">player_plugin</span><span class="plain">, </span><span class="identifier">PL::Player::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">PLAYER_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">scoring_plugin</span><span class="plain">, </span><span class="identifier">PL::Score::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SCORE_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">regions_plugin</span><span class="plain">, </span><span class="identifier">PL::Regions::start</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">REGIONS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">backdrops_plugin</span><span class="plain">, </span><span class="identifier">PL::Backdrops::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">BACKDROPS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">devices_plugin</span><span class="plain">, </span><span class="identifier">PL::Devices::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">DEVICES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">showme_plugin</span><span class="plain">, </span><span class="identifier">PL::Showme::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SHOWME_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
 
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">times_plugin</span><span class="plain">, </span><span class="functiontext">PL::TimesOfDay::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">TIMES_OF_DAY_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>

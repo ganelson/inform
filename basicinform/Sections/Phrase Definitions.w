@@ -1,6 +1,6 @@
 Phrase Definitions.
 
-The phrases making up the Inform language, and in terms of which all
+The phrases making up the basic Inform language, and in terms of which all
 other phrases and rules are defined.
 
 @ All phrases of the Inform language itself are defined here. The Standard
@@ -248,7 +248,7 @@ any more, and compile no code.
 
 We assume in each case that the next say label number to be free is always
 the start of the next block, and that the next say exit label number is always
-the one at the end of the current construct. This is true because NI does
+the one at the end of the current construct. This is true because Inform does
 not allow "say if" to be nested.
 
 See test case |BIP-SayIf|.

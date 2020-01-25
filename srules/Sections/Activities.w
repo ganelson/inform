@@ -1,48 +1,32 @@
 Activities.
 
-The built-in activities and their default stock of rules; the
-locale description mechanism.
+The built-in activities and their default stock of rules; and in particular,
+the locale description mechanism.
 
 @ These must not be created until the basic rulebooks are in place, because
 creating any activity automatically creates three rulebooks as well.
 
-Once again, there are no activities or assumptions about them built into
-NI, but the template I6 layer expects the following 26 activities to be
-created and in this order. (That is, the order here must exactly match that
-of the |*_ACT| constant definitions made in |Definitions.i6t|.) The activities
-are fairly completely described in the Inform documentation, so the only
-notes here concern implementation.
-
-@ We start with activities used in describing things and rooms.
-
-Most of the activities begin with all three rulebooks empty, since by
-default they do not intervene. This one, however, has a "last" for-rule,
-because it's required to do something definite: it must actually print a
-name, and the last for-rule is the default way to do this. (The assumption
-is that any other for-rule added by the user will halt the rulebook before
-the default implementation is reached.) We also include a before rule which
-marks any item whose name is being printed with the "mentioned" property,
-for reasons to be found below.
-
-@ The very first rules: those invoked at the earliest possible moment when
-the virtual machine is starting up. We need this hook, really, for the Glulx
-VM, which requires various styles to be created.
+The |srules| template expects the following activities to be created and in
+this order. (That is, the order here must exactly match that of the |*_ACT|
+constant definitions made in |Definitions.i6t|.) The activities are fairly
+completely described in the Inform documentation, so the only notes here
+concern implementation.
 
 =
-Part SR3 - Activities (for interactive fiction language element only)
+Part Four - Activities (for interactive fiction language element only)
 
-Section SR3/1 - Definitions
-
-Before printing the name of a thing (called the item being printed)
-	(this is the make named things mentioned rule):
-	if expanding text for comparison purposes, continue the activity;
-	now the item being printed is mentioned.
-
-@h Issuing Responses.
+@h Issuing responses.
+Responses are textual replies made by rules, and while one could imagine
+uses for them outside of an IF-like dialogue, they belong better in the
+Standard Rules (i.e., as an aspect of IF) than in the general-purpose
+language. So |STANDARD_RESPONSE_ISSUING_R| is in |srules|, not |basicinform|,
+and we define:
 
 =
+Section 1 - Responses
+
 Issuing the response text of something -- documented at act_resp -- is an
-activity on responses. [33]
+activity on responses.
 
 The standard issuing the response text rule is listed last in for issuing the
 response text.
@@ -50,7 +34,21 @@ response text.
 The standard issuing the response text rule translates into I6 as
 "STANDARD_RESPONSE_ISSUING_R".
 
-Printing a number of something (documented at act_pan) is an activity. [2]
+@h Naming and listing.
+We start with a piece of unfinished business. The "printing the name"
+activity was created by Basic Inform, but we need to add a rule to its
+before rule which marks any item whose name is being printed with
+the "mentioned" property, for reasons to be found below.
+
+=
+Section 2 - Naming and Listing
+
+Before printing the name of a thing (called the item being printed)
+	(this is the make named things mentioned rule):
+	if expanding text for comparison purposes, continue the activity;
+	now the item being printed is mentioned.
+
+Printing a number of something (documented at act_pan) is an activity.
 
 Rule for printing a number of something (called the item) (this is the standard
 	printing a number of something rule):
@@ -63,31 +61,31 @@ a number rulebook.
 supplemented by details:
 
 =
-Printing room description details of something (documented at act_details) is an activity. [3]
-Printing inventory details of something (documented at act_idetails) is an activity. [4]
+Printing room description details of something (documented at act_details) is an activity.
+Printing inventory details of something (documented at act_idetails) is an activity.
 
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
 
 =
-Listing contents of something (documented at act_lc) is an activity. [5]
+Listing contents of something (documented at act_lc) is an activity.
 The standard contents listing rule is listed last in the for listing contents rulebook.
 The standard contents listing rule translates into I6 as "STANDARD_CONTENTS_LISTING_R".
-Grouping together something (documented at act_gt) is an activity. [6]
+Grouping together something (documented at act_gt) is an activity.
 
 @ And such lists of names are formed up in turn into room descriptions.
 Something which is visible in a room can either have a paragraph of its own
 or can be relegated to the list of "nondescript" items at the end.
 
 =
-Writing a paragraph about something (documented at act_wpa) is an activity. [7]
+Writing a paragraph about something (documented at act_wpa) is an activity.
 
 @ When these paragraphs have all gone by, the nondescript items left over are
 more briefly listed: the following activity gets the chance to change how
 this is done.
 
 =
-Listing nondescript items of something (documented at act_lni) is an activity. [8]
+Listing nondescript items of something (documented at act_lni) is an activity.
 
 @ Darkness behaves, for room description purposes, a little as if it were a
 room in its own right. Until the 1990s that was almost always how darkness
@@ -95,11 +93,11 @@ was implemented in IF programs: this persists in I6, but not I7, where the
 existence of a room-which-is-not-a-room would break type safety.
 
 =
-Printing the name of a dark room (documented at act_darkname) is an activity. [9]
-Printing the description of a dark room (documented at act_darkdesc) is an activity. [10]
-Printing the announcement of darkness (documented at act_nowdark) is an activity. [11]
-Printing the announcement of light (documented at act_nowlight) is an activity. [12]
-Printing a refusal to act in the dark (documented at act_toodark) is an activity. [13]
+Printing the name of a dark room (documented at act_darkname) is an activity.
+Printing the description of a dark room (documented at act_darkdesc) is an activity.
+Printing the announcement of darkness (documented at act_nowdark) is an activity.
+Printing the announcement of light (documented at act_nowlight) is an activity.
+Printing a refusal to act in the dark (documented at act_toodark) is an activity.
 
 The look around once light available rule is listed last in for printing the
 announcement of light.
@@ -112,35 +110,38 @@ refreshed every turn during play, and the banner which appears at or close
 to the start of play:
 
 =
-Constructing the status line (documented at act_csl) is an activity. [14]
-Printing the banner text (documented at act_banner) is an activity. [15]
+Constructing the status line (documented at act_csl) is an activity.
+Printing the banner text (documented at act_banner) is an activity.
 
-@ Now a brace of activities to intervene in how the Inform parser does its
+@h Parsing activites.
+Now a brace of activities to intervene in how the command parser does its
 parsing, arranged roughly in chronological order of their typical use
 during a single turn of a typed command, its parsing, and final conversion
 into an action.
 
-The unusual notation "(future action)" here allows NI to parse
-rule preambles for these activities in a way which would refer to the
-action which might, at some point in the future, be generated -- during
-parsing we don't of course yet know what that action is, but there is
-always a current guess at what it might be.
+The unusual notation "(future action)" here allows Inform to parse rule
+preambles for these activities in a way which would refer to the action which
+might, at some point in the future, be generated -- during parsing we don't of
+course yet know what that action is, but there is always a current guess at
+what it might be.
 
 =
-Reading a command (documented at act_reading) is an activity. [16]
-Deciding the scope of something (future action) (documented at act_ds) is an activity. [17]
-Deciding the concealed possessions of something (documented at act_con) is an activity. [18]
+Section 3 - Command parsing
+
+Reading a command (documented at act_reading) is an activity.
+Deciding the scope of something (future action) (documented at act_ds) is an activity.
+Deciding the concealed possessions of something (documented at act_con) is an activity.
 Deciding whether all includes something (future action) (documented at act_all)
-	is an activity. [19]
+	is an activity.
 The for deciding whether all includes rules have outcomes it does not (failure) and
 	it does (success).
 Clarifying the parser's choice of something (future action) (documented at act_clarify)
-	is an activity. [20]
-Asking which do you mean (future action) (documented at act_which) is an activity. [21]
-Printing a parser error (documented at act_parsererror) is an activity. [22]
-Supplying a missing noun (documented at act_smn) is an activity. [23]
-Supplying a missing second noun (documented at act_smn) is an activity. [24]
-Implicitly taking something (documented at act_implicitly) is an activity. [25]
+	is an activity.
+Asking which do you mean (future action) (documented at act_which) is an activity.
+Printing a parser error (documented at act_parsererror) is an activity.
+Supplying a missing noun (documented at act_smn) is an activity.
+Supplying a missing second noun (documented at act_smn) is an activity.
+Implicitly taking something (documented at act_implicitly) is an activity.
 
 @ Here are the default rules for the behaviour of ALL:
 
@@ -198,15 +199,18 @@ The standard implicit taking rule translates into I6 as "STANDARD_IMPLICIT_TAKIN
 	"(first taking [the noun])[command clarification break]" (A),
 	"([the second noun] first taking [the noun])[command clarification break]" (B).
 
-@ The very last rules of all. The obituary is a rare example of a
+@h Posthumous activities.
+The very last rules of all. The obituary is a rare example of a
 sequence of events in the I6 library having been rolled up into an
 activity, partly because it's one of the few clear-cut moments where
 several unconnected things happen in succession.
 
 =
-Amusing a victorious player (documented at act_amuse) is an activity. [27]
+Section 4 - Posthumous activities
 
-Printing the player's obituary (documented at act_obit) is an activity. [28]
+Amusing a victorious player (documented at act_amuse) is an activity.
+
+Printing the player's obituary (documented at act_obit) is an activity.
 The print obituary headline rule is listed last in for printing the player's obituary.
 The print final score rule is listed last in for printing the player's obituary.
 The display final status line rule is listed last in for printing the player's obituary.
@@ -224,14 +228,14 @@ options too. The "ask the final question rule" handles this, and does so
 by repeatedly calling the following activity:
 
 =
-Handling the final question is an activity. [29]
+Handling the final question is an activity.
 
-@ It follows that this activity must at least sometimes do something
-dramatic to the execution state: perform a quit, for instance. Four
-primitive rules are available for the drastic things which the activity
-might wish to do, but these are not placed in any rulebook: instead they
-are available for anyone who wants to call them. (In the default
-implementation below, we put references to them into a table.)
+@ It follows that this activity must at least sometimes do something dramatic
+to the execution state: perform a quit, for instance. Four primitive rules are
+available for the drastic things which the activity might wish to do, but
+these are not placed in any rulebook: instead they are available for anyone
+who wants to call them. (In the default implementation below, we put
+references to them into a table.)
 
 =
 The immediately restart the VM rule translates into I6 as "IMMEDIATELY_RESTART_VM_R".
@@ -280,7 +284,7 @@ activity is empty, then the option is omitted from the question and not
 recognised as an answer.)
 
 =
-Section SR3/2 - Final Question
+Section 5 - The Final Question
 
 This is the print the final question rule:
 	let named options count be 0;
@@ -320,8 +324,8 @@ This is the standard respond to final question rule:
 					rule succeeds;
 	say "Please give one of the answers above." (A).
 
-@ The table of final options is the only material under the heading "Section SR/Q",
-to make it easy for users to replace with entirely different tables.
+@ The table of final options is the only material under the following heading
+to make it easier for users to replace with entirely different tables.
 
 These settings are the traditional ones used by Inform since 1995 or so.
 The UNDO option has customarily been a "secret", though not much of one,
@@ -329,7 +333,7 @@ since it somewhat cheapens the announcement of a calamity to be immediately
 offered the chance to reverse it: death, where is thy sting?
 
 =
-Section SR3/3 - Final question options
+Section 6 - Final question options
 
 Table of Final Question Options
 final question wording	only if victorious	topic		final response rule		final response activity
@@ -392,7 +396,7 @@ because of the property numbering overhead in the Z-machine memory
 representation of objects.)
 
 =
-Section SR3/4 - Locale descriptions - Unindexed
+Section 7 - Locale descriptions - Unindexed
 
 Table of Locale Priorities
 notable-object (an object)	locale description priority (a number)
@@ -452,7 +456,7 @@ a way which doesn't use the "listing contents" activity -- since the
 list is not in fact a list of the contents of anything.
 
 =
-Printing the locale description of something (documented at act_pld) is an activity. [30]
+Printing the locale description of something (documented at act_pld) is an activity.
 
 The locale paragraph count is a number that varies.
 
@@ -529,7 +533,7 @@ listing is by default the same as the order in which things are added to the
 table, which in turn is the object-tree traversal order.
 
 =
-Choosing notable locale objects of something (documented at act_cnlo) is an activity. [31]
+Choosing notable locale objects of something (documented at act_cnlo) is an activity.
 
 For choosing notable locale objects (this is the standard notable locale objects rule):
 	let the domain be the parameter-object;
@@ -604,7 +608,7 @@ one of the main motivations to break room description up into activities
 in March 2008.
 
 =
-Printing a locale paragraph about something (documented at act_plp) is an activity. [32]
+Printing a locale paragraph about something (documented at act_plp) is an activity.
 
 For printing a locale paragraph about a thing (called the item)
 	(this is the don't mention player's supporter in room descriptions rule):

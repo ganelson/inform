@@ -1,11 +1,10 @@
 Miscellaneous Definitions.
 
-@ This section is a miscellaneous collection of constructions. In general,
-whereas the Standard Rules for IF aim for luxuriance, the Basic Inform
-kernel is as small as it sensibly can be. So we have a few of each sort
-of definition.
+A miscellany of properties, variables, rulebooks and activities. Whereas the
+Standard Rules for interactive fiction are luxuriant in providing these, the
+Basic Inform kernel is as small as it sensibly can be, with just a few of each.
 
-=
+@ =
 Part Two - Miscellaneous Definitions
 
 @h Properties.

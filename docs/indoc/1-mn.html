@@ -139,8 +139,8 @@ to go inside the Inform user interface application.
 <pre class="displaydefn">
         <span class="functiontext">Scanner::write_manifest_file</span><span class="plain">(</span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="reserved">volume</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;definitions_filename</span><span class="plain">) </span><span class="functiontext">Updater::write_definitions_file</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;standard_rules_filename</span><span class="plain">)</span>
-            <span class="functiontext">Updater::rewrite_standard_rules_file</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;standard_rules_filename</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;xrefs_filename</span><span class="plain">)</span>
+            <span class="functiontext">Updater::write_xrefs_file</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;xrefs_filename</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

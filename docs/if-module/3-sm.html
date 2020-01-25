@@ -89,6 +89,7 @@ kinds and properties:
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_container</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_supporter</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_person</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_players_holdall</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_initial_appearance</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_wearable</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_fixed_in_place</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -99,6 +100,8 @@ kinds and properties:
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_worn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_mark_as_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_mark_as_thing</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_container</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_supporter</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_matching_key</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
@@ -310,7 +313,8 @@ Rules. (So there is no need to translate this to other languages.)
         <span class="identifier">thing</span><span class="plain"> |</span>
         <span class="identifier">container</span><span class="plain"> |</span>
         <span class="identifier">supporter</span><span class="plain"> |</span>
-        <span class="identifier">person</span>
+        <span class="identifier">person</span><span class="plain"> |</span>
+        <span class="identifier">player</span><span class="character">'s holdall</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -327,6 +331,7 @@ Rules. (So there is no need to translate this to other languages.)
                 <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">K_container</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">K_supporter</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">K_person</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 5: </span><span class="identifier">K_players_holdall</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1070,7 +1075,7 @@ provide access routines to read and write:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Spatial::progenitor is used in <a href="#SP32_2">&#167;32.2</a>, <a href="#SP37">&#167;37</a>, <a href="#SP38_1">&#167;38.1</a>, <a href="#SP38_1_1">&#167;38.1.1</a>, <a href="#SP38_2">&#167;38.2</a>, <a href="#SP38_3">&#167;38.3</a>, <a href="#SP42">&#167;42</a>, <a href="#SP44">&#167;44</a>, <a href="#SP45">&#167;45</a>, 3/tp (<a href="3-tp.html#SP12_3">&#167;12.3</a>), 3/rgn (<a href="3-rgn.html#SP18">&#167;18</a>), 3/tm (<a href="3-tm.html#SP37_6">&#167;37.6</a>, <a href="3-tm.html#SP37_7">&#167;37.7</a>).</p>
+<p class="endnote">The function PL::Spatial::progenitor is used in <a href="#SP32_2">&#167;32.2</a>, <a href="#SP37">&#167;37</a>, <a href="#SP38_2">&#167;38.2</a>, <a href="#SP38_2_1">&#167;38.2.1</a>, <a href="#SP38_3">&#167;38.3</a>, <a href="#SP38_4">&#167;38.4</a>, <a href="#SP42">&#167;42</a>, <a href="#SP44">&#167;44</a>, <a href="#SP45">&#167;45</a>, 3/tp (<a href="3-tp.html#SP12_3">&#167;12.3</a>), 3/rgn (<a href="3-rgn.html#SP18">&#167;18</a>), 3/tm (<a href="3-tm.html#SP37_6">&#167;37.6</a>, <a href="3-tm.html#SP37_7">&#167;37.7</a>).</p>
 
 <p class="endnote">The function PL::Spatial::set_progenitor is used in <a href="#SP32_3">&#167;32.3</a>, 3/tm (<a href="3-tm.html#SP37_7">&#167;37.7</a>).</p>
 
@@ -1089,7 +1094,7 @@ provide access routines to read and write:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Spatial::void_progenitor is used in <a href="#SP38_1">&#167;38.1</a>.</p>
+<p class="endnote">The function PL::Spatial::void_progenitor is used in <a href="#SP38_2">&#167;38.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32.  </b>We need to establish what the rooms are before we worry about objects which
 are "here"; rooms are never "here", so there's no circularity in that,
@@ -1397,7 +1402,7 @@ The tree is grown entirely from its root by repeated use of this one operation.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Spatial::adopt_object is used in <a href="#SP38_2">&#167;38.2</a>.</p>
+<p class="endnote">The function PL::Spatial::adopt_object is used in <a href="#SP38_3">&#167;38.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP36_1"></a><b>&#167;36.1.  </b>"Parting" is the operation of being removed from the main tree and placed
 in the incorporation tree instead, but with the same parent.
@@ -1419,7 +1424,7 @@ in the incorporation tree instead, but with the same parent.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Spatial::part_object is used in <a href="#SP38_2">&#167;38.2</a>.</p>
+<p class="endnote">The function PL::Spatial::part_object is used in <a href="#SP38_3">&#167;38.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP36_2"></a><b>&#167;36.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Remove the object from the main object tree</span> <span class="cwebmacronumber">36.2</span>&gt; =
@@ -1517,11 +1522,12 @@ code it turns into. Here goes:
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_III</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">well_founded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Check the well-foundedness of the hierarchy of the set of progenitors</span> <span class="cwebmacronumber">38.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">well_founded</span><span class="plain">) </span>&lt;<span class="cwebmacro">Expand the progenitor data into the two object trees</span> <span class="cwebmacronumber">38.2</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Assert the portability of any item carried or supported by a person</span> <span class="cwebmacronumber">38.3</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Assert I6-level properties to express the spatial structure</span> <span class="cwebmacronumber">38.4</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Set up the compilation sequence so that it traverses the main object tree</span> <span class="cwebmacronumber">38.5</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Define the Rucksack Class constant</span> <span class="cwebmacronumber">38.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Check the well-foundedness of the hierarchy of the set of progenitors</span> <span class="cwebmacronumber">38.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">well_founded</span><span class="plain">) </span>&lt;<span class="cwebmacro">Expand the progenitor data into the two object trees</span> <span class="cwebmacronumber">38.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert the portability of any item carried or supported by a person</span> <span class="cwebmacronumber">38.4</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert I6-level properties to express the spatial structure</span> <span class="cwebmacronumber">38.5</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Set up the compilation sequence so that it traverses the main object tree</span> <span class="cwebmacronumber">38.6</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Log::aspect_switched_on</span><span class="plain">(</span><span class="identifier">OBJECT_TREE_DA</span><span class="plain">)) </span><span class="functiontext">PL::Spatial::log_object_tree</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1531,7 +1537,33 @@ code it turns into. Here goes:
 
 <p class="endnote">The function PL::Spatial::spatial_stage_III is used in <a href="#SP28">&#167;28</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_1"></a><b>&#167;38.1.  </b>The following verifies, in a brute-force way, that there are no cycles in
+<p class="inwebparagraph"><a id="SP38_1"></a><b>&#167;38.1.  </b>To enable the use of player's holdalls, we must declare a constant
+<code class="display"><span class="extract">RUCKSACK_CLASS</span></code> to tell some code in the template layer to use possessions
+with this I6 class as the rucksack pro tem. This is all a bit of a hack, to retrofit
+a degree of generality onto the original I6 library feature, and even then
+it isn't really fully general: only the player has the benefit of a "player's
+holdall" (hence the name), with other actors oblivious.
+</p>
+
+
+<p class="macrodefinition"><code class="display">
+&lt;<span class="cwebmacrodefn">Define the Rucksack Class constant</span> <span class="cwebmacronumber">38.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_players_holdall</span><span class="plain">) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">RUCKSACK_CLASS_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+            <span class="identifier">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">K_players_holdall</span><span class="plain">));</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP38">&#167;38</a>.</p>
+
+<p class="inwebparagraph"><a id="SP38_2"></a><b>&#167;38.2.  </b>The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
 now, rather than at Stage II above, because other plugins may also have
 changed progenitors at Stage II.)
@@ -1539,7 +1571,7 @@ changed progenitors at Stage II.)
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Check the well-foundedness of the hierarchy of the set of progenitors</span> <span class="cwebmacronumber">38.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Check the well-foundedness of the hierarchy of the set of progenitors</span> <span class="cwebmacronumber">38.2</span>&gt; =
 </code></p>
 
 
@@ -1547,13 +1579,12 @@ changed progenitors at Stage II.)
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_loop</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain">) + 1;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">I2</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">=0;</span>
-                <span class="plain">(</span><span class="identifier">I2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">max_loop</span><span class="plain">);</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">I2</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">=0; (</span><span class="identifier">I2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">max_loop</span><span class="plain">);</span>
                 <span class="identifier">I2</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I2</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">++) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I2</span><span class="plain"> == </span><span class="identifier">I</span><span class="plain">) {</span>
-                    &lt;<span class="cwebmacro">Diagnose the ill-foundedness with a problem message</span> <span class="cwebmacronumber">38.1.1</span>&gt;<span class="plain">;</span>
+                    &lt;<span class="cwebmacro">Diagnose the ill-foundedness with a problem message</span> <span class="cwebmacronumber">38.2.1</span>&gt;<span class="plain">;</span>
                     <span class="functiontext">PL::Spatial::void_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span>    <span class="comment">thus cutting the cycle</span>
                     <span class="identifier">well_founded</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -1565,12 +1596,12 @@ changed progenitors at Stage II.)
 
 <p class="endnote">This code is used in <a href="#SP38">&#167;38</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_1_1"></a><b>&#167;38.1.1.  </b>The cutest of all the object problem messages, really:
+<p class="inwebparagraph"><a id="SP38_2_1"></a><b>&#167;38.2.1.  </b>The cutest of all the object problem messages, really:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Diagnose the ill-foundedness with a problem message</span> <span class="cwebmacronumber">38.1.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Diagnose the ill-foundedness with a problem message</span> <span class="cwebmacronumber">38.2.1</span>&gt; =
 </code></p>
 
 
@@ -1596,9 +1627,9 @@ changed progenitors at Stage II.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP38_1">&#167;38.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP38_2">&#167;38.2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_2"></a><b>&#167;38.2.  </b>Intermediate states are always suspect in program design, and we might
+<p class="inwebparagraph"><a id="SP38_3"></a><b>&#167;38.3.  </b>Intermediate states are always suspect in program design, and we might
 ask what's wrong with simply making the trees as we go along, rather than
 storing all of those progenitors and then converting them into the trees.
 We don't do that because (for reasons to do with "here" and with how work
@@ -1619,7 +1650,7 @@ to the trees in creation order achieves this nicely:
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Expand the progenitor data into the two object trees</span> <span class="cwebmacronumber">38.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Expand the progenitor data into the two object trees</span> <span class="cwebmacronumber">38.3</span>&gt; =
 </code></p>
 
 
@@ -1637,7 +1668,7 @@ to the trees in creation order achieves this nicely:
 
 <p class="endnote">This code is used in <a href="#SP38">&#167;38</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_3"></a><b>&#167;38.3.  </b>As a brief aside: if something is carried by a living person, we can
+<p class="inwebparagraph"><a id="SP38_4"></a><b>&#167;38.4.  </b>As a brief aside: if something is carried by a living person, we can
 reasonably assume it's portable. (This is needed in particular to ensure that
 supporters which are initially carried don't pick up "fixed in place" in
 the absence of other information.)
@@ -1645,7 +1676,7 @@ the absence of other information.)
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Assert the portability of any item carried or supported by a person</span> <span class="cwebmacronumber">38.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Assert the portability of any item carried or supported by a person</span> <span class="cwebmacronumber">38.4</span>&gt; =
 </code></p>
 
 
@@ -1672,22 +1703,23 @@ the absence of other information.)
 
 <p class="endnote">This code is used in <a href="#SP38">&#167;38</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_4"></a><b>&#167;38.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Assert I6-level properties to express the spatial structure</span> <span class="cwebmacronumber">38.4</span>&gt; =
+<p class="inwebparagraph"><a id="SP38_5"></a><b>&#167;38.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Assert I6-level properties to express the spatial structure</span> <span class="cwebmacronumber">38.5</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        &lt;<span class="cwebmacro">Assert an explicit default description value for the room kind</span> <span class="cwebmacronumber">38.4.1</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Assert room and thing indicator properties</span> <span class="cwebmacronumber">38.4.2</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Assert incorporation tree properties</span> <span class="cwebmacronumber">38.4.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert an explicit default description value for the room kind</span> <span class="cwebmacronumber">38.5.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert room and thing indicator properties</span> <span class="cwebmacronumber">38.5.2</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert container and supporter indicator properties</span> <span class="cwebmacronumber">38.5.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assert incorporation tree properties</span> <span class="cwebmacronumber">38.5.4</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP38">&#167;38</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_4_1"></a><b>&#167;38.4.1.  </b>We need to make sure that every room does have an I6 <code class="display"><span class="extract">description</span></code> value
+<p class="inwebparagraph"><a id="SP38_5_1"></a><b>&#167;38.5.1.  </b>We need to make sure that every room does have an I6 <code class="display"><span class="extract">description</span></code> value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
 that any room with no explicit description will inherit <code class="display"><span class="extract">EMPTY_TEXT_VALUE</span></code>
@@ -1696,7 +1728,7 @@ as a value for <code class="display"><span class="extract">description</span></c
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Assert an explicit default description value for the room kind</span> <span class="cwebmacronumber">38.4.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Assert an explicit default description value for the room kind</span> <span class="cwebmacronumber">38.5.1</span>&gt; =
 </code></p>
 
 
@@ -1719,9 +1751,9 @@ as a value for <code class="display"><span class="extract">description</span></c
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP38_4">&#167;38.4</a>.</p>
+<p class="endnote">This code is used in <a href="#SP38_5">&#167;38.5</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_4_2"></a><b>&#167;38.4.2.  </b>These I6-only properties exist for speed. They're implemented in I6 as
+<p class="inwebparagraph"><a id="SP38_5_2"></a><b>&#167;38.5.2.  </b>These I6-only properties exist for speed. They're implemented in I6 as
 attributes, which means that testing them is very fast and there is no memory
 overhead for their storage. That shaves a little time off route-finding in
 extensive maps.
@@ -1729,7 +1761,7 @@ extensive maps.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Assert room and thing indicator properties</span> <span class="cwebmacronumber">38.4.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Assert room and thing indicator properties</span> <span class="cwebmacronumber">38.5.2</span>&gt; =
 </code></p>
 
 
@@ -1751,16 +1783,41 @@ extensive maps.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP38_4">&#167;38.4</a>.</p>
+<p class="endnote">This code is used in <a href="#SP38_5">&#167;38.5</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_4_3"></a><b>&#167;38.4.3.  </b>The main spatial tree is expressed in the compiled I6 code in an implicit
+<p class="inwebparagraph"><a id="SP38_5_3"></a><b>&#167;38.5.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Assert container and supporter indicator properties</span> <span class="cwebmacronumber">38.5.3</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">P_container</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"container"</span><span class="plain">);</span>
+        <span class="identifier">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="identifier">P_container</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">P_supporter</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"supporter"</span><span class="plain">);</span>
+        <span class="identifier">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="identifier">P_supporter</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_container</span><span class="plain">))</span>
+                <span class="identifier">Properties::EitherOr::assert</span><span class="plain">(</span>
+                    <span class="identifier">P_container</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_supporter</span><span class="plain">))</span>
+                <span class="identifier">Properties::EitherOr::assert</span><span class="plain">(</span>
+                    <span class="identifier">P_supporter</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP38_5">&#167;38.5</a>.</p>
+
+<p class="inwebparagraph"><a id="SP38_5_4"></a><b>&#167;38.5.4.  </b>The main spatial tree is expressed in the compiled I6 code in an implicit
 way, using the I6 object tree, but the incorporation tree is expressed using
 a triplet of I6-only properties:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Assert incorporation tree properties</span> <span class="cwebmacronumber">38.4.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Assert incorporation tree properties</span> <span class="cwebmacronumber">38.5.4</span>&gt; =
 </code></p>
 
 
@@ -1798,9 +1855,9 @@ a triplet of I6-only properties:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP38_4">&#167;38.4</a>.</p>
+<p class="endnote">This code is used in <a href="#SP38_5">&#167;38.5</a>.</p>
 
-<p class="inwebparagraph"><a id="SP38_5"></a><b>&#167;38.5.  </b>Because Inform 6 requires objects to be defined in a traversal order for
+<p class="inwebparagraph"><a id="SP38_6"></a><b>&#167;38.6.  </b>Because Inform 6 requires objects to be defined in a traversal order for
 the main spatial tree (only the main one because I6 has no concept of
 incorporation), we use the main tree to determine the compilation sequence
 for objects:
@@ -1808,7 +1865,7 @@ for objects:
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Set up the compilation sequence so that it traverses the main object tree</span> <span class="cwebmacronumber">38.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">Set up the compilation sequence so that it traverses the main object tree</span> <span class="cwebmacronumber">38.6</span>&gt; =
 </code></p>
 
 
@@ -1841,7 +1898,7 @@ for objects:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function PL::Spatial::add_to_object_sequence is used in <a href="#SP38_5">&#167;38.5</a>.</p>
+<p class="endnote">The function PL::Spatial::add_to_object_sequence is used in <a href="#SP38_6">&#167;38.6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP40"></a><b>&#167;40.  </b>The "definition depth" is the same thing as the depth in the main tree;
 0 for a room, 1 for a player standing in that room, 2 for his hat, and so on.

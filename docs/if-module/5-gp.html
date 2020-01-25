@@ -25,7 +25,6 @@
 
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">real_location_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">actor_location_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">parameter_object_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">I6_noun_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">I6_second_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -140,8 +139,7 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
         <span class="identifier">actor</span><span class="plain">-</span><span class="identifier">location</span><span class="plain"> |				==&gt; 3</span>
         <span class="identifier">second</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> |					==&gt; 4</span>
         <span class="identifier">person</span><span class="plain"> </span><span class="identifier">asked</span><span class="plain"> |					==&gt; 5</span>
-        <span class="identifier">maximum</span><span class="plain"> </span><span class="identifier">score</span><span class="plain"> |					==&gt; 6</span>
-        <span class="identifier">parameter</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">				==&gt; 7</span>
+        <span class="identifier">maximum</span><span class="plain"> </span><span class="identifier">score</span><span class="plain">					==&gt; 6</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -169,7 +167,6 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
                 <span class="reserved">case</span><span class="plain"> 5: </span><span class="identifier">I6_actor_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> 6: </span><span class="identifier">max_score_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">;</span>
                     <span class="identifier">NonlocalVariables::make_initalisable</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 7: </span><span class="identifier">parameter_object_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>

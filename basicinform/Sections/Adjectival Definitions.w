@@ -1,5 +1,8 @@
 Adjectival Definitions.
 
+All the built-in adjectives on Basic Inform, from even and odd (for numbers)
+to symmetric (for relations).
+
 @ See test case |BIP-Adjectives|.
 
 =
@@ -96,8 +99,8 @@ Definition: a real number is nonexistent rather than existent if I6 routine
 =
 Basic Inform ends here.
 
-@ ...except that this is not quite true, because like most extensions they
-then quote some documentation for Inform to weave into index pages: though
+@ ...except that this is not quite true, because like most extensions it
+then quotes some documentation for Inform to weave into index pages: though
 here it's more of a polite refusal than a manual, since the entire system
 documentation is really the description of what was defined in this
 extension.

@@ -1,19 +1,20 @@
 Actions.
 
-The standard stock of actions supplied with Inform, along with the
-rules which define them; and the Understand grammar which corresponds to them.
+The standard stock of actions, along with the rules which define them; and
+the command grammar which requests them.
 
-@ Inform comes with no actions built in, and only one (perhaps unexpected)
-assumption: that the 8th action defined is "going".
+@ Inform comes with no actions built in, and Basic Inform defines none either.
+The compiler makes only one (perhaps unexpected) assumption: that the 8th
+action defined is "going".
 
 The order, and the subheadings, here are responsible for the order
 and subheadings used in the Actions page of the Index.
 
 =
 
-Part SR4 - Actions (for interactive fiction language element only)
+Part Five - Actions (for interactive fiction language element only)
 
-Section SR4/1 - Verbs needed for adaptive text
+Section 1 - Verbs needed for adaptive text
 
 To achieve is a verb. To appreciate is a verb. To arrive is a verb. To care is a verb.
 To close is a verb. To die is a verb. To discover is a verb. To drop is a verb.
@@ -29,11 +30,11 @@ To switch is a verb. To take is a verb. To talk is a verb. To taste is a verb.
 To touch is a verb. To turn is a verb. To wait is a verb. To wave is a verb.
 To win is a verb.
 
-Section SR4/2 - Standard actions concerning the actor's possessions
-
 @h Taking inventory.
 
 =
+Section 2 - Standard actions concerning the actor's possessions
+
 Taking inventory is an action applying to nothing.
 The taking inventory action translates into I6 as "Inv".
 
@@ -551,7 +552,7 @@ Report an actor eating (this is the standard report eating rule):
 @h Going.
 
 =
-Section SR4/3 - Standard actions which move the actor
+Section 3 - Standard actions which move the actor
 
 Going is an action applying to one visible thing.
 The going action translates into I6 as "Go".
@@ -1000,7 +1001,7 @@ Report an actor getting off (this is the describe room stood up into rule):
 @h Looking.
 
 =
-Section SR4/4 - Standard actions concerning the actor's vision
+Section 4 - Standard actions concerning the actor's vision
 
 Looking is an action applying to nothing.
 The looking action translates into I6 as "Look".
@@ -1339,7 +1340,7 @@ Report an actor consulting something about (this is the block consulting rule):
 @h Locking it with.
 
 =
-Section SR4/5 - Standard actions which change the state of things
+Section 5 - Standard actions which change the state of things
 
 Locking it with is an action applying to one thing and one carried thing.
 The locking it with action translates into I6 as "Lock".
@@ -1833,7 +1834,7 @@ Report an actor taking off (this is the standard report taking off rule):
 @h Giving it to.
 
 =
-Section SR4/6 - Standard actions concerning other people
+Section 6 - Standard actions concerning other people
 
 Giving it to is an action applying to one carried thing and one thing.
 The giving it to action translates into I6 as "Give".
@@ -2219,7 +2220,7 @@ Check an actor asking something for (this is the translate asking for to giving 
 @h Waiting.
 
 =
-Section SR4/7 - Standard actions which are checked but then do nothing unless rules intervene
+Section 7 - Standard actions which are checked but then do nothing unless rules intervene
 
 Waiting is an action applying to nothing.
 The waiting action translates into I6 as "Wait".
@@ -2562,7 +2563,7 @@ Report an actor squeezing (this is the report squeezing rule):
 @h Saying yes.
 
 =
-Section SR4/8 - Standard actions which always do nothing unless rules intervene
+Section 8 - Standard actions which always do nothing unless rules intervene
 
 Saying yes is an action applying to nothing.
 The Saying yes action translates into I6 as "Yes".
@@ -3011,7 +3012,7 @@ they are delegated quickly to assembly language instructions for whichever
 is the current VM: so these are close to the metal, as they say.
 
 =
-Section SR4/9 - Standard actions which happen out of world
+Section 9 - Standard actions which happen out of world
 
 Quitting the game is an action out of world and applying to nothing.
 The quitting the game action translates into I6 as "Quit".
@@ -3198,236 +3199,3 @@ The announce the pronoun meanings rule translates into I6 as "ANNOUNCE_PRONOUN_M
 	"means " (B),
 	"is unset" (C),
 	"no pronouns are known to the game." (D).
-
-@h Miscellaneous Grammar Tokens.
-There's only one of these, at present.
-
-=
-The understand token a time period translates into I6 as "RELATIVE_TIME_TOKEN".
-
-@h Grammar.
-
-=
-Section SR4/10 - Grammar
-
-Understand "take [things]" as taking.
-Understand "take off [something]" as taking off.
-Understand "take [something] off" as taking off.
-Understand "take [things inside] from [something]" as removing it from.
-Understand "take [things inside] off [something]" as removing it from.
-Understand "take inventory" as taking inventory.
-Understand the commands "carry" and "hold" as "take".
-
-Understand "get in/on" as entering.
-Understand "get out/off/down/up" as exiting.
-Understand "get [things]" as taking.
-Understand "get in/into/on/onto [something]" as entering.
-Understand "get off/down [something]" as getting off.
-Understand "get [things inside] from [something]" as removing it from.
-
-Understand "pick up [things]" or "pick [things] up" as taking.
-
-Understand "stand" or "stand up" as exiting.
-Understand "stand on [something]" as entering.
-
-Understand "remove [something preferably held]" as taking off.
-Understand "remove [things inside] from [something]" as removing it from.
-
-Understand "shed [something preferably held]" as taking off.
-Understand the commands "doff" and "disrobe" as "shed".
-
-Understand "wear [something preferably held]" as wearing.
-Understand the command "don" as "wear".
-
-Understand "put [other things] in/inside/into [something]" as inserting it into.
-Understand "put [other things] on/onto [something]" as putting it on.
-Understand "put on [something preferably held]" as wearing.
-Understand "put [something preferably held] on" as wearing.
-Understand "put down [things preferably held]" or "put [things preferably held] down" as dropping.
-
-Understand "insert [other things] in/into [something]" as inserting it into.
-
-Understand "drop [things preferably held]" as dropping.
-Understand "drop [other things] in/into/down [something]" as inserting it into.
-Understand "drop [other things] on/onto [something]" as putting it on.
-Understand "drop [something preferably held] at/against [something]" as throwing it at.
-Understand the commands "throw" and "discard" as "drop".
-
-Understand "give [something preferably held] to [someone]" as giving it to.
-Understand "give [someone] [something preferably held]" as giving it to (with nouns reversed).
-Understand the commands "pay" and "offer" and "feed" as "give".
-
-Understand "show [someone] [something preferably held]" as showing it to (with nouns reversed).
-Understand "show [something preferably held] to [someone]" as showing it to.
-Understand the commands "present" and "display" as "show".
-
-Understand "go" as going.
-Understand "go [direction]" as going.
-Understand "go [something]" as entering.
-Understand "go into/in/inside/through [something]" as entering.
-Understand the commands "walk" and "run" as "go".
-
-Understand "inventory" as taking inventory.
-Understand the commands "i" and "inv" as "inventory".
-
-Understand "look" as looking.
-Understand "look at [something]" as examining.
-Understand "look [something]" as examining.
-Understand "look inside/in/into/through [something]" as searching.
-Understand "look under [something]" as looking under.
-Understand "look up [text] in [something]" as consulting it about (with nouns reversed).
-Understand the command "l" as "look".
-
-Understand "consult [something] on/about [text]" as consulting it about.
-
-Understand "open [something]" as opening.
-Understand "open [something] with [something preferably held]" as unlocking it with.
-Understand the commands "unwrap", "uncover" as "open".
-
-Understand "close [something]" as closing.
-Understand "close up [something]" as closing.
-Understand "close off [something]" as switching off.
-Understand the commands "shut" and "cover" as "close".
-
-Understand "enter" as entering.
-Understand "enter [something]" as entering.
-Understand the command "cross" as "enter".
-
-Understand "sit on top of [something]" as entering.
-Understand "sit on/in/inside [something]" as entering.
-
-Understand "exit" as exiting.
-Understand the commands "leave" and "out" as "exit".
-
-Understand "examine [something]" as examining.
-Understand the commands "x", "watch", "describe" and "check" as "examine".
-
-Understand "read [something]" as examining.
-Understand "read about [text] in [something]" as consulting it about (with nouns reversed).
-Understand "read [text] in [something]" as consulting it about (with nouns reversed).
-
-Understand "yes" as saying yes.
-Understand the command "y" as "yes".
-
-Understand "no" as saying no.
-
-Understand "sorry" as saying sorry.
-
-Understand "search [something]" as searching.
-
-Understand "wave" as waving hands.
-
-Understand "wave [something]" as waving.
-
-Understand "set [something] to [text]" as setting it to.
-Understand the command "adjust" as "set".
-
-Understand "pull [something]" as pulling.
-Understand the command "drag" as "pull".
-
-Understand "push [something]" as pushing.
-Understand "push [something] [direction]" or "push [something] to [direction]" as pushing it to.
-Understand the commands "move", "shift", "clear" and "press" as "push".
-
-Understand "turn [something]" as turning.
-Understand "turn [something] on" or "turn on [something]" as switching on.
-Understand "turn [something] off" or "turn off [something]" as switching off.
-Understand the commands "rotate", "twist", "unscrew" and "screw" as "turn".
-
-Understand "switch [something switched on]" as switching off.
-Understand "switch [something]" or "switch on [something]" or "switch [something] on" as
-	switching on.
-Understand "switch [something] off" or "switch off [something]" as switching off.
-
-Understand "lock [something] with [something preferably held]" as locking it with.
-
-Understand "unlock [something] with [something preferably held]" as unlocking it with.
-
-Understand "attack [something]" as attacking.
-Understand the commands "break", "smash", "hit", "fight", "torture", "wreck", "crack", "destroy",
-	"murder", "kill", "punch" and "thump" as "attack".
-
-Understand "wait" as waiting.
-Understand the command "z" as "wait".
-
-Understand "answer [text] to [someone]" as answering it that (with nouns reversed).
-Understand the commands "say", "shout" and "speak" as "answer".
-
-Understand "tell [someone] about [text]" as telling it about.
-
-Understand "ask [someone] about [text]" as asking it about.
-Understand "ask [someone] for [something]" as asking it for.
-
-Understand "eat [something preferably held]" as eating.
-
-Understand "sleep" as sleeping.
-Understand the command "nap" as "sleep".
-
-Understand "climb [something]" or "climb up/over [something]" as climbing.
-Understand the command "scale" as "climb".
-
-Understand "buy [something]" as buying.
-Understand the command "purchase" as "buy".
-
-Understand "squeeze [something]" as squeezing.
-Understand the command "squash" as "squeeze".
-
-Understand "swing [something]" or "swing on [something]" as swinging.
-
-Understand "wake" or "wake up" as waking up.
-Understand "wake [someone]" or "wake [someone] up" or "wake up [someone]" as waking.
-Understand the commands "awake" and "awaken" as "wake".
-
-Understand "kiss [someone]" as kissing.
-Understand the commands "embrace" and "hug" as "kiss".
-
-Understand "think" as thinking.
-
-Understand "smell" as smelling.
-Understand "smell [something]" as smelling.
-Understand the command "sniff" as "smell".
-
-Understand "listen" as listening to.
-Understand "hear [something]" as listening to.
-Understand "listen to [something]" as listening to.
-
-Understand "taste [something]" as tasting.
-
-Understand "touch [something]" as touching.
-Understand the command "feel" as "touch".
-
-Understand "rub [something]" as rubbing.
-Understand the commands "shine", "polish", "sweep", "clean", "dust", "wipe" and "scrub" as "rub".
-
-Understand "tie [something] to [something]" as tying it to.
-Understand the commands "attach" and "fasten" as "tie".
-
-Understand "burn [something]" as burning.
-Understand the command "light" as "burn".
-
-Understand "drink [something]" as drinking.
-Understand the commands "swallow" and "sip" as "drink".
-
-Understand "cut [something]" as cutting.
-Understand the commands "slice", "prune" and "chop" as "cut".
-
-Understand "jump" as jumping.
-Understand the commands "skip" and "hop" as "jump".
-
-Understand "score" as requesting the score.
-Understand "quit" or "q" as quitting the game.
-Understand "save" as saving the game.
-Understand "restart" as restarting the game.
-Understand "restore" as restoring the game.
-Understand "verify" as verifying the story file.
-Understand "version" as requesting the story file version.
-Understand "script" or "script on" or "transcript" or "transcript on" as switching the story
-	transcript on.
-Understand "script off" or "transcript off" as switching the story transcript off.
-Understand "superbrief" or "short" as preferring abbreviated room descriptions.
-Understand "verbose" or "long" as preferring unabbreviated room descriptions.
-Understand "brief" or "normal" as preferring sometimes abbreviated room descriptions.
-Understand "nouns" or "pronouns" as requesting the pronoun meanings.
-Understand "notify" or "notify on" as switching score notification on.
-Understand "notify off" as switching score notification off.
-

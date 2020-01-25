@@ -246,6 +246,13 @@ each of these still has one of the three results noted above; which will be
         <span class="plain">... ( &lt;</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt; ) |				==&gt; </span><span class="identifier">R</span><span class="plain">[1]; </span><span class="identifier">default_rbno_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span>
         <span class="plain">... ( ... ) |							==&gt; </span>&lt;<span class="cwebmacro">Issue PM_BadOutcomeClarification problem</span> <span class="cwebmacronumber">8.1</span>&gt;
         <span class="plain">...										==&gt; </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">; </span><span class="identifier">default_rbno_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span>
+
+    <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="reserved">outcomes</span><span class="plain">&gt; ::=</span>
+        <span class="identifier">it</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">very</span><span class="plain"> </span><span class="identifier">likely</span><span class="plain"> |</span>
+        <span class="identifier">it</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">likely</span><span class="plain"> |</span>
+        <span class="identifier">it</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">possible</span><span class="plain"> |</span>
+        <span class="identifier">it</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">unlikely</span><span class="plain"> |</span>
+        <span class="identifier">it</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">very</span><span class="plain"> </span><span class="identifier">unlikely</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -344,9 +351,8 @@ can be used in a void context as a sort of return-from-rule phrase.
 <pre class="display">
     <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="functiontext">Rulebooks::Outcomes::rbno_by_name</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">K_rulebook_outcome</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">K_rulebook_outcome</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Rvalues::to_named_rulebook_outcome</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="plain">}</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">OUTCOMES_HAP</span><span class="plain">);</span>
         <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">OUTCOME_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -356,6 +362,21 @@ can be used in a void context as a sort of return-from-rule phrase.
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_named_rulebook_outcome</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">));</span>
         <span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">OUTCOME_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="reserved">outcomes</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = -1;</span>
+            <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
+                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO4_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO3_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO2_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO1_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO0_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= 0) {</span>
+                <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
+                <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
+                <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rbno</span><span class="plain">;</span>
     <span class="plain">}</span>
 

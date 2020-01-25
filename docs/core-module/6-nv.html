@@ -900,7 +900,6 @@ foreign verbs (4).
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="functiontext">NewVerbs::declare_sm</span><span class="plain">(</span><span class="functiontext">Sentences::VPs::include_in_SMF</span><span class="plain">,					</span><span class="identifier">I</span><span class="string">"include-in"</span><span class="plain">, 4);</span>
         <span class="functiontext">NewVerbs::declare_sm</span><span class="plain">(</span><span class="functiontext">Sentences::VPs::omit_from_SMF</span><span class="plain">,						</span><span class="identifier">I</span><span class="string">"omit-from"</span><span class="plain">, 4);</span>
-        <span class="functiontext">NewVerbs::declare_sm</span><span class="plain">(</span><span class="identifier">Index::DocReferences::document_at_SMF</span><span class="plain">,				</span><span class="identifier">I</span><span class="string">"document-at"</span><span class="plain">, 4);</span>
 
         <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">infinitive</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::wording</span><span class="plain">(&lt;</span><span class="identifier">bootstrap</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt;, 0);</span>
         <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">Conjugation::conjugate</span><span class="plain">(</span><span class="identifier">infinitive</span><span class="plain">, </span><span class="identifier">English_language</span><span class="plain">);</span>
@@ -1089,6 +1088,7 @@ foreign verbs (4).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meaning</span><span class="plain">) {</span>
             <span class="functiontext">BinaryPredicates::mark_as_needed</span><span class="plain">(</span><span class="identifier">meaning</span><span class="plain">);</span>
             <span class="identifier">rel_iname</span><span class="plain"> = </span><span class="identifier">meaning</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Meaningful! %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">rel_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
 
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
@@ -1193,6 +1193,7 @@ foreign verbs (4).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meaning</span><span class="plain">) {</span>
             <span class="functiontext">BinaryPredicates::mark_as_needed</span><span class="plain">(</span><span class="identifier">meaning</span><span class="plain">);</span>
             <span class="identifier">rel_iname</span><span class="plain"> = </span><span class="identifier">meaning</span><span class="plain">-</span><span class="element">&gt;bp_iname</span><span class="plain">;</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Meaningful 2! %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">rel_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
 
 

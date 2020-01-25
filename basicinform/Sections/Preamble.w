@@ -1,9 +1,8 @@
 Preamble.
 
-@ Basic Inform is like a boot program for a computer that is starting up: at
-the beginning, the process is delicate, and the computer needs a fairly exact
-sequence of things to be done; but by the end, we have a fully flexible
-machine ready to go in any number of directions.
+Basic Inform is like a boot program for a computer that is starting up: it
+sets up the compiler to implement the familiar language, beginning with
+basic verbs and use options.
 
 @h Title.
 Every Inform 7 extension begins with a standard titling line and a

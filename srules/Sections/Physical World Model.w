@@ -1,7 +1,7 @@
 Physical World Model.
 
-Verbal descriptions of spatial relationships; the hierarchy of
-kinds of object, and their properties.
+Spatial relationships; the hierarchy of kinds used to model things and places,
+and their properties.
 
 @h Verbs and Relations.
 We first extend our suite of verbs and meanings to cover standard
@@ -118,29 +118,29 @@ Chapter 2 - Kinds for the Physical World
 
 Section 1 - Kind Definitions
 
-A room is a kind. [1]
-A thing is a kind. [2]
-A direction is a kind. [3]
-A door is a kind of thing. [4]
-A container is a kind of thing. [5]
-A supporter is a kind of thing. [6]
-A backdrop is a kind of thing. [7]
+A room is a kind.
+A thing is a kind.
+A direction is a kind.
+A door is a kind of thing.
+A container is a kind of thing.
+A supporter is a kind of thing.
+A backdrop is a kind of thing.
 The plural of person is people. The plural of person is persons.
-A person is a kind of thing. [8]
-A region is a kind. [9]
+A person is a kind of thing.
+A region is a kind.
 
 @ At this point, then, the hierarchy looks like so:
 
 	|kind|
-	|    room| [1]
-	|    thing| [2]
-	|        door| [4]
-	|        container| [5]
-	|        supporter| [6]
-	|        backdrop| [7]
-	|        person| [8]
-	|    direction| [3]
-	|    region| [9]
+	|    room|
+	|    thing|
+	|        door|
+	|        container|
+	|        supporter|
+	|        backdrop|
+	|        person|
+	|    direction|
+	|    region|
 
 This framework is the minimum kit needed in order for Inform to be able to
 manage the spatial relationships arising from its basic verbs. Room and thing

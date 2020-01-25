@@ -78,6 +78,7 @@ variables mentioned below:
     <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">i6_glob_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">i6_nothing_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the I6 <code class="display"><span class="extract">nothing</span></code> constant</span>
     <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">command_prompt_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the command prompt text</span>
+    <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">parameter_object_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -103,7 +104,8 @@ hacky constructs which only the SR should ever refer to.
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt; ::=</span>
         <span class="identifier">i6</span><span class="plain">-</span><span class="identifier">varying</span><span class="plain">-</span><span class="identifier">global</span><span class="plain"> |</span>
         <span class="identifier">i6</span><span class="plain">-</span><span class="identifier">nothing</span><span class="plain">-</span><span class="identifier">constant</span><span class="plain"> |</span>
-        <span class="identifier">command</span><span class="plain"> </span><span class="identifier">prompt</span>
+        <span class="identifier">command</span><span class="plain"> </span><span class="identifier">prompt</span><span class="plain"> |</span>
+        <span class="identifier">parameter</span><span class="plain">-</span><span class="identifier">object</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -190,6 +192,7 @@ reference to how it's stored at run-time.
                 <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">i6_glob_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">i6_nothing_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">command_prompt_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">parameter_object_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -507,7 +510,7 @@ I6 schema for how to change a variable:
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::warn_about_change</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain"> == </span><span class="identifier">score_VAR</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">score_VAR</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nlv</span><span class="plain"> == </span><span class="identifier">score_VAR</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeScore</span><span class="plain">),</span>
                     <span class="string">"this is a story with no scoring"</span><span class="plain">,</span>

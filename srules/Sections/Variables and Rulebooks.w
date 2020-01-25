@@ -3,66 +3,47 @@ Variables and Rulebooks.
 The global variables and those built-in rulebooks which do
 not belong either to specific actions or to specific activities.
 
-@ With the kinds, objects and properties all now made, we turn to more
-abstract constructions: rules, rulebooks, activities, global variables
-and so on. As at the beginning of Part SR1 above, we begin with an
-entirely clean slate -- none of any of these things exists yet -- but
-also with expectations on what we do, since NI and the I7 template layer
-need certain constructions to be made.
+@h The player's situation.
+A set of global variables defines the player's current situation in
+space and time.
 
-We begin with global variables. The order in which these are defined,
-and the section subheadings under which they are grouped, determine the
-way they are indexed in the Contents index of a project -- that is,
-moving them around would reorder the Contents index, and rewording the
-subheadings SR2/1, SR2/2, ..., below would change the text of the
-subheadings in the Contents index accordingly.
+Although users often think of the protagonist object as a fixed object
+whose name is "player", this is a variable, and it is possible to change
+perspective during play and become somebody else -- at which point the
+"player" variable will point to a different object.
 
-Some of these variables are special to NI, and it knows which they are
-not by the order in which they're defined (as with kinds, above) but by
-their (I7) names. These are marked with the comment |[*]|, and cannot
-be renamed without altering NI to match. Those marked |[**]| are similarly
-named in the template layer.
-
-@ It's now the occasion for our first global variable definition, because
-although users often think of the protagonist object as a fixed object
-whose name is "player", it's in fact possible to change perspective
-during play and become somebody else -- at which point the "player"
-variable will point to a different object.
-
-Note that "player" is actually a variable belonging to the I6 library,
-as indeed most of those in the Standard Rules are. Without the explicit
-translation supplied below, it would probably be compiled as |Q1_player|
-or some such name; and might well be implemented by NI as an entry in an
-array (since the Z-machine supports only a limited number of global
-variables, in effect using them as a set of 240 registers, and we
-therefore don't want to create too many ourselves).
+Note that "player" is a name given to a variable explicitly defined in
+the |srules| template with a given name (in this case |player|), so it
+has a "translates into I6" sentence.
 
 =
 
-Part SR2 - Variables and Rulebooks (for interactive fiction language element only)
+Part Three - Variables and Rulebooks (for interactive fiction language element only)
 
-Section SR2/1 - Situation
+Chapter 1 - Variables
 
-The player is a person that varies. [*]
+Section 1 - Situation
+
+The player is a person that varies.
 The player variable translates into I6 as "player".
 
-@ The I7 variable "location" corresponds to I6's |real_location|,
-not |location|. Its value is never equal to a pseudo-room representing
-darkness: it is always an actual room, and I7 has nothing
-corresponding to I6's |thedark| "room". Similarly, we use an I7
-variable "darkness witnessed" for a flag which the I6 library would
-have stored as the |visited| attribute for the |thedark| object.
+@ The I7 variable "location" corresponds to I6's |real_location|, not
+|location|. Its value is never equal to a pseudo-room representing darkness:
+it is always an actual room, and I7 has nothing corresponding to I6's
+|thedark| "room". Similarly, we use an I7 variable "darkness witnessed" for a
+flag which the I6 library would have stored as the |visited| attribute for the
+|thedark| object.
 
 The "maximum score" is, rather cheekily, translated to an I6 constant:
 and this cannot be changed at run-time.
 
 =
-The location -- documented at var_location -- is an object that varies. [*]
+The location -- documented at var_location -- is an object that varies.
 The score -- documented at var_score -- is a number that varies.
 The last notified score is a number that varies.
-The maximum score is a number that varies. [*]
+The maximum score is a number that varies.
 The turn count is a number that varies.
-The time of day -- documented at var_time -- is a time that varies. [*]
+The time of day -- documented at var_time -- is a time that varies.
 The darkness witnessed is a truth state that varies.
 
 The location variable translates into I6 as "real_location".
@@ -82,19 +63,18 @@ after it has finished, and making them global variables also makes them a
 little faster to look up (a good thing since they are used so much), and
 causes them to be indexed more prominently.
 
-"Item described" is simply an I7 name for |self|. (In an object-oriented
-system such as I6, |self| is the natural way to refer to the object
-currently under discussion, within routines applying to all objects of its
-class.) In early drafts of I7, it was called "this object", but somehow
-this raised expectations too high about how often it would be meaningful:
-it looked like a pronoun running meanings from sentence to sentence.
+"Item described" is simply an I7 name for |self|. (This is an Inter variable
+which refers to the object currently under discussion.) In early drafts of I7,
+it was called "this object", but somehow this raised expectations too high
+about how often it would be meaningful: it looked like a pronoun running
+meanings from sentence to sentence.
 
 =
-Section SR2/2 - Current action
+Section 2 - Current action
 
-The noun -- documented at var_noun -- is an object that varies. [*]
-The second noun is an object that varies. [*]
-The person asked -- documented at var_person_asked -- is an object that varies. [*]
+The noun -- documented at var_noun -- is an object that varies.
+The second noun is an object that varies.
+The person asked -- documented at var_person_asked -- is an object that varies.
 The reason the action failed -- documented at var_reason -- is an action name
 based rule producing nothing that varies.
 The item described is an object that varies.
@@ -106,11 +86,11 @@ The reason the action failed variable translates into I6 as "reason_the_action_f
 The item described variable translates into I6 as "self".
 
 @ "Person reaching" turns out to have exactly the same meaning as "person
-asked" -- they are both the |actor|, in I6 terms, but are used in different
+asked" -- they are both the |actor|, in Inter terms, but are used in different
 situations.
 
 =
-Section SR2/3 - Used when ruling on accessibility
+Section 3 - Used when ruling on accessibility
 
 The person reaching -- documented at var_person_reaching -- is an object that varies.
 The container in question is an object that varies.
@@ -122,33 +102,32 @@ The container in question variable translates into I6 as "parameter_object".
 The supporter in question variable translates into I6 as "parameter_object".
 The particular possession variable translates into I6 as "particular_possession".
 
-@ Parsing variables follow. The I6 parser tends to put any data read as
-part of a command into the variable |parsed_number|, but then, I6 is
-typeless: we can't have a single I7 variable for all these possibilities
-since it could then have no legal type. We solve this as follows. Whenever
-a kind of value $K$ is created which can be parsed as part of a command, an
-I7 variable "the $K$ understood" is also created, as a $K$ that varies.
-All of these variables are translated into I6's |parsed_number|, so in
-effect they provide aliases of each possible type for the same underlying
-memory location. The four exceptional kinds of value not parsed by the
-systematic approaches in NI for enumerated KOVs and units are "number",
-"time", "snippet" and "truth state": because of their exceptional
-status, they don't get "the $K$ understood" variables created
-automatically for them, so we must construct those by hand. Hence "the
-number understood", "the time understood", "the topic understood" (for
-historical reasons this one is not called "the snippet understood"),
-"the truth state understood" but no others.
+@ Parsing variables follow. The I6 parser tends to put any data read as part
+of a command into the variable |parsed_number|, but then, Inter is typeless:
+we can't have a single I7 variable for all these possibilities since it could
+then have no legal type. We solve this as follows. Whenever a kind of value
+$K$ is created which can be parsed as part of a command, an I7 variable "the
+$K$ understood" is also created, as a $K$ that varies. All of these variables
+are translated into Inter's |parsed_number|, so in effect they provide aliases
+of each possible type for the same underlying memory location. The four
+exceptional kinds of value not parsed by the systematic approaches in Inform
+for enumerated KOVs and units are "number", "time", "snippet" and "truth
+state": because of their exceptional status, they don't get "the $K$
+understood" variables created automatically for them, so we must construct
+those by hand. Hence "the number understood", "the time understood", "the
+topic understood" (for historical reasons this one is not called "the snippet
+understood"), "the truth state understood" but no others.
 
 =
-Section SR2/4 - Used when understanding typed commands
+Section 4 - Used when understanding typed commands
 
 The player's command -- documented at var_command -- is a snippet that varies.
 The matched text is a snippet that varies.
-The number understood -- documented at var_understood -- is a number that varies. [*]
-The real number understood -- documented at var_understood -- is a real number that varies. [*]
-The time understood is a time that varies. [*]
-The topic understood is a snippet that varies. [*]
-The truth state understood is a truth state that varies. [*]
+The number understood -- documented at var_understood -- is a number that varies.
+The real number understood -- documented at var_understood -- is a real number that varies.
+The time understood is a time that varies.
+The topic understood is a snippet that varies.
+The truth state understood is a truth state that varies.
 The current item from the multiple object list is an object that varies.
 
 The player's command variable translates into I6 as "players_command".
@@ -157,13 +136,10 @@ The topic understood variable translates into I6 as "parsed_number".
 The current item from the multiple object list variable translates into I6 as
 	"multiple_object_item".
 
-@ The following are, unless the user creates global variables of his own, the
-last in the Contents index...
+@ =
+Section 5 - Presentation on screen
 
-=
-Section SR2/5 - Presentation on screen
-
-The command prompt -- documented at var_prompt -- is a text that varies. [**]
+The command prompt -- documented at var_prompt -- is a text that varies.
 The command prompt is ">".
 
 The left hand status line -- documented at var_sl -- is a text that varies.
@@ -178,7 +154,7 @@ The listing group size variable translates into I6 as "listing_size".
 @ Now some linguistic variables:
 
 =
-Section SR2/6 - Language generation
+Section 6 - Language generation
 
 The prior named object is an object that varies.
 The prior named object variable translates into I6 as "prior_named_noun".
@@ -201,13 +177,13 @@ figure is unique in that it might refer to nothing. That sounds a little
 arbitrary but in fact follows a convention used by the Blorb format for
 binding story files with their resources, which in turn follows Infocom
 conventions of 1987-89: the cover art always has resource ID number 1,
-whether it exists or not. NI creates figures and sound effects counting
+whether it exists or not. Inform creates figures and sound effects counting
 upwards from 1, giving them each unique resource ID numbers, so the first
 to be created gets ID number 1: by defining "figure of cover" here, we
 can be sure that we are first, so everything works.
 
 =
-Section SR2/6a - Unindexed Standard Rules variables - Unindexed
+Section 7 - Unindexed Standard Rules variables - Unindexed
 
 The story title, the story author, the story headline, the story genre
 and the story description are text variables. [*****]
@@ -224,16 +200,16 @@ Section SR2/6b - Unindexed Standard Rules variables - Unindexed (for figures lan
 Figure of cover is the file of cover art ("The cover art.").
 
 @ And we finish out the set with some "secret" variables used only by the
-Standard Rules or by NI, and which are therefore also unindexed. Their
+Standard Rules or by Inform, and which are therefore also unindexed. Their
 names are all hyphenated, to reduce the chance of anyone stumbling into
 them in a namespace clash.
 
 The first set of three secret variables is used by the predicate calculus
-machinery in NI. This is the code which handles logical sentences such as
+machinery in Inform. This is the code which handles logical sentences such as
 "at least six doors are open" or descriptions such as "open doors", by
 reducing them to a logical notation which sometimes makes use of variables.
 For instance, "open doors" reduces to something like "all $x$ such that
-door($x$) and open($x$)", with $x$ being a variable. When NI works with
+door($x$) and open($x$)", with $x$ being a variable. When Inform works with
 such logical propositions, it often needs to substitute $x=c$, that is, to
 replace $x$ with a given constant $c$. But it can only do this if $c$ is an
 Inform 7 value. This is a problem if what it wants is to substitute in
@@ -242,7 +218,7 @@ substitute a value $c$ which will eventually translate to |whatever|, but
 it can't find any I7 value $c$ which will do this.
 
 We solve this problem by constructing some unusual I7 variables whose only
-purpose is that NI can use them in substitutions. They should never be
+purpose is that Inform can use them in substitutions. They should never be
 referred to in I7 source text anywhere else at all, not even elsewhere in
 the Standard Rules.
 
@@ -253,7 +229,7 @@ substitution $x=$~|nothing| can be made.
 
 (2) Well, once you start telling lies it's so hard to stop, and it's also a
 lie that the "I6-varying-global" translates to |nothing|. It actually
-translates to whatever the NI machinery for compiling propositions happens
+translates to whatever the Inform machinery for compiling propositions happens
 to want at the moment, so it has no permanent meaning at all. (It will
 always translate to an I6 global variable storing a value whose I7 kind
 is "object", so the type-checking machinery isn't endangered by this
@@ -262,12 +238,12 @@ translation sentence below in order to avoid allocating any storage at
 run-time for what is in the end only a label.)
 
 =
-Section SR2/6c - Unindexed Standard Rules variables - Unindexed
+Section 8 - Unindexed Standard Rules variables - Unindexed
 
-The I6-nothing-constant is an object that varies. [*]
+The I6-nothing-constant is an object that varies.
 The I6-nothing-constant variable translates into I6 as "nothing".
 
-The I6-varying-global is an object that varies. [*]
+The I6-varying-global is an object that varies.
 The I6-varying-global variable translates into I6 as "nothing".
 
 @ The remaining secret variables are:
@@ -279,7 +255,7 @@ and into the action variable "thing gone with" of the going action.
 (2) The "actor-location" is needed temporarily to store the room in
 which the actor of the current action is standing, and it wants to be
 an I6 global (rather than, say, a rulebook variable belonging to the
-action-processing rulebook) so that NI can use common code to handle
+action-processing rulebook) so that Inform can use common code to handle
 this alongside |noun|, |second| and |actor| when compiling preambles
 to rules.
 
@@ -296,46 +272,28 @@ The actor-location variable translates into I6 as "actor_location".
 The scene being changed is a scene that varies. [*]
 The scene being changed variable translates into I6 as "parameter_value".
 
-@ And that completes the run through all the variables created in the
-Standard Rules.
-
 @h Rulebooks.
-There are 27 rulebooks which are, so to speak, "primitive" in Inform 7 --
-which are part of its workings and cannot safely be tampered with. NI
-requires them to be declared by the Standard Rules as the first 25 rulebooks
-to be created, and in the exact order below. (In fact, though, this is mostly
-so that it can prepare the index pages correctly: NI is not the part of I7
-which decides what to use these rulebooks for. That is almost always the
-responsibility of the template I6 layer which, for instance, calls upon
-the action-processing rulebook when it wants an action processed.)
+Whereas Basic Inform equips the language with only a handful of rulebooks
+to start out, the Standard Rules are replete with them.
 
-At the I6 level, a rulebook is referred to by its ID number, which counts
-upwards from 0 in order of creation. Any reordering of the constants below,
-therefore, is unsafe unless changes are made elsewhere so that the following
-three tallies always remain in synchrony:
+Note, however, that many of these have explicit support in the |basicinform|
+template and in the compiler itself, and that they must be created exactly
+in the order below, unless matching changes are made to both other places.
+In particular, these need to stay in sync:
 
-(a) The sequence of declaration of these rulebooks in the Standard Rules.
+(a) The sequence of declaration of these rulebooks here, in the Standard Rules.
 (b) The inweb |@d| definitions in the form |TURN_SEQUENCE_RB| in the section
-Rulebooks of the NI source code.
+Rulebooks of the Inform source code.
 (c) The I6 |Constant| definitions in the form |TURN_SEQUENCE_RB| in the file
-|Rulebooks.i6t| of the template I6 layer.
+|Definitions.i6t| of the |basicinform| template.
 
-Anyway, we will declare the rulebooks and their variables or outcomes
-first, and come back to stock some of them with rules later.
-
-@ Every story file created by Inform 6 begins execution in a routine called
-|Main|, which is analogous to the |main()| function of a C program: it is as
-if the entire program is a call to this function.
-
-In an I7 story file, the code in |Main| is the only code which is not executed
-in the context of a rulebook, and by design it does as little as possible.
-The definition is in part "Main" of "OrderOfPlay.i6t", and this is what
-it does:
+@ When an interactive fiction project using the Standard Rules starts up,
+it does the following:
 
 (1) Consider the startup rules.
-(2) Repeatedly follow the turn sequence rules until |deadflag| is set, which
-is an I6 variable used to indicate that the game has ended in one way or
-another.
+(2) Repeatedly follow the turn sequence rules until the Inter variable
+|deadflag| is set, which is used to indicate that the game has ended in one
+way or another (though not necessarily in "death").
 (3) Follow the shutdown rules.
 
 Briefly, the startup phase takes us to the end of the room description
@@ -346,7 +304,9 @@ from printing the obituary text, through final score, to the question
 about quitting or restarting.
 
 =
-Section SR2/7 - The Standard Rulebooks
+Chapter 2 - Rulebooks
+
+Section 1 - The Standard Rulebooks
 
 Turn sequence rules is a rulebook.
 
@@ -437,7 +397,7 @@ report taking.
 
 During play, then, the three rulebooks "check", "after" and "report"
 are completely empty. This is the result of a reform in April 2007 which
-wasn't altogether popular. Before then, NI rather cleverly filed rules like
+wasn't altogether popular. Before then, Inform rather cleverly filed rules like
 "Check doing something with the haddock" in the generic "check"
 rulebook and ran this rulebook as part of the action processing sequence.
 But this clearly broke principle (i) above, and meant that the six-stage
@@ -456,8 +416,8 @@ withdrawn.)
 So if they are always empty and never used, why are the three rulebooks
 called simply "check", "after" and "report" created in the first
 place? The answer is that this is a convenience for parsing rule preambles
-in NI: it provides a temporary home for such rules before they are divided up
-into their specific rulebooks, and it also makes it easier for NI to detect
+in Inform: it provides a temporary home for such rules before they are divided up
+into their specific rulebooks, and it also makes it easier for Inform to detect
 and give a helpful Problem message in response to rules like "Check taking
 or dropping the perch" which can't be filed anywhere in our scheme, and so
 have to be forbidden.
@@ -505,10 +465,10 @@ instance, we also create the "check dropping", "carry out dropping" and
 @h Rules.
 At run-time, the value of a rule is the (packed) address of an I6 routine.
 In the case of rules created in I7 source text, the body of the rule
-definition is compiled by NI to a new I6 routine which carries it out.
+definition is compiled by Inform to a new I6 routine which carries it out.
 But there are also primitive rules which are implemented in the template
 I6 layer, and these need no I7 source text definitions: instead we simply
-tell NI the name of the I6 routine which will be handling this rule, and
+tell Inform the name of the I6 routine which will be handling this rule, and
 that it need not bother to create one for itself.
 
 An example of this is provided by the first rule we shall create: the
@@ -518,7 +478,7 @@ variables and properties with the kind of value "rule" can be initialised
 automatically to a safely neutral default value. It makes no decision.
 
 =
-Section SR2/8 - The Standard Rules
+Section 2 - The Standard Rules
 
 The little-used do nothing rule translates into I6 as "LITTLE_USED_DO_NOTHING_R".
 
@@ -546,7 +506,7 @@ screen display working on Glulx or Z6. Before anything else happens, however,
 the "starting the virtual machine" activity (see below) is carried out.
 
 (c) The "seed random number generator rule" seeds the RNG to a fixed value
-if NI has requested this (which it does in response to the |-rng| command
+if Inform has requested this (which it does in response to the |-rng| command
 line switch, which is in turn used by the |intest| testing utility: it's a
 way to make deterministic tests of programs which use random values).
 
@@ -794,7 +754,7 @@ The ask the final question rule translates into I6 as "ASK_FINAL_QUESTION_R".
 
 @h Scene changing.
 Scene changing is handled by a routine called |DetectSceneChange| which is
-compiled directly by NI: this is so primitive that it can't even be handled
+compiled directly by Inform: this is so primitive that it can't even be handled
 at the template layer. The rulebook is all a little elaborate given that
 it contains only one rule, but it's possible to imagine extensions which
 need to do book-keeping similar to scene changing and which want to make
@@ -810,7 +770,7 @@ two rulebooks, and that would have thrown the rulebook numbering), so let's
 take this opportunity to define the "Entire Game" scene:
 
 =
-Section SR2/9 - The Entire Game scene
+Section 3 - The Entire Game scene
 
 The Entire Game is a scene.
 The Entire Game begins when the story has not ended.
@@ -874,7 +834,7 @@ the two book-ends, then, and this is where any newly created action-processing
 rules created by the user or by extensions will go.
 
 =
-Section SR2/10 - Action processing
+Section 4 - Action processing
 
 The before stage rule is listed first in the action-processing rules. [3rd.]
 The set pronouns from items from multiple object lists rule is listed first in the
@@ -1065,7 +1025,7 @@ the "access through barriers" rule settles the matter. But in practice
 we expect most users to work with one of the two reaching rulebooks instead.
 
 =
-Section SR2/11 - Accessibility
+Section 5 - Accessibility
 
 The access through barriers rule is listed last in the accessibility rules.
 
@@ -1138,7 +1098,7 @@ Rules is all about.
 There is a small stock of built-in adjectives for values.
 
 =
-Section SR2/12 - Adjectival definitions
+Section 6 - Adjectival definitions
 
 A scene can be recurring or non-recurring. A scene is usually non-recurring.
 The Entire Game is recurring.
@@ -1147,7 +1107,7 @@ The Entire Game is recurring.
 And there is one build-in value property for values.
 
 =
-Section SR2/13 - Scene descriptions
+Section 7 - Scene descriptions
 
 A scene has a text called description.
 When a scene (called the event) begins (this is the scene description text rule):
@@ -1159,7 +1119,7 @@ This abstracts a set of return codes from the I6 parser, which are written
 there as constants with the notation |*_ETYPE|.
 
 =
-Section SR2/14 - Command parser errors
+Section 8 - Command parser errors
 
 A command parser error is a kind of value. The command parser errors are
 	didn't understand error,
@@ -1196,6 +1156,8 @@ These rules do nothing in themselves, and are really just hooks on which
 some response texts can be hung.
 
 =
+Section 9 - Responses for internal rules
+
 The list writer internal rule translates into I6 as
 	"LIST_WRITER_INTERNAL_R" with
 	" (" (A),

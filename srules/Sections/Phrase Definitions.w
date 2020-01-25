@@ -1,51 +1,22 @@
 Phrase Definitions.
 
-The phrases making up the Inform language, and in terms of which all
-other phrases and rules are defined; and the final sign-off of the Standard
+Additional phrases to do with interactive fiction, to add to the much larger
+collection provided by Basic Inform; and the final sign-off of the Standard
 Rules extension, including its minimal documentation.
 
-@ Our last task is to create the phrases: more or less all of them, but that
-does need a little qualification. NI has no phrase definitions built in,
-but it does contain assumptions about how "say ...", "repeat ...",
-"let ...", "otherwise ..." and "end ..." will behave when defined: we
-would not be allowed to call these something else, or redefine them in
-fundamentally different ways. Apart from that, we are more or less free.
-
-Most of these phrases are defined in terms of I6 code, using the |(-| and
-|-)| notation -- it would be too cumbersome to use the "... translates into
-I6 as ..." verb for this, too. The fact that phrases are not so much
-translated as transliterated was one source of early criticism of Inform 7.
-Phrases appeared to have very simplistic definitions, with the natural
-language simply being a verbose description of obviously equivalent I6 code.
-However, the simplicity is misleading, because the definitions below tend
-to conceal where the complexity of the translation process suddenly
-increases. If the preamble includes "(c - condition)", and the definition
-includes the expansion |{c}|, then the text forming c is translated in a way
-much more profound than any simple substitution process could describe.
-Type-checking also complicates the code produced below, since NI automatically
-generates the code needed to perform run-time type checking at any point where
-doubt remains as to the phrase definition which must be used.
-
-@h Say phrases.
-We begin with saying phrases: the very first phrase to exist is the one
-printing a single value -- literal text, a number, a time, an object, or
-really almost anything, since the vast majority of kinds in Inform are
-sayable. There used to be separate definitions for saying text, numbers
-and unicode characters here, but they were removed in June 2015 as being
-redundant. Though they did no harm, they made some problem messages longer
-than necessary by obliging them to cite a longer list of possible readings
-of a misread phrase.
+@ The following is inevitably a bit of a miscellany. Firstly, there's no
+model of the passage of time in Basic Inform, so:
 
 =
-Part SR5 - Phrasebook
+Part Seven - Phrasebook
 
-Section SR5/1/1a - Saying - Time Values (for interactive fiction language element only)
+Chapter 1 - Saying
+
+Section 1 - Time Values (for interactive fiction language element only)
 
 To say (something - time) in words
 	(documented at phs_timewords):
 	(- print (PrintTimeOfDayEnglish) {something}; -).
-
-
 To say here
 	(documented at phs_here):
 	say "[if story tense is present tense]here[otherwise]there".
@@ -53,11 +24,14 @@ To say now
 	(documented at phs_now):
 	say "[if story tense is present tense]now[otherwise]then".
 
-@ Now some visual effects, which may or may not be rendered the way the user
-hopes: that's partly up to the virtual machine, unfortunately.
+@ The ability to put up a dinky reverse-video quotation as an epigraph
+has somehow survived for 36 years. The decision to continue to support it
+even in Inform 6 was critiqued as being an unnecessary throwback by Jimmy
+Maher in 2019; he was clearly right; and yet here we are, and it survives
+even the 2020 restructuring of Inform's language design.
 
 =
-Section SR5/1/7 - Saying - Fonts and visual effects
+Section 2 - Boxed quotations
 
 To display the boxed quotation (Q - text)
 	(documented at ph_boxed):
@@ -66,7 +40,7 @@ To display the boxed quotation (Q - text)
 @ And now some oddball special texts which must sometimes be said.
 
 =
-Section SR5/1/8 - Saying - Some built-in texts
+Section 3 - Some built-in texts
 
 To say the/-- banner text
 	(documented at phs_banner):
@@ -87,13 +61,23 @@ To say command clarification break -- running on
 	(documented at phs_clarifbreak):
 	(- CommandClarificationBreak(); -).
 
-@h Using the list-writer.
-The I7 list-writer resembles the old I6 library one, but has been reimplemented
-in a more general way: see the template file "ListWriter.i6t". The following
-is the main routine for listing:
+@ Recall that this activity exists only in the Standard Rules, and therefore
+this phrase definition must similarly be here, not in Basic Inform.
 
 =
-Section SR5/1/9 - Saying - Saying lists of things
+Section 4 - Responses
+
+To say text of (R - response)
+	(documented at phs_response):
+	carry out the issuing the response text activity with R.
+
+@h Using the list-writer.
+One of the most powerful features of Inform 6 was its list-writer, a lengthy
+piece of I6 code wbich now lives on as Inter code, in the |srules| template:
+see "ListWriter.i6t". The following phrases control it:
+
+=
+Section 5 - Saying lists of things
 
 To list the contents of (O - an object),
 	with newlines,
@@ -114,12 +98,12 @@ To list the contents of (O - an object),
 	(documented at ph_listcontents):
 	(- WriteListFrom(child({O}), {phrase options}); -).
 
-@h Text substitutions using the list-writer.
-These all look (and are) repetitive. We want to avoid passing a description
-value to some routine, because that's tricky if the description needs to refer
-to a value local to the current stack frame. (There are ways round that, but
-it minimises nuisance to avoid the need.) So we mark out the set of objects
-matching by giving them, and only them, the |workflag2| attribute.
+@ These text substitutions all look (and are) repetitive. We want to avoid
+passing a description value to some routine, because that's tricky if the
+description needs to refer to a value local to the current stack frame. (There
+are ways round that, but it minimises nuisance to avoid the need.) So we mark
+out the set of objects matching by giving them, and only them, the |workflag2|
+attribute.
 
 =
 To say a list of (OS - description of objects)
@@ -213,7 +197,7 @@ See the specifications of |list_together| and |c_style| in the DM4, which are
 still broadly accurate.
 
 =
-Section SR5/1/10 - Saying - Group in and omit from lists
+Section 6 - Group in and omit from lists
 
 To group (OS - description of objects) together
 	(documented at ph_group): (-
@@ -249,43 +233,19 @@ of, or items supported by, something it lists. Here we can restrict to
 just those contents, or supportees, matching a description |D|.
 
 =
-Section SR5/1/12 - Saying - Filtering contents - Unindexed
+Section 7 - Filtering contents of lists - Unindexed
 
 To filter list recursion to (D - description of objects):
 	(- list_filter_routine = {D}; -).
 To unfilter list recursion:
 	(- list_filter_routine = 0; -).
 
-@h Responses.
+@h Figures and sound effects.
 
 =
-Section SR5/1/13 - Saying - Responses
+Chapter 2 - Multimedia
 
-To say text of (R - response)
-	(documented at phs_response):
-	carry out the issuing the response text activity with R.
-
-@h Lists.
-The following are all for adding and removing values to dynamic lists:
-
-=
-
-@ The multiple object list is a data structure used in the parser when
-processing commands like TAKE ALL.
-
-=
-To decide what list of objects is the multiple object list
-	(documented at ph_multipleobjectlist):
-	(- LIST_OF_TY_Mol({-new:list of objects}) -).
-To alter the multiple object list to (L - list of objects)
-	(documented at ph_altermultipleobjectlist):
-	(- LIST_OF_TY_Set_Mol({-by-reference:L}); -).
-
-@ Figures and sound effects.
-Ditto, but for "Figures.i6t".
-
-=
-Section SR5/2/22 - Values - Figures (for figures language element only)
+Section 1 - Figures (for figures language element only)
 
 To display (F - figure name), one time only
 	(documented at ph_displayfigure):
@@ -294,7 +254,7 @@ To decide which number is the Glulx resource ID of (F - figure name)
 	(documented at ph_figureid):
 	(- ResourceIDsOfFigures-->{F} -).
 
-Section SR5/2/23 - Values - Sound effects (for sounds language element only)
+Section 2 - Sound effects (for sounds language element only)
 
 To play (SFX - sound name), one time only
 	(documented at ph_playsf):
@@ -302,20 +262,6 @@ To play (SFX - sound name), one time only
 To decide which number is the Glulx resource ID of (SFX - sound name)
 	(documented at ph_soundid):
 	(- ResourceIDsOfSounds-->{SFX} -).
-
-@ The antique forms "yes" and "no" are now somewhat to be regretted, with
-"decide yes" and "decide no" being clearer ways to write the same thing.
-But we seem to be stuck with them.
-
-=
-Section SR5/3/7 - Control phrases - Deciding outcomes
-
-To yes
-	(documented at ph_yes):
-	(- rtrue; -) - in to decide if only.
-To no
-	(documented at ph_no):
-	(- rfalse; -) - in to decide if only.
 
 @h Actions, activities and rules.
 We begin with the firing off of new actions. The current action runs silently
@@ -326,7 +272,9 @@ actions as part of their normal workings: if we want action $X$ to be tried
 silently, then any action $X$ itself tries should also be tried silently.
 
 =
-Section SR5/4/1 - Actions, activities and rules - Trying actions (for interactive fiction language element only)
+Chapter 3 - Actions, activities and rules
+
+Section 1 - Trying actions (for interactive fiction language element only)
 
 To try (S - action)
 	(documented at ph_try):
@@ -344,7 +292,7 @@ To decide whether the action is not silent:
 may be reimplemented using a verb "to require" at some future point.
 
 =
-Section SR5/4/2 - Actions, activities and rules - Action requirements (for interactive fiction language element only)
+Section 2 - Action requirements (for interactive fiction language element only)
 
 To decide whether the action requires a touchable noun
 	(documented at ph_requirestouch):
@@ -394,7 +342,7 @@ the I6 routine for a rule will run into an |rtrue|. "Continue the action"
 prevents this.
 
 =
-Section SR5/4/3 - Actions, activities and rules - Stop or continue (for interactive fiction language element only)
+Section 3 - Stop or continue (for interactive fiction language element only)
 
 To stop the action
 	(documented at ph_stopaction):
@@ -404,7 +352,7 @@ To continue the action
 	(- rfalse; -) - in to only.
 
 @ =
-Section SR5/4/4 - Actions, activities and rules - Actions as values (for interactive fiction language element only)
+Section 4 - Actions as values (for interactive fiction language element only)
 
 To decide what action is the current action
 	(documented at ph_currentaction):
@@ -437,7 +385,9 @@ phrase to hold... and so on. Ideally, we would word all conditional phrases
 so as to avoid the verbs, but natural language just doesn't work that way.
 
 =
-Section SR5/5/1 - Model world - Ending the story (for interactive fiction language element only)
+Chapter 4 - The Model World
+
+Section 1 - Ending the story (for interactive fiction language element only)
 
 To end the story
 	(documented at ph_end):
@@ -470,7 +420,7 @@ To resume the story
 @ Times of day.
 
 =
-Section SR5/5/2 - Model world - Times of day (for interactive fiction language element only)
+Section 2 - Times of day (for interactive fiction language element only)
 
 To decide which number is the minutes part of (t - time)
 	(documented at ph_minspart):
@@ -507,7 +457,7 @@ To decide which time is (t - time) after (t2 - time)
 @ Durations are in effect casts from "number" to "time".
 
 =
-Section SR5/5/3 - Model world - Durations (for interactive fiction language element only)
+Section 3 - Durations (for interactive fiction language element only)
 
 To decide which time is (n - number) minutes
 	(documented at ph_durationmins):
@@ -519,7 +469,7 @@ To decide which time is (n - number) hours
 @ Timed events.
 
 =
-Section SR5/5/4 - Model world - Timed events (for interactive fiction language element only)
+Section 4 - Timed events (for interactive fiction language element only)
 
 To (R - rule) in (t - number) turn/turns from now
 	(documented at ph_turnsfromnow):
@@ -534,7 +484,7 @@ To (R - rule) in (t - time) from now
 @ Scenes.
 
 =
-Section SR5/5/5 - Model world - Scenes (for interactive fiction language element only)
+Section 5 - Scenes (for interactive fiction language element only)
 
 To decide if (sc - scene) has happened
 	(documented at ph_hashappened):
@@ -552,7 +502,7 @@ To decide if (sc - scene) has not ended
 @ Timing of scenes.
 
 =
-Section SR5/5/6 - Model world - Timing of scenes (for interactive fiction language element only)
+Section 6 - Timing of scenes (for interactive fiction language element only)
 
 To decide which time is the time since (sc - scene) began
 	(documented at ph_scenetimesincebegan):
@@ -570,7 +520,7 @@ To decide which time is the time when (sc - scene) ended
 @ Player's identity and location.
 
 =
-Section SR5/5/7 - Model world - Player's identity and location (for interactive fiction language element only)
+Section 7 - Player's identity and location (for interactive fiction language element only)
 
 To decide whether in darkness
 	(documented at ph_indarkness):
@@ -579,7 +529,7 @@ To decide whether in darkness
 @ Moving and removing things.
 
 =
-Section SR5/5/8 - Model world - Moving and removing things (for interactive fiction language element only)
+Section 8 - Moving and removing things (for interactive fiction language element only)
 
 To move (something - object) to (something else - object),
 	without printing a room description
@@ -600,7 +550,7 @@ To update backdrop positions
 @ The map.
 
 =
-Section SR5/5/9 - Model world - The map (for interactive fiction language element only)
+Section 9 - The map (for interactive fiction language element only)
 
 To decide which room is location of (O - object)
 	(documented at ph_locationof):
@@ -636,7 +586,7 @@ To decide which room is the back side of (D - object)
 @ Route-finding.
 
 =
-Section SR5/5/10 - Model world - Route-finding (for interactive fiction language element only)
+Section 10 - Route-finding (for interactive fiction language element only)
 
 To decide which object is best route from (R1 - object) to (R2 - object),
 	using doors or using even locked doors
@@ -660,7 +610,7 @@ To decide which number is number of moves from (R1 - object) to (R2 - object) th
 @ The object tree.
 
 =
-Section SR5/5/11 - Model world - The object tree (for interactive fiction language element only)
+Section 11 - The object tree (for interactive fiction language element only)
 
 To decide which object is holder of (something - object)
 	(documented at ph_holder):
@@ -676,16 +626,19 @@ To decide which object is first thing held by (something - object)
 First, asking yes/no questions.
 
 =
-Section SR5/6/1 - Understanding - Asking yes/no questions
+Chapter 5 - Understanding
+
+Section 1 - Asking yes/no questions
 
 To decide whether player consents
 	(documented at ph_consents):
 		(- YesOrNo() -).
 
-@ Support for snippets, which are substrings of the player's command.
+@ Support for snippets, which are substrings of the player's command. This
+is a kind of value which doesm't exist in Basic Inform.
 
 =
-Section SR5/6/2 - Understanding - The player's command (for interactive fiction language element only)
+Section 2 - The player's command (for interactive fiction language element only)
 
 To decide if (S - a snippet) matches (T - a topic)
 	(documented at ph_snippetmatches):
@@ -703,7 +656,7 @@ To decide if (S - a snippet) does not include (T - a topic)
 @ Changing the player's command.
 
 =
-Section SR5/6/3 - Understanding - Changing the player's command (for interactive fiction language element only)
+Section 3 - Changing the player's command (for interactive fiction language element only)
 
 To change the text of the player's command to (T - text)
 	(documented at ph_changecommand):
@@ -721,7 +674,7 @@ To reject the player's command
 @ Scope and pronouns.
 
 =
-Section SR5/6/4 - Understanding - Scope and pronouns (for interactive fiction language element only)
+Section 4 - Scope and pronouns (for interactive fiction language element only)
 
 To place (O - an object) in scope, but not its contents
 	(documented at ph_placeinscope):
@@ -732,6 +685,19 @@ To place the/-- contents of (O - an object) in scope
 To set pronouns from (O - an object)
 	(documented at ph_setpronouns):
 	(- PronounNotice({O}); -).
+
+@ The multiple object list is a data structure used in the parser when
+processing commands like TAKE ALL.
+
+=
+Section 5 - The multiple object list
+
+To decide what list of objects is the multiple object list
+	(documented at ph_multipleobjectlist):
+	(- LIST_OF_TY_Mol({-new:list of objects}) -).
+To alter the multiple object list to (L - list of objects)
+	(documented at ph_altermultipleobjectlist):
+	(- LIST_OF_TY_Set_Mol({-by-reference:L}); -).
 
 @h Message support.
 "Unindexed" here is a euphemism for "undocumented". This is where
@@ -759,11 +725,14 @@ To say pronoun i6 dictionary word:
 To say parser command so far:
 	(- PrintCommand(); -).
 
-@h Miscellaneous other phrases.
-Again, these are not part of Inform's public specification.
+@h Deprecated or private-API-like phrases.
+None of these are part of Inform's public specification, and they should be
+used only by extensions built in to Inform; they may change at any time.
 
 =
-Section SR5/9/1 - Miscellaneous other phrases - Unindexed (for interactive fiction language element only)
+Chapter 6 - Deprecated or private phrases - Unindexed
+
+Section 1 - Spatial modelling - Unindexed (for interactive fiction language element only)
 
 @ These are actually sensible concepts in the world model, and could even
 be opened to public use, but they're quite complicated to explain.
@@ -798,6 +767,8 @@ stage only. A convenience, but also an anomaly, and let's not encourage
 its further use.
 
 =
+Section 2 - Room descriptions - Unindexed (for interactive fiction language element only)
+
 To produce a room description with going spacing conventions:
 	(- LookAfterGoing(); -).
 
@@ -809,21 +780,8 @@ Please don't touch.
 To print the location's description:
 	(- PrintOrRun(location, description); -).
 
-@ This avoids "mentioned" being given to items printed only internally for
-the sake of a string comparison, and not shown on screen.
-
-=
-To decide if expanding text for comparison purposes:
-	(- say__comp -).
-
-@ This is a bit trickier than it looks, because it isn't always set when
-one thinks it is.
-
-=
-To decide whether the I6 parser is running multiple actions:
-	(- (multiflag==1) -).
-
-@ Again, the following cries out for an enumerated kind of value.
+@ The following cries out for an enumerated kind of value, but for historical
+reasons it isn't one.
 
 =
 To decide if set to sometimes abbreviated room descriptions:
@@ -839,6 +797,8 @@ mid-way, without causing spurious action failures. (There are better ways
 to make user-defined actions convert, and some of the examples show this.)
 
 =
+Section 3 - Action conversion - Unindexed (for interactive fiction language element only)
+
 To convert to (AN - an action name) on (O - an object):
 	(- return GVS_Convert({AN},{O},0); -) - in to only.
 To convert to request of (X - object) to perform (AN - action name) with
@@ -853,6 +813,8 @@ light variables; the SR uses them carefully in situations where it's known to
 work out all right.
 
 =
+Section 4 - Surreptitious violation of invariants - Unindexed (for interactive fiction language element only)
+
 To surreptitiously move (something - object) to (something else - object):
 	(- move {something} to {something else}; -).
 To surreptitiously move (something - object) to (something else - object) during going:
@@ -863,6 +825,8 @@ To surreptitiously reckon darkness:
 @ These are text substitutions needed to make the capitalised lists work.
 
 =
+Section 5 - Capitalised list-writing - Unindexed (for interactive fiction language element only)
+
 To say list-writer list of marked objects: (-
 	 	WriteListOfMarkedObjects(ENGLISH_BIT);
 	-).
@@ -870,11 +834,44 @@ To say list-writer articled list of marked objects: (-
 	 	WriteListOfMarkedObjects(ENGLISH_BIT+DEFART_BIT+CFIRSTART_BIT);
 	-).
 
+@ This avoids "mentioned" being given to items printed only internally for
+the sake of a string comparison, and not shown on screen.
+
+=
+Section 6 - Printing names - Unindexed (for interactive fiction language element only)
+
+To decide if expanding text for comparison purposes:
+	(- say__comp -).
+
+@ This is a bit trickier than it looks, because it isn't always set when
+one thinks it is. (And since first typing that sentence, I've forgotten
+when that would be.)
+
+=
+Section 7 - Command parsing - Unindexed (for interactive fiction language element only)
+
+To decide whether the I6 parser is running multiple actions:
+	(- (multiflag==1) -).
+
+@ The antique forms "yes" and "no" are now somewhat to be regretted, with
+"decide yes" and "decide no" being clearer ways to write the same thing.
+But we seem to be stuck with them.
+
+=
+Section 8 - Deprecated Inform - unindexed
+
+To yes
+	(documented at ph_yes):
+	(- rtrue; -) - in to decide if only.
+To no
+	(documented at ph_no):
+	(- rfalse; -) - in to decide if only.
+
 @ This is convenient for debugging Inform, but for no other purpose. It
 toggles verbose logging of the type-checker.
 
 =
-Section SR5/9/2 - Debugging Inform - Unindexed
+Section 9 - Debugging Inform - Unindexed
 
 To ***:
 	(- {-primitive-definition:verbose-checking} -).
@@ -896,5 +893,6 @@ extension.
 ---- DOCUMENTATION ----
 
 Unlike other extensions, the Standard Rules are compulsorily included
-with every project. They define the phrases, kinds and relations which
-are basic to Inform, and which are described throughout the documentation.
+with every work of interactive fiction made with Inform. They are described
+throughout the documentation supplied with Inform, so no details will be
+given here.

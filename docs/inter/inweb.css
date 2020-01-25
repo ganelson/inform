@@ -67,6 +67,8 @@ p {
 /* Where an inweb paragraph begins: */
 
 p.inwebparagraph {
+	width: 60em;
+	line-height: 150%;
 	padding-top: 15px;
 	padding-bottom: 5px;
 }
@@ -93,6 +95,8 @@ p.endnote {
 /* The Purpose slug: */
 
 p.purpose {
+	width: 60em;
+	line-height: 150%;
 	font-size: 1em;
 	font-style:italic;	
 	margin-left: 15px;

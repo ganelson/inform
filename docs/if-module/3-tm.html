@@ -93,6 +93,7 @@ I6 properties (<code class="display"><span class="extract">door_to</span></code>
 
 
 <pre class="display">
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_dir</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_other_side</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a value property for the other side of a door</span>
@@ -1339,12 +1340,16 @@ trust that there is nothing surprising here.
 
 
 <pre class="displaydefn">
+        <span class="identifier">P_door</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"door"</span><span class="plain">);</span>
+        <span class="identifier">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="identifier">P_door</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">P_door_dir</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"door_dir"</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="identifier">P_door_to</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"door_to"</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
+                <span class="identifier">Properties::EitherOr::assert</span><span class="plain">(</span>
+                    <span class="identifier">P_door</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
                 <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">;</span>
                 <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">;</span>
                 <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">D1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_a</span><span class="plain">;</span>

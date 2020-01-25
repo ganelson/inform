@@ -12,4 +12,5 @@ Sections
 	Variables and Rulebooks
 	Activities
 	Actions
+	Command Grammar
 	Phrase Definitions

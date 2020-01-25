@@ -99,6 +99,7 @@ not here. First, some "areas":
     <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_story_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_telemetry</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_uuid</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_xrefs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -259,6 +260,8 @@ Inform". This is used to generate the Phrasebook index.
 
         <span class="identifier">pathname_of_HTML_models</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">pathname_of_area</span><span class="plain">[</span><span class="constant">INTERNAL_FS_AREA</span><span class="plain">], </span><span class="identifier">I</span><span class="string">"HTML"</span><span class="plain">);</span>
         <span class="identifier">filename_of_cblorb_report_model</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">pathname_of_HTML_models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CblorbModel.html"</span><span class="plain">);</span>
+
+        <span class="identifier">filename_of_xrefs</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">pathname_of_HTML_models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"xrefs.txt"</span><span class="plain">);</span>
 
         <span class="identifier">filename_of_documentation_snippets</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"definitions.html"</span><span class="plain">);</span>
 </pre>
