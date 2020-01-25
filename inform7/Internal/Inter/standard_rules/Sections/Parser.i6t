@@ -3985,6 +3985,21 @@ Array alt_match_list --> (MATCH_LIST_WORDS+1);
 	return result;
 ];
 
+[ CheckDPMR result sinp1 sinp2 rv;
+	sinp1 = inp1; sinp2 = inp2; inp1 = noun; inp2 = second;
+	rv = FollowRulebook(DOES_THE_PLAYER_MEAN_RB);
+	inp1 = sinp1; inp2 = sinp2;
+	if ((rv) && RulebookSucceeded()) {
+		result = ResultOfRule();
+		if (result == RBNO4_OUTCOME) return 4;
+		if (result == RBNO3_OUTCOME) return 3;
+		if (result == RBNO2_OUTCOME) return 2;
+		if (result == RBNO1_OUTCOME) return 1;
+		if (result == RBNO0_OUTCOME) return 0;
+	}
+	return 2;
+];
+
 @h Default Topic.
 A default value for the I7 sort-of-kind "topic", which never matches.
 

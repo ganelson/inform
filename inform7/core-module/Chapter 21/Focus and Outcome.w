@@ -152,6 +152,13 @@ The following parses a declaration of named outcomes. For example:
 	... ( ... ) |							==> @<Issue PM_BadOutcomeClarification problem@>
 	...										==> SUCCESS_OUTCOME; default_rbno_flag = FALSE
 
+<notable-rulebook-outcomes> ::=
+	it is very likely |
+	it is likely |
+	it is possible |
+	it is unlikely |
+	it is very unlikely
+
 @<Issue PM_BadOutcomeClarification problem@> =
 	*X = UNRECOGNISED_OUTCOME;
 	Problems::Issue::sentence_problem(_p_(PM_BadOutcomeClarification),
@@ -218,9 +225,8 @@ can be used in a void context as a sort of return-from-rule phrase.
 @ =
 named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
-	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
+	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome))
 		return Rvalues::to_named_rulebook_outcome(p);
-	}
 
 	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
 	Hierarchy::markup_wording(R, OUTCOME_NAME_HMD, W);
@@ -230,6 +236,21 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno));
 	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
+	if (<notable-rulebook-outcomes>(W)) {
+		int i = -1;
+		switch (<<r>>) {
+			case 0: i = RBNO4_INAME_HL; break;
+			case 1: i = RBNO3_INAME_HL; break;
+			case 2: i = RBNO2_INAME_HL; break;
+			case 3: i = RBNO1_INAME_HL; break;
+			case 4: i = RBNO0_INAME_HL; break;
+		}
+		if (i >= 0) {
+			inter_name *iname = Hierarchy::find(i);
+			Hierarchy::make_available(Emit::tree(), iname);
+			Emit::named_iname_constant(iname, K_value, rbno->nro_iname);
+		}
+	}
 	return rbno;
 }
 

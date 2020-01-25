@@ -376,9 +376,7 @@ Constant UNSUCCESSFUL_ATTEMPT_RB         = 27;
 
 Constant AFTER_RB                        = 32;
 Constant REPORT_RB                       = 33;
-
-! 31 is does the player mean
-
+Constant DOES_THE_PLAYER_MEAN_RB		 = 34;
 Constant MULTIPLE_ACTION_PROCESSING_RB   = 35;
 
 @h Kind IDs.

@@ -348,17 +348,17 @@ about quitting or restarting.
 =
 Section SR2/7 - The Standard Rulebooks
 
-Turn sequence rules is a rulebook. [2]
+Turn sequence rules is a rulebook.
 
 @ Now a set of rulebooks to do with the passage of time.
 
 =
-Scene changing rules is a rulebook. [3]
-When play begins is a rulebook. [4]
-When play ends is a rulebook. [5]
-When scene begins is a scene based rulebook. [6]
-When scene ends is a scene based rulebook. [7]
-Every turn rules is a rulebook. [8]
+Scene changing rules is a rulebook.
+When play begins is a rulebook.
+When play ends is a rulebook.
+When scene begins is a scene based rulebook.
+When scene ends is a scene based rulebook.
+Every turn rules is a rulebook.
 
 @ The action machinery requires some 16 rulebooks to work, though that is
 the result of gradual simplification -- in 2006 it required 25, for instance.
@@ -377,37 +377,37 @@ what rulebooks we consult next depends on what the action is (hence "specific")
 -- see below for more on how check/carry out/report rules are filed.
 
 =
-Action-processing rules is a rulebook. [9]
+Action-processing rules is a rulebook.
 The action-processing rulebook has a person called the actor.
-Setting action variables is a rulebook. [10]
-The specific action-processing rules is a rulebook. [11]
+Setting action variables is a rulebook.
+The specific action-processing rules is a rulebook.
 The specific action-processing rulebook has a truth state called action in world.
 The specific action-processing rulebook has a truth state called action keeping silent.
 The specific action-processing rulebook has a rulebook called specific check rulebook.
 The specific action-processing rulebook has a rulebook called specific carry out rulebook.
 The specific action-processing rulebook has a rulebook called specific report rulebook.
 The specific action-processing rulebook has a truth state called within the player's sight.
-The player's action awareness rules is a rulebook. [12]
+The player's action awareness rules is a rulebook.
 
 @ The rules on accessibility and visibility, which control whether an action
 is physically possible, have named outcomes as a taste of syntactic sugar.
 
 =
-Accessibility rules is a rulebook. [13]
-Reaching inside rules is an object-based rulebook. [14]
+Accessibility rules is a rulebook.
+Reaching inside rules is an object-based rulebook.
 Reaching inside rules have outcomes allow access (success) and deny access (failure).
-Reaching outside rules is an object-based rulebook. [15]
+Reaching outside rules is an object-based rulebook.
 Reaching outside rules have outcomes allow access (success) and deny access (failure).
-Visibility rules is a rulebook. [16]
+Visibility rules is a rulebook.
 Visibility rules have outcomes there is sufficient light (failure) and there is
 insufficient light (success).
 
 @ Two rulebooks govern the processing of asking other people to carry out actions:
 
 =
-Persuasion rules is a rulebook. [17]
+Persuasion rules is a rulebook.
 Persuasion rules have outcomes persuasion succeeds (success) and persuasion fails (failure).
-Unsuccessful attempt by is a rulebook. [18]
+Unsuccessful attempt by is a rulebook.
 
 @ Next, the six classic rulebooks best known to users of Inform. It's
 perhaps an unfortunate point of the design that there are so many as six:
@@ -463,12 +463,12 @@ or dropping the perch" which can't be filed anywhere in our scheme, and so
 have to be forbidden.
 
 =
-Before rules is a rulebook. [19]
-Instead rules is a rulebook. [20]
-Check rules is a rulebook. [21]
-Carry out rules is a rulebook. [22]
-After rules is a rulebook. [23]
-Report rules is a rulebook. [24]
+Before rules is a rulebook.
+Instead rules is a rulebook.
+Check rules is a rulebook.
+Carry out rules is a rulebook.
+After rules is a rulebook.
+Report rules is a rulebook.
 
 @ The next rulebook in this roundup is one used for parsing ambiguous
 commands during play. This looks like the job of an activity rather than a
@@ -477,45 +477,24 @@ scale of responses, rather than wanting something to be done, and (ii) it
 doesn't really make any sense to split that question into a before, for and
 after stage. So this is a named rulebook instead.
 
+"Does the player mean" is essentially a front end for the I6 parser's
+|ChooseObjects| entry point, which relies on numerical scores to assess the
+likelihood of possible choices. To facilitate that, the I7 compiler recognises
+these five outcome names and translates them into the Inter constants
+|RBNO4_OUTCOME|, |RBNO3_OUTCOME|, ..., |RBNO0_OUTCOME| respectively. So don't
+change the names of these outcomes.
+
 =
-The does the player mean rules is a rulebook. [25]
+The does the player mean rules is a rulebook.
 The does the player mean rules have outcomes it is very likely, it is likely, it is possible,
 it is unlikely and it is very unlikely.
-
-@ "Does the player mean" is essentially a front end for the I6 parser's
-|ChooseObjects| entry point, which relies on numerical scores to assess the
-likelihood of possible choices. That makes it useful to have an I6 wrapper
-function which consults the "does the player mean" rulebook, translates
-the named outcomes into a score from 0 to 4, and returns that. Note that
-if the rulebook makes no decision and has no outcome, we return the
-middle-of-the-road value 2. (This wrapper routine looks as if it belongs
-in the template I6 layer, but having it here allows it to use the |(+| and
-|+)| escapes.)
-
-=
-Include (-
-	[ CheckDPMR result sinp1 sinp2 rv;
-		sinp1 = inp1; sinp2 = inp2; inp1 = noun; inp2 = second;
-		rv = FollowRulebook( (+does the player mean rules+) );
-		inp1 = sinp1; inp2 = sinp2;
-		if ((rv) && RulebookSucceeded()) {
-			result = ResultOfRule();
-			if (result == (+ it is very likely outcome +) ) return 4;
-			if (result == (+ it is likely outcome +) ) return 3;
-			if (result == (+ it is possible outcome +) ) return 2;
-			if (result == (+ it is unlikely outcome +) ) return 1;
-			if (result == (+ it is very unlikely outcome +) ) return 0;
-		}
-		return 2;
-	];
--).
 
 @ The following rulebook was added at the (implied) suggestion of John
 Clemens, whose Consolidated Multiple Actions extension made use of
 something similar.
 
 =
-The multiple action processing rules is a rulebook. [26]
+The multiple action processing rules is a rulebook.
 
 @ And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities

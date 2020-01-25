@@ -797,6 +797,11 @@ void Hierarchy::establish(inter_tree *I) {
 @h Rulebooks.
 
 @e EMPTY_RULEBOOK_INAME_HL
+@e RBNO4_INAME_HL
+@e RBNO3_INAME_HL
+@e RBNO2_INAME_HL
+@e RBNO1_INAME_HL
+@e RBNO0_INAME_HL
 
 @e OUTCOMES_HAP
 @e OUTCOME_NAME_HMD
@@ -817,6 +822,11 @@ void Hierarchy::establish(inter_tree *I) {
 
 	location_requirement generic_rulebooks = HierarchyLocations::generic_submodule(I, rulebooks);
 	HierarchyLocations::func(I, EMPTY_RULEBOOK_INAME_HL, I"empty_fn", Translation::to(I"EMPTY_RULEBOOK"), generic_rulebooks);
+	HierarchyLocations::con(I, RBNO4_INAME_HL, I"RBNO4_OUTCOME", Translation::uniqued(), generic_rulebooks);
+	HierarchyLocations::con(I, RBNO3_INAME_HL, I"RBNO3_OUTCOME", Translation::uniqued(), generic_rulebooks);
+	HierarchyLocations::con(I, RBNO2_INAME_HL, I"RBNO2_OUTCOME", Translation::uniqued(), generic_rulebooks);
+	HierarchyLocations::con(I, RBNO1_INAME_HL, I"RBNO1_OUTCOME", Translation::uniqued(), generic_rulebooks);
+	HierarchyLocations::con(I, RBNO0_INAME_HL, I"RBNO0_OUTCOME", Translation::uniqued(), generic_rulebooks);
 
 	location_requirement local_rulebooks = HierarchyLocations::local_submodule(rulebooks);
 	HierarchyLocations::ap(I, OUTCOMES_HAP, local_rulebooks, I"rulebook_outcome", I"_outcome");
