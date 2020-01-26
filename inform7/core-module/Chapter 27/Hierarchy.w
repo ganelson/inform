@@ -1009,7 +1009,7 @@ void Hierarchy::establish(inter_tree *I) {
 	location_requirement in_K_number = HierarchyLocations::this_exotic_package(K_NUMBER_XPACKAGE);
 	HierarchyLocations::func(I, DECIMAL_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"DECIMAL_TOKEN_INNER"), in_K_number);
 
-	if (basic_mode == FALSE) {
+	if (CoreMain::basic_mode() == FALSE) {
 		location_requirement in_K_time = HierarchyLocations::this_exotic_package(K_TIME_XPACKAGE);
 		HierarchyLocations::func(I, TIME_TOKEN_INNER_HL, I"gpr_fn", Translation::to(I"TIME_TOKEN_INNER"), in_K_time);
 	}

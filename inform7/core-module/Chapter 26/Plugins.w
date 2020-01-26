@@ -277,7 +277,7 @@ void Plugins::Manage::plug_in(wording W) {
 		if (P->set_number == IF_PLUGIN_NAME)
 			P->now_plugged_in = FALSE;
 	#endif
-	if (basic_mode) {
+	if (CoreMain::basic_mode()) {
 		LOOP_OVER(P, plugin)
 			if ((P->set_number == IF_PLUGIN_NAME) &&
 				(P->plugin_number != NAMING_PLUGIN_NAME))
@@ -288,7 +288,7 @@ void Plugins::Manage::plug_in(wording W) {
 		if (P->set_number == MULTIMEDIA_PLUGIN_NAME)
 			P->now_plugged_in = FALSE;
 	#endif
-	if (basic_mode) {
+	if (CoreMain::basic_mode()) {
 		LOOP_OVER(P, plugin)
 			if ((P->set_number == MULTIMEDIA_PLUGIN_NAME) &&
 				(P->plugin_number != GLULX_EXTERNAL_FILES_PLUGIN_NAME))
@@ -348,7 +348,8 @@ void Plugins::Manage::load_types(void) {
 			if (P->has_template_file) {
 				TEMPORARY_TEXT(segment_name);
 				WRITE_TO(segment_name, "%s.kindt", P->has_template_file);
-				I6T::interpret_kindt(segment_name);
+				LOG("Plugins say %S\n", segment_name);
+//				I6T::interpret_kindt(segment_name);
 				DISCARD_TEXT(segment_name);
 			}
 		}

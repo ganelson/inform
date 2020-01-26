@@ -35,8 +35,8 @@ and |+)| Inform 7 escapes (see below).
 @e I6TCODE_MODE
 
 =
-void I6T::interpret_kindt(text_stream *segment_name) {
-	I6T::interpreter_shared(KINDT_MODE, NULL, NULL, segment_name, -1, NULL);
+void I6T::interpret_kindt(filename *segment_file) {
+	I6T::interpreter_shared(KINDT_MODE, NULL, NULL, NULL, -1, segment_file);
 }
 
 void I6T::interpret_indext(filename *indext_file) {
@@ -132,6 +132,7 @@ file.
 	} else if (index_template) {
 		Input_File = Filenames::fopen(index_template, "r");
 		if (Input_File == NULL) {
+			LOG("Filename was %f\n", index_template);
 			Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
 				"I couldn't open the template file for the index.");
 		}

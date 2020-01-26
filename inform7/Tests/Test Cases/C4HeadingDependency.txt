@@ -16,12 +16,12 @@ Chapter 2
 
 A peach is in the Schoolhouse.
 
-Section of Minimal Grammar (in place of Section SR4/10 - Grammar in Standard Rules by Graham Nelson)
-
-Understand "take [things]" as taking.
-
 Section of Other Stuff
 
 A banana is in the Schoolhouse.
 
 Test me with "take peach / inv".
+
+Part of Minimal Grammar (in place of Part Six - Grammar in Standard Rules by Graham Nelson)
+
+Understand "take [things]" as taking.

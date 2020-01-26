@@ -78,6 +78,7 @@ int CoreMain::main(int argc, char *argv[]) {
 		if (census_mode)
 			Extensions::Files::handle_census_mode();
 		else {
+			@<Work out our kit requirements@>;
 			@<Perform lexical analysis@>;
 			@<Perform semantic analysis@>;
 			@<Read the assertions in two passes@>;
@@ -215,6 +216,9 @@ list is not exhaustive.
 	COMPILATION_STEP(Index::DocReferences::read_xrefs, I"Index::DocReferences::read_xrefs")
 	doc_references_top = lexer_wordcount - 1;
 
+@<Work out our kit requirements@> =
+	COMPILATION_STEP(Kits::determine, I"Kits::determine")
+
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Lexical analysis");
@@ -231,6 +235,7 @@ list is not exhaustive.
 
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Initialise language semantics");
 	if (problem_count == 0) Plugins::Manage::load_types();
+	if (problem_count == 0) Kits::load_types();
 	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
 	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
 
@@ -455,27 +460,8 @@ with "Output.i6t".
 			if (SS == NULL)
 				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
-			linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
-			inter_library *bi =
-				CodeGen::Libraries::find(I"basic_inform", NO_FS_AREAS, pathname_of_inter_resources);
-			if (bi == NULL)
-				Problems::Fatal::issue("The Basic Inform inter library cannot be found");
-			ADD_TO_LINKED_LIST(bi, inter_library, requirements_list);
-			if (basic_mode == FALSE) {
-				inter_library *stdr =
-					CodeGen::Libraries::find(I"standard_rules", NO_FS_AREAS, pathname_of_inter_resources);
-				if (stdr == NULL)
-					Problems::Fatal::issue("The Standard Rules inter library cannot be found");
-				ADD_TO_LINKED_LIST(stdr, inter_library, requirements_list);
-			} else {
-				inter_library *bix =
-					CodeGen::Libraries::find(I"basic_inform_extras", NO_FS_AREAS, pathname_of_inter_resources);
-				if (bix == NULL)
-					Problems::Fatal::issue("The The Basic Inform (extras) inter library cannot be found");
-				ADD_TO_LINKED_LIST(bix, inter_library, requirements_list);
-			}
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, NO_FS_AREAS, pathname_of_inter_resources, requirements_list);
+				SS, NO_FS_AREAS, pathname_of_inter_resources, Kits::list_of_inter_libraries());
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}

@@ -516,8 +516,11 @@ integration: \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
 		$(INTERNAL)/Inter/basic_inform/arch-32d.interb \
+		$(INTERNAL)/Inter/basic_inform/kit_metadata.txt \
 		$(INTERNAL)/Inter/basic_inform_extras/arch-32d.interb \
+		$(INTERNAL)/Inter/basic_inform_extras/kit_metadata.txt \
 		$(INTERNAL)/Inter/standard_rules/arch-32d.interb \
+		$(INTERNAL)/Inter/standard_rules/kit_metadata.txt \
 		$(INTERNAL)/Inter/default.interpipeline \
 		$(DOCEXEMPLUM) \
 		$(INTERNALEXEMPLUM) \
@@ -624,12 +627,32 @@ $(INTERNAL)/Inter/basic_inform/arch-32d.interb: \
 	inform7/Internal/Inter/basic_inform/arch-32d.interb
 	$(call transfer-i6-template)
 
+$(INTERNAL)/Inter/basic_inform/kinds/*.kindt: \
+	inform7/Internal/Inter/basic_inform/kinds/*.kindt
+	$(call transfer-i6-template)
+
 $(INTERNAL)/Inter/basic_inform_extras/arch-32d.interb: \
 	inform7/Internal/Inter/basic_inform_extras/arch-32d.interb
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/kinds/Core.kindt: \
-	inform7/Internal/Inter/kinds/*.kindt
+$(INTERNAL)/Inter/basic_inform_extras/kinds/*.kindt: \
+	inform7/Internal/Inter/basic_inform_extras/kinds/*.kindt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/basic_inform/kit_metadata.txt: \
+	inform7/Internal/Inter/basic_inform/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/basic_inform_extras/kit_metadata.txt: \
+	inform7/Internal/Inter/basic_inform_extras/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/standard_rules/kit_metadata.txt: \
+	inform7/Internal/Inter/standard_rules/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/standard_rules/kinds/*.kindt: \
+	inform7/Internal/Inter/standard_rules/kinds/*.kindt
 	$(call transfer-i6-template)
 
 # The I6 template could be tangled by inweb, but we don't do so: instead the
@@ -647,6 +670,7 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/Inter/standard_rules/Sections/*.i6t $(INTERNAL)/Inter/standard_rules/source
 	cp -R -f inform7/Internal/Inter/standard_rules/*.interb $(INTERNAL)/Inter/standard_rules
 	cp -R -f inform7/Internal/Inter/standard_rules/library_metadata.txt $(INTERNAL)/Inter/standard_rules
+	cp -R -f inform7/Internal/Inter/standard_rules/kit_metadata.txt $(INTERNAL)/Inter/standard_rules
 	mkdir -p "$(INTERNAL)/Inter/basic_inform"
 	mkdir -p "$(INTERNAL)/Inter/basic_inform/source"
 	rm -f $(INTERNAL)/Inter/basic_inform/Sections/*.i6t
@@ -654,6 +678,7 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/Inter/basic_inform/Sections/*.i6t $(INTERNAL)/Inter/basic_inform/source
 	cp -R -f inform7/Internal/Inter/basic_inform/*.interb $(INTERNAL)/Inter/basic_inform
 	cp -R -f inform7/Internal/Inter/basic_inform/library_metadata.txt $(INTERNAL)/Inter/basic_inform
+	cp -R -f inform7/Internal/Inter/basic_inform/kit_metadata.txt $(INTERNAL)/Inter/basic_inform
 	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras"
 	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras/source"
 	rm -f $(INTERNAL)/Inter/basic_inform_extras/Sections/*.i6t
@@ -661,9 +686,13 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t $(INTERNAL)/Inter/basic_inform_extras/source
 	cp -R -f inform7/Internal/Inter/basic_inform_extras/*.interb $(INTERNAL)/Inter/basic_inform_extras
 	cp -R -f inform7/Internal/Inter/basic_inform_extras/library_metadata.txt $(INTERNAL)/Inter/basic_inform_extras
-	mkdir -p "$(INTERNAL)/Inter/kinds"
-	rm -f $(INTERNAL)/Inter/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/kinds/*.kindt $(INTERNAL)/Inter/kinds
+	cp -R -f inform7/Internal/Inter/basic_inform_extras/kit_metadata.txt $(INTERNAL)/Inter/basic_inform_extras
+	mkdir -p "$(INTERNAL)/Inter/basic_inform/kinds"
+	rm -f $(INTERNAL)/Inter/basic_inform/kinds/*.kindt
+	cp -R -f inform7/Internal/Inter/basic_inform/kinds/*.kindt $(INTERNAL)/Inter/basic_inform/kinds
+	mkdir -p "$(INTERNAL)/Inter/standard_rules/kinds"
+	rm -f $(INTERNAL)/Inter/standard_rules/kinds/*.kindt
+	cp -R -f inform7/Internal/Inter/standard_rules/kinds/*.kindt $(INTERNAL)/Inter/standard_rules/kinds
 endef
 
 $(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline

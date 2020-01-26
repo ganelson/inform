@@ -8,19 +8,8 @@ or from the main source text file, and fed into the lexer.
 @ The source text is drawn almost entirely from the primary source file and
 the extensions, but Inform does also inject small amounts of source text of
 its own (for instance, when a new kind is created, the kind interpreter
-does this).
-
-In particular, every source text read into Inform is automatically prefixed by
-the following eight words -- if Inform were a computer, this would be the BIOS
-which boots up its operating system. (In that the rest of the creation of the
-I7 world model is handled by source text in the Standard Rules.)
-
-Because of this mandatory insertion, one extension, the Standard Rules, is
-compulsorily included in every run. So there will certainly be at least two
-files of source text to be read, and quite possibly more.
-
-@d MANDATORY_INSERTED_TEXT L"Include Basic Inform by Graham Nelson. Include the Standard Rules by Graham Nelson.\n\n"
-@d BASIC_MODE_INSERTED_TEXT L"Include Basic Inform by Graham Nelson.\n\n"
+does this), and some extensions, such as Basic Inform, need to be given
+inclusion sentences -- see Kits.
 
 =
 source_file *primary_source_file = NULL; /* first to be opened */
@@ -40,10 +29,7 @@ int SourceFiles::read_extension_source_text(extension_file *EF,
 }
 
 void SourceFiles::read_primary_source_text(void) {
-	if (basic_mode)
-		Feeds::feed_text(BASIC_MODE_INSERTED_TEXT);
-	else
-		Feeds::feed_text(MANDATORY_INSERTED_TEXT);
+	Kits::feed_early_source_text();
 	SourceFiles::read_further_mandatory_text();
 	SourceFiles::read_file(filename_of_i7_source, I"your source text", NULL, FALSE);
 }

@@ -23,6 +23,11 @@ inter_library *CodeGen::Libraries::new(pathname *P) {
 	return lib;
 }
 
+pathname *CodeGen::Libraries::location(inter_library *lib) {
+	if (lib == NULL) internal_error("no library");
+	return lib->location;
+}
+
 text_stream *CodeGen::Libraries::URL(inter_library *lib) {
 	if (lib == NULL) return NULL;
 	return lib->attachment_point;

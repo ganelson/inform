@@ -40,6 +40,7 @@
   property <= value, word value
   table column <= value, word value
   combination value and value <= value, pointer value, sayable value, combined value of any arity
+  external file <= value, word value, enumerated value, sayable value
   described action <= value, word value
   action <= value, pointer value, sayable value
   action name <= value, word value, sayable value
@@ -47,7 +48,6 @@
   scene <= value, word value, enumerated value, sayable value
   figure name <= value, word value, enumerated value, sayable value
   sound name <= value, word value, enumerated value, sayable value
-  external file <= value, word value, enumerated value, sayable value
   natural language <= value, word value, enumerated value, sayable value
   room <= value, word value, sayable value, object
   thing <= value, word value, sayable value, object
@@ -114,6 +114,7 @@
   property ->
   table column ->
   combination value and value ->
+  external file ->
   described action ->
   action ->
   action name ->
@@ -121,7 +122,6 @@
   scene ->
   figure name ->
   sound name ->
-  external file ->
   natural language ->
   room -> object ->
   thing -> object ->

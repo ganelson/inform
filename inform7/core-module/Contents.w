@@ -9,6 +9,7 @@ Chapter 1: Configuration and Control
 execution, and which reads command-line switches supplied by its customers."
 	Main Routine
 	Core Module
+	Kits
 	Progress Percentages
 	Where Everything Lives
 

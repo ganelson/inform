@@ -1,0 +1,5 @@
+priority: 0
+insert: Include Basic Inform by Graham Nelson.
+dependency: if not standard_rules then basic_inform_extras
+kinds: Core.kindt
+kinds: Files.kindt
