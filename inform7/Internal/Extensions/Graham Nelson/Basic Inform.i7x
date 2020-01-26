@@ -82,8 +82,6 @@ Use index figure thumbnails of at least 50 translates as
 
 Use dynamic memory allocation of at least 8192.
 
-Use interactive fiction language elements. Use multimedia language elements.
-
 Use ALLOC_CHUNK_SIZE of 32000.
 Use MAX_ARRAYS of 10000.
 Use MAX_CLASSES of 200.

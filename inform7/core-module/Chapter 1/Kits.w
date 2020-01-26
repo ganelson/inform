@@ -11,6 +11,7 @@ typedef struct inform_kit {
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
 	struct linked_list *kind_definitions; /* of |text_stream| */
+	struct linked_list *activations; /* of |element_activation| */
 	int priority;
 	MEMORY_MANAGEMENT
 } inform_kit;
@@ -21,6 +22,12 @@ typedef struct inform_kit_ittt {
 	struct text_stream *then_name;
 	MEMORY_MANAGEMENT
 } inform_kit_ittt;
+
+typedef struct element_activation {
+	struct text_stream *element_name;
+	int activate;
+	MEMORY_MANAGEMENT
+} element_activation;
 
 inform_kit *Kits::load(text_stream *name) {
 	inform_kit *K = CREATE(inform_kit);
@@ -34,6 +41,7 @@ inform_kit *Kits::load(text_stream *name) {
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
 	K->kind_definitions = NEW_LINKED_LIST(text_stream);
+	K->activations = NEW_LINKED_LIST(element_activation);
 	
 	pathname *P = CodeGen::Libraries::location(K->lib);
 	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
@@ -51,6 +59,13 @@ void Kits::dependency(inform_kit *K, text_stream *if_text, int inc, text_stream 
 	ADD_TO_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt);
 }
 
+void Kits::activation(inform_kit *K, text_stream *name, int act) {
+	element_activation *EA = CREATE(element_activation);
+	EA->element_name = Str::duplicate(name);
+	EA->activate = act;
+	ADD_TO_LINKED_LIST(EA, element_activation, K->activations);
+}
+
 void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state) {
 	inform_kit *K = (inform_kit *) state;
 	match_results mr = Regexp::create_mr();
@@ -63,6 +78,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		K->priority = Str::atoi(mr.exp[0], 0);
 	} else if (Regexp::match(&mr, text, L"kinds: (%C+)")) {
 		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->kind_definitions);
+	} else if (Regexp::match(&mr, text, L"activate: (%c+)")) {
+		Kits::activation(K, mr.exp[0], TRUE);
+	} else if (Regexp::match(&mr, text, L"deactivate: (%c+)")) {
+		Kits::activation(K, mr.exp[0], FALSE);
 	} else if (Regexp::match(&mr, text, L"dependency: if (%C+) then (%C+)")) {
 		Kits::dependency(K, mr.exp[0], TRUE, mr.exp[1]);
 	} else if (Regexp::match(&mr, text, L"dependency: if not (%C+) then (%C+)")) {
@@ -129,6 +148,28 @@ void Kits::load_types(void) {
 			I6T::interpret_kindt(F);
 		}
 	}
+}
+
+void Kits::activate_plugins(void) {
+	LOG("Activate plugins...\n");
+	Plugins::Manage::activate(CORE_PLUGIN_NAME);
+	inform_kit *K;
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
+		element_activation *EA;
+		LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
+			int S = Plugins::Manage::parse(EA->element_name);
+			if (S == -1)
+				Problems::Issue::sentence_problem(_p_(Untestable),
+					"one of the Inform kits made reference to a language segment which does not exist",
+					"which strongly suggests that Inform is not properly installed.");
+			if (S >= 0) {
+				if (EA->activate) Plugins::Manage::activate(S);
+				else Plugins::Manage::deactivate(S);
+			}
+		}
+	}
+	Plugins::Manage::show(DL, "Included", TRUE);
+	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
 
 @ In particular, every source text read into Inform is automatically prefixed by

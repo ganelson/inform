@@ -8,7 +8,7 @@ We first extend our suite of verbs and meanings to cover standard
 world-modelling terms.
 
 =
-Part Two - The Physical World Model (for interactive fiction language element only)
+Part Two - The Physical World Model
 
 Chapter 1 - Verbs and Relations
 

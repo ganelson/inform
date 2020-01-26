@@ -18,9 +18,6 @@ typedef struct plugin {
 	void *starter_routine;
 	int now_plugged_in;
 	int stores_data;
-	int has_been_set_explicitly;
-	char *has_template_file;
-	struct inter_name *IFDEF_iname;
 	MEMORY_MANAGEMENT
 } plugin;
 
@@ -108,9 +105,18 @@ word_assemblage Plugins::Manage::wording(int N) {
 	P->plugin_number = NA;
 	P->set_name = Plugins::Manage::wording(NA2);
 	P->set_number = NA2;
-	P->has_template_file = NULL;
-	P->IFDEF_iname = NULL;
-	P->has_been_set_explicitly = FALSE;
+	registered_plugins[NA] = P;
+	if (P->allocation_id >= MAX_PLUGINS) internal_error("Too many plugins");
+
+@d CREATE_STARTLESS_PLUGIN(P, mem, NA, NA2)
+	P = CREATE(plugin);
+	P->starter_routine = NULL;
+	P->now_plugged_in = FALSE;
+	P->stores_data = mem;
+	P->plugin_name = Plugins::Manage::wording(NA);
+	P->plugin_number = NA;
+	P->set_name = Plugins::Manage::wording(NA2);
+	P->set_number = NA2;
 	registered_plugins[NA] = P;
 	if (P->allocation_id >= MAX_PLUGINS) internal_error("Too many plugins");
 
@@ -143,26 +149,16 @@ word_assemblage Plugins::Manage::wording(int N) {
 void Plugins::Manage::start(void) {
 	Plugins::Call::initialise_calls();
 
-	CREATE_PLUGIN(core_plugin, Plugins::Manage::start_core, FALSE, CORE_PLUGIN_NAME, CORE_PLUGIN_NAME);
-	core_plugin->now_plugged_in = TRUE;
-	core_plugin->has_template_file = "Core";
+	CREATE_STARTLESS_PLUGIN(core_plugin, FALSE, CORE_PLUGIN_NAME, CORE_PLUGIN_NAME);
+	CREATE_STARTLESS_PLUGIN(IF_plugin, FALSE, IF_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_STARTLESS_PLUGIN(multimedia_plugin, FALSE, MULTIMEDIA_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
+
 	CREATE_PLUGIN(counting_plugin, PL::Counting::start, TRUE, INSTANCE_COUNTING_PLUGIN_NAME, CORE_PLUGIN_NAME);
-	counting_plugin->now_plugged_in = TRUE;
-
-	CREATE_PLUGIN(IF_plugin, Plugins::Manage::deactivated_start, FALSE, IF_PLUGIN_NAME, IF_PLUGIN_NAME);
-
-	CREATE_PLUGIN(multimedia_plugin, Plugins::Manage::deactivated_start, FALSE, MULTIMEDIA_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-
-	#ifndef IF_MODULE
-	IF_plugin->now_plugged_in = FALSE;
-	#endif
 
 	#ifdef IF_MODULE
-	IF_plugin->now_plugged_in = TRUE;
-	CREATE_PLUGIN(naming_plugin, PL::Naming::start, FALSE, NAMING_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_PLUGIN(naming_plugin, PL::Naming::start, FALSE, NAMING_PLUGIN_NAME, CORE_PLUGIN_NAME);
 	CREATE_PLUGIN(parsing_plugin, PL::Parsing::Visibility::start, FALSE, COMMAND_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(actions_plugin, PL::Actions::start, FALSE, ACTIONS_PLUGIN_NAME, IF_PLUGIN_NAME);
-	actions_plugin->has_template_file = "Actions";
 	CREATE_PLUGIN(spatial_plugin, PL::Spatial::start, TRUE, SPATIAL_MODEL_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(map_plugin, PL::Map::start, FALSE, MAPPING_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(persons_plugin, PL::Persons::start, FALSE, PERSONS_PLUGIN_NAME, IF_PLUGIN_NAME);
@@ -172,39 +168,22 @@ void Plugins::Manage::start(void) {
 	CREATE_PLUGIN(backdrops_plugin, PL::Backdrops::start, FALSE, BACKDROPS_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(devices_plugin, PL::Devices::start, FALSE, DEVICES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(showme_plugin, PL::Showme::start, FALSE, SHOWME_PLUGIN_NAME, IF_PLUGIN_NAME);
-
 	CREATE_PLUGIN(times_plugin, PL::TimesOfDay::start, FALSE, TIMES_OF_DAY_PLUGIN_NAME, IF_PLUGIN_NAME);
-	times_plugin->has_template_file = "Times";
 	CREATE_PLUGIN(scenes_plugin, PL::Scenes::start, FALSE, SCENES_PLUGIN_NAME, IF_PLUGIN_NAME);
-	scenes_plugin->has_template_file = "Scenes";
 	CREATE_PLUGIN(bibliographic_plugin, PL::Bibliographic::start, FALSE, BIBLIOGRAPHIC_DATA_PLUGIN_NAME, IF_PLUGIN_NAME);
 	#endif
 
 	#ifdef MULTIMEDIA_MODULE
-	multimedia_plugin->now_plugged_in = TRUE;
-
 	CREATE_PLUGIN(figures_plugin, PL::Figures::start, FALSE, FIGURES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-	figures_plugin->has_template_file = "Figures";
-
 	CREATE_PLUGIN(sounds_plugin, PL::Sounds::start, FALSE, SOUNDS_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-	sounds_plugin->has_template_file = "Sounds";
-
 	CREATE_PLUGIN(files_plugin, PL::Files::start, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-	files_plugin->has_template_file = "Files";
 	#endif
 
 	#ifndef MULTIMEDIA_MODULE
-	multimedia_plugin->now_plugged_in = FALSE;
-	CREATE_PLUGIN(figures_plugin, Plugins::Manage::deactivated_start, FALSE, FIGURES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-	CREATE_PLUGIN(sounds_plugin, Plugins::Manage::deactivated_start, FALSE, SOUNDS_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
-	CREATE_PLUGIN(files_plugin, Plugins::Manage::deactivated_start, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
+	CREATE_STARTLESS_PLUGIN(figures_plugin, FALSE, FIGURES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
+	CREATE_STARTLESS_PLUGIN(sounds_plugin, FALSE, SOUNDS_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
+	CREATE_STARTLESS_PLUGIN(files_plugin, FALSE, GLULX_EXTERNAL_FILES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);
 	#endif
-}
-
-void Plugins::Manage::deactivated_start(void) {
-}
-
-void Plugins::Manage::start_core(void) {
 }
 
 @ Although most of Inform's brain remains the same, the outermost part can
@@ -227,84 +206,77 @@ unplugs all other plugins, reducing Inform to a non-IF language entirely.
 The subject noun phrase is an articled list, and each entry is parsed
 with the following.
 
-=
-<use-language-element-sentence-subject> ::=
-	no <plugin-name> |		==> PLUGIN_REMOVAL_OFFSET + R[1]
-	<plugin-name> |			==> R[1]
-	...						==> @<Issue PM_NoSuchLanguageElement problem@>
-
-@<Issue PM_NoSuchLanguageElement problem@> =
-	*X = -1;
-	Problems::Issue::sentence_problem(_p_(PM_NoSuchLanguageElement),
-		"this seems to ask to include or exclude a language feature which "
-		"I don't recognise the name of",
-		"possibly because you've borrowed it from a different version of "
-		"Inform, or forgotten what these are called? You can see the current "
-		"configuration at the bottom of the Contents index.");
-
 @
 
-@d PLUGIN_REMOVAL_OFFSET MAX_PLUGINS+1
-
 =
-void Plugins::Manage::plug_in(wording W) {
+int Plugins::Manage::parse(text_stream *S) {
+	if (Str::eq(S, I"core")) return CORE_PLUGIN_NAME;
+	if (Str::eq(S, I"instance counting")) return INSTANCE_COUNTING_PLUGIN_NAME;
+	if (Str::eq(S, I"interactive fiction")) return IF_PLUGIN_NAME;
+	if (Str::eq(S, I"multimedia")) return MULTIMEDIA_PLUGIN_NAME;
+	if (Str::eq(S, I"naming")) return NAMING_PLUGIN_NAME;
+	if (Str::eq(S, I"command")) return COMMAND_PLUGIN_NAME;
+	if (Str::eq(S, I"actions")) return ACTIONS_PLUGIN_NAME;
+	if (Str::eq(S, I"spatial model")) return SPATIAL_MODEL_PLUGIN_NAME;
+	if (Str::eq(S, I"mapping")) return MAPPING_PLUGIN_NAME;
+	if (Str::eq(S, I"persons")) return PERSONS_PLUGIN_NAME;
+	if (Str::eq(S, I"player")) return PLAYER_PLUGIN_NAME;
+	if (Str::eq(S, I"regions")) return REGIONS_PLUGIN_NAME;
+	if (Str::eq(S, I"backdrops")) return BACKDROPS_PLUGIN_NAME;
+	if (Str::eq(S, I"devices")) return DEVICES_PLUGIN_NAME;
+	if (Str::eq(S, I"showme")) return SHOWME_PLUGIN_NAME;
+	if (Str::eq(S, I"times of day")) return TIMES_OF_DAY_PLUGIN_NAME;
+	if (Str::eq(S, I"scenes")) return SCENES_PLUGIN_NAME;
+	if (Str::eq(S, I"figures")) return FIGURES_PLUGIN_NAME;
+	if (Str::eq(S, I"sounds")) return SOUNDS_PLUGIN_NAME;
+	if (Str::eq(S, I"glulx external files")) return GLULX_EXTERNAL_FILES_PLUGIN_NAME;
+	if (Str::eq(S, I"bibliographic data")) return BIBLIOGRAPHIC_DATA_PLUGIN_NAME;
+	if (Str::eq(S, I"scoring")) return SCORE_PLUGIN_NAME;
+	return -1;
+}
+
+void Plugins::Manage::activate(int N) {
+	if (N < 0) return;
 	plugin *P;
-	if (<use-language-element-sentence-subject>(W)) {
-		int plugin_number = <<r>>;
-		int new_state = TRUE;
-		if (plugin_number >= PLUGIN_REMOVAL_OFFSET) {
-			new_state = FALSE;
-			plugin_number -= PLUGIN_REMOVAL_OFFSET;
-		}
-		LOOP_OVER(P, plugin) {
-			int definiteness = UNKNOWN_CE;
-			if (P->plugin_number == plugin_number) definiteness = CERTAIN_CE;
-			if (P->set_number == plugin_number) definiteness = LIKELY_CE;
-			if (definiteness != UNKNOWN_CE) {
-				if ((definiteness == LIKELY_CE) && (P->has_been_set_explicitly)) continue;
-				if (P == core_plugin) {
-					if (new_state == FALSE) @<Issue problem for trying to remove the core@>;
-					plugin *Q;
-					LOOP_OVER(Q, plugin) Q->now_plugged_in = FALSE;
-				}
-				P->now_plugged_in = new_state;
-				P->has_been_set_explicitly = TRUE;
-			}
-		}
-	}
+	LOOP_OVER(P, plugin)
+		if ((P->set_number == N) || (P->plugin_number == N))
+			P->now_plugged_in = TRUE;
 	#ifndef IF_MODULE
-	LOOP_OVER(P, plugin)
-		if (P->set_number == IF_PLUGIN_NAME)
-			P->now_plugged_in = FALSE;
+	Plugins::Manage::deactivate(IF_PLUGIN_NAME)
 	#endif
-	if (CoreMain::basic_mode()) {
-		LOOP_OVER(P, plugin)
-			if ((P->set_number == IF_PLUGIN_NAME) &&
-				(P->plugin_number != NAMING_PLUGIN_NAME))
-				P->now_plugged_in = FALSE;
-	}
 	#ifndef MULTIMEDIA_MODULE
-	LOOP_OVER(P, plugin)
-		if (P->set_number == MULTIMEDIA_PLUGIN_NAME)
-			P->now_plugged_in = FALSE;
+	Plugins::Manage::deactivate(MULTIMEDIA_PLUGIN_NAME)
 	#endif
-	if (CoreMain::basic_mode()) {
-		LOOP_OVER(P, plugin)
-			if ((P->set_number == MULTIMEDIA_PLUGIN_NAME) &&
-				(P->plugin_number != GLULX_EXTERNAL_FILES_PLUGIN_NAME))
-				P->now_plugged_in = FALSE;
-	}
+}
+
+void Plugins::Manage::deactivate(int N) {
+	if (N < 0) return;
+	plugin *P;
+	LOOP_OVER(P, plugin)
+		if ((P->set_number == N) || (P->plugin_number == N)) {
+			if (P->set_number == CORE_PLUGIN_NAME) @<Issue problem for trying to remove the core@>
+			else P->now_plugged_in = FALSE;
+		}
 }
 
 @<Issue problem for trying to remove the core@> =
-	Problems::Issue::sentence_problem(_p_(PM_DontRemoveTheCore),
+	Problems::Issue::sentence_problem(_p_(Untestable),
 		"the core of the Inform language cannot be removed",
 		"because then what should we do? What should we ever do?");
 	return;
 
-@ And, we're as good as our word because --
+@ It's kind of incredible that C's grammar for round brackets is unambiguous.
 
 =
+void Plugins::Manage::start_plugins(void) {
+	plugin *P;
+	LOOP_OVER(P, plugin)
+		if (P->now_plugged_in) {
+			void (*start)() = (void (*)()) P->starter_routine;
+			if (start) (*start)();
+		}
+}
+
 void Plugins::Manage::show_configuration(OUTPUT_STREAM) {
 	HTML_OPEN("p");
 	Index::anchor(OUT, I"CONFIG");
@@ -325,34 +297,6 @@ void Plugins::Manage::show(OUTPUT_STREAM, char *label, int state) {
 	}
 	if (c == 0) WRITE("<i>none</i>");
 	WRITE(".\n");
-}
-
-@ Similarly:
-
-=
-void Plugins::Manage::define_IFDEF_symbols(void) {
-	plugin *P;
-	LOOP_OVER(P, plugin)
-		if ((P->now_plugged_in) && (P->IFDEF_iname)) {
-			Emit::named_numeric_constant(P->IFDEF_iname, 0);
-		}
-}
-
-@ =
-void Plugins::Manage::load_types(void) {
-	plugin *P;
-	LOOP_OVER(P, plugin)
-		if (P->now_plugged_in) {
-			void (*start)() = (void (*)()) P->starter_routine;
-			(*start)();
-			if (P->has_template_file) {
-				TEMPORARY_TEXT(segment_name);
-				WRITE_TO(segment_name, "%s.kindt", P->has_template_file);
-				LOG("Plugins say %S\n", segment_name);
-//				I6T::interpret_kindt(segment_name);
-				DISCARD_TEXT(segment_name);
-			}
-		}
 }
 
 int Plugins::Manage::plugged_in(plugin *P) {

@@ -1,3 +1,0 @@
-Use no coreasdfa language element.
-
-Home is a room.

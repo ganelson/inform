@@ -5,3 +5,5 @@ kinds: Times.kindt
 kinds: Scenes.kindt
 kinds: Figures.kindt
 kinds: Sounds.kindt
+activate: interactive fiction
+activate: multimedia

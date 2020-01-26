@@ -48,7 +48,9 @@ void StructuralSentences::new_beginend(parse_node *new, extension_file *ef) {
 
 =
 void StructuralSentences::new_language(wording W) {
-	Plugins::Manage::plug_in(W);
+	Problems::Issue::sentence_problem(_p_(PM_UseElementWithdrawn),
+		"the ability to activate or deactivate compiler elements in source text has been withdrawn",
+		"in favour of a new system with Inform kits.");
 }
 
 @

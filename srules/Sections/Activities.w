@@ -13,7 +13,7 @@ completely described in the Inform documentation, so the only notes here
 concern implementation.
 
 =
-Part Four - Activities (for interactive fiction language element only)
+Part Four - Activities
 
 @h Issuing responses.
 Responses are textual replies made by rules, and while one could imagine

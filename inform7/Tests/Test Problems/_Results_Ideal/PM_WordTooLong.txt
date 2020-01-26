@@ -11,7 +11,5 @@ Problem__ PM_WordTooLong
     bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk,
     creation's thunderclap from Finnegan's Wake. And both of those words are
     fine.)
-  >--> An internal error has occurred: one lexer feeder interrupted another.
-    The error was detected at line 568 of "inform7/words-module/Chapter
-    3/Lexer.w". This should never happen, and I am now halting in abject
-    failure.
+I've now read your source text, which is 4 words long.
+Inform 7 has finished: 6 centiseconds used.

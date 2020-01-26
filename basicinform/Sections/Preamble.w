@@ -150,13 +150,6 @@ Use index figure thumbnails of at least 50 translates as
 
 Use dynamic memory allocation of at least 8192.
 
-@ Inform source text has a core of basic computational abilities, and then
-a whole set of additional elements to handle IF. We want all of those to be
-used, so:
-
-=
-Use interactive fiction language elements. Use multimedia language elements.
-
 @ Some Inform 7 projects are rather heavy-duty by the expectations of the
 Inform 6 compiler (which it uses as a code-generator): I6 was written fifteen
 years earlier, when computers were unimaginably smaller and slower. So many

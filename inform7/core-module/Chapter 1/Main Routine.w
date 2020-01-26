@@ -228,14 +228,15 @@ list is not exhaustive.
 @<Perform semantic analysis@> =
 	ProgressBar::update_progress_bar(1, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Semantic analysis Ia");
+	COMPILATION_STEP(Kits::activate_plugins, I"Kits::activate_plugins");
 	COMPILATION_STEP(ParseTreeUsage::plant_parse_tree, I"ParseTreeUsage::plant_parse_tree")
 	COMPILATION_STEP(StructuralSentences::break_source, I"StructuralSentences::break_source")
 	COMPILATION_STEP(Extensions::Inclusion::traverse, I"Extensions::Inclusion::traverse")
 	COMPILATION_STEP(Sentences::Headings::satisfy_dependencies, I"Sentences::Headings::satisfy_dependencies")
 
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Initialise language semantics");
-	if (problem_count == 0) Plugins::Manage::load_types();
-	if (problem_count == 0) Kits::load_types();
+	COMPILATION_STEP(Plugins::Manage::start_plugins, I"Plugins::Manage::start_plugins");
+	COMPILATION_STEP(Kits::load_types, I"Kits::load_types");
 	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
 	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
 
@@ -315,7 +316,6 @@ with "Output.i6t".
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Generating inter");
 	COMPILATION_STEP(UseOptions::compile_icl_commands, I"UseOptions::compile_icl_commands")
 	COMPILATION_STEP(VirtualMachines::compile_build_number, I"VirtualMachines::compile_build_number")
-	COMPILATION_STEP(Plugins::Manage::define_IFDEF_symbols, I"Plugins::Manage::define_IFDEF_symbols")
 	COMPILATION_STEP(PL::Bibliographic::compile_constants, I"PL::Bibliographic::compile_constants")
 	COMPILATION_STEP(Extensions::Files::ShowExtensionVersions_routine, I"Extensions::Files::ShowExtensionVersions_routine")
 	COMPILATION_STEP(Kinds::Constructors::compile_I6_constants, I"Kinds::Constructors::compile_I6_constants")

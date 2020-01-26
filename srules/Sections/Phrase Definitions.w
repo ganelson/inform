@@ -12,7 +12,7 @@ Part Seven - Phrasebook
 
 Chapter 1 - Saying
 
-Section 1 - Time Values (for interactive fiction language element only)
+Section 1 - Time Values
 
 To say (something - time) in words
 	(documented at phs_timewords):
@@ -274,7 +274,7 @@ silently, then any action $X$ itself tries should also be tried silently.
 =
 Chapter 3 - Actions, activities and rules
 
-Section 1 - Trying actions (for interactive fiction language element only)
+Section 1 - Trying actions
 
 To try (S - action)
 	(documented at ph_try):
@@ -292,7 +292,7 @@ To decide whether the action is not silent:
 may be reimplemented using a verb "to require" at some future point.
 
 =
-Section 2 - Action requirements (for interactive fiction language element only)
+Section 2 - Action requirements
 
 To decide whether the action requires a touchable noun
 	(documented at ph_requirestouch):
@@ -342,7 +342,7 @@ the I6 routine for a rule will run into an |rtrue|. "Continue the action"
 prevents this.
 
 =
-Section 3 - Stop or continue (for interactive fiction language element only)
+Section 3 - Stop or continue
 
 To stop the action
 	(documented at ph_stopaction):
@@ -352,7 +352,7 @@ To continue the action
 	(- rfalse; -) - in to only.
 
 @ =
-Section 4 - Actions as values (for interactive fiction language element only)
+Section 4 - Actions as values
 
 To decide what action is the current action
 	(documented at ph_currentaction):
@@ -387,7 +387,7 @@ so as to avoid the verbs, but natural language just doesn't work that way.
 =
 Chapter 4 - The Model World
 
-Section 1 - Ending the story (for interactive fiction language element only)
+Section 1 - Ending the story
 
 To end the story
 	(documented at ph_end):
@@ -420,7 +420,7 @@ To resume the story
 @ Times of day.
 
 =
-Section 2 - Times of day (for interactive fiction language element only)
+Section 2 - Times of day
 
 To decide which number is the minutes part of (t - time)
 	(documented at ph_minspart):
@@ -457,7 +457,7 @@ To decide which time is (t - time) after (t2 - time)
 @ Durations are in effect casts from "number" to "time".
 
 =
-Section 3 - Durations (for interactive fiction language element only)
+Section 3 - Durations
 
 To decide which time is (n - number) minutes
 	(documented at ph_durationmins):
@@ -469,7 +469,7 @@ To decide which time is (n - number) hours
 @ Timed events.
 
 =
-Section 4 - Timed events (for interactive fiction language element only)
+Section 4 - Timed events
 
 To (R - rule) in (t - number) turn/turns from now
 	(documented at ph_turnsfromnow):
@@ -484,7 +484,7 @@ To (R - rule) in (t - time) from now
 @ Scenes.
 
 =
-Section 5 - Scenes (for interactive fiction language element only)
+Section 5 - Scenes
 
 To decide if (sc - scene) has happened
 	(documented at ph_hashappened):
@@ -502,7 +502,7 @@ To decide if (sc - scene) has not ended
 @ Timing of scenes.
 
 =
-Section 6 - Timing of scenes (for interactive fiction language element only)
+Section 6 - Timing of scenes
 
 To decide which time is the time since (sc - scene) began
 	(documented at ph_scenetimesincebegan):
@@ -520,7 +520,7 @@ To decide which time is the time when (sc - scene) ended
 @ Player's identity and location.
 
 =
-Section 7 - Player's identity and location (for interactive fiction language element only)
+Section 7 - Player's identity and location
 
 To decide whether in darkness
 	(documented at ph_indarkness):
@@ -529,7 +529,7 @@ To decide whether in darkness
 @ Moving and removing things.
 
 =
-Section 8 - Moving and removing things (for interactive fiction language element only)
+Section 8 - Moving and removing things
 
 To move (something - object) to (something else - object),
 	without printing a room description
@@ -550,7 +550,7 @@ To update backdrop positions
 @ The map.
 
 =
-Section 9 - The map (for interactive fiction language element only)
+Section 9 - The map
 
 To decide which room is location of (O - object)
 	(documented at ph_locationof):
@@ -586,7 +586,7 @@ To decide which room is the back side of (D - object)
 @ Route-finding.
 
 =
-Section 10 - Route-finding (for interactive fiction language element only)
+Section 10 - Route-finding
 
 To decide which object is best route from (R1 - object) to (R2 - object),
 	using doors or using even locked doors
@@ -610,7 +610,7 @@ To decide which number is number of moves from (R1 - object) to (R2 - object) th
 @ The object tree.
 
 =
-Section 11 - The object tree (for interactive fiction language element only)
+Section 11 - The object tree
 
 To decide which object is holder of (something - object)
 	(documented at ph_holder):
@@ -638,7 +638,7 @@ To decide whether player consents
 is a kind of value which doesm't exist in Basic Inform.
 
 =
-Section 2 - The player's command (for interactive fiction language element only)
+Section 2 - The player's command
 
 To decide if (S - a snippet) matches (T - a topic)
 	(documented at ph_snippetmatches):
@@ -656,7 +656,7 @@ To decide if (S - a snippet) does not include (T - a topic)
 @ Changing the player's command.
 
 =
-Section 3 - Changing the player's command (for interactive fiction language element only)
+Section 3 - Changing the player's command
 
 To change the text of the player's command to (T - text)
 	(documented at ph_changecommand):
@@ -674,7 +674,7 @@ To reject the player's command
 @ Scope and pronouns.
 
 =
-Section 4 - Scope and pronouns (for interactive fiction language element only)
+Section 4 - Scope and pronouns
 
 To place (O - an object) in scope, but not its contents
 	(documented at ph_placeinscope):
@@ -732,7 +732,7 @@ used only by extensions built in to Inform; they may change at any time.
 =
 Chapter 6 - Deprecated or private phrases - Unindexed
 
-Section 1 - Spatial modelling - Unindexed (for interactive fiction language element only)
+Section 1 - Spatial modelling - Unindexed
 
 @ These are actually sensible concepts in the world model, and could even
 be opened to public use, but they're quite complicated to explain.
@@ -767,7 +767,7 @@ stage only. A convenience, but also an anomaly, and let's not encourage
 its further use.
 
 =
-Section 2 - Room descriptions - Unindexed (for interactive fiction language element only)
+Section 2 - Room descriptions - Unindexed
 
 To produce a room description with going spacing conventions:
 	(- LookAfterGoing(); -).
@@ -797,7 +797,7 @@ mid-way, without causing spurious action failures. (There are better ways
 to make user-defined actions convert, and some of the examples show this.)
 
 =
-Section 3 - Action conversion - Unindexed (for interactive fiction language element only)
+Section 3 - Action conversion - Unindexed
 
 To convert to (AN - an action name) on (O - an object):
 	(- return GVS_Convert({AN},{O},0); -) - in to only.
@@ -813,7 +813,7 @@ light variables; the SR uses them carefully in situations where it's known to
 work out all right.
 
 =
-Section 4 - Surreptitious violation of invariants - Unindexed (for interactive fiction language element only)
+Section 4 - Surreptitious violation of invariants - Unindexed
 
 To surreptitiously move (something - object) to (something else - object):
 	(- move {something} to {something else}; -).
@@ -825,7 +825,7 @@ To surreptitiously reckon darkness:
 @ These are text substitutions needed to make the capitalised lists work.
 
 =
-Section 5 - Capitalised list-writing - Unindexed (for interactive fiction language element only)
+Section 5 - Capitalised list-writing - Unindexed
 
 To say list-writer list of marked objects: (-
 	 	WriteListOfMarkedObjects(ENGLISH_BIT);
@@ -838,7 +838,7 @@ To say list-writer articled list of marked objects: (-
 the sake of a string comparison, and not shown on screen.
 
 =
-Section 6 - Printing names - Unindexed (for interactive fiction language element only)
+Section 6 - Printing names - Unindexed
 
 To decide if expanding text for comparison purposes:
 	(- say__comp -).
@@ -848,7 +848,7 @@ one thinks it is. (And since first typing that sentence, I've forgotten
 when that would be.)
 
 =
-Section 7 - Command parsing - Unindexed (for interactive fiction language element only)
+Section 7 - Command parsing - Unindexed
 
 To decide whether the I6 parser is running multiple actions:
 	(- (multiflag==1) -).

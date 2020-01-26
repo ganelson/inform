@@ -18,7 +18,7 @@ has a "translates into I6" sentence.
 
 =
 
-Part Three - Variables and Rulebooks (for interactive fiction language element only)
+Part Three - Variables and Rulebooks
 
 Chapter 1 - Variables
 

@@ -12,7 +12,7 @@ and subheadings used in the Actions page of the Index.
 
 =
 
-Part Five - Actions (for interactive fiction language element only)
+Part Five - Actions
 
 Section 1 - Verbs needed for adaptive text
 

@@ -789,7 +789,6 @@ void NewVerbs::ConjugateVerb(void) {
 	if (meaning) {
 		BinaryPredicates::mark_as_needed(meaning);
 		rel_iname = meaning->bp_iname;
-		LOG("Meaningful! %n\n", rel_iname);
 	}
 
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -884,7 +883,6 @@ void NewVerbs::ConjugateVerb(void) {
 	if (meaning) {
 		BinaryPredicates::mark_as_needed(meaning);
 		rel_iname = meaning->bp_iname;
-		LOG("Meaningful 2! %n\n", rel_iname);
 	}
 
 

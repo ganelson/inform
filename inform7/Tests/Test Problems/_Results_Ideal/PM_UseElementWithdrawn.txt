@@ -1,0 +1,7 @@
+Inform 7.10.1 build 6Q21 has started.
+I've now read your source text, which is 5 words long.
+Problem__ PM_UseElementWithdrawn
+  >--> You wrote 'Use interactive fiction language elements' (source text, line 1):
+    but the ability to activate or deactivate compiler elements in source text
+    has been withdrawn, in favour of a new system with Inform kits.
+Inform 7 has finished: 5 centiseconds used.
