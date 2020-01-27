@@ -7,7 +7,8 @@ A kit is a combination of Inter code with an Inform 7 extension.
 =
 typedef struct inform_kit {
 	struct text_stream *name;
-	struct inter_library *lib;
+	struct pathname *location;
+	struct text_stream *attachment_point;
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
 	struct linked_list *kind_definitions; /* of |text_stream| */
@@ -33,14 +34,21 @@ typedef struct element_activation {
 	MEMORY_MANAGEMENT
 } element_activation;
 
-inform_kit *Kits::load(text_stream *name) {
+pathname *Kits::find(text_stream *name, int N, pathname **PP) {
+	for (int i=0; i<N; i++) {
+		pathname *P = Pathnames::subfolder(PP[i], name);
+		filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
+		if (TextFiles::exists(F)) return P;
+	}
+	return NULL;
+}
+
+inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	inform_kit *K = CREATE(inform_kit);
 	K->name = Str::duplicate(name);
-	K->lib = CodeGen::Libraries::find(name, NO_FS_AREAS, pathname_of_inter_resources);
-	if (K->lib == NULL) {
-		WRITE_TO(STDERR, "Cannot find kit '%S'\n", name);
-		Problems::Fatal::issue("Unable to find one of the Inform support kits");
-	}
+	K->attachment_point = Str::new();
+	WRITE_TO(K->attachment_point, "/main/%S", name);
+	K->location = P;
 	K->early_source = NULL;
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
@@ -51,12 +59,20 @@ inform_kit *Kits::load(text_stream *name) {
 	K->supports_natural_language = FALSE;
 	K->index_template = NULL;
 	
-	pathname *P = CodeGen::Libraries::location(K->lib);
-	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
+	filename *F = Filenames::in_folder(K->location, I"kit_metadata.txt");
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
 
 	return K;
+}
+
+inform_kit *Kits::load(text_stream *name) {
+	pathname *P = Kits::find(name, NO_FS_AREAS, pathname_of_inter_resources);
+	if (P == NULL) {
+		WRITE_TO(STDERR, "Cannot find kit '%S'\n", name);
+		Problems::Fatal::issue("Unable to find one of the Inform support kits");
+	}
+	return Kits::load_at(name, P);
 }
 
 void Kits::dependency(inform_kit *K, text_stream *if_text, int inc, text_stream *then_text) {
@@ -176,8 +192,7 @@ void Kits::load_types(void) {
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
 		text_stream *segment;
 		LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
-			pathname *P = CodeGen::Libraries::location(K->lib);
-			P = Pathnames::subfolder(P, I"kinds");
+			pathname *P = Pathnames::subfolder(K->location, I"kinds");
 			filename *F = Filenames::in_folder(P, segment);
 			LOG("Loading kinds definitions from %f\n", F);
 			I6T::interpret_kindt(F);
@@ -260,9 +275,11 @@ int Kits::number_of_early_fed_sentences(void) {
 
 linked_list *requirements_list = NULL;
 linked_list *Kits::list_of_inter_libraries(void) {
-	requirements_list = NEW_LINKED_LIST(inter_library);
+	requirements_list = NEW_LINKED_LIST(link_instruction);
 	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
-		ADD_TO_LINKED_LIST(K->lib, inter_library, requirements_list);
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
+		link_instruction *link = CodeGen::LinkInstructions::new(K->location, K->attachment_point);
+		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
+	}
 	return requirements_list;
 }

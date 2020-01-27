@@ -70,8 +70,6 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
 	if (template_action == ASSIMILATE_CLSW) {
-		inter_library *lib = CodeGen::Libraries::new(template_path);
-		text_stream *attach = CodeGen::Libraries::URL(lib);
 		text_stream *name = CodeGen::Architecture::leafname();
 		if (Str::len(name) == 0) Errors::fatal("no -architecture given");
 		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
@@ -90,9 +88,7 @@ int main(int argc, char **argv) {
 		DISCARD_TEXT(leafname);
 		DISCARD_TEXT(fullname);
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, attach, L"/main/(%c+)")) {
-			Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), mr.exp[0]);
-		}
+		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(template_path));
 		Regexp::dispose_of(&mr);
 	}
 

@@ -19,7 +19,7 @@ We need to itemise the structures we'll want to allocate:
 @e code_generation_target_MT
 @e code_generation_MT
 @e generated_segment_MT
-@e inter_library_MT
+@e link_instruction_MT
 
 @ With allocation functions:
 
@@ -34,7 +34,7 @@ ALLOCATE_INDIVIDUALLY(pipeline_stage)
 ALLOCATE_INDIVIDUALLY(code_generation_target)
 ALLOCATE_INDIVIDUALLY(code_generation)
 ALLOCATE_INDIVIDUALLY(generated_segment)
-ALLOCATE_INDIVIDUALLY(inter_library)
+ALLOCATE_INDIVIDUALLY(link_instruction)
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the

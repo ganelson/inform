@@ -8,7 +8,7 @@ Chapter 1: Setting Up
 	Codegen Module
 	Stages
 	Architecture
-	Libraries
+	Link Instructions
 	Pipelines
 
 Chapter 2: Miscellaneous Pipeline Stages
