@@ -51,8 +51,8 @@ and <code class="display"><span class="extract">+)</span></code> Inform 7 escape
 </pre>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_kindt</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment_name</span><span class="plain">) {</span>
-        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="constant">KINDT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_kindt</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">segment_file</span><span class="plain">) {</span>
+        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="constant">KINDT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">segment_file</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_indext</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">indext_file</span><span class="plain">) {</span>
@@ -67,9 +67,9 @@ and <code class="display"><span class="extract">+)</span></code> Inform 7 escape
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function I6T::interpret_kindt is used in 26/pl (<a href="26-pl.html#SP13">&#167;13</a>).</p>
+<p class="endnote">The function I6T::interpret_kindt is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function I6T::interpret_indext is used in 1/mr (<a href="1-mr.html#SP4_16">&#167;4.16</a>).</p>
+<p class="endnote">The function I6T::interpret_indext is used in 1/mr (<a href="1-mr.html#SP4_17">&#167;4.17</a>).</p>
 
 <p class="endnote">The function I6T::interpret_i6t is used in 26/i6i (<a href="26-i6i.html#SP7">&#167;7</a>, <a href="26-i6i.html#SP8">&#167;8</a>), 26/uo (<a href="26-uo.html#SP17">&#167;17</a>).</p>
 
@@ -170,6 +170,7 @@ file.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">index_template</span><span class="plain">) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">index_template</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename was %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">index_template</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
                     <span class="string">"I couldn't open the template file for the index."</span><span class="plain">);</span>
             <span class="plain">}</span>

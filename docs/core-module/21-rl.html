@@ -85,7 +85,7 @@ see below.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure rule is accessed in 2/sq, 2/si, 5/ins, 5/nv, 8/ed2, 9/ma, 9/pk, 11/sm, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/pu, 22/prcd, 22/dptd, 22/po, 22/pav, 25/cii, 26/uo, 26/ts and here.</p>
+<p class="endnote">The structure rule is accessed in 1/kts, 2/sq, 2/si, 5/ins, 5/nv, 8/ed2, 9/ma, 9/pk, 11/sm, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/pu, 22/prcd, 22/dptd, 22/po, 22/pav, 25/cii, 26/uo, 26/ts and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -275,8 +275,10 @@ kind is considered to be action-based and resulting in nothing.
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Rules::to_kind</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">actions_plugin</span><span class="plain">))</span>
+                <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
+            <span class="reserved">else</span>
+                <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1371,7 +1373,7 @@ I wonder how useful this really is, but it was much requested at one time.
 
     <p class="endnote">The function Rules::rule_defines_response is used in 17/ts (<a href="17-ts.html#SP11">&#167;11</a>), 17/rs (<a href="17-rs.html#SP4">&#167;4</a>, <a href="17-rs.html#SP7_1">&#167;7.1</a>, <a href="17-rs.html#SP7_3_1">&#167;7.3.1</a>, <a href="17-rs.html#SP12_1_1">&#167;12.1.1</a>).</p>
 
-    <p class="endnote">The function Rules::check_response_usages is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
+    <p class="endnote">The function Rules::check_response_usages is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
 
     <p class="endnote">The function Rules::now_rule_defines_response is used in 17/rs (<a href="17-rs.html#SP12_1_1">&#167;12.1.1</a>), 26/tti (<a href="26-tti.html#SP7">&#167;7</a>).</p>
 

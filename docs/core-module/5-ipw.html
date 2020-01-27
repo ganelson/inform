@@ -69,7 +69,7 @@ instance) Spatial.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Data::Objects::page_World</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">in this case there is no model world</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">in this case there is no model world</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">map_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">in this case there is no model world</span>
 
         <span class="identifier">PL::SpatialMap::establish_benchmark_room</span><span class="plain">();</span>
         <span class="identifier">PL::EPSMap::traverse_for_map_parameters</span><span class="plain">(1);</span>

@@ -31,9 +31,6 @@
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">starter_routine</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">now_plugged_in</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stores_data</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">has_been_set_explicitly</span><span class="plain">;</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">has_template_file</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">IFDEF_iname</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">plugin</span><span class="plain">;</span>
 </pre>
@@ -53,7 +50,7 @@
         <span class="plain">*</span><span class="identifier">devices_plugin</span><span class="plain">, *</span><span class="identifier">showme_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">times_plugin</span><span class="plain">, *</span><span class="identifier">scenes_plugin</span><span class="plain">, *</span><span class="identifier">scoring_plugin</span><span class="plain">,</span>
         <span class="plain">*</span><span class="identifier">figures_plugin</span><span class="plain">, *</span><span class="identifier">sounds_plugin</span><span class="plain">, *</span><span class="identifier">files_plugin</span><span class="plain">,</span>
-        <span class="plain">*</span><span class="identifier">bibliographic_plugin</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">bibliographic_plugin</span><span class="plain">, *</span><span class="identifier">chronology_plugin</span><span class="plain">;</span>
 
     <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">registered_plugins</span><span class="plain">[</span><span class="constant">MAX_PLUGINS</span><span class="plain">];</span>
 
@@ -108,7 +105,8 @@ the rest &mdash; using it uses all of them.
         <span class="identifier">sounds</span><span class="plain"> |</span>
         <span class="identifier">glulx</span><span class="plain"> </span><span class="identifier">external</span><span class="plain"> </span><span class="identifier">files</span><span class="plain"> |</span>
         <span class="identifier">bibliographic</span><span class="plain"> </span><span class="identifier">data</span><span class="plain"> |</span>
-        <span class="identifier">scoring</span>
+        <span class="identifier">scoring</span><span class="plain"> |</span>
+        <span class="identifier">chronology</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -152,9 +150,17 @@ present.
         <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> = </span><span class="identifier">NA</span><span class="plain">;</span>
         <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_name</span><span class="plain"> = </span><span class="functiontext">Plugins::Manage::wording</span><span class="plain">(</span><span class="identifier">NA2</span><span class="plain">);</span>
         <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> = </span><span class="identifier">NA2</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_been_set_explicitly</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">registered_plugins</span><span class="plain">[</span><span class="identifier">NA</span><span class="plain">] = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> &gt;= </span><span class="constant">MAX_PLUGINS</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Too many plugins"</span><span class="plain">);</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">mem</span><span class="plain">, </span><span class="identifier">NA</span><span class="plain">, </span><span class="identifier">NA2</span><span class="plain">)</span>
+        <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">plugin</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;starter_routine</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;stores_data</span><span class="plain"> = </span><span class="identifier">mem</span><span class="plain">;</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_name</span><span class="plain"> = </span><span class="functiontext">Plugins::Manage::wording</span><span class="plain">(</span><span class="identifier">NA</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> = </span><span class="identifier">NA</span><span class="plain">;</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_name</span><span class="plain"> = </span><span class="functiontext">Plugins::Manage::wording</span><span class="plain">(</span><span class="identifier">NA2</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> = </span><span class="identifier">NA2</span><span class="plain">;</span>
         <span class="identifier">registered_plugins</span><span class="plain">[</span><span class="identifier">NA</span><span class="plain">] = </span><span class="identifier">P</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> &gt;= </span><span class="constant">MAX_PLUGINS</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Too many plugins"</span><span class="plain">);</span>
 </pre>
@@ -184,32 +190,23 @@ present.
     <span class="definitionkeyword">enum</span> <span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SCORE_PLUGIN_NAME</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CHRONOLOGY_PLUGIN_NAME</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Plugins::Call::initialise_calls</span><span class="plain">();</span>
 
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">core_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::start_core</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">core_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">core_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Core"</span><span class="plain">;</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">core_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">IF_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">multimedia_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
+
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">counting_plugin</span><span class="plain">, </span><span class="functiontext">PL::Counting::start</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">INSTANCE_COUNTING_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">counting_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">IF_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">multimedia_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-
-        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="identifier">IF_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="identifier">IF_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">naming_plugin</span><span class="plain">, </span><span class="identifier">PL::Naming::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">NAMING_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">parsing_plugin</span><span class="plain">, </span><span class="identifier">PL::Parsing::Visibility::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">COMMAND_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">naming_plugin</span><span class="plain">, </span><span class="identifier">PL::Naming::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">NAMING_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">parsing_plugin</span><span class="plain">, </span><span class="identifier">PL::Parsing::Visibility::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">COMMAND_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">COMMAND_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">actions_plugin</span><span class="plain">, </span><span class="identifier">PL::Actions::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">ACTIONS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">actions_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Actions"</span><span class="plain">;</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">, </span><span class="identifier">PL::Spatial::start</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">SPATIAL_MODEL_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">map_plugin</span><span class="plain">, </span><span class="identifier">PL::Map::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">MAPPING_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">persons_plugin</span><span class="plain">, </span><span class="identifier">PL::Persons::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">PERSONS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
@@ -219,49 +216,29 @@ present.
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">backdrops_plugin</span><span class="plain">, </span><span class="identifier">PL::Backdrops::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">BACKDROPS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">devices_plugin</span><span class="plain">, </span><span class="identifier">PL::Devices::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">DEVICES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">showme_plugin</span><span class="plain">, </span><span class="identifier">PL::Showme::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SHOWME_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">times_plugin</span><span class="plain">, </span><span class="functiontext">PL::TimesOfDay::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">TIMES_OF_DAY_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">times_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Times"</span><span class="plain">;</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">scenes_plugin</span><span class="plain">, </span><span class="identifier">PL::Scenes::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SCENES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">scenes_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Scenes"</span><span class="plain">;</span>
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">bibliographic_plugin</span><span class="plain">, </span><span class="identifier">PL::Bibliographic::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">chronology_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">CHRONOLOGY_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">);</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">MULTIMEDIA_MODULE</span>
-        <span class="identifier">multimedia_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">figures_plugin</span><span class="plain">, </span><span class="identifier">PL::Figures::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">FIGURES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">figures_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Figures"</span><span class="plain">;</span>
-
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">, </span><span class="identifier">PL::Sounds::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SOUNDS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">sounds_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Sounds"</span><span class="plain">;</span>
-
         <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">, </span><span class="identifier">PL::Files::start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">files_plugin</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain"> = </span><span class="string">"Files"</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MULTIMEDIA_MODULE</span>
-        <span class="identifier">multimedia_plugin</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">figures_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">FIGURES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SOUNDS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
-        <span class="identifier">CREATE_PLUGIN</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">, </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">figures_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">FIGURES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">SOUNDS_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
+        <span class="identifier">CREATE_STARTLESS_PLUGIN</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">, </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::deactivated_start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::start_core</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Plugins::Manage::start is used in 1/mr (<a href="1-mr.html#SP4_7">&#167;4.7</a>).</p>
-
-<p class="endnote">The function Plugins::Manage::deactivated_start appears nowhere else.</p>
-
-<p class="endnote">The function Plugins::Manage::start_core appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Although most of Inform's brain remains the same, the outermost part can
 be put together from whatever skills are required: our modular oblongata,
@@ -298,96 +275,68 @@ combinations; so this is really a provisional feature for now.)
 with the following.
 </p>
 
-
-<pre class="display">
-    <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">element</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">no</span><span class="plain"> &lt;</span><span class="reserved">plugin</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |		==&gt; </span><span class="constant">PLUGIN_REMOVAL_OFFSET</span><span class="plain"> + </span><span class="identifier">R</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="reserved">plugin</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |			==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
-        <span class="plain">...						==&gt; </span>&lt;<span class="cwebmacro">Issue PM_NoSuchLanguageElement problem</span> <span class="cwebmacronumber">9.1</span>&gt;
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Issue PM_NoSuchLanguageElement problem</span> <span class="cwebmacronumber">9.1</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = -1;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchLanguageElement</span><span class="plain">),</span>
-            <span class="string">"this seems to ask to include or exclude a language feature which "</span>
-            <span class="string">"I don't recognise the name of"</span><span class="plain">,</span>
-            <span class="string">"possibly because you've borrowed it from a different version of "</span>
-            <span class="string">"Inform, or forgotten what these are called? You can see the current "</span>
-            <span class="string">"configuration at the bottom of the Contents index."</span><span class="plain">);</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP9">&#167;9</a>.</p>
-
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
 
-<pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLUGIN_REMOVAL_OFFSET</span><span class="plain"> </span><span class="constant">MAX_PLUGINS</span><span class="plain">+1</span>
-</pre>
-
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::plug_in</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::parse</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"core"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"instance counting"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">INSTANCE_COUNTING_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"interactive fiction"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"multimedia"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"naming"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">NAMING_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"command"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">COMMAND_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"actions"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">ACTIONS_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"spatial model"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">SPATIAL_MODEL_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"mapping"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">MAPPING_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"persons"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">PERSONS_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"player"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">PLAYER_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"regions"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">REGIONS_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"backdrops"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BACKDROPS_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"devices"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">DEVICES_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"showme"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">SHOWME_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"times of day"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TIMES_OF_DAY_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"scenes"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">SCENES_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"figures"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FIGURES_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"sounds"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">SOUNDS_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"glulx external files"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"bibliographic data"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BIBLIOGRAPHIC_DATA_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"scoring"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">SCORE_PLUGIN_NAME</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> -1;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::activate</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">element</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">plugin_number</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_state</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plugin_number</span><span class="plain"> &gt;= </span><span class="constant">PLUGIN_REMOVAL_OFFSET</span><span class="plain">) {</span>
-                <span class="identifier">new_state</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                <span class="identifier">plugin_number</span><span class="plain"> -= </span><span class="constant">PLUGIN_REMOVAL_OFFSET</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">definiteness</span><span class="plain"> = </span><span class="identifier">UNKNOWN_CE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> == </span><span class="identifier">plugin_number</span><span class="plain">) </span><span class="identifier">definiteness</span><span class="plain"> = </span><span class="identifier">CERTAIN_CE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="identifier">plugin_number</span><span class="plain">) </span><span class="identifier">definiteness</span><span class="plain"> = </span><span class="identifier">LIKELY_CE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">definiteness</span><span class="plain"> != </span><span class="identifier">UNKNOWN_CE</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">definiteness</span><span class="plain"> == </span><span class="identifier">LIKELY_CE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_been_set_explicitly</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">core_plugin</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">new_state</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue problem for trying to remove the core</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
-                        <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">Q</span><span class="plain">;</span>
-                        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">) </span><span class="identifier">Q</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">new_state</span><span class="plain">;</span>
-                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_been_set_explicitly</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">) || (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">))</span>
+                <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">)</span>
-                <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="functiontext">Plugins::Manage::deactivate</span><span class="plain">(</span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">)</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) {</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">IF_PLUGIN_NAME</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> != </span><span class="constant">NAMING_PLUGIN_NAME</span><span class="plain">))</span>
-                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MULTIMEDIA_MODULE</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">)</span>
-                <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="functiontext">Plugins::Manage::deactivate</span><span class="plain">(</span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">)</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">basic_mode</span><span class="plain">) {</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">MULTIMEDIA_PLUGIN_NAME</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> != </span><span class="constant">GLULX_EXTERNAL_FILES_PLUGIN_NAME</span><span class="plain">))</span>
-                    <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::deactivate</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">) || (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;plugin_number</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;set_number</span><span class="plain"> == </span><span class="constant">CORE_PLUGIN_NAME</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue problem for trying to remove the core</span> <span class="cwebmacronumber">10.1</span>&gt;
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Plugins::Manage::plug_in is used in 7/ss (<a href="7-ss.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Plugins::Manage::parse is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Plugins::Manage::activate is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Plugins::Manage::deactivate is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Issue problem for trying to remove the core</span> <span class="cwebmacronumber">10.1</span>&gt; =
@@ -395,7 +344,7 @@ with the following.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DontRemoveTheCore</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">),</span>
             <span class="string">"the core of the Inform language cannot be removed"</span><span class="plain">,</span>
             <span class="string">"because then what should we do? What should we ever do?"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -405,11 +354,20 @@ with the following.
 
 <p class="endnote">This code is used in <a href="#SP10">&#167;10</a>.</p>
 
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>And, we're as good as our word because &mdash;
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>It's kind of incredible that C's grammar for round brackets is unambiguous.
 </p>
 
 
 <pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::start_plugins</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain">) {</span>
+                <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">start</span><span class="plain">)() = (</span><span class="reserved">void</span><span class="plain"> (*)()) </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;starter_routine</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">start</span><span class="plain">) (*</span><span class="identifier">start</span><span class="plain">)();</span>
+            <span class="plain">}</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::show_configuration</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">Index::anchor</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CONFIG"</span><span class="plain">);</span>
@@ -431,50 +389,6 @@ with the following.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;none&lt;/i&gt;"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
     <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Plugins::Manage::show_configuration is used in 26/vm (<a href="26-vm.html#SP19">&#167;19</a>).</p>
-
-<p class="endnote">The function Plugins::Manage::show appears nowhere else.</p>
-
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Similarly:
-</p>
-
-
-<pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::define_IFDEF_symbols</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain">)) {</span>
-                <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;IFDEF_iname</span><span class="plain">, 0);</span>
-            <span class="plain">}</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Plugins::Manage::define_IFDEF_symbols is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
-
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
-
-
-<pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::load_types</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">plugin</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain">) {</span>
-                <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">start</span><span class="plain">)() = (</span><span class="reserved">void</span><span class="plain"> (*)()) </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;starter_routine</span><span class="plain">;</span>
-                <span class="plain">(*</span><span class="identifier">start</span><span class="plain">)();</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain">) {</span>
-                    <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">, </span><span class="string">"%s.kindt"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;has_template_file</span><span class="plain">);</span>
-                    <span class="functiontext">I6T::interpret_kindt</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
-                    <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">);</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-    <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="reserved">plugin</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;now_plugged_in</span><span class="plain">;</span>
@@ -483,9 +397,13 @@ with the following.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Plugins::Manage::load_types is used in 1/mr (<a href="1-mr.html#SP4_9">&#167;4.9</a>).</p>
+<p class="endnote">The function Plugins::Manage::start_plugins is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
 
-<p class="endnote">The function Plugins::Manage::plugged_in is used in 16/ic (<a href="16-ic.html#SP15">&#167;15</a>).</p>
+<p class="endnote">The function Plugins::Manage::show_configuration is used in 26/vm (<a href="26-vm.html#SP19">&#167;19</a>).</p>
+
+<p class="endnote">The function Plugins::Manage::show is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function Plugins::Manage::plugged_in is used in 1/mr (<a href="1-mr.html#SP4_7">&#167;4.7</a>, <a href="1-mr.html#SP4_17">&#167;4.17</a>), 5/ipw (<a href="5-ipw.html#SP2">&#167;2</a>), 9/rpt (<a href="9-rpt.html#SP9_5">&#167;9.5</a>), 16/ic (<a href="16-ic.html#SP15">&#167;15</a>), 21/rl (<a href="21-rl.html#SP8">&#167;8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-iti.html">Back to 'I6 Template Interpreter'</a></li><li><a href="26-pc.html">Continue with 'Plugin Calls'</a></li></ul><hr class="tocbar">

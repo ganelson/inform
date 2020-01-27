@@ -286,14 +286,14 @@ BINFORM = inform7/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7x
 .PHONY: srules
 srules: $(SRULES)
 
-$(SRULES): srules/Contents.w srules/Sections/*.w basicinform/Contents.w basicinform/Sections/*.w
-	$(INWEBX) srules -tangle-to $(SRULES)
-	$(INWEBX) basicinform -tangle-to $(BINFORM)
+$(SRULES): inform7/extensions/standard_rules/Contents.w inform7/extensions/standard_rules/Sections/*.w inform7/extensions/basic_inform/Contents.w inform7/extensions/basic_inform/Sections/*.w
+	$(INWEBX) inform7/extensions/standard_rules -tangle-to $(SRULES)
+	$(INWEBX) inform7/extensions/basic_inform -tangle-to $(BINFORM)
 
 .PHONY: forcesrules
 forcesrules:
-	$(INWEBX) srules -tangle-to $(SRULES)
-	$(INWEBX) basicinform -tangle-to $(BINFORM)
+	$(INWEBX) inform7/extensions/standard_rules -tangle-to $(SRULES)
+	$(INWEBX) inform7/extensions/basic_inform -tangle-to $(BINFORM)
 
 # -----------------------------------------------------------------------------
 # Target "tools"
@@ -436,8 +436,8 @@ pages:
 	$(INWEBX) inter/inter-module -weave-docs -weave-into docs/inter-module
 	$(INWEBX) inter/codegen-module -weave-docs -weave-into docs/codegen-module
 	$(INWEBX) inter/building-module -weave-docs -weave-into docs/building-module
-	$(INWEBX) srules -weave-docs -weave-into docs/srules
-	$(INWEBX) basicinform -weave-docs -weave-into docs/basicinform
+	$(INWEBX) inform7/extensions/standard_rules -weave-docs -weave-into docs/standard_rules
+	$(INWEBX) inform7/extensions/basic_inform -weave-docs -weave-into docs/basic_inform
 
 # -----------------------------------------------------------------------------
 # Target "clean"

@@ -105,14 +105,18 @@ This repository is where development is done on the following executables:
 * inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/P-ui.html)
 * inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/P-ui.html)
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
-* basicinform - The Basic Inform extension, included in all projects. - __version 1__ - [&#9733;&nbsp;Web](docs/basicinform/index.html)
-* srules - The Standard Rules extension, included in all interactive fiction projects. - __version 6__ - [&#9733;&nbsp;Web](docs/srules/index.html)
 
-This repository also contains the webs for the Template (at the subtree inform7/Internal/Inter). These are libraries of low-level Inter code needed at run-time, whose source is written in Inform 6 notation:
+Two webs give detailed expositions of the most important built-in Inform extensions (at the subtree inform7/extensions):
 
-* basic_inform - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/basic_inform/index.html)
-* standard_rules - Support for Inform as an interactive fiction tool - [&#9733;&nbsp;Web](docs/standard_rules/index.html)
-* basic_inform_extras - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/basic_inform_extras/index.html)
+* basic_inform -  - __unversioned__ - [&#9733;&nbsp;Web](docs/basic_inform/index.html)
+* standard_rules -  - __unversioned__ - [&#9733;&nbsp;Web](docs/standard_rules/index.html)
+
+This repository also contains kits of Inter code (at the subtree inform7/Internal/Inter). These are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
+
+* BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/BasicInformKit/index.html)
+* WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](docs/WorldModelKit/index.html)
+* CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](docs/CommandParserKit/index.html)
+* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/BasicInformExtrasKit/index.html)
 
 The inform7 subtree further contains these primary resources:
 

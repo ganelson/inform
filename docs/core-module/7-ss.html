@@ -88,7 +88,9 @@
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">StructuralSentences::new_language</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="functiontext">Plugins::Manage::plug_in</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UseElementWithdrawn</span><span class="plain">),</span>
+            <span class="string">"the ability to activate or deactivate compiler elements in source text has been withdrawn"</span><span class="plain">,</span>
+            <span class="string">"in favour of a new system with Inform kits."</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -119,7 +121,7 @@ text has now officially been read.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function StructuralSentences::declare_source_loaded is used in 1/mr (<a href="1-mr.html#SP4_9">&#167;4.9</a>).</p>
+<p class="endnote">The function StructuralSentences::declare_source_loaded is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Sentence breaking. </b>The <code class="display"><span class="extract">Sentences::break</span></code> routine is used for long stretches of text,
 normally entire files. The following provides a way for the <code class="display"><span class="extract">.i6t</span></code>
@@ -149,7 +151,7 @@ though: extensions, including the Standard Rules, have yet to be read.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function StructuralSentences::break_source is used in 1/mr (<a href="1-mr.html#SP4_9">&#167;4.9</a>).</p>
+<p class="endnote">The function StructuralSentences::break_source is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Sentences in the source text are of five categories: dividing sentences,
 which divide up the source into segments; structural sentences, which split

@@ -26,13 +26,19 @@
     <span class="reserved">inter_library</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::new</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_library</span><span class="plain">);</span>
         <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"library_metadata.txt"</span><span class="plain">);</span>
-        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">,</span>
-            <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">CodeGen::Libraries::read_metadata</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">lib</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"library metadata file failed to set attachment point"</span><span class="plain">);</span>
+        <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">, </span><span class="string">"/main/%S"</span><span class="plain">, </span><span class="identifier">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
+    <span class="comment">filename *F = Filenames::in_folder(P, I"kit_metadata.txt");</span>
+    <span class="comment">TextFiles::read(F, FALSE,</span>
+    <span class="comment">NULL, FALSE, CodeGen::Libraries::read_metadata, NULL, (void *) lib);</span>
+    <span class="comment">if (lib-&gt;attachment_point == NULL)</span>
+    <span class="comment">Errors::nowhere("library metadata file failed to set attachment point");</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::location</span><span class="plain">(</span><span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lib</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no library"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::URL</span><span class="plain">(</span><span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain">) {</span>
@@ -57,7 +63,7 @@
     <span class="reserved">inter_library</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::find</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">PP</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"library_metadata.txt"</span><span class="plain">);</span>
+            <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kit_metadata.txt"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">CodeGen::Libraries::new</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -67,6 +73,8 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function CodeGen::Libraries::new appears nowhere else.</p>
+
+<p class="endnote">The function CodeGen::Libraries::location appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Libraries::URL appears nowhere else.</p>
 

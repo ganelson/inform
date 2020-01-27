@@ -121,14 +121,18 @@ This repository is where development is done on the following executables:
 @primaryd(inrtps, 'Web of InC', 'P-ui')
 @primaryd(inter, 'Web of InC', 'P-ui')
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
-@primary(basicinform, 'Web of Inform 7')
-@primary(srules, 'Web of Inform 7')
 
-This repository also contains the webs for the Template (at the subtree inform7/Internal/Inter). These are libraries of low-level Inter code needed at run-time, whose source is written in Inform 6 notation:
+Two webs give detailed expositions of the most important built-in Inform extensions (at the subtree inform7/extensions):
 
-@primaryl(basic_inform, 'Web of Inform 6', 'Support for Inform as a programming language')
-@primaryl(standard_rules, 'Web of Inform 6', 'Support for Inform as an interactive fiction tool')
-@primaryl(basic_inform_extras, 'Web of Inform 6', 'Additional support needed only if the Standard Rules are not used')
+@primary(basic_inform, 'Web of Inform 7')
+@primary(standard_rules, 'Web of Inform 7')
+
+This repository also contains kits of Inter code (at the subtree inform7/Internal/Inter). These are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
+
+@primaryl(BasicInformKit, 'Web of Inform 6', 'Support for Inform as a programming language')
+@primaryl(WorldModelKit, 'Web of Inform 6', 'Support for modelling space, time and actions in interactive fiction')
+@primaryl(CommandParserKit, 'Web of Inform 6', 'Support for parsing turn-by-turn commands in interactive fiction')
+@primaryl(BasicInformExtrasKit, 'Web of Inform 6', 'Additional support needed only if the Standard Rules are not used')
 
 The inform7 subtree further contains these primary resources:
 
@@ -236,8 +240,8 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 @define xweb(program)
 	<li>
 		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
-		@version(@program)
-		- <span class="purpose">@purpose(@program)</span></p>
+		@version(inform7/extensions/@program)
+		- <span class="purpose">@purpose(inform7/extensions/@program)</span></p>
 	</li>
 @end
 @define subweb(owner, program)
@@ -313,15 +317,16 @@ These pages showcase the woven form, and are for human eyes only.</p>
 		<hr>
 		<p class="chapter">The two extensions (though their use is compulsory) which, though themselves written in Inform, create the Inform language:</p>
 		<ul class="sectionlist">
-			@xweb('basicinform')
-			@xweb('srules')
+			@xweb('basic_inform')
+			@xweb('standard_rules')
 		</ul>
 		<hr>
-		<p class="chapter">The template libraries of run-time code which support these extensions:</p>
+		<p class="chapter">The kits of Inter code which support low-level features of the language:</p>
 		<ul class="sectionlist">
-			@webt('basic_inform', 'support for Inform as a programming language.')
-			@webt('standard_rules', 'support for Inform as an interactive fiction tool.')
-			@webt('basic_inform_extras', 'additional support needed only if the Standard Rules are not used.')
+			@webt('BasicInformKit', 'support for Inform as a programming language.')
+			@webt('WorldModelKit', 'support for modelling space, time and actions in interactive fiction.')
+			@webt('CommandParserKit', 'support for parsing turn-by-turn commands in interactive fiction.')
+			@webt('BasicInformExtrasKit', 'additional support needed only if the Standard Rules are not used.')
 		</ul>
 		<hr>
 		<p class="chapter">Other webs in this repository:</p>
