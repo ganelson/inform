@@ -700,7 +700,6 @@ define transfer-i6-template
 	rm -f $(INTERNAL)/Inter/WorldModelKit/*.interb
 	cp -R -f inform7/Internal/Inter/WorldModelKit/Sections/*.i6t $(INTERNAL)/Inter/WorldModelKit/source
 	cp -R -f inform7/Internal/Inter/WorldModelKit/*.interb $(INTERNAL)/Inter/WorldModelKit
-	cp -R -f inform7/Internal/Inter/WorldModelKit/library_metadata.txt $(INTERNAL)/Inter/WorldModelKit
 	cp -R -f inform7/Internal/Inter/WorldModelKit/kit_metadata.txt $(INTERNAL)/Inter/WorldModelKit
 	mkdir -p "$(INTERNAL)/Inter/CommandParserKit"
 	mkdir -p "$(INTERNAL)/Inter/CommandParserKit/source"
@@ -708,7 +707,6 @@ define transfer-i6-template
 	rm -f $(INTERNAL)/Inter/CommandParserKit/*.interb
 	cp -R -f inform7/Internal/Inter/CommandParserKit/Sections/*.i6t $(INTERNAL)/Inter/CommandParserKit/source
 	cp -R -f inform7/Internal/Inter/CommandParserKit/*.interb $(INTERNAL)/Inter/CommandParserKit
-	cp -R -f inform7/Internal/Inter/CommandParserKit/library_metadata.txt $(INTERNAL)/Inter/CommandParserKit
 	cp -R -f inform7/Internal/Inter/CommandParserKit/kit_metadata.txt $(INTERNAL)/Inter/CommandParserKit
 	mkdir -p "$(INTERNAL)/Inter/BasicInformKit"
 	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/source"
@@ -716,7 +714,6 @@ define transfer-i6-template
 	rm -f $(INTERNAL)/Inter/BasicInformKit/*.interb
 	cp -R -f inform7/Internal/Inter/BasicInformKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformKit/source
 	cp -R -f inform7/Internal/Inter/BasicInformKit/*.interb $(INTERNAL)/Inter/BasicInformKit
-	cp -R -f inform7/Internal/Inter/BasicInformKit/library_metadata.txt $(INTERNAL)/Inter/BasicInformKit
 	cp -R -f inform7/Internal/Inter/BasicInformKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformKit
 	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit"
 	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit/source"
@@ -724,7 +721,6 @@ define transfer-i6-template
 	rm -f $(INTERNAL)/Inter/BasicInformExtrasKit/*.interb
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformExtrasKit/source
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/*.interb $(INTERNAL)/Inter/BasicInformExtrasKit
-	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/library_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
 	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/kinds"
 	rm -f $(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt
@@ -732,6 +728,9 @@ define transfer-i6-template
 	mkdir -p "$(INTERNAL)/Inter/WorldModelKit/kinds"
 	rm -f $(INTERNAL)/Inter/WorldModelKit/kinds/*.kindt
 	cp -R -f inform7/Internal/Inter/WorldModelKit/kinds/*.kindt $(INTERNAL)/Inter/WorldModelKit/kinds
+	mkdir -p "$(INTERNAL)/Inter/CommandParserKit/kinds"
+	rm -f $(INTERNAL)/Inter/CommandParserKit/kinds/*.kindt
+	cp -R -f inform7/Internal/Inter/CommandParserKit/kinds/*.kindt $(INTERNAL)/Inter/CommandParserKit/kinds
 endef
 
 $(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline
