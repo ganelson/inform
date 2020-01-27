@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
+Import: inbuild
 
 Preliminaries
 	Using Inbuild

@@ -20,6 +20,7 @@ Import: inter/inter
 Import: core
 Import: inter/building
 Import: inter/codegen
+Import: inbuild/inbuild
 Import: if
 Import: multimedia
 Import: index

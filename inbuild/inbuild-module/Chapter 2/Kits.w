@@ -66,12 +66,9 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	return K;
 }
 
-inform_kit *Kits::load(text_stream *name) {
-	pathname *P = Kits::find(name, NO_FS_AREAS, pathname_of_inter_resources);
-	if (P == NULL) {
-		WRITE_TO(STDERR, "Cannot find kit '%S'\n", name);
-		Problems::Fatal::issue("Unable to find one of the Inform support kits");
-	}
+inform_kit *Kits::load(text_stream *name, int N, pathname **PP) {
+	pathname *P = Kits::find(name, N, PP);
+	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
 	return Kits::load_at(name, P);
 }
 
@@ -137,7 +134,7 @@ int Kits::loaded(text_stream *name) {
 	return FALSE;
 }
 
-void Kits::perform_ittt(void) {
+void Kits::perform_ittt(int N, pathname **PP) {
 	int changes_made = TRUE;
 	while (changes_made) {
 		changes_made = FALSE;
@@ -147,7 +144,7 @@ void Kits::perform_ittt(void) {
 			LOOP_OVER_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt)
 				if ((Kits::loaded(ITTT->then_name) == FALSE) &&
 					(Kits::loaded(ITTT->if_name) == ITTT->if_included)) {
-					Kits::load(ITTT->then_name);
+					Kits::load(ITTT->then_name, N, PP);
 					changes_made = TRUE;
 				}
 		}
@@ -165,15 +162,16 @@ void Kits::request(text_stream *name) {
 	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested);
 }
 
-void Kits::determine(void) {
+#ifdef CORE_MODULE
+void Kits::determine(int N, pathname **PP) {
 	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
 	Kits::request(I"BasicInformKit");
 	NaturalLanguages::request_required_kits();
 	text_stream *kit_name;
 	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
-		Kits::load(kit_name);
+		Kits::load(kit_name, N, PP);
 
-	Kits::perform_ittt();
+	Kits::perform_ittt(N, PP);
 
 	kits_to_include = NEW_LINKED_LIST(inform_kit);
 	for (int p=0; p<100; p++) {
@@ -186,7 +184,9 @@ void Kits::determine(void) {
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
 		LOG("Using Inform kit '%S' (priority %d).\n", K->name, K->priority);
 }
+#endif
 
+#ifdef CORE_MODULE
 void Kits::load_types(void) {
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
@@ -199,7 +199,9 @@ void Kits::load_types(void) {
 		}
 	}
 }
+#endif
 
+#ifdef CORE_MODULE
 void Kits::activate_plugins(void) {
 	LOG("Activate plugins...\n");
 	Plugins::Manage::activate(CORE_PLUGIN_NAME);
@@ -221,6 +223,7 @@ void Kits::activate_plugins(void) {
 	Plugins::Manage::show(DL, "Included", TRUE);
 	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
+#endif
 
 int Kits::Main_defined(void) {
 	inform_kit *K;
@@ -273,6 +276,7 @@ int Kits::number_of_early_fed_sentences(void) {
 	return N;
 }
 
+#ifdef CODEGEN_MODULE
 linked_list *requirements_list = NULL;
 linked_list *Kits::list_of_inter_libraries(void) {
 	requirements_list = NEW_LINKED_LIST(link_instruction);
@@ -283,3 +287,4 @@ linked_list *Kits::list_of_inter_libraries(void) {
 	}
 	return requirements_list;
 }
+#endif
