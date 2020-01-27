@@ -14,12 +14,13 @@ typedef struct inter_library {
 inter_library *CodeGen::Libraries::new(pathname *P) {
 	inter_library *lib = CREATE(inter_library);
 	lib->location = P;
-	lib->attachment_point = NULL;
-	filename *F = Filenames::in_folder(P, I"library_metadata.txt");
-	TextFiles::read(F, FALSE,
-		NULL, FALSE, CodeGen::Libraries::read_metadata, NULL, (void *) lib);
-	if (lib->attachment_point == NULL)
-		Errors::nowhere("library metadata file failed to set attachment point");
+	lib->attachment_point = Str::new();
+	WRITE_TO(lib->attachment_point, "/main/%S", Pathnames::directory_name(P));
+//	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
+//	TextFiles::read(F, FALSE,
+//		NULL, FALSE, CodeGen::Libraries::read_metadata, NULL, (void *) lib);
+//	if (lib->attachment_point == NULL)
+//		Errors::nowhere("library metadata file failed to set attachment point");
 	return lib;
 }
 
@@ -50,7 +51,7 @@ void CodeGen::Libraries::read_metadata(text_stream *text,
 inter_library *CodeGen::Libraries::find(text_stream *name, int N, pathname **PP) {
 	for (int i=0; i<N; i++) {
 		pathname *P = Pathnames::subfolder(PP[i], name);
-		filename *F = Filenames::in_folder(P, I"library_metadata.txt");
+		filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
 		if (TextFiles::exists(F)) return CodeGen::Libraries::new(P);
 	}
 	return NULL;

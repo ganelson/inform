@@ -2,6 +2,11 @@ ZMachine Template.
 
 To provide routines handling low-level Z-machine facilities.
 
+@h Begin Z-only matter.
+
+=
+#Ifdef TARGET_ZCODE;
+
 @h Summary.
 This segment closely parallels "Glulx.i6t", which provides exactly
 equivalent functionality (indeed, usually the same-named functions and in
@@ -497,3 +502,8 @@ These simply wrap the relevant opcodes.
     @loadw base offset -> sp;
     @ret sp;
 ];
+
+@h End Z-only matter.
+
+=
+#Endif; ! TARGET_ZCODE

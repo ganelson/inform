@@ -11,7 +11,10 @@ typedef struct inform_kit {
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
 	struct linked_list *kind_definitions; /* of |text_stream| */
+	struct linked_list *extensions; /* of |text_stream| */
 	struct linked_list *activations; /* of |element_activation| */
+	struct text_stream *index_template;
+	int defines_Main;
 	int priority;
 	MEMORY_MANAGEMENT
 } inform_kit;
@@ -41,7 +44,10 @@ inform_kit *Kits::load(text_stream *name) {
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
 	K->kind_definitions = NEW_LINKED_LIST(text_stream);
+	K->extensions = NEW_LINKED_LIST(text_stream);
 	K->activations = NEW_LINKED_LIST(element_activation);
+	K->defines_Main = FALSE;
+	K->index_template = NULL;
 	
 	pathname *P = CodeGen::Libraries::location(K->lib);
 	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
@@ -71,6 +77,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	match_results mr = Regexp::create_mr();
 	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
 		;
+	} else if (Regexp::match(&mr, text, L"defines Main: yes")) {
+		K->defines_Main = TRUE;
+	} else if (Regexp::match(&mr, text, L"defines Main: no")) {
+		K->defines_Main = FALSE;
 	} else if (Regexp::match(&mr, text, L"insert: (%c*)")) {
 		K->early_source = Str::duplicate(mr.exp[0]);
 		WRITE_TO(K->early_source, "\n\n");
@@ -78,6 +88,8 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		K->priority = Str::atoi(mr.exp[0], 0);
 	} else if (Regexp::match(&mr, text, L"kinds: (%C+)")) {
 		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->kind_definitions);
+	} else if (Regexp::match(&mr, text, L"extension: (%c+)")) {
+		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->extensions);
 	} else if (Regexp::match(&mr, text, L"activate: (%c+)")) {
 		Kits::activation(K, mr.exp[0], TRUE);
 	} else if (Regexp::match(&mr, text, L"deactivate: (%c+)")) {
@@ -86,8 +98,11 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		Kits::dependency(K, mr.exp[0], TRUE, mr.exp[1]);
 	} else if (Regexp::match(&mr, text, L"dependency: if not (%C+) then (%C+)")) {
 		Kits::dependency(K, mr.exp[0], FALSE, mr.exp[1]);
+	} else if (Regexp::match(&mr, text, L"index from: (%c*)")) {
+		K->index_template = Str::duplicate(mr.exp[0]);
 	} else {
 		Errors::in_text_file("illegible line in kit metadata file", tfp);
+		WRITE_TO(STDERR, "'%S'\n", text);
 	}
 	Regexp::dispose_of(&mr);
 }
@@ -117,11 +132,24 @@ void Kits::perform_ittt(void) {
 	}
 }
 
+linked_list *kits_requested = NULL;
 linked_list *kits_to_include = NULL;
+void Kits::request(text_stream *name) {
+	if (kits_requested == NULL) kits_requested = NEW_LINKED_LIST(text_stream);
+	text_stream *kit_name;
+	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
+		if (Str::eq(kit_name, name))
+			return;
+	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested);
+}
 
 void Kits::determine(void) {
-	Kits::load(I"basic_inform");
-	if (CoreMain::basic_mode() == FALSE) Kits::load(I"standard_rules");
+	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
+	Kits::request(I"BasicInformKit");
+	text_stream *kit_name;
+	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
+		Kits::load(kit_name);
+
 	Kits::perform_ittt();
 
 	kits_to_include = NEW_LINKED_LIST(inform_kit);
@@ -172,6 +200,23 @@ void Kits::activate_plugins(void) {
 	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
 
+int Kits::Main_defined(void) {
+	inform_kit *K;
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
+		if (K->defines_Main)
+			return TRUE;
+	return FALSE;
+}
+
+text_stream *Kits::index_template(void) {
+	text_stream *I = NULL;
+	inform_kit *K;
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
+		if (K->index_template)
+			I = K->index_template;
+	return I;
+}
+
 @ In particular, every source text read into Inform is automatically prefixed by
 the following eight words -- if Inform were a computer, this would be the BIOS
 which boots up its operating system. (In that the rest of the creation of the
@@ -185,11 +230,14 @@ files of source text to be read, and quite possibly more.
 @d BASIC_MODE_INSERTED_TEXT L"Include Basic Inform by Graham Nelson.\n\n"
 
 =
-void Kits::feed_early_source_text(void) {
+void Kits::feed_early_source_text(OUTPUT_STREAM) {
 	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
-		if (K->early_source)
-			Feeds::feed_stream(K->early_source);
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
+		text_stream *X;
+		LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions)
+			WRITE("Include %S.\n\n", X);
+		if (K->early_source) WRITE("%S\n\n", K->early_source);
+	}
 }
 
 linked_list *requirements_list = NULL;

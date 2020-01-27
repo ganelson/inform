@@ -67,9 +67,6 @@ Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_16_BIT;
 Constant Large_Unicode_Tables;
 #ENDIF;
 
-{-segment:UnicodeData.i6t}
-{-segment:Char.i6t}
-
 @h KOV Support.
 See the "BlockValues.i6t" segment for the specification of the following
 routines. Because no block values are ever stored in a text, they can

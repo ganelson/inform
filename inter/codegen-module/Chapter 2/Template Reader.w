@@ -204,8 +204,32 @@ void TemplateReader::extract(text_stream *template_file, I6T_kit *kit) {
 	(*(kit->raw_callback))(SP, kit);
 }
 
+typedef struct contents_section_state {
+	struct linked_list *sects; /* of |text_stream| */
+	int active;
+} contents_section_state;
+
 void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 	text_stream *segment_name, int N_escape, I6T_kit *kit) {
+	if (Str::eq(segment_name, I"all")) {
+		for (int area=0; area<kit->no_i6t_file_areas; area++) {
+			pathname *P = Pathnames::up(kit->i6t_files[area]);
+			filename *F = Filenames::in_folder(P, I"Contents.w");
+			if (TextFiles::exists(F)) {
+				contents_section_state CSS;
+				CSS.active = FALSE;
+				CSS.sects = NEW_LINKED_LIST(text_stream);
+				TextFiles::read(F, FALSE,
+					NULL, FALSE, TemplateReader::read_contents, NULL, (void *) &CSS);
+				text_stream *segment;
+				LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects)
+					TemplateReader::interpret(OUT, sf, segment, N_escape, kit);
+				return;
+			}
+		}
+		TemplateReader::error("unable to find a contents section to read 'all'", I"Contents.w");
+		return;
+	}
 	FILE *Input_File = NULL;
 	TEMPORARY_TEXT(heading_name);
 	int skip_part = FALSE, comment = TRUE;
@@ -467,6 +491,21 @@ safely between |{-open-index}| and |{-close-index}|.
 		Str::clear(OUT);
 		continue;
 	}
+
+@h Contents section.
+
+=
+void TemplateReader::read_contents(text_stream *text, text_file_position *tfp, void *state) {
+	contents_section_state *CSS = (contents_section_state *) state;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, L"Sections"))
+		CSS->active = TRUE;
+	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
+		WRITE_TO(mr.exp[0], ".i6t");
+		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
+	}
+	Regexp::dispose_of(&mr);
+}
 
 @h Template errors.
 Errors here used to be basically failed assertions, but inevitably people

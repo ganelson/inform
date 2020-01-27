@@ -1,5 +1,5 @@
 prepare <- *attach
-merge-template <- Main.i6t
+merge-template <- all
 parse-linked-matter
 resolve-conditional-compilation
 assimilate

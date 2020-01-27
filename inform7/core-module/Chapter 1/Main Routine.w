@@ -26,7 +26,6 @@ int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug featu
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 int existing_story_file = FALSE; /* Ignore source text to blorb existing story file? */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
-int basic_mode = FALSE; /* Inform running as a pared-down, non-IF language */
 int census_mode = FALSE; /* Inform running only to update extension documentation */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
@@ -111,7 +110,6 @@ int CoreMain::main(int argc, char *argv[]) {
 arguments in order to set certain pathnames or filenames, so the following
 list is not exhaustive.
 
-@e BASIC_CLSW
 @e CASE_CLSW
 @e CENSUS_CLSW
 @e CLOCK_CLSW
@@ -120,6 +118,7 @@ list is not exhaustive.
 @e FORMAT_CLSW
 @e CRASHALL_CLSW
 @e INTERNAL_CLSW
+@e KIT_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
 @e PROJECT_CLSW
@@ -139,8 +138,6 @@ list is not exhaustive.
 
 	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
 		L"compile I6 code suitable for the virtual machine X");
-	CommandLine::declare_boolean_switch(BASIC_CLSW, L"basic", 1,
-		L"run a basic non-IF version of the Inform language");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
 		L"perform an extensions census (rather than compile)");
 	CommandLine::declare_boolean_switch(CLOCK_CLSW, L"clock", 1,
@@ -165,6 +162,8 @@ list is not exhaustive.
 		L"return 0 unless exactly this Problem message is generated (for testing)");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
 		L"specify code-generation pipeline");
+	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
+		L"load the Inform kit called X");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
 		L"specify code-generation pipeline from file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
@@ -201,6 +200,15 @@ list is not exhaustive.
 
 @d COMPILATION_STEP(routine, mark) {
 	if (problem_count == 0) {
+		clock_t now = clock();
+		routine();
+		int cs = ((int) (clock() - now)) / (CLOCKS_PER_SEC/100);
+		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
+	}
+}
+
+@d COMPILATION_STEP_IF(plugin, routine, mark) {
+	if ((problem_count == 0) && (Plugins::Manage::plugged_in(plugin))) {
 		clock_t now = clock();
 		routine();
 		int cs = ((int) (clock() - now)) / (CLOCKS_PER_SEC/100);
@@ -319,9 +327,7 @@ with "Output.i6t".
 	COMPILATION_STEP(PL::Bibliographic::compile_constants, I"PL::Bibliographic::compile_constants")
 	COMPILATION_STEP(Extensions::Files::ShowExtensionVersions_routine, I"Extensions::Files::ShowExtensionVersions_routine")
 	COMPILATION_STEP(Kinds::Constructors::compile_I6_constants, I"Kinds::Constructors::compile_I6_constants")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Score::compile_max_score, I"PL::Score::compile_max_score")
-	}
+	COMPILATION_STEP_IF(scoring_plugin, PL::Score::compile_max_score, I"PL::Score::compile_max_score")
 	COMPILATION_STEP(UseOptions::TestUseOption_routine, I"UseOptions::TestUseOption_routine")
 	COMPILATION_STEP(Activities::compile_activity_constants, I"Activities::compile_activity_constants")
 	COMPILATION_STEP(Activities::Activity_before_rulebooks_array, I"Activities::Activity_before_rulebooks_array")
@@ -332,62 +338,51 @@ with "Output.i6t".
 	COMPILATION_STEP(Kinds::RunTime::compile_data_type_support_routines, I"Kinds::RunTime::compile_data_type_support_routines")
 	COMPILATION_STEP(Kinds::RunTime::I7_Kind_Name_routine, I"Kinds::RunTime::I7_Kind_Name_routine")
 	COMPILATION_STEP(World::Compile::compile, I"World::Compile::compile")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Backdrops::write_found_in_routines, I"PL::Backdrops::write_found_in_routines")
-		COMPILATION_STEP(PL::Map::write_door_dir_routines, I"PL::Map::write_door_dir_routines")
-		COMPILATION_STEP(PL::Map::write_door_to_routines, I"PL::Map::write_door_to_routines")
-		COMPILATION_STEP(PL::Parsing::Tokens::General::write_parse_name_routines, I"PL::Parsing::Tokens::General::write_parse_name_routines")
-		COMPILATION_STEP(PL::Regions::write_regional_found_in_routines, I"PL::Regions::write_regional_found_in_routines")
-	}
+	COMPILATION_STEP_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines, I"PL::Backdrops::write_found_in_routines")
+	COMPILATION_STEP_IF(map_plugin, PL::Map::write_door_dir_routines, I"PL::Map::write_door_dir_routines")
+	COMPILATION_STEP_IF(map_plugin, PL::Map::write_door_to_routines, I"PL::Map::write_door_to_routines")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::General::write_parse_name_routines, I"PL::Parsing::Tokens::General::write_parse_name_routines")
+	COMPILATION_STEP_IF(regions_plugin, PL::Regions::write_regional_found_in_routines, I"PL::Regions::write_regional_found_in_routines")
 	COMPILATION_STEP(Tables::complete, I"Tables::complete")
 	COMPILATION_STEP(Tables::Support::compile, I"Tables::Support::compile")
 	COMPILATION_STEP(Equations::compile, I"Equations::compile")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Actions::Patterns::Named::compile, I"PL::Actions::Patterns::Named::compile")
-		COMPILATION_STEP(PL::Actions::ActionData, I"PL::Actions::ActionData")
-		COMPILATION_STEP(PL::Actions::ActionCoding_array, I"PL::Actions::ActionCoding_array")
-		COMPILATION_STEP(PL::Actions::ActionHappened, I"PL::Actions::ActionHappened")
-		COMPILATION_STEP(PL::Actions::compile_action_routines, I"PL::Actions::compile_action_routines")
-		COMPILATION_STEP(PL::Parsing::Lines::MistakeActionSub_routine, I"PL::Parsing::Lines::MistakeActionSub_routine")
-	}
+	COMPILATION_STEP_IF(actions_plugin, PL::Actions::Patterns::Named::compile, I"PL::Actions::Patterns::Named::compile")
+	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionData, I"PL::Actions::ActionData")
+	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionCoding_array, I"PL::Actions::ActionCoding_array")
+	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionHappened, I"PL::Actions::ActionHappened")
+	COMPILATION_STEP_IF(actions_plugin, PL::Actions::compile_action_routines, I"PL::Actions::compile_action_routines")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Lines::MistakeActionSub_routine, I"PL::Parsing::Lines::MistakeActionSub_routine")
 	COMPILATION_STEP(Phrases::Manager::compile_first_block, I"Phrases::Manager::compile_first_block")
 	COMPILATION_STEP(Phrases::Manager::compile_rulebooks, I"Phrases::Manager::compile_rulebooks")
 	COMPILATION_STEP(Phrases::Manager::rulebooks_array, I"Phrases::Manager::rulebooks_array")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Scenes::DetectSceneChange_routine, I"PL::Scenes::DetectSceneChange_routine")
-		COMPILATION_STEP(PL::Scenes::ShowSceneStatus_routine, I"PL::Scenes::ShowSceneStatus_routine")
-	}
+	COMPILATION_STEP_IF(scenes_plugin, PL::Scenes::DetectSceneChange_routine, I"PL::Scenes::DetectSceneChange_routine")
+	COMPILATION_STEP_IF(scenes_plugin, PL::Scenes::ShowSceneStatus_routine, I"PL::Scenes::ShowSceneStatus_routine")
 	COMPILATION_STEP(PL::Files::arrays, I"PL::Files::arrays")
 	COMPILATION_STEP(Rulebooks::rulebook_var_creators, I"Rulebooks::rulebook_var_creators")
 	COMPILATION_STEP(Activities::activity_var_creators, I"Activities::activity_var_creators")
 	COMPILATION_STEP(Relations::IterateRelations, I"Relations::IterateRelations")
 	COMPILATION_STEP(Phrases::Manager::RulebookNames_array, I"Phrases::Manager::RulebookNames_array")
 	COMPILATION_STEP(Phrases::Manager::RulePrintingRule_routine, I"Phrases::Manager::RulePrintingRule_routine")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Parsing::Verbs::prepare, I"PL::Parsing::Verbs::prepare")
-		COMPILATION_STEP(PL::Parsing::Verbs::compile_conditions, I"PL::Parsing::Verbs::compile_conditions")
-		COMPILATION_STEP(PL::Parsing::Tokens::Values::number, I"PL::Parsing::Tokens::Values::number")
-		COMPILATION_STEP(PL::Parsing::Tokens::Values::truth_state, I"PL::Parsing::Tokens::Values::truth_state")
-	 	COMPILATION_STEP(PL::Parsing::Tokens::Values::time, I"PL::Parsing::Tokens::Values::time")
-		COMPILATION_STEP(PL::Parsing::Tokens::Values::compile_type_gprs, I"PL::Parsing::Tokens::Values::compile_type_gprs")
-	}
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::prepare, I"PL::Parsing::Verbs::prepare")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::compile_conditions, I"PL::Parsing::Verbs::compile_conditions")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::number, I"PL::Parsing::Tokens::Values::number")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state, I"PL::Parsing::Tokens::Values::truth_state")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::time, I"PL::Parsing::Tokens::Values::time")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs, I"PL::Parsing::Tokens::Values::compile_type_gprs")
 	COMPILATION_STEP(NewVerbs::ConjugateVerb, I"NewVerbs::ConjugateVerb")
 	COMPILATION_STEP(Adjectives::Meanings::agreements, I"Adjectives::Meanings::agreements")
-	if (basic_mode == FALSE) {
-		if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-			COMPILATION_STEP(PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
-			COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
-			COMPILATION_STEP(PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
-		} else {
-			COMPILATION_STEP(PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
-		}
+	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
+		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
+		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
+	} else {
+		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
 	}
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
 	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	if (basic_mode) {
+	if (Kits::Main_defined() == FALSE)
 		COMPILATION_STEP(Phrases::invoke_to_begin, I"Phrases::invoke_to_begin")
-	}
 	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
 	COMPILATION_STEP(Strings::compile_responses, I"Strings::compile_responses")
 	COMPILATION_STEP(Lists::check, I"Lists::check")
@@ -395,15 +390,13 @@ with "Output.i6t".
 	COMPILATION_STEP(Relations::compile_defined_relations, I"Relations::compile_defined_relations")
 	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
 	COMPILATION_STEP(Strings::TextSubstitutions::allow_no_further_text_subs, I"Strings::TextSubstitutions::allow_no_further_text_subs")
-	if (basic_mode == FALSE) {
-		COMPILATION_STEP(PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
-		COMPILATION_STEP(Chronology::past_actions_i6_routines, I"Chronology::past_actions_i6_routines")
-		COMPILATION_STEP(Chronology::chronology_extents_i6_escape, I"Chronology::chronology_extents_i6_escape")
-		COMPILATION_STEP(Chronology::past_tenses_i6_escape, I"Chronology::past_tenses_i6_escape")
-		COMPILATION_STEP(Chronology::allow_no_further_past_tenses, I"Chronology::allow_no_further_past_tenses")
-		COMPILATION_STEP(PL::Parsing::Verbs::compile_all, I"PL::Parsing::Verbs::compile_all")
-		COMPILATION_STEP(PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
-	}
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
+	COMPILATION_STEP_IF(actions_plugin, Chronology::past_actions_i6_routines, I"Chronology::past_actions_i6_routines")
+	COMPILATION_STEP_IF(chronology_plugin, Chronology::chronology_extents_i6_escape, I"Chronology::chronology_extents_i6_escape")
+	COMPILATION_STEP_IF(chronology_plugin, Chronology::past_tenses_i6_escape, I"Chronology::past_tenses_i6_escape")
+	COMPILATION_STEP_IF(chronology_plugin, Chronology::allow_no_further_past_tenses, I"Chronology::allow_no_further_past_tenses")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::compile_all, I"PL::Parsing::Verbs::compile_all")
+	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
 	COMPILATION_STEP(Properties::Measurement::compile_MADJ_routines, I"Properties::Measurement::compile_MADJ_routines")
 	COMPILATION_STEP(Calculus::Propositions::Deferred::compile_remaining_deferred, I"Calculus::Propositions::Deferred::compile_remaining_deferred")
 	COMPILATION_STEP(Calculus::Deferrals::allow_no_further_deferrals, I"Calculus::Deferrals::allow_no_further_deferrals")
@@ -477,13 +470,13 @@ with "Output.i6t".
 @ Metadata.
 
 @<Generate metadata@> =
-	if (basic_mode == FALSE)
+	if (Plugins::Manage::plugged_in(bibliographic_plugin))
 		PL::Bibliographic::Release::write_ifiction_and_blurb();
 	if (problem_count == 0) {
 		natural_language *nl = NaturalLanguages::English();
 		filename *index_template =
 			Filenames::in_folder(nl->nl_bundle_path,
-				(basic_mode)?(I"Basic.indext"):(I"Standard.indext"));
+				Kits::index_template());
 		I6T::interpret_indext(index_template);
 	}
 
@@ -527,7 +520,6 @@ void CoreMain::go_to_log_phase(text_stream *argument) {
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		/* Miscellaneous boolean settings */
-		case BASIC_CLSW: basic_mode = val; break;
 		case CENSUS_CLSW: census_mode = val; break;
 		case CLOCK_CLSW: report_clock_time = val; break;
 		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
@@ -544,6 +536,7 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		/* Other settings */
 		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
+		case KIT_CLSW: Kits::request(arg); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
@@ -565,7 +558,7 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 
 		/* Useful pathnames */
 		case PROJECT_CLSW:
-			if (Str::includes(arg, I"#2oetMiq9bqxoxY")) basic_mode = TRUE;
+			if (Str::includes(arg, I"#2oetMiq9bqxoxY")) Kits::request(I"BasicInformKit");
 			Locations::set_project(arg); break;
 		case INTERNAL_CLSW: Locations::set_internal(arg); break;
 		case EXTERNAL_CLSW: Locations::set_external(arg); break;
@@ -590,8 +583,4 @@ void CoreMain::set_inter_pipeline(wording W) {
 	Str::delete_first_character(inter_processing_pipeline);
 	Str::delete_last_character(inter_processing_pipeline);
 	LOG("Setting pipeline %S\n", inter_processing_pipeline);
-}
-
-int CoreMain::basic_mode(void) {
-	return basic_mode;
 }

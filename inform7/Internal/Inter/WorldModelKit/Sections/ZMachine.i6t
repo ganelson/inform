@@ -2,6 +2,11 @@ ZMachine Template.
 
 To provide Z-specific actions.
 
+@h Begin Z-only matter.
+
+=
+#Ifdef TARGET_ZCODE;
+
 @h Veneer.
 
 =
@@ -225,3 +230,8 @@ compared to the Z-machine's: hence the |+1|.
 	indirect(#actions_table-->action);
 	rtrue;
 ];
+
+@h End Z-only matter.
+
+=
+#Endif; ! TARGET_ZCODE

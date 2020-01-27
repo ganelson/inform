@@ -194,6 +194,23 @@ description:some text
 index-default-value:""
 specification-text:Some text in double quotation marks, perhaps with substitutions written in square brackets.
 
++SNIPPET_TY:
+apply-macro:#BASE-KIND
+singular:snippet
+plural:snippets
+
+instance-of:WORD_VALUE_TY
+instance-of:SAYABLE_VALUE_TY
+default-value:101
+
+i6-printing-routine:PrintSnippet
+constant-compilation-method:none
+
+description:a snippet
+documentation-reference:kind_snippet
+index-default-value:<i>word 1 of command</i>
+specification-text:A fragment of the player's most recent typed command, taking in a run of consecutive words.
+
 +UNICODE_CHARACTER_TY:
 apply-macro:#BASE-KIND
 singular:unicode character
@@ -264,23 +281,6 @@ index-priority:6
 index-default-value:verb be
 specification-text:One of the verbs which Inform knows how to conjugate.
 
-+SNIPPET_TY:
-apply-macro:#BASE-KIND
-singular:snippet
-plural:snippets
-
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
-default-value:101
-
-i6-printing-routine:PrintSnippet
-constant-compilation-method:none
-
-description:a snippet
-documentation-reference:kind_snippet
-index-default-value:<i>word 1 of command</i>
-specification-text:A fragment of the player's most recent typed command, taking in a run of consecutive words.
-
 +TABLE_TY:
 apply-macro:#BASE-KIND
 singular:table name
@@ -332,21 +332,6 @@ index-default-value:allow access
 
 description:the name of a rulebook outcome
 index-priority:6
-
-+UNDERSTANDING_TY:
-apply-macro:#BASE-KIND
-singular:topic
-plural:topics
-
-instance-of:WORD_VALUE_TY
-cast:TEXT_TY
-default-value:DefaultTopic
-
-i6-printing-routine-actions:DA_Topic
-constant-compilation-method:special
-
-description:a topic
-index-priority:0
 
 +INTERMEDIATE_TY:
 apply-macro:#BASE-KIND

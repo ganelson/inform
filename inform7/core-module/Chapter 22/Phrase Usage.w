@@ -296,7 +296,7 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
 				"the idea is to create new relations.)");
 		}
 	}
-	if ((CoreMain::basic_mode()) && (<begin-phrase-preamble>(W))) {
+	if (<begin-phrase-preamble>(W)) {
 		phud.to_begin = TRUE;
 	}
 

@@ -505,7 +505,7 @@ void Kinds::Interpreter::include_templates_for_kinds(void) {
 void Kinds::Interpreter::transcribe_kind_template(kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
 	#ifdef CORE_MODULE
-	if ((CoreMain::basic_mode()) && (Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
+	if ((Plugins::Manage::plugged_in(parsing_plugin) == FALSE) && (Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
 		return;
 	#endif
 	text_stream *p = ttd->template_text;
@@ -815,6 +815,10 @@ void Kinds::Interpreter::apply_kind_command(single_kind_command stc, kind_constr
 
 @<A few kind commands contribute to linked lists in the constructor structure@> =
 	if (tcc == cast_KCC) {
+		#ifdef CORE_MODULE
+		if ((Str::eq(stc.constructor_argument, I"SNIPPET_TY")) &&
+			(Plugins::Manage::plugged_in(parsing_plugin) == FALSE)) return;
+		#endif
 		kind_constructor_casting_rule *dtcr = CREATE(kind_constructor_casting_rule);
 		dtcr->next_casting_rule = con->first_casting_rule;
 		con->first_casting_rule = dtcr;

@@ -375,8 +375,7 @@ points", say). This is where we do it:
 @h Late Afternoon.
 Rules are pretty well sorted out now, but we still need to compile some I6
 to show how they fit together. These miscellaneous function calls can happen
-in any order, as suits the needs of the |Main.i6t| script, so long as they
-all occur in the late afternoon.
+in any order, so long as they all occur in the late afternoon.
 
 First, rules set to go off at a particular time need to have their timings
 noted down:

@@ -247,21 +247,6 @@ of language definitions, this needs to come first.
 =
 Object Compass "compass" has concealed;
 
-@h VM-Specific Code.
-These sections of code contain different definitions of the same routines,
-and in some cases the same arrays, to handle low-level functions in the
-virtual machine -- saving the game, performing UNDO, parsing typed text into
-dictionary word addresses and so on.
-
-=
-#Ifdef TARGET_GLULX;
-{-segment:Glulx.i6t}
-#Endif;
-
-#Ifdef TARGET_ZCODE;
-{-segment:ZMachine.i6t}
-#Endif;
-
 @h Score and Rankings Table.
 The following command tells NI to compile constant definitions for |INITIAL_MAX_SCORE|
 and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
@@ -280,8 +265,6 @@ I7 source text in the Standard Rules; and the rest of the library largely
 lives here:
 
 =
-{-segment:Light.i6t}
-{-segment:ListWriter.i6t}
 
 @h Parser.
 The largest single block of code in the traditional I6 library part of the
@@ -301,8 +284,6 @@ If it is ever discovered to contain the wrong data, the alarm sounds.
 =
 Object InformParser "(Inform Parser)" has proper;
 
-{-segment:Parser.i6t}
-
 [ ParserError error_type;
 	if (error_type) PrintSingleParagraph(error_type);
 	rfalse;
@@ -315,7 +296,6 @@ The |Main| routine, where execution begins, and the primitive rules in the
 principal rulebooks.
 
 =
-{-segment:OrderOfPlay.i6t}
 
 @h Activities.
 These are numbered upwards from 0 in order of creation. The following arrays
@@ -359,38 +339,23 @@ material new in I7 usage.
 
 =
 
-{-segment:Actions.i6t}
-{-segment:Activities.i6t}
-{-segment:Figures.i6t}
-{-segment:OutOfWorld.i6t}
-{-segment:Printing.i6t}
-{-segment:WorldModel.i6t}
-{-segment:MapRouteFinding.i6t}
-{-segment:RTP.i6t}
-
 @h Parsing Tokens.
 GPRs, scope and noun filters to be used in grammar lines, but no actual
 grammar lines as yet.
 
 =
-{-segment:Number.i6t}
-{-segment:Time.i6t}
 
 @h Text generation.
 
 @h Testing commands.
 
 =
-#IFDEF DEBUG;
-{-segment:Tests.i6t}
-#ENDIF; ! DEBUG
 
 @h I6 Inclusions.
 This paragraph contains no code, by default: it's a hook on which to hang
 verbatim I6 material.
 
 =
-! "Include (- ... -)" inclusions with no specified position appear here.
 
 @h Entries in constant lists.
 Well: most of them, anyway. In particular, all of those which are lists of
@@ -413,7 +378,6 @@ Similarly, this is where we wrap up all references to past tenses: after this
 point, we cannot safely compile any I7 condition in the past tense.
 
 =
-{-segment:Chronology.i6t}
 
 @h Grammar.
 This is the trickiest matter of timing. We had to leave the grammar lines
@@ -481,11 +445,3 @@ handles the heap, and there is then one further section to support each of
 the kinds of value in question.
 
 =
-{-segment:StoredAction.i6t}
-
-@h Signing off.
-And that's all, folks.
-
-=
-! End of automatically generated I6 source
-! --------------------------------------------------------------------------

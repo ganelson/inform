@@ -3,6 +3,11 @@ Tests Template.
 The command grammar and I6 implementation for testing commands such
 as TEST, ACTIONS and PURLOIN.
 
+@h All testy.
+
+=
+#Ifdef DEBUG;
+
 @h Abstract Command.
 The code below is compiled only if the symbol |DEBUG| is defined, which it
 always is for normal runs in the Inform user interface, but not for Release
@@ -532,3 +537,8 @@ Verb meta 'trace'
 Verb meta 'tree'
     *                                           -> XTree
     * scope=testcommandnoun                     -> XTree;
+
+@h End testy.
+
+=
+#Endif;

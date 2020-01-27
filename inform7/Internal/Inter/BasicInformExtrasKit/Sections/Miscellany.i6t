@@ -1,4 +1,4 @@
-Basic Inform Extras.
+Miscellany.
 
 Additions to the Basic Inform template which are needed only if the Standard
 Rules are not to be used.
@@ -369,8 +369,6 @@ The routines accessible from outside this segment.
     if (obj has pluralname) case = case + 3;
     return case;
 ];
-
-{-segment:Activities.i6t}
 
 [ PNToVP gna;
 !	if (prior_named_noun == player) return story_viewpoint;

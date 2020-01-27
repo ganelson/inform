@@ -1,5 +1,5 @@
 priority: 2
-insert: Include the Standard Rules by Graham Nelson.
+extension: Standard Rules by Graham Nelson
 kinds: Actions.kindt
 kinds: Times.kindt
 kinds: Scenes.kindt
@@ -7,3 +7,5 @@ kinds: Figures.kindt
 kinds: Sounds.kindt
 activate: interactive fiction
 activate: multimedia
+defines Main: yes
+index from: Standard.indext

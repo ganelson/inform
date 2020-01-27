@@ -40,7 +40,8 @@ Tests/Test Inter/_Inter_Binary/
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
 
-Internal/Inter/basic_inform/*.interb
-Internal/Inter/basic_inform_extras/*.interb
-Internal/Inter/standard_rules/*.interb
+Internal/Inter/BasicInformKit/*.interb
+Internal/Inter/BasicInformExtrasKit/*.interb
+Internal/Inter/WorldModelKit/*.interb
+Internal/Inter/CommandParserKit/*.interb
 

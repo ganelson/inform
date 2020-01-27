@@ -31,7 +31,7 @@ plugin *core_plugin, *IF_plugin, *counting_plugin, *multimedia_plugin,
 	*devices_plugin, *showme_plugin,
 	*times_plugin, *scenes_plugin, *scoring_plugin,
 	*figures_plugin, *sounds_plugin, *files_plugin,
-	*bibliographic_plugin;
+	*bibliographic_plugin, *chronology_plugin;
 
 plugin *registered_plugins[MAX_PLUGINS];
 
@@ -79,7 +79,8 @@ For now, at least, these names should not be translated out of English.
 	sounds |
 	glulx external files |
 	bibliographic data |
-	scoring
+	scoring |
+	chronology
 
 @ And the following matches if and only if the text in question is (a) a
 valid plugin name, and (b) the name of a plugin which is being used at
@@ -144,6 +145,7 @@ word_assemblage Plugins::Manage::wording(int N) {
 @e GLULX_EXTERNAL_FILES_PLUGIN_NAME
 @e BIBLIOGRAPHIC_DATA_PLUGIN_NAME
 @e SCORE_PLUGIN_NAME
+@e CHRONOLOGY_PLUGIN_NAME
 
 =
 void Plugins::Manage::start(void) {
@@ -157,7 +159,7 @@ void Plugins::Manage::start(void) {
 
 	#ifdef IF_MODULE
 	CREATE_PLUGIN(naming_plugin, PL::Naming::start, FALSE, NAMING_PLUGIN_NAME, CORE_PLUGIN_NAME);
-	CREATE_PLUGIN(parsing_plugin, PL::Parsing::Visibility::start, FALSE, COMMAND_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_PLUGIN(parsing_plugin, PL::Parsing::Visibility::start, FALSE, COMMAND_PLUGIN_NAME, COMMAND_PLUGIN_NAME);
 	CREATE_PLUGIN(actions_plugin, PL::Actions::start, FALSE, ACTIONS_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(spatial_plugin, PL::Spatial::start, TRUE, SPATIAL_MODEL_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(map_plugin, PL::Map::start, FALSE, MAPPING_PLUGIN_NAME, IF_PLUGIN_NAME);
@@ -172,6 +174,7 @@ void Plugins::Manage::start(void) {
 	CREATE_PLUGIN(scenes_plugin, PL::Scenes::start, FALSE, SCENES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(bibliographic_plugin, PL::Bibliographic::start, FALSE, BIBLIOGRAPHIC_DATA_PLUGIN_NAME, IF_PLUGIN_NAME);
 	#endif
+	CREATE_STARTLESS_PLUGIN(chronology_plugin, FALSE, CHRONOLOGY_PLUGIN_NAME, IF_PLUGIN_NAME);
 
 	#ifdef MULTIMEDIA_MODULE
 	CREATE_PLUGIN(figures_plugin, PL::Figures::start, FALSE, FIGURES_PLUGIN_NAME, MULTIMEDIA_PLUGIN_NAME);

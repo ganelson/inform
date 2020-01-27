@@ -2,6 +2,11 @@ Glulx Template.
 
 To provide Glulx-specific actions.
 
+@h Begin Glulx-only matter.
+
+=
+#Ifdef TARGET_GLULX;
+
 @h GlkList Command.
 GLKLIST is a testing command best used by those who understand Glulx and its
 ways: it isn't documented in the I7 manual, because it is pretty inscrutable
@@ -226,3 +231,8 @@ compared to the Z-machine's: hence the |+1|.
 	indirect(#actions_table-->(action+1));
 	rtrue;
 ];
+
+@h End Glulx-only matter.
+
+=
+#Endif;

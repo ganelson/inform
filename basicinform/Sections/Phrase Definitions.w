@@ -87,8 +87,8 @@ escape notations, see the core Inform source code.
 The global variable |say__n| tracks the last number printed. For the "in
 words" definition, we need to set it by hand, since Inform doesn't otherwise
 realise that number-printing is what we are doing here. For definitions of
-functions such as |STextSubstitution|, see the source for the |basic_inform|
-template library, which is also where |say__n| is defined.
+functions such as |STextSubstitution|, see the source for |BasicInformKit|,
+which is also where |say__n| is defined.
 
 See test case |BIP-Say|.
 

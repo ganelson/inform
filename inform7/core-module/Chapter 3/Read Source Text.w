@@ -29,7 +29,10 @@ int SourceFiles::read_extension_source_text(extension_file *EF,
 }
 
 void SourceFiles::read_primary_source_text(void) {
-	Kits::feed_early_source_text();
+	TEMPORARY_TEXT(early);
+	Kits::feed_early_source_text(early);
+	if (Str::len(early) > 0) Feeds::feed_stream(early);
+	DISCARD_TEXT(early);
 	SourceFiles::read_further_mandatory_text();
 	SourceFiles::read_file(filename_of_i7_source, I"your source text", NULL, FALSE);
 }

@@ -1,0 +1,8 @@
+priority: 0
+extension: Basic Inform by Graham Nelson
+dependency: if not WorldModelKit then BasicInformExtrasKit
+kinds: Core.kindt
+kinds: Files.kindt
+activate: glulx external files
+defines Main: no
+index from: Basic.indext

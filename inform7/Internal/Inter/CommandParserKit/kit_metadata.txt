@@ -1,0 +1,5 @@
+priority: 3
+extension: Standard Rules by Graham Nelson
+dependency: if CommandParserKit then WorldModelKit
+activate: command
+kinds: Parsing.kindt

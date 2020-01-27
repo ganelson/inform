@@ -166,54 +166,70 @@ inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.prefor
 
 .PHONY: intertemplate
 intertemplate: \
-	inform7/Internal/Inter/basic_inform/arch-16d.interb \
-	inform7/Internal/Inter/basic_inform/arch-16.interb \
-	inform7/Internal/Inter/basic_inform/arch-32d.interb \
-	inform7/Internal/Inter/basic_inform/arch-32.interb \
-	inform7/Internal/Inter/basic_inform_extras/arch-16d.interb \
-	inform7/Internal/Inter/basic_inform_extras/arch-16.interb \
-	inform7/Internal/Inter/basic_inform_extras/arch-32d.interb \
-	inform7/Internal/Inter/basic_inform_extras/arch-32.interb \
-	inform7/Internal/Inter/standard_rules/arch-16d.interb \
-	inform7/Internal/Inter/standard_rules/arch-16.interb \
-	inform7/Internal/Inter/standard_rules/arch-32d.interb \
-	inform7/Internal/Inter/standard_rules/arch-32.interb
+	inform7/Internal/Inter/BasicInformKit/arch-16d.interb \
+	inform7/Internal/Inter/BasicInformKit/arch-16.interb \
+	inform7/Internal/Inter/BasicInformKit/arch-32d.interb \
+	inform7/Internal/Inter/BasicInformKit/arch-32.interb \
+	inform7/Internal/Inter/BasicInformExtrasKit/arch-16d.interb \
+	inform7/Internal/Inter/BasicInformExtrasKit/arch-16.interb \
+	inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb \
+	inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb \
+	inform7/Internal/Inter/WorldModelKit/arch-16d.interb \
+	inform7/Internal/Inter/WorldModelKit/arch-16.interb \
+	inform7/Internal/Inter/WorldModelKit/arch-32d.interb \
+	inform7/Internal/Inter/WorldModelKit/arch-32.interb \
+	inform7/Internal/Inter/CommandParserKit/arch-16d.interb \
+	inform7/Internal/Inter/CommandParserKit/arch-16.interb \
+	inform7/Internal/Inter/CommandParserKit/arch-32d.interb \
+	inform7/Internal/Inter/CommandParserKit/arch-32.interb
 
-inform7/Internal/Inter/basic_inform/arch-16d.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/basic_inform
+inform7/Internal/Inter/BasicInformKit/arch-16d.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/BasicInformKit
 
-inform7/Internal/Inter/basic_inform/arch-16.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/basic_inform
+inform7/Internal/Inter/BasicInformKit/arch-16.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/BasicInformKit
 
-inform7/Internal/Inter/basic_inform/arch-32d.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/basic_inform
+inform7/Internal/Inter/BasicInformKit/arch-32d.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/BasicInformKit
 
-inform7/Internal/Inter/basic_inform/arch-32.interb: inform7/Internal/Inter/basic_inform/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/basic_inform
+inform7/Internal/Inter/BasicInformKit/arch-32.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/BasicInformKit
 
-inform7/Internal/Inter/basic_inform_extras/arch-16d.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/basic_inform_extras
+inform7/Internal/Inter/BasicInformExtrasKit/arch-16d.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/BasicInformExtrasKit
 
-inform7/Internal/Inter/basic_inform_extras/arch-16.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/basic_inform_extras
+inform7/Internal/Inter/BasicInformExtrasKit/arch-16.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/BasicInformExtrasKit
 
-inform7/Internal/Inter/basic_inform_extras/arch-32d.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/basic_inform_extras
+inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/BasicInformExtrasKit
 
-inform7/Internal/Inter/basic_inform_extras/arch-32.interb: inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/basic_inform_extras
+inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/BasicInformExtrasKit
 
-inform7/Internal/Inter/standard_rules/arch-16d.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/standard_rules
+inform7/Internal/Inter/WorldModelKit/arch-16d.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/WorldModelKit
 
-inform7/Internal/Inter/standard_rules/arch-16.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/standard_rules
+inform7/Internal/Inter/WorldModelKit/arch-16.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/WorldModelKit
 
-inform7/Internal/Inter/standard_rules/arch-32d.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/standard_rules
+inform7/Internal/Inter/WorldModelKit/arch-32d.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/WorldModelKit
 
-inform7/Internal/Inter/standard_rules/arch-32.interb: inform7/Internal/Inter/standard_rules/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/standard_rules
+inform7/Internal/Inter/WorldModelKit/arch-32.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/WorldModelKit
+
+inform7/Internal/Inter/CommandParserKit/arch-16d.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/CommandParserKit
+
+inform7/Internal/Inter/CommandParserKit/arch-16.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/CommandParserKit
+
+inform7/Internal/Inter/CommandParserKit/arch-32d.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/CommandParserKit
+
+inform7/Internal/Inter/CommandParserKit/arch-32.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/CommandParserKit
 
 # -----------------------------------------------------------------------------
 # Target "makers"
@@ -391,9 +407,10 @@ endef
 .PHONY: pages
 pages:
 	$(INPOLICYX) -write-me scripts/READMEscript.txt
-	$(INWEBX) inform7/Internal/Inter/basic_inform -weave-docs -weave-into docs/basic_inform
-	$(INWEBX) inform7/Internal/Inter/standard_rules -weave-docs -weave-into docs/standard_rules
-	$(INWEBX) inform7/Internal/Inter/basic_inform_extras -weave-docs -weave-into docs/basic_inform_extras
+	$(INWEBX) inform7/Internal/Inter/BasicInformKit -weave-docs -weave-into docs/BasicInformKit
+	$(INWEBX) inform7/Internal/Inter/WorldModelKit -weave-docs -weave-into docs/WorldModelKit
+	$(INWEBX) inform7/Internal/Inter/CommandParserKit -weave-docs -weave-into docs/CommandParserKit
+	$(INWEBX) inform7/Internal/Inter/BasicInformExtrasKit -weave-docs -weave-into docs/BasicInformExtrasKit
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
@@ -515,12 +532,14 @@ integration: \
 		$(INTERNAL)/Languages/English/Basic.indext \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
-		$(INTERNAL)/Inter/basic_inform/arch-32d.interb \
-		$(INTERNAL)/Inter/basic_inform/kit_metadata.txt \
-		$(INTERNAL)/Inter/basic_inform_extras/arch-32d.interb \
-		$(INTERNAL)/Inter/basic_inform_extras/kit_metadata.txt \
-		$(INTERNAL)/Inter/standard_rules/arch-32d.interb \
-		$(INTERNAL)/Inter/standard_rules/kit_metadata.txt \
+		$(INTERNAL)/Inter/BasicInformKit/arch-32d.interb \
+		$(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt \
+		$(INTERNAL)/Inter/BasicInformExtrasKit/arch-32d.interb \
+		$(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt \
+		$(INTERNAL)/Inter/WorldModelKit/arch-32d.interb \
+		$(INTERNAL)/Inter/WorldModelKit/kit_metadata.txt \
+		$(INTERNAL)/Inter/CommandParserKit/arch-32d.interb \
+		$(INTERNAL)/Inter/CommandParserKit/kit_metadata.txt \
 		$(INTERNAL)/Inter/default.interpipeline \
 		$(DOCEXEMPLUM) \
 		$(INTERNALEXEMPLUM) \
@@ -619,40 +638,52 @@ endef
 
 # (d) Copying the I6 template into the app
 
-$(INTERNAL)/Inter/standard_rules/arch-32d.interb: \
-	inform7/Internal/Inter/standard_rules/arch-32d.interb
+$(INTERNAL)/Inter/WorldModelKit/arch-32d.interb: \
+	inform7/Internal/Inter/WorldModelKit/arch-32d.interb
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform/arch-32d.interb: \
-	inform7/Internal/Inter/basic_inform/arch-32d.interb
+$(INTERNAL)/Inter/CommandParserKit/arch-32d.interb: \
+	inform7/Internal/Inter/CommandParserKit/arch-32d.interb
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform/kinds/*.kindt: \
-	inform7/Internal/Inter/basic_inform/kinds/*.kindt
+$(INTERNAL)/Inter/BasicInformKit/arch-32d.interb: \
+	inform7/Internal/Inter/BasicInformKit/arch-32d.interb
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform_extras/arch-32d.interb: \
-	inform7/Internal/Inter/basic_inform_extras/arch-32d.interb
+$(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt: \
+	inform7/Internal/Inter/BasicInformKit/kinds/*.kindt
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform_extras/kinds/*.kindt: \
-	inform7/Internal/Inter/basic_inform_extras/kinds/*.kindt
+$(INTERNAL)/Inter/BasicInformExtrasKit/arch-32d.interb: \
+	inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform/kit_metadata.txt: \
-	inform7/Internal/Inter/basic_inform/kit_metadata.txt
+$(INTERNAL)/Inter/BasicInformExtrasKit/kinds/*.kindt: \
+	inform7/Internal/Inter/BasicInformExtrasKit/kinds/*.kindt
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/basic_inform_extras/kit_metadata.txt: \
-	inform7/Internal/Inter/basic_inform_extras/kit_metadata.txt
+$(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt: \
+	inform7/Internal/Inter/BasicInformKit/kit_metadata.txt
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/standard_rules/kit_metadata.txt: \
-	inform7/Internal/Inter/standard_rules/kit_metadata.txt
+$(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt: \
+	inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt
 	$(call transfer-i6-template)
 
-$(INTERNAL)/Inter/standard_rules/kinds/*.kindt: \
-	inform7/Internal/Inter/standard_rules/kinds/*.kindt
+$(INTERNAL)/Inter/WorldModelKit/kit_metadata.txt: \
+	inform7/Internal/Inter/WorldModelKit/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/WorldModelKit/kinds/*.kindt: \
+	inform7/Internal/Inter/WorldModelKit/kinds/*.kindt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/CommandParserKit/kit_metadata.txt: \
+	inform7/Internal/Inter/CommandParserKit/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/CommandParserKit/kinds/*.kindt: \
+	inform7/Internal/Inter/CommandParserKit/kinds/*.kindt
 	$(call transfer-i6-template)
 
 # The I6 template could be tangled by inweb, but we don't do so: instead the
@@ -663,36 +694,44 @@ define transfer-i6-template
 	mkdir -p "$(INTERNAL)/Inter"
 	rm -f $(INTERNAL)/Inter/*.i6t
 	cp -R -f inform7/Internal/Inter/*.interpipeline $(INTERNAL)/Inter
-	mkdir -p "$(INTERNAL)/Inter/standard_rules"
-	mkdir -p "$(INTERNAL)/Inter/standard_rules/source"
-	rm -f $(INTERNAL)/Inter/standard_rules/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/standard_rules/*.interb
-	cp -R -f inform7/Internal/Inter/standard_rules/Sections/*.i6t $(INTERNAL)/Inter/standard_rules/source
-	cp -R -f inform7/Internal/Inter/standard_rules/*.interb $(INTERNAL)/Inter/standard_rules
-	cp -R -f inform7/Internal/Inter/standard_rules/library_metadata.txt $(INTERNAL)/Inter/standard_rules
-	cp -R -f inform7/Internal/Inter/standard_rules/kit_metadata.txt $(INTERNAL)/Inter/standard_rules
-	mkdir -p "$(INTERNAL)/Inter/basic_inform"
-	mkdir -p "$(INTERNAL)/Inter/basic_inform/source"
-	rm -f $(INTERNAL)/Inter/basic_inform/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/basic_inform/*.interb
-	cp -R -f inform7/Internal/Inter/basic_inform/Sections/*.i6t $(INTERNAL)/Inter/basic_inform/source
-	cp -R -f inform7/Internal/Inter/basic_inform/*.interb $(INTERNAL)/Inter/basic_inform
-	cp -R -f inform7/Internal/Inter/basic_inform/library_metadata.txt $(INTERNAL)/Inter/basic_inform
-	cp -R -f inform7/Internal/Inter/basic_inform/kit_metadata.txt $(INTERNAL)/Inter/basic_inform
-	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras"
-	mkdir -p "$(INTERNAL)/Inter/basic_inform_extras/source"
-	rm -f $(INTERNAL)/Inter/basic_inform_extras/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/basic_inform_extras/*.interb
-	cp -R -f inform7/Internal/Inter/basic_inform_extras/Sections/*.i6t $(INTERNAL)/Inter/basic_inform_extras/source
-	cp -R -f inform7/Internal/Inter/basic_inform_extras/*.interb $(INTERNAL)/Inter/basic_inform_extras
-	cp -R -f inform7/Internal/Inter/basic_inform_extras/library_metadata.txt $(INTERNAL)/Inter/basic_inform_extras
-	cp -R -f inform7/Internal/Inter/basic_inform_extras/kit_metadata.txt $(INTERNAL)/Inter/basic_inform_extras
-	mkdir -p "$(INTERNAL)/Inter/basic_inform/kinds"
-	rm -f $(INTERNAL)/Inter/basic_inform/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/basic_inform/kinds/*.kindt $(INTERNAL)/Inter/basic_inform/kinds
-	mkdir -p "$(INTERNAL)/Inter/standard_rules/kinds"
-	rm -f $(INTERNAL)/Inter/standard_rules/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/standard_rules/kinds/*.kindt $(INTERNAL)/Inter/standard_rules/kinds
+	mkdir -p "$(INTERNAL)/Inter/WorldModelKit"
+	mkdir -p "$(INTERNAL)/Inter/WorldModelKit/source"
+	rm -f $(INTERNAL)/Inter/WorldModelKit/Sections/*.i6t
+	rm -f $(INTERNAL)/Inter/WorldModelKit/*.interb
+	cp -R -f inform7/Internal/Inter/WorldModelKit/Sections/*.i6t $(INTERNAL)/Inter/WorldModelKit/source
+	cp -R -f inform7/Internal/Inter/WorldModelKit/*.interb $(INTERNAL)/Inter/WorldModelKit
+	cp -R -f inform7/Internal/Inter/WorldModelKit/library_metadata.txt $(INTERNAL)/Inter/WorldModelKit
+	cp -R -f inform7/Internal/Inter/WorldModelKit/kit_metadata.txt $(INTERNAL)/Inter/WorldModelKit
+	mkdir -p "$(INTERNAL)/Inter/CommandParserKit"
+	mkdir -p "$(INTERNAL)/Inter/CommandParserKit/source"
+	rm -f $(INTERNAL)/Inter/CommandParserKit/Sections/*.i6t
+	rm -f $(INTERNAL)/Inter/CommandParserKit/*.interb
+	cp -R -f inform7/Internal/Inter/CommandParserKit/Sections/*.i6t $(INTERNAL)/Inter/CommandParserKit/source
+	cp -R -f inform7/Internal/Inter/CommandParserKit/*.interb $(INTERNAL)/Inter/CommandParserKit
+	cp -R -f inform7/Internal/Inter/CommandParserKit/library_metadata.txt $(INTERNAL)/Inter/CommandParserKit
+	cp -R -f inform7/Internal/Inter/CommandParserKit/kit_metadata.txt $(INTERNAL)/Inter/CommandParserKit
+	mkdir -p "$(INTERNAL)/Inter/BasicInformKit"
+	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/source"
+	rm -f $(INTERNAL)/Inter/BasicInformKit/Sections/*.i6t
+	rm -f $(INTERNAL)/Inter/BasicInformKit/*.interb
+	cp -R -f inform7/Internal/Inter/BasicInformKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformKit/source
+	cp -R -f inform7/Internal/Inter/BasicInformKit/*.interb $(INTERNAL)/Inter/BasicInformKit
+	cp -R -f inform7/Internal/Inter/BasicInformKit/library_metadata.txt $(INTERNAL)/Inter/BasicInformKit
+	cp -R -f inform7/Internal/Inter/BasicInformKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformKit
+	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit"
+	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit/source"
+	rm -f $(INTERNAL)/Inter/BasicInformExtrasKit/Sections/*.i6t
+	rm -f $(INTERNAL)/Inter/BasicInformExtrasKit/*.interb
+	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformExtrasKit/source
+	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/*.interb $(INTERNAL)/Inter/BasicInformExtrasKit
+	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/library_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
+	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
+	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/kinds"
+	rm -f $(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt
+	cp -R -f inform7/Internal/Inter/BasicInformKit/kinds/*.kindt $(INTERNAL)/Inter/BasicInformKit/kinds
+	mkdir -p "$(INTERNAL)/Inter/WorldModelKit/kinds"
+	rm -f $(INTERNAL)/Inter/WorldModelKit/kinds/*.kindt
+	cp -R -f inform7/Internal/Inter/WorldModelKit/kinds/*.kindt $(INTERNAL)/Inter/WorldModelKit/kinds
 endef
 
 $(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline

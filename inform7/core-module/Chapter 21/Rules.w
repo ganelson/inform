@@ -192,8 +192,10 @@ kind is considered to be action-based and resulting in nothing.
 kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
-		if (CoreMain::basic_mode()) K = Kinds::binary_construction(CON_rule, K_nil, K_nil);
-		else K = Kinds::binary_construction(CON_rule, K_action_name, K_nil);
+		if (Plugins::Manage::plugged_in(actions_plugin))
+			K = Kinds::binary_construction(CON_rule, K_action_name, K_nil);
+		else
+			K = Kinds::binary_construction(CON_rule, K_nil, K_nil);
 	}
 	return K;
 }

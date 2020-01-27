@@ -3,6 +3,11 @@ Glulx Template.
 To start up the Glk interface for the Glulx virtual machine, and
 provide Glulx-specific printing functions.
 
+@h Begin Glulx-only matter.
+
+=
+#Ifdef TARGET_GLULX;
+
 @h Summary.
 This segment closely parallels "ZMachine.i6t", which provides exactly
 equivalent functionality (indeed, usually the same-named functions and in
@@ -1954,3 +1959,8 @@ text just appears in the main window.
 	@aloadb x y sp;
 	@return sp;
 ];
+
+@h End Glulx-only matter.
+
+=
+#Endif;
