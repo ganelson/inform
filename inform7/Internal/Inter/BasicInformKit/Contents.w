@@ -8,7 +8,6 @@ Web Syntax Version: 2
 Sections
 	Definitions
 	Utilities
-	Language
 	Glulx
 	ZMachine
 	Paragraphing

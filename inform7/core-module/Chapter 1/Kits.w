@@ -15,6 +15,7 @@ typedef struct inform_kit {
 	struct linked_list *activations; /* of |element_activation| */
 	struct text_stream *index_template;
 	int defines_Main;
+	int supports_natural_language;
 	int priority;
 	MEMORY_MANAGEMENT
 } inform_kit;
@@ -47,6 +48,7 @@ inform_kit *Kits::load(text_stream *name) {
 	K->extensions = NEW_LINKED_LIST(text_stream);
 	K->activations = NEW_LINKED_LIST(element_activation);
 	K->defines_Main = FALSE;
+	K->supports_natural_language = FALSE;
 	K->index_template = NULL;
 	
 	pathname *P = CodeGen::Libraries::location(K->lib);
@@ -81,6 +83,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		K->defines_Main = TRUE;
 	} else if (Regexp::match(&mr, text, L"defines Main: no")) {
 		K->defines_Main = FALSE;
+	} else if (Regexp::match(&mr, text, L"natural language: yes")) {
+		K->supports_natural_language = TRUE;
+	} else if (Regexp::match(&mr, text, L"natural language: no")) {
+		K->supports_natural_language = FALSE;
 	} else if (Regexp::match(&mr, text, L"insert: (%c*)")) {
 		K->early_source = Str::duplicate(mr.exp[0]);
 		WRITE_TO(K->early_source, "\n\n");
@@ -146,6 +152,7 @@ void Kits::request(text_stream *name) {
 void Kits::determine(void) {
 	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
 	Kits::request(I"BasicInformKit");
+	NaturalLanguages::request_required_kits();
 	text_stream *kit_name;
 	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
 		Kits::load(kit_name);

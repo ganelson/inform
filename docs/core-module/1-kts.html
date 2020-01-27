@@ -27,6 +27,7 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">activations</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">element_activation</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">index_template</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">defines_Main</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">supports_natural_language</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inform_kit</span><span class="plain">;</span>
@@ -59,6 +60,7 @@
         <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;extensions</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain">);</span>
         <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;activations</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">element_activation</span><span class="plain">);</span>
         <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;defines_Main</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;supports_natural_language</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;index_template</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">CodeGen::Libraries::location</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;lib</span><span class="plain">);</span>
@@ -93,6 +95,10 @@
             <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;defines_Main</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"defines Main: no"</span><span class="plain">)) {</span>
             <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;defines_Main</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"natural language: yes"</span><span class="plain">)) {</span>
+            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;supports_natural_language</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"natural language: no"</span><span class="plain">)) {</span>
+            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;supports_natural_language</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"insert: (%c*)"</span><span class="plain">)) {</span>
             <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
@@ -158,6 +164,7 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::determine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kits_requested</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Kits::request</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CommandParserKit"</span><span class="plain">);</span>
         <span class="functiontext">Kits::request</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BasicInformKit"</span><span class="plain">);</span>
+        <span class="functiontext">NaturalLanguages::request_required_kits</span><span class="plain">();</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">kit_name</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">kit_name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">kits_requested</span><span class="plain">)</span>
             <span class="functiontext">Kits::load</span><span class="plain">(</span><span class="identifier">kit_name</span><span class="plain">);</span>
@@ -244,7 +251,7 @@
 
 <p class="endnote">The function Kits::perform_ittt appears nowhere else.</p>
 
-<p class="endnote">The function Kits::request is used in 1/mr (<a href="1-mr.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function Kits::request is used in 1/mr (<a href="1-mr.html#SP6">&#167;6</a>), 3/nl (<a href="3-nl.html#SP18">&#167;18</a>).</p>
 
 <p class="endnote">The function Kits::determine is used in 1/mr (<a href="1-mr.html#SP4_8">&#167;4.8</a>).</p>
 
@@ -290,6 +297,17 @@ files of source text to be read, and quite possibly more.
         <span class="plain">}</span>
     <span class="plain">}</span>
 
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kits::number_of_early_fed_sentences</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">inform_kit</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">inform_kit</span><span class="plain">, </span><span class="identifier">kits_to_include</span><span class="plain">) {</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;extensions</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">++;</span>
+        <span class="plain">}</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">requirements_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="functiontext">Kits::list_of_inter_libraries</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">requirements_list</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">inter_library</span><span class="plain">);</span>
@@ -303,6 +321,8 @@ files of source text to be read, and quite possibly more.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Kits::feed_early_source_text is used in 3/rst (<a href="3-rst.html#SP3">&#167;3</a>).</p>
+
+<p class="endnote">The function Kits::number_of_early_fed_sentences appears nowhere else.</p>
 
 <p class="endnote">The function Kits::list_of_inter_libraries is used in 1/mr (<a href="1-mr.html#SP4_16">&#167;4.16</a>).</p>
 

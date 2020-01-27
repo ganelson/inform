@@ -21,7 +21,8 @@ fields to excerpts of text. The following are the field numbers:
 @d CUE_NATIVE_LFIELD 3			/* e.g. "in deutscher Sprache" */
 @d ISO_639_CODE_LFIELD 4		/* e.g. "de": an ISO 639-1 code */
 @d TRANSLATOR_LFIELD 5			/* e.g. "Team GerX" */
-@d MAX_LANGUAGE_FIELDS 6		/* one more than the highest number above */
+@d KIT_LFIELD 6					/* e.g. "GermanLanguageKit" */
+@d MAX_LANGUAGE_FIELDS 7		/* one more than the highest number above */
 
 @ Each natural language whose bundle can be located generates an instance
 of the following structure.
@@ -36,7 +37,7 @@ typedef struct natural_language {
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
-	int extension_required; /* do we need to Include the extension for this language? */
+	int kit_required; /* do we need to load a kit for this language? */
 	int adaptive_person; /* which person (one of constants below) text subs are written from */
 	MEMORY_MANAGEMENT
 } natural_language;
@@ -117,7 +118,7 @@ should be a single English word, without accents.
 	nl->instance_name = Feeds::feed_stream(sentence_format);
 	DISCARD_TEXT(sentence_format);
 	nl->nl_instance = NULL;
-	nl->extension_required = FALSE;
+	nl->kit_required = FALSE;
 	nl->adaptive_person = -1; /* i.e., none yet specified */
 
 	for (int n=0; n<MAX_LANGUAGE_FIELDS; n++) nl->language_field[n] = EMPTY_WORDING;
@@ -267,14 +268,14 @@ int NaturalLanguages::adaptive_person(natural_language *nl) {
 natural_language *NaturalLanguages::English(void) {
 	natural_language *nl = NaturalLanguages::get_nl(I"english");
 	if (nl == NULL) internal_error("unable to find English language bundle");
-	nl->extension_required = TRUE;
+	nl->kit_required = TRUE;
 	English_language = nl;
 	return nl;
 }
 
 void NaturalLanguages::set_language_of_play(natural_language *nl) {
 	language_of_play = nl;
-	if (nl) nl->extension_required = TRUE;
+	if (nl) nl->kit_required = TRUE;
 }
 
 @h Language code.
@@ -302,25 +303,18 @@ that's the language in which the SR are written, and French Language, because
 that's the language of play.
 
 =
-void NaturalLanguages::include_required(void) {
+void NaturalLanguages::request_required_kits(void) {
 	natural_language *nl;
-	feed_t id = Feeds::begin();
-	int icount = 0;
 	LOOP_OVER(nl, natural_language)
-		if (nl->extension_required) {
+		if (nl->kit_required) {
 			TEMPORARY_TEXT(TEMP);
-			if (icount++ > 0) WRITE_TO(TEMP, ". ");
-			WRITE_TO(TEMP, "Include %+W Language by ", NaturalLanguages::get_name(nl));
-			if (Wordings::nonempty(nl->language_field[TRANSLATOR_LFIELD]))
-				WRITE_TO(TEMP, "%+W", nl->language_field[TRANSLATOR_LFIELD]);
-			else WRITE_TO(TEMP, "Unknown Translator");
-			Feeds::feed_stream(TEMP);
+			if (Wordings::nonempty(nl->language_field[KIT_LFIELD]))
+				WRITE_TO(TEMP, "%+W", nl->language_field[KIT_LFIELD]);
+			else
+				WRITE_TO(TEMP, "%+WLanguageKit", nl->language_field[NAME_IN_ENGLISH_LFIELD]);
+			Kits::request(TEMP);
 			DISCARD_TEXT(TEMP);
 		}
-	ParseTree::set_attachment_point_one_off(language_extension_inclusion_point);
-	wording W = Feeds::end(id);
-	Sentences::break(W, NULL);
-	ParseTree::set_attachment_point_one_off(NULL);
 }
 
 @h Including Preform syntax.

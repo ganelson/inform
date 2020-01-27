@@ -174,6 +174,10 @@ intertemplate: \
 	inform7/Internal/Inter/BasicInformExtrasKit/arch-16.interb \
 	inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb \
 	inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb \
+	inform7/Internal/Inter/EnglishLanguageKit/arch-16d.interb \
+	inform7/Internal/Inter/EnglishLanguageKit/arch-16.interb \
+	inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb \
+	inform7/Internal/Inter/EnglishLanguageKit/arch-32.interb \
 	inform7/Internal/Inter/WorldModelKit/arch-16d.interb \
 	inform7/Internal/Inter/WorldModelKit/arch-16.interb \
 	inform7/Internal/Inter/WorldModelKit/arch-32d.interb \
@@ -206,6 +210,18 @@ inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb: inform7/Internal/In
 
 inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
 	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/BasicInformExtrasKit
+
+inform7/Internal/Inter/EnglishLanguageKit/arch-16d.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
+	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/EnglishLanguageKit
+
+inform7/Internal/Inter/EnglishLanguageKit/arch-16.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
+	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/EnglishLanguageKit
+
+inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
+	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/EnglishLanguageKit
+
+inform7/Internal/Inter/EnglishLanguageKit/arch-32.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
+	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/EnglishLanguageKit
 
 inform7/Internal/Inter/WorldModelKit/arch-16d.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
 	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/WorldModelKit
@@ -411,6 +427,7 @@ pages:
 	$(INWEBX) inform7/Internal/Inter/WorldModelKit -weave-docs -weave-into docs/WorldModelKit
 	$(INWEBX) inform7/Internal/Inter/CommandParserKit -weave-docs -weave-into docs/CommandParserKit
 	$(INWEBX) inform7/Internal/Inter/BasicInformExtrasKit -weave-docs -weave-into docs/BasicInformExtrasKit
+	$(INWEBX) inform7/Internal/Inter/EnglishLanguageKit -weave-docs -weave-into docs/EnglishLanguageKit
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
@@ -534,6 +551,8 @@ integration: \
 		$(BINFORMINPLACE) \
 		$(INTERNAL)/Inter/BasicInformKit/arch-32d.interb \
 		$(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt \
+		$(INTERNAL)/Inter/EnglishLanguageKit/arch-32d.interb \
+		$(INTERNAL)/Inter/EnglishLanguageKit/kit_metadata.txt \
 		$(INTERNAL)/Inter/BasicInformExtrasKit/arch-32d.interb \
 		$(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt \
 		$(INTERNAL)/Inter/WorldModelKit/arch-32d.interb \
@@ -662,12 +681,20 @@ $(INTERNAL)/Inter/BasicInformExtrasKit/kinds/*.kindt: \
 	inform7/Internal/Inter/BasicInformExtrasKit/kinds/*.kindt
 	$(call transfer-i6-template)
 
+$(INTERNAL)/Inter/EnglishLanguageKit/arch-32d.interb: \
+	inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb
+	$(call transfer-i6-template)
+
 $(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt: \
 	inform7/Internal/Inter/BasicInformKit/kit_metadata.txt
 	$(call transfer-i6-template)
 
 $(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt: \
 	inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt
+	$(call transfer-i6-template)
+
+$(INTERNAL)/Inter/EnglishLanguageKit/kit_metadata.txt: \
+	inform7/Internal/Inter/EnglishLanguageKit/kit_metadata.txt
 	$(call transfer-i6-template)
 
 $(INTERNAL)/Inter/WorldModelKit/kit_metadata.txt: \
@@ -722,6 +749,13 @@ define transfer-i6-template
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformExtrasKit/source
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/*.interb $(INTERNAL)/Inter/BasicInformExtrasKit
 	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
+	mkdir -p "$(INTERNAL)/Inter/EnglishLanguageKit"
+	mkdir -p "$(INTERNAL)/Inter/EnglishLanguageKit/source"
+	rm -f $(INTERNAL)/Inter/EnglishLanguageKit/Sections/*.i6t
+	rm -f $(INTERNAL)/Inter/EnglishLanguageKit/*.interb
+	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t $(INTERNAL)/Inter/EnglishLanguageKit/source
+	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/*.interb $(INTERNAL)/Inter/EnglishLanguageKit
+	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/kit_metadata.txt $(INTERNAL)/Inter/EnglishLanguageKit
 	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/kinds"
 	rm -f $(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt
 	cp -R -f inform7/Internal/Inter/BasicInformKit/kinds/*.kindt $(INTERNAL)/Inter/BasicInformKit/kinds

@@ -85,7 +85,6 @@ void StructuralSentences::break_source(void) {
 	if (doc_references_top >= n) n = doc_references_top+1;
 	Sentences::break(Wordings::new(n, lexer_wordcount-1), NULL);
 	ParseTree::pop_attachment_point(l);
-	NaturalLanguages::include_required();
 	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
 	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
 	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);

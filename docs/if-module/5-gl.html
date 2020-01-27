@@ -821,6 +821,7 @@ quantities used in sorting GLs: the "general sorting bonus" and the
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Specifications::is_kind_like</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">K_understanding</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">K_understanding</span><span class="plain">))) { </span>    <span class="comment">"[text]" token</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">usb_contribution</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> - 100;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">usb_contribution</span><span class="plain"> &gt;= 0) </span><span class="identifier">usb_contribution</span><span class="plain"> = -1;</span>

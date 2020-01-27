@@ -28,11 +28,6 @@
         <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
         <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">, </span><span class="string">"/main/%S"</span><span class="plain">, </span><span class="identifier">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">));</span>
-    <span class="comment">filename *F = Filenames::in_folder(P, I"kit_metadata.txt");</span>
-    <span class="comment">TextFiles::read(F, FALSE,</span>
-    <span class="comment">NULL, FALSE, CodeGen::Libraries::read_metadata, NULL, (void *) lib);</span>
-    <span class="comment">if (lib-&gt;attachment_point == NULL)</span>
-    <span class="comment">Errors::nowhere("library metadata file failed to set attachment point");</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -44,20 +39,6 @@
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::URL</span><span class="plain">(</span><span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lib</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Libraries::read_metadata</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">,</span>
-        <span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">inter_library</span><span class="plain"> *</span><span class="identifier">lib</span><span class="plain"> = (</span><span class="reserved">inter_library</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
-        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::is_whitespace</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">)) || (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">))) {</span>
-            <span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"attach: (%c*)"</span><span class="plain">)) {</span>
-            <span class="identifier">lib</span><span class="plain">-</span><span class="element">&gt;attachment_point</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Errors::in_text_file</span><span class="plain">(</span><span class="string">"illegible line in library metadata file"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_library</span><span class="plain"> *</span><span class="functiontext">CodeGen::Libraries::find</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">) {</span>
@@ -77,8 +58,6 @@
 <p class="endnote">The function CodeGen::Libraries::location appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Libraries::URL appears nowhere else.</p>
-
-<p class="endnote">The function CodeGen::Libraries::read_metadata appears nowhere else.</p>
 
 <p class="endnote">The function CodeGen::Libraries::find appears nowhere else.</p>
 

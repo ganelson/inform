@@ -131,6 +131,7 @@ This repository also contains kits of Inter code (at the subtree inform7/Interna
 
 @primaryl(BasicInformKit, 'Web of Inform 6', 'Support for Inform as a programming language')
 @primaryl(WorldModelKit, 'Web of Inform 6', 'Support for modelling space, time and actions in interactive fiction')
+@primaryl(EnglishLanguageKit, 'Web of Inform 6', 'Support for English as the natural language used')
 @primaryl(CommandParserKit, 'Web of Inform 6', 'Support for parsing turn-by-turn commands in interactive fiction')
 @primaryl(BasicInformExtrasKit, 'Web of Inform 6', 'Additional support needed only if the Standard Rules are not used')
 
@@ -325,6 +326,7 @@ These pages showcase the woven form, and are for human eyes only.</p>
 		<ul class="sectionlist">
 			@webt('BasicInformKit', 'support for Inform as a programming language.')
 			@webt('WorldModelKit', 'support for modelling space, time and actions in interactive fiction.')
+			@webt('EnglishLanguageKit', 'support for English as the natural language used.')
 			@webt('CommandParserKit', 'support for parsing turn-by-turn commands in interactive fiction.')
 			@webt('BasicInformExtrasKit', 'additional support needed only if the Standard Rules are not used.')
 		</ul>

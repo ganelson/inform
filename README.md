@@ -115,6 +115,7 @@ This repository also contains kits of Inter code (at the subtree inform7/Interna
 
 * BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/BasicInformKit/index.html)
 * WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](docs/WorldModelKit/index.html)
+* EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](docs/EnglishLanguageKit/index.html)
 * CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](docs/CommandParserKit/index.html)
 * BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/BasicInformExtrasKit/index.html)
 
