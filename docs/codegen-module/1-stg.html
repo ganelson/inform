@@ -50,7 +50,7 @@ write output to; others are not.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CodeGen::Stage::new is used in <a href="#SP2">&#167;2</a>, 1/arc (<a href="1-arc.html#SP2">&#167;2</a>), 1/lbr (<a href="1-lbr.html#SP2">&#167;2</a>), 2/lnk (<a href="2-lnk.html#SP1">&#167;1</a>), 2/plm (<a href="2-plm.html#SP1">&#167;1</a>), 2/rcc (<a href="2-rcc.html#SP1">&#167;1</a>), 2/alm (<a href="2-alm.html#SP1">&#167;1</a>), 2/res (<a href="2-res.html#SP1">&#167;1</a>), 2/ip (<a href="2-ip.html#SP1">&#167;1</a>), 2/unq (<a href="2-unq.html#SP1">&#167;1</a>), 2/rv (<a href="2-rv.html#SP1">&#167;1</a>), 2/erm (<a href="2-erm.html#SP1">&#167;1</a>), 2/erl (<a href="2-erl.html#SP1">&#167;1</a>), 3/cg (<a href="3-cg.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function CodeGen::Stage::new is used in <a href="#SP2">&#167;2</a>, 1/arc (<a href="1-arc.html#SP2">&#167;2</a>), 1/li (<a href="1-li.html#SP2">&#167;2</a>), 2/lnk (<a href="2-lnk.html#SP1">&#167;1</a>), 2/plm (<a href="2-plm.html#SP1">&#167;1</a>), 2/rcc (<a href="2-rcc.html#SP1">&#167;1</a>), 2/alm (<a href="2-alm.html#SP1">&#167;1</a>), 2/res (<a href="2-res.html#SP1">&#167;1</a>), 2/ip (<a href="2-ip.html#SP1">&#167;1</a>), 2/unq (<a href="2-unq.html#SP1">&#167;1</a>), 2/rv (<a href="2-rv.html#SP1">&#167;1</a>), 2/erm (<a href="2-erm.html#SP1">&#167;1</a>), 2/erl (<a href="2-erl.html#SP1">&#167;1</a>), 3/cg (<a href="3-cg.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The structure pipeline_stage is accessed in 1/ppl and here.</p>
 
@@ -73,7 +73,7 @@ to the routine below.
 
             <span class="functiontext">CodeGen::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Architecture::create_pipeline_stage</span><span class="plain">();</span>
-            <span class="functiontext">CodeGen::Libraries::create_pipeline_stage</span><span class="plain">();</span>
+            <span class="functiontext">CodeGen::LinkInstructions::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Assimilate::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Eliminate::create_pipeline_stage</span><span class="plain">();</span>
             <span class="functiontext">CodeGen::Externals::create_pipeline_stage</span><span class="plain">();</span>

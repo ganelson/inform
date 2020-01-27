@@ -116,6 +116,7 @@ This repository is where development is done on the following executables:
 	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
 	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
 @primaryd(inblorb, 'Web of InC', 'P-ui')
+@primaryd(inbuild, 'Web of InC', 'P-ui')
 @primaryd(indoc, 'Web of InC', 'P-iti')
 @primaryd(inpolicy, 'Web of InC', 'P-ui')
 @primaryd(inrtps, 'Web of InC', 'P-ui')
@@ -334,6 +335,7 @@ These pages showcase the woven form, and are for human eyes only.</p>
 		<p class="chapter">Other webs in this repository:</p>
 		<ul class="sectionlist">
 			@web('inblorb', 'P-ui')
+			@web('inbuild', 'P-ui')
 			@web('indoc', 'P-iti')
 			@web('inpolicy', 'P-ui')
 			@web('inrtps', 'P-ui')

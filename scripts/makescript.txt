@@ -95,6 +95,9 @@ INTERX = inter/Tangled/inter
 {tool} INRTPS inrtps inrtps
 {dep} INRTPS on FOUNDATION
 
+{tool} INBUILD inbuild inbuild
+{dep} INBUILD on FOUNDATION
+
 {tool} INTERTOOL inter inter
 {dep} INTERTOOL on FOUNDATION
 {dep} INTERTOOL on INTER
@@ -429,6 +432,7 @@ pages:
 	$(INWEBX) inform7/Internal/Inter/BasicInformExtrasKit -weave-docs -weave-into docs/BasicInformExtrasKit
 	$(INWEBX) inform7/Internal/Inter/EnglishLanguageKit -weave-docs -weave-into docs/EnglishLanguageKit
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
+	$(INWEBX) inbuild -weave-docs -weave-into docs/inbuild
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
 	$(INWEBX) inform7/core-module -weave-docs -weave-into docs/core-module
