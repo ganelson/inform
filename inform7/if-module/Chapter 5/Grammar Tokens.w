@@ -211,7 +211,7 @@ to be used in I7: these are defined by the following routine.
 
 =
 kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
-	if (gtc == TOPIC_TOKEN_GTC) return K_understanding;
+	if ((K_understanding) && (gtc == TOPIC_TOKEN_GTC)) return K_understanding;
 	return K_object;
 }
 
@@ -425,7 +425,8 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 @<Vet the grammar token determination for parseability at run-time@> =
 	if (Specifications::is_description(spec)) {
 		kind *K = Specifications::to_kind(spec);
-		if ((Kinds::Compare::le(K, K_object) == FALSE) &&
+		if ((K_understanding) &&
+			(Kinds::Compare::le(K, K_object) == FALSE) &&
 			(Kinds::Compare::eq(K, K_understanding) == FALSE) &&
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
@@ -1047,7 +1048,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 	if (Specifications::is_kind_like(spec)) {
 		kind *K = ParseTree::get_kind_of_value(spec);
-		if ((Kinds::Compare::le(K, K_object) == FALSE) &&
+		if ((K_understanding) &&
+			(Kinds::Compare::le(K, K_object) == FALSE) &&
 			(Kinds::Compare::eq(K, K_understanding) == FALSE)) {
 			if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
@@ -1241,7 +1243,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				}
 			} else {
 				if (ParseTree::is(spec, CONSTANT_NT)) {
-					if (Rvalues::is_CONSTANT_of_kind(spec, K_understanding)) {
+					if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
 						gv = Rvalues::to_grammar_verb(spec);
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);

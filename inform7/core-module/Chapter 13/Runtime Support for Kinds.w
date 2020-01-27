@@ -257,7 +257,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 		return;
 	}
 
-	if (Kinds::Compare::eq(K, K_understanding)) {
+	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) {
 		inter_name *empty = Hierarchy::find(DEFAULTTOPIC_HL);
 		Emit::to_ival(v1, v2, empty);
 		return;

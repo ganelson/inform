@@ -1610,7 +1610,7 @@ literal can mean are too generous.)
 	}
 	LOGIF(MATCHING, "Kinds found: $u, wanted: $u\n", kind_found, kind_wanted);
 
-	if (((Kinds::Compare::eq(kind_wanted, K_understanding)) &&
+	if (((K_understanding) && (Kinds::Compare::eq(kind_wanted, K_understanding)) &&
 		(Kinds::Compare::eq(kind_found, K_understanding) == FALSE))
 		|| (Kinds::Compare::compatible(kind_found, kind_wanted) == NEVER_MATCH)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
@@ -2974,7 +2974,7 @@ different representations at run-time.
 @<Step (5.d.2) Coerce constant TEXT and TEXT ROUTINE to UNDERSTANDING@> =
 	LOG_DASH("(5.d.2)");
 	if ((Rvalues::is_CONSTANT_of_kind(p, K_text)) &&
-		(Kinds::Compare::eq(kind_expected, K_understanding))) {
+		(K_understanding) && (Kinds::Compare::eq(kind_expected, K_understanding))) {
 		ParseTree::set_kind_of_value(p, K_understanding);
 	}
 
@@ -3386,14 +3386,16 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	kind_found = Specifications::to_kind(spec);
 	if ((Kinds::get_construct(kind_found) == CON_property) && (Kinds::Compare::le(K, K_object)))
 		return TRUE;
-	if ((Kinds::Compare::eq(kind_found, K_snippet)) && (Kinds::Compare::eq(K, K_understanding)))
+	if ((K_understanding) && (Kinds::Compare::eq(kind_found, K_snippet)) &&
+		(Kinds::Compare::eq(K, K_understanding)))
 		return TRUE;
-	if ((Kinds::Compare::eq(K, K_understanding)) && (ParseTree::is(spec, CONSTANT_NT) == FALSE) &&
+	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) &&
+		(ParseTree::is(spec, CONSTANT_NT) == FALSE) &&
 		(Kinds::Compare::eq(kind_found, K_text)))
 		goto DontValidate;
 	vts = Specifications::from_kind(K);
 	if (Dash::compatible_with_description(spec, vts) == NEVER_MATCH) {
-		if ((Kinds::Compare::eq(K, K_understanding)) && (ParseTree::is(spec, CONSTANT_NT))) {
+		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) && (ParseTree::is(spec, CONSTANT_NT))) {
 			vts = Specifications::from_kind(K_snippet);
 			if (Dash::compatible_with_description(spec, vts) != NEVER_MATCH) return TRUE;
 		}

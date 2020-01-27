@@ -240,6 +240,17 @@ void Kits::feed_early_source_text(OUTPUT_STREAM) {
 	}
 }
 
+int Kits::number_of_early_fed_sentences(void) {
+	int N = 0;
+	inform_kit *K;
+	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
+		text_stream *X;
+		LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions) N++;
+		if (K->early_source) N++;
+	}
+	return N;
+}
+
 linked_list *requirements_list = NULL;
 linked_list *Kits::list_of_inter_libraries(void) {
 	requirements_list = NEW_LINKED_LIST(inter_library);

@@ -110,7 +110,7 @@ void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 	tc->table_from_which_kind_inferred = t;
 	LOGIF(TABLES, "Table column $C contains kind $u, according to $B\n",
 		tc, tc->kind_stored_in_column, t);
-	if (Kinds::Compare::eq(K, K_understanding))
+	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))
 		Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K_snippet);
 	else Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K);
 }
@@ -396,7 +396,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 		Tables::Columns::set_kind(tcu->column_identity, t, K);
 	} else {
 		int allow_refinement = TRUE;
-		if (Kinds::Compare::eq(CK, K_understanding)) {
+		if ((K_understanding) && (Kinds::Compare::eq(CK, K_understanding))) {
 			CK = K_text; /* make sure the entries are texts... */
 			allow_refinement = FALSE; /* ...and don't allow any change to the kind */
 		}

@@ -742,7 +742,7 @@ kinds of value:
 		return;
 	}
 	#ifdef IF_MODULE
-	if (Kinds::Compare::eq(kind_of_constant, K_understanding)) {
+	if ((K_understanding) && (Kinds::Compare::eq(kind_of_constant, K_understanding))) {
 		if (Wordings::empty(ParseTree::get_text(spec_found)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_t v1 = 0, v2 = 0;

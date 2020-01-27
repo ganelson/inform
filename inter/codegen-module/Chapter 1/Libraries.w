@@ -16,11 +16,6 @@ inter_library *CodeGen::Libraries::new(pathname *P) {
 	lib->location = P;
 	lib->attachment_point = Str::new();
 	WRITE_TO(lib->attachment_point, "/main/%S", Pathnames::directory_name(P));
-//	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
-//	TextFiles::read(F, FALSE,
-//		NULL, FALSE, CodeGen::Libraries::read_metadata, NULL, (void *) lib);
-//	if (lib->attachment_point == NULL)
-//		Errors::nowhere("library metadata file failed to set attachment point");
 	return lib;
 }
 
@@ -32,20 +27,6 @@ pathname *CodeGen::Libraries::location(inter_library *lib) {
 text_stream *CodeGen::Libraries::URL(inter_library *lib) {
 	if (lib == NULL) return NULL;
 	return lib->attachment_point;
-}
-
-void CodeGen::Libraries::read_metadata(text_stream *text,
-	text_file_position *tfp, void *state) {
-	inter_library *lib = (inter_library *) state;
-	match_results mr = Regexp::create_mr();
-	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
-		;
-	} else if (Regexp::match(&mr, text, L"attach: (%c*)")) {
-		lib->attachment_point = Str::duplicate(mr.exp[0]);
-	} else {
-		Errors::in_text_file("illegible line in library metadata file", tfp);
-	}
-	Regexp::dispose_of(&mr);
 }
 
 inter_library *CodeGen::Libraries::find(text_stream *name, int N, pathname **PP) {

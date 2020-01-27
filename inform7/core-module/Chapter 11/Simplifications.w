@@ -173,7 +173,7 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 				parse_node *tab = spec->down->next;
 				table_column *tc = Rvalues::to_table_column(col);
 				kind *K = Tables::Columns::get_kind(tc);
-				if (Kinds::Compare::eq(K, K_understanding)) K = K_snippet;
+				if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) K = K_snippet;
 				int nv = Calculus::Variables::find_unused(prop);
 				pcalc_term nv_term = Calculus::Terms::new_variable(nv);
 				prop = Calculus::Propositions::insert_atom(prop, pl_prev,

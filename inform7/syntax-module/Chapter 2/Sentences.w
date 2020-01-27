@@ -452,7 +452,13 @@ source texts implicitly begin with an inclusion of the Standard Rules.)
 =
 <if-start-of-source-text> internal 0 {
 	int w1 = Wordings::first_wn(W);
-	if ((no_sentences_read == 3) &&
+	#ifdef CORE_MODULE
+	int N = 1 + Kits::number_of_early_fed_sentences();
+	#endif
+	#ifndef CORE_MODULE
+	int N = 3;
+	#endif
+	if ((no_sentences_read == N) &&
 		((w1 == 0) || (compare_word(w1-1, PARBREAK_V)))) return TRUE;
 	return FALSE;
 }

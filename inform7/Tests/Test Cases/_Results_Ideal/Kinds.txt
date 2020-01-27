@@ -18,15 +18,14 @@
   real number <= value, word value, arithmetic value, real arithmetic value, sayable value
   truth state <= value, word value, sayable value
   text <= value, pointer value, sayable value
+  snippet <= value, word value, sayable value
   unicode character <= value, word value, sayable value
   use option <= value, word value, sayable value
   response <= value, word value, sayable value
   verb <= value, word value, sayable value
-  snippet <= value, word value, sayable value
   table name <= value, word value, sayable value
   equation name <= value, word value
   rulebook outcome <= value, word value, sayable value
-  topic <= value, word value
   nothing <= value, word value
   phrase value -> value <= value, word value, sayable value
   value, value <= value, word value
@@ -48,6 +47,7 @@
   scene <= value, word value, enumerated value, sayable value
   figure name <= value, word value, enumerated value, sayable value
   sound name <= value, word value, enumerated value, sayable value
+  topic <= value, word value
   natural language <= value, word value, enumerated value, sayable value
   room <= value, word value, sayable value, object
   thing <= value, word value, sayable value, object
@@ -92,15 +92,14 @@
   real number ->
   truth state ->
   text ->
+  snippet ->
   unicode character ->
   use option ->
   response ->
   verb ->
-  snippet ->
   table name ->
   equation name ->
   rulebook outcome ->
-  topic ->
   nothing ->
   phrase value -> value ->
   value, value ->
@@ -122,6 +121,7 @@
   scene ->
   figure name ->
   sound name ->
+  topic ->
   natural language ->
   room -> object ->
   thing -> object ->

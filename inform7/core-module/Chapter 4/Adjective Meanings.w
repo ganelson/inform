@@ -605,7 +605,7 @@ void Adjectives::Meanings::set_definition_domain(adjective_meaning *am, int earl
 		K = Rvalues::to_kind(supplied);
 	if (K == NULL) @<Reject domain of adjective@>;
 	if (Kinds::Behaviour::is_kind_of_kind(K)) @<Reject domain as vague@>;
-	if (Kinds::Compare::eq(K, K_understanding)) @<Reject domain as topic@>;
+	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) @<Reject domain as topic@>;
 	@<Set the domain INFS as needed@>;
 }
 

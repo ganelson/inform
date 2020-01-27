@@ -667,7 +667,7 @@ to abbreviated forms of object names are normally allowed.
 	if (domain == NULL) domain = Kinds::weaken(Specifications::to_kind(governing_spec));
 	if (Specifications::is_new_variable_like(governing_spec))
 		domain = Specifications::kind_of_new_variable_like(governing_spec);
-	if (Kinds::contains(domain, Kinds::get_construct(K_understanding)))
+	if ((K_understanding) && (Kinds::contains(domain, Kinds::get_construct(K_understanding))))
 		@<Issue a problem for topics that vary@>;
 	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(domain, W);
 	if (prevailing_mood == CERTAIN_CE)

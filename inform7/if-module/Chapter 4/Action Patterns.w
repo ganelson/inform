@@ -1033,6 +1033,7 @@ description.
 	if (entry->parc >= 2) {
 		if (Wordings::nonempty(entry->parameter[1])) {
 			if ((entry->action_listed != NULL)
+				&& (K_understanding)
 				&& (Kinds::Compare::eq(PL::Actions::get_data_type_of_second_noun(entry->action_listed), K_understanding))
 				&& (<understanding-action-irregular-operand>(entry->parameter[1]))) {
 				trial_ap.second_spec = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
@@ -1347,7 +1348,7 @@ void PL::Actions::Patterns::put_action_object_into_ap(action_pattern *ap, int po
 		else { any_flag = TRUE; spec = Specifications::from_kind(K_thing); }
 	}
 	if (spec == NULL) spec = Specifications::new_UNKNOWN(W);
-	if (Rvalues::is_CONSTANT_of_kind(spec, K_text))
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_text)))
 		ParseTree::set_kind_of_value(spec, K_understanding);
 	ParseTree::set_text(spec, W);
 	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (position %d) %W = $P\n", pos, W, spec);
@@ -1366,10 +1367,10 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	parse_node *spec1 = ap->second_spec; /* the second noun */
 	parse_node *spec2 = ap->actor_spec; /* the actor */
 
-	if ((Rvalues::is_CONSTANT_of_kind(spec0, K_understanding)) &&
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec0, K_understanding)) &&
 		(<nominative-pronoun>(ParseTree::get_text(spec0)) == FALSE))
 		spec0 = Rvalues::from_wording(ParseTree::get_text(spec0));
-	if ((Rvalues::is_CONSTANT_of_kind(spec1, K_understanding)) &&
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec1, K_understanding)) &&
 		(<nominative-pronoun>(ParseTree::get_text(spec1)) == FALSE))
 		spec1 = Rvalues::from_wording(ParseTree::get_text(spec1));
 
@@ -1409,7 +1410,7 @@ text when the action expects that.
 
 =
 void PL::Actions::Patterns::emit_try_action_parameter(parse_node *spec, kind *required_kind) {
-	if (Kinds::Compare::eq(required_kind, K_understanding)) {
+	if ((K_understanding) && (Kinds::Compare::eq(required_kind, K_understanding))) {
 		kind *K = Specifications::to_kind(spec);
 		if ((Kinds::Compare::compatible(K, K_understanding)) ||
 			(Kinds::Compare::compatible(K, K_text))) {
@@ -1550,7 +1551,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			force_proposition = FALSE;
 		}
 	else if (ParseTreeUsage::is_rvalue(spec)) {
-		if (Rvalues::is_CONSTANT_of_kind(spec, K_understanding)) {
+		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
 			if ((<understanding-action-irregular-operand>(ParseTree::get_text(spec))) &&
 				(<<r>> == TRUE)) {
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
@@ -1644,7 +1645,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 
 	int request_bits = ap->request;
 	if (ap->noun_spec) {
-		if (Rvalues::is_CONSTANT_of_kind(ap->noun_spec, K_understanding)) {
+		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->noun_spec, K_understanding))) {
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC);
 			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, ParseTree::get_text(ap->noun_spec));
@@ -1655,7 +1656,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		Emit::array_numeric_entry(0);
 	}
 	if (ap->second_spec) {
-		if (Rvalues::is_CONSTANT_of_kind(ap->second_spec, K_understanding)) {
+		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->second_spec, K_understanding))) {
 			request_bits = request_bits | 32;
 			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, ParseTree::get_text(ap->second_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);

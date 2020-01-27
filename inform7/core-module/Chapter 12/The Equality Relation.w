@@ -53,7 +53,7 @@ any kind.
 int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	LOGIF(MATCHING, "Typecheck $u '==' $u\n", kinds_of_terms[0], kinds_of_terms[1]);
-	if ((Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
+	if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
 			(Kinds::Compare::eq(kinds_of_terms[1], K_text))) {
 			LOGIF(MATCHING, "No!\n");
 		Problems::Issue::tcp_problem(_p_(PM_TextIsNotTopic), tck,
@@ -69,10 +69,10 @@ int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 	if ((Kinds::Compare::le(kinds_of_terms[0], K_object)) &&
 		(Properties::Conditions::name_can_coincide_with_property(kinds_of_terms[1])))
 		@<Apply rule for "is" applied to an object and a value@>
-	else if ((Kinds::Compare::eq(kinds_of_terms[1], K_understanding)) &&
+	else if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[1], K_understanding)) &&
 			(Kinds::Compare::eq(kinds_of_terms[0], K_snippet)))
 		return ALWAYS_MATCH;
-	else if ((Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
+	else if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
 			(Kinds::Compare::eq(kinds_of_terms[1], K_snippet)))
 		return ALWAYS_MATCH;
 	else if ((Kinds::Compare::eq(kinds_of_terms[1], K_text)) &&

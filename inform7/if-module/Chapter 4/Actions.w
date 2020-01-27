@@ -1322,7 +1322,7 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
-		if (Kinds::Compare::eq(K, K_understanding)) {
+		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) {
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
@@ -1502,7 +1502,7 @@ void PL::Actions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) 
 	if (argc == 0) K = an->noun_kind;
 	if (argc == 1) K = an->second_kind;
 	if (Kinds::Compare::le(K, K_object)) WRITE("something");
-	else if (Kinds::Compare::eq(K, K_understanding)) WRITE("some text");
+	else if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) WRITE("some text");
 	else Kinds::Textual::write(OUT, K);
 	HTML::end_colour(OUT);
 	WRITE(" ");
