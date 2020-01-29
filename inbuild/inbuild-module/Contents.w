@@ -7,5 +7,11 @@ Licence: Artistic License 2.0
 Chapter 1: Setting Up
 	Inbuild Module
 
-Chapter 2: Everything Else
+Chapter 2: Conceptual Framework
+	Version Numbers
+	Conceptual Model
+	Build Graphs
+	Build Steps
+
+Chapter 3: The Genres
 	Kits

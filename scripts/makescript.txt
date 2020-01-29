@@ -22,6 +22,7 @@ INTESTWEB = ../intest
 INWEB = ../inweb/Tangled/inweb
 INWEBX = ../inweb/Tangled/inweb
 INTERX = inter/Tangled/inter
+INBUILDX = inbuild/Tangled/inbuild
 
 # The "-" at the front here tells make to load this file if it exists, and
 # continue otherwise. If it does exist, it will define the symbol INTEGRATION.
@@ -60,6 +61,7 @@ INTERX = inter/Tangled/inter
 {module} INTER inter inter/inter-module
 {module} BUILDING building inter/building-module
 {module} CODEGEN codegen inter/codegen-module
+{module} INBUILD inbuild inbuild/inbuild-module
 
 # First, the tools we need to make, using the same declaration notation.
 # In the eventual makefile, the symbol NAMEWEB is the location of NAME;
@@ -95,8 +97,9 @@ INTERX = inter/Tangled/inter
 {tool} INRTPS inrtps inrtps
 {dep} INRTPS on FOUNDATION
 
-{tool} INBUILD inbuild inbuild
-{dep} INBUILD on FOUNDATION
+{tool} INBUILDTOOL inbuild inbuild
+{dep} INBUILDTOOL on FOUNDATION
+{dep} INBUILDTOOL on INBUILD
 
 {tool} INTERTOOL inter inter
 {dep} INTERTOOL on FOUNDATION
@@ -153,11 +156,11 @@ INFORM6X = inform6/Tangled/inform6
 
 .PHONY: all
 
-all: tools srules intertemplate localintegration
+all: tools kits srules localintegration
 
 .PHONY: force
 
-force: forcetools forcesrules localintegration
+force: forcetools forcekits forcesrules localintegration
 
 .PHONY: localintegration
 localintegration: inform7/Internal/Languages/English/Syntax.preform
@@ -166,89 +169,6 @@ inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.prefor
 	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
 
 # (Of course those other four phony targets are yet to be defined.)
-
-.PHONY: intertemplate
-intertemplate: \
-	inform7/Internal/Inter/BasicInformKit/arch-16d.interb \
-	inform7/Internal/Inter/BasicInformKit/arch-16.interb \
-	inform7/Internal/Inter/BasicInformKit/arch-32d.interb \
-	inform7/Internal/Inter/BasicInformKit/arch-32.interb \
-	inform7/Internal/Inter/BasicInformExtrasKit/arch-16d.interb \
-	inform7/Internal/Inter/BasicInformExtrasKit/arch-16.interb \
-	inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb \
-	inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb \
-	inform7/Internal/Inter/EnglishLanguageKit/arch-16d.interb \
-	inform7/Internal/Inter/EnglishLanguageKit/arch-16.interb \
-	inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb \
-	inform7/Internal/Inter/EnglishLanguageKit/arch-32.interb \
-	inform7/Internal/Inter/WorldModelKit/arch-16d.interb \
-	inform7/Internal/Inter/WorldModelKit/arch-16.interb \
-	inform7/Internal/Inter/WorldModelKit/arch-32d.interb \
-	inform7/Internal/Inter/WorldModelKit/arch-32.interb \
-	inform7/Internal/Inter/CommandParserKit/arch-16d.interb \
-	inform7/Internal/Inter/CommandParserKit/arch-16.interb \
-	inform7/Internal/Inter/CommandParserKit/arch-32d.interb \
-	inform7/Internal/Inter/CommandParserKit/arch-32.interb
-
-inform7/Internal/Inter/BasicInformKit/arch-16d.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/BasicInformKit
-
-inform7/Internal/Inter/BasicInformKit/arch-16.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/BasicInformKit
-
-inform7/Internal/Inter/BasicInformKit/arch-32d.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/BasicInformKit
-
-inform7/Internal/Inter/BasicInformKit/arch-32.interb: inform7/Internal/Inter/BasicInformKit/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/BasicInformKit
-
-inform7/Internal/Inter/BasicInformExtrasKit/arch-16d.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/BasicInformExtrasKit
-
-inform7/Internal/Inter/BasicInformExtrasKit/arch-16.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/BasicInformExtrasKit
-
-inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/BasicInformExtrasKit
-
-inform7/Internal/Inter/BasicInformExtrasKit/arch-32.interb: inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/BasicInformExtrasKit
-
-inform7/Internal/Inter/EnglishLanguageKit/arch-16d.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/EnglishLanguageKit
-
-inform7/Internal/Inter/EnglishLanguageKit/arch-16.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/EnglishLanguageKit
-
-inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/EnglishLanguageKit
-
-inform7/Internal/Inter/EnglishLanguageKit/arch-32.interb: inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/EnglishLanguageKit
-
-inform7/Internal/Inter/WorldModelKit/arch-16d.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/WorldModelKit
-
-inform7/Internal/Inter/WorldModelKit/arch-16.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/WorldModelKit
-
-inform7/Internal/Inter/WorldModelKit/arch-32d.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/WorldModelKit
-
-inform7/Internal/Inter/WorldModelKit/arch-32.interb: inform7/Internal/Inter/WorldModelKit/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/WorldModelKit
-
-inform7/Internal/Inter/CommandParserKit/arch-16d.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
-	$(INTERX) -architecture 16d -assimilate inform7/Internal/Inter/CommandParserKit
-
-inform7/Internal/Inter/CommandParserKit/arch-16.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
-	$(INTERX) -architecture 16 -assimilate inform7/Internal/Inter/CommandParserKit
-
-inform7/Internal/Inter/CommandParserKit/arch-32d.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
-	$(INTERX) -architecture 32d -assimilate inform7/Internal/Inter/CommandParserKit
-
-inform7/Internal/Inter/CommandParserKit/arch-32.interb: inform7/Internal/Inter/CommandParserKit/Sections/*.i6t
-	$(INTERX) -architecture 32 -assimilate inform7/Internal/Inter/CommandParserKit
 
 # -----------------------------------------------------------------------------
 # Target "makers"
@@ -313,6 +233,20 @@ $(SRULES): inform7/extensions/standard_rules/Contents.w inform7/extensions/stand
 forcesrules:
 	$(INWEBX) inform7/extensions/standard_rules -tangle-to $(SRULES)
 	$(INWEBX) inform7/extensions/basic_inform -tangle-to $(BINFORM)
+
+# -----------------------------------------------------------------------------
+# Targets "kits" and "forcekits"
+# -----------------------------------------------------------------------------
+# These are easy because Inbuild performs a make-like service on them; that
+# saves a great deal of messy make code here.
+
+.PHONY: kits
+kits:
+	$(INBUILDX) -build -contents-of inform7/Internal/Inter
+
+.PHONY: forcekits
+forcekits:
+	$(INBUILDX) -rebuild -contents-of inform7/Internal/Inter
 
 # -----------------------------------------------------------------------------
 # Target "tools"

@@ -5,9 +5,19 @@ A kit is a combination of Inter code with an Inform 7 extension.
 @h Kits.
 
 =
+inbuild_genre *kit_genre = NULL;
+void Kits::start(void) {
+	kit_genre = Model::genre(I"kit");
+	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, Kits::write_copy);
+}
+
+void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
+	WRITE("Kit %S", work->name);
+}
+
 typedef struct inform_kit {
+	struct inbuild_copy *as_copy;
 	struct text_stream *name;
-	struct pathname *location;
 	struct text_stream *attachment_point;
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
@@ -15,6 +25,7 @@ typedef struct inform_kit {
 	struct linked_list *extensions; /* of |text_stream| */
 	struct linked_list *activations; /* of |element_activation| */
 	struct text_stream *index_template;
+	struct inbuild_version_number version;
 	int defines_Main;
 	int supports_natural_language;
 	int priority;
@@ -48,7 +59,6 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	K->name = Str::duplicate(name);
 	K->attachment_point = Str::new();
 	WRITE_TO(K->attachment_point, "/main/%S", name);
-	K->location = P;
 	K->early_source = NULL;
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
@@ -58,12 +68,61 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	K->defines_Main = FALSE;
 	K->supports_natural_language = FALSE;
 	K->index_template = NULL;
+	K->version = VersionNumbers::null();
 	
-	filename *F = Filenames::in_folder(K->location, I"kit_metadata.txt");
+	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
 
+	inbuild_work *work = Model::work(kit_genre, name, NULL);
+	inbuild_edition *edition = Model::edition(work, K->version);
+	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
+	
+	build_graph *KV = Graphs::copy_vertex(K->as_copy);
+	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
+	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
+	build_graph *BV[4];
+	for (int i=0; i<4; i++) {
+		filename *FV = Filenames::in_folder(P, binaries[i]);
+		BV[i] = Graphs::internal_vertex(FV);
+		Graphs::arrow(KV, BV[i]);
+		build_step *BS = BuildSteps::new_step(ASSIMILATE_BSTEP, P, archs[i]);
+		BuildSteps::add_step(BV[i]->script, BS);
+	}
+
+	filename *contents_page = Filenames::in_folder(K->as_copy->location_if_path, I"Contents.w");
+	build_graph *CV = Graphs::internal_vertex(contents_page);
+	for (int i=0; i<4; i++) Graphs::arrow(BV[i], CV);
+
+	kit_contents_section_state CSS;
+	CSS.active = FALSE;
+	CSS.sects = NEW_LINKED_LIST(text_stream);
+	TextFiles::read(contents_page, FALSE, NULL, FALSE, Kits::read_contents, NULL, (void *) &CSS);
+	text_stream *segment;
+	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
+		filename *SF = Filenames::in_folder(
+			Pathnames::subfolder(K->as_copy->location_if_path, I"Sections"), segment);
+		build_graph *SV = Graphs::internal_vertex(SF);
+		for (int i=0; i<4; i++) Graphs::arrow(BV[i], SV);
+	}
 	return K;
+}
+
+typedef struct kit_contents_section_state {
+	struct linked_list *sects; /* of |text_stream| */
+	int active;
+} kit_contents_section_state;
+
+void Kits::read_contents(text_stream *text, text_file_position *tfp, void *state) {
+	kit_contents_section_state *CSS = (kit_contents_section_state *) state;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, L"Sections"))
+		CSS->active = TRUE;
+	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
+		WRITE_TO(mr.exp[0], ".i6t");
+		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
+	}
+	Regexp::dispose_of(&mr);
 }
 
 inform_kit *Kits::load(text_stream *name, int N, pathname **PP) {
@@ -92,6 +151,8 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	match_results mr = Regexp::create_mr();
 	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
 		;
+	} else if (Regexp::match(&mr, text, L"version: (%C+)")) {
+		K->version = VersionNumbers::from_text(mr.exp[0]);
 	} else if (Regexp::match(&mr, text, L"defines Main: yes")) {
 		K->defines_Main = TRUE;
 	} else if (Regexp::match(&mr, text, L"defines Main: no")) {
@@ -192,7 +253,7 @@ void Kits::load_types(void) {
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
 		text_stream *segment;
 		LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
-			pathname *P = Pathnames::subfolder(K->location, I"kinds");
+			pathname *P = Pathnames::subfolder(K->as_copy->location_if_path, I"kinds");
 			filename *F = Filenames::in_folder(P, segment);
 			LOG("Loading kinds definitions from %f\n", F);
 			I6T::interpret_kindt(F);
@@ -282,7 +343,7 @@ linked_list *Kits::list_of_inter_libraries(void) {
 	requirements_list = NEW_LINKED_LIST(link_instruction);
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		link_instruction *link = CodeGen::LinkInstructions::new(K->location, K->attachment_point);
+		link_instruction *link = CodeGen::LinkInstructions::new(K->as_copy->location_if_path, K->attachment_point);
 		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
 	}
 	return requirements_list;
