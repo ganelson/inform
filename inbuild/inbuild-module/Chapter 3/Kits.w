@@ -9,10 +9,23 @@ inbuild_genre *kit_genre = NULL;
 void Kits::start(void) {
 	kit_genre = Model::genre(I"kit");
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, Kits::write_copy);
+	METHOD_ADD(kit_genre, GENRE_LOCATION_IN_NEST_MTID, Kits::location_in_nest);
 }
 
 void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
 	WRITE("Kit %S", work->name);
+}
+
+void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
+	pathname *P = Pathnames::subfolder(N->location, I"Inter");
+	P = Pathnames::subfolder(P, req->work->name);
+	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
+	if (TextFiles::exists(canary)) {
+		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
+		if ((VersionNumbers::ge(K->version, req->min_version)) && (VersionNumbers::le(K->version, req->min_version))) {
+			Nests::add_search_result(search_results, N, K->as_copy);
+		}
+	}
 }
 
 typedef struct inform_kit {
@@ -303,17 +316,11 @@ text_stream *Kits::index_template(void) {
 	return I;
 }
 
-@ In particular, every source text read into Inform is automatically prefixed by
-the following eight words -- if Inform were a computer, this would be the BIOS
-which boots up its operating system. (In that the rest of the creation of the
-I7 world model is handled by source text in the Standard Rules.)
-
-Because of this mandatory insertion, one extension, the Standard Rules, is
-compulsorily included in every run. So there will certainly be at least two
-files of source text to be read, and quite possibly more.
-
-@d MANDATORY_INSERTED_TEXT L"Include Basic Inform by Graham Nelson. Include the Standard Rules by Graham Nelson.\n\n"
-@d BASIC_MODE_INSERTED_TEXT L"Include Basic Inform by Graham Nelson.\n\n"
+@ Every source text read into Inform is automatically prefixed by a few words
+loading the fundamental "extensions" -- text such as "Include Basic Inform by
+Graham Nelson." If Inform were a computer, this would be the BIOS which boots
+up its operating system. Each kit can contribute such extensions, so there
+may be multiple sentences, which we need to count up.
 
 =
 void Kits::feed_early_source_text(OUTPUT_STREAM) {

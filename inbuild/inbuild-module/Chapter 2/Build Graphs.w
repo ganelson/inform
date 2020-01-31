@@ -58,11 +58,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_graph *V, int recurse) {
 	for (int i=0; i<depth; i++) WRITE("  ");
 	if (V->buildable_if_copy) {
 		WRITE("[copy%d] ", V->allocation_id);
-		Model::write_work(OUT, V->buildable_if_copy->edition->work);
-		inbuild_version_number N = V->buildable_if_copy->edition->version;
-		if (VersionNumbers::is_null(N) == FALSE) {
-			WRITE(" v"); VersionNumbers::to_text(OUT, N);
-		}
+		Model::write_copy(OUT, V->buildable_if_copy);
 		WRITE("\n");
 	} else {
 		Graphs::update_timestamp(V);

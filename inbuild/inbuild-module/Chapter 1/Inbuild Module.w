@@ -20,6 +20,8 @@ Setting up the use of this module.
 @e build_methodology_MT
 @e build_script_MT
 @e build_step_MT
+@e inbuild_nest_MT
+@e inbuild_search_result_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -34,6 +36,8 @@ ALLOCATE_INDIVIDUALLY(build_graph)
 ALLOCATE_INDIVIDUALLY(build_methodology)
 ALLOCATE_INDIVIDUALLY(build_script)
 ALLOCATE_INDIVIDUALLY(build_step)
+ALLOCATE_INDIVIDUALLY(inbuild_nest)
+ALLOCATE_INDIVIDUALLY(inbuild_search_result)
 
 @h The beginning.
 

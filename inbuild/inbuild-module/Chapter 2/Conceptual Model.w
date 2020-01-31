@@ -7,6 +7,7 @@ For example, "kit" and "extension" will both be both genres. There will be
 few of these.
 
 @e GENRE_WRITE_WORK_MTID
+@e GENRE_LOCATION_IN_NEST_MTID
 
 =
 typedef struct inbuild_genre {
@@ -16,6 +17,7 @@ typedef struct inbuild_genre {
 } inbuild_genre;
 
 VMETHOD_TYPE(GENRE_WRITE_WORK_MTID, inbuild_genre *gen, text_stream *OUT, inbuild_work *work)
+VMETHOD_TYPE(GENRE_LOCATION_IN_NEST_MTID, inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results)
 
 @ =
 inbuild_genre *Model::genre(text_stream *name) {
@@ -127,4 +129,12 @@ inbuild_copy *Model::copy_in_directory(inbuild_edition *edition, pathname *P, ge
 	copy->content = C;
 	copy->graph = NULL;
 	return copy;
+}
+
+void Model::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
+	Model::write_work(OUT, C->edition->work);
+	inbuild_version_number N = C->edition->version;
+	if (VersionNumbers::is_null(N) == FALSE) {
+		WRITE(" v"); VersionNumbers::to_text(OUT, N);
+	}
 }

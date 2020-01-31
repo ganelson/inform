@@ -15,6 +15,8 @@ this plan out.
 =
 pathname *path_to_inbuild = NULL;
 pathname *path_to_tools = NULL;
+linked_list *nest_list = NULL;
+linked_list *find_list = NULL;
 
 int inbuild_task = INSPECT_TTASK;
 int dry_run_mode = FALSE;
@@ -24,12 +26,33 @@ int main(int argc, char **argv) {
 	Foundation::start();
 	InbuildModule::start();
 	targets = NEW_LINKED_LIST(inbuild_copy);
+	nest_list = NEW_LINKED_LIST(inbuild_nest);
+	find_list = NEW_LINKED_LIST(text_stream);
 	@<Read the command line@>;
+	if (FIRST_IN_LINKED_LIST(inbuild_nest, nest_list) == NULL)
+		Nests::add_to_search_sequence(nest_list,
+			Nests::new(Pathnames::from_text(I"inform7/Internal")));
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 	build_methodology *BM;
 	if (path_to_tools) BM = BuildSteps::methodology(path_to_tools, FALSE);
 	else BM = BuildSteps::methodology(Pathnames::up(path_to_inbuild), TRUE);
 	if (dry_run_mode == FALSE) BM->methodology = SHELL_METHODOLOGY;
+	text_stream *T;
+	LOOP_OVER_LINKED_LIST(T, text_stream, find_list) {
+		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+		inbuild_work *work = Model::work(kit_genre, T, I""); 
+		inbuild_requirement *req = Model::requirement(work,
+			VersionNumbers::null(), VersionNumbers::null());
+		Nests::locate(req, nest_list, L);
+		int n = 0;
+		inbuild_search_result *R;
+		LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
+			Model::write_copy(STDOUT, R->copy);
+			WRITE_TO(STDOUT, " (in nest %p)\n", R->nest->location);
+			n++;
+		}
+		if (n == 0) WRITE_TO(STDOUT, "%S not found\n", T);
+	}
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
 		switch (inbuild_task) {
@@ -53,6 +76,8 @@ int main(int argc, char **argv) {
 @e DRY_CLSW
 @e TOOLS_CLSW
 @e CONTENTS_OF_CLSW
+@e NEST_CLSW
+@e FIND_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -72,6 +97,10 @@ int main(int argc, char **argv) {
 		L"make this a dry run (print but do not execute shell commands)");
 	CommandLine::declare_boolean_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
+		L"add the nest at pathname X to the search list");
+	CommandLine::declare_switch(FIND_CLSW, L"find", 2,
+		L"find copies in nests in the search list");
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
@@ -85,6 +114,9 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
 		case CONTENTS_OF_CLSW: Main::load_many(Pathnames::from_text(arg)); break;
 		case DRY_CLSW: dry_run_mode = val; break;
+		case NEST_CLSW: Nests::add_to_search_sequence(nest_list,
+			Nests::new(Pathnames::from_text(arg))); break;
+		case FIND_CLSW: ADD_TO_LINKED_LIST(Str::duplicate(arg), text_stream, find_list); break;
 		default: internal_error("unimplemented switch");
 	}
 }
