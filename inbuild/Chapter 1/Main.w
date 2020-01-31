@@ -11,6 +11,8 @@ this plan out.
 @e GRAPH_TTASK
 @e BUILD_TTASK
 @e REBUILD_TTASK
+@e COPY_TO_TTASK
+@e SYNC_TO_TTASK
 
 =
 pathname *path_to_inbuild = NULL;
@@ -21,6 +23,7 @@ linked_list *find_list = NULL;
 int inbuild_task = INSPECT_TTASK;
 int dry_run_mode = FALSE;
 linked_list *targets = NULL; /* of |inbuild_copy| */
+inbuild_nest *destination_nest = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
@@ -60,6 +63,8 @@ int main(int argc, char **argv) {
 			case GRAPH_TTASK: Graphs::describe(STDOUT, C->graph, TRUE); break;
 			case BUILD_TTASK: Graphs::build(C->graph, BM); break;
 			case REBUILD_TTASK: Graphs::rebuild(C->graph, BM); break;
+			case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE); break;
+			case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE); break;
 		}
 	}
 	InbuildModule::end();
@@ -78,11 +83,17 @@ int main(int argc, char **argv) {
 @e CONTENTS_OF_CLSW
 @e NEST_CLSW
 @e FIND_CLSW
+@e COPY_TO_CLSW
+@e SYNC_TO_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
 		L"usage: inbuild [-TASK] TARGET1 TARGET2 ...\n");
+	CommandLine::declare_switch(COPY_TO_CLSW, L"copy-to", 2,
+		L"copy target(s) to nest X");
+	CommandLine::declare_switch(SYNC_TO_CLSW, L"sync-to", 2,
+		L"forcibly copy target(s) to nest X, even if prior version already there");
 	CommandLine::declare_switch(BUILD_CLSW, L"build", 1,
 		L"incrementally build target(s)");
 	CommandLine::declare_switch(REBUILD_CLSW, L"rebuild", 1,
@@ -117,6 +128,12 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case NEST_CLSW: Nests::add_to_search_sequence(nest_list,
 			Nests::new(Pathnames::from_text(arg))); break;
 		case FIND_CLSW: ADD_TO_LINKED_LIST(Str::duplicate(arg), text_stream, find_list); break;
+		case COPY_TO_CLSW: inbuild_task = COPY_TO_TTASK;
+			destination_nest = Nests::new(Pathnames::from_text(arg));
+			break;
+		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
+			destination_nest = Nests::new(Pathnames::from_text(arg));
+			break;
 		default: internal_error("unimplemented switch");
 	}
 }

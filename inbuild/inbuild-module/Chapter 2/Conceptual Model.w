@@ -8,6 +8,7 @@ few of these.
 
 @e GENRE_WRITE_WORK_MTID
 @e GENRE_LOCATION_IN_NEST_MTID
+@e GENRE_COPY_TO_NEST_MTID
 
 =
 typedef struct inbuild_genre {
@@ -18,6 +19,7 @@ typedef struct inbuild_genre {
 
 VMETHOD_TYPE(GENRE_WRITE_WORK_MTID, inbuild_genre *gen, text_stream *OUT, inbuild_work *work)
 VMETHOD_TYPE(GENRE_LOCATION_IN_NEST_MTID, inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results)
+VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID, inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing)
 
 @ =
 inbuild_genre *Model::genre(text_stream *name) {

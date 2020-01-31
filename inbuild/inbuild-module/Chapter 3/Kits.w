@@ -10,6 +10,7 @@ void Kits::start(void) {
 	kit_genre = Model::genre(I"kit");
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, Kits::write_copy);
 	METHOD_ADD(kit_genre, GENRE_LOCATION_IN_NEST_MTID, Kits::location_in_nest);
+	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, Kits::copy_to_nest);
 }
 
 void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -26,6 +27,26 @@ void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_require
 			Nests::add_search_result(search_results, N, K->as_copy);
 		}
 	}
+}
+
+void Kits::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing) {
+//	Model::write_copy(STDOUT, C); PRINT(" --> %p %S\n", N->location, syncing?I"syncing":I"copying");
+	pathname *dest_kit = Pathnames::subfolder(N->location, I"Inter");
+	dest_kit = Pathnames::subfolder(dest_kit, C->edition->work->name);
+
+	filename *dest_kit_metadata = Filenames::in_folder(dest_kit, I"kit_metadata.txt");
+	if (TextFiles::exists(dest_kit_metadata)) {
+		if (syncing == FALSE) {
+			Errors::with_text("already present in nest (use -sync-to not -copy-to to overwrite)",
+				C->edition->work->name);
+			return;
+		}
+	} else {
+		Pathnames::create_in_file_system(N->location);
+		Pathnames::create_in_file_system(Pathnames::subfolder(N->location, I"Inter"));
+		Pathnames::create_in_file_system(dest_kit);
+	}
+	Pathnames::rsync(C->location_if_path, dest_kit);
 }
 
 typedef struct inform_kit {
@@ -58,9 +79,11 @@ typedef struct element_activation {
 	MEMORY_MANAGEMENT
 } element_activation;
 
-pathname *Kits::find(text_stream *name, int N, pathname **PP) {
-	for (int i=0; i<N; i++) {
-		pathname *P = Pathnames::subfolder(PP[i], name);
+pathname *Kits::find(text_stream *name, linked_list *nest_list) {
+	inbuild_nest *N;
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, nest_list) {
+		pathname *P = Pathnames::subfolder(N->location, I"Inter");
+		P = Pathnames::subfolder(P, name);
 		filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
 		if (TextFiles::exists(F)) return P;
 	}
@@ -138,8 +161,8 @@ void Kits::read_contents(text_stream *text, text_file_position *tfp, void *state
 	Regexp::dispose_of(&mr);
 }
 
-inform_kit *Kits::load(text_stream *name, int N, pathname **PP) {
-	pathname *P = Kits::find(name, N, PP);
+inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
+	pathname *P = Kits::find(name, nest_list);
 	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
 	return Kits::load_at(name, P);
 }
@@ -208,7 +231,7 @@ int Kits::loaded(text_stream *name) {
 	return FALSE;
 }
 
-void Kits::perform_ittt(int N, pathname **PP) {
+void Kits::perform_ittt(linked_list *nest_list) {
 	int changes_made = TRUE;
 	while (changes_made) {
 		changes_made = FALSE;
@@ -218,7 +241,7 @@ void Kits::perform_ittt(int N, pathname **PP) {
 			LOOP_OVER_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt)
 				if ((Kits::loaded(ITTT->then_name) == FALSE) &&
 					(Kits::loaded(ITTT->if_name) == ITTT->if_included)) {
-					Kits::load(ITTT->then_name, N, PP);
+					Kits::load(ITTT->then_name, nest_list);
 					changes_made = TRUE;
 				}
 		}
@@ -237,15 +260,15 @@ void Kits::request(text_stream *name) {
 }
 
 #ifdef CORE_MODULE
-void Kits::determine(int N, pathname **PP) {
+void Kits::determine(linked_list *nest_list) {
 	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
 	Kits::request(I"BasicInformKit");
 	NaturalLanguages::request_required_kits();
 	text_stream *kit_name;
 	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
-		Kits::load(kit_name, N, PP);
+		Kits::load(kit_name, nest_list);
 
-	Kits::perform_ittt(N, PP);
+	Kits::perform_ittt(nest_list);
 
 	kits_to_include = NEW_LINKED_LIST(inform_kit);
 	for (int p=0; p<100; p++) {

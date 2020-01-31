@@ -225,7 +225,7 @@ list is not exhaustive.
 	doc_references_top = lexer_wordcount - 1;
 
 @<Work out our kit requirements@> =
-	Kits::determine(NO_FS_AREAS, pathname_of_inter_resources);
+	Kits::determine(I7_nest_list);
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);

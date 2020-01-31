@@ -487,28 +487,23 @@ integration: \
 		$(INTERNAL)/Languages/English/Basic.indext \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
-		$(INTERNAL)/Inter/BasicInformKit/arch-32d.interb \
-		$(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt \
-		$(INTERNAL)/Inter/EnglishLanguageKit/arch-32d.interb \
-		$(INTERNAL)/Inter/EnglishLanguageKit/kit_metadata.txt \
-		$(INTERNAL)/Inter/BasicInformExtrasKit/arch-32d.interb \
-		$(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt \
-		$(INTERNAL)/Inter/WorldModelKit/arch-32d.interb \
-		$(INTERNAL)/Inter/WorldModelKit/kit_metadata.txt \
-		$(INTERNAL)/Inter/CommandParserKit/arch-32d.interb \
-		$(INTERNAL)/Inter/CommandParserKit/kit_metadata.txt \
+		kitsintegration \
 		$(INTERNAL)/Inter/default.interpipeline \
 		$(DOCEXEMPLUM) \
 		$(INTERNALEXEMPLUM) \
 		$(IMAGESEXEMPLUM) \
 		$(RTPEXEMPLUM)
 
+.PHONY: kitsintegration
+kitsintegration:
+	$(call transfer-kits)
+
 .PHONY: forceintegration
 forceintegration:
 	$(call transfer-intools)
 	$(call transfer-preform)
 	$(call transfer-standard-rules)
-	$(call transfer-i6-template)
+	$(call transfer-kits)
 	$(call transfer-inter-resources)
 	$(call transfer-internal-tree)
 	$(call transfer-images)
@@ -595,114 +590,8 @@ endef
 
 # (d) Copying the I6 template into the app
 
-$(INTERNAL)/Inter/WorldModelKit/arch-32d.interb: \
-	inform7/Internal/Inter/WorldModelKit/arch-32d.interb
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/CommandParserKit/arch-32d.interb: \
-	inform7/Internal/Inter/CommandParserKit/arch-32d.interb
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformKit/arch-32d.interb: \
-	inform7/Internal/Inter/BasicInformKit/arch-32d.interb
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt: \
-	inform7/Internal/Inter/BasicInformKit/kinds/*.kindt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformExtrasKit/arch-32d.interb: \
-	inform7/Internal/Inter/BasicInformExtrasKit/arch-32d.interb
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformExtrasKit/kinds/*.kindt: \
-	inform7/Internal/Inter/BasicInformExtrasKit/kinds/*.kindt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/EnglishLanguageKit/arch-32d.interb: \
-	inform7/Internal/Inter/EnglishLanguageKit/arch-32d.interb
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformKit/kit_metadata.txt: \
-	inform7/Internal/Inter/BasicInformKit/kit_metadata.txt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/BasicInformExtrasKit/kit_metadata.txt: \
-	inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/EnglishLanguageKit/kit_metadata.txt: \
-	inform7/Internal/Inter/EnglishLanguageKit/kit_metadata.txt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/WorldModelKit/kit_metadata.txt: \
-	inform7/Internal/Inter/WorldModelKit/kit_metadata.txt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/WorldModelKit/kinds/*.kindt: \
-	inform7/Internal/Inter/WorldModelKit/kinds/*.kindt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/CommandParserKit/kit_metadata.txt: \
-	inform7/Internal/Inter/CommandParserKit/kit_metadata.txt
-	$(call transfer-i6-template)
-
-$(INTERNAL)/Inter/CommandParserKit/kinds/*.kindt: \
-	inform7/Internal/Inter/CommandParserKit/kinds/*.kindt
-	$(call transfer-i6-template)
-
-# The I6 template could be tangled by inweb, but we don't do so: instead the
-# tangling happens at run-time and is done by Core Inform on the fly. So the
-# build process consists only of copying it:
-
-define transfer-i6-template
-	mkdir -p "$(INTERNAL)/Inter"
-	rm -f $(INTERNAL)/Inter/*.i6t
-	cp -R -f inform7/Internal/Inter/*.interpipeline $(INTERNAL)/Inter
-	mkdir -p "$(INTERNAL)/Inter/WorldModelKit"
-	mkdir -p "$(INTERNAL)/Inter/WorldModelKit/source"
-	rm -f $(INTERNAL)/Inter/WorldModelKit/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/WorldModelKit/*.interb
-	cp -R -f inform7/Internal/Inter/WorldModelKit/Sections/*.i6t $(INTERNAL)/Inter/WorldModelKit/source
-	cp -R -f inform7/Internal/Inter/WorldModelKit/*.interb $(INTERNAL)/Inter/WorldModelKit
-	cp -R -f inform7/Internal/Inter/WorldModelKit/kit_metadata.txt $(INTERNAL)/Inter/WorldModelKit
-	mkdir -p "$(INTERNAL)/Inter/CommandParserKit"
-	mkdir -p "$(INTERNAL)/Inter/CommandParserKit/source"
-	rm -f $(INTERNAL)/Inter/CommandParserKit/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/CommandParserKit/*.interb
-	cp -R -f inform7/Internal/Inter/CommandParserKit/Sections/*.i6t $(INTERNAL)/Inter/CommandParserKit/source
-	cp -R -f inform7/Internal/Inter/CommandParserKit/*.interb $(INTERNAL)/Inter/CommandParserKit
-	cp -R -f inform7/Internal/Inter/CommandParserKit/kit_metadata.txt $(INTERNAL)/Inter/CommandParserKit
-	mkdir -p "$(INTERNAL)/Inter/BasicInformKit"
-	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/source"
-	rm -f $(INTERNAL)/Inter/BasicInformKit/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/BasicInformKit/*.interb
-	cp -R -f inform7/Internal/Inter/BasicInformKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformKit/source
-	cp -R -f inform7/Internal/Inter/BasicInformKit/*.interb $(INTERNAL)/Inter/BasicInformKit
-	cp -R -f inform7/Internal/Inter/BasicInformKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformKit
-	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit"
-	mkdir -p "$(INTERNAL)/Inter/BasicInformExtrasKit/source"
-	rm -f $(INTERNAL)/Inter/BasicInformExtrasKit/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/BasicInformExtrasKit/*.interb
-	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/Sections/*.i6t $(INTERNAL)/Inter/BasicInformExtrasKit/source
-	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/*.interb $(INTERNAL)/Inter/BasicInformExtrasKit
-	cp -R -f inform7/Internal/Inter/BasicInformExtrasKit/kit_metadata.txt $(INTERNAL)/Inter/BasicInformExtrasKit
-	mkdir -p "$(INTERNAL)/Inter/EnglishLanguageKit"
-	mkdir -p "$(INTERNAL)/Inter/EnglishLanguageKit/source"
-	rm -f $(INTERNAL)/Inter/EnglishLanguageKit/Sections/*.i6t
-	rm -f $(INTERNAL)/Inter/EnglishLanguageKit/*.interb
-	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/Sections/*.i6t $(INTERNAL)/Inter/EnglishLanguageKit/source
-	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/*.interb $(INTERNAL)/Inter/EnglishLanguageKit
-	cp -R -f inform7/Internal/Inter/EnglishLanguageKit/kit_metadata.txt $(INTERNAL)/Inter/EnglishLanguageKit
-	mkdir -p "$(INTERNAL)/Inter/BasicInformKit/kinds"
-	rm -f $(INTERNAL)/Inter/BasicInformKit/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/BasicInformKit/kinds/*.kindt $(INTERNAL)/Inter/BasicInformKit/kinds
-	mkdir -p "$(INTERNAL)/Inter/WorldModelKit/kinds"
-	rm -f $(INTERNAL)/Inter/WorldModelKit/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/WorldModelKit/kinds/*.kindt $(INTERNAL)/Inter/WorldModelKit/kinds
-	mkdir -p "$(INTERNAL)/Inter/CommandParserKit/kinds"
-	rm -f $(INTERNAL)/Inter/CommandParserKit/kinds/*.kindt
-	cp -R -f inform7/Internal/Inter/CommandParserKit/kinds/*.kindt $(INTERNAL)/Inter/CommandParserKit/kinds
+define transfer-kits
+	$(INBUILDX) -sync-to $(INTERNAL) -contents-of inform7/Internal/Inter
 endef
 
 $(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline

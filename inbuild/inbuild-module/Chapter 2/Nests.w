@@ -58,3 +58,7 @@ void Nests::locate(inbuild_requirement *req, linked_list *search_list, linked_li
 		VMETHOD_CALL(req->work->genre, GENRE_LOCATION_IN_NEST_MTID, N, req, results);
 	}
 }
+
+void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, C, destination_nest, syncing);
+}
