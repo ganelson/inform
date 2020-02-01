@@ -16,7 +16,7 @@ or ECD.
 
 =
 typedef struct extension_census_datum {
-	struct extension_identifier ecd_id; /* title, author, hash code */
+	struct inbuild_work *ecd_work; /* title, author, hash code */
 	struct text_stream *version_text; /* such as |23| or |14/060527| */
 	struct text_stream *VM_requirement; /* such as "(for Z-machine only)" */
 	int built_in; /* found in the Inform 7 application's private stock */
@@ -233,8 +233,8 @@ stored have been waived.
 	@<Remove filename extension for extensions, if any@>;
 	Str::copy(raw_title, candidate_title);
 	Str::copy(raw_author_name, candidate_author_name);
-	Extensions::IDs::normalise_casing(candidate_author_name);
-	Extensions::IDs::normalise_casing(candidate_title);
+	Works::normalise_casing(candidate_author_name);
+	Works::normalise_casing(candidate_title);
 
 	if (Str::includes_character(candidate_title, '.')) {
 		LOG("Title is <%S>\n", candidate_title);
@@ -286,7 +286,7 @@ line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or by the local
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
 		if (titling_chars_read < MAX_TITLING_LINE_LENGTH - 1) PUT_TO(titling_line, c);
 	}
-	Extensions::IDs::normalise_casing(titling_line);
+	Works::normalise_casing(titling_line);
 
 @ In the following, all possible newlines are converted to white space, and
 all white space before a quoted rubric text is ignored. We need to do this
@@ -421,8 +421,8 @@ which the user had installed to override this built-in extension.
 @<See if we duplicate the title and author name of an extension already found in another domain@> =
 	extension_census_datum *other;
 	LOOP_OVER(other, extension_census_datum)
-		if ((Str::eq(candidate_author_name, other->ecd_id.author_name))
-			&& (Str::eq(candidate_title, other->ecd_id.title))
+		if ((Str::eq(candidate_author_name, other->ecd_work->author_name))
+			&& (Str::eq(candidate_title, other->ecd_work->title))
 			&& ((other->built_in) || (cs->origin == ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA))) {
 			other->overriding_a_built_in_extension = TRUE;
 			overridden_by_an_extension_already_found = TRUE;
@@ -435,8 +435,9 @@ truncate it.
 
 @<Create a new census datum for this extension, which has passed all tests@> =
 	ecd = CREATE(extension_census_datum);
-	Extensions::IDs::new(&(ecd->ecd_id), candidate_author_name, candidate_title, INSTALLED_EIDBC);
-	Extensions::IDs::set_raw(&(ecd->ecd_id), raw_author_name, raw_title);
+	ecd->ecd_work = Works::new(extension_genre, candidate_title, candidate_author_name);
+	Works::add_to_database(ecd->ecd_work, INSTALLED_WDBC);
+	Works::set_raw(ecd->ecd_work, raw_author_name, raw_title);
 	ecd->VM_requirement = Str::duplicate(requirement_text);
 	if (Str::len(version_text) > MAX_VERSION_NUMBER_LENGTH)
 		Str::truncate(version_text, MAX_VERSION_NUMBER_LENGTH); /* truncate to maximum legal length */
@@ -791,8 +792,8 @@ the usual ones seen in Mac OS X applications such as iTunes.
 
 @<Insert a subtitling row in the census sorting, if necessary@> =
 	if ((d == CE_BY_AUTHOR) &&
-		(Str::ne(current_author_name, ecd->ecd_id.author_name))) {
-		Str::copy(current_author_name, ecd->ecd_id.author_name);
+		(Str::ne(current_author_name, ecd->ecd_work->author_name))) {
+		Str::copy(current_author_name, ecd->ecd_work->author_name);
 		@<Begin a tinted census line@>;
 		@<Print the author's line in the extension census table@>;
 		@<End a tinted census line@>;
@@ -831,13 +832,13 @@ the usual ones seen in Mac OS X applications such as iTunes.
 @ Used only in "by author".
 
 @<Print the author's line in the extension census table@> =
-	WRITE("%S", ecd->ecd_id.raw_author_name);
+	WRITE("%S", ecd->ecd_work->raw_author_name);
 
 	extension_census_datum *ecd2;
 	int cu = 0, cn = 0, j;
 	for (j = i; j < no_entries; j++) {
 		ecd2 = sorted_census_results[j];
-		if (Str::ne(current_author_name, ecd2->ecd_id.author_name)) break;
+		if (Str::ne(current_author_name, ecd2->ecd_work->author_name)) break;
 		if (Extensions::Census::ecd_used(ecd2)) cu++;
 		else cn++;
 	}
@@ -900,23 +901,23 @@ where all is optional except the title part.
 	WRITE("&nbsp;");
 	HTML_TAG_WITH("img", "%s", bulletornot);
 
-	Extensions::IDs::begin_extension_link(OUT, &(ecd->ecd_id), ecd->rubric);
+	Works::begin_extension_link(OUT, ecd->ecd_work, ecd->rubric);
 	if (d != CE_BY_AUTHOR) {
 		HTML::begin_colour(OUT, I"404040");
-		WRITE("%S", ecd->ecd_id.raw_title);
-		if (Str::len(ecd->ecd_id.raw_title) + Str::len(ecd->ecd_id.raw_author_name) > 45) {
+		WRITE("%S", ecd->ecd_work->raw_title);
+		if (Str::len(ecd->ecd_work->raw_title) + Str::len(ecd->ecd_work->raw_author_name) > 45) {
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		} else
 			WRITE(" ");
-		WRITE("by %S", ecd->ecd_id.raw_author_name);
+		WRITE("by %S", ecd->ecd_work->raw_author_name);
 		HTML::end_colour(OUT);
 	} else {
 		HTML::begin_colour(OUT, I"404040");
-		WRITE("%S", ecd->ecd_id.raw_title);
+		WRITE("%S", ecd->ecd_work->raw_title);
 		HTML::end_colour(OUT);
 	}
-	Extensions::IDs::end_extension_link(OUT, &(ecd->ecd_id));
+	Works::end_extension_link(OUT, ecd->ecd_work);
 
 	if (Str::len(ecd->VM_requirement)) {
 		@<Append icons which signify the VM requirements of the extension@>;
@@ -960,19 +961,19 @@ the first and last word and just look at what is in between:
 		area = pathname_of_extensions[MATERIALS_FS_AREA];
 	}
 	if (ecd->built_in) HTML_TAG_WITH("img", "%s", opener)
-	else HTML::Javascript::open_file(OUT, area, ecd->ecd_id.raw_author_name, opener);
+	else HTML::Javascript::open_file(OUT, area, ecd->ecd_work->raw_author_name, opener);
 
 @<Print column 4 of the census line@> =
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
 	if ((d == CE_BY_DATE) || (d == CE_BY_INSTALL)) {
-		WRITE("%S", Extensions::IDs::get_usage_date(&(ecd->ecd_id)));
+		WRITE("%S", Works::get_usage_date(ecd->ecd_work));
 	} else if (d == CE_BY_LENGTH) {
-		if (Extensions::IDs::forgot(&(ecd->ecd_id)))
+		if (Works::forgot(ecd->ecd_work))
 			WRITE("I did read this, but forgot");
-		else if (Extensions::IDs::never(&(ecd->ecd_id)))
+		else if (Works::never(ecd->ecd_work))
 			WRITE("I've never read this");
 		else
-			WRITE("%d words", Extensions::IDs::get_word_count(&(ecd->ecd_id)));
+			WRITE("%d words", Works::get_word_count(ecd->ecd_work));
 	} else {
 		if (Str::len(ecd->rubric) > 0)
 			WRITE("%S", ecd->rubric);
@@ -992,10 +993,8 @@ int Extensions::Census::installation_region(extension_census_datum *ecd) {
 }
 
 int Extensions::Census::ecd_used(extension_census_datum *ecd) {
-	if ((Extensions::IDs::no_times_used_in_context(
-		&(ecd->ecd_id), LOADED_EIDBC) > 0) ||
-		(Extensions::IDs::no_times_used_in_context(
-		&(ecd->ecd_id), DICTIONARY_REFERRED_EIDBC) > 0))
+	if ((Works::no_times_used_in_context(ecd->ecd_work, LOADED_WDBC) > 0) ||
+		(Works::no_times_used_in_context(ecd->ecd_work, DICTIONARY_REFERRED_WDBC) > 0))
 		return TRUE;
 	return FALSE;
 }
@@ -1006,13 +1005,13 @@ int Extensions::Census::ecd_used(extension_census_datum *ecd) {
 int Extensions::Census::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	return Extensions::IDs::compare_by_title(&(e1->ecd_id), &(e2->ecd_id));
+	return Works::compare_by_title(e1->ecd_work, e2->ecd_work);
 }
 
 int Extensions::Census::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	return Extensions::IDs::compare(&(e1->ecd_id), &(e2->ecd_id));
+	return Works::compare(e1->ecd_work, e2->ecd_work);
 }
 
 int Extensions::Census::compare_ecd_by_installation(const void *ecd1, const void *ecd2) {
@@ -1020,17 +1019,17 @@ int Extensions::Census::compare_ecd_by_installation(const void *ecd1, const void
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	int d = Extensions::Census::installation_region(e1) - Extensions::Census::installation_region(e2);
 	if (d != 0) return d;
-	return Extensions::IDs::compare_by_title(&(e1->ecd_id), &(e2->ecd_id));
+	return Works::compare_by_title(e1->ecd_work, e2->ecd_work);
 }
 
 int Extensions::Census::compare_ecd_by_date(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	return Extensions::IDs::compare_by_date(&(e1->ecd_id), &(e2->ecd_id));
+	return Works::compare_by_date(e1->ecd_work, e2->ecd_work);
 }
 
 int Extensions::Census::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	return Extensions::IDs::compare_by_length(&(e1->ecd_id), &(e2->ecd_id));
+	return Works::compare_by_length(e1->ecd_work, e2->ecd_work);
 }

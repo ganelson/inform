@@ -404,7 +404,7 @@ divided up by the extensions containing the rules which produce them.
 		contiguous_match = TRUE;
 		if (no_cms++ == 0) {
 			TEMPORARY_TEXT(QT);
-			WRITE_TO(QT, "%<X", Extensions::Files::get_eid(ef));
+			WRITE_TO(QT, "%<X", Extensions::Files::get_work(ef));
 			Emit::array_text_entry(QT);
 			DISCARD_TEXT(QT);
 		} else

@@ -142,7 +142,7 @@ its purpose.
 
 =
 typedef struct extension_file {
-	struct extension_identifier ef_id; /* Texts of title and author with hash code */
+	struct inbuild_work *ef_work; /* Texts of title and author with hash code */
 	struct wording author_text; /* Author's name */
 	struct wording title_text; /* Extension name */
 	struct wording body_text; /* Body of source text supplied in extension, if any */
@@ -171,7 +171,7 @@ extension_file *Extensions::Files::new(wording AW, wording NW, wording VMW, int 
 	extension_file *ef = CREATE(extension_file);
 	ef->author_text = AW;
 	ef->title_text = NW;
-	@<Create EID for new extension file@>;
+	@<Create work for new extension file@>;
 	ef->min_version_needed = version_word;
 	ef->inclusion_sentence = current_sentence;
 	ef->VM_restriction_text = VMW;
@@ -196,7 +196,7 @@ title names, and then produce problem messages in the event of only longish
 ones, unless the census is going on: in which case it's better to leave the
 matter to the census errors system elsewhere.
 
-@<Create EID for new extension file@> =
+@<Create work for new extension file@> =
 	TEMPORARY_TEXT(exft);
 	TEMPORARY_TEXT(exfa);
 	WRITE_TO(exft, "%+W", ef->title_text);
@@ -219,8 +219,9 @@ matter to the census errors system elsewhere.
 			Str::truncate(exft, MAX_EXTENSION_AUTHOR_LENGTH-1);
 		}
 	}
-	Extensions::IDs::new(&(ef->ef_id), exfa, exft, LOADED_EIDBC);
-	if (Extensions::IDs::is_standard_rules(&(ef->ef_id))) standard_rules_extension = ef;
+	ef->ef_work = Works::new(extension_genre, exft, exfa);
+	Works::add_to_database(ef->ef_work, LOADED_WDBC);
+	if (Works::is_standard_rules(ef->ef_work)) standard_rules_extension = ef;
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
@@ -262,8 +263,8 @@ source_file *Extensions::Files::get_corresponding_source_file(extension_file *ef
 @ When headings cross-refer to extensions, they need to read extension IDs, so:
 
 =
-extension_identifier *Extensions::Files::get_eid(extension_file *ef) {
-	return &(ef->ef_id);
+inbuild_work *Extensions::Files::get_work(extension_file *ef) {
+	return ef->ef_work;
 }
 
 @ A few problem messages need the version number loaded, so:
@@ -459,10 +460,10 @@ and author. These are printed as I6 strings, hence the ISO encoding.
 
 =
 void Extensions::Files::credit_ef(OUTPUT_STREAM, extension_file *ef, int with_newline) {
-	WRITE("%S", ef->ef_id.raw_title);
+	WRITE("%S", ef->ef_work->raw_title);
 	if (ef->version_loaded >= 0)
 		WRITE(" version %+W", Wordings::one_word(ef->version_loaded));
-	WRITE(" by %S", ef->ef_id.raw_author_name);
+	WRITE(" by %S", ef->ef_work->raw_author_name);
 	if (Str::len(ef->extra_credit_as_lexed) > 0) WRITE(" (%S)", ef->extra_credit_as_lexed);
 	if (with_newline) WRITE("\n");
 }
@@ -513,9 +514,9 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 		HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
 		HTML_OPEN("span");
 		WRITE("%+W ", ef->title_text);
-		Extensions::IDs::begin_extension_link(OUT, &(ef->ef_id), NULL);
+		Works::begin_extension_link(OUT, ef->ef_work, NULL);
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
-		Extensions::IDs::end_extension_link(OUT, &(ef->ef_id));
+		Works::end_extension_link(OUT, ef->ef_work);
 		if (ef != standard_rules_extension) { /* give author and inclusion links, but not for SR */
 			WRITE(" by %+W", ef->author_text);
 		}
@@ -571,7 +572,7 @@ void Extensions::Files::update_census(void) {
 	LOOP_OVER(ef, extension_file) Extensions::Documentation::write_detailed(ef);
 	Extensions::Files::write_sketchy_documentation_for_extensions_found();
 	Extensions::Dictionary::write_back();
-	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Extensions::IDs::log_EID_hash_table();
+	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Works::log_work_hash_table();
 }
 
 @ Documenting extensions seen but not used: we run through the census

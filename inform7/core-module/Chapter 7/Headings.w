@@ -53,7 +53,7 @@ typedef struct heading {
 	int for_release; /* include this material in a release version? */
 	int omit_material; /* if set, simply ignore all of this */
 	int use_with_or_without; /* if TRUE, use with the extension; if FALSE, without */
-	struct extension_identifier for_use_with; /* e.g. "for use with ... by ..." */
+	struct inbuild_work *for_use_with; /* e.g. "for use with ... by ..." */
 	struct wording in_place_of_text; /* e.g. "in place of ... in ... by ..." */
 	struct wording heading_text; /* once provisos have been stripped away */
 	struct noun *list_of_contents; /* tagged names defined under this */
@@ -189,8 +189,7 @@ and cannot contain information about releasing or about virtual machines.
 
 =
 int last_indentation_above_level[NO_HEADING_LEVELS], lial_made = FALSE;
-
-extension_identifier *grammar_eid = NULL;
+inbuild_work *work_identified = NULL;
 
 heading *Sentences::Headings::declare(parse_node *PN) {
 	heading *h = CREATE(heading);
@@ -201,6 +200,7 @@ heading *Sentences::Headings::declare(parse_node *PN) {
 	h->index_definitions_made_under_this = TRUE;
 	h->use_with_or_without = NOT_APPLICABLE;
 	h->in_place_of_text = EMPTY_WORDING;
+	h->for_use_with = NULL;
 
 	if ((PN == NULL) || (Wordings::empty(ParseTree::get_text(PN))))
 		internal_error("heading at textless node");
@@ -245,7 +245,6 @@ heading *Sentences::Headings::declare(parse_node *PN) {
 @d IN_PLACE_OF_HQ 7
 
 @<Parse heading text for release or other stipulations@> =
-	grammar_eid = &(h->for_use_with);
 	current_sentence = PN;
 
 	wording W = ParseTree::get_text(PN);
@@ -266,6 +265,7 @@ heading *Sentences::Headings::declare(parse_node *PN) {
 		W = GET_RW(<heading-qualifier>, 1);
 	}
 	h->heading_text = W;
+	h->for_use_with = work_identified;
 
 @ When a heading has been found, we repeatedly try to match it against
 <heading-qualifier> to see if it ends with text telling us what to do with
@@ -334,7 +334,8 @@ allowed; they should probably be withdrawn.
 	wording AW = GET_RW(<extension-identifier>, 2);
 	WRITE_TO(exft, "%+W", TW);
 	WRITE_TO(exfa, "%+W", AW);
-	Extensions::IDs::new(grammar_eid, exfa, exft, USEWITH_EIDBC);
+	work_identified = Works::new(extension_genre, exft, exfa);
+	Works::add_to_database(work_identified, USEWITH_WDBC);
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
@@ -565,9 +566,9 @@ the parse tree on quite a large scale, and that's just what we do.
 =
 void Sentences::Headings::satisfy_individual_heading_dependency(heading *h) {
 	if (h->level < 1) return;
-	extension_identifier *eid = &(h->for_use_with);
+	inbuild_work *work = h->for_use_with;
 	int loaded = FALSE;
-	if (Extensions::IDs::no_times_used_in_context(eid, LOADED_EIDBC) != 0) loaded = TRUE;
+	if (Works::no_times_used_in_context(work, LOADED_WDBC) != 0) loaded = TRUE;
 	LOGIF(HEADINGS, "SIHD on $H: loaded %d: annotation %d: %W: %d\n", h, loaded,
 		ParseTree::int_annotation(h->sentence_declaring,
 			suppress_heading_dependencies_ANNOT),
@@ -587,9 +588,9 @@ void Sentences::Headings::satisfy_individual_heading_dependency(heading *h) {
 				LOOP_OVER(h2, heading)
 					if ((Wordings::nonempty(h2->heading_text)) &&
 						(Wordings::match_perhaps_quoted(S, h2->heading_text)) &&
-						(Extensions::IDs::match(
-							Extensions::Files::get_eid(
-								Sentences::Headings::get_extension_containing(h2)), eid))) {
+						(Works::match(
+							Extensions::Files::get_work(
+								Sentences::Headings::get_extension_containing(h2)), work))) {
 						found = TRUE;
 						if (h->level != h2->level)
 							@<Can't replace heading unless level matches@>;
@@ -607,7 +608,7 @@ void Sentences::Headings::satisfy_individual_heading_dependency(heading *h) {
 @<Can't replace heading in an unincluded extension@> =
 	current_sentence = h->sentence_declaring;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_extension_id(2, &(h->for_use_with));
+	Problems::quote_extension_id(2, h->for_use_with);
 	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnincluded));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
@@ -664,9 +665,9 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 @<Can't replace heading subordinate to another replaced heading@> =
 	current_sentence = h2->sentence_declaring;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_extension_id(2, &(h2->for_use_with));
+	Problems::quote_extension_id(2, h2->for_use_with);
 	Problems::quote_source(3, h->sentence_declaring);
-	Problems::quote_extension_id(4, &(h->for_use_with));
+	Problems::quote_extension_id(4, h->for_use_with);
 	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfSubordinate));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
@@ -678,13 +679,13 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 @<Can't find heading in the given extension@> =
 	current_sentence = h->sentence_declaring;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_extension_id(2, &(h->for_use_with));
+	Problems::quote_extension_id(2, h->for_use_with);
 	Problems::quote_wording(3, h->in_place_of_text);
 	Problems::quote_text(4,
 		"unspecified, that is, the extension didn't have a version number");
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file)
-		if (Extensions::IDs::match(&(h->for_use_with), Extensions::Files::get_eid(ef)))
+		if (Works::match(h->for_use_with, Extensions::Files::get_work(ef)))
 			Problems::quote_wording(4,
 				Wordings::one_word(Extensions::Files::get_version_wn(ef)));
 	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnknown));

@@ -79,11 +79,11 @@ void Problems::quote_invocation(int t, parse_node *p) {
 void Problems::expand_invocation(OUTPUT_STREAM, void *p) {
 	Phrases::TypeData::Textual::inv_write_HTML_representation(OUT, (parse_node *) p);
 }
-void Problems::quote_extension_id(int t, extension_identifier *p) {
+void Problems::quote_extension_id(int t, inbuild_work *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_extension_id);
 }
 void Problems::expand_extension_id(OUTPUT_STREAM, void *p) {
-	Extensions::IDs::write_to_HTML_file(OUT, (extension_identifier *) p, FALSE);
+	Works::write_to_HTML_file(OUT, (inbuild_work *) p, FALSE);
 }
 void Problems::quote_property(int t, property *p) { Problems::quote_wording(t, p->name); }
 void Problems::quote_table(int t, table *tab) {

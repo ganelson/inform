@@ -58,6 +58,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	InterModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
+	InbuildModule::start();
 
 	int rv = CoreMain::main(argc, argv);
 
@@ -74,6 +75,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	InterModule::end();
 	BuildingModule::end();
 	CodegenModule::end();
+	InbuildModule::end();
 	Foundation::end(); /* must be ended last */
 	return rv;
 }

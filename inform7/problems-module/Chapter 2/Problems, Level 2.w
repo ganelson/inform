@@ -118,7 +118,7 @@ which they differ.
 	if (pos) {
 		#ifdef CORE_MODULE
 		extension_file *ef = SourceFiles::get_extension_corresponding(pos);
-		if (ef) WRITE_TO(PBUFF, "</b> in the extension <b>%X", Extensions::Files::get_eid(ef));
+		if (ef) WRITE_TO(PBUFF, "</b> in the extension <b>%X", Extensions::Files::get_work(ef));
 		#endif
 	}
 	WRITE_TO(PBUFF, "</b>:");

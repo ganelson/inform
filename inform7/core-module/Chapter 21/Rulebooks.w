@@ -1113,7 +1113,7 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 
 @<Index the segment for the rulebooks in this extension@> =
 	HTML_OPEN("p"); WRITE("<b>From the extension ");
-	Extensions::IDs::write_to_HTML_file(OUT, Extensions::Files::get_eid(ef), FALSE);
+	Works::write_to_HTML_file(OUT, Extensions::Files::get_work(ef), FALSE);
 	WRITE("</b>"); HTML_CLOSE("p");
 	@<Index rulebooks occurring in this part of the source text@>;
 

@@ -83,14 +83,14 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	WRITE_TO(PBUFF, "'");
 	Problems::Buffer::copy_text_into_problem_buffer(W);
 	text_stream *paraphrase = file;
-	#ifdef EXTENSIONS_PRESENT
+	#ifdef INBUILD_MODULE
 	paraphrase = I"source text";
 	extension_file *ef = SourceFiles::get_extension_corresponding(referred);
 	if (ef) {
-		extension_identifier *eid = Extensions::Files::get_eid(ef);
-		if ((eid) && (Extensions::IDs::is_standard_rules(eid)))
+		inbuild_work *work = Extensions::Files::get_work(ef);
+		if ((work) && (Works::is_standard_rules(work)))
 			paraphrase = I"the Standard Rules";
-		else if ((eid) && (Extensions::IDs::is_basic_inform(eid)))
+		else if ((work) && (Works::is_basic_inform(work)))
 			paraphrase = I"Basic Inform";
 		else
 			paraphrase = file;

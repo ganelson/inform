@@ -58,8 +58,8 @@ compilation_module *Modules::new(parse_node *from) {
 	DISCARD_TEXT(pname);
 
 	if (owner) {
-		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_id.raw_author_name);
-		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_id.raw_title);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_work->raw_author_name);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_work->raw_title);
 		TEMPORARY_TEXT(V);
 		WRITE_TO(V, "%+W", Wordings::one_word(owner->version_loaded));
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
@@ -78,7 +78,7 @@ compiled from the compilation module will go into a package of that name.
 	if (owner == standard_rules_extension) WRITE_TO(pname, "standard_rules");
 	else if (owner == NULL) WRITE_TO(pname, "source_text");
 	else {
-		WRITE_TO(pname, "%X", Extensions::Files::get_eid(owner));
+		WRITE_TO(pname, "%X", Extensions::Files::get_work(owner));
 		LOOP_THROUGH_TEXT(pos, pname)
 			if (Str::get(pos) == ' ')
 				Str::put(pos, '_');

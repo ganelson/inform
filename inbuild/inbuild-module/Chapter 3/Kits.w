@@ -13,13 +13,26 @@ void Kits::start(void) {
 	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, Kits::copy_to_nest);
 }
 
+inbuild_copy *Kits::claim(text_stream *arg, text_stream *ext, int directory_status) {
+	if (directory_status == FALSE) return NULL;
+		int kitpos = Str::len(arg) - 3;
+	if ((kitpos >= 0) && (Str::get_at(arg, kitpos) == 'K') &&
+		(Str::get_at(arg, kitpos+1) == 'i') &&
+		(Str::get_at(arg, kitpos+2) == 't')) {
+		pathname *P = Pathnames::from_text(arg);
+		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
+		return K->as_copy;
+	}
+	return NULL;
+}
+
 void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
-	WRITE("Kit %S", work->name);
+	WRITE("Kit %S", work->title);
 }
 
 void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
 	pathname *P = Pathnames::subfolder(N->location, I"Inter");
-	P = Pathnames::subfolder(P, req->work->name);
+	P = Pathnames::subfolder(P, req->work->title);
 	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
 	if (TextFiles::exists(canary)) {
 		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
@@ -32,13 +45,13 @@ void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_require
 void Kits::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing) {
 //	Model::write_copy(STDOUT, C); PRINT(" --> %p %S\n", N->location, syncing?I"syncing":I"copying");
 	pathname *dest_kit = Pathnames::subfolder(N->location, I"Inter");
-	dest_kit = Pathnames::subfolder(dest_kit, C->edition->work->name);
+	dest_kit = Pathnames::subfolder(dest_kit, C->edition->work->title);
 
 	filename *dest_kit_metadata = Filenames::in_folder(dest_kit, I"kit_metadata.txt");
 	if (TextFiles::exists(dest_kit_metadata)) {
 		if (syncing == FALSE) {
 			Errors::with_text("already present in nest (use -sync-to not -copy-to to overwrite)",
-				C->edition->work->name);
+				C->edition->work->title);
 			return;
 		}
 	} else {
@@ -110,7 +123,7 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
 
-	inbuild_work *work = Model::work(kit_genre, name, NULL);
+	inbuild_work *work = Works::new(kit_genre, name, NULL);
 	inbuild_edition *edition = Model::edition(work, K->version);
 	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
 	

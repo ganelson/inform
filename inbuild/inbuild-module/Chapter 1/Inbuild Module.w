@@ -22,6 +22,7 @@ Setting up the use of this module.
 @e build_step_MT
 @e inbuild_nest_MT
 @e inbuild_search_result_MT
+@e inbuild_work_database_entry_array_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -39,6 +40,8 @@ ALLOCATE_INDIVIDUALLY(build_step)
 ALLOCATE_INDIVIDUALLY(inbuild_nest)
 ALLOCATE_INDIVIDUALLY(inbuild_search_result)
 
+ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
+
 @h The beginning.
 
 =
@@ -49,6 +52,7 @@ void InbuildModule::start(void) {
 	@<Register this module's debugging log writers@>;
 	@<Register this module's command line switches@>;
 	Kits::start();
+	Extensions::start();
 }
 
 @
@@ -57,7 +61,7 @@ void InbuildModule::start(void) {
 	;
 
 @<Register this module's stream writers@> =
-	;
+	Writers::register_writer('X', &Works::writer);
 
 @
 

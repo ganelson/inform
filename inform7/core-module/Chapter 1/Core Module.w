@@ -53,7 +53,6 @@ We need to itemise the structures we'll want to allocate:
 @e ph_stack_frame_box_MT
 @e i6_inclusion_matter_MT
 @e literal_list_MT
-@e extension_identifier_database_entry_array_MT
 @e control_structure_phrase_MT
 @e adjective_meaning_MT
 @e adjective_meaning_block_MT
@@ -178,7 +177,6 @@ ALLOCATE_INDIVIDUALLY(label_namespace)
 ALLOCATE_IN_ARRAYS(activity_crossref, 100)
 ALLOCATE_IN_ARRAYS(activity_list, 1000)
 ALLOCATE_IN_ARRAYS(application, 100)
-ALLOCATE_IN_ARRAYS(extension_identifier_database_entry, 100)
 ALLOCATE_IN_ARRAYS(i6_schema, 100)
 ALLOCATE_IN_ARRAYS(instance_usage, 200)
 ALLOCATE_IN_ARRAYS(invocation_options, 100)
@@ -290,7 +288,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Writers::register_writer_I('B', &CoreModule::writer);
 	Writers::register_writer('I', &Instances::writer);
 	Writers::register_writer('L', &LocalVariables::writer);
-	Writers::register_writer('X', &Extensions::IDs::writer);
 
 @
 

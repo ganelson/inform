@@ -58,20 +58,20 @@ is any, as well as the correct identifying headings and requirements.
 =
 int Extensions::Documentation::write_extension_documentation_page(extension_census_datum *ecd, extension_file *ef,
 	int eg_number) {
-	extension_identifier *eid = NULL;
+	inbuild_work *work = NULL;
 	text_stream DOCF_struct;
 	text_stream *DOCF = &DOCF_struct;
 	FILE *TEST_DOCF;
 	int page_exists_already, no_egs = 0;
 
-	if (ecd) eid = &(ecd->ecd_id); else if (ef) eid = &(ef->ef_id);
+	if (ecd) work = ecd->ecd_work; else if (ef) work = ef->ef_work;
 	else internal_error("WEDP incorrectly called");
-	LOGIF(EXTENSIONS_CENSUS, "WEDP %s (%X)/%d\n", (ecd)?"ecd":" ef", eid, eg_number);
+	LOGIF(EXTENSIONS_CENSUS, "WEDP %s (%X)/%d\n", (ecd)?"ecd":" ef", work, eg_number);
 
 	TEMPORARY_TEXT(leaf);
-	Str::copy(leaf, eid->title);
+	Str::copy(leaf, work->title);
 	if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
-	filename *name = Locations::of_extension_documentation(leaf, eid->author_name);
+	filename *name = Locations::of_extension_documentation(leaf, work->author_name);
 
 	page_exists_already = FALSE;
 	TEST_DOCF = Filenames::fopen(name, "r");
@@ -87,7 +87,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 	if (ef == NULL) internal_error("null EF in extension documentation writer");
 
 	if (Pathnames::create_in_file_system(
-			Pathnames::subfolder(pathname_of_extension_docs_inner, eid->author_name)) == 0)
+			Pathnames::subfolder(pathname_of_extension_docs_inner, work->author_name)) == 0)
 		return 0;
 
 	if (STREAM_OPEN_TO_FILE(DOCF, name, UTF8_ENC) == FALSE)
@@ -111,12 +111,12 @@ calls.
 
 @<Convert ECD to a text-only EF@> =
 	feed_t id = Feeds::begin();
-	Feeds::feed_stream(eid->raw_author_name);
+	Feeds::feed_stream(work->raw_author_name);
 	Feeds::feed_text(L" ");
 	wording AW = Feeds::end(id);
 
 	id = Feeds::begin();
-	Feeds::feed_stream(eid->raw_title);
+	Feeds::feed_stream(work->raw_title);
 	Feeds::feed_text(L" ");
 	wording TW = Feeds::end(id);
 
@@ -153,10 +153,10 @@ different template:
 
 @<Write documentation for a specific extension into the page@> =
 	HTML_OPEN("p");
-	if (Extensions::IDs::is_standard_rules(eid) == FALSE)
+	if (Works::is_standard_rules(work) == FALSE)
 		@<Write Javascript paste icon for source text to include this extension@>;
 	WRITE("<b>");
-	Extensions::IDs::write_to_HTML_file(OUT, eid, TRUE);
+	Works::write_to_HTML_file(OUT, work, TRUE);
 	WRITE("</b>");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
@@ -175,7 +175,7 @@ different template:
 
 @<Write Javascript paste icon for source text to include this extension@> =
 	TEMPORARY_TEXT(inclusion_text);
-	WRITE_TO(inclusion_text, "Include %X.\n\n\n", eid);
+	WRITE_TO(inclusion_text, "Include %X.\n\n\n", work);
 	HTML::Javascript::paste_stream(OUT, inclusion_text);
 	DISCARD_TEXT(inclusion_text);
 	WRITE("&nbsp;");

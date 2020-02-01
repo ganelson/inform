@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 	text_stream *T;
 	LOOP_OVER_LINKED_LIST(T, text_stream, find_list) {
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		inbuild_work *work = Model::work(kit_genre, T, I""); 
+		inbuild_work *work = Works::new(kit_genre, T, I""); 
 		inbuild_requirement *req = Model::requirement(work,
 			VersionNumbers::null(), VersionNumbers::null());
 		Nests::locate(req, nest_list, L);
@@ -139,7 +139,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 }
 
 void Main::bareword(int id, text_stream *arg, void *state) {
-	Main::load_one(arg);
+	Main::load_one(arg, TRUE);
 }
 
 void Main::load_many(pathname *P) {
@@ -148,38 +148,18 @@ void Main::load_many(pathname *P) {
 	while (Directories::next(D, LEAFNAME)) {
 		TEMPORARY_TEXT(FILENAME);
 		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, LEAFNAME);
-		Main::load_one(FILENAME);
+		Main::load_one(FILENAME, FALSE);
 		DISCARD_TEXT(FILENAME);
 	}
 	DISCARD_TEXT(LEAFNAME);
 	Directories::close(D);
 }
 
-void Main::load_one(text_stream *arg) {
-	int pos = Str::len(arg) - 1, dotpos = -1;
-	while (pos >= 0) {
-		wchar_t c = Str::get_at(arg, pos);
-		if (c == FOLDER_SEPARATOR) break;
-		if (c == '.') dotpos = pos;
-		pos--;
-	}
-	if (dotpos >= 0) {
-		TEMPORARY_TEXT(extension);
-		Str::substr(extension, Str::at(arg, dotpos+1), Str::end(arg));
-		if (Str::eq(extension, I"i7x")) {
-			;
-		}
-		DISCARD_TEXT(extension);
+void Main::load_one(text_stream *arg, int throwing_error) {
+	inbuild_copy *C = Model::claim(arg);
+	if (C == NULL) {
+		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
 		return;
 	}
-	if (Str::get_last_char(arg) == FOLDER_SEPARATOR)
-		Str::delete_last_character(arg);
-	int kitpos = Str::len(arg) - 3;
-	if ((kitpos >= 0) && (Str::get_at(arg, kitpos) == 'K') &&
-		(Str::get_at(arg, kitpos+1) == 'i') &&
-		(Str::get_at(arg, kitpos+2) == 't')) {
-		pathname *P = Pathnames::from_text(arg);
-		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
-		ADD_TO_LINKED_LIST(K->as_copy, inbuild_copy, targets);
-	}
+	ADD_TO_LINKED_LIST(C, inbuild_copy, targets);
 }

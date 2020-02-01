@@ -780,9 +780,9 @@ void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_
 	if (ef) {
 		if (ef != standard_rules_extension) {
 			if (nonbreaking_space) WRITE("&nbsp;"); else WRITE(" ");
-			Extensions::IDs::begin_extension_link(OUT, Extensions::Files::get_eid(ef), NULL);
+			Works::begin_extension_link(OUT, Extensions::Files::get_work(ef), NULL);
 			HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Revealext.png");
-			Extensions::IDs::end_extension_link(OUT, Extensions::Files::get_eid(ef));
+			Works::end_extension_link(OUT, Extensions::Files::get_work(ef));
 		}
 		return;
 	}

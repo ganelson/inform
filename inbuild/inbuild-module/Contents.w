@@ -8,11 +8,13 @@ Chapter 1: Setting Up
 	Inbuild Module
 
 Chapter 2: Conceptual Framework
-	Version Numbers
 	Conceptual Model
+	Works
+	Version Numbers
 	Build Graphs
 	Build Steps
 	Nests
 
 Chapter 3: The Genres
 	Kits
+	Extensions

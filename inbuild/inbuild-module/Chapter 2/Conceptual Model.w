@@ -33,31 +33,6 @@ inbuild_genre *Model::genre(text_stream *name) {
 	return gen;
 }
 
-@h Works.
-A "work" is a single creative work; for example, Bronze by Emily Short might
-be a work. Mamy versions of this IF story may exist over time, but they will
-all be versions of the same "work".
-
-=
-typedef struct inbuild_work {
-	struct inbuild_genre *genre;
-	struct text_stream *name;
-	struct text_stream *author;
-	MEMORY_MANAGEMENT
-} inbuild_work;
-
-inbuild_work *Model::work(inbuild_genre *genre, text_stream *name, text_stream *author) {
-	inbuild_work *work = CREATE(inbuild_work);
-	work->genre = genre;
-	work->name = Str::duplicate(name);
-	work->author = Str::duplicate(author);
-	return work;
-}
-
-void Model::write_work(OUTPUT_STREAM, inbuild_work *work) {
-	VMETHOD_CALL(work->genre, GENRE_WRITE_WORK_MTID, OUT, work);
-}
-
 @h Editions.
 An "edition" of a work is a particular version numbered form of it. For
 example, release 7 of Bronze by Emily Short would be an edition of Bronze.
@@ -134,9 +109,31 @@ inbuild_copy *Model::copy_in_directory(inbuild_edition *edition, pathname *P, ge
 }
 
 void Model::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
-	Model::write_work(OUT, C->edition->work);
+	Works::write(OUT, C->edition->work);
 	inbuild_version_number N = C->edition->version;
 	if (VersionNumbers::is_null(N) == FALSE) {
 		WRITE(" v"); VersionNumbers::to_text(OUT, N);
 	}
+}
+
+inbuild_copy *Model::claim(text_stream *arg) {
+	TEMPORARY_TEXT(ext);
+	int pos = Str::len(arg) - 1, dotpos = -1;
+	while (pos >= 0) {
+		wchar_t c = Str::get_at(arg, pos);
+		if (c == FOLDER_SEPARATOR) break;
+		if (c == '.') dotpos = pos;
+		pos--;
+	}
+	if (dotpos >= 0)
+		Str::substr(ext, Str::at(arg, dotpos+1), Str::end(arg));
+	int directory_status = NOT_APPLICABLE;
+	if (Str::get_last_char(arg) == FOLDER_SEPARATOR) {
+		Str::delete_last_character(arg);
+		directory_status = TRUE;
+	}
+	inbuild_copy *C = NULL;
+	if (C == NULL) C = Kits::claim(arg, ext, directory_status);
+	DISCARD_TEXT(ext);
+	return C;
 }

@@ -69,7 +69,6 @@ which, we also handle extension installation, uninstallation and
 documentation here."
 	Extension Files
 	Including Extensions
-	Extension Identifiers
 	Extension Census
 	Extension Dictionary
 	Extension Documentation

@@ -20,9 +20,12 @@ Instead they are used to represent the absence of a version number.
 
 =
 inbuild_version_number VersionNumbers::null(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconditional-uninitialized"
 	inbuild_version_number V;
 	for (int i=0; i<VERSION_NUMBER_DEPTH; i++) V.version_numbers[i] = -1;
 	return V;
+#pragma clang diagnostic pop
 }
 
 int VersionNumbers::is_null(inbuild_version_number V) {

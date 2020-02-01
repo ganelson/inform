@@ -19,7 +19,7 @@ in the dictionary after each successful use of that extension.
 
 =
 typedef struct extension_dictionary_entry {
-	struct extension_identifier ede_id; /* author name and title, with hash code */
+	struct inbuild_work *ede_work; /* author name and title, with hash code */
 	struct text_stream *entry_text; /* text of the dictionary entry */
 	struct text_stream *sorting; /* text reprocessed for sorting purposes */
 	struct text_stream *type; /* grammatical category, such as "kind" */
@@ -98,7 +98,7 @@ format but also recorded the erasure flag.
 =
 void Extensions::Dictionary::log_entry(extension_dictionary_entry *ede) {
 	LOG("ede: %4d %d |%S|%S|%S|%S|\n", ede->allocation_id,
-		ede->erased, ede->ede_id.author_name, ede->ede_id.title,
+		ede->erased, ede->ede_work->author_name, ede->ede_work->title,
 		ede->entry_text, ede->type);
 }
 
@@ -129,7 +129,7 @@ void Extensions::Dictionary::erase_entries_of_uninstalled_extensions(void) {
 	LOGIF(EXTENSIONS_CENSUS, "Erasure of dictionary entries for uninstalled extensions\n");
 	LOOP_OVER(ede, extension_dictionary_entry)
 		if ((ede->erased == FALSE) &&
-			(Extensions::IDs::no_times_used_in_context(&(ede->ede_id), INSTALLED_EIDBC) == 0)) {
+			(Works::no_times_used_in_context(ede->ede_work, INSTALLED_WDBC) == 0)) {
 			ede->erased = TRUE;
 			LOGIF(EXTENSIONS_CENSUS, "Erased $d", ede);
 		}
@@ -148,7 +148,7 @@ void Extensions::Dictionary::erase_entries(extension_file *ef) {
 	LOGIF(EXTENSIONS_CENSUS, "Erasure of dictionary entries for $x\n", ef);
 	LOOP_OVER(ede, extension_dictionary_entry)
 		if ((ede->erased == FALSE) &&
-			(Extensions::IDs::match(&(ede->ede_id), &(ef->ef_id)))) {
+			(Works::match(ede->ede_work, ef->ef_work))) {
 			ede->erased = TRUE;
 			LOGIF(EXTENSIONS_CENSUS, "Erased $d", ede);
 		}
@@ -162,19 +162,20 @@ void Extensions::Dictionary::new_entry(text_stream *category, extension_file *ef
 	if (Wordings::nonempty(W)) { /* a safety precaution: never index the empty text */
 		TEMPORARY_TEXT(headword);
 		WRITE_TO(headword, "%+W", W);
-		Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_id.author_name, ef->ef_id.title, headword);
+		Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_work->author_name, ef->ef_work->title, headword);
 		DISCARD_TEXT(headword);
 	}
 }
 
 void Extensions::Dictionary::new_entry_from_stream(text_stream *category, extension_file *ef, text_stream *headword) {
-	Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_id.author_name, ef->ef_id.title, headword);
+	Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_work->author_name, ef->ef_work->title, headword);
 }
 
 void Extensions::Dictionary::new_dictionary_entry_raw(text_stream *category,
 	text_stream *author, text_stream *title, text_stream *headword) {
 	extension_dictionary_entry *ede = CREATE(extension_dictionary_entry);
-	Extensions::IDs::new(&(ede->ede_id), author, title, DICTIONARY_REFERRED_EIDBC);
+	ede->ede_work = Works::new(extension_genre, title, author);
+	Works::add_to_database(ede->ede_work, DICTIONARY_REFERRED_WDBC);
 	ede->entry_text = Str::duplicate(headword);
 	ede->type = Str::duplicate(category);
 	ede->sorting = Str::new();
@@ -198,9 +199,9 @@ void Extensions::Dictionary::new_dictionary_entry_raw(text_stream *category,
 					break;
 			}
 		}
-		if (Str::len(sdate) > 0) Extensions::IDs::set_sort_date(&(ede->ede_id), sdate);
-		if (wc > 0) Extensions::IDs::set_word_count(&(ede->ede_id), wc);
-		if (Str::len(udate) > 0) Extensions::IDs::set_usage_date(&(ede->ede_id), udate);
+		if (Str::len(sdate) > 0) Works::set_sort_date(ede->ede_work, sdate);
+		if (wc > 0) Works::set_word_count(ede->ede_work, wc);
+		if (Str::len(udate) > 0) Works::set_usage_date(ede->ede_work, udate);
 		DISCARD_TEXT(sdate);
 		DISCARD_TEXT(udate);
 	}
@@ -332,7 +333,7 @@ for any future increase of the above maxima without fuss.)
 
 @<Write line to the dictionary file from single entry@> =
 	WRITE_TO(DICTF, "|%S|%S|%S|%S|\n",
-		ede->ede_id.author_name, ede->ede_id.title,
+		ede->ede_work->author_name, ede->ede_work->title,
 		ede->entry_text, ede->type);
 
 @h Sorting the extension dictionary.
@@ -526,20 +527,20 @@ not seem to have arisen from homonyms like "lead" (the substance) versus
 =
 void Extensions::Dictionary::extension_clash(extension_dictionary_entry *ede1, extension_dictionary_entry *ede2) {
 	extension_dictionary_entry *left = NULL, *right = NULL;
-	extension_identifier *leftx, *rightx;
+	inbuild_work *leftx, *rightx;
 	known_extension_clash *kec;
 	if ((ede1 == NULL) || (ede2 == NULL)) internal_error("bad extension clash");
 
-	int d = Extensions::IDs::compare(&(ede1->ede_id), &(ede2->ede_id)); /* compare source extensions */
+	int d = Works::compare(ede1->ede_work, ede2->ede_work); /* compare source extensions */
 
 	@<Ignore apparent clashes which are in fact not troublesome@>;
 
 	if (d < 0) { left = ede1; right = ede2; }
 	if (d > 0) { left = ede2; right = ede1; }
-	leftx = &(left->ede_id); rightx = &(right->ede_id);
+	leftx = left->ede_work; rightx = right->ede_work;
 
 	LOOP_OVER(kec, known_extension_clash)
-		if ((kec->first_known) && (Extensions::IDs::match(leftx, &(kec->leftx->ede_id)))) {
+		if ((kec->first_known) && (Works::match(leftx, kec->leftx->ede_work))) {
 			@<Search list of KECs deriving from the same left extension as this clash@>;
 			return;
 		}
@@ -568,7 +569,7 @@ extension anywhere in the list, we must add the new pair of definitions:
 
 @<Search list of KECs deriving from the same left extension as this clash@> =
 	while (kec) {
-		if (Extensions::IDs::match(rightx, &(kec->rightx->ede_id))) {
+		if (Works::match(rightx, kec->rightx->ede_work)) {
 			kec->number_clashes++; return;
 		}
 		if (kec->next == NULL) {
@@ -610,14 +611,14 @@ matter to the UTF-8 HTML file:
 @<Write a paragraph about extensions clashing with the lefthand one here@> =
 	known_extension_clash *example;
 	HTML_OPEN("b");
-	Extensions::IDs::write_to_HTML_file(OUT, &(kec->leftx->ede_id), FALSE);
+	Works::write_to_HTML_file(OUT, kec->leftx->ede_work, FALSE);
 	HTML_CLOSE("b");
 	WRITE(": ");
 
 	for (example = kec; example; example = example->next) {
 		WRITE("clash with ");
 		HTML_OPEN("b");
-		Extensions::IDs::write_to_HTML_file(OUT, &(example->rightx->ede_id), FALSE);
+		Works::write_to_HTML_file(OUT, example->rightx->ede_work, FALSE);
 		HTML_CLOSE("b");
 		WRITE(" (on ");
 		if (example->number_clashes > 1)
@@ -683,6 +684,6 @@ A vs B, A vs C, then B vs C. This has $O(N^2)$ running time, so if there are
 	if (tint) HTML::end_colour(OUT);
 	WRITE(" - <i>%S</i>&nbsp;&nbsp;&nbsp;", ede->type);
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
-	Extensions::IDs::write_link_to_HTML_file(OUT, &(ede->ede_id));
+	Works::write_link_to_HTML_file(OUT, ede->ede_work);
 	HTML_CLOSE("span");
 	HTML_CLOSE("p");
