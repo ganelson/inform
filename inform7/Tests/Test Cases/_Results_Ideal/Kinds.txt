@@ -49,6 +49,10 @@
   sound name <= value, word value, enumerated value, sayable value
   topic <= value, word value
   natural language <= value, word value, enumerated value, sayable value
+  grammatical tense <= value, word value, enumerated value, sayable value
+  narrative viewpoint <= value, word value, enumerated value, sayable value
+  grammatical case <= value, word value, enumerated value, sayable value
+  grammatical gender <= value, word value, enumerated value, sayable value
   room <= value, word value, sayable value, object
   thing <= value, word value, sayable value, object
   direction <= value, word value, sayable value, object
@@ -65,10 +69,6 @@
   vehicle <= value, word value, sayable value, object, thing, container
   player's holdall <= value, word value, sayable value, object, thing, container
   command parser error <= value, word value, enumerated value, sayable value
-  grammatical tense <= value, word value, enumerated value, sayable value
-  narrative viewpoint <= value, word value, enumerated value, sayable value
-  grammatical case <= value, word value, enumerated value, sayable value
-  grammatical gender <= value, word value, enumerated value, sayable value
   
   2. 2
   The (always) compatibility relation on (base) kinds, where it differs from <=:
@@ -123,6 +123,10 @@
   sound name ->
   topic ->
   natural language ->
+  grammatical tense ->
+  narrative viewpoint ->
+  grammatical case ->
+  grammatical gender ->
   room -> object ->
   thing -> object ->
   direction -> object ->
@@ -139,10 +143,6 @@
   vehicle -> container -> thing -> object ->
   player's holdall -> container -> thing -> object ->
   command parser error ->
-  grammatical tense ->
-  narrative viewpoint ->
-  grammatical case ->
-  grammatical gender ->
   
   4. 4
   Looking for partially ordered set violations.

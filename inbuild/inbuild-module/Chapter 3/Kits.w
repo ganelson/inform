@@ -21,6 +21,7 @@ inbuild_copy *Kits::claim(text_stream *arg, text_stream *ext, int directory_stat
 		(Str::get_at(arg, kitpos+2) == 't')) {
 		pathname *P = Pathnames::from_text(arg);
 		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
+		Works::add_to_database(K->as_copy->edition->work, CLAIMED_WDBC);
 		return K->as_copy;
 	}
 	return NULL;

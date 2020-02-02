@@ -19,6 +19,8 @@ inbuild_copy *Extensions::claim(text_stream *arg, text_stream *ext, int director
 	if (directory_status == TRUE) return NULL;
 	if (Str::eq_insensitive(ext, I"i7x")) {
 		// eventually load into a copy here
+		
+		// Works::add_to_database(...->work, CLAIMED_WDBC);
 		return NULL;
 	}
 	return NULL;

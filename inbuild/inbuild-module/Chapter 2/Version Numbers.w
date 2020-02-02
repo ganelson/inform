@@ -28,6 +28,19 @@ inbuild_version_number VersionNumbers::null(void) {
 #pragma clang diagnostic pop
 }
 
+inbuild_version_number VersionNumbers::from_major(int major) {
+	inbuild_version_number V = VersionNumbers::null();
+	V.version_numbers[0] = major;
+	return V;
+}
+
+inbuild_version_number VersionNumbers::from_pair(int major, int minor) {
+	inbuild_version_number V = VersionNumbers::null();
+	V.version_numbers[0] = major;
+	V.version_numbers[1] = minor;
+	return V;
+}
+
 int VersionNumbers::is_null(inbuild_version_number V) {
 	for (int i=0, allow=TRUE; i<VERSION_NUMBER_DEPTH; i++) {
 		if (V.version_numbers[i] < -1)
@@ -50,6 +63,11 @@ void VersionNumbers::to_text(OUTPUT_STREAM, inbuild_version_number V) {
 			if (i>0) WRITE(".");
 			WRITE("%d", V.version_numbers[i]);
 		}
+}
+
+void VersionNumbers::writer(OUTPUT_STREAM, char *format_string, void *vE) {
+	inbuild_version_number *V = (inbuild_version_number *) vE;
+	VersionNumbers::to_text(OUT, *V);
 }
 
 inbuild_version_number VersionNumbers::from_text(text_stream *T) {

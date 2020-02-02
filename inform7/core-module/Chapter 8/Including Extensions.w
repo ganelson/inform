@@ -163,8 +163,9 @@ then we need to note that the version requirement on PS has been raised to 3.
 can't know at load time what we will ultimately require.)
 
 @<This is an extension already loaded, so note any version number hike and return@> =
-	if (Extensions::Inclusion::parse_version(ef->min_version_needed) <
-		Extensions::Inclusion::parse_version(version_word)) {
+	if (VersionNumbers::lt(
+			Extensions::Inclusion::parse_version(ef->min_version_needed),
+			Extensions::Inclusion::parse_version(version_word))) {
 		ef->min_version_needed = version_word;
 		ef->inclusion_sentence = current_sentence;
 	}
@@ -261,10 +262,10 @@ it seems cleaner to constrain the number of digits than the value.
 @d MAX_VERSION_NUMBER_LENGTH 10 /* for |999/991231| */
 
 =
-int Extensions::Inclusion::parse_version(int vwn) {
-	int i, rv, slashes = 0, digits = 0, slash_at = 0;
+inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
+	int i, slashes = 0, digits = 0, slash_at = 0;
 	wchar_t *p, *q;
-	if (vwn == -1) return 0; /* an unspecified version equates to |0/000000| */
+	if (vwn == -1) return VersionNumbers::from_pair(0, 0); /* an unspecified version equates to |0/000000| */
 	p = Lexer::word_text(vwn); q = p;
 	for (i=0; p[i] != 0; i++)
 		if (p[i] == '/') {
@@ -277,15 +278,15 @@ int Extensions::Inclusion::parse_version(int vwn) {
 	if ((p[0] == '0') || (digits == 0)) goto Malformed;
 
 	if ((slashes == 0) && (digits <= 3)) /* so that |p| points to 1 to 3 digits, not starting with |0| */
-		return Wide::atoi(p)*1000000;
+		return VersionNumbers::from_pair(Wide::atoi(p), 0);
 	p[slash_at] = 0; /* temporarily replace the slash with a null, making |p| and |q| distinct C strings */
 	if (Wide::len(p) > 3) goto Malformed; /* now |p| points to 1 to 3 digits, not starting with |0| */
 	if (Wide::len(q) != 6) goto Malformed;
 	while (*q == '0') q++; /* now |q| points to 0 to 6 digits, not starting with |0| */
 	if (q[0] == 0) q--; /* if it was 0 digits, backspace to make it a single digit |0| */
-	rv = (Wide::atoi(p)*1000000) + Wide::atoi(q);
+	inbuild_version_number V = VersionNumbers::from_pair(Wide::atoi(p), Wide::atoi(q));
 	p[slash_at] = '/'; /* put the slash back over the null byte temporarily dividing the string */
-	return rv;
+	return V;
 
 	Malformed: @<Issue a problem message for a malformed version number@>;
 }
@@ -303,7 +304,7 @@ number text.
 		"(The DDDDDD part is optional, so '3' is a legal version number too. "
 		"N must be between 1 and 999: in particular, there is no version 0.)");
 	Vocabulary::change_text_of_word(vwn, L"1");
-	return 1000000; /* which equates to |1/000000| */
+	return VersionNumbers::from_pair(1, 0); /* which equates to |1/000000| */
 
 @h Checking the begins here and ends here sentences.
 When a newly loaded extension is being sentence-broken, problem messages

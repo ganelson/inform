@@ -61,6 +61,7 @@ void InbuildModule::start(void) {
 	;
 
 @<Register this module's stream writers@> =
+	Writers::register_writer('v', &VersionNumbers::writer);
 	Writers::register_writer('X', &Works::writer);
 
 @

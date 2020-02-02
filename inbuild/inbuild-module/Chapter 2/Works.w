@@ -209,12 +209,13 @@ indeed, the typical number will be 0 or 1.
 
 Works are entered into the database with one of the following contexts:
 
-@d NO_WDB_CONTEXTS 5
+@d NO_WDB_CONTEXTS 6
 @d LOADED_WDBC 0
 @d INSTALLED_WDBC 1
 @d DICTIONARY_REFERRED_WDBC 2
 @d HYPOTHETICAL_WDBC 3
 @d USEWITH_WDBC 4
+@d CLAIMED_WDBC 5
 
 =
 typedef struct inbuild_work_database_entry {

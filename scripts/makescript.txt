@@ -90,6 +90,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {dep} INFORM7 on INTER
 {dep} INFORM7 on BUILDING
 {dep} INFORM7 on CODEGEN
+{dep} INFORM7 on INBUILD
 
 {tool} INPOLICY inpolicy inpolicy
 {dep} INPOLICY on FOUNDATION

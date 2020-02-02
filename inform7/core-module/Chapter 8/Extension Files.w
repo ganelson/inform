@@ -264,7 +264,7 @@ source_file *Extensions::Files::get_corresponding_source_file(extension_file *ef
 
 =
 inbuild_work *Extensions::Files::get_work(extension_file *ef) {
-	return ef->ef_work;
+	return (ef)?(ef->ef_work):NULL;
 }
 
 @ A few problem messages need the version number loaded, so:
@@ -342,10 +342,10 @@ check that they have been met.
 void Extensions::Files::check_versions(void) {
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
-		int have = Extensions::Inclusion::parse_version(ef->version_loaded),
+		inbuild_version_number have = Extensions::Inclusion::parse_version(ef->version_loaded),
 			need = Extensions::Inclusion::parse_version(ef->min_version_needed);
-		if (need > have) {
-			LOG("Need %d, have %d\n", need, have);
+		if (VersionNumbers::gt(need, have)) {
+			LOG("Need %v, have %v\n", &need, &have);
 			current_sentence = ef->inclusion_sentence;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_extension(2, ef);
