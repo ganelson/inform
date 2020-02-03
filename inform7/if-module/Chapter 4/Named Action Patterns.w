@@ -116,7 +116,7 @@ void PL::Actions::Patterns::Named::index_for_extension(OUTPUT_STREAM, source_fil
 	named_action_pattern *nap;
 	int kc = 0;
 	LOOP_OVER(nap, named_action_pattern)
-		if (Lexer::file_of_origin(Wordings::first_wn(nap->text_of_declaration)) == ef->read_into_file)
+		if (Lexer::file_of_origin(Wordings::first_wn(nap->text_of_declaration)) == Extensions::Files::source(ef))
 			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Kinds of action", I"kind of action",
 				nap->text_of_declaration);
 	if (kc != 0) HTML_CLOSE("p");

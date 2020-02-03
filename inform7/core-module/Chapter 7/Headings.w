@@ -677,6 +677,7 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 	Problems::issue_problem_end();
 
 @<Can't find heading in the given extension@> =
+	TEMPORARY_TEXT(vt);
 	current_sentence = h->sentence_declaring;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_extension_id(2, h->for_use_with);
@@ -685,9 +686,10 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 		"unspecified, that is, the extension didn't have a version number");
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file)
-		if (Works::match(h->for_use_with, Extensions::Files::get_work(ef)))
-			Problems::quote_wording(4,
-				Wordings::one_word(Extensions::Files::get_version_wn(ef)));
+		if (Works::match(h->for_use_with, Extensions::Files::get_work(ef))) {
+			VersionNumbers::to_text(vt, Extensions::Files::get_version(ef));
+			Problems::quote_stream(4, vt);
+		}
 	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnknown));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
@@ -695,6 +697,7 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 		"not seem to have any heading called '%3'. (The version I loaded "
 		"was %4.)");
 	Problems::issue_problem_end();
+	DISCARD_TEXT(vt);
 
 @<Can't replace heading unless level matches@> =
 	current_sentence = h->sentence_declaring;

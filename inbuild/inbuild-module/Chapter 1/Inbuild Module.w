@@ -9,6 +9,7 @@ Setting up the use of this module.
 @ To begin with, this module needs to allocate memory:
 
 @e inform_kit_MT
+@e inform_extension_MT
 @e inform_kit_ittt_MT
 @e element_activation_MT
 @e inbuild_genre_MT
@@ -26,6 +27,7 @@ Setting up the use of this module.
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
+ALLOCATE_INDIVIDUALLY(inform_extension)
 ALLOCATE_INDIVIDUALLY(inform_kit_ittt)
 ALLOCATE_INDIVIDUALLY(element_activation)
 ALLOCATE_INDIVIDUALLY(inbuild_genre)

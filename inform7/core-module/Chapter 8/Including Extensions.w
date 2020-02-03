@@ -128,9 +128,10 @@ parse tree.
 	extension_file *requested_extension =
 		Extensions::Inclusion::load(AW, W, version_word, RW);
 
-	if (requested_extension->body_text_unbroken) {
-		Sentences::break(requested_extension->body_text, requested_extension);
-		requested_extension->body_text_unbroken = FALSE;
+	inform_extension *E = Extensions::Files::find(requested_extension);
+	if ((E) && (E->body_text_unbroken)) {
+		Sentences::break(E->body_text, requested_extension);
+		E->body_text_unbroken = FALSE;
 	}
 
 @h Extension loading.
@@ -163,11 +164,10 @@ then we need to note that the version requirement on PS has been raised to 3.
 can't know at load time what we will ultimately require.)
 
 @<This is an extension already loaded, so note any version number hike and return@> =
-	if (VersionNumbers::lt(
-			Extensions::Inclusion::parse_version(ef->min_version_needed),
-			Extensions::Inclusion::parse_version(version_word))) {
-		ef->min_version_needed = version_word;
-		ef->inclusion_sentence = current_sentence;
+	if (version_word >= 0) {
+		inbuild_version_number V = Extensions::Inclusion::parse_version(version_word);
+		if (Model::ratchet_minimum(V, ef->ef_req))
+			ef->inclusion_sentence = current_sentence;
 	}
 	return ef;
 
@@ -178,17 +178,21 @@ trap-door into Read Source Text, to seek and open the file.
 	TEMPORARY_TEXT(synopsis);
 	@<Concoct a synopsis for the extension to be read@>;
 	feed_t id = Feeds::begin();
-	switch (SourceFiles::read_extension_source_text(ef, synopsis, census_mode)) {
-		case ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA:
-		case ORIGIN_WAS_USER_EXTENSIONS_AREA:
-			ef->loaded_from_built_in_area = FALSE; break;
-		case ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA:
-			ef->loaded_from_built_in_area = TRUE; break;
-		default: /* which can happen if the extension file cannot be found */
-			ef->loaded_from_built_in_area = FALSE; break;
+	int origin = SourceFiles::read_extension_source_text(ef, synopsis, census_mode);
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E) {
+		switch (origin) {
+			case ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA:
+			case ORIGIN_WAS_USER_EXTENSIONS_AREA:
+				E->loaded_from_built_in_area = FALSE; break;
+			case ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA:
+				E->loaded_from_built_in_area = TRUE; break;
+			default: /* which can happen if the extension file cannot be found */
+				E->loaded_from_built_in_area = FALSE; break;
+		}
+		wording EXW = Feeds::end(id);
+		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
 	}
-	wording EXW = Feeds::end(id);
-	if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
 	DISCARD_TEXT(synopsis);
 
 @ We concoct a textual synopsis in the form
@@ -222,9 +226,9 @@ present then the extension contains only body source and no documentation.
 
 @<Break the extension's text into body and documentation@> =
 	<extension-body>(EXW);
-	ef->body_text = GET_RW(<extension-body>, 1);
-	if (<<r>>) ef->documentation_text = GET_RW(<extension-body>, 2);
-	ef->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
+	E->body_text = GET_RW(<extension-body>, 1);
+	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
+	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
 
 @h Parsing extension version numbers.
 Extensions can have versions in the form N/DDDDDD, a format which was chosen
@@ -278,7 +282,7 @@ inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
 	if ((p[0] == '0') || (digits == 0)) goto Malformed;
 
 	if ((slashes == 0) && (digits <= 3)) /* so that |p| points to 1 to 3 digits, not starting with |0| */
-		return VersionNumbers::from_pair(Wide::atoi(p), 0);
+		return VersionNumbers::from_major(Wide::atoi(p));
 	p[slash_at] = 0; /* temporarily replace the slash with a null, making |p| and |q| distinct C strings */
 	if (Wide::len(p) > 3) goto Malformed; /* now |p| points to 1 to 3 digits, not starting with |0| */
 	if (Wide::len(q) != 6) goto Malformed;
@@ -355,10 +359,9 @@ void Extensions::Inclusion::check_begins_here(parse_node *PN, extension_file *ef
 	wording W = Wordings::new(<<t1>>, <<t2>>);
 	wording AW = Wordings::new(<<auth1>>, <<auth2>>);
 	if (Wordings::empty(AW)) return;
-	ef->version_loaded = <<r>>;
+	if (<<r>> < 0) Extensions::Files::set_version(ef, VersionNumbers::null());
+	else Extensions::Files::set_version(ef, Extensions::Inclusion::parse_version(<<r>>));
 	ef->VM_restriction_text = Wordings::new(<<rest1>>, <<rest2>>);
-
-	if (ef->version_loaded >= 0) Extensions::Inclusion::parse_version(ef->version_loaded);
 
 	if (Wordings::nonempty(ef->VM_restriction_text))
 		@<Check that the extension's stipulation about the virtual machine can be met@>;

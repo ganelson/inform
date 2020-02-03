@@ -142,21 +142,12 @@ its purpose.
 
 =
 typedef struct extension_file {
-	struct inbuild_work *ef_work; /* Texts of title and author with hash code */
+	struct inbuild_requirement *ef_req; /* Work and version needed */
 	struct wording author_text; /* Author's name */
 	struct wording title_text; /* Extension name */
-	struct wording body_text; /* Body of source text supplied in extension, if any */
-	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
-	struct wording documentation_text; /* Documentation supplied in extension, if any */
 	struct wording VM_restriction_text; /* Restricting use to certain VMs */
-	int min_version_needed; /* As stipulated by source */
-	int version_loaded; /* As actually loaded */
-	int loaded_from_built_in_area; /* Located within Inform application */
-	int authorial_modesty; /* Do not credit in the compiled game */
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
-	struct source_file *read_into_file; /* Which source file loaded this */
-	struct text_stream *rubric_as_lexed;
-	struct text_stream *extra_credit_as_lexed;
+	struct inbuild_copy *found;
 	MEMORY_MANAGEMENT
 } extension_file;
 
@@ -172,23 +163,21 @@ extension_file *Extensions::Files::new(wording AW, wording NW, wording VMW, int 
 	ef->author_text = AW;
 	ef->title_text = NW;
 	@<Create work for new extension file@>;
-	ef->min_version_needed = version_word;
 	ef->inclusion_sentence = current_sentence;
 	ef->VM_restriction_text = VMW;
-	ef->body_text = EMPTY_WORDING;
-	ef->body_text_unbroken = FALSE;
-	ef->documentation_text = EMPTY_WORDING;
-	ef->version_loaded = -1;
-	ef->loaded_from_built_in_area = FALSE;
-	ef->authorial_modesty = FALSE;
-	ef->rubric_as_lexed = NULL;
-	ef->extra_credit_as_lexed = NULL;
+	ef->found = NULL;
 	if (Str::len(violation) > 0) {
 		LOG("So %S\n", violation);
 		Problems::Issue::extension_problem_S(_p_(PM_IncludesTooLong), ef, violation); /* see below */
 	}
 	DISCARD_TEXT(violation);
 	return ef;
+}
+
+inform_extension *Extensions::Files::find(extension_file *ef) {
+	if (ef == NULL) return NULL;
+	if (ef->found == NULL) return NULL;
+	return Extensions::from_copy(ef->found);
 }
 
 @ We protect ourselves a little against absurdly long requested author or
@@ -219,9 +208,12 @@ matter to the census errors system elsewhere.
 			Str::truncate(exft, MAX_EXTENSION_AUTHOR_LENGTH-1);
 		}
 	}
-	ef->ef_work = Works::new(extension_genre, exft, exfa);
-	Works::add_to_database(ef->ef_work, LOADED_WDBC);
-	if (Works::is_standard_rules(ef->ef_work)) standard_rules_extension = ef;
+	inbuild_work *work = Works::new(extension_genre, exft, exfa);
+	Works::add_to_database(work, LOADED_WDBC);
+	inbuild_version_number min = VersionNumbers::null();
+	if (version_word >= 0) min = Extensions::Inclusion::parse_version(version_word);
+	ef->ef_req = Model::requirement(work, min, VersionNumbers::null());
+	if (Works::is_standard_rules(work)) standard_rules_extension = ef;
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
@@ -238,13 +230,17 @@ sources, collaborators, translators and so on.
 
 =
 void Extensions::Files::set_rubric(extension_file *ef, text_stream *text) {
-	ef->rubric_as_lexed = Str::duplicate(text);
-	LOGIF(EXTENSIONS_CENSUS, "Extension rubric: %S\n", ef->rubric_as_lexed);
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	E->rubric_as_lexed = Str::duplicate(text);
+	LOGIF(EXTENSIONS_CENSUS, "Extension rubric: %S\n", E->rubric_as_lexed);
 }
 
 void Extensions::Files::set_extra_credit(extension_file *ef, text_stream *text) {
-	ef->extra_credit_as_lexed = Str::duplicate(text);
-	LOGIF(EXTENSIONS_CENSUS, "Extension extra credit: %S\n", ef->extra_credit_as_lexed);
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	E->extra_credit_as_lexed = Str::duplicate(text);
+	LOGIF(EXTENSIONS_CENSUS, "Extension extra credit: %S\n", E->extra_credit_as_lexed);
 }
 
 @ Once we start reading text from the file (if it can successfully be found:
@@ -253,25 +249,38 @@ it up with the corresponding source file structure.
 
 =
 void Extensions::Files::set_corresponding_source_file(extension_file *ef, source_file *sf) {
-	ef->read_into_file = sf;
+	inform_extension *E = Extensions::load_at(
+		ef->ef_req->work->title, ef->ef_req->work->author_name, sf->name);
+	ef->found = E->as_copy;
+	E->read_into_file = sf;
 }
 
-source_file *Extensions::Files::get_corresponding_source_file(extension_file *ef) {
-	return ef->read_into_file;
+source_file *Extensions::Files::source(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E) return E->read_into_file;
+	return NULL;
 }
 
 @ When headings cross-refer to extensions, they need to read extension IDs, so:
 
 =
 inbuild_work *Extensions::Files::get_work(extension_file *ef) {
-	return (ef)?(ef->ef_work):NULL;
+	return (ef)?(ef->ef_req->work):NULL;
 }
 
 @ A few problem messages need the version number loaded, so:
 
 =
-int Extensions::Files::get_version_wn(extension_file *ef) {
-	return ef->version_loaded;
+inbuild_version_number Extensions::Files::get_version(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) return VersionNumbers::null();
+	return E->version_loaded;
+}
+
+void Extensions::Files::set_version(extension_file *ef, inbuild_version_number V) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("no E found");
+	E->version_loaded = V;
 }
 
 @ The use option "authorial modesty" is unusual in applying to the extension
@@ -281,7 +290,11 @@ the main source text:
 
 =
 int general_authorial_modesty = FALSE;
-void Extensions::Files::set_authorial_modesty(extension_file *ef) { ef->authorial_modesty = TRUE; }
+void Extensions::Files::set_authorial_modesty(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	E->authorial_modesty = TRUE;
+}
 void Extensions::Files::set_general_authorial_modesty(void) { general_authorial_modesty = TRUE; }
 
 @h Printing names of extensions.
@@ -342,19 +355,21 @@ check that they have been met.
 void Extensions::Files::check_versions(void) {
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
-		inbuild_version_number have = Extensions::Inclusion::parse_version(ef->version_loaded),
-			need = Extensions::Inclusion::parse_version(ef->min_version_needed);
-		if (VersionNumbers::gt(need, have)) {
-			LOG("Need %v, have %v\n", &need, &have);
+		if (Model::meets(Extensions::Files::get_version(ef), ef->ef_req) == FALSE) {
+			inbuild_version_number have = Extensions::Files::get_version(ef);
+			LOG("Need %v, have %v\n", &(ef->ef_req->min_version), &have);
 			current_sentence = ef->inclusion_sentence;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_extension(2, ef);
-			if (ef->version_loaded >= 0) {
-				Problems::quote_wording(3, Wordings::one_word(ef->version_loaded));
+			if (VersionNumbers::is_null(have) == FALSE) {
+				TEMPORARY_TEXT(vn);
+				VersionNumbers::to_text(vn, have);
+				Problems::quote_stream(3, vn);
 				Problems::Issue::handmade_problem(_p_(PM_ExtVersionTooLow));
 				Problems::issue_problem_segment(
 					"You wrote %1: but my copy of %2 is only version %3.");
 				Problems::issue_problem_end();
+				DISCARD_TEXT(vn);
 			} else {
 				Problems::Issue::handmade_problem(_p_(PM_ExtNoVersion));
 				Problems::issue_problem_segment(
@@ -398,7 +413,8 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		#ifdef IF_MODULE
 		if (PL::Bibliographic::story_author_is(the_author_name)) self_penned = TRUE;
 		#endif
-		if ((ef->authorial_modesty == FALSE) && /* if (1) extension doesn't ask to be modest */
+		inform_extension *E = Extensions::Files::find(ef);
+		if (((E == NULL) || (E->authorial_modesty == FALSE)) && /* if (1) extension doesn't ask to be modest */
 			((general_authorial_modesty == FALSE) || /* and (2) author doesn't ask to be modest, or... */
 			(self_penned == FALSE))) { /* ...didn't write this extension */
 				TEMPORARY_TEXT(C);
@@ -460,11 +476,13 @@ and author. These are printed as I6 strings, hence the ISO encoding.
 
 =
 void Extensions::Files::credit_ef(OUTPUT_STREAM, extension_file *ef, int with_newline) {
-	WRITE("%S", ef->ef_work->raw_title);
-	if (ef->version_loaded >= 0)
-		WRITE(" version %+W", Wordings::one_word(ef->version_loaded));
-	WRITE(" by %S", ef->ef_work->raw_author_name);
-	if (Str::len(ef->extra_credit_as_lexed) > 0) WRITE(" (%S)", ef->extra_credit_as_lexed);
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	WRITE("%S", ef->ef_req->work->raw_title);
+	inbuild_version_number V = Extensions::Files::get_version(ef);
+	if (VersionNumbers::is_null(V) == FALSE) WRITE(" version %v", &V);
+	WRITE(" by %S", ef->ef_req->work->raw_author_name);
+	if (Str::len(E->extra_credit_as_lexed) > 0) WRITE(" (%S)", E->extra_credit_as_lexed);
 	if (with_newline) WRITE("\n");
 }
 
@@ -514,27 +532,29 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 		HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
 		HTML_OPEN("span");
 		WRITE("%+W ", ef->title_text);
-		Works::begin_extension_link(OUT, ef->ef_work, NULL);
+		Works::begin_extension_link(OUT, ef->ef_req->work, NULL);
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
-		Works::end_extension_link(OUT, ef->ef_work);
+		Works::end_extension_link(OUT, ef->ef_req->work);
 		if (ef != standard_rules_extension) { /* give author and inclusion links, but not for SR */
 			WRITE(" by %+W", ef->author_text);
 		}
-		if (ef->version_loaded >= 0) {
+		if (VersionNumbers::is_null(Extensions::Files::get_version(ef)) == FALSE) {
 			WRITE(" ");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("version %+W", Wordings::one_word(ef->version_loaded));
+			inbuild_version_number V = Extensions::Files::get_version(ef);
+			WRITE("version %v", &V);
 			HTML_CLOSE("span");
 		}
-		if (Str::len(ef->extra_credit_as_lexed) > 0) {
+		inform_extension *E = Extensions::Files::find(ef);
+		if ((E) && (Str::len(E->extra_credit_as_lexed) > 0)) {
 			WRITE(" ");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("(%S)", ef->extra_credit_as_lexed);
+			WRITE("(%S)", E->extra_credit_as_lexed);
 			HTML_CLOSE("span");
 		}
 		HTML_CLOSE("span");
 		HTML_OPEN("span");
-		WRITE("%d words", TextFromFiles::total_word_count(ef->read_into_file));
+		WRITE("%d words", TextFromFiles::total_word_count(Extensions::Files::source(ef)));
 		if (from == NULL) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ef->inclusion_sentence)));
 		HTML_CLOSE("span");
 		HTML_CLOSE("li");

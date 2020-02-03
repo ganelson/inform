@@ -58,10 +58,11 @@ compilation_module *Modules::new(parse_node *from) {
 	DISCARD_TEXT(pname);
 
 	if (owner) {
-		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_work->raw_author_name);
-		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_work->raw_title);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_req->work->raw_author_name);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_req->work->raw_title);
 		TEMPORARY_TEXT(V);
-		WRITE_TO(V, "%+W", Wordings::one_word(owner->version_loaded));
+		inbuild_version_number N = Extensions::Files::get_version(owner);
+		WRITE_TO(V, "%v", &N);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
 		DISCARD_TEXT(V);
 	}

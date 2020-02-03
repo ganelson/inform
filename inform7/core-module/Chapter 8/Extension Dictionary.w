@@ -148,7 +148,7 @@ void Extensions::Dictionary::erase_entries(extension_file *ef) {
 	LOGIF(EXTENSIONS_CENSUS, "Erasure of dictionary entries for $x\n", ef);
 	LOOP_OVER(ede, extension_dictionary_entry)
 		if ((ede->erased == FALSE) &&
-			(Works::match(ede->ede_work, ef->ef_work))) {
+			(Works::match(ede->ede_work, ef->ef_req->work))) {
 			ede->erased = TRUE;
 			LOGIF(EXTENSIONS_CENSUS, "Erased $d", ede);
 		}
@@ -162,13 +162,13 @@ void Extensions::Dictionary::new_entry(text_stream *category, extension_file *ef
 	if (Wordings::nonempty(W)) { /* a safety precaution: never index the empty text */
 		TEMPORARY_TEXT(headword);
 		WRITE_TO(headword, "%+W", W);
-		Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_work->author_name, ef->ef_work->title, headword);
+		Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_req->work->author_name, ef->ef_req->work->title, headword);
 		DISCARD_TEXT(headword);
 	}
 }
 
 void Extensions::Dictionary::new_entry_from_stream(text_stream *category, extension_file *ef, text_stream *headword) {
-	Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_work->author_name, ef->ef_work->title, headword);
+	Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_req->work->author_name, ef->ef_req->work->title, headword);
 }
 
 void Extensions::Dictionary::new_dictionary_entry_raw(text_stream *category,
@@ -289,7 +289,7 @@ void Extensions::Dictionary::time_stamp(extension_file *ef) {
 		the_present->tm_year+1900, the_present->tm_mon + 1, the_present->tm_mday,
 		the_present->tm_hour, the_present->tm_min, the_present->tm_sec,
 		TextFromFiles::total_word_count(
-			Extensions::Files::get_corresponding_source_file(ef)),
+			Extensions::Files::source(ef)),
 		ascday[the_present->tm_wday], the_present->tm_mday,
 		ascmon[the_present->tm_mon], the_present->tm_year+1900,
 		the_present->tm_hour, the_present->tm_min);

@@ -273,7 +273,7 @@ void PL::Actions::Index::index_for_extension(OUTPUT_STREAM, source_file *sf, ext
 	action_name *acn;
 	int kc = 0;
 	LOOP_OVER(acn, action_name)
-		if (Lexer::file_of_origin(Wordings::first_wn(acn->present_name)) == ef->read_into_file)
+		if (Lexer::file_of_origin(Wordings::first_wn(acn->present_name)) == Extensions::Files::source(ef))
 			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Actions", I"action",
 				acn->present_name);
 	if (kc != 0) HTML_CLOSE("p");

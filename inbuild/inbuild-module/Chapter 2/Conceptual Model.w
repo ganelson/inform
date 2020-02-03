@@ -73,6 +73,30 @@ inbuild_requirement *Model::requirement(inbuild_work *work,
 	return req;
 }
 
+int Model::meets(inbuild_version_number V, inbuild_requirement *req) {
+	if (req == NULL) return TRUE;
+	if (VersionNumbers::is_null(req->min_version) == FALSE) {
+		if (VersionNumbers::is_null(V)) return FALSE;
+		if (VersionNumbers::lt(V, req->min_version)) return FALSE;
+	}
+	if (VersionNumbers::is_null(req->max_version) == FALSE) {
+		if (VersionNumbers::is_null(V)) return TRUE;
+		if (VersionNumbers::gt(V, req->max_version)) return FALSE;
+	}
+	return TRUE;
+}
+
+int Model::ratchet_minimum(inbuild_version_number V, inbuild_requirement *req) {
+	if (req == NULL) internal_error("no requirement");
+	if (VersionNumbers::is_null(V)) return FALSE;
+	if ((VersionNumbers::is_null(req->min_version)) ||
+		(VersionNumbers::gt(V, req->min_version))) {
+		req->min_version = V;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 @h Copies.
 A "copy" of a work exists in the file system when we've actually got hold of
 some edition of it. For some genres, copies will be files; for others,
