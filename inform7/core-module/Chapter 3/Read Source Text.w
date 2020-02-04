@@ -82,11 +82,11 @@ int SourceFiles::read_file(filename *F, text_stream *synopsis, extension_file *E
 	int area = -1;
 	if (EF)
 		area = SourceFiles::read_file_inner(F, synopsis,
-			pathname_of_extensions, NO_FS_AREAS + 1, documentation_only, &sf,
+			I7_nest_list, documentation_only, &sf,
 			STORE_POINTER_extension_file(EF), FALSE, EF);
 	else
 		area = SourceFiles::read_file_inner(F, synopsis,
-			NULL, 0, documentation_only, &sf,
+			NULL, documentation_only, &sf,
 			STORE_POINTER_extension_file(NULL), TRUE, NULL);
 	if (area == -1) {
 		if (EF) {
@@ -136,7 +136,7 @@ application.
 
 @ =
 int SourceFiles::read_file_inner(filename *F, text_stream *synopsis,
-	pathname **list, int list_len, int documentation_only, source_file **S,
+	linked_list *search_list, int documentation_only, source_file **S,
 	general_pointer ref, int primary, extension_file *EF) {
 	int origin_tried = 1;
 
@@ -165,24 +165,20 @@ application to communicate the problem badly.
 
 @<Set pathname and filename, and open file@> =
 	handle = NULL;
-	if (list) {
-		TEMPORARY_TEXT(author_name);
-		TEMPORARY_TEXT(title);
-		WRITE_TO(author_name, "%W", EF->author_text);
-		WRITE_TO(title, "%W", EF->title_text);
-		for (int area=0; area<list_len; area++)
-			if (handle == NULL) {
-				pathname *P = list[area];
-				origin_tried = area + 1;
-				eventual = Locations::of_extension(P, title, author_name, TRUE);
-				handle = Filenames::fopen_caseless(eventual, "r");
-				if (handle == NULL) {
-					eventual = Locations::of_extension(P, title, author_name, FALSE);
-					handle = Filenames::fopen_caseless(eventual, "r");
-				}
-			}
-		DISCARD_TEXT(author_name);
-		DISCARD_TEXT(title);
+	if (search_list) {
+		text_stream *author_name = EF->ef_req->work->author_name;
+		text_stream *title = EF->ef_req->work->title;
+		inbuild_work *work = Works::new(extension_genre, title, author_name);
+		inbuild_requirement *req = Model::requirement(work, VersionNumbers::null(), VersionNumbers::null());
+		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+		Nests::locate(req, search_list, L);
+		inbuild_search_result *search_result;
+		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+			eventual = search_result->copy->location_if_file;
+			handle = Filenames::fopen_caseless(eventual, "r");
+			origin_tried = Nests::get_tag(search_result->nest);
+			break;
+		}
 	} else {
 		handle = Filenames::fopen(F, "r");
 	}

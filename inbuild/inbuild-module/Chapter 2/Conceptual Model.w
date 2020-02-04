@@ -158,6 +158,7 @@ inbuild_copy *Model::claim(text_stream *arg) {
 	}
 	inbuild_copy *C = NULL;
 	if (C == NULL) C = Kits::claim(arg, ext, directory_status);
+	if (C == NULL) C = Extensions::claim(arg, ext, directory_status);
 	DISCARD_TEXT(ext);
 	return C;
 }

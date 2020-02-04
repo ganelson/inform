@@ -18,3 +18,4 @@ Chapter 2: Conceptual Framework
 Chapter 3: The Genres
 	Kits
 	Extensions
+	Extension Census

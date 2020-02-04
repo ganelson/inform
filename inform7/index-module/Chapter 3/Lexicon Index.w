@@ -485,7 +485,8 @@ void Index::Lexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, extensio
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
 			if (lex->part_of_speech == VERB_LEXE) WRITE("to <b>%S</b>", entry_text);
 			else WRITE("to be able to <b>%S</b>", entry_text);
-			Extensions::Dictionary::new_entry_from_stream(I"verb", ef, entry_text);
+			inform_extension *E = Extensions::Files::find(ef);
+			Extensions::Dictionary::new_entry_from_stream(I"verb", E, entry_text);
 			DISCARD_TEXT(entry_text);
 		}
 	if (verb_count > 0) HTML_CLOSE("p");

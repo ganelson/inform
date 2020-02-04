@@ -7,6 +7,7 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
+Import: inform7/words
 Import: inbuild
 
 Preliminaries

@@ -263,8 +263,6 @@ In order that the numerical form of a version number should be a signed
 |N| be at most 999. It could in fact rise to 2146 without incident, but
 it seems cleaner to constrain the number of digits than the value.
 
-@d MAX_VERSION_NUMBER_LENGTH 10 /* for |999/991231| */
-
 =
 inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
 	int i, slashes = 0, digits = 0, slash_at = 0;

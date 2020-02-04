@@ -167,8 +167,8 @@ void Extensions::Dictionary::new_entry(text_stream *category, extension_file *ef
 	}
 }
 
-void Extensions::Dictionary::new_entry_from_stream(text_stream *category, extension_file *ef, text_stream *headword) {
-	Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_req->work->author_name, ef->ef_req->work->title, headword);
+void Extensions::Dictionary::new_entry_from_stream(text_stream *category, inform_extension *E, text_stream *headword) {
+	Extensions::Dictionary::new_dictionary_entry_raw(category, E->as_copy->edition->work->author_name, E->as_copy->edition->work->title, headword);
 }
 
 void Extensions::Dictionary::new_dictionary_entry_raw(text_stream *category,
@@ -280,7 +280,7 @@ void Extensions::Dictionary::load_helper(text_stream *line_entry,
 @h Time stamping.
 
 =
-void Extensions::Dictionary::time_stamp(extension_file *ef) {
+void Extensions::Dictionary::time_stamp(inform_extension *E) {
 	TEMPORARY_TEXT(dbuff);
 	char *ascday[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 	char *ascmon[] = { "January", "February", "March", "April", "May", "June",
@@ -288,12 +288,11 @@ void Extensions::Dictionary::time_stamp(extension_file *ef) {
 	WRITE_TO(dbuff, "%04d%02d%02d%02d%02d%02d/%d:%s %d %s %d %02d:%02d",
 		the_present->tm_year+1900, the_present->tm_mon + 1, the_present->tm_mday,
 		the_present->tm_hour, the_present->tm_min, the_present->tm_sec,
-		TextFromFiles::total_word_count(
-			Extensions::Files::source(ef)),
+		TextFromFiles::total_word_count(E->read_into_file),
 		ascday[the_present->tm_wday], the_present->tm_mday,
 		ascmon[the_present->tm_mon], the_present->tm_year+1900,
 		the_present->tm_hour, the_present->tm_min);
-	Extensions::Dictionary::new_entry_from_stream(I"indexing", ef, dbuff);
+	Extensions::Dictionary::new_entry_from_stream(I"indexing", E, dbuff);
 	DISCARD_TEXT(dbuff);
 }
 

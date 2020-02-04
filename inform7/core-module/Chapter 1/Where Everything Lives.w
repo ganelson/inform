@@ -23,7 +23,6 @@ char *AREA_NAME[3] = { "from .materials", "installed", "built in" };
 = (early code)
 linked_list *I7_nest_list = NULL;
 pathname *pathname_of_area[NO_FS_AREAS]              = { NULL, NULL, NULL };
-pathname *pathname_of_extensions[NO_FS_AREAS]        = { NULL, NULL, NULL };
 pathname *pathname_of_inter_resources[NO_FS_AREAS]   = { NULL, NULL, NULL };
 pathname *pathname_of_languages[NO_FS_AREAS]         = { NULL, NULL, NULL };
 pathname *pathname_of_website_templates[NO_FS_AREAS] = { NULL, NULL, NULL };
@@ -135,12 +134,21 @@ int Locations::set_defaults(int census_mode) {
 	if ((census_mode) && (filename_of_i7_source))
 		Problems::Fatal::issue("In census mode, no source text may be supplied");
 	I7_nest_list = NEW_LINKED_LIST(inbuild_nest);
-	if (pathname_of_area[MATERIALS_FS_AREA])
-		ADD_TO_LINKED_LIST(Nests::new(pathname_of_area[MATERIALS_FS_AREA]), inbuild_nest, I7_nest_list);
-	if (pathname_of_area[EXTERNAL_FS_AREA])
-		ADD_TO_LINKED_LIST(Nests::new(pathname_of_area[EXTERNAL_FS_AREA]), inbuild_nest, I7_nest_list);
-	if (pathname_of_area[INTERNAL_FS_AREA])
-		ADD_TO_LINKED_LIST(Nests::new(pathname_of_area[INTERNAL_FS_AREA]), inbuild_nest, I7_nest_list);
+	if (pathname_of_area[MATERIALS_FS_AREA]) {
+		inbuild_nest *nest = Nests::new(pathname_of_area[MATERIALS_FS_AREA]);
+		Nests::set_tag(nest, ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA);
+		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
+	}
+	if (pathname_of_area[EXTERNAL_FS_AREA]) {
+		inbuild_nest *nest = Nests::new(pathname_of_area[EXTERNAL_FS_AREA]);
+		Nests::set_tag(nest, ORIGIN_WAS_USER_EXTENSIONS_AREA);
+		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
+	}
+	if (pathname_of_area[INTERNAL_FS_AREA]) {
+		inbuild_nest *nest = Nests::new(pathname_of_area[INTERNAL_FS_AREA]);
+		Nests::set_tag(nest, ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA);
+		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
+	}
 	return TRUE;
 }
 
@@ -476,7 +484,6 @@ template files, language definitions and website templates.
 
 =
 void Locations::EILT_at(int area, pathname *P) {
-	pathname_of_extensions[area] =        Pathnames::subfolder(P, I"Extensions");
 	pathname_of_languages[area] =         Pathnames::subfolder(P, I"Languages");
 	pathname_of_website_templates[area] = Pathnames::subfolder(P, I"Templates");
 	pathname_of_inter_resources[area] =   Pathnames::subfolder(P, I"Inter");

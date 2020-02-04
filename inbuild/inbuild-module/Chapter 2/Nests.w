@@ -8,6 +8,7 @@ Nests are repositories of Inform-related resources.
 typedef struct inbuild_nest {
 	struct pathname *location;
 	int read_only;
+	int tag_value;
 	MEMORY_MANAGEMENT
 } inbuild_nest;
 
@@ -22,7 +23,18 @@ inbuild_nest *Nests::new(pathname *P) {
 	inbuild_nest *N = CREATE(inbuild_nest);
 	N->location = P;
 	N->read_only = FALSE;
+	N->tag_value = -1;
 	return N;
+}
+
+int Nests::get_tag(inbuild_nest *N) {
+	if (N == NULL) return -1;
+	return N->tag_value;
+}
+
+void Nests::set_tag(inbuild_nest *N, int t) {
+	if (N == NULL) internal_error("no nest");
+	N->tag_value = t;
 }
 
 void Nests::protect(inbuild_nest *N) {

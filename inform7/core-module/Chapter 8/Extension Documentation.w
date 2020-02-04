@@ -245,7 +245,8 @@ documentation page could be forgiven for thinking it a miscellany.
 
 @<Document and dictionary the definitions made in extension file ef@> =
 	Extensions::Dictionary::erase_entries(ef);
-	Extensions::Dictionary::time_stamp(ef);
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E) Extensions::Dictionary::time_stamp(E);
 
 	@<Document and dictionary the kinds made in extension@>;
 	@<Document and dictionary the objects made in extension@>;

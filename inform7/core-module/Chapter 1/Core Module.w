@@ -37,7 +37,6 @@ We need to itemise the structures we'll want to allocate:
 @e pcalc_prop_deferral_MT
 @e literal_pattern_MT
 @e generalisation_MT
-@e extension_census_datum_MT
 @e extension_dictionary_entry_MT
 @e known_extension_clash_MT
 @e i6_schema_array_MT
@@ -117,7 +116,6 @@ ALLOCATE_INDIVIDUALLY(dval_written)
 ALLOCATE_INDIVIDUALLY(equation_node)
 ALLOCATE_INDIVIDUALLY(equation_symbol)
 ALLOCATE_INDIVIDUALLY(equation)
-ALLOCATE_INDIVIDUALLY(extension_census_datum)
 ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(extension_file)
 ALLOCATE_INDIVIDUALLY(generalisation)
@@ -257,7 +255,6 @@ void CoreModule::start(void) {
 @ Not all of our memory will be claimed in the form of structures: now and then
 we need to use the equivalent of traditional |malloc| and |calloc| routines.
 
-@e EXTENSION_DICTIONARY_MREASON
 @e INDEX_SORTING_MREASON
 @e INSTANCE_COUNTING_MREASON
 @e MAP_INDEX_MREASON
@@ -271,7 +268,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e EMIT_ARRAY_MREASON
 
 @<Register this module's memory allocation reasons@> =
-	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
 	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
 	Memory::reason_name(INSTANCE_COUNTING_MREASON, "instance-of-kind counting");
 	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
@@ -301,7 +297,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e DEBUGGING_LOG_CONTENTS_DA
 @e DESCRIPTION_COMPILATION_DA
 @e EXPRESSIONS_DA
-@e EXTENSIONS_CENSUS_DA
 @e FIGURE_CREATIONS_DA
 @e HEADINGS_DA
 @e IMPLICATIONS_DA
@@ -347,7 +342,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(DEBUGGING_LOG_CONTENTS_DA, L"debugging log contents", TRUE, FALSE);
 	Log::declare_aspect(DESCRIPTION_COMPILATION_DA, L"description compilation", FALSE, FALSE);
 	Log::declare_aspect(EXPRESSIONS_DA, L"expressions", FALSE, FALSE);
-	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
 	Log::declare_aspect(FIGURE_CREATIONS_DA, L"figure creations", FALSE, FALSE);
 	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
 	Log::declare_aspect(IMPLICATIONS_DA, L"implications", FALSE, TRUE);

@@ -24,12 +24,6 @@ because the application passes this as |-rules| on the command line, and it
 knows the location of the latter because this is standard and fixed for
 each platform: see Platform-Specific Definitions.
 
-@ An extension has a title and an author name, each of which is limited in
-length to one character less than the following constants:
-
-@d MAX_EXTENSION_TITLE_LENGTH 51
-@d MAX_EXTENSION_AUTHOR_LENGTH 51
-
 @h How the application should install extensions.
 When the Inform 7 application looks at a file chosen by the user to
 be installed, it should look at the first line. (Note that this might have
@@ -577,9 +571,13 @@ two alternatives are expressed here:
 =
 void Extensions::Files::handle_census_mode(void) {
 	if (census_mode) {
+		extension_census *C = Extensions::Census::new(I7_nest_list);
+		C->built_in_tag = ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA;
+		C->materials_tag = ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA;
+		C->external_tag = ORIGIN_WAS_USER_EXTENSIONS_AREA;
 		Extensions::Dictionary::load();
-		Extensions::Census::perform();
-		Extensions::Files::write_top_level_of_extensions_documentation();
+		Extensions::Census::perform(C);
+		Extensions::Files::write_top_level_of_extensions_documentation(C);
 		Extensions::Files::write_sketchy_documentation_for_extensions_found();
 	}
 }
@@ -587,8 +585,12 @@ void Extensions::Files::handle_census_mode(void) {
 void Extensions::Files::update_census(void) {
 	extension_file *ef;
 	Extensions::Dictionary::load();
-	Extensions::Census::perform();
-	Extensions::Files::write_top_level_of_extensions_documentation();
+	extension_census *C = Extensions::Census::new(I7_nest_list);
+	C->built_in_tag = ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA;
+	C->materials_tag = ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA;
+	C->external_tag = ORIGIN_WAS_USER_EXTENSIONS_AREA;
+	Extensions::Census::perform(C);
+	Extensions::Files::write_top_level_of_extensions_documentation(C);
 	LOOP_OVER(ef, extension_file) Extensions::Documentation::write_detailed(ef);
 	Extensions::Files::write_sketchy_documentation_for_extensions_found();
 	Extensions::Dictionary::write_back();
@@ -635,13 +637,13 @@ platform, for reasons as always to do with the vagaries of Internet
 Explorer 7 for Windows.
 
 =
-void Extensions::Files::write_top_level_of_extensions_documentation(void) {
-	Extensions::Files::write_top_level_extensions_page(I"Extensions.html", 1);
-	Extensions::Files::write_top_level_extensions_page(I"ExtIndex.html", 2);
+void Extensions::Files::write_top_level_of_extensions_documentation(extension_census *C) {
+	Extensions::Files::write_top_level_extensions_page(I"Extensions.html", 1, C);
+	Extensions::Files::write_top_level_extensions_page(I"ExtIndex.html", 2, NULL);
 }
 
 @ =
-void Extensions::Files::write_top_level_extensions_page(text_stream *leaf, int content) {
+void Extensions::Files::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
 	text_stream HOMEPAGE_struct;
 	text_stream *OUT = &HOMEPAGE_struct;
 	filename *F = Filenames::in_folder(pathname_of_extension_docs, leaf);
@@ -674,7 +676,7 @@ void Extensions::Files::write_top_level_extensions_page(text_stream *leaf, int c
 	HTML_CLOSE("div");
 
 	switch (content) {
-		case 1: Extensions::Census::write_results(OUT); break;
+		case 1: Extensions::Census::write_results(OUT, C); break;
 		case 2: Extensions::Dictionary::write_to_HTML(OUT); break;
 	}
 

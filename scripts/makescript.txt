@@ -100,6 +100,7 @@ INBUILDX = inbuild/Tangled/inbuild
 
 {tool} INBUILDTOOL inbuild inbuild
 {dep} INBUILDTOOL on FOUNDATION
+{dep} INBUILDTOOL on WORDS
 {dep} INBUILDTOOL on INBUILD
 
 {tool} INTERTOOL inter inter

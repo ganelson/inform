@@ -3,7 +3,41 @@
 To conduct a census of all the extensions installed (whether used
 on this run or not), and keep the documentation index for them up to date.
 
-@h Definitions.
+@
+
+=
+typedef struct extension_census {
+	struct linked_list *search_list; /* of |inbuild_nest| */
+	int built_in_tag;
+	int materials_tag;
+	int external_tag;
+	MEMORY_MANAGEMENT
+} extension_census;
+
+extension_census *Extensions::Census::new(linked_list *L) {
+	extension_census *C = CREATE(extension_census);
+	C->search_list = L;
+	C->built_in_tag = -2;
+	C->materials_tag = -2;
+	C->external_tag = -2;
+	return C;
+}
+
+pathname *Extensions::Census::internal_path(extension_census *C) {
+	inbuild_nest *N = NULL;
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
+		if (Nests::get_tag(N) == C->built_in_tag)
+			return Extensions::path_within_nest(N);
+	return NULL;
+}
+
+pathname *Extensions::Census::external_path(extension_census *C) {
+	inbuild_nest *N = NULL;
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
+		if (Nests::get_tag(N) == C->external_tag)
+			return Extensions::path_within_nest(N);
+	return NULL;
+}
 
 @ In addition to the extensions read in, there are the roads not taken: the
 ones which I7 has at its disposal, but which the source text never asks to
@@ -17,12 +51,12 @@ or ECD.
 =
 typedef struct extension_census_datum {
 	struct inbuild_work *ecd_work; /* title, author, hash code */
-	struct text_stream *version_text; /* such as |23| or |14/060527| */
+	struct inbuild_version_number version; /* such as |2.1| or |14/060527| */
 	struct text_stream *VM_requirement; /* such as "(for Z-machine only)" */
 	int built_in; /* found in the Inform 7 application's private stock */
 	int project_specific; /* found in the Materials folder for the current project */
 	int overriding_a_built_in_extension; /* not built in, but overriding one which is */
-	pathname *domain; /* pathname of the stock in which this was found */
+	struct inbuild_nest *domain; /* pathname of the stock in which this was found */
 	struct text_stream *rubric; /* brief description found in opening lines */
 	struct extension_census_datum *next; /* next one in lexicographic order */
 	MEMORY_MANAGEMENT
@@ -41,10 +75,11 @@ ever be reversed, a matching change would need to be made in the code which
 opens extension files in Read Source Text.)
 
 =
-void Extensions::Census::perform(void) {
+void Extensions::Census::perform(extension_census *C) {
 	Extensions::Census::begin_recording_census_errors();
-	for (int area=0; area<NO_FS_AREAS; area++)
-		Extensions::Census::take_census_of_domain(pathname_of_extensions[area], area+1);
+	inbuild_nest *N;
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
+		Extensions::Census::take_census_of_domain(C, N, Nests::get_tag(N));
 	Extensions::Census::end_recording_census_errors();
 }
 
@@ -56,10 +91,11 @@ special (it is read-only, for one thing), but in principle we could have
 any number of other domains. The following code scans one.
 
 =
-pathname *current_extension_domain = NULL;
-void Extensions::Census::take_census_of_domain(pathname *P, int origin) {
-	current_extension_domain = P;
-	Extensions::Census::census_from(P, TRUE, origin, NULL);
+inbuild_nest *current_extension_domain = NULL;
+void Extensions::Census::take_census_of_domain(extension_census *C, inbuild_nest *N, int origin) {
+	current_extension_domain = N;
+	pathname *P = Extensions::path_within_nest(N);
+	Extensions::Census::census_from(C, N, P, TRUE, origin, NULL);
 }
 
 @ The following routine is not as recursive as it looks, since it runs at
@@ -90,7 +126,7 @@ typedef struct census_state {
 	text_stream *parent;
 } census_state;
 
-void Extensions::Census::census_from(pathname *P, int top_level, int origin, text_stream *parent) {
+void Extensions::Census::census_from(extension_census *C, inbuild_nest *N, pathname *P, int top_level, int origin, text_stream *parent) {
 	scan_directory *dir = Directories::open(P);
 	if (dir) {
 		census_state cs;
@@ -98,13 +134,13 @@ void Extensions::Census::census_from(pathname *P, int top_level, int origin, tex
 		TEMPORARY_TEXT(item_name);
 		int count = 0;
 		while (Directories::next(dir, item_name))
-			Extensions::Census::census_from_helper(item_name, &cs, ++count);
+			Extensions::Census::census_from_helper(C, N, item_name, &cs, ++count);
 		DISCARD_TEXT(item_name);
 		Directories::close(dir);
 	}
 }
 
-void Extensions::Census::census_from_helper(text_stream *item_name, census_state *cs,
+void Extensions::Census::census_from_helper(extension_census *C, inbuild_nest *N, text_stream *item_name, census_state *cs,
 	int count) {
 	if (Str::len(item_name) == 0) return;
 	LOGIF(EXTENSIONS_CENSUS, "%d: %S\n", count, item_name);
@@ -137,19 +173,19 @@ level to scan it.
 		if (Str::eq(item_name, I"Reserved")) return;
 
 		if (Str::len(item_name) > MAX_EXTENSION_TITLE_LENGTH-1) {
-			Extensions::Census::census_error("author name exceeds the maximum permitted length",
+			Extensions::Census::census_error(I"author name exceeds the maximum permitted length",
 				item_name, NULL, NULL, NULL); return;
 		}
 		if (Str::includes_character(item_name, '.')) {
-			Extensions::Census::census_error("author name contains a full stop",
+			Extensions::Census::census_error(I"author name contains a full stop",
 				item_name, NULL, NULL, NULL); return;
 		}
 		Extensions::Census::census_from(
-			Pathnames::subfolder(cs->P, item_name),
+			C, N, Pathnames::subfolder(cs->P, item_name),
 			FALSE, cs->origin, item_name);
 		return;
 	}
-	Extensions::Census::census_error("non-folder found where author folders should be",
+	Extensions::Census::census_error(I"non-folder found where author folders should be",
 		item_name, NULL, NULL, NULL); return;
 
 @ At the lower level, |.| files or folders are again skipped; any other
@@ -166,30 +202,28 @@ installed correctly on other Informs elsewhere (perhaps on other platforms).
 @d MAX_TITLING_LINE_LENGTH 501 /* lots, allowing for an improbably large number of virtual machine restrictions */
 
 @<Take census from a possible extension@> =
+	inbuild_version_number V = VersionNumbers::null();
 	int overridden_by_an_extension_already_found = FALSE;
 	TEMPORARY_TEXT(candidate_title);
 	TEMPORARY_TEXT(raw_title);
 	TEMPORARY_TEXT(candidate_author_name);
 	TEMPORARY_TEXT(raw_author_name);
-	TEMPORARY_TEXT(titling_line);
 	TEMPORARY_TEXT(rubric_text);
-	TEMPORARY_TEXT(version_text);
 	TEMPORARY_TEXT(requirement_text);
 	TEMPORARY_TEXT(claimed_author_name);
 	TEMPORARY_TEXT(claimed_title);
 	if (Str::get_last_char(item_name) == '.') return;
 	if (Str::get_last_char(item_name) == FOLDER_SEPARATOR) {
-		Extensions::Census::census_error("folder or application in author folder",
+		Extensions::Census::census_error(I"folder or application in author folder",
 			cs->parent, item_name, NULL, NULL); return;
 	}
 	if (Str::len(item_name) > MAX_EXTENSION_TITLE_LENGTH-1) {
-		Extensions::Census::census_error("title exceeds the maximum permitted length",
+		Extensions::Census::census_error(I"title exceeds the maximum permitted length",
 			cs->parent, item_name, NULL, NULL); return;
 	}
-
+	
 	@<Make candidate title and author name from normalised casing versions of filename and parent folder name@>;
-	@<Extract the titling line and rubric, if any, from the extension file@>;
-	@<Parse the version, title, author and VM requirements from the titling line@>;
+	@<Scan the extension file@>;
 	@<Check that the candidate name and title match those claimed in the titling line@>;
 	@<See if we duplicate the title and author name of an extension already found in another domain@>;
 	if (overridden_by_an_extension_already_found == FALSE) {
@@ -200,9 +234,7 @@ installed correctly on other Informs elsewhere (perhaps on other platforms).
 	DISCARD_TEXT(raw_title);
 	DISCARD_TEXT(candidate_author_name);
 	DISCARD_TEXT(raw_author_name);
-	DISCARD_TEXT(titling_line);
 	DISCARD_TEXT(rubric_text);
-	DISCARD_TEXT(version_text);
 	DISCARD_TEXT(requirement_text);
 	DISCARD_TEXT(claimed_author_name);
 	DISCARD_TEXT(claimed_title);
@@ -238,7 +270,7 @@ stored have been waived.
 
 	if (Str::includes_character(candidate_title, '.')) {
 		LOG("Title is <%S>\n", candidate_title);
-		Extensions::Census::census_error("title contains a full stop",
+		Extensions::Census::census_error(I"title contains a full stop",
 			cs->parent, candidate_title, NULL, NULL); return;
 	}
 
@@ -260,127 +292,21 @@ extract its titling line and rubric, then close it again.
 	@<Read the rubric text, if any is present@>;
 	fclose(EXTF);
 
-@ The following should only fail in the event of some peculiar filing system
-failure (or of some other process having moved or deleted the file since
-we scanned the folder only moments ago).
+@ The actual scanning is delegated to the extension-scanner already given.
 
-@<Open the extension file for reading@> =
+@<Scan the extension file@> =
 	filename *F =
-		Locations::of_extension(current_extension_domain,
-			item_name, cs->parent, FALSE);
-	EXTF = Filenames::fopen_caseless(F, "r");
-	if (EXTF == NULL) {
-		Extensions::Census::census_error("file cannot be read",
-			cs->parent, item_name, NULL, NULL); return;
+		Extensions::filename_in_nest(current_extension_domain,
+			item_name, cs->parent);
+	TEMPORARY_TEXT(error_text);
+	V = Extensions::scan_file(F, claimed_title, claimed_author_name,
+		rubric_text, requirement_text, error_text);
+	if (Str::len(error_text) > 0) {
+		Extensions::Census::census_error(error_text,
+			cs->parent, item_name, NULL, NULL);
+		return;
 	}
-
-@ The actual maximum number of characters in the titling line is one less
-than |MAX_TITLING_LINE_LENGTH|, to allow for the null terminator. The titling
-line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or by the local
-|\n| for good measure.
-
-@<Read the titling line of the extension and normalise its casing@> =
-	int titling_chars_read = 0, c;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
-		if (c == 0xFEFF) return; /* skip the optional Unicode BOM pseudo-character */
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
-		if (titling_chars_read < MAX_TITLING_LINE_LENGTH - 1) PUT_TO(titling_line, c);
-	}
-	Works::normalise_casing(titling_line);
-
-@ In the following, all possible newlines are converted to white space, and
-all white space before a quoted rubric text is ignored. We need to do this
-partly because users have probably keyed a double line break before the
-rubric, but also because we might have stopped reading the titling line
-halfway through a line division combination like |0A 0D|, so that the first
-thing we read here is a meaningless |0D|.
-
-@<Read the rubric text, if any is present@> =
-	int c, found_start = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
-		if ((c != ' ') && (found_start == FALSE)) {
-			if (c == '"') found_start = TRUE;
-			else break;
-		} else {
-			if (c == '"') break;
-			if (found_start) PUT_TO(rubric_text, c);
-		}
-	}
-
-@h Parsing the titling line.
-In general, once case-normalised, a titling line looks like this:
-
->> Version 2/070423 Of Going To The Zoo (For Glulx Only) By Cary Grant Begins Here.
-
-and the version information, the VM restriction and the full stop are all
-optional, but the division word "of" and the concluding "begin[s] here"
-are not. We break it up into pieces, so that
-
-	|version_text = "2/070423"|
-	|claimed_title = "Going To The Zoo"|
-	|claimed_author_name = "Cary Grant"|
-	|requirement_text = "(For Glulx Only)"|
-
-It's tempting to do this by feeding it into the lexer and then reusing some
-of the code which parses these lines during sentence-breaking, but in fact
-we want to use the information rather differently, and besides: it seems
-useful to record some C code here which correctly parses a titling line,
-since this can easily be extracted and used in other utilities handling
-Inform extensions.
-
-@<Parse the version, title, author and VM requirements from the titling line@> =
-	match_results mr = Regexp::create_mr();
-	if (Str::get_last_char(titling_line) == '.') Str::delete_last_character(titling_line);
-	if ((Regexp::match(&mr, titling_line, L"(%c*) Begin Here")) ||
-		(Regexp::match(&mr, titling_line, L"(%c*) Begins Here"))) {
-		Str::copy(titling_line, mr.exp[0]);
-	} else {
-		LOG("Titling: %S\n", titling_line);
-		Extensions::Census::census_error("appears not to be an extension (its first line does "
-			"not end 'begin(s) here', as extension titling lines must)",
-			cs->parent, item_name, NULL, NULL); return;
-	}
-
-	@<Scan the version text, if any, and advance to the position past Version... Of@>;
-	if (Regexp::match(&mr, titling_line, L"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
-	@<Divide the remaining text into a claimed author name and title, divided by By@>;
-	@<Extract the VM requirements text, if any, from the claimed title@>;
-	Regexp::dispose_of(&mr);
-
-@ We make no attempt to check the version number for validity: the purpose
-of the census is to identify extensions and reject accidentally included
-other files, not to syntax-check all extensions to see if they would work
-if used.
-
-@<Scan the version text, if any, and advance to the position past Version... Of@> =
-	if (Regexp::match(&mr, titling_line, L"Version (%c*?) Of (%c*)")) {
-		Str::copy(version_text, mr.exp[0]);
-		Str::copy(titling_line, mr.exp[1]);
-	}
-
-@ The earliest "by" is the divider: note that extension titles are not
-allowed to contain this word, so "North By Northwest By Cary Grant" is
-not a situation we need to contend with.
-
-@<Divide the remaining text into a claimed author name and title, divided by By@> =
-	if (Regexp::match(&mr, titling_line, L"(%c*?) By (%c*)")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(claimed_author_name, mr.exp[1]);
-	} else {
-		Extensions::Census::census_error("appears not to be an extension (the titling line does "
-			"not give both author and title)",
-			cs->parent, item_name, NULL, NULL); return;
-	}
-
-@ Similarly, extension titles are not allowed to contain parentheses, so
-this is unambiguous.
-
-@<Extract the VM requirements text, if any, from the claimed title@> =
-	if (Regexp::match(&mr, claimed_title, L"(%c*?) *(%(%c*%))")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(requirement_text, mr.exp[1]);
-	}
+	DISCARD_TEXT(error_text);
 
 @h Making sure this is the extension we expected to find.
 It's easier for these confusions to arise than might be thought. For instance,
@@ -396,18 +322,15 @@ to arise when users install extensions by hand. Still, it's prudent to check.
 	if (Str::eq(claimed_author_name, candidate_author_name)) right_folder = TRUE;
 
 	if ((right_leafname == TRUE) && (right_folder == FALSE)) {
-		Extensions::Census::census_error("an extension with the right filename but in the wrong "
-			"author's folder",
+		Extensions::Census::census_error(I"an extension with the right filename but in the wrong author's folder",
 			cs->parent, item_name, claimed_author_name, claimed_title); return;
 	}
 	if ((right_leafname == FALSE) && (right_folder == TRUE)) {
-		Extensions::Census::census_error("an extension stored in the correct author's folder, but "
-			"with the wrong filename",
+		Extensions::Census::census_error(I"an extension stored in the correct author's folder, but with the wrong filename",
 			cs->parent, item_name, claimed_author_name, claimed_title); return;
 	}
 	if ((right_leafname == FALSE) && (right_folder == FALSE)) {
-		Extensions::Census::census_error("an extension but with the wrong filename and put in the "
-			"wrong author's folder",
+		Extensions::Census::census_error(I"an extension but with the wrong filename and put in the wrong author's folder",
 			cs->parent, item_name, claimed_author_name, claimed_title); return;
 	}
 
@@ -423,7 +346,7 @@ which the user had installed to override this built-in extension.
 	LOOP_OVER(other, extension_census_datum)
 		if ((Str::eq(candidate_author_name, other->ecd_work->author_name))
 			&& (Str::eq(candidate_title, other->ecd_work->title))
-			&& ((other->built_in) || (cs->origin == ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA))) {
+			&& ((other->built_in) || (cs->origin == C->built_in_tag))) {
 			other->overriding_a_built_in_extension = TRUE;
 			overridden_by_an_extension_already_found = TRUE;
 		}
@@ -439,14 +362,12 @@ truncate it.
 	Works::add_to_database(ecd->ecd_work, INSTALLED_WDBC);
 	Works::set_raw(ecd->ecd_work, raw_author_name, raw_title);
 	ecd->VM_requirement = Str::duplicate(requirement_text);
-	if (Str::len(version_text) > MAX_VERSION_NUMBER_LENGTH)
-		Str::truncate(version_text, MAX_VERSION_NUMBER_LENGTH); /* truncate to maximum legal length */
-	ecd->version_text = Str::duplicate(version_text);
+	ecd->version = V;
 	ecd->domain = current_extension_domain;
 	ecd->built_in = FALSE;
-	if (cs->origin == ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA) ecd->built_in = TRUE;
+	if (cs->origin == C->built_in_tag) ecd->built_in = TRUE;
 	ecd->project_specific = FALSE;
-	if (cs->origin == ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA) ecd->project_specific = TRUE;
+	if (cs->origin == C->materials_tag) ecd->project_specific = TRUE;
 	ecd->overriding_a_built_in_extension = FALSE;
 	ecd->next = NULL;
 	ecd->rubric = Str::duplicate(rubric_text);
@@ -484,18 +405,23 @@ void Extensions::Census::end_recording_census_errors(void) {
 @ When a census error arises, then, we write it as a line to the errors stream.
 
 =
-void Extensions::Census::census_error(char *message, text_stream *auth, text_stream *title,
+void Extensions::Census::census_error(text_stream *message, text_stream *auth, text_stream *title,
 	text_stream *claimed_author, text_stream *claimed_title) {
 	text_stream *OUT = CENERR;
 	no_census_errors++;
+	#ifdef INDEX_MODULE
 	HTMLFiles::open_para(OUT, 2, "hanging");
+	#endif
+	#ifndef INDEX_MODULE
+	HTML_OPEN("p");
+	#endif
 	if (Str::len(claimed_author) > 0)
-		WRITE("<b>%S by %S</b> - %s (the extension says it is '%S by %S')",
+		WRITE("<b>%S by %S</b> - %S (the extension says it is '%S by %S')",
 			title, auth, message, claimed_title, claimed_author);
 	else if ((Str::len(auth) > 0) && (Str::len(title) > 0))
-		WRITE("<b>%S by %S</b> - %s", title, auth, message);
+		WRITE("<b>%S by %S</b> - %S", title, auth, message);
 	else
-		WRITE("<b>%S</b> - %s", auth, message);
+		WRITE("<b>%S</b> - %S", auth, message);
 	HTML_CLOSE("p");
 }
 
@@ -557,7 +483,7 @@ any oddities found in the external extensions area.
 @d CE_BY_LENGTH 5
 
 =
-void Extensions::Census::write_results(OUTPUT_STREAM) {
+void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
 	@<Display the location of installed extensions@>;
 	Extensions::Census::warn_about_census_errors(OUT);
 	HTML::end_html_row(OUT);
@@ -608,8 +534,10 @@ void Extensions::Census::write_results(OUTPUT_STREAM) {
 		HTML_TAG_WITH("img", "src='inform:/doc_images/folder4.png' border=0");
 		WRITE("&nbsp;You have no other extensions installed at present.");
 	} else {
-		HTML::Javascript::open_file(OUT, pathname_of_extensions[EXTERNAL_FS_AREA], NULL,
+		#ifdef INDEX_MODULE
+		HTML::Javascript::open_file(OUT, Extensions::Census::external_path(C), NULL,
 			"src='inform:/doc_images/folder4.png' border=0");
+		#endif
 		WRITE("&nbsp;You have %d further extension%s installed. These are marked "
 			"with a blue folder icon in the catalogue below. (Click it to see "
 			"where the file is stored on your computer.) "
@@ -619,7 +547,9 @@ void Extensions::Census::write_results(OUTPUT_STREAM) {
 	HTML_CLOSE("p");
 	if (nps > 0) {
 		HTML_OPEN("p");
-		HTML::Javascript::open_file(OUT, pathname_of_extensions[INTERNAL_FS_AREA], NULL, PROJECT_SPECIFIC_SYMBOL);
+		#ifdef INDEX_MODULE
+		HTML::Javascript::open_file(OUT, Extensions::Census::internal_path(C), NULL, PROJECT_SPECIFIC_SYMBOL);
+		#endif
 		WRITE("&nbsp;You have %d extension%s in the .materials folder for the "
 			"current project. (Click the purple folder icon to show the "
 			"location.) %s not available to other projects.",
@@ -632,9 +562,11 @@ extensions used in the current run; otherwise they wouldn't show in the
 documentation as used today until the next run, for obscure timing reasons.
 
 @<Time stamp the extensions used on this run@> =
-	extension_file *ef;
-	LOOP_OVER(ef, extension_file)
-		Extensions::Dictionary::time_stamp(ef);
+	#ifdef CORE_MODULE
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		Extensions::Dictionary::time_stamp(E);
+	#endif
 
 @ I am the first to admit that this implementation is not inspired. There
 are five radio buttons, and number 2 is selected by default.
@@ -721,8 +653,10 @@ just a blank image used for horizontal spacing to keep margins straight.
 			WRITE(" Your version overrides the one built in&nbsp;");
 		}
 		if (key_vms) {
+			#ifdef CORE_MODULE
 			HTML_TAG("br");
 			VirtualMachines::write_key(OUT);
+			#endif
 		}
 		HTML_CLOSE("p");
 	}
@@ -862,14 +796,14 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		case 0:
 			WRITE("Supplied in the .materials folder&nbsp;&nbsp;");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("%p", pathname_of_extensions[INTERNAL_FS_AREA]);
+			WRITE("%p", Extensions::Census::internal_path(C));
 			HTML_CLOSE("span"); break;
 		case 1: WRITE("Built in to Inform"); break;
 		case 2: WRITE("User installed but overriding a built-in extension"); break;
 		case 3:
 			WRITE("User installed&nbsp;&nbsp;");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("%p", pathname_of_extensions[EXTERNAL_FS_AREA]);
+			WRITE("%p", Extensions::Census::external_path(C));
 			HTML_CLOSE("span"); break;
 	}
 
@@ -931,14 +865,19 @@ brackets, which the lexer will split off as distinct words, we can ignore
 the first and last word and just look at what is in between:
 
 @<Append icons which signify the VM requirements of the extension@> =
-	wording W = Feeds::feed_stream(ecd->VM_requirement);
 	WRITE("&nbsp;");
+	#ifdef CORE_MODULE
+	wording W = Feeds::feed_stream(ecd->VM_requirement);
 	VirtualMachines::write_icons(OUT, Wordings::trim_last_word(Wordings::trim_last_word(W)));
+	#endif
+	#ifndef CORE_MODULE
+	WRITE("%S", ecd->VM_requirement);
+	#endif
 
 @<Print column 2 of the census line@> =
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
-	if (Str::len(ecd->version_text) > 0)
-		WRITE("v&nbsp;%S", ecd->version_text);
+	if (VersionNumbers::is_null(ecd->version) == FALSE)
+		WRITE("v&nbsp;%v", &(ecd->version));
 	else
 		WRITE("--");
 	HTML_CLOSE("span");
@@ -951,17 +890,20 @@ the first and last word and just look at what is in between:
 
 @<Print column 3 of the census line@> =
 	char *opener = "src='inform:/doc_images/folder4.png' border=0";
-	pathname *area = pathname_of_extensions[EXTERNAL_FS_AREA];
 	if (ecd->built_in) { opener = BUILT_IN_SYMBOL; key_builtin = TRUE; }
 	if (ecd->overriding_a_built_in_extension) {
 		opener = OVERRIDING_SYMBOL; key_override = TRUE;
 	}
 	if (ecd->project_specific) {
 		opener = PROJECT_SPECIFIC_SYMBOL; key_pspec = TRUE;
-		area = pathname_of_extensions[MATERIALS_FS_AREA];
 	}
 	if (ecd->built_in) HTML_TAG_WITH("img", "%s", opener)
-	else HTML::Javascript::open_file(OUT, area, ecd->ecd_work->raw_author_name, opener);
+	else {
+		#ifdef INDEX_MODULE
+		pathname *area = Extensions::path_within_nest(ecd->domain);
+		HTML::Javascript::open_file(OUT, area, ecd->ecd_work->raw_author_name, opener);
+		#endif
+	}
 
 @<Print column 4 of the census line@> =
 	HTML_OPEN_WITH("span", "class=\"smaller\"");

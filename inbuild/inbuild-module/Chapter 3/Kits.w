@@ -37,7 +37,7 @@ void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_require
 	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
 	if (TextFiles::exists(canary)) {
 		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
-		if ((VersionNumbers::ge(K->version, req->min_version)) && (VersionNumbers::le(K->version, req->min_version))) {
+		if (Model::meets(K->version, req)) {
 			Nests::add_search_result(search_results, N, K->as_copy);
 		}
 	}
