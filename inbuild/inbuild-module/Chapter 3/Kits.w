@@ -28,18 +28,29 @@ inbuild_copy *Kits::claim(text_stream *arg, text_stream *ext, int directory_stat
 }
 
 void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
-	WRITE("Kit %S", work->title);
+	WRITE("%S", work->title);
 }
 
 void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
 	pathname *P = Pathnames::subfolder(N->location, I"Inter");
-	P = Pathnames::subfolder(P, req->work->title);
-	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
-	if (TextFiles::exists(canary)) {
-		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
-		if (Model::meets(K->version, req)) {
-			Nests::add_search_result(search_results, N, K->as_copy);
+	scan_directory *D = Directories::open(P);
+	if (D) {
+		TEMPORARY_TEXT(LEAFNAME);
+		while (Directories::next(D, LEAFNAME)) {
+			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
+				Str::delete_last_character(LEAFNAME);
+				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+				filename *canary = Filenames::in_folder(Q, I"kit_metadata.txt");
+				if (TextFiles::exists(canary)) {
+					inform_kit *K = Kits::load_at(Pathnames::directory_name(Q), Q);
+					if (Requirements::meets(K->as_copy->edition, req)) {
+						Nests::add_search_result(search_results, N, K->as_copy);
+					}
+				}
+			}
 		}
+		DISCARD_TEXT(LEAFNAME);
+		Directories::close(D);
 	}
 }
 
@@ -125,6 +136,7 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
 
 	inbuild_work *work = Works::new(kit_genre, name, NULL);
+	work->title = Str::duplicate(name);
 	inbuild_edition *edition = Model::edition(work, K->version);
 	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
 	

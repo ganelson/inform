@@ -166,7 +166,7 @@ can't know at load time what we will ultimately require.)
 @<This is an extension already loaded, so note any version number hike and return@> =
 	if (version_word >= 0) {
 		inbuild_version_number V = Extensions::Inclusion::parse_version(version_word);
-		if (Model::ratchet_minimum(V, ef->ef_req))
+		if (Requirements::ratchet_minimum(V, ef->ef_req))
 			ef->inclusion_sentence = current_sentence;
 	}
 	return ef;

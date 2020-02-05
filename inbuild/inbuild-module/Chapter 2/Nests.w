@@ -67,7 +67,9 @@ void Nests::add_to_search_sequence(linked_list *search_list, inbuild_nest *N) {
 void Nests::locate(inbuild_requirement *req, linked_list *search_list, linked_list *results) {
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
-		VMETHOD_CALL(req->work->genre, GENRE_LOCATION_IN_NEST_MTID, N, req, results);
+		inbuild_genre *G;
+		LOOP_OVER(G, inbuild_genre)
+			VMETHOD_CALL(G, GENRE_LOCATION_IN_NEST_MTID, N, req, results);
 	}
 }
 

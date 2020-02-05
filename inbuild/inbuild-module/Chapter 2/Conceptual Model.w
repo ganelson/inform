@@ -33,6 +33,11 @@ inbuild_genre *Model::genre(text_stream *name) {
 	return gen;
 }
 
+text_stream *Model::genre_name(inbuild_genre *G) {
+	if (G == NULL) return I"(none)";
+	return G->genre_name;
+}
+
 @h Editions.
 An "edition" of a work is a particular version numbered form of it. For
 example, release 7 of Bronze by Emily Short would be an edition of Bronze.
@@ -49,52 +54,6 @@ inbuild_edition *Model::edition(inbuild_work *work, inbuild_version_number versi
 	edition->work = work;
 	edition->version = version;
 	return edition;
-}
-
-@h Requirements.
-A "requirement" is when we want to get hold of a work in some edition which
-meets a range of possible versions. A null minimum version means "no minimum",
-a null maximum means "no maximum".
-
-=
-typedef struct inbuild_requirement {
-	struct inbuild_work *work;
-	struct inbuild_version_number min_version;
-	struct inbuild_version_number max_version;
-	MEMORY_MANAGEMENT
-} inbuild_requirement;
-
-inbuild_requirement *Model::requirement(inbuild_work *work,
-	inbuild_version_number min, inbuild_version_number max) {
-	inbuild_requirement *req = CREATE(inbuild_requirement);
-	req->work = work;
-	req->min_version = min;
-	req->max_version = max;
-	return req;
-}
-
-int Model::meets(inbuild_version_number V, inbuild_requirement *req) {
-	if (req == NULL) return TRUE;
-	if (VersionNumbers::is_null(req->min_version) == FALSE) {
-		if (VersionNumbers::is_null(V)) return FALSE;
-		if (VersionNumbers::lt(V, req->min_version)) return FALSE;
-	}
-	if (VersionNumbers::is_null(req->max_version) == FALSE) {
-		if (VersionNumbers::is_null(V)) return TRUE;
-		if (VersionNumbers::gt(V, req->max_version)) return FALSE;
-	}
-	return TRUE;
-}
-
-int Model::ratchet_minimum(inbuild_version_number V, inbuild_requirement *req) {
-	if (req == NULL) internal_error("no requirement");
-	if (VersionNumbers::is_null(V)) return FALSE;
-	if ((VersionNumbers::is_null(req->min_version)) ||
-		(VersionNumbers::gt(V, req->min_version))) {
-		req->min_version = V;
-		return TRUE;
-	}
-	return FALSE;
 }
 
 @h Copies.

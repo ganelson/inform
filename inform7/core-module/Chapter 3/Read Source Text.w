@@ -169,7 +169,7 @@ application to communicate the problem badly.
 		text_stream *author_name = EF->ef_req->work->author_name;
 		text_stream *title = EF->ef_req->work->title;
 		inbuild_work *work = Works::new(extension_genre, title, author_name);
-		inbuild_requirement *req = Model::requirement(work, VersionNumbers::null(), VersionNumbers::null());
+		inbuild_requirement *req = Requirements::any_version_of(work);
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 		Nests::locate(req, search_list, L);
 		inbuild_search_result *search_result;

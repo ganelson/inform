@@ -26,24 +26,28 @@ inbuild_copy *Extensions::claim(text_stream *arg, text_stream *ext, int director
 	if (directory_status == TRUE) return NULL;
 	if (Str::eq_insensitive(ext, I"i7x")) {
 		filename *F = Filenames::from_text(arg);
-		TEMPORARY_TEXT(author);
-		TEMPORARY_TEXT(title);
-		TEMPORARY_TEXT(error_text);
-		TEMPORARY_TEXT(rubric_text);
-		TEMPORARY_TEXT(requirement_text);
-		inbuild_version_number V = Extensions::scan_file(F, title, author, rubric_text, requirement_text, error_text);
-		inform_extension *E = Extensions::load_at(title, author, F);
-		if (Str::len(error_text) > 0) return NULL;
-		Works::add_to_database(E->as_copy->edition->work, CLAIMED_WDBC);
-		E->version_loaded = V; E->as_copy->edition->version = V;
-		DISCARD_TEXT(author);
-		DISCARD_TEXT(title);
-		DISCARD_TEXT(error_text);
-		DISCARD_TEXT(rubric_text);
-		DISCARD_TEXT(requirement_text);
-		return E->as_copy;
+		return Extensions::claim_file(F);
 	}
 	return NULL;
+}
+
+inbuild_copy *Extensions::claim_file(filename *F) {
+	TEMPORARY_TEXT(author);
+	TEMPORARY_TEXT(title);
+	TEMPORARY_TEXT(error_text);
+	TEMPORARY_TEXT(rubric_text);
+	TEMPORARY_TEXT(requirement_text);
+	inbuild_version_number V = Extensions::scan_file(F, title, author, rubric_text, requirement_text, error_text);
+	inform_extension *E = Extensions::load_at(title, author, F);
+	if (Str::len(error_text) > 0) return NULL;
+	Works::add_to_database(E->as_copy->edition->work, CLAIMED_WDBC);
+	E->version_loaded = V; E->as_copy->edition->version = V;
+	DISCARD_TEXT(author);
+	DISCARD_TEXT(title);
+	DISCARD_TEXT(error_text);
+	DISCARD_TEXT(rubric_text);
+	DISCARD_TEXT(requirement_text);
+	return E->as_copy;
 }
 
 void Extensions::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -200,18 +204,45 @@ this is unambiguous.
 =
 void Extensions::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
 	pathname *P = Extensions::path_within_nest(N);
-	for (int i7x_flag = 1; i7x_flag >= 0; i7x_flag--) {
-		TEMPORARY_TEXT(leaf);
-		if (i7x_flag) WRITE_TO(leaf, "%S.i7x", req->work->title);
-		else WRITE_TO(leaf, "%S", req->work->title);
-		filename *F = Filenames::in_folder(Pathnames::subfolder(P, req->work->author_name), leaf);
-		if (TextFiles::exists(F)) {
-			inform_extension *E = Extensions::load_at(req->work->title, req->work->author_name, F);
-			if (Model::meets(E->version_loaded, req)) {
-				Nests::add_search_result(search_results, N, E->as_copy);
+	if ((Str::len(req->work->title) > 0) && (Str::len(req->work->author_name) > 0)) {
+		for (int i7x_flag = 1; i7x_flag >= 0; i7x_flag--) {
+			TEMPORARY_TEXT(leaf);
+			if (i7x_flag) WRITE_TO(leaf, "%S.i7x", req->work->title);
+			else WRITE_TO(leaf, "%S", req->work->title);
+			filename *F = Filenames::in_folder(Pathnames::subfolder(P, req->work->author_name), leaf);
+			if (TextFiles::exists(F)) {
+				inform_extension *E = Extensions::load_at(req->work->title, req->work->author_name, F);
+				if (Requirements::meets(E->as_copy->edition, req)) {
+					Nests::add_search_result(search_results, N, E->as_copy);
+				}
+			}
+			DISCARD_TEXT(leaf);
+		}
+	} else {
+		Extensions::location_recursively(P, N, req, search_results);
+	}
+}
+
+void Extensions::location_recursively(pathname *P, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
+	scan_directory *D = Directories::open(P);
+	if (D) {
+		TEMPORARY_TEXT(LEAFNAME);
+		while (Directories::next(D, LEAFNAME)) {
+			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
+				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+				Extensions::location_recursively(Q, N, req, search_results);
+			} else {
+				if (Str::suffix_eq(LEAFNAME, I".i7x", 4)) {
+					filename *F = Filenames::in_folder(P, LEAFNAME);
+					inbuild_copy *C = Extensions::claim_file(F);
+					if (Requirements::meets(C->edition, req)) {
+						Nests::add_search_result(search_results, N, C);
+					}
+				}
 			}
 		}
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(LEAFNAME);
+		Directories::close(D);
 	}
 }
 

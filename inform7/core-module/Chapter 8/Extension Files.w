@@ -206,7 +206,7 @@ matter to the census errors system elsewhere.
 	Works::add_to_database(work, LOADED_WDBC);
 	inbuild_version_number min = VersionNumbers::null();
 	if (version_word >= 0) min = Extensions::Inclusion::parse_version(version_word);
-	ef->ef_req = Model::requirement(work, min, VersionNumbers::null());
+	ef->ef_req = Requirements::new(work, min, VersionNumbers::null());
 	if (Works::is_standard_rules(work)) standard_rules_extension = ef;
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
@@ -269,6 +269,12 @@ inbuild_version_number Extensions::Files::get_version(extension_file *ef) {
 	inform_extension *E = Extensions::Files::find(ef);
 	if (E == NULL) return VersionNumbers::null();
 	return E->version_loaded;
+}
+
+inbuild_edition *Extensions::Files::get_edition(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) return NULL;
+	return E->as_copy->edition;
 }
 
 void Extensions::Files::set_version(extension_file *ef, inbuild_version_number V) {
@@ -349,7 +355,7 @@ check that they have been met.
 void Extensions::Files::check_versions(void) {
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
-		if (Model::meets(Extensions::Files::get_version(ef), ef->ef_req) == FALSE) {
+		if (Requirements::meets(Extensions::Files::get_edition(ef), ef->ef_req) == FALSE) {
 			inbuild_version_number have = Extensions::Files::get_version(ef);
 			LOG("Need %v, have %v\n", &(ef->ef_req->min_version), &have);
 			current_sentence = ef->inclusion_sentence;
