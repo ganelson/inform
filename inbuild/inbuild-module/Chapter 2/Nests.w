@@ -64,15 +64,22 @@ void Nests::add_to_search_sequence(linked_list *search_list, inbuild_nest *N) {
 	ADD_TO_LINKED_LIST(N, inbuild_nest, search_list);
 }
 
-void Nests::locate(inbuild_requirement *req, linked_list *search_list, linked_list *results) {
+void Nests::search_for(inbuild_requirement *req, linked_list *search_list, linked_list *results) {
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
 		inbuild_genre *G;
 		LOOP_OVER(G, inbuild_genre)
-			VMETHOD_CALL(G, GENRE_LOCATION_IN_NEST_MTID, N, req, results);
+			VMETHOD_CALL(G, GENRE_SEARCH_NEST_FOR_MTID, N, req, results);
 	}
 }
 
-void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, C, destination_nest, syncing);
+void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
+	build_methodology *meth) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, C, destination_nest, syncing, meth);
+}
+
+void Nests::overwrite_error(inbuild_nest *N, inbuild_copy *C) {
+	text_stream *ext = Str::new();
+	WRITE_TO(ext, "%X", C->edition->work);
+	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
 }

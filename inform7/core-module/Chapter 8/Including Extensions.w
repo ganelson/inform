@@ -334,11 +334,11 @@ problem messages if it is malformed.
 =
 <begins-here-sentence-subject> ::=
 	<extension-title-and-version> by ... |	==> R[1]; <<auth1>> = Wordings::first_wn(WR[1]); <<auth2>> = Wordings::last_wn(WR[1]);
-	...										==> @<Issue PM_ExtMiswordedBeginsHere problem@>
+	...										==> @<Issue problem@>
 
-@<Issue PM_ExtMiswordedBeginsHere problem@> =
+@<Issue problem@> =
 	<<auth1>> = -1; <<auth2>> = -1;
-	Problems::Issue::handmade_problem(_p_(PM_ExtMiswordedBeginsHere));
+	Problems::Issue::handmade_problem(_p_(BelievedImpossible)); // since inbuild's scan catches this first
 	Problems::issue_problem_segment(
 		"has a misworded 'begins here' sentence ('%2'), which contains "
 		"no 'by'. Recall that every extension should begin with a "
@@ -385,12 +385,14 @@ with our VM de jour.
 file called Onion Cookery in the Delia Smith folder of the (probably external)
 extensions area: but suppose that file turns out instead to be French Cuisine
 by Elizabeth David, according to its "begins here" sentence? Then the
-following problem message is produced:
+following problem message is produced. (In fact it's now hard to get this
+problem to arise, because inbuild searches for extensions much more carefully
+than Inform 7 used to.)
 
 @<Issue a problem message pointing out that name and author do not agree with filename@> =
 	Problems::quote_extension(1, ef);
 	Problems::quote_wording(2, ParseTree::get_text(PN));
-	Problems::Issue::handmade_problem(_p_(PM_ExtMisidentified));
+	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"The extension %1, which your source text makes use of, seems to be "
 		"misidentified: its 'begins here' sentence declares it as '%2'. "

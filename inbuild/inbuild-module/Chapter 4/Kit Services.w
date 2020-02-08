@@ -2,78 +2,9 @@
 
 A kit is a combination of Inter code with an Inform 7 extension.
 
-@h Kits.
+@h Genre definition.
 
 =
-inbuild_genre *kit_genre = NULL;
-void Kits::start(void) {
-	kit_genre = Model::genre(I"kit");
-	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, Kits::write_copy);
-	METHOD_ADD(kit_genre, GENRE_LOCATION_IN_NEST_MTID, Kits::location_in_nest);
-	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, Kits::copy_to_nest);
-}
-
-inbuild_copy *Kits::claim(text_stream *arg, text_stream *ext, int directory_status) {
-	if (directory_status == FALSE) return NULL;
-		int kitpos = Str::len(arg) - 3;
-	if ((kitpos >= 0) && (Str::get_at(arg, kitpos) == 'K') &&
-		(Str::get_at(arg, kitpos+1) == 'i') &&
-		(Str::get_at(arg, kitpos+2) == 't')) {
-		pathname *P = Pathnames::from_text(arg);
-		inform_kit *K = Kits::load_at(Pathnames::directory_name(P), P);
-		Works::add_to_database(K->as_copy->edition->work, CLAIMED_WDBC);
-		return K->as_copy;
-	}
-	return NULL;
-}
-
-void Kits::write_copy(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
-	WRITE("%S", work->title);
-}
-
-void Kits::location_in_nest(inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results) {
-	pathname *P = Pathnames::subfolder(N->location, I"Inter");
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(LEAFNAME);
-		while (Directories::next(D, LEAFNAME)) {
-			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
-				Str::delete_last_character(LEAFNAME);
-				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
-				filename *canary = Filenames::in_folder(Q, I"kit_metadata.txt");
-				if (TextFiles::exists(canary)) {
-					inform_kit *K = Kits::load_at(Pathnames::directory_name(Q), Q);
-					if (Requirements::meets(K->as_copy->edition, req)) {
-						Nests::add_search_result(search_results, N, K->as_copy);
-					}
-				}
-			}
-		}
-		DISCARD_TEXT(LEAFNAME);
-		Directories::close(D);
-	}
-}
-
-void Kits::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing) {
-//	Model::write_copy(STDOUT, C); PRINT(" --> %p %S\n", N->location, syncing?I"syncing":I"copying");
-	pathname *dest_kit = Pathnames::subfolder(N->location, I"Inter");
-	dest_kit = Pathnames::subfolder(dest_kit, C->edition->work->title);
-
-	filename *dest_kit_metadata = Filenames::in_folder(dest_kit, I"kit_metadata.txt");
-	if (TextFiles::exists(dest_kit_metadata)) {
-		if (syncing == FALSE) {
-			Errors::with_text("already present in nest (use -sync-to not -copy-to to overwrite)",
-				C->edition->work->title);
-			return;
-		}
-	} else {
-		Pathnames::create_in_file_system(N->location);
-		Pathnames::create_in_file_system(Pathnames::subfolder(N->location, I"Inter"));
-		Pathnames::create_in_file_system(dest_kit);
-	}
-	Pathnames::rsync(C->location_if_path, dest_kit);
-}
-
 typedef struct inform_kit {
 	struct inbuild_copy *as_copy;
 	struct text_stream *name;
@@ -107,7 +38,7 @@ typedef struct element_activation {
 pathname *Kits::find(text_stream *name, linked_list *nest_list) {
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, nest_list) {
-		pathname *P = Pathnames::subfolder(N->location, I"Inter");
+		pathname *P = KitManager::path_within_nest(N);
 		P = Pathnames::subfolder(P, name);
 		filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
 		if (TextFiles::exists(F)) return P;
@@ -115,8 +46,9 @@ pathname *Kits::find(text_stream *name, linked_list *nest_list) {
 	return NULL;
 }
 
-inform_kit *Kits::load_at(text_stream *name, pathname *P) {
+inform_kit *Kits::new_ik(text_stream *name, pathname *P) {
 	inform_kit *K = CREATE(inform_kit);
+	K->as_copy = NULL;
 	K->name = Str::duplicate(name);
 	K->attachment_point = Str::new();
 	WRITE_TO(K->attachment_point, "/main/%S", name);
@@ -134,63 +66,15 @@ inform_kit *Kits::load_at(text_stream *name, pathname *P) {
 	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
-
-	inbuild_work *work = Works::new(kit_genre, name, NULL);
-	work->title = Str::duplicate(name);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
-	
-	build_graph *KV = Graphs::copy_vertex(K->as_copy);
-	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
-	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
-	build_graph *BV[4];
-	for (int i=0; i<4; i++) {
-		filename *FV = Filenames::in_folder(P, binaries[i]);
-		BV[i] = Graphs::internal_vertex(FV);
-		Graphs::arrow(KV, BV[i]);
-		build_step *BS = BuildSteps::new_step(ASSIMILATE_BSTEP, P, archs[i]);
-		BuildSteps::add_step(BV[i]->script, BS);
-	}
-
-	filename *contents_page = Filenames::in_folder(K->as_copy->location_if_path, I"Contents.w");
-	build_graph *CV = Graphs::internal_vertex(contents_page);
-	for (int i=0; i<4; i++) Graphs::arrow(BV[i], CV);
-
-	kit_contents_section_state CSS;
-	CSS.active = FALSE;
-	CSS.sects = NEW_LINKED_LIST(text_stream);
-	TextFiles::read(contents_page, FALSE, NULL, FALSE, Kits::read_contents, NULL, (void *) &CSS);
-	text_stream *segment;
-	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
-		filename *SF = Filenames::in_folder(
-			Pathnames::subfolder(K->as_copy->location_if_path, I"Sections"), segment);
-		build_graph *SV = Graphs::internal_vertex(SF);
-		for (int i=0; i<4; i++) Graphs::arrow(BV[i], SV);
-	}
 	return K;
-}
-
-typedef struct kit_contents_section_state {
-	struct linked_list *sects; /* of |text_stream| */
-	int active;
-} kit_contents_section_state;
-
-void Kits::read_contents(text_stream *text, text_file_position *tfp, void *state) {
-	kit_contents_section_state *CSS = (kit_contents_section_state *) state;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"Sections"))
-		CSS->active = TRUE;
-	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
-		WRITE_TO(mr.exp[0], ".i6t");
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
-	}
-	Regexp::dispose_of(&mr);
 }
 
 inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
 	pathname *P = Kits::find(name, nest_list);
 	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
-	return Kits::load_at(name, P);
+	inbuild_copy *C = KitManager::new_copy(name, P);
+	KitManager::build_graph(C);
+	return KitManager::from_copy(C);
 }
 
 void Kits::dependency(inform_kit *K, text_stream *if_text, int inc, text_stream *then_text) {

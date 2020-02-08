@@ -171,7 +171,7 @@ extension_file *Extensions::Files::new(wording AW, wording NW, wording VMW, int 
 inform_extension *Extensions::Files::find(extension_file *ef) {
 	if (ef == NULL) return NULL;
 	if (ef->found == NULL) return NULL;
-	return Extensions::from_copy(ef->found);
+	return ExtensionManager::from_copy(ef->found);
 }
 
 @ We protect ourselves a little against absurdly long requested author or
@@ -243,10 +243,23 @@ it up with the corresponding source file structure.
 
 =
 void Extensions::Files::set_corresponding_source_file(extension_file *ef, source_file *sf) {
-	inform_extension *E = Extensions::load_at(
-		ef->ef_req->work->title, ef->ef_req->work->author_name, sf->name);
-	ef->found = E->as_copy;
-	E->read_into_file = sf;
+	TEMPORARY_TEXT(error_text);
+	inbuild_copy *C = ExtensionManager::claim_file_as_copy(sf->name, error_text, TRUE);
+	if (Str::len(error_text) > 0) {
+		Problems::quote_extension(1, ef);
+		Problems::quote_stream(2, error_text);
+		Problems::Issue::handmade_problem(_p_(PM_ExtMiswordedBeginsHere));
+		Problems::issue_problem_segment(
+			"The extension %1, which your source text makes use of, seems to be "
+			"damaged or incorrect: its identifying opening line is wrong. "
+			"Specifically, %2.");
+		Problems::issue_problem_end();
+	} else {
+		ef->found = C;
+		inform_extension *E = ExtensionManager::from_copy(C);
+		E->read_into_file = sf;
+	}
+	DISCARD_TEXT(error_text);
 }
 
 source_file *Extensions::Files::source(extension_file *ef) {
@@ -268,7 +281,7 @@ inbuild_work *Extensions::Files::get_work(extension_file *ef) {
 inbuild_version_number Extensions::Files::get_version(extension_file *ef) {
 	inform_extension *E = Extensions::Files::find(ef);
 	if (E == NULL) return VersionNumbers::null();
-	return E->version_loaded;
+	return E->as_copy->edition->version;
 }
 
 inbuild_edition *Extensions::Files::get_edition(extension_file *ef) {
@@ -280,7 +293,7 @@ inbuild_edition *Extensions::Files::get_edition(extension_file *ef) {
 void Extensions::Files::set_version(extension_file *ef, inbuild_version_number V) {
 	inform_extension *E = Extensions::Files::find(ef);
 	if (E == NULL) internal_error("no E found");
-	E->version_loaded = V;
+	E->as_copy->edition->version = V;
 }
 
 @ The use option "authorial modesty" is unusual in applying to the extension

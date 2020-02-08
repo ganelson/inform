@@ -139,7 +139,7 @@ source text.
 
 @<Check we can end an extension here@> =
 	switch (sfsm_extension_position) {
-		case 1: Problems::Issue::extension_problem(_p_(PM_ExtEndsWithoutBegins),
+		case 1: Problems::Issue::extension_problem(_p_(BelievedImpossible),
 			sfsm_extension, "has an 'ends here' with nothing having begun"); break;
 		case 2: sfsm_extension_position++; break;
 		case 3: Problems::Issue::extension_problem(_p_(PM_ExtMultipleEndsHere),

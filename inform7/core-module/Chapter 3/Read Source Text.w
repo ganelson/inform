@@ -170,8 +170,9 @@ application to communicate the problem badly.
 		text_stream *title = EF->ef_req->work->title;
 		inbuild_work *work = Works::new(extension_genre, title, author_name);
 		inbuild_requirement *req = Requirements::any_version_of(work);
+		req->allow_malformed = TRUE;
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::locate(req, search_list, L);
+		Nests::search_for(req, search_list, L);
 		inbuild_search_result *search_result;
 		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 			eventual = search_result->copy->location_if_file;

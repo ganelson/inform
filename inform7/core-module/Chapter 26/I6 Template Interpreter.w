@@ -128,7 +128,11 @@ file.
 
 @<Open a file for input, if necessary@> =
 	if (Str::len(segment_name) > 0) {
-		@<Open the I6 template file@>;
+		Input_File = NULL;
+		WRITE_TO(STDERR, "inform: Unable to open segment <%S>\n", segment_name);
+		Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
+			"I couldn't open a requested I6T segment: see the console "
+			"output for details.");
 	} else if (index_template) {
 		Input_File = Filenames::fopen(index_template, "r");
 		if (Input_File == NULL) {
@@ -136,29 +140,6 @@ file.
 			Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
 				"I couldn't open the template file for the index.");
 		}
-	}
-
-@ We look for the |.i6t| files first in the materials folder, then in the
-installed area and lastly (but almost always) in the built-in resources.
-Within those, we look inside |Inter/kinds| for |*.kindt| files,
-and |Inter/miscellaneous| for |*.i6t| files (though at present Inform makes
-no use of this ability).
-
-@<Open the I6 template file@> =
-	Input_File = NULL;
-	for (int area=0; area<NO_FS_AREAS; area++)
-		if (Input_File == NULL) {
-			pathname *P = pathname_of_inter_resources[area];
-			if (int_mode == KINDT_MODE) P = Pathnames::subfolder(P, I"kinds");
-			else P = Pathnames::subfolder(P, I"miscellaneous");
-			Input_File = Filenames::fopen(
-				Filenames::in_folder(P, segment_name), "r");
-		}
-	if (Input_File == NULL) {
-		WRITE_TO(STDERR, "inform: Unable to open segment <%S>\n", segment_name);
-		Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
-			"I couldn't open a requested I6T segment: see the console "
-			"output for details.");
 	}
 
 @ I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so

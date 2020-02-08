@@ -16,7 +16,11 @@ Chapter 2: Conceptual Framework
 	Build Steps
 	Nests
 
-Chapter 3: The Genres
-	Kits
-	Extensions
+Chapter 3: Managing Genres of Work
+	Kit Manager
+	Extension Manager
+
+Chapter 4: Services for the Inform Compiler
+	Kit Services
+	Extension Services
 	Extension Census

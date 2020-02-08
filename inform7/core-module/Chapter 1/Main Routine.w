@@ -435,6 +435,13 @@ with "Output.i6t".
 			@<Ensure inter pipeline variables dictionary@>;
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), Filenames::get_leafname(filename_of_compiled_i6_code));
+			pathname *inter_subnests[NO_FS_AREAS] = { NULL, NULL, NULL };
+			int s = 0;
+			inbuild_nest *N;
+			LOOP_OVER_LINKED_LIST(N, inbuild_nest, I7_nest_list) {
+				if (s >= NO_FS_AREAS) break;
+				inter_subnests[s++] = KitManager::path_within_nest(N);
+			}
 			codegen_pipeline *SS = NULL;
 			if (inter_processing_file)
 				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), pipeline_vars);
@@ -442,7 +449,7 @@ with "Output.i6t".
 				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
 			else {
 				for (int area=0; area<NO_FS_AREAS; area++) {
-					pathname *P = pathname_of_inter_resources[area];
+					pathname *P = inter_subnests[area];
 					filename *F = Filenames::in_folder(P, I"default.interpipeline");
 					if (TextFiles::exists(F)) {
 						SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
@@ -454,7 +461,7 @@ with "Output.i6t".
 				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, NO_FS_AREAS, pathname_of_inter_resources, Kits::list_of_inter_libraries());
+				SS, NO_FS_AREAS, inter_subnests, Kits::list_of_inter_libraries());
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}

@@ -27,7 +27,7 @@ pathname *Extensions::Census::internal_path(extension_census *C) {
 	inbuild_nest *N = NULL;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
 		if (Nests::get_tag(N) == C->built_in_tag)
-			return Extensions::path_within_nest(N);
+			return ExtensionManager::path_within_nest(N);
 	return NULL;
 }
 
@@ -35,7 +35,7 @@ pathname *Extensions::Census::external_path(extension_census *C) {
 	inbuild_nest *N = NULL;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
 		if (Nests::get_tag(N) == C->external_tag)
-			return Extensions::path_within_nest(N);
+			return ExtensionManager::path_within_nest(N);
 	return NULL;
 }
 
@@ -94,7 +94,7 @@ any number of other domains. The following code scans one.
 inbuild_nest *current_extension_domain = NULL;
 void Extensions::Census::take_census_of_domain(extension_census *C, inbuild_nest *N, int origin) {
 	current_extension_domain = N;
-	pathname *P = Extensions::path_within_nest(N);
+	pathname *P = ExtensionManager::path_within_nest(N);
 	Extensions::Census::census_from(C, N, P, TRUE, origin, NULL);
 }
 
@@ -296,10 +296,10 @@ extract its titling line and rubric, then close it again.
 
 @<Scan the extension file@> =
 	filename *F =
-		Extensions::filename_in_nest(current_extension_domain,
+		ExtensionManager::filename_in_nest(current_extension_domain,
 			item_name, cs->parent);
 	TEMPORARY_TEXT(error_text);
-	V = Extensions::scan_file(F, claimed_title, claimed_author_name,
+	V = ExtensionManager::scan_file(F, claimed_title, claimed_author_name,
 		rubric_text, requirement_text, error_text);
 	if (Str::len(error_text) > 0) {
 		Extensions::Census::census_error(error_text,
@@ -900,7 +900,7 @@ the first and last word and just look at what is in between:
 	if (ecd->built_in) HTML_TAG_WITH("img", "%s", opener)
 	else {
 		#ifdef INDEX_MODULE
-		pathname *area = Extensions::path_within_nest(ecd->domain);
+		pathname *area = ExtensionManager::path_within_nest(ecd->domain);
 		HTML::Javascript::open_file(OUT, area, ecd->ecd_work->raw_author_name, opener);
 		#endif
 	}

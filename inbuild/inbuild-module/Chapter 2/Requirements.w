@@ -10,6 +10,7 @@ typedef struct inbuild_requirement {
 	struct inbuild_work *work;
 	struct inbuild_version_number min_version;
 	struct inbuild_version_number max_version;
+	int allow_malformed;
 	MEMORY_MANAGEMENT
 } inbuild_requirement;
 
@@ -19,6 +20,7 @@ inbuild_requirement *Requirements::new(inbuild_work *work,
 	req->work = work;
 	req->min_version = min;
 	req->max_version = max;
+	req->allow_malformed = FALSE;
 	return req;
 }
 
@@ -74,7 +76,18 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 	Str::trim_white_space(value);
 
 	if ((Str::len(clause) > 0) && (Str::len(value) > 0)) {
-		if (Str::eq(clause, I"title")) Str::copy(req->work->title, value);
+		if (Str::eq(clause, I"genre")) {
+			inbuild_genre *G;
+			LOOP_OVER(G, inbuild_genre)
+				if (Str::eq_insensitive(G->genre_name, value)) {
+					req->work->genre = G;
+					break;
+				}
+			if (req->work->genre == NULL) {
+				if (Str::len(errors) == 0)
+					WRITE_TO(errors, "not a valid genre: '%S'", value);
+			}
+		} else if (Str::eq(clause, I"title")) Str::copy(req->work->title, value);
 		else if (Str::eq(clause, I"author")) Str::copy(req->work->author_name, value);
 		else if (Str::eq(clause, I"version")) {
 			inbuild_version_number V = VersionNumbers::from_text(value);
@@ -118,6 +131,7 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 			if (req->work->genre != edition->work->genre)
 				return FALSE;
 		}
+		if ((req->allow_malformed) && (Str::len(edition->work->title) == 0)) return TRUE;
 		if (Str::len(req->work->title) > 0) {
 			if (Str::ne_insensitive(req->work->title, edition->work->title))
 				return FALSE;

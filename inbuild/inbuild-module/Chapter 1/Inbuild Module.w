@@ -57,8 +57,8 @@ void InbuildModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	@<Register this module's command line switches@>;
-	Kits::start();
-	Extensions::start();
+	KitManager::start();
+	ExtensionManager::start();
 }
 
 @

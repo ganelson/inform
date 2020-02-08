@@ -288,7 +288,7 @@ void Extensions::Dictionary::time_stamp(inform_extension *E) {
 	WRITE_TO(dbuff, "%04d%02d%02d%02d%02d%02d/%d:%s %d %s %d %02d:%02d",
 		the_present->tm_year+1900, the_present->tm_mon + 1, the_present->tm_mday,
 		the_present->tm_hour, the_present->tm_min, the_present->tm_sec,
-		TextFromFiles::total_word_count(E->read_into_file),
+		(E->read_into_file)?(TextFromFiles::total_word_count(E->read_into_file)):0,
 		ascday[the_present->tm_wday], the_present->tm_mday,
 		ascmon[the_present->tm_mon], the_present->tm_year+1900,
 		the_present->tm_hour, the_present->tm_min);

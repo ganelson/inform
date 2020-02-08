@@ -7,7 +7,8 @@ For example, "kit" and "extension" will both be both genres. There will be
 few of these.
 
 @e GENRE_WRITE_WORK_MTID
-@e GENRE_LOCATION_IN_NEST_MTID
+@e GENRE_CLAIM_AS_COPY_MTID
+@e GENRE_SEARCH_NEST_FOR_MTID
 @e GENRE_COPY_TO_NEST_MTID
 
 =
@@ -18,8 +19,9 @@ typedef struct inbuild_genre {
 } inbuild_genre;
 
 VMETHOD_TYPE(GENRE_WRITE_WORK_MTID, inbuild_genre *gen, text_stream *OUT, inbuild_work *work)
-VMETHOD_TYPE(GENRE_LOCATION_IN_NEST_MTID, inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results)
-VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID, inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing)
+VMETHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID, inbuild_genre *gen, inbuild_copy **C, text_stream *arg, text_stream *ext, int directory_status)
+VMETHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID, inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results)
+VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID, inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing, build_methodology *meth)
 
 @ =
 inbuild_genre *Model::genre(text_stream *name) {
@@ -116,8 +118,10 @@ inbuild_copy *Model::claim(text_stream *arg) {
 		directory_status = TRUE;
 	}
 	inbuild_copy *C = NULL;
-	if (C == NULL) C = Kits::claim(arg, ext, directory_status);
-	if (C == NULL) C = Extensions::claim(arg, ext, directory_status);
+	inbuild_genre *G;
+	LOOP_OVER(G, inbuild_genre)
+		if (C == NULL)
+			VMETHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
 	DISCARD_TEXT(ext);
 	return C;
 }

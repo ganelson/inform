@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 				Errors::with_text("requirement malformed: %S", errors);
 			} else {
 				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-				Nests::locate(req, nest_list, L);
+				Nests::search_for(req, nest_list, L);
 				inbuild_search_result *R;
 				LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
 					ADD_TO_LINKED_LIST(R->copy, inbuild_copy, targets);
@@ -76,8 +76,8 @@ int main(int argc, char **argv) {
 			case GRAPH_TTASK: Graphs::describe(STDOUT, C->graph, TRUE); break;
 			case BUILD_TTASK: Graphs::build(C->graph, BM); break;
 			case REBUILD_TTASK: Graphs::rebuild(C->graph, BM); break;
-			case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE); break;
-			case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE); break;
+			case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
+			case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE, BM); break;
 		}
 	}
 	WordsModule::end();

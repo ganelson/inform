@@ -103,16 +103,10 @@ build_methodology *BuildSteps::methodology(pathname *tools_path, int dev) {
 void BuildSteps::execute(build_script *BS, build_methodology *meth) {
 	build_step *S;
 	LOOP_OVER_LINKED_LIST(S, build_step, BS->steps) {
-		switch (meth->methodology) {
-			case DRY_RUN_METHODOLOGY:
-			case SHELL_METHODOLOGY: {
-				TEMPORARY_TEXT(command);
-				@<Write a shell command for the step@>;
-				WRITE_TO(STDOUT, "%S\n", command);
-				if (meth->methodology == SHELL_METHODOLOGY) Shell::run(command);
-				DISCARD_TEXT(command);
-			}
-		}
+		TEMPORARY_TEXT(command);
+		@<Write a shell command for the step@>;
+		BuildSteps::shell(command, meth);
+		DISCARD_TEXT(command);
 	}
 }
 
@@ -125,3 +119,14 @@ void BuildSteps::execute(build_script *BS, build_methodology *meth) {
 			break;
 		default: internal_error("unimplemented step");
 	}
+
+@ =
+void BuildSteps::shell(text_stream *command, build_methodology *meth) {
+	switch (meth->methodology) {
+		case DRY_RUN_METHODOLOGY:
+		case SHELL_METHODOLOGY: {
+			WRITE_TO(STDOUT, "%S\n", command);
+			if (meth->methodology == SHELL_METHODOLOGY) Shell::run(command);
+		}
+	}	
+}
