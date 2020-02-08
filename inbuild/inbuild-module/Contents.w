@@ -19,8 +19,14 @@ Chapter 2: Conceptual Framework
 Chapter 3: Managing Genres of Work
 	Kit Manager
 	Extension Manager
+	Language Manager
+	Project Manager
+	Template Manager
 
 Chapter 4: Services for the Inform Compiler
 	Kit Services
 	Extension Services
 	Extension Census
+	Template Services
+	Project Services
+	Language Services

@@ -1,4 +1,4 @@
-[Extensions::] Extensions.
+[Extensions::] Extension Services.
 
 An Inform 7 extension.
 

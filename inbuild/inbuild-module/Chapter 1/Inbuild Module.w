@@ -26,6 +26,9 @@ Setting up the use of this module.
 @e inbuild_work_database_entry_array_MT
 @e extension_census_datum_MT
 @e extension_census_MT
+@e inform_template_MT
+@e inform_project_MT
+@e inform_language_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -45,6 +48,9 @@ ALLOCATE_INDIVIDUALLY(inbuild_nest)
 ALLOCATE_INDIVIDUALLY(inbuild_search_result)
 ALLOCATE_INDIVIDUALLY(extension_census_datum)
 ALLOCATE_INDIVIDUALLY(extension_census)
+ALLOCATE_INDIVIDUALLY(inform_template)
+ALLOCATE_INDIVIDUALLY(inform_project)
+ALLOCATE_INDIVIDUALLY(inform_language)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 
@@ -59,6 +65,9 @@ void InbuildModule::start(void) {
 	@<Register this module's command line switches@>;
 	KitManager::start();
 	ExtensionManager::start();
+	TemplateManager::start();
+	LanguageManager::start();
+	ProjectManager::start();
 }
 
 @
