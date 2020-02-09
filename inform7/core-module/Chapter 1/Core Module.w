@@ -78,7 +78,6 @@ We need to itemise the structures we'll want to allocate:
 @e rule_MT
 @e rulebook_outcome_MT
 @e applicability_condition_MT
-@e natural_language_MT
 @e llist_entry_MT
 @e response_message_MT
 @e table_contribution_array_MT
@@ -139,7 +138,6 @@ ALLOCATE_INDIVIDUALLY(llist_entry)
 ALLOCATE_INDIVIDUALLY(measurement_definition)
 ALLOCATE_INDIVIDUALLY(named_rulebook_outcome)
 ALLOCATE_INDIVIDUALLY(nascent_array)
-ALLOCATE_INDIVIDUALLY(natural_language)
 ALLOCATE_INDIVIDUALLY(nonlocal_variable)
 ALLOCATE_INDIVIDUALLY(past_tense_action_record)
 ALLOCATE_INDIVIDUALLY(past_tense_condition_record)
@@ -224,7 +222,6 @@ COMPILE_WRITER(heading *, Sentences::Headings::log)
 COMPILE_WRITER(ph_type_data *, Phrases::TypeData::Textual::log)
 COMPILE_WRITER(inference *, World::Inferences::log)
 COMPILE_WRITER(i6_schema *, Calculus::Schemas::log)
-COMPILE_WRITER(natural_language *, NaturalLanguages::log)
 COMPILE_WRITER(inference_subject *, InferenceSubjects::log)
 COMPILE_WRITER(rulebook *, Rulebooks::log)
 COMPILE_WRITER(local_variable *, LocalVariables::log)
@@ -390,7 +387,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('h', Phrases::TypeData::Textual::log);
 	REGISTER_WRITER('I', World::Inferences::log);
 	REGISTER_WRITER('i', Calculus::Schemas::log);
-	REGISTER_WRITER('J', NaturalLanguages::log);
 	REGISTER_WRITER('j', InferenceSubjects::log);
 	REGISTER_WRITER('K', Rulebooks::log);
 	REGISTER_WRITER('k', LocalVariables::log);

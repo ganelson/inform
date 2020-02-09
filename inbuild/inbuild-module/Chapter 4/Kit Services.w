@@ -17,7 +17,7 @@ typedef struct inform_kit {
 	struct text_stream *index_template;
 	struct inbuild_version_number version;
 	int defines_Main;
-	int supports_natural_language;
+	int supports_inform_language;
 	int priority;
 	MEMORY_MANAGEMENT
 } inform_kit;
@@ -59,7 +59,7 @@ inform_kit *Kits::new_ik(text_stream *name, pathname *P) {
 	K->extensions = NEW_LINKED_LIST(text_stream);
 	K->activations = NEW_LINKED_LIST(element_activation);
 	K->defines_Main = FALSE;
-	K->supports_natural_language = FALSE;
+	K->supports_inform_language = FALSE;
 	K->index_template = NULL;
 	K->version = VersionNumbers::null();
 	
@@ -104,9 +104,9 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	} else if (Regexp::match(&mr, text, L"defines Main: no")) {
 		K->defines_Main = FALSE;
 	} else if (Regexp::match(&mr, text, L"natural language: yes")) {
-		K->supports_natural_language = TRUE;
+		K->supports_inform_language = TRUE;
 	} else if (Regexp::match(&mr, text, L"natural language: no")) {
-		K->supports_natural_language = FALSE;
+		K->supports_inform_language = FALSE;
 	} else if (Regexp::match(&mr, text, L"insert: (%c*)")) {
 		K->early_source = Str::duplicate(mr.exp[0]);
 		WRITE_TO(K->early_source, "\n\n");
@@ -173,7 +173,7 @@ void Kits::request(text_stream *name) {
 void Kits::determine(linked_list *nest_list) {
 	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
 	Kits::request(I"BasicInformKit");
-	NaturalLanguages::request_required_kits();
+	Languages::request_required_kits();
 	text_stream *kit_name;
 	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
 		Kits::load(kit_name, nest_list);

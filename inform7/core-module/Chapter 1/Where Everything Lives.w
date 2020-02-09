@@ -23,7 +23,6 @@ char *AREA_NAME[3] = { "from .materials", "installed", "built in" };
 = (early code)
 linked_list *I7_nest_list = NULL;
 pathname *pathname_of_area[NO_FS_AREAS]              = { NULL, NULL, NULL };
-pathname *pathname_of_languages[NO_FS_AREAS]         = { NULL, NULL, NULL };
 pathname *pathname_of_website_templates[NO_FS_AREAS] = { NULL, NULL, NULL };
 
 pathname *pathname_of_extension_docs = NULL;
@@ -483,7 +482,6 @@ template files, language definitions and website templates.
 
 =
 void Locations::EILT_at(int area, pathname *P) {
-	pathname_of_languages[area] =         Pathnames::subfolder(P, I"Languages");
 	pathname_of_website_templates[area] = Pathnames::subfolder(P, I"Templates");
 }
 

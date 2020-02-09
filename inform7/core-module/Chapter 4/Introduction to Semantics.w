@@ -200,9 +200,9 @@ whole thing into a |specification| for the rest of Inform to use.
 
 @
 
-@d PREFORM_LANGUAGE_TYPE struct natural_language
+@d PREFORM_LANGUAGE_TYPE struct inform_language
 @d PREFORM_ADAPTIVE_PERSON NaturalLanguages::adaptive_person
-@d PREFORM_LANGUAGE_FROM_NAME NaturalLanguages::get_nl
+@d PREFORM_LANGUAGE_FROM_NAME Languages::from_name
 @d PREFORM_OPTIMISER Semantics::mark_preform_requirements
 @d PREFORM_CIRCULARITY_BREAKER Semantics::break_preform_circularities
 @d PREFORM_ERROR_HANDLER NaturalLanguages::preform_error
@@ -211,7 +211,7 @@ whole thing into a |specification| for the rest of Inform to use.
 void Semantics::read_preform(void) {
 	@<Mark certain nonterminals to have their vocabularies numbered and flagged@>;
 	NaturalLanguages::scan();
-	wording W = NaturalLanguages::load_preform(NaturalLanguages::English());
+	wording W = NaturalLanguages::load_preform(language_of_syntax);
 	int nonterminals_declared = Preform::parse_preform(W, FALSE);
 	language_definition_top = lexer_wordcount - 1;
 

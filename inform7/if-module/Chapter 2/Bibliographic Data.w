@@ -95,7 +95,7 @@ being used in the source text, something we have to look ahead to since
 it affects the grammar needed to understand the rest of the file --
 
 =
-natural_language *PL::Bibliographic::scan_language(parse_node *PN) {
+inform_language *PL::Bibliographic::scan_language(parse_node *PN) {
 	if (<titling-line>(ParseTree::get_text(PN))) return <<rp>>;
 	return NULL;
 }
@@ -344,7 +344,7 @@ void PL::Bibliographic::index_library_card(OUTPUT_STREAM) {
 	PL::Bibliographic::library_card_entry(OUT, "Release number", story_release_number_VAR, I"1");
 	PL::Bibliographic::library_card_entry(OUT, "Story creation year", story_creation_year_VAR, I"(This year)");
 	TEMPORARY_TEXT(lang);
-	WRITE_TO(lang, "%+W", NaturalLanguages::get_name(language_of_play));
+	WRITE_TO(lang, "%X", language_of_play->as_copy->edition->work);
 	PL::Bibliographic::library_card_entry(OUT, "Language of play", NULL, lang);
 	DISCARD_TEXT(lang);
 	PL::Bibliographic::library_card_entry(OUT, "IFID number", NULL, PL::Bibliographic::IFID::read_uuid());

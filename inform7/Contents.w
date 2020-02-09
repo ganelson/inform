@@ -17,10 +17,10 @@ Import: problems
 Import: linguistics
 Import: kinds
 Import: inter/inter
+Import: inbuild/inbuild
 Import: core
 Import: inter/building
 Import: inter/codegen
-Import: inbuild/inbuild
 Import: if
 Import: multimedia
 Import: index

@@ -37,12 +37,25 @@ inform_kit *KitManager::from_copy(inbuild_copy *C) {
 	return NULL;
 }
 
+dictionary *kit_copy_cache = NULL;
 inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
-	inform_kit *K = Kits::new_ik(name, P);
-	inbuild_work *work = Works::new(kit_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
-	return K->as_copy;
+	if (kit_copy_cache == NULL) kit_copy_cache = Dictionaries::new(16, FALSE);
+	TEMPORARY_TEXT(key);
+	WRITE_TO(key, "%p", P);
+	inbuild_copy *C = NULL;
+	if (Dictionaries::find(kit_copy_cache, key))
+		C = Dictionaries::read_value(kit_copy_cache, key);
+	if (C == NULL) {
+		inform_kit *K = Kits::new_ik(name, P);
+		inbuild_work *work = Works::new(kit_genre, Str::duplicate(name), NULL);
+		inbuild_edition *edition = Model::edition(work, K->version);
+		C = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
+		K->as_copy = C;
+		Dictionaries::create(kit_copy_cache, key);
+		Dictionaries::write_value(kit_copy_cache, key, C);
+	}
+	DISCARD_TEXT(key);
+	return C;
 }
 
 @h Claiming.
@@ -86,6 +99,7 @@ requirements.
 =
 void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
+	if ((req->work->genre) && (req->work->genre != kit_genre)) return;
 	pathname *P = KitManager::path_within_nest(N);
 	scan_directory *D = Directories::open(P);
 	if (D) {

@@ -188,6 +188,7 @@ list is not exhaustive.
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
 	Log::set_debug_log_filename(filename_of_debugging_log);
+	NaturalLanguages::default_to_English();
 
 @<Open the debugging log and the problems report@> =
 	Log::open();
@@ -479,13 +480,8 @@ with "Output.i6t".
 @<Generate metadata@> =
 	if (Plugins::Manage::plugged_in(bibliographic_plugin))
 		PL::Bibliographic::Release::write_ifiction_and_blurb();
-	if (problem_count == 0) {
-		natural_language *nl = NaturalLanguages::English();
-		filename *index_template =
-			Filenames::in_folder(nl->nl_bundle_path,
-				Kits::index_template());
-		I6T::interpret_indext(index_template);
-	}
+	if (problem_count == 0)
+		NaturalLanguages::produce_index();
 
 @<Post mortem logging@> =
 	if (problem_count == 0) {

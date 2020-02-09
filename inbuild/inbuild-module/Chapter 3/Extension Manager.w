@@ -246,6 +246,7 @@ so we'll quietly allow for it.
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
+	if ((req->work->genre) && (req->work->genre != extension_genre)) return;
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
 		pathname *Q = Pathnames::subfolder(P, req->work->author_name);

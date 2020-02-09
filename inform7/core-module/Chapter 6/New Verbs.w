@@ -88,8 +88,8 @@ as the object.
 
 =
 <verb-implies-sentence-subject> ::=
-	in <natural-language> <infinitive-declaration> |	==> R[2]; <<natural_language:nl>> = (natural_language *) (RP[1]);
-	<infinitive-declaration>							==> R[1]; <<natural_language:nl>> = English_language;
+	in <natural-language> <infinitive-declaration> |	==> R[2]; <<inform_language:nl>> = (inform_language *) (RP[1]);
+	<infinitive-declaration>							==> R[1]; <<inform_language:nl>> = English_language;
 
 <infinitive-declaration> ::=
 	to <infinitive-usage> ( ... ) |		==> R[1]; <<giving-parts>> = TRUE
@@ -257,7 +257,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 		@<Find the underlying relation of the new verb or preposition@>;
 
 	if (<verb-implies-sentence-subject>(ParseTree::get_text(PN->next))) {
-		natural_language *nl = <<natural_language:nl>>;
+		inform_language *nl = <<inform_language:nl>>;
 		int r = <<r>>;
 		wording W = GET_RW(<infinitive-usage>, 1);
 		if (<<giving-parts>>) PW = GET_RW(<infinitive-declaration>, 1);

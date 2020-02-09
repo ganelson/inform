@@ -140,6 +140,8 @@ Extensions are loaded here.
 =
 extension_file *Extensions::Inclusion::load(wording A, wording T,
 	int version_word, wording VMW) {
+	NaturalLanguages::scan(); /* to avoid wording from those interleaving with extension wording */
+
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file)
 		if ((Wordings::match(ef->author_text, A)) && (Wordings::match(ef->title_text, T)))

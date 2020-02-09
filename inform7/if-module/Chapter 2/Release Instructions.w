@@ -598,7 +598,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		WRITE("</description>\n");
 	}
 	WRITE("<language>");
-	NaturalLanguages::write_language_code(OUT, language_of_play);
+	Languages::write_ISO_code(OUT, language_of_play);
 	WRITE("</language>\n");
 	WRITE("<group>Inform</group>\n");
 	if (episode_number >= 0) {

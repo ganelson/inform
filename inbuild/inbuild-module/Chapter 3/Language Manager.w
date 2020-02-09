@@ -4,8 +4,10 @@ A language is a combination of Inter code with an Inform 7 extension.
 
 @h Genre definition.
 
-=
+= (early code)
 inbuild_genre *language_genre = NULL;
+
+@ =
 void LanguageManager::start(void) {
 	language_genre = Model::genre(I"language");
 	METHOD_ADD(language_genre, GENRE_WRITE_WORK_MTID, LanguageManager::write_work);
@@ -37,12 +39,25 @@ inform_language *LanguageManager::from_copy(inbuild_copy *C) {
 	return NULL;
 }
 
+dictionary *language_copy_cache = NULL;
 inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P) {
-	inform_language *K = Languages::new_il(name, P);
-	inbuild_work *work = Works::new(language_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_language(K));
-	return K->as_copy;
+	if (language_copy_cache == NULL) language_copy_cache = Dictionaries::new(16, FALSE);
+	TEMPORARY_TEXT(key);
+	WRITE_TO(key, "%p", P);
+	inbuild_copy *C = NULL;
+	if (Dictionaries::find(language_copy_cache, key))
+		C = Dictionaries::read_value(language_copy_cache, key);
+	if (C == NULL) {
+		inform_language *K = Languages::new_il(name, P);
+		inbuild_work *work = Works::new(language_genre, Str::duplicate(name), NULL);
+		inbuild_edition *edition = Model::edition(work, K->version);
+		C = Model::copy_in_directory(edition, P, STORE_POINTER_inform_language(K));
+		K->as_copy = C;
+		Dictionaries::create(language_copy_cache, key);
+		Dictionaries::write_value(language_copy_cache, key, C);
+	}
+	DISCARD_TEXT(key);
+	return C;
 }
 
 @h Claiming.
@@ -53,14 +68,24 @@ supplied at the command line; |ext| is a substring of it, and is its extension
 not a file, false if we know the reverse, and otherwise not applicable.
 
 A language needs to be a directory whose name ends in |Language|, and which contains
-a valid metadata file.
+a valid metadata file. The name should be in English text, without accents.
 
 =
 void LanguageManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	text_stream *arg, text_stream *ext, int directory_status) {
 	if (directory_status == FALSE) return;
 	pathname *P = Pathnames::from_text(arg);
-	*C = LanguageManager::claim_folder_as_copy(P);
+	text_stream *name = Pathnames::directory_name(P);
+	int acceptable = TRUE;
+	LOOP_THROUGH_TEXT(pos, name) {
+		int c = Str::get(pos);
+		if ((c < 32) || (c > 126)) acceptable = FALSE; /* contains non-ASCII */
+		if (c == FOLDER_SEPARATOR) { Str::put(pos, 0); break; }
+	}
+	if (Str::len(name) == 0) acceptable = FALSE; /* i.e., an empty text */
+	if (acceptable) {
+		*C = LanguageManager::claim_folder_as_copy(P);
+	}
 }
 
 inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P) {

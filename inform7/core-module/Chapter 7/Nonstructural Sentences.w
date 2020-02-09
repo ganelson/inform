@@ -485,7 +485,7 @@ int Sentences::VPs::translates_into_language_as_SMF(int task, parse_node *V, wor
 		case ACCEPT_SMFT:
 			if (<translation-target-language>(O2W)) {
 				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				natural_language *nl = (natural_language *) (<<rp>>);
+				inform_language *nl = (inform_language *) (<<rp>>);
 				<nounphrase-definite>(SW);
 				V->next = <<rp>>;
 				<nounphrase-articled>(OW);

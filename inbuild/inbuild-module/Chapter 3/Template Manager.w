@@ -82,6 +82,7 @@ requirements.
 =
 void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
+	if ((req->work->genre) && (req->work->genre != template_genre)) return;
 	pathname *P = TemplateManager::path_within_nest(N);
 	scan_directory *D = Directories::open(P);
 	if (D) {

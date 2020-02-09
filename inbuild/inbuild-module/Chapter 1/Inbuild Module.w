@@ -89,7 +89,7 @@ void InbuildModule::start(void) {
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
-	;
+	Writers::register_writer('J', &Languages::log);
 
 @<Register this module's command line switches@> =
 	;

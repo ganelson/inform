@@ -28,7 +28,7 @@ DECLARE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
 DECLARE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
 DECLARE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
-DECLARE_ANNOTATION_FUNCTIONS(defn_language, natural_language)
+DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 DECLARE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
@@ -85,7 +85,7 @@ MAKE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
 MAKE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
 MAKE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
 MAKE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
-MAKE_ANNOTATION_FUNCTIONS(defn_language, natural_language)
+MAKE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 MAKE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
 MAKE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
@@ -247,7 +247,7 @@ goes. The annotations used are identified by nonzero ID numbers, as follows:
 @e converted_SN_ANNOT /* |int|: marking descriptions */
 @e creation_proposition_ANNOT /* |pcalc_prop|: proposition which newly created value satisfies */
 @e creation_site_ANNOT /* |int|: whether an instance was created from this node */
-@e defn_language_ANNOT /* |natural_language|: what language this definition is in */
+@e defn_language_ANNOT /* |inform_language|: what language this definition is in */
 @e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
 @e end_control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
 @e epistemological_status_ANNOT /* |int|: a bitmap of results from checking an ambiguous reading */

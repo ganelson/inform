@@ -105,7 +105,7 @@ and is a somewhat provisional feature for now.
 @ =
 void UseNouns::nl_translates(parse_node *pn) {
 	/* the object */
-	natural_language *nl = ParseTree::get_defn_language(pn->next->next);
+	inform_language *nl = ParseTree::get_defn_language(pn->next->next);
 	int g = ParseTree::int_annotation(pn->next->next, gender_reference_ANNOT);
 	if (nl == NULL) internal_error("No such NL");
 	if (nl == English_language) {
