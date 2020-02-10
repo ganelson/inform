@@ -29,6 +29,7 @@ Setting up the use of this module.
 @e inform_template_MT
 @e inform_project_MT
 @e inform_language_MT
+@e inform_pipeline_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -51,6 +52,7 @@ ALLOCATE_INDIVIDUALLY(extension_census)
 ALLOCATE_INDIVIDUALLY(inform_template)
 ALLOCATE_INDIVIDUALLY(inform_project)
 ALLOCATE_INDIVIDUALLY(inform_language)
+ALLOCATE_INDIVIDUALLY(inform_pipeline)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 
@@ -68,6 +70,7 @@ void InbuildModule::start(void) {
 	TemplateManager::start();
 	LanguageManager::start();
 	ProjectManager::start();
+	PipelineManager::start();
 }
 
 @

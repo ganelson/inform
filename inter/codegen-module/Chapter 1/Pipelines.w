@@ -15,8 +15,7 @@ typedef struct pipeline_step {
 	struct code_generation_target *target_argument;
 	struct text_stream *package_argument;
 	struct filename *parsed_filename;
-	struct pathname **the_PP;
-	int the_N;
+	struct linked_list *the_PP; /* of |pathname| */
 	int to_debugging_log;
 	int from_memory;
 	int repository_argument;
@@ -43,7 +42,6 @@ pipeline_step *CodeGen::Pipeline::new_step(void) {
 void CodeGen::Pipeline::clean_step(pipeline_step *step) {
 	step->parsed_filename = NULL;
 	step->text_out_file = NULL;
-	step->the_N = -1;
 	step->to_debugging_log = FALSE;
 	step->from_memory = FALSE;
 	step->the_PP = NULL;
@@ -237,7 +235,7 @@ void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
 	S->memory_repository = I;
 }
 
-void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **PP,
+void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 	linked_list *requirements_list) {
 	if (S == NULL) return;
 	clock_t start = clock();
@@ -257,7 +255,6 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, int N, pathname **
 			CodeGen::Pipeline::lint(I);
 
 			CodeGen::Pipeline::clean_step(step);
-			step->the_N = N;
 			step->the_PP = PP;
 			step->repository = I;
 			step->pipeline = S;

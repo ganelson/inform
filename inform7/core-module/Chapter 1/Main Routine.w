@@ -102,6 +102,7 @@ int CoreMain::main(int argc, char *argv[]) {
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	story_filename_extension = I"ulx";
 	inter_processing_pipeline = Str::new();
+	inter_processing_file = I"compile";
 
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
 	STREAM_FLUSH(STDOUT);
@@ -436,33 +437,40 @@ with "Output.i6t".
 			@<Ensure inter pipeline variables dictionary@>;
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), Filenames::get_leafname(filename_of_compiled_i6_code));
-			pathname *inter_subnests[NO_FS_AREAS] = { NULL, NULL, NULL };
-			int s = 0;
+			
+			linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 			inbuild_nest *N;
-			LOOP_OVER_LINKED_LIST(N, inbuild_nest, I7_nest_list) {
-				if (s >= NO_FS_AREAS) break;
-				inter_subnests[s++] = KitManager::path_within_nest(N);
-			}
+			LOOP_OVER_LINKED_LIST(N, inbuild_nest, I7_nest_list)
+				ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
+
 			codegen_pipeline *SS = NULL;
-			if (inter_processing_file)
-				SS = CodeGen::Pipeline::parse_from_file(Filenames::from_text(inter_processing_file), pipeline_vars);
-			else if (Str::len(inter_processing_pipeline) > 0)
+			if (Str::len(inter_processing_pipeline) > 0) {
 				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
-			else {
-				for (int area=0; area<NO_FS_AREAS; area++) {
-					pathname *P = inter_subnests[area];
-					filename *F = Filenames::in_folder(P, I"default.interpipeline");
-					if (TextFiles::exists(F)) {
+				if (SS == NULL)
+					Problems::Fatal::issue("The Inter pipeline description contained errors");
+			} else {
+				inbuild_requirement *req =
+					Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
+				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+				Nests::search_for(req, I7_nest_list, L);
+				if (LinkedLists::len(L) == 0) {
+					WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
+					Problems::Fatal::issue("The Inter pipeline could not be found");
+				} else {
+					inbuild_search_result *R;
+					LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
+						inbuild_copy *C = R->copy;
+						filename *F = C->location_if_file;
 						SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
+						if (SS == NULL)
+							Problems::Fatal::filename_related("This Inter pipeline contains errors", F);
 						break;
 					}
 				}
 			}
-			if (SS == NULL)
-				Problems::Fatal::issue("The Inter pipeline description contained errors");
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, NO_FS_AREAS, inter_subnests, Kits::list_of_inter_libraries());
+				SS, inter_paths, Kits::list_of_inter_libraries());
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}

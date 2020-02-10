@@ -582,7 +582,7 @@ To provide an example, ^{@Emily Short}'s useful extension "Locksmith" is one of 
 
 Each time that Inform translates any source text, it performs a quick check of the extensions available, and updates its own internal records. A directory of the extensions currently installed can be found by clicking on "Installed Extensions" from the Extensions panel. This is also worth visiting in order to browse the Public Library, a selection of extensions contributed by Inform users.
 
-[x] Including extensions {PM_IncludeExtQuoted} {PM_ExtVersionMalformed} {PM_ExtMiswordedBeginsHere} {PM_ExtMisidentified} {PM_ExtMalformedVM} {PM_ExtInadequateVM} {PM_ExtMisidentifiedEnds}
+[x] Including extensions {PM_IncludeExtQuoted} {PM_ExtVersionMalformed} {PM_ExtMiswordedBeginsHere} {PM_ExtMalformedVM} {PM_ExtInadequateVM} {PM_ExtMisidentifiedEnds}
 
 ^^{extensions: using}
 ^^{include (extension) by (extension author)+assert+}
@@ -17442,7 +17442,7 @@ Sometimes authorship is complicated. What if Mary Brown finds some Inform 6 code
 
 But Mary and John deserve their credits too: see the next section for how to give them.
 
-[x] A simple example extension {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtEndsWithoutBegins} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
+[x] A simple example extension {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
 
 ^^{extensions: writing: example}
 ^^{>VERSION}

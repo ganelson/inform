@@ -27,7 +27,7 @@ void NaturalLanguages::scan(void) {
 }
 
 @h Language of play.
-The following is the language read and typed by the player:
+The followin
 
 =
 inform_language *language_of_play = NULL; 
@@ -36,8 +36,10 @@ inform_language *language_of_index = NULL;
 
 @ =
 void NaturalLanguages::default_to_English(void) {
-	language_of_syntax = NaturalLanguages::English();
-	language_of_index = language_of_syntax;
+	inform_language *E = NaturalLanguages::English();
+	NaturalLanguages::set_language_of_syntax(E);
+	NaturalLanguages::set_language_of_index(E);
+	NaturalLanguages::set_language_of_play(E);
 }
 
 void NaturalLanguages::set_language_of_play(inform_language *L) {
@@ -45,12 +47,19 @@ void NaturalLanguages::set_language_of_play(inform_language *L) {
 	if (L) L->kit_required = TRUE;
 }
 
+void NaturalLanguages::set_language_of_index(inform_language *L) {
+	language_of_index = L;
+}
+
+void NaturalLanguages::set_language_of_syntax(inform_language *L) {
+	language_of_syntax = L;
+	English_language = L;
+}
+
 inform_language *NaturalLanguages::English(void) {
 	NaturalLanguages::scan();
 	inform_language *L = Languages::from_name(I"english");
 	if (L == NULL) internal_error("unable to find English language bundle");
-	L->kit_required = TRUE;
-	English_language = L;
 	return L;
 }
 

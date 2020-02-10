@@ -152,13 +152,12 @@ void Main::act(void) {
 	if ((pipeline_as_file) || (pipeline_as_text)) {
 		if (NUMBER_CREATED(inter_file) > 0)
 			Errors::fatal("-pipeline and -pipeline-file cannot be combined with inter file parameters");
-		int no_subnests = 0;
-		pathname *subnests[1];
-		if (template_path) { no_subnests = 1; subnests[0] = template_path; }
+		linked_list *inter_paths = NEW_LINKED_LIST(pathname);
+		ADD_TO_LINKED_LIST(template_path, pathname, inter_paths);
 		codegen_pipeline *SS;
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
-		if (SS) CodeGen::Pipeline::run(domain_path, SS, no_subnests, subnests, requirements_list);
+		if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list);
 		else Errors::fatal("pipeline could not be parsed");
 	} else if (unit_test_file) {
 		UnitTests::run(unit_test_file);

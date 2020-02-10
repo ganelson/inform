@@ -14,11 +14,11 @@ int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 	inter_bookmark IBM;
 	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->repository);
-	CodeGen::MergeTemplate::link(&IBM, step->step_argument, step->the_N, step->the_PP, NULL);
+	CodeGen::MergeTemplate::link(&IBM, step->step_argument, step->the_PP, NULL);
 	return TRUE;
 }
 
-void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, int N, pathname **PP, inter_package *owner) {
+void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, linked_list *PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	if (Str::eq(template_file, I"none"))
@@ -32,8 +32,11 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 		Inter::Bookmarks::at_end_of_this_package(template_package);
 
 	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(CodeGen::MergeTemplate::receive_raw),  &(CodeGen::MergeTemplate::receive_command), NULL);
-	kit.no_i6t_file_areas = N;
-	for (int i=0; i<N; i++) kit.i6t_files[i] = Pathnames::subfolder(PP[i], I"Sections");
+	kit.no_i6t_file_areas = LinkedLists::len(PP);
+	pathname *P;
+	int i=0;
+	LOOP_OVER_LINKED_LIST(P, pathname, PP)
+		kit.i6t_files[i] = Pathnames::subfolder(P, I"Sections");
 	int stage = EARLY_LINK_STAGE;
 	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
 	TEMPORARY_TEXT(T);

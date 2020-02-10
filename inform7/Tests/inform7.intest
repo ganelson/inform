@@ -79,7 +79,7 @@
 	else
 		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
 	endif
-	set: $PIPELINE = inform7/Tests/test.interpipeline
+	set: $PIPELINE = test
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.
@@ -199,7 +199,7 @@
 	else
 		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
 	endif
-	set: $PIPELINE = inform7/Tests/test_basic.interpipeline
+	set: $PIPELINE = test_basic
 	
 	! First, problem message cases, where we require ni to fail and with the
 	! correct output.

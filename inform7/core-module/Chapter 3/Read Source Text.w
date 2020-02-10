@@ -71,7 +71,7 @@ but in that event the Extensions.w routines do indeed want to know this.
 source code is classified.)
 
 @d ORIGIN_WAS_PRIMARY_SOURCE 0
-@d ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA 1 /* must match |*_FS_AREA| numbers plus 1 */
+@d ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA 1
 @d ORIGIN_WAS_USER_EXTENSIONS_AREA 2
 @d ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA 3
 

@@ -8,22 +8,14 @@ To configure the many locations used in the host filing system.
 of where everything lives in the filing system. Very early in Inform's run,
 it works out the filenames of everything it will ever need to refer to, and
 these are stored in the following globals. Explanations are given below,
-not here. First, some "areas":
-
-@d NO_FS_AREAS 3
-@d MATERIALS_FS_AREA 0 /* must match |ORIGIN_WAS_*| constants minus 1 */
-@d EXTERNAL_FS_AREA 1
-@d INTERNAL_FS_AREA 2
-
-=
-char *AREA_NAME[3] = { "from .materials", "installed", "built in" };
-
-@ Now for the folders:
+not here.
 
 = (early code)
 linked_list *I7_nest_list = NULL;
-pathname *pathname_of_area[NO_FS_AREAS]              = { NULL, NULL, NULL };
-pathname *pathname_of_website_templates[NO_FS_AREAS] = { NULL, NULL, NULL };
+
+pathname *pathname_of_materials = NULL;
+pathname *pathname_of_external_folder = NULL;
+pathname *pathname_of_internal_folder = NULL;
 
 pathname *pathname_of_extension_docs = NULL;
 pathname *pathname_of_extension_docs_inner = NULL;
@@ -83,16 +75,16 @@ void Locations::set_project(text_stream *loc) {
 }
 
 void Locations::set_internal(text_stream *loc) {
-	pathname_of_area[INTERNAL_FS_AREA] = Pathnames::from_text(loc);
+	pathname_of_internal_folder = Pathnames::from_text(loc);
 }
 
 void Locations::set_default_internal(pathname *P) {
-	if (pathname_of_area[INTERNAL_FS_AREA] == NULL)
-		pathname_of_area[INTERNAL_FS_AREA] = P;
+	if (pathname_of_internal_folder == NULL)
+		pathname_of_internal_folder = P;
 }
 
 void Locations::set_external(text_stream *loc) {
-	pathname_of_area[EXTERNAL_FS_AREA] = Pathnames::from_text(loc);
+	pathname_of_external_folder = Pathnames::from_text(loc);
 }
 
 void Locations::set_transient(text_stream *loc) {
@@ -132,18 +124,18 @@ int Locations::set_defaults(int census_mode) {
 	if ((census_mode) && (filename_of_i7_source))
 		Problems::Fatal::issue("In census mode, no source text may be supplied");
 	I7_nest_list = NEW_LINKED_LIST(inbuild_nest);
-	if (pathname_of_area[MATERIALS_FS_AREA]) {
-		inbuild_nest *nest = Nests::new(pathname_of_area[MATERIALS_FS_AREA]);
+	if (pathname_of_materials) {
+		inbuild_nest *nest = Nests::new(pathname_of_materials);
 		Nests::set_tag(nest, ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA);
 		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
 	}
-	if (pathname_of_area[EXTERNAL_FS_AREA]) {
-		inbuild_nest *nest = Nests::new(pathname_of_area[EXTERNAL_FS_AREA]);
+	if (pathname_of_external_folder) {
+		inbuild_nest *nest = Nests::new(pathname_of_external_folder);
 		Nests::set_tag(nest, ORIGIN_WAS_USER_EXTENSIONS_AREA);
 		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
 	}
-	if (pathname_of_area[INTERNAL_FS_AREA]) {
-		inbuild_nest *nest = Nests::new(pathname_of_area[INTERNAL_FS_AREA]);
+	if (pathname_of_internal_folder) {
+		inbuild_nest *nest = Nests::new(pathname_of_internal_folder);
 		Nests::set_tag(nest, ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA);
 		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
 	}
@@ -169,13 +161,11 @@ language definitions, and website templates. The Standard Rules, for
 example, live inside the Extensions part of this.
 
 @<Internal resources@> =
-	if (pathname_of_area[INTERNAL_FS_AREA] == NULL)
+	if (pathname_of_internal_folder == NULL)
 		Problems::Fatal::issue("Did not set -internal when calling");
 
-	Locations::EILT_at(INTERNAL_FS_AREA, pathname_of_area[INTERNAL_FS_AREA]);
-
 	pathname *inter_resources =
-		Pathnames::subfolder(pathname_of_area[INTERNAL_FS_AREA], I"Inter");
+		Pathnames::subfolder(pathname_of_internal_folder, I"Inter");
 	filename_of_default_inter_pipeline =
 		Filenames::in_folder(inter_resources, I"default.interpipeline");
 
@@ -191,14 +181,14 @@ brief specifications of phrases, extracted from the manual "Writing with
 Inform". This is used to generate the Phrasebook index.
 
 @<Miscellaneous other stuff@> =
-	pathname *misc = Pathnames::subfolder(pathname_of_area[INTERNAL_FS_AREA], I"Miscellany");
+	pathname *misc = Pathnames::subfolder(pathname_of_internal_folder, I"Miscellany");
 
 	filename_of_large_default_cover_art = Filenames::in_folder(misc, I"Cover.jpg");
 	filename_of_small_default_cover_art = Filenames::in_folder(misc, I"Small Cover.jpg");
 	filename_of_intro_postcard = Filenames::in_folder(misc, I"Postcard.pdf");
 	filename_of_intro_booklet = Filenames::in_folder(misc, I"IntroductionToIF.pdf");
 
-	pathname_of_HTML_models = Pathnames::subfolder(pathname_of_area[INTERNAL_FS_AREA], I"HTML");
+	pathname_of_HTML_models = Pathnames::subfolder(pathname_of_internal_folder, I"HTML");
 	filename_of_cblorb_report_model = Filenames::in_folder(pathname_of_HTML_models, I"CblorbModel.html");
 
 	filename_of_xrefs = Filenames::in_folder(pathname_of_HTML_models, I"xrefs.txt");
@@ -226,24 +216,24 @@ If |-transient| is not specified, it's the same folder, i.e., Inform does
 not distinguish between permanent and transient external resources.
 
 @<External resources@> =
-	if (pathname_of_area[EXTERNAL_FS_AREA] == NULL) {
-		pathname_of_area[EXTERNAL_FS_AREA] = home_path;
+	if (pathname_of_external_folder == NULL) {
+		pathname_of_external_folder = home_path;
 		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
 		if (subfolder_within[0]) {
 			TEMPORARY_TEXT(SF);
 			WRITE_TO(SF, "%s", subfolder_within);
-			pathname_of_area[EXTERNAL_FS_AREA] = Pathnames::subfolder(home_path, SF);
+			pathname_of_external_folder = Pathnames::subfolder(home_path, SF);
 			DISCARD_TEXT(SF);
 		}
-		pathname_of_area[EXTERNAL_FS_AREA] =
-			Pathnames::subfolder(pathname_of_area[EXTERNAL_FS_AREA], I"Inform");
+		pathname_of_external_folder =
+			Pathnames::subfolder(pathname_of_external_folder, I"Inform");
 	}
-	if (Pathnames::create_in_file_system(pathname_of_area[EXTERNAL_FS_AREA]) == 0) return FALSE;
+	if (Pathnames::create_in_file_system(pathname_of_external_folder) == 0) return FALSE;
 	@<Permanent external resources@>;
 
 	if (pathname_of_transient_external_resources == NULL)
 		pathname_of_transient_external_resources =
-			pathname_of_area[EXTERNAL_FS_AREA];
+			pathname_of_external_folder;
 	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
 	@<Transient external resources@>;
 
@@ -256,9 +246,8 @@ a useful little file to add source text to everything Inform compiles,
 generally to set use options.
 
 @<Permanent external resources@> =
-	Locations::EILT_at(EXTERNAL_FS_AREA, pathname_of_area[EXTERNAL_FS_AREA]);
 	filename_of_options =
-		Filenames::in_folder(pathname_of_area[EXTERNAL_FS_AREA], I"Options.txt");
+		Filenames::in_folder(pathname_of_external_folder, I"Options.txt");
 
 @ The transient resources are all written by us.
 
@@ -418,15 +407,13 @@ For the third and final time, there are EILT resources.
 			Str::truncate(mf, i);
 			WRITE_TO(mf, ".materials");
 		}
-		pathname_of_area[MATERIALS_FS_AREA] =
+		pathname_of_materials =
 			Pathnames::subfolder(pathname_of_project->pathname_of_parent, mf);
 		DISCARD_TEXT(mf);
-		if (Pathnames::create_in_file_system(pathname_of_area[MATERIALS_FS_AREA]) == 0) return FALSE;
+		if (Pathnames::create_in_file_system(pathname_of_materials) == 0) return FALSE;
 	} else {
-		pathname_of_area[MATERIALS_FS_AREA] = Pathnames::from_text(I"inform.materials");
+		pathname_of_materials = Pathnames::from_text(I"inform.materials");
 	}
-
-	Locations::EILT_at(MATERIALS_FS_AREA, pathname_of_area[MATERIALS_FS_AREA]);
 
 	@<Figures and sounds@>;
 	@<The Release folder@>;
@@ -442,15 +429,15 @@ This is also where the originals (not the released copies) of the Figures
 and Sounds, if any, live: in their own subfolders.
 
 @<Figures and sounds@> =
-	pathname_of_materials_figures =    Pathnames::subfolder(pathname_of_area[MATERIALS_FS_AREA], I"Figures");
-	pathname_of_materials_sounds =     Pathnames::subfolder(pathname_of_area[MATERIALS_FS_AREA], I"Sounds");
+	pathname_of_materials_figures =    Pathnames::subfolder(pathname_of_materials, I"Figures");
+	pathname_of_materials_sounds =     Pathnames::subfolder(pathname_of_materials, I"Sounds");
 
-	filename_of_large_cover_art_jpeg = Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Cover.jpg");
-	filename_of_large_cover_art_png =  Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Cover.png");
-	filename_of_small_cover_art_jpeg = Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Small Cover.jpg");
-	filename_of_small_cover_art_png =  Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Small Cover.png");
+	filename_of_large_cover_art_jpeg = Filenames::in_folder(pathname_of_materials, I"Cover.jpg");
+	filename_of_large_cover_art_png =  Filenames::in_folder(pathname_of_materials, I"Cover.png");
+	filename_of_small_cover_art_jpeg = Filenames::in_folder(pathname_of_materials, I"Small Cover.jpg");
+	filename_of_small_cover_art_png =  Filenames::in_folder(pathname_of_materials, I"Small Cover.png");
 
-	filename_of_epsfile =              Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], I"Inform Map.eps");
+	filename_of_epsfile =              Filenames::in_folder(pathname_of_materials, I"Inform Map.eps");
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
@@ -458,7 +445,7 @@ is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
 
 @<The Release folder@> =
-	pathname_of_materials_release =    Pathnames::subfolder(pathname_of_area[MATERIALS_FS_AREA], I"Release");
+	pathname_of_materials_release =    Pathnames::subfolder(pathname_of_materials, I"Release");
 	pathname_of_released_interpreter = Pathnames::subfolder(pathname_of_materials_release, I"interpreter");
 	pathname_of_released_figures =     Pathnames::subfolder(pathname_of_materials_release, I"Figures");
 	pathname_of_released_sounds =      Pathnames::subfolder(pathname_of_materials_release, I"Sounds");
@@ -472,18 +459,8 @@ have by default, if so.
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "story.%S", story_filename_extension);
 	filename_of_existing_story_file =
-		Filenames::in_folder(pathname_of_area[MATERIALS_FS_AREA], leaf);
+		Filenames::in_folder(pathname_of_materials, leaf);
 	DISCARD_TEXT(leaf);
-
-@h EILTs.
-Each of the materials folder, the internal and external areas has a suite
-of subfolders to hold I7 extensions (in an author tree: see below), I6
-template files, language definitions and website templates.
-
-=
-void Locations::EILT_at(int area, pathname *P) {
-	pathname_of_website_templates[area] = Pathnames::subfolder(P, I"Templates");
-}
 
 @h Location of extensions.
 When Inform needs one of the EILT resources, it now has three places to look:

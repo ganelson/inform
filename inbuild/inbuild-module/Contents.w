@@ -22,6 +22,7 @@ Chapter 3: Managing Genres of Work
 	Language Manager
 	Project Manager
 	Template Manager
+	Pipeline Manager
 
 Chapter 4: Services for the Inform Compiler
 	Kit Services
@@ -30,3 +31,4 @@ Chapter 4: Services for the Inform Compiler
 	Template Services
 	Project Services
 	Language Services
+	Pipeline Services

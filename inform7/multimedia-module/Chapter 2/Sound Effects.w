@@ -175,7 +175,7 @@ void PL::Sounds::write_sounds_manifest(OUTPUT_STREAM) {
 	LOOP_OVER(bs, blorb_sound) {
 		WRITE("<key>%d</key>\n", bs->sound_number);
 		TEMPORARY_TEXT(rel);
-		Filenames::to_text_relative(rel, bs->filename_of_sound_file, pathname_of_area[MATERIALS_FS_AREA]);
+		Filenames::to_text_relative(rel, bs->filename_of_sound_file, pathname_of_materials);
 		WRITE("<string>%S</string>\n", rel);
 		DISCARD_TEXT(rel);
 	}
@@ -331,7 +331,7 @@ void PL::Sounds::index_all(OUTPUT_STREAM) {
 		WRITE("%+W", bs->name);
 		Index::link(OUT, Wordings::first_wn(bs->name));
 		TEMPORARY_TEXT(rel);
-		Filenames::to_text_relative(rel, bs->filename_of_sound_file, pathname_of_area[MATERIALS_FS_AREA]);
+		Filenames::to_text_relative(rel, bs->filename_of_sound_file, pathname_of_materials);
 		HTML_TAG("br");
 		WRITE("%SFilename: \"%S\" - resource number %d", line2, rel, bs->sound_number);
 		DISCARD_TEXT(rel);

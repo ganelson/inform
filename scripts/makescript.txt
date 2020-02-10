@@ -490,7 +490,6 @@ integration: \
 		$(SRULESINPLACE) \
 		$(BINFORMINPLACE) \
 		kitsintegration \
-		$(INTERNAL)/Inter/default.interpipeline \
 		$(DOCEXEMPLUM) \
 		$(INTERNALEXEMPLUM) \
 		$(IMAGESEXEMPLUM) \
@@ -506,7 +505,6 @@ forceintegration:
 	$(call transfer-preform)
 	$(call transfer-standard-rules)
 	$(call transfer-kits)
-	$(call transfer-inter-resources)
 	$(call transfer-internal-tree)
 	$(call transfer-images)
 	$(call make-inapp-documentation)
@@ -590,19 +588,11 @@ define transfer-xefs
 	cp -f inform7/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
 endef
 
-# (d) Copying the I6 template into the app
+# (d) Copying kits and pipelines into the app
 
 define transfer-kits
 	$(INBUILDX) -sync-to $(INTERNAL) -contents-of inform7/Internal/Inter
-endef
-
-$(INTERNAL)/Inter/default.interpipeline: inform7/Internal/Inter/*.interpipeline
-	$(call transfer-inter-resources)
-
-define transfer-inter-resources
-	mkdir -p "$(INTERNAL)/Inter"
-	rm -f $(INTERNAL)/Inter/*.interpipeline
-	cp -R -f inform7/Internal/Inter/*.interpipeline $(INTERNAL)/Inter
+	$(INBUILDX) -sync-to $(INTERNAL) -contents-of inform7/Internal/Pipelines
 endef
 
 # (e) Copying internal resources into the app

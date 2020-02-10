@@ -47,7 +47,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 		C = Dictionaries::read_value(kit_copy_cache, key);
 	if (C == NULL) {
 		inform_kit *K = Kits::new_ik(name, P);
-		inbuild_work *work = Works::new(kit_genre, Str::duplicate(name), NULL);
+		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Model::edition(work, K->version);
 		C = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
 		K->as_copy = C;

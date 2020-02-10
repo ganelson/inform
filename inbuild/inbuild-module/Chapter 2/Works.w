@@ -47,15 +47,23 @@ derived from its title and author name.
 
 =
 inbuild_work *Works::new(inbuild_genre *genre, text_stream *ti, text_stream *an) {
+	return Works::new_inner(genre, ti, an, TRUE);
+}
+inbuild_work *Works::new_raw(inbuild_genre *genre, text_stream *ti, text_stream *an) {
+	return Works::new_inner(genre, ti, an, FALSE);
+}
+
+inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_stream *an, int norm) {
 	inbuild_work *work = CREATE(inbuild_work);
 	work->genre = genre;
 	work->raw_author_name = Str::duplicate(an);
 	work->author_name = Str::duplicate(an);
 	work->raw_title = Str::duplicate(ti);
 	work->title = Str::duplicate(ti);
-	Works::normalise_casing(work->author_name);
-	Works::normalise_casing(work->title);
-
+	if (norm) {
+		Works::normalise_casing(work->author_name);
+		Works::normalise_casing(work->title);
+	}
 	unsigned int hc = 0;
 	LOOP_THROUGH_TEXT(pos, work->author_name)
 		hc = hc*30011 + (unsigned int) Str::get(pos);
