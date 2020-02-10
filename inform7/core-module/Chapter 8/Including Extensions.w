@@ -184,10 +184,10 @@ trap-door into Read Source Text, to seek and open the file.
 	inform_extension *E = Extensions::Files::find(ef);
 	if (E) {
 		switch (origin) {
-			case ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA:
-			case ORIGIN_WAS_USER_EXTENSIONS_AREA:
+			case MATERIALS_NEST_TAG:
+			case EXTERNAL_NEST_TAG:
 				E->loaded_from_built_in_area = FALSE; break;
-			case ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA:
+			case INTERNAL_NEST_TAG:
 				E->loaded_from_built_in_area = TRUE; break;
 			default: /* which can happen if the extension file cannot be found */
 				E->loaded_from_built_in_area = FALSE; break;

@@ -170,7 +170,8 @@ void Kits::request(text_stream *name) {
 }
 
 #ifdef CORE_MODULE
-void Kits::determine(linked_list *nest_list) {
+void Kits::determine(void) {
+	linked_list *nest_list = SharedCLI::nest_list();
 	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
 	Kits::request(I"BasicInformKit");
 	Languages::request_required_kits();
@@ -283,9 +284,19 @@ linked_list *Kits::list_of_inter_libraries(void) {
 	requirements_list = NEW_LINKED_LIST(link_instruction);
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		link_instruction *link = CodeGen::LinkInstructions::new(K->as_copy->location_if_path, K->attachment_point);
+		link_instruction *link = CodeGen::LinkInstructions::new(
+			K->as_copy->location_if_path, K->attachment_point);
 		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
 	}
 	return requirements_list;
 }
 #endif
+
+linked_list *Kits::inter_paths(void) {
+	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
+	inbuild_nest *N;
+	linked_list *L = SharedCLI::nest_list();
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+		ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
+	return inter_paths;
+}

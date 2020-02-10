@@ -115,10 +115,8 @@ list is not exhaustive.
 @e CENSUS_CLSW
 @e CLOCK_CLSW
 @e DEBUG_CLSW
-@e EXTERNAL_CLSW
 @e FORMAT_CLSW
 @e CRASHALL_CLSW
-@e INTERNAL_CLSW
 @e KIT_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
@@ -127,7 +125,6 @@ list is not exhaustive.
 @e REQUIRE_PROBLEM_CLSW
 @e RNG_CLSW
 @e SIGILS_CLSW
-@e TRANSIENT_CLSW
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
@@ -178,11 +175,10 @@ list is not exhaustive.
 		L"use X as the user's home for installed material such as extensions");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
 		L"use X for transient data such as the extensions census");
+	SharedCLI::declare_options();
 
 @<Establish our location in the file system@> =
 	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
-	pathname *def_int = Pathnames::subfolder(Pathnames::up(path_to_inform7), I"Internal");
-	Locations::set_default_internal(def_int);
 
 @<With that done, configure all other settings@> =
 	VirtualMachines::set_identifier(story_filename_extension);
@@ -227,7 +223,7 @@ list is not exhaustive.
 	doc_references_top = lexer_wordcount - 1;
 
 @<Work out our kit requirements@> =
-	Kits::determine(I7_nest_list);
+	Kits::determine();
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
@@ -438,11 +434,6 @@ with "Output.i6t".
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), Filenames::get_leafname(filename_of_compiled_i6_code));
 			
-			linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-			inbuild_nest *N;
-			LOOP_OVER_LINKED_LIST(N, inbuild_nest, I7_nest_list)
-				ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
-
 			codegen_pipeline *SS = NULL;
 			if (Str::len(inter_processing_pipeline) > 0) {
 				SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
@@ -452,7 +443,7 @@ with "Output.i6t".
 				inbuild_requirement *req =
 					Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
 				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-				Nests::search_for(req, I7_nest_list, L);
+				Nests::search_for(req, SharedCLI::nest_list(), L);
 				if (LinkedLists::len(L) == 0) {
 					WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
 					Problems::Fatal::issue("The Inter pipeline could not be found");
@@ -470,7 +461,7 @@ with "Output.i6t".
 			}
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, inter_paths, Kits::list_of_inter_libraries());
+				SS, Kits::inter_paths(), Kits::list_of_inter_libraries());
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
@@ -571,12 +562,8 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case PROJECT_CLSW:
 			if (Str::includes(arg, I"#2oetMiq9bqxoxY")) Kits::request(I"BasicInformKit");
 			Locations::set_project(arg); break;
-		case INTERNAL_CLSW: Locations::set_internal(arg); break;
-		case EXTERNAL_CLSW: Locations::set_external(arg); break;
-		case TRANSIENT_CLSW: Locations::set_transient(arg); break;
-
-		default: internal_error("unimplemented switch");
 	}
+	SharedCLI::option(id, val, arg, state);
 }
 
 void CoreMain::bareword(int id, text_stream *opt, void *state) {

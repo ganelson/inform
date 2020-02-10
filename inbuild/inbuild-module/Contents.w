@@ -6,6 +6,7 @@ Licence: Artistic License 2.0
 
 Chapter 1: Setting Up
 	Inbuild Module
+	Shared CLI
 
 Chapter 2: Conceptual Framework
 	Conceptual Model

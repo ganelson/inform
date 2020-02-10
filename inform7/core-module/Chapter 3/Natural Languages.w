@@ -21,7 +21,7 @@ void NaturalLanguages::scan(void) {
 		bundle_scan_made = TRUE;
 		inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, I7_nest_list, L);
+		Nests::search_for(req, SharedCLI::nest_list(), L);
 		language_scan_top = lexer_wordcount - 1;
 	}
 }

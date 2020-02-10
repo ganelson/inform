@@ -67,13 +67,6 @@ int SourceFiles::increase_sentence_count(wording W) {
 one of the following values to indicate the source of the source: the value
 only really tells us something we didn't know in the case of extensions,
 but in that event the Extensions.w routines do indeed want to know this.
-(Area 51 is reserved for extensions of alien origin, but the relevant
-source code is classified.)
-
-@d ORIGIN_WAS_PRIMARY_SOURCE 0
-@d ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA 1
-@d ORIGIN_WAS_USER_EXTENSIONS_AREA 2
-@d ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA 3
 
 =
 int SourceFiles::read_file(filename *F, text_stream *synopsis, extension_file *EF,
@@ -82,7 +75,7 @@ int SourceFiles::read_file(filename *F, text_stream *synopsis, extension_file *E
 	int area = -1;
 	if (EF)
 		area = SourceFiles::read_file_inner(F, synopsis,
-			I7_nest_list, documentation_only, &sf,
+			SharedCLI::nest_list(), documentation_only, &sf,
 			STORE_POINTER_extension_file(EF), FALSE, EF);
 	else
 		area = SourceFiles::read_file_inner(F, synopsis,

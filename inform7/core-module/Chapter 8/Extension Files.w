@@ -590,10 +590,7 @@ two alternatives are expressed here:
 =
 void Extensions::Files::handle_census_mode(void) {
 	if (census_mode) {
-		extension_census *C = Extensions::Census::new(I7_nest_list);
-		C->built_in_tag = ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA;
-		C->materials_tag = ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA;
-		C->external_tag = ORIGIN_WAS_USER_EXTENSIONS_AREA;
+		extension_census *C = Extensions::Census::new();
 		Extensions::Dictionary::load();
 		Extensions::Census::perform(C);
 		Extensions::Files::write_top_level_of_extensions_documentation(C);
@@ -604,10 +601,7 @@ void Extensions::Files::handle_census_mode(void) {
 void Extensions::Files::update_census(void) {
 	extension_file *ef;
 	Extensions::Dictionary::load();
-	extension_census *C = Extensions::Census::new(I7_nest_list);
-	C->built_in_tag = ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA;
-	C->materials_tag = ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA;
-	C->external_tag = ORIGIN_WAS_USER_EXTENSIONS_AREA;
+	extension_census *C = Extensions::Census::new();
 	Extensions::Census::perform(C);
 	Extensions::Files::write_top_level_of_extensions_documentation(C);
 	LOOP_OVER(ef, extension_file) Extensions::Documentation::write_detailed(ef);

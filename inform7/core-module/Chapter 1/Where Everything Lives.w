@@ -11,12 +11,7 @@ these are stored in the following globals. Explanations are given below,
 not here.
 
 = (early code)
-linked_list *I7_nest_list = NULL;
-
 pathname *pathname_of_materials = NULL;
-pathname *pathname_of_external_folder = NULL;
-pathname *pathname_of_internal_folder = NULL;
-
 pathname *pathname_of_extension_docs = NULL;
 pathname *pathname_of_extension_docs_inner = NULL;
 pathname *pathname_of_HTML_models = NULL;
@@ -30,7 +25,6 @@ pathname *pathname_of_released_figures = NULL;
 pathname *pathname_of_released_interpreter = NULL;
 pathname *pathname_of_released_sounds = NULL;
 pathname *pathname_of_transient_census_data = NULL;
-pathname *pathname_of_transient_external_resources = NULL;
 
 @ And secondly, the files:
 
@@ -40,7 +34,6 @@ filename *filename_of_cblorb_report = NULL;
 filename *filename_of_cblorb_report_model = NULL;
 filename *filename_of_compiled_i6_code = NULL;
 filename *filename_of_debugging_log = NULL;
-filename *filename_of_default_inter_pipeline = NULL;
 filename *filename_of_documentation_snippets = NULL;
 filename *filename_of_epsfile = NULL;
 filename *filename_of_existing_story_file = NULL;
@@ -74,23 +67,6 @@ void Locations::set_project(text_stream *loc) {
 	pathname_of_project = Pathnames::from_text(loc);
 }
 
-void Locations::set_internal(text_stream *loc) {
-	pathname_of_internal_folder = Pathnames::from_text(loc);
-}
-
-void Locations::set_default_internal(pathname *P) {
-	if (pathname_of_internal_folder == NULL)
-		pathname_of_internal_folder = P;
-}
-
-void Locations::set_external(text_stream *loc) {
-	pathname_of_external_folder = Pathnames::from_text(loc);
-}
-
-void Locations::set_transient(text_stream *loc) {
-	pathname_of_transient_external_resources = Pathnames::from_text(loc);
-}
-
 int Locations::set_I7_source(text_stream *loc) {
 	if (filename_of_i7_source) return FALSE;
 	filename_of_i7_source = Filenames::from_text(loc);
@@ -115,6 +91,9 @@ and census mode, when it's scanning the file system for extensions.
 
 =
 int Locations::set_defaults(int census_mode) {
+	@<Materials folder@>;
+	if (pathname_of_materials)
+		SharedCLI::add_nest(pathname_of_materials, MATERIALS_NEST_TAG);
 	@<Internal resources@>;
 	@<External resources@>;
 	@<Project resources@>;
@@ -123,22 +102,6 @@ int Locations::set_defaults(int census_mode) {
 		Problems::Fatal::issue("Except in census mode, source text must be supplied");
 	if ((census_mode) && (filename_of_i7_source))
 		Problems::Fatal::issue("In census mode, no source text may be supplied");
-	I7_nest_list = NEW_LINKED_LIST(inbuild_nest);
-	if (pathname_of_materials) {
-		inbuild_nest *nest = Nests::new(pathname_of_materials);
-		Nests::set_tag(nest, ORIGIN_WAS_MATERIALS_EXTENSIONS_AREA);
-		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
-	}
-	if (pathname_of_external_folder) {
-		inbuild_nest *nest = Nests::new(pathname_of_external_folder);
-		Nests::set_tag(nest, ORIGIN_WAS_USER_EXTENSIONS_AREA);
-		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
-	}
-	if (pathname_of_internal_folder) {
-		inbuild_nest *nest = Nests::new(pathname_of_internal_folder);
-		Nests::set_tag(nest, ORIGIN_WAS_BUILT_IN_EXTENSIONS_AREA);
-		ADD_TO_LINKED_LIST(nest, inbuild_nest, I7_nest_list);
-	}
 	return TRUE;
 }
 
@@ -156,18 +119,10 @@ know how to find that folder, and we don't want to make any assumptions.
 Inform therefore requires on every run that it be told via the |-internal|
 switch where the internal resources folder is.
 
-The main ingredients here are the "EILT" resources: extensions, I6T files,
-language definitions, and website templates. The Standard Rules, for
-example, live inside the Extensions part of this.
-
 @<Internal resources@> =
-	if (pathname_of_internal_folder == NULL)
-		Problems::Fatal::issue("Did not set -internal when calling");
-
-	pathname *inter_resources =
-		Pathnames::subfolder(pathname_of_internal_folder, I"Inter");
-	filename_of_default_inter_pipeline =
-		Filenames::in_folder(inter_resources, I"default.interpipeline");
+	inbuild_nest *I = SharedCLI::internal();
+	if (I == NULL) Problems::Fatal::issue("Did not set -internal when calling");
+	pathname *pathname_of_internal_folder = I->location;
 
 	@<Miscellaneous other stuff@>;
 
@@ -216,24 +171,25 @@ If |-transient| is not specified, it's the same folder, i.e., Inform does
 not distinguish between permanent and transient external resources.
 
 @<External resources@> =
-	if (pathname_of_external_folder == NULL) {
-		pathname_of_external_folder = home_path;
+	inbuild_nest *E = SharedCLI::external();
+	if (E == NULL) {
+		pathname *P = home_path;
 		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
 		if (subfolder_within[0]) {
 			TEMPORARY_TEXT(SF);
 			WRITE_TO(SF, "%s", subfolder_within);
-			pathname_of_external_folder = Pathnames::subfolder(home_path, SF);
+			P = Pathnames::subfolder(home_path, SF);
 			DISCARD_TEXT(SF);
 		}
-		pathname_of_external_folder =
-			Pathnames::subfolder(pathname_of_external_folder, I"Inform");
+		P = Pathnames::subfolder(P, I"Inform");
+		E = SharedCLI::add_nest(P, EXTERNAL_NEST_TAG);
 	}
+	pathname *pathname_of_external_folder = E->location;
+
 	if (Pathnames::create_in_file_system(pathname_of_external_folder) == 0) return FALSE;
 	@<Permanent external resources@>;
 
-	if (pathname_of_transient_external_resources == NULL)
-		pathname_of_transient_external_resources =
-			pathname_of_external_folder;
+	pathname *pathname_of_transient_external_resources = SharedCLI::transient();
 	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
 	@<Transient external resources@>;
 
@@ -391,13 +347,11 @@ the index as seen by the user.
 	filename_of_headings =
 		Filenames::in_folder(pathname_of_project_index_folder, I"Headings.xml");
 
-@h Materials resources.
+@h Materials folder.
 The materials folder sits alongside the project folder and has the same name,
 but ending |.materials| instead of |.inform|.
 
-For the third and final time, there are EILT resources.
-
-@<Materials resources@> =
+@<Materials folder@> =
 	if (pathname_of_project) {
 		TEMPORARY_TEXT(mf);
 		WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_project));
@@ -415,6 +369,9 @@ For the third and final time, there are EILT resources.
 		pathname_of_materials = Pathnames::from_text(I"inform.materials");
 	}
 
+@h Materials resources.
+
+@<Materials resources@> =
 	@<Figures and sounds@>;
 	@<The Release folder@>;
 	@<Existing story file@>;

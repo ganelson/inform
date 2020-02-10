@@ -1030,7 +1030,8 @@ with the earliest quoted searched first.
 
 @<Tell Inblorb where to find the website templates@> =
 	inbuild_nest *N;
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, I7_nest_list)
+	linked_list *L = SharedCLI::nest_list();
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
 
 @ Inblorb reports its progress, or lack of it, with an HTML page, just as we do.

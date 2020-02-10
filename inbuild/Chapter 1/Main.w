@@ -17,47 +17,40 @@ this plan out.
 =
 pathname *path_to_inbuild = NULL;
 pathname *path_to_tools = NULL;
-linked_list *nest_list = NULL;
 
 int inbuild_task = INSPECT_TTASK;
 int dry_run_mode = FALSE;
 linked_list *targets = NULL; /* of |inbuild_copy| */
 inbuild_nest *destination_nest = NULL;
 text_stream *filter_text = NULL;
+linked_list *inbuild_nest_list = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
 	WordsModule::start();
 	InbuildModule::start();
 	targets = NEW_LINKED_LIST(inbuild_copy);
-	nest_list = NEW_LINKED_LIST(inbuild_nest);
 	@<Read the command line@>;
-	if (FIRST_IN_LINKED_LIST(inbuild_nest, nest_list) == NULL)
-		Nests::add_to_search_sequence(nest_list,
-			Nests::new(Pathnames::from_text(I"inform7/Internal")));
+	
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 	build_methodology *BM;
 	if (path_to_tools) BM = BuildSteps::methodology(path_to_tools, FALSE);
 	else BM = BuildSteps::methodology(Pathnames::up(path_to_inbuild), TRUE);
 	if (dry_run_mode == FALSE) BM->methodology = SHELL_METHODOLOGY;
 	if (Str::len(filter_text) > 0) {
-		if (LinkedLists::len(nest_list) == 0) {
-			Errors::with_text("can't apply this, since no nests have been given: '%S'", filter_text);
+		TEMPORARY_TEXT(errors);
+		inbuild_requirement *req = Requirements::from_text(filter_text, errors);
+		if (Str::len(errors) > 0) {
+			Errors::with_text("requirement malformed: %S", errors);
 		} else {
-			TEMPORARY_TEXT(errors);
-			inbuild_requirement *req = Requirements::from_text(filter_text, errors);
-			if (Str::len(errors) > 0) {
-				Errors::with_text("requirement malformed: %S", errors);
-			} else {
-				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-				Nests::search_for(req, nest_list, L);
-				inbuild_search_result *R;
-				LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
-					ADD_TO_LINKED_LIST(R->copy, inbuild_copy, targets);
-				}
+			linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+			Nests::search_for(req, inbuild_nest_list, L);
+			inbuild_search_result *R;
+			LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
+				ADD_TO_LINKED_LIST(R->copy, inbuild_copy, targets);
 			}
-			DISCARD_TEXT(errors);
 		}
+		DISCARD_TEXT(errors);
 	}
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
@@ -96,7 +89,6 @@ int main(int argc, char **argv) {
 @e TOOLS_CLSW
 @e CONTENTS_OF_CLSW
 @e MATCHING_CLSW
-@e NEST_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
 
@@ -124,10 +116,14 @@ int main(int argc, char **argv) {
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
-	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
-		L"add the nest at pathname X to the search list");
+	SharedCLI::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
+
+	if (LinkedLists::len(unsorted_nest_list) == 0)
+		SharedCLI::add_nest(
+			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+	inbuild_nest_list = SharedCLI::nest_list();
 
 @ =
 void Main::option(int id, int val, text_stream *arg, void *state) {
@@ -140,16 +136,14 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
 		case CONTENTS_OF_CLSW: Main::load_many(Pathnames::from_text(arg)); break;
 		case DRY_CLSW: dry_run_mode = val; break;
-		case NEST_CLSW: Nests::add_to_search_sequence(nest_list,
-			Nests::new(Pathnames::from_text(arg))); break;
 		case COPY_TO_CLSW: inbuild_task = COPY_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
 		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
-		default: internal_error("unimplemented switch");
 	}
+	SharedCLI::option(id, val, arg, state);
 }
 
 void Main::bareword(int id, text_stream *arg, void *state) {

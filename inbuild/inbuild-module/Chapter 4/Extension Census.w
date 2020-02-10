@@ -14,12 +14,12 @@ typedef struct extension_census {
 	MEMORY_MANAGEMENT
 } extension_census;
 
-extension_census *Extensions::Census::new(linked_list *L) {
+extension_census *Extensions::Census::new(void) {
 	extension_census *C = CREATE(extension_census);
-	C->search_list = L;
-	C->built_in_tag = -2;
-	C->materials_tag = -2;
-	C->external_tag = -2;
+	C->search_list = SharedCLI::nest_list();
+	C->built_in_tag = INTERNAL_NEST_TAG;
+	C->materials_tag = MATERIALS_NEST_TAG;
+	C->external_tag = EXTERNAL_NEST_TAG;
 	return C;
 }
 
