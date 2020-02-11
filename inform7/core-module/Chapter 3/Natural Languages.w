@@ -69,7 +69,7 @@ inform_language *NaturalLanguages::English(void) {
 void NaturalLanguages::produce_index(void) {
 	I6T::interpret_indext(
 		Filenames::in_folder(
-			Languages::path_to_bundle(language_of_index), Kits::index_template()));
+			Languages::path_to_bundle(language_of_index), Projects::index_template(SharedCLI::project())));
 }
 
 @

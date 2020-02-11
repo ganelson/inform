@@ -125,7 +125,7 @@ that's the language in which the SR are written, and French Language, because
 that's the language of play.
 
 =
-void Languages::request_required_kits(void) {
+void Languages::request_required_kits(inform_project *project) {
 	inform_language *L;
 	LOOP_OVER(L, inform_language)
 		if (L->kit_required) {
@@ -134,7 +134,7 @@ void Languages::request_required_kits(void) {
 				WRITE_TO(TEMP, "%+W", L->language_field[KIT_LFIELD]);
 			else
 				WRITE_TO(TEMP, "%+WLanguageKit", L->language_field[NAME_IN_ENGLISH_LFIELD]);
-			Kits::request(TEMP);
+			Projects::add_kit_dependency(project, TEMP);
 			DISCARD_TEXT(TEMP);
 		}
 }

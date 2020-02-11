@@ -86,7 +86,7 @@ inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F, text_stream *err
 		Model::edition(Works::new(extension_genre, title, author), V), F);
 	if ((allow_malformed) || (Str::len(error_text) == 0)) {
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-		ExtensionManager::build_graph(C);
+		ExtensionManager::build_vertex(C);
 	} else {
 		C = NULL;
 	}
@@ -348,6 +348,6 @@ The build graph for an extension is just a single node: you don't need to
 build an extension at all.
 
 =
-void ExtensionManager::build_graph(inbuild_copy *C) {
+void ExtensionManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

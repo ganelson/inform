@@ -85,7 +85,7 @@ inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
 	if (TextFiles::exists(canary)) {
 		inbuild_copy *C = KitManager::new_copy(Pathnames::directory_name(P), P);
-		KitManager::build_graph(C);
+		KitManager::build_vertex(C);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		return C;
 	}
@@ -166,12 +166,12 @@ dependency on every section file of the web of Inform 6 source for the kit.
 If there are $S$ sections then the graph has $S+5$ vertices and $4(S+1)$ edges.
 
 =
-void KitManager::build_graph(inbuild_copy *C) {
+void KitManager::build_vertex(inbuild_copy *C) {
 	pathname *P = C->location_if_path;
-	build_graph *KV = Graphs::copy_vertex(C);
+	build_vertex *KV = Graphs::copy_vertex(C);
 	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
 	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
-	build_graph *BV[4];
+	build_vertex *BV[4];
 	for (int i=0; i<4; i++) {
 		filename *FV = Filenames::in_folder(P, binaries[i]);
 		BV[i] = Graphs::internal_vertex(FV);
@@ -181,7 +181,7 @@ void KitManager::build_graph(inbuild_copy *C) {
 	}
 
 	filename *contents_page = Filenames::in_folder(C->location_if_path, I"Contents.w");
-	build_graph *CV = Graphs::internal_vertex(contents_page);
+	build_vertex *CV = Graphs::internal_vertex(contents_page);
 	for (int i=0; i<4; i++) Graphs::arrow(BV[i], CV);
 
 	kit_contents_section_state CSS;
@@ -192,7 +192,7 @@ void KitManager::build_graph(inbuild_copy *C) {
 	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
 		filename *SF = Filenames::in_folder(
 			Pathnames::subfolder(C->location_if_path, I"Sections"), segment);
-		build_graph *SV = Graphs::internal_vertex(SF);
+		build_vertex *SV = Graphs::internal_vertex(SF);
 		for (int i=0; i<4; i++) Graphs::arrow(BV[i], SV);
 	}
 }

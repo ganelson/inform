@@ -212,7 +212,7 @@ list is not exhaustive.
 	doc_references_top = lexer_wordcount - 1;
 
 @<Work out our kit requirements@> =
-	Kits::determine();
+	Projects::finalise_kit_dependencies(SharedCLI::project());
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
@@ -223,7 +223,7 @@ list is not exhaustive.
 @<Perform semantic analysis@> =
 	ProgressBar::update_progress_bar(1, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Semantic analysis Ia");
-	COMPILATION_STEP(Kits::activate_plugins, I"Kits::activate_plugins");
+	Projects::activate_plugins(SharedCLI::project());
 	COMPILATION_STEP(ParseTreeUsage::plant_parse_tree, I"ParseTreeUsage::plant_parse_tree")
 	COMPILATION_STEP(StructuralSentences::break_source, I"StructuralSentences::break_source")
 	COMPILATION_STEP(Extensions::Inclusion::traverse, I"Extensions::Inclusion::traverse")
@@ -231,7 +231,7 @@ list is not exhaustive.
 
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Initialise language semantics");
 	COMPILATION_STEP(Plugins::Manage::start_plugins, I"Plugins::Manage::start_plugins");
-	COMPILATION_STEP(Kits::load_types, I"Kits::load_types");
+	Projects::load_types(SharedCLI::project());
 	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
 	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
 
@@ -368,7 +368,7 @@ with "Output.i6t".
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
 	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	if (Kits::Main_defined() == FALSE)
+	if (Projects::Main_defined(SharedCLI::project()) == FALSE)
 		COMPILATION_STEP(Phrases::invoke_to_begin, I"Phrases::invoke_to_begin")
 	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
 	COMPILATION_STEP(Strings::compile_responses, I"Strings::compile_responses")
@@ -450,7 +450,7 @@ with "Output.i6t".
 			}
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, Kits::inter_paths(), Kits::list_of_inter_libraries());
+				SS, Kits::inter_paths(), Projects::list_of_inter_libraries(SharedCLI::project()));
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}

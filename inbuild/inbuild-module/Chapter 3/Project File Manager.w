@@ -61,7 +61,7 @@ void ProjectFileManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *ProjectFileManager::claim_file_as_copy(filename *F) {
 	inbuild_copy *C = ProjectFileManager::new_copy(Filenames::get_leafname(F), F);
-	ProjectFileManager::build_graph(C);
+	ProjectFileManager::build_vertex(C);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
@@ -90,6 +90,6 @@ void ProjectFileManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbui
 The build graph for a project will need further thought.
 
 =
-void ProjectFileManager::build_graph(inbuild_copy *C) {
+void ProjectFileManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

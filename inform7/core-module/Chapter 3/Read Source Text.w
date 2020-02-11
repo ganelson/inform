@@ -30,11 +30,29 @@ int SourceFiles::read_extension_source_text(extension_file *EF,
 
 void SourceFiles::read_primary_source_text(void) {
 	TEMPORARY_TEXT(early);
-	Kits::feed_early_source_text(early);
+	Projects::early_source_text(early, SharedCLI::project());
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
 	SourceFiles::read_further_mandatory_text();
-	SourceFiles::read_file(Projects::source(SharedCLI::project()), I"your source text", NULL, FALSE);
+	linked_list *L = Projects::source(SharedCLI::project());
+	if (L) {
+		build_vertex *N;
+		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
+			filename *F = N->buildable_if_internal_file;
+			if (TextFiles::exists(F) == FALSE) {
+				Problems::quote_stream(1, Filenames::get_leafname(F));
+				Problems::Issue::handmade_problem(_p_(Untestable));
+				Problems::issue_problem_segment(
+					"I can't open the file '%1' of source text. %P"
+					"If you are using the 'Source' subfolder of Materials to "
+					"hold your source text, maybe your 'Contents.txt' has a "
+					"typo in it?");
+				Problems::issue_problem_end();		
+			} else {
+				SourceFiles::read_file(F, N->annotation, NULL, FALSE);
+			}
+		}
+	}
 }
 
 @ The following reads in the text of the optional file of use options, if

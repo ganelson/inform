@@ -13,48 +13,50 @@ belongs to a single copy, and internal vertices, each of which represents
 a different file inside the copy.
 
 =
-typedef struct build_graph {
+typedef struct build_vertex {
 	struct inbuild_copy *buildable_if_copy;
 	struct filename *buildable_if_internal_file;
-	struct linked_list *arrows; /* of pointers to other |build_graph| nodes */
+	struct text_stream *annotation;
+	struct linked_list *arrows; /* of pointers to other |build_vertex| nodes */
 	struct build_script *script;
 	time_t timestamp;
 	MEMORY_MANAGEMENT
-} build_graph;
+} build_vertex;
 
-build_graph *Graphs::internal_vertex(filename *F) {
-	build_graph *G = CREATE(build_graph);
+build_vertex *Graphs::internal_vertex(filename *F) {
+	build_vertex *G = CREATE(build_vertex);
 	G->buildable_if_copy = NULL;
 	G->buildable_if_internal_file = F;
-	G->arrows = NEW_LINKED_LIST(build_graph);
+	G->arrows = NEW_LINKED_LIST(build_vertex);
 	G->timestamp = (time_t) 0;
 	G->script = BuildSteps::new_script();
+	G->annotation = NULL;
 	return G;
 }
 
-build_graph *Graphs::copy_vertex(inbuild_copy *C) {
+build_vertex *Graphs::copy_vertex(inbuild_copy *C) {
 	if (C == NULL) internal_error("no copy");
-	if (C->graph == NULL) {
-		C->graph = Graphs::internal_vertex(NULL);
-		C->graph->buildable_if_copy = C;
+	if (C->vertex == NULL) {
+		C->vertex = Graphs::internal_vertex(NULL);
+		C->vertex->buildable_if_copy = C;
 	}
-	return C->graph;
+	return C->vertex;
 }
 
-void Graphs::arrow(build_graph *from, build_graph *to) {
+void Graphs::arrow(build_vertex *from, build_vertex *to) {
 	if (from == NULL) internal_error("no from");
 	if (to == NULL) internal_error("no to");
 	if (from == to) internal_error("graph node depends on itself");
-	build_graph *G;
-	LOOP_OVER_LINKED_LIST(G, build_graph, from->arrows)
+	build_vertex *G;
+	LOOP_OVER_LINKED_LIST(G, build_vertex, from->arrows)
 		if (G == to) return;
-	ADD_TO_LINKED_LIST(to, build_graph, from->arrows);
+	ADD_TO_LINKED_LIST(to, build_vertex, from->arrows);
 }
 
-void Graphs::describe(OUTPUT_STREAM, build_graph *G, int recurse) {
+void Graphs::describe(OUTPUT_STREAM, build_vertex *G, int recurse) {
 	Graphs::describe_r(OUT, 0, G, recurse);
 }
-void Graphs::describe_r(OUTPUT_STREAM, int depth, build_graph *V, int recurse) {
+void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V, int recurse) {
 	for (int i=0; i<depth; i++) WRITE("  ");
 	if (V->buildable_if_copy) {
 		WRITE("[copy%d] ", V->allocation_id);
@@ -67,13 +69,13 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_graph *V, int recurse) {
 		else WRITE("\n");
 	}
 	if (recurse) {
-		build_graph *W;
-		LOOP_OVER_LINKED_LIST(W, build_graph, V->arrows)
+		build_vertex *W;
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->arrows)
 			Graphs::describe_r(OUT, depth+1, W, TRUE);
 	}
 }
 
-void Graphs::update_timestamp(build_graph *V) {
+void Graphs::update_timestamp(build_vertex *V) {
 	if (V == NULL) return;
 	if (V->buildable_if_internal_file == NULL) return;
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
@@ -86,23 +88,23 @@ void Graphs::update_timestamp(build_graph *V) {
 	V->timestamp = filestat.st_mtime;
 }
 
-void Graphs::build(build_graph *G, build_methodology *meth) {
+void Graphs::build(build_vertex *G, build_methodology *meth) {
 	Graphs::build_r(FALSE, G, meth);
 }
-void Graphs::rebuild(build_graph *G, build_methodology *meth) {
+void Graphs::rebuild(build_vertex *G, build_methodology *meth) {
 	Graphs::build_r(TRUE, G, meth);
 }
-void Graphs::build_r(int forcing_build, build_graph *V, build_methodology *meth) {
+void Graphs::build_r(int forcing_build, build_vertex *V, build_methodology *meth) {
 	int needs_building = forcing_build;
 	if (V->buildable_if_internal_file)
 		if (TextFiles::exists(V->buildable_if_internal_file) == FALSE)
 			needs_building = TRUE;
-	build_graph *W;
-	LOOP_OVER_LINKED_LIST(W, build_graph, V->arrows)
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->arrows)
 		Graphs::build_r(forcing_build, W, meth);
 	if (needs_building == FALSE) {
 		Graphs::update_timestamp(V);
-		LOOP_OVER_LINKED_LIST(W, build_graph, V->arrows) {
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->arrows) {
 			Graphs::update_timestamp(W);
 			double since = difftime(V->timestamp, W->timestamp);
 			if (since < 0) { needs_building = TRUE; break; }

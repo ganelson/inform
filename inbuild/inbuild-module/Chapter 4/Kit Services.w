@@ -73,7 +73,7 @@ inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
 	pathname *P = Kits::find(name, nest_list);
 	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
 	inbuild_copy *C = KitManager::new_copy(name, P);
-	KitManager::build_graph(C);
+	if (C->vertex == NULL) KitManager::build_vertex(C);
 	return KitManager::from_copy(C);
 }
 
@@ -133,164 +133,62 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	Regexp::dispose_of(&mr);
 }
 
-int Kits::loaded(text_stream *name) {
-	inform_kit *K;
-	LOOP_OVER(K, inform_kit)
-		if (Str::eq(K->name, name))
-			return TRUE;
-	return FALSE;
-}
-
-void Kits::perform_ittt(linked_list *nest_list) {
-	int changes_made = TRUE;
-	while (changes_made) {
-		changes_made = FALSE;
-		inform_kit *K;
-		LOOP_OVER(K, inform_kit) {
-			inform_kit_ittt *ITTT;
-			LOOP_OVER_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt)
-				if ((Kits::loaded(ITTT->then_name) == FALSE) &&
-					(Kits::loaded(ITTT->if_name) == ITTT->if_included)) {
-					Kits::load(ITTT->then_name, nest_list);
-					changes_made = TRUE;
-				}
+int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {
+	int changes_made = FALSE;
+	inform_kit_ittt *ITTT;
+	LOOP_OVER_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt)
+		if ((ITTT->if_included == parity) &&
+			(Projects::uses_kit(project, ITTT->then_name) == FALSE) &&
+			(Projects::uses_kit(project, ITTT->if_name) == ITTT->if_included)) {
+			Projects::add_kit_dependency(project, ITTT->then_name);
+			changes_made = TRUE;
 		}
-	}
-}
-
-linked_list *kits_requested = NULL;
-linked_list *kits_to_include = NULL;
-void Kits::request(text_stream *name) {
-	if (kits_requested == NULL) kits_requested = NEW_LINKED_LIST(text_stream);
-	text_stream *kit_name;
-	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
-		if (Str::eq(kit_name, name))
-			return;
-	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested);
+	return changes_made;
 }
 
 #ifdef CORE_MODULE
-void Kits::determine(void) {
-	linked_list *nest_list = SharedCLI::nest_list();
-	if (kits_requested == NULL) Kits::request(I"CommandParserKit");
-	Kits::request(I"BasicInformKit");
-	Languages::request_required_kits();
-	text_stream *kit_name;
-	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested)
-		Kits::load(kit_name, nest_list);
-
-	Kits::perform_ittt(nest_list);
-
-	kits_to_include = NEW_LINKED_LIST(inform_kit);
-	for (int p=0; p<100; p++) {
-		inform_kit *K;
-		LOOP_OVER(K, inform_kit)
-			if (K->priority == p)
-				ADD_TO_LINKED_LIST(K, inform_kit, kits_to_include);
-	}
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
-		LOG("Using Inform kit '%S' (priority %d).\n", K->name, K->priority);
-}
-#endif
-
-#ifdef CORE_MODULE
-void Kits::load_types(void) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		text_stream *segment;
-		LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
-			pathname *P = Pathnames::subfolder(K->as_copy->location_if_path, I"kinds");
-			filename *F = Filenames::in_folder(P, segment);
-			LOG("Loading kinds definitions from %f\n", F);
-			I6T::interpret_kindt(F);
-		}
+void Kits::load_types(inform_kit *K) {
+	text_stream *segment;
+	LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
+		pathname *P = Pathnames::subfolder(K->as_copy->location_if_path, I"kinds");
+		filename *F = Filenames::in_folder(P, segment);
+		LOG("Loading kinds definitions from %f\n", F);
+		I6T::interpret_kindt(F);
 	}
 }
 #endif
 
 #ifdef CORE_MODULE
-void Kits::activate_plugins(void) {
-	LOG("Activate plugins...\n");
-	Plugins::Manage::activate(CORE_PLUGIN_NAME);
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		element_activation *EA;
-		LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
-			int S = Plugins::Manage::parse(EA->element_name);
-			if (S == -1)
-				Problems::Issue::sentence_problem(_p_(Untestable),
-					"one of the Inform kits made reference to a language segment which does not exist",
-					"which strongly suggests that Inform is not properly installed.");
-			if (S >= 0) {
-				if (EA->activate) Plugins::Manage::activate(S);
-				else Plugins::Manage::deactivate(S);
-			}
+void Kits::activate_plugins(inform_kit *K) {
+	element_activation *EA;
+	LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
+		int S = Plugins::Manage::parse(EA->element_name);
+		if (S == -1)
+			Problems::Issue::sentence_problem(_p_(Untestable),
+				"one of the Inform kits made reference to a language segment which does not exist",
+				"which strongly suggests that Inform is not properly installed.");
+		if (S >= 0) {
+			if (EA->activate) Plugins::Manage::activate(S);
+			else Plugins::Manage::deactivate(S);
 		}
 	}
-	Plugins::Manage::show(DL, "Included", TRUE);
-	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
 #endif
 
-int Kits::Main_defined(void) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
-		if (K->defines_Main)
-			return TRUE;
-	return FALSE;
+void Kits::early_source_text(OUTPUT_STREAM, inform_kit *K) {
+	text_stream *X;
+	LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions)
+		WRITE("Include %S.\n\n", X);
+	if (K->early_source) WRITE("%S\n\n", K->early_source);
 }
 
-text_stream *Kits::index_template(void) {
-	text_stream *I = NULL;
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include)
-		if (K->index_template)
-			I = K->index_template;
-	return I;
-}
-
-@ Every source text read into Inform is automatically prefixed by a few words
-loading the fundamental "extensions" -- text such as "Include Basic Inform by
-Graham Nelson." If Inform were a computer, this would be the BIOS which boots
-up its operating system. Each kit can contribute such extensions, so there
-may be multiple sentences, which we need to count up.
-
-=
-void Kits::feed_early_source_text(OUTPUT_STREAM) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		text_stream *X;
-		LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions)
-			WRITE("Include %S.\n\n", X);
-		if (K->early_source) WRITE("%S\n\n", K->early_source);
-	}
-}
-
-int Kits::number_of_early_fed_sentences(void) {
+int Kits::number_of_early_fed_sentences(inform_kit *K) {
 	int N = 0;
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		text_stream *X;
-		LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions) N++;
-		if (K->early_source) N++;
-	}
+	text_stream *X;
+	LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions) N++;
+	if (K->early_source) N++;
 	return N;
 }
-
-#ifdef CODEGEN_MODULE
-linked_list *requirements_list = NULL;
-linked_list *Kits::list_of_inter_libraries(void) {
-	requirements_list = NEW_LINKED_LIST(link_instruction);
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, kits_to_include) {
-		link_instruction *link = CodeGen::LinkInstructions::new(
-			K->as_copy->location_if_path, K->attachment_point);
-		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
-	}
-	return requirements_list;
-}
-#endif
 
 linked_list *Kits::inter_paths(void) {
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);

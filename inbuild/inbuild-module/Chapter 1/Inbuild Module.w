@@ -17,7 +17,7 @@ Setting up the use of this module.
 @e inbuild_edition_MT
 @e inbuild_requirement_MT
 @e inbuild_copy_MT
-@e build_graph_MT
+@e build_vertex_MT
 @e build_methodology_MT
 @e build_script_MT
 @e build_step_MT
@@ -41,7 +41,7 @@ ALLOCATE_INDIVIDUALLY(inbuild_work)
 ALLOCATE_INDIVIDUALLY(inbuild_edition)
 ALLOCATE_INDIVIDUALLY(inbuild_requirement)
 ALLOCATE_INDIVIDUALLY(inbuild_copy)
-ALLOCATE_INDIVIDUALLY(build_graph)
+ALLOCATE_INDIVIDUALLY(build_vertex)
 ALLOCATE_INDIVIDUALLY(build_methodology)
 ALLOCATE_INDIVIDUALLY(build_script)
 ALLOCATE_INDIVIDUALLY(build_step)

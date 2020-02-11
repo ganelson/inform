@@ -75,7 +75,7 @@ inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *erro
 		Model::edition(Works::new_raw(pipeline_genre, unext, NULL), V), F);
 	DISCARD_TEXT(unext);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	PipelineManager::build_graph(C);
+	PipelineManager::build_vertex(C);
 	return C;
 }
 
@@ -152,6 +152,6 @@ The build graph for a pipeline is just a single node: you don't need to
 build a pipeline at all.
 
 =
-void PipelineManager::build_graph(inbuild_copy *C) {
+void PipelineManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

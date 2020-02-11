@@ -58,7 +58,7 @@ void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 	inbuild_copy *C = ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
-	ProjectBundleManager::build_graph(C);
+	ProjectBundleManager::build_vertex(C);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
@@ -87,6 +87,6 @@ void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inb
 The build graph for a project will need further thought.
 
 =
-void ProjectBundleManager::build_graph(inbuild_copy *C) {
+void ProjectBundleManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

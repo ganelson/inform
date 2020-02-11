@@ -163,8 +163,12 @@ void SharedCLI::create_shared_project(void) {
 		shared_project = ProjectFileManager::from_copy(C);
 	}
 	@<Create the materials nest@>;
-	if (shared_project)
-		Projects::set_source_filename(shared_project, filename_of_i7_source);
+	if (shared_project) {
+		pathname *P = (shared_materials_nest)?(shared_materials_nest->location):NULL;
+		if (P) P = Pathnames::subfolder(P, I"Source");
+		if (Str::len(project_file_request) > 0) P = NULL;
+		Projects::set_source_filename(shared_project, P, filename_of_i7_source);
+	}
 }
 
 @<Create the materials nest@> =
@@ -202,6 +206,30 @@ pathname *SharedCLI::pathname_of_materials(pathname *pathname_of_bundle) {
 	pathname *materials = Pathnames::subfolder(Pathnames::up(pathname_of_bundle), mf);
 	DISCARD_TEXT(mf);
 	return materials;
+}
+
+@h Kit requests.
+
+=
+linked_list *kits_requested_at_command_line = NULL;
+void SharedCLI::request_kit(text_stream *name) {
+	if (kits_requested_at_command_line == NULL)
+		kits_requested_at_command_line = NEW_LINKED_LIST(text_stream);
+	text_stream *kit_name;
+	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
+		if (Str::eq(kit_name, name))
+			return;
+	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
+}
+
+void SharedCLI::pass_kit_requests(void) {
+	if ((shared_project) && (kits_requested_at_command_line)) {
+		text_stream *kit_name;
+		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line) {
+			Projects::add_kit_dependency(shared_project, kit_name);
+			Projects::not_necessarily_parser_IF(shared_project);
+		}
+	}
 }
 
 @h Command line.
@@ -243,7 +271,7 @@ void SharedCLI::option(int id, int val, text_stream *arg, void *state) {
 		case INTERNAL_CLSW: SharedCLI::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW: SharedCLI::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
 		case TRANSIENT_CLSW: shared_transient_resources = Pathnames::from_text(arg); break;
-		case KIT_CLSW: Kits::request(arg); break;
+		case KIT_CLSW: SharedCLI::request_kit(arg); break;
 		case PROJECT_CLSW:
 			if (SharedCLI::set_I7_bundle(arg) == FALSE)
 				Errors::fatal_with_text("can't specify the project twice: '%S'", arg);
@@ -262,4 +290,5 @@ options remain to be processed.
 void SharedCLI::optioneering_complete(void) {
 	SharedCLI::create_shared_project();
 	SharedCLI::sort_nest_list();
+	SharedCLI::pass_kit_requests();
 }

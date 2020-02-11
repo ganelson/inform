@@ -66,9 +66,9 @@ int main(int argc, char **argv) {
 				}
 				WRITE_TO(STDOUT, "\n");
 				break;
-			case GRAPH_TTASK: Graphs::describe(STDOUT, C->graph, TRUE); break;
-			case BUILD_TTASK: Graphs::build(C->graph, BM); break;
-			case REBUILD_TTASK: Graphs::rebuild(C->graph, BM); break;
+			case GRAPH_TTASK: Graphs::describe(STDOUT, C->vertex, TRUE); break;
+			case BUILD_TTASK: Graphs::build(C->vertex, BM); break;
+			case REBUILD_TTASK: Graphs::rebuild(C->vertex, BM); break;
 			case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
 			case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE, BM); break;
 		}

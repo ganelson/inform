@@ -69,7 +69,7 @@ typedef struct inbuild_copy {
 	struct pathname *location_if_path;
 	struct filename *location_if_file;
 	general_pointer content; /* the type of which depends on the work's genre */
-	struct build_graph *graph;
+	struct build_vertex *vertex;
 	MEMORY_MANAGEMENT
 } inbuild_copy;
 
@@ -79,7 +79,7 @@ inbuild_copy *Model::copy_in_file(inbuild_edition *edition, filename *F, general
 	copy->location_if_path = NULL;
 	copy->location_if_file = F;
 	copy->content = C;
-	copy->graph = NULL;
+	copy->vertex = NULL;
 	return copy;
 }
 
@@ -89,7 +89,7 @@ inbuild_copy *Model::copy_in_directory(inbuild_edition *edition, pathname *P, ge
 	copy->location_if_path = P;
 	copy->location_if_file = NULL;
 	copy->content = C;
-	copy->graph = NULL;
+	copy->vertex = NULL;
 	return copy;
 }
 

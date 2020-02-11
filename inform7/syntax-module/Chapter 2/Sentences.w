@@ -453,7 +453,7 @@ source texts implicitly begin with an inclusion of the Standard Rules.)
 <if-start-of-source-text> internal 0 {
 	int w1 = Wordings::first_wn(W);
 	#ifdef CORE_MODULE
-	int N = 1 + Kits::number_of_early_fed_sentences();
+	int N = 1 + Projects::number_of_early_fed_sentences(SharedCLI::project());
 	#endif
 	#ifndef CORE_MODULE
 	int N = 3;
