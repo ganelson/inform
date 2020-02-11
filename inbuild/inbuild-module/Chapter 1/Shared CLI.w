@@ -123,6 +123,15 @@ int SharedCLI::set_I7_source(text_stream *loc) {
 int SharedCLI::set_I7_bundle(text_stream *loc) {
 	if (Str::len(project_bundle_request) > 0) return FALSE;
 	project_bundle_request = Str::duplicate(loc);
+	pathname *pathname_of_bundle = Pathnames::from_text(project_bundle_request);
+	pathname *materials = SharedCLI::pathname_of_materials(pathname_of_bundle);
+	TEMPORARY_TEXT(leaf);
+	WRITE_TO(leaf, "%s-settings.txt", INTOOL_NAME);
+	filename *expert_settings = Filenames::in_folder(materials, leaf);
+	LOG("Speculatively %f\n", expert_settings);
+	if (TextFiles::exists(expert_settings))
+		CommandLine::also_read_file(expert_settings);
+	DISCARD_TEXT(leaf);
 	return TRUE;
 }
 
@@ -142,8 +151,6 @@ void SharedCLI::create_shared_project(void) {
 			Filenames::in_folder(
 				Pathnames::subfolder(pathname_of_bundle, I"Source"),
 				I"story.ni");
-		if (Str::includes(project_bundle_request, I"#2oetMiq9bqxoxY"))
-			Kits::request(I"BasicInformKit");
 	}
 	if (Str::len(project_file_request) > 0) {
 		filename_of_i7_source = Filenames::from_text(project_file_request);
@@ -160,22 +167,10 @@ void SharedCLI::create_shared_project(void) {
 		Projects::set_source_filename(shared_project, filename_of_i7_source);
 }
 
-@ The materials folder sits alongside the project folder and has the same name,
-but ending |.materials| instead of |.inform|.
-
 @<Create the materials nest@> =
 	pathname *materials = NULL;
 	if (pathname_of_bundle) {
-		TEMPORARY_TEXT(mf);
-		WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_bundle));
-		int i = Str::len(mf)-1;
-		while ((i>0) && (Str::get_at(mf, i) != '.')) i--;
-		if (i>0) {
-			Str::truncate(mf, i);
-			WRITE_TO(mf, ".materials");
-		}
-		materials = Pathnames::subfolder(Pathnames::up(pathname_of_bundle), mf);
-		DISCARD_TEXT(mf);
+		materials = SharedCLI::pathname_of_materials(pathname_of_bundle);
 		Pathnames::create_in_file_system(materials);
 	} else if (filename_of_i7_source) {
 		materials = Pathnames::from_text(I"inform.materials");
@@ -191,8 +186,28 @@ inform_project *SharedCLI::project(void) {
 	return shared_project;
 }
 
+@ The materials folder sits alongside the project folder and has the same name,
+but ending |.materials| instead of |.inform|.
+
+=
+pathname *SharedCLI::pathname_of_materials(pathname *pathname_of_bundle) {
+	TEMPORARY_TEXT(mf);
+	WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_bundle));
+	int i = Str::len(mf)-1;
+	while ((i>0) && (Str::get_at(mf, i) != '.')) i--;
+	if (i>0) {
+		Str::truncate(mf, i);
+		WRITE_TO(mf, ".materials");
+	}
+	pathname *materials = Pathnames::subfolder(Pathnames::up(pathname_of_bundle), mf);
+	DISCARD_TEXT(mf);
+	return materials;
+}
+
 @h Command line.
 We add the following switches:
+
+@e INBUILD_CLSG
 
 @e NEST_CLSW
 @e INTERNAL_CLSW
@@ -204,6 +219,7 @@ We add the following switches:
 
 =
 void SharedCLI::declare_options(void) {
+	CommandLine::begin_group(INBUILD_CLSG);
 	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
 		L"add the nest at pathname X to the search list");
 	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
@@ -218,6 +234,7 @@ void SharedCLI::declare_options(void) {
 		L"work within the Inform project X");
 	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
 		L"use file X as the Inform source text");
+	CommandLine::end_group();
 }
 
 void SharedCLI::option(int id, int val, text_stream *arg, void *state) {

@@ -180,6 +180,7 @@ list is not exhaustive.
 	LOG("Inform called as:");
 	for (int i=0; i<argc; i++) LOG(" %s", argv[i]);
 	LOG("\n");
+	CommandLine::play_back_log();
 	Problems::Issue::start_problems_report();
 
 @
