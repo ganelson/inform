@@ -117,10 +117,8 @@ list is not exhaustive.
 @e DEBUG_CLSW
 @e FORMAT_CLSW
 @e CRASHALL_CLSW
-@e KIT_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
-@e PROJECT_CLSW
 @e RELEASE_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e RNG_CLSW
@@ -160,27 +158,17 @@ list is not exhaustive.
 		L"return 0 unless exactly this Problem message is generated (for testing)");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
 		L"specify code-generation pipeline");
-	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
-		L"load the Inform kit called X");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
 		L"specify code-generation pipeline from file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
-
-	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
-		L"work within the Inform project X");
-	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
-		L"use X as the location of built-in material such as the Standard Rules");
-	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
-		L"use X as the user's home for installed material such as extensions");
-	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
-		L"use X for transient data such as the extensions census");
 	SharedCLI::declare_options();
 
 @<Establish our location in the file system@> =
 	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
 
 @<With that done, configure all other settings@> =
+	SharedCLI::optioneering_complete();
 	VirtualMachines::set_identifier(story_filename_extension);
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
@@ -538,7 +526,6 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		/* Other settings */
 		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
-		case KIT_CLSW: Kits::request(arg); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
@@ -557,17 +544,12 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 			Regexp::dispose_of(&mr);
 			break;
 		}
-
-		/* Useful pathnames */
-		case PROJECT_CLSW:
-			if (Str::includes(arg, I"#2oetMiq9bqxoxY")) Kits::request(I"BasicInformKit");
-			Locations::set_project(arg); break;
 	}
 	SharedCLI::option(id, val, arg, state);
 }
 
 void CoreMain::bareword(int id, text_stream *opt, void *state) {
-	if (Locations::set_I7_source(opt) == FALSE)
+	if (SharedCLI::set_I7_source(opt) == FALSE)
 		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
 }
 

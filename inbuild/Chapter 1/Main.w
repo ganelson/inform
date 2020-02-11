@@ -123,6 +123,7 @@ int main(int argc, char **argv) {
 	if (LinkedLists::len(unsorted_nest_list) == 0)
 		SharedCLI::add_nest(
 			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+	SharedCLI::optioneering_complete();
 	inbuild_nest_list = SharedCLI::nest_list();
 
 @ =

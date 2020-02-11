@@ -69,7 +69,8 @@ void InbuildModule::start(void) {
 	ExtensionManager::start();
 	TemplateManager::start();
 	LanguageManager::start();
-	ProjectManager::start();
+	ProjectBundleManager::start();
+	ProjectFileManager::start();
 	PipelineManager::start();
 }
 

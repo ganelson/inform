@@ -209,7 +209,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 				TEMPORARY_TEXT(leaf);
 				WRITE_TO(leaf, "%N", Wordings::first_wn(SW));
 				filename_of_existing_story_file =
-					Filenames::in_folder(pathname_of_materials, leaf);
+					Filenames::in_folder(SharedCLI::materials(), leaf);
 				DISCARD_TEXT(leaf);
 			}
 			existing_story_file = TRUE;
@@ -221,7 +221,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(DW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(pathname_of_materials, leaf);
+			filename *A = Filenames::in_folder(SharedCLI::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				pathname_of_materials_release,
@@ -234,7 +234,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(LW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(pathname_of_materials, leaf);
+			filename *A = Filenames::in_folder(SharedCLI::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				pathname_of_materials_release,
@@ -249,7 +249,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(FW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(pathname_of_materials, leaf);
+			filename *A = Filenames::in_folder(SharedCLI::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			TEMPORARY_TEXT(folder);
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
@@ -352,13 +352,13 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	}
 
 @<Create the Materials folder if not already present@> =
-	if (Pathnames::create_in_file_system(pathname_of_materials) == FALSE) {
+	if (Pathnames::create_in_file_system(SharedCLI::materials()) == FALSE) {
 		Problems::Issue::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
 			"was to have been called",
-			pathname_of_materials);
+			SharedCLI::materials());
 		return;
 	}
 
@@ -614,7 +614,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		WRITE("<auxiliary>\n"); INDENT;
 		WRITE("<leafname>");
 		TEMPORARY_TEXT(rel);
-		Filenames::to_text_relative(rel, af->name_of_original_file, pathname_of_materials);
+		Filenames::to_text_relative(rel, af->name_of_original_file, SharedCLI::materials());
 		HTMLFiles::write_xml_safe_text(OUT, rel);
 		DISCARD_TEXT(rel);
 		WRITE("</leafname>\n");
@@ -867,7 +867,7 @@ the Blorb-file's filename won't be too long for the file system.
 		filename_of_cblorb_report);
 
 @<Tell Inblorb where the project and release folders are@> =
-	WRITE("project folder \"%p\"\n", pathname_of_project);
+	WRITE("project folder \"%p\"\n", Projects::path(SharedCLI::project()));
 	if (create_Materials)
 		WRITE("release to \"%p\"\n", pathname_of_materials_release);
 
@@ -1001,14 +1001,14 @@ file online.
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == JAVASCRIPT_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, pathname_of_materials);
+			Filenames::to_text_relative(rel, af->name_of_original_file, SharedCLI::materials());
 			WRITE("<script src='%S'></script>", rel);
 			DISCARD_TEXT(rel);
 		}
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == CSS_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, pathname_of_materials);
+			Filenames::to_text_relative(rel, af->name_of_original_file, SharedCLI::materials());
 			WRITE("<link rel='stylesheet' href='%S' type='text/css' media='all'></link>", rel);
 			DISCARD_TEXT(rel);
 		}

@@ -69,10 +69,11 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	TEMPORARY_TEXT(file);
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
-		#ifdef REDIRECT_PROBLEM_SOURCE_TO
-		if (REDIRECT_PROBLEM_SOURCE_TO) {
+		#ifdef INBUILD_MODULE
+		pathname *proj = Projects::path(SharedCLI::project());
+		if (proj) {
 			TEMPORARY_TEXT(project_prefix);
-			WRITE_TO(project_prefix, "%p", pathname_of_project);
+			WRITE_TO(project_prefix, "%p", proj);
 			if (Str::prefix_eq(file, project_prefix, Str::len(project_prefix)))
 				Str::delete_n_characters(file, Str::len(project_prefix));
 		}

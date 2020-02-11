@@ -4,7 +4,6 @@ Interface to the Problems module.
 
 @
 
-@d REDIRECT_PROBLEM_SOURCE_TO pathname_of_project
 @d PROBLEMS_HTML_EMITTER HTMLFiles::char_out
 
 @ Inform tops and tails its output of problem messages, and it also prints

@@ -21,7 +21,8 @@ Chapter 3: Managing Genres of Work
 	Kit Manager
 	Extension Manager
 	Language Manager
-	Project Manager
+	Project Bundle Manager
+	Project File Manager
 	Template Manager
 	Pipeline Manager
 

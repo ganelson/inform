@@ -100,9 +100,9 @@ void HTMLFiles::html_source_link(OUTPUT_STREAM, source_location sl, int nonbreak
 	if (sl.file_of_origin) {
 		TEMPORARY_TEXT(fn);
 		WRITE_TO(fn, "%f", TextFromFiles::get_filename(sl.file_of_origin));
-		if (pathname_of_project) {
+		if (Projects::path(SharedCLI::project())) {
 			TEMPORARY_TEXT(pp);
-			WRITE_TO(pp, "%p", pathname_of_project);
+			WRITE_TO(pp, "%p", Projects::path(SharedCLI::project()));
 			int N = Str::len(pp);
 			if (Str::prefix_eq(fn, pp, N))
 				Str::delete_n_characters(fn, N+1);

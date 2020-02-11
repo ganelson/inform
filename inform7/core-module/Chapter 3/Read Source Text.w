@@ -34,7 +34,7 @@ void SourceFiles::read_primary_source_text(void) {
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
 	SourceFiles::read_further_mandatory_text();
-	SourceFiles::read_file(filename_of_i7_source, I"your source text", NULL, FALSE);
+	SourceFiles::read_file(Projects::source(SharedCLI::project()), I"your source text", NULL, FALSE);
 }
 
 @ The following reads in the text of the optional file of use options, if

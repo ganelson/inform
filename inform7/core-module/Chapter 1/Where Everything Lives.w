@@ -11,14 +11,12 @@ these are stored in the following globals. Explanations are given below,
 not here.
 
 = (early code)
-pathname *pathname_of_materials = NULL;
 pathname *pathname_of_extension_docs = NULL;
 pathname *pathname_of_extension_docs_inner = NULL;
 pathname *pathname_of_HTML_models = NULL;
 pathname *pathname_of_materials_figures = NULL;
 pathname *pathname_of_materials_release = NULL;
 pathname *pathname_of_materials_sounds = NULL;
-pathname *pathname_of_project = NULL;
 pathname *pathname_of_project_index_details_folder = NULL;
 pathname *pathname_of_project_index_folder = NULL;
 pathname *pathname_of_released_figures = NULL;
@@ -39,7 +37,6 @@ filename *filename_of_epsfile = NULL;
 filename *filename_of_existing_story_file = NULL;
 filename *filename_of_extensions_dictionary = NULL;
 filename *filename_of_headings = NULL;
-filename *filename_of_i7_source = NULL;
 filename *filename_of_ifiction_record = NULL;
 filename *filename_of_intro_booklet = NULL;
 filename *filename_of_intro_postcard = NULL;
@@ -53,31 +50,10 @@ filename *filename_of_report = NULL;
 filename *filename_of_small_cover_art_jpeg = NULL;
 filename *filename_of_small_cover_art_png = NULL;
 filename *filename_of_small_default_cover_art = NULL;
-filename *filename_of_SR_module = NULL;
 filename *filename_of_story_file = NULL;
 filename *filename_of_telemetry = NULL;
 filename *filename_of_uuid = NULL;
 filename *filename_of_xrefs = NULL;
-
-@h Command line settings.
-The following are called when the command line is parsed.
-
-=
-void Locations::set_project(text_stream *loc) {
-	pathname_of_project = Pathnames::from_text(loc);
-}
-
-int Locations::set_I7_source(text_stream *loc) {
-	if (filename_of_i7_source) return FALSE;
-	filename_of_i7_source = Filenames::from_text(loc);
-	return TRUE;
-}
-
-int Locations::set_SR_module(text_stream *loc) {
-	if (filename_of_SR_module) return FALSE;
-	filename_of_SR_module = Filenames::from_text(loc);
-	return TRUE;
-}
 
 @h Establishing the defaults.
 Inform's file access happens inside four different areas: the internal
@@ -91,16 +67,14 @@ and census mode, when it's scanning the file system for extensions.
 
 =
 int Locations::set_defaults(int census_mode) {
-	@<Materials folder@>;
-	if (pathname_of_materials)
-		SharedCLI::add_nest(pathname_of_materials, MATERIALS_NEST_TAG);
 	@<Internal resources@>;
 	@<External resources@>;
 	@<Project resources@>;
 	@<Materials resources@>;
-	if ((census_mode == FALSE) && (filename_of_i7_source == NULL))
+	inform_project *project = SharedCLI::project();
+	if ((census_mode == FALSE) && (project == NULL))
 		Problems::Fatal::issue("Except in census mode, source text must be supplied");
-	if ((census_mode) && (filename_of_i7_source))
+	if ((census_mode) && (project))
 		Problems::Fatal::issue("In census mode, no source text may be supplied");
 	return TRUE;
 }
@@ -266,27 +240,15 @@ have no purpose unless Inform is in a release run (with |-release| set on
 the command line), but they take no time to generate so we make them anyway.
 
 @<Project resources@> =
-	@<The Source folder within the project@>;
+	pathname *proj = Projects::path(SharedCLI::project());
 	@<The Build folder within the project@>;
 	@<The Index folder within the project@>;
 
-	filename_of_uuid = Filenames::in_folder(pathname_of_project, I"uuid.txt");
+	filename_of_uuid = Filenames::in_folder(proj, I"uuid.txt");
 
-	filename_of_ifiction_record = Filenames::in_folder(pathname_of_project, I"Metadata.iFiction");
-	filename_of_manifest = Filenames::in_folder(pathname_of_project, I"manifest.plist");
-	filename_of_blurb = Filenames::in_folder(pathname_of_project, I"Release.blurb");
-
-@ This contains just the main source text for the project. Anachronistically,
-this has the filename extension |.ni| for "natural Inform", which was the
-working title for Inform 7 back in the early 2000s.
-
-@<The Source folder within the project@> =
-	if (filename_of_i7_source == NULL)
-		if (pathname_of_project)
-			filename_of_i7_source =
-				Filenames::in_folder(
-					Pathnames::subfolder(pathname_of_project, I"Source"),
-					I"story.ni");
+	filename_of_ifiction_record = Filenames::in_folder(proj, I"Metadata.iFiction");
+	filename_of_manifest = Filenames::in_folder(proj, I"manifest.plist");
+	filename_of_blurb = Filenames::in_folder(proj, I"Release.blurb");
 
 @ The build folder for a project contains all of the working files created
 during the compilation process. The opening part here may be a surprise:
@@ -307,7 +269,7 @@ will produce if this is a Release run.
 	pathname *build_folder = pathname_of_transient_census_data;
 
 	if (census_mode == FALSE) {
-		build_folder = Pathnames::subfolder(pathname_of_project, I"Build");
+		build_folder = Pathnames::subfolder(proj, I"Build");
 		if (Pathnames::create_in_file_system(build_folder) == 0) return FALSE;
 	}
 
@@ -335,7 +297,7 @@ the index as seen by the user.
 
 @<The Index folder within the project@> =
 	pathname_of_project_index_folder =
-		Pathnames::subfolder(pathname_of_project, I"Index");
+		Pathnames::subfolder(proj, I"Index");
 	pathname_of_project_index_details_folder =
 		Pathnames::subfolder(pathname_of_project_index_folder, I"Details");
 
@@ -346,28 +308,6 @@ the index as seen by the user.
 
 	filename_of_headings =
 		Filenames::in_folder(pathname_of_project_index_folder, I"Headings.xml");
-
-@h Materials folder.
-The materials folder sits alongside the project folder and has the same name,
-but ending |.materials| instead of |.inform|.
-
-@<Materials folder@> =
-	if (pathname_of_project) {
-		TEMPORARY_TEXT(mf);
-		WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_project));
-		int i = Str::len(mf)-1;
-		while ((i>0) && (Str::get_at(mf, i) != '.')) i--;
-		if (i>0) {
-			Str::truncate(mf, i);
-			WRITE_TO(mf, ".materials");
-		}
-		pathname_of_materials =
-			Pathnames::subfolder(pathname_of_project->pathname_of_parent, mf);
-		DISCARD_TEXT(mf);
-		if (Pathnames::create_in_file_system(pathname_of_materials) == 0) return FALSE;
-	} else {
-		pathname_of_materials = Pathnames::from_text(I"inform.materials");
-	}
 
 @h Materials resources.
 
@@ -386,15 +326,17 @@ This is also where the originals (not the released copies) of the Figures
 and Sounds, if any, live: in their own subfolders.
 
 @<Figures and sounds@> =
-	pathname_of_materials_figures =    Pathnames::subfolder(pathname_of_materials, I"Figures");
-	pathname_of_materials_sounds =     Pathnames::subfolder(pathname_of_materials, I"Sounds");
+	pathname *M = SharedCLI::materials();
 
-	filename_of_large_cover_art_jpeg = Filenames::in_folder(pathname_of_materials, I"Cover.jpg");
-	filename_of_large_cover_art_png =  Filenames::in_folder(pathname_of_materials, I"Cover.png");
-	filename_of_small_cover_art_jpeg = Filenames::in_folder(pathname_of_materials, I"Small Cover.jpg");
-	filename_of_small_cover_art_png =  Filenames::in_folder(pathname_of_materials, I"Small Cover.png");
+	pathname_of_materials_figures =    Pathnames::subfolder(M, I"Figures");
+	pathname_of_materials_sounds =     Pathnames::subfolder(M, I"Sounds");
 
-	filename_of_epsfile =              Filenames::in_folder(pathname_of_materials, I"Inform Map.eps");
+	filename_of_large_cover_art_jpeg = Filenames::in_folder(M, I"Cover.jpg");
+	filename_of_large_cover_art_png =  Filenames::in_folder(M, I"Cover.png");
+	filename_of_small_cover_art_jpeg = Filenames::in_folder(M, I"Small Cover.jpg");
+	filename_of_small_cover_art_png =  Filenames::in_folder(M, I"Small Cover.png");
+
+	filename_of_epsfile =              Filenames::in_folder(M, I"Inform Map.eps");
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
@@ -402,7 +344,10 @@ is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
 
 @<The Release folder@> =
-	pathname_of_materials_release =    Pathnames::subfolder(pathname_of_materials, I"Release");
+	pathname *M = SharedCLI::materials();
+
+	pathname_of_materials_release =    Pathnames::subfolder(M, I"Release");
+
 	pathname_of_released_interpreter = Pathnames::subfolder(pathname_of_materials_release, I"interpreter");
 	pathname_of_released_figures =     Pathnames::subfolder(pathname_of_materials_release, I"Figures");
 	pathname_of_released_sounds =      Pathnames::subfolder(pathname_of_materials_release, I"Sounds");
@@ -416,7 +361,7 @@ have by default, if so.
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "story.%S", story_filename_extension);
 	filename_of_existing_story_file =
-		Filenames::in_folder(pathname_of_materials, leaf);
+		Filenames::in_folder(SharedCLI::materials(), leaf);
 	DISCARD_TEXT(leaf);
 
 @h Location of extensions.
@@ -465,7 +410,8 @@ leafname |A.html|.
 
 =
 filename *Locations::in_index(text_stream *leafname, int sub) {
-	if (pathname_of_project == NULL) return Filenames::in_folder(NULL, leafname);
+	pathname *proj = Projects::path(SharedCLI::project());
+	if (proj == NULL) return Filenames::in_folder(NULL, leafname);
 	if (sub >= 0) {
 		TEMPORARY_TEXT(full_leafname);
 		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
