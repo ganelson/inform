@@ -3,6 +3,16 @@
 A subset of command-line options shared by the tools which incorporate this
 module.
 
+@h Using this API.
+The Inbuild module has to be used in three phases, as follows:
+
+@e CONFIGURATION_INBUILD_PHASE from 1
+@e TINKERING_INBUILD_PHASE
+@e GRAPHING_INBUILD_PHASE
+
+=
+int inbuild_phase = CONFIGURATION_INBUILD_PHASE;
+
 @h The nest list.
 Nests used by the Inform and Inbuild tools are tagged with the following
 comstamts, except that no nest is ever tagged |NOT_A_NEST_TAG|.
@@ -29,6 +39,7 @@ inbuild_nest *shared_external_nest = NULL;
 inbuild_nest *shared_materials_nest = NULL;
 
 inbuild_nest *SharedCLI::add_nest(pathname *P, int tag) {
+	if (inbuild_phase > CONFIGURATION_INBUILD_PHASE) internal_error("too late");
 	if (unsorted_nest_list == NULL)
 		unsorted_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N = Nests::new(P);
@@ -49,6 +60,8 @@ are given precedence over those in the external folder, and so on.
 =
 linked_list *shared_nest_list = NULL;
 void SharedCLI::sort_nest_list(void) {
+	if (inbuild_phase < TINKERING_INBUILD_PHASE) internal_error("too soon");
+	if (inbuild_phase > TINKERING_INBUILD_PHASE) internal_error("too late");
 	shared_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, unsorted_nest_list)
@@ -142,24 +155,29 @@ int SharedCLI::set_I7_bundle(text_stream *loc) {
 =
 inform_project *shared_project = NULL;
 
-void SharedCLI::create_shared_project(void) {
+void SharedCLI::create_shared_project(inbuild_copy *C) {
 	filename *filename_of_i7_source = NULL;
 	pathname *pathname_of_bundle = NULL;
 	if (Str::len(project_bundle_request) > 0) {
 		pathname_of_bundle = Pathnames::from_text(project_bundle_request);
-		filename_of_i7_source =
-			Filenames::in_folder(
-				Pathnames::subfolder(pathname_of_bundle, I"Source"),
-				I"story.ni");
 	}
 	if (Str::len(project_file_request) > 0) {
 		filename_of_i7_source = Filenames::from_text(project_file_request);
 	}
+	if (C) {
+		pathname_of_bundle = C->location_if_path;
+		filename_of_i7_source = C->location_if_file;
+	}
+	if ((pathname_of_bundle) && (filename_of_i7_source == NULL))
+		filename_of_i7_source =
+			Filenames::in_folder(
+				Pathnames::subfolder(pathname_of_bundle, I"Source"),
+				I"story.ni");
 	if (pathname_of_bundle) {
-		inbuild_copy *C = ProjectBundleManager::claim_folder_as_copy(pathname_of_bundle);
+		if (C == NULL) C = ProjectBundleManager::claim_folder_as_copy(pathname_of_bundle);
 		shared_project = ProjectBundleManager::from_copy(C);
 	} else if (filename_of_i7_source) {
-		inbuild_copy *C = ProjectFileManager::claim_file_as_copy(filename_of_i7_source);
+		if (C == NULL) C = ProjectFileManager::claim_file_as_copy(filename_of_i7_source);
 		shared_project = ProjectFileManager::from_copy(C);
 	}
 	@<Create the materials nest@>;
@@ -287,8 +305,10 @@ void SharedCLI::option(int id, int val, text_stream *arg, void *state) {
 options remain to be processed.
 
 =
-void SharedCLI::optioneering_complete(void) {
-	SharedCLI::create_shared_project();
+inbuild_copy *SharedCLI::optioneering_complete(inbuild_copy *C) {
+	SharedCLI::create_shared_project(C);
+	inbuild_phase = TINKERING_INBUILD_PHASE;
 	SharedCLI::sort_nest_list();
 	SharedCLI::pass_kit_requests();
+	return (shared_project)?(shared_project->as_copy):NULL;
 }

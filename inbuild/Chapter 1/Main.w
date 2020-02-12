@@ -125,7 +125,24 @@ int main(int argc, char **argv) {
 			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
 	
 	CommandLine::play_back_log();
-	SharedCLI::optioneering_complete();
+	inbuild_copy *proj = NULL, *C;
+	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
+		if (C->edition->work->genre == project_bundle_genre) {
+			if (Str::len(project_bundle_request) > 0)
+				Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
+			else if (proj) Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
+			else proj = C;
+		}
+	
+	proj = SharedCLI::optioneering_complete(proj);
+	if (proj) {
+		int found = FALSE;
+		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
+			if (C == proj)
+				found = TRUE;
+		if (found == FALSE) ADD_TO_LINKED_LIST(proj, inbuild_copy, targets);
+		Projects::construct_graph(SharedCLI::project());
+	}
 	inbuild_nest_list = SharedCLI::nest_list();
 
 @ =

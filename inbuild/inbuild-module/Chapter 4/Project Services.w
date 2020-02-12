@@ -34,19 +34,17 @@ void Projects::set_source_filename(inform_project *project, pathname *P, filenam
 			NULL, FALSE, Projects::manifest_helper, NULL, (void *) L);
 		text_stream *leafname;
 		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
-			build_vertex *S = Graphs::internal_vertex(Filenames::in_folder(P, leafname));
+			build_vertex *S = Graphs::file_vertex(Filenames::in_folder(P, leafname));
 			S->annotation = leafname;
 			ADD_TO_LINKED_LIST(S, build_vertex, project->source_vertices);
 		}
 	}
 	if ((LinkedLists::len(project->source_vertices) == 0) && (F)) {
-		build_vertex *S = Graphs::internal_vertex(F);
+		build_vertex *S = Graphs::file_vertex(F);
 		S->annotation = I"your source text";
 		ADD_TO_LINKED_LIST(S, build_vertex, project->source_vertices);
 	}
 }
-
-//  Graphs::arrow(project->as_copy->vertex, S);
 
 void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void *state) {
 	linked_list *L = (linked_list *) state;
@@ -187,3 +185,17 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 	return requirements_list;
 }
 #endif
+
+void Projects::construct_graph(inform_project *project) {
+	if (project == NULL) return;
+	Projects::finalise_kit_dependencies(project);
+	build_vertex *V = project->as_copy->vertex;
+	inform_kit *K;
+	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
+		 Graphs::need_this_to_build(V, K->as_copy->vertex);
+	}
+	build_vertex *S;
+	LOOP_OVER_LINKED_LIST(S, build_vertex, project->source_vertices) {
+		 Graphs::need_this_to_build(V, S);
+	}
+}

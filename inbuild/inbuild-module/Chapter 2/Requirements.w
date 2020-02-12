@@ -60,6 +60,11 @@ inbuild_requirement *Requirements::from_text(text_stream *T, text_stream *errors
 
 void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_stream *errors) {
 	Str::trim_white_space(T);
+	if (Str::get_last_char(T) == '*') {
+		req->allow_malformed = TRUE;
+		Str::delete_last_character(T);
+		Str::trim_white_space(T);
+	}
 	if (Str::eq(T, I"all")) return;
 
 	TEMPORARY_TEXT(clause);
@@ -122,6 +127,33 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 
 	DISCARD_TEXT(clause);
 	DISCARD_TEXT(value);
+}
+
+void Requirements::write(OUTPUT_STREAM, inbuild_requirement *req) {
+	if (req == NULL) { WRITE("<none>"); return; }
+	int claused = FALSE;
+	if (req->work->genre) {
+		if (claused) WRITE(","); claused = TRUE;
+		WRITE("genre=%S", req->work->genre->genre_name);
+	}
+	if (Str::len(req->work->title) > 0) {
+		if (claused) WRITE(","); claused = TRUE;
+		WRITE("work=%S", req->work->title);
+	}
+	if (Str::len(req->work->author_name) > 0) {
+		if (claused) WRITE(","); claused = TRUE;
+		WRITE("author=%S", req->work->author_name);
+	}
+	if (VersionNumbers::is_null(req->min_version) == FALSE) {
+		if (claused) WRITE(","); claused = TRUE;
+		WRITE("min=%v", &(req->min_version));
+	}
+	if (VersionNumbers::is_null(req->max_version) == FALSE) {
+		if (claused) WRITE(","); claused = TRUE;
+		WRITE("max=%v", &(req->max_version));
+	}
+	if (claused == FALSE) WRITE("all");
+	if (req->allow_malformed) WRITE("*");
 }
 
 int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {

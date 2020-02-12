@@ -168,7 +168,7 @@ list is not exhaustive.
 	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
 
 @<With that done, configure all other settings@> =
-	SharedCLI::optioneering_complete();
+	SharedCLI::optioneering_complete(NULL);
 	VirtualMachines::set_identifier(story_filename_extension);
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
@@ -212,7 +212,7 @@ list is not exhaustive.
 	doc_references_top = lexer_wordcount - 1;
 
 @<Work out our kit requirements@> =
-	Projects::finalise_kit_dependencies(SharedCLI::project());
+	Projects::construct_graph(SharedCLI::project());
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
