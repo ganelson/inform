@@ -116,12 +116,12 @@ int main(int argc, char **argv) {
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
-	SharedCLI::declare_options();
+	Inbuild::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
 	if (LinkedLists::len(unsorted_nest_list) == 0)
-		SharedCLI::add_nest(
+		Inbuild::add_nest(
 			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
 	
 	CommandLine::play_back_log();
@@ -134,16 +134,16 @@ int main(int argc, char **argv) {
 			else proj = C;
 		}
 	
-	proj = SharedCLI::optioneering_complete(proj);
+	proj = Inbuild::optioneering_complete(proj);
 	if (proj) {
 		int found = FALSE;
 		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
 			if (C == proj)
 				found = TRUE;
 		if (found == FALSE) ADD_TO_LINKED_LIST(proj, inbuild_copy, targets);
-		Projects::construct_graph(SharedCLI::project());
 	}
-	inbuild_nest_list = SharedCLI::nest_list();
+	inbuild_nest_list = Inbuild::nest_list();
+	Inbuild::go_operational();
 
 @ =
 void Main::option(int id, int val, text_stream *arg, void *state) {
@@ -163,7 +163,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
 	}
-	SharedCLI::option(id, val, arg, state);
+	Inbuild::option(id, val, arg, state);
 }
 
 void Main::bareword(int id, text_stream *arg, void *state) {

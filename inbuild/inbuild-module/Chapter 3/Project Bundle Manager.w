@@ -12,6 +12,7 @@ void ProjectBundleManager::start(void) {
 	METHOD_ADD(project_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectBundleManager::claim_as_copy);
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);
 	METHOD_ADD(project_bundle_genre, GENRE_COPY_TO_NEST_MTID, ProjectBundleManager::copy_to_nest);
+	METHOD_ADD(project_bundle_genre, GENRE_GO_OPERATIONAL_MTID, ProjectBundleManager::go_operational);
 }
 
 void ProjectBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -84,9 +85,18 @@ void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inb
 }
 
 @h Build graph.
-The build graph for a project will need further thought.
+The build graph for a project will need further thought...
 
 =
 void ProjectBundleManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }
+
+@ which it will get here:
+
+=
+void ProjectBundleManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+	Projects::construct_graph(ProjectBundleManager::from_copy(C));
+}
+
+

@@ -65,8 +65,9 @@ linked_list *Projects::source(inform_project *project) {
 }
 
 void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name) {
+	RUN_ONLY_BEFORE_PHASE(OPERATIONAL_INBUILD_PHASE)
 	if (Projects::uses_kit(project, kit_name)) return;
-	linked_list *nest_list = SharedCLI::nest_list();
+	linked_list *nest_list = Inbuild::nest_list();
 	inform_kit *kit = Kits::load(kit_name, nest_list);
 	ADD_TO_LINKED_LIST(kit, inform_kit, project->kits_to_include);
 }
@@ -80,6 +81,7 @@ int Projects::uses_kit(inform_project *project, text_stream *name) {
 }
 
 void Projects::finalise_kit_dependencies(inform_project *project) {
+	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	Projects::add_kit_dependency(project, I"BasicInformKit");
 	Languages::request_required_kits(project);
 	if (project->assumed_to_be_parser_IF)
@@ -187,6 +189,7 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 #endif
 
 void Projects::construct_graph(inform_project *project) {
+	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	if (project == NULL) return;
 	Projects::finalise_kit_dependencies(project);
 	build_vertex *V = project->as_copy->vertex;

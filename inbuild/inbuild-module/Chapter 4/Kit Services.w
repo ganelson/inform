@@ -193,7 +193,7 @@ int Kits::number_of_early_fed_sentences(inform_kit *K) {
 linked_list *Kits::inter_paths(void) {
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 	inbuild_nest *N;
-	linked_list *L = SharedCLI::nest_list();
+	linked_list *L = Inbuild::nest_list();
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
 	return inter_paths;

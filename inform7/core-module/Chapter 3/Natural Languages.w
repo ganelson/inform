@@ -21,7 +21,7 @@ void NaturalLanguages::scan(void) {
 		bundle_scan_made = TRUE;
 		inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, SharedCLI::nest_list(), L);
+		Nests::search_for(req, Inbuild::nest_list(), L);
 		language_scan_top = lexer_wordcount - 1;
 	}
 }
@@ -69,7 +69,7 @@ inform_language *NaturalLanguages::English(void) {
 void NaturalLanguages::produce_index(void) {
 	I6T::interpret_indext(
 		Filenames::in_folder(
-			Languages::path_to_bundle(language_of_index), Projects::index_template(SharedCLI::project())));
+			Languages::path_to_bundle(language_of_index), Projects::index_template(Inbuild::project())));
 }
 
 @

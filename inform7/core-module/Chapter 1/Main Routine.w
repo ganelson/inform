@@ -162,13 +162,13 @@ list is not exhaustive.
 		L"specify code-generation pipeline from file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
-	SharedCLI::declare_options();
+	Inbuild::declare_options();
 
 @<Establish our location in the file system@> =
 	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
 
 @<With that done, configure all other settings@> =
-	SharedCLI::optioneering_complete(NULL);
+	Inbuild::optioneering_complete(NULL);
 	VirtualMachines::set_identifier(story_filename_extension);
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
@@ -212,7 +212,7 @@ list is not exhaustive.
 	doc_references_top = lexer_wordcount - 1;
 
 @<Work out our kit requirements@> =
-	Projects::construct_graph(SharedCLI::project());
+	Inbuild::go_operational();
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
@@ -223,7 +223,7 @@ list is not exhaustive.
 @<Perform semantic analysis@> =
 	ProgressBar::update_progress_bar(1, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Semantic analysis Ia");
-	Projects::activate_plugins(SharedCLI::project());
+	Projects::activate_plugins(Inbuild::project());
 	COMPILATION_STEP(ParseTreeUsage::plant_parse_tree, I"ParseTreeUsage::plant_parse_tree")
 	COMPILATION_STEP(StructuralSentences::break_source, I"StructuralSentences::break_source")
 	COMPILATION_STEP(Extensions::Inclusion::traverse, I"Extensions::Inclusion::traverse")
@@ -231,7 +231,7 @@ list is not exhaustive.
 
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Initialise language semantics");
 	COMPILATION_STEP(Plugins::Manage::start_plugins, I"Plugins::Manage::start_plugins");
-	Projects::load_types(SharedCLI::project());
+	Projects::load_types(Inbuild::project());
 	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
 	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
 
@@ -368,7 +368,7 @@ with "Output.i6t".
 
 	COMPILATION_STEP(Lists::check, I"Lists::check")
 	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	if (Projects::Main_defined(SharedCLI::project()) == FALSE)
+	if (Projects::Main_defined(Inbuild::project()) == FALSE)
 		COMPILATION_STEP(Phrases::invoke_to_begin, I"Phrases::invoke_to_begin")
 	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
 	COMPILATION_STEP(Strings::compile_responses, I"Strings::compile_responses")
@@ -432,7 +432,7 @@ with "Output.i6t".
 				inbuild_requirement *req =
 					Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
 				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-				Nests::search_for(req, SharedCLI::nest_list(), L);
+				Nests::search_for(req, Inbuild::nest_list(), L);
 				if (LinkedLists::len(L) == 0) {
 					WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
 					Problems::Fatal::issue("The Inter pipeline could not be found");
@@ -450,7 +450,7 @@ with "Output.i6t".
 			}
 			CodeGen::Pipeline::set_repository(SS, Emit::tree());
 			CodeGen::Pipeline::run(Filenames::get_path_to(filename_of_compiled_i6_code),
-				SS, Kits::inter_paths(), Projects::list_of_inter_libraries(SharedCLI::project()));
+				SS, Kits::inter_paths(), Projects::list_of_inter_libraries(Inbuild::project()));
 		}
 		LOG("Back end elapsed time: %dcs\n", ((int) (clock() - front_end)) / (CLOCKS_PER_SEC/100));
 	}
@@ -546,11 +546,11 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 			break;
 		}
 	}
-	SharedCLI::option(id, val, arg, state);
+	Inbuild::option(id, val, arg, state);
 }
 
 void CoreMain::bareword(int id, text_stream *opt, void *state) {
-	if (SharedCLI::set_I7_source(opt) == FALSE)
+	if (Inbuild::set_I7_source(opt) == FALSE)
 		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
 }
 

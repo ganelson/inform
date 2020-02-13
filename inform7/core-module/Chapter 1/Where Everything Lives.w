@@ -71,7 +71,7 @@ int Locations::set_defaults(int census_mode) {
 	@<External resources@>;
 	@<Project resources@>;
 	@<Materials resources@>;
-	inform_project *project = SharedCLI::project();
+	inform_project *project = Inbuild::project();
 	if ((census_mode == FALSE) && (project == NULL))
 		Problems::Fatal::issue("Except in census mode, source text must be supplied");
 	if ((census_mode) && (project))
@@ -94,7 +94,7 @@ Inform therefore requires on every run that it be told via the |-internal|
 switch where the internal resources folder is.
 
 @<Internal resources@> =
-	inbuild_nest *I = SharedCLI::internal();
+	inbuild_nest *I = Inbuild::internal();
 	if (I == NULL) Problems::Fatal::issue("Did not set -internal when calling");
 	pathname *pathname_of_internal_folder = I->location;
 
@@ -145,7 +145,7 @@ If |-transient| is not specified, it's the same folder, i.e., Inform does
 not distinguish between permanent and transient external resources.
 
 @<External resources@> =
-	inbuild_nest *E = SharedCLI::external();
+	inbuild_nest *E = Inbuild::external();
 	if (E == NULL) {
 		pathname *P = home_path;
 		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
@@ -156,14 +156,14 @@ not distinguish between permanent and transient external resources.
 			DISCARD_TEXT(SF);
 		}
 		P = Pathnames::subfolder(P, I"Inform");
-		E = SharedCLI::add_nest(P, EXTERNAL_NEST_TAG);
+		E = Inbuild::add_nest(P, EXTERNAL_NEST_TAG);
 	}
 	pathname *pathname_of_external_folder = E->location;
 
 	if (Pathnames::create_in_file_system(pathname_of_external_folder) == 0) return FALSE;
 	@<Permanent external resources@>;
 
-	pathname *pathname_of_transient_external_resources = SharedCLI::transient();
+	pathname *pathname_of_transient_external_resources = Inbuild::transient();
 	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
 	@<Transient external resources@>;
 
@@ -240,7 +240,7 @@ have no purpose unless Inform is in a release run (with |-release| set on
 the command line), but they take no time to generate so we make them anyway.
 
 @<Project resources@> =
-	pathname *proj = Projects::path(SharedCLI::project());
+	pathname *proj = Projects::path(Inbuild::project());
 	@<The Build folder within the project@>;
 	@<The Index folder within the project@>;
 
@@ -326,7 +326,7 @@ This is also where the originals (not the released copies) of the Figures
 and Sounds, if any, live: in their own subfolders.
 
 @<Figures and sounds@> =
-	pathname *M = SharedCLI::materials();
+	pathname *M = Inbuild::materials();
 
 	pathname_of_materials_figures =    Pathnames::subfolder(M, I"Figures");
 	pathname_of_materials_sounds =     Pathnames::subfolder(M, I"Sounds");
@@ -344,7 +344,7 @@ is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
 
 @<The Release folder@> =
-	pathname *M = SharedCLI::materials();
+	pathname *M = Inbuild::materials();
 
 	pathname_of_materials_release =    Pathnames::subfolder(M, I"Release");
 
@@ -361,7 +361,7 @@ have by default, if so.
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "story.%S", story_filename_extension);
 	filename_of_existing_story_file =
-		Filenames::in_folder(SharedCLI::materials(), leaf);
+		Filenames::in_folder(Inbuild::materials(), leaf);
 	DISCARD_TEXT(leaf);
 
 @h Location of extensions.
@@ -410,7 +410,7 @@ leafname |A.html|.
 
 =
 filename *Locations::in_index(text_stream *leafname, int sub) {
-	pathname *proj = Projects::path(SharedCLI::project());
+	pathname *proj = Projects::path(Inbuild::project());
 	if (proj == NULL) return Filenames::in_folder(NULL, leafname);
 	if (sub >= 0) {
 		TEMPORARY_TEXT(full_leafname);

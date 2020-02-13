@@ -30,11 +30,11 @@ int SourceFiles::read_extension_source_text(extension_file *EF,
 
 void SourceFiles::read_primary_source_text(void) {
 	TEMPORARY_TEXT(early);
-	Projects::early_source_text(early, SharedCLI::project());
+	Projects::early_source_text(early, Inbuild::project());
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
 	SourceFiles::read_further_mandatory_text();
-	linked_list *L = Projects::source(SharedCLI::project());
+	linked_list *L = Projects::source(Inbuild::project());
 	if (L) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
@@ -93,7 +93,7 @@ int SourceFiles::read_file(filename *F, text_stream *synopsis, extension_file *E
 	int area = -1;
 	if (EF)
 		area = SourceFiles::read_file_inner(F, synopsis,
-			SharedCLI::nest_list(), documentation_only, &sf,
+			Inbuild::nest_list(), documentation_only, &sf,
 			STORE_POINTER_extension_file(EF), FALSE, EF);
 	else
 		area = SourceFiles::read_file_inner(F, synopsis,

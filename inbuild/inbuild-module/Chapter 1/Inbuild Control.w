@@ -1,17 +1,132 @@
-[SharedCLI::] Shared CLI.
+[Inbuild::] Inbuild Control.
 
-A subset of command-line options shared by the tools which incorporate this
-module.
+The top-level controller through which client tools use this module.
 
-@h Using this API.
-The Inbuild module has to be used in three phases, as follows:
+@h Phases.
+Although nothing at all clever happens in this section, it requires careful
+sequencing to avoid invisible errors coming in because function X assumes
+that function Y has already been called, or perhaos that it never will
+be again. The client tool ("the tool") has to work in the following way
+to avoid those problems.
+
+Firstly, the inbuild module runs through the following phases in sequence:
 
 @e CONFIGURATION_INBUILD_PHASE from 1
+@e PRETINKERING_INBUILD_PHASE
 @e TINKERING_INBUILD_PHASE
-@e GRAPHING_INBUILD_PHASE
+@e NESTED_INBUILD_PHASE
+@e PROJECTED_INBUILD_PHASE
+@e GOING_OPERATIONAL_INBUILD_PHASE
+@e OPERATIONAL_INBUILD_PHASE
+
+@d RUN_ONLY_IN_PHASE(P)
+	if (inbuild_phase < P) internal_error("too soon");
+	if (inbuild_phase > P) internal_error("too late");
+@d RUN_ONLY_FROM_PHASE(P)
+	if (inbuild_phase < P) internal_error("too soon");
+@d RUN_ONLY_BEFORE_PHASE(P)
+	if (inbuild_phase >= P) internal_error("too late");
 
 =
 int inbuild_phase = CONFIGURATION_INBUILD_PHASE;
+
+@ Initially, then, we are in the configuration phase. This is when command
+line processing should be done, and the tool should use the following routines
+to add and process command line switches handled by inbuild:
+
+@e INBUILD_CLSG
+
+@e NEST_CLSW
+@e INTERNAL_CLSW
+@e EXTERNAL_CLSW
+@e TRANSIENT_CLSW
+@e KIT_CLSW
+@e PROJECT_CLSW
+@e SOURCE_CLSW
+
+=
+void Inbuild::declare_options(void) {
+	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	CommandLine::begin_group(INBUILD_CLSG);
+	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
+		L"add the nest at pathname X to the search list");
+	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
+		L"use X as the location of built-in material such as the Standard Rules");
+	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
+		L"use X as the user's home for installed material such as extensions");
+	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
+		L"use X for transient data such as the extensions census");
+	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
+		L"load the Inform kit called X");
+	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
+		L"work within the Inform project X");
+	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
+		L"use file X as the Inform source text");
+	CommandLine::end_group();
+}
+
+pathname *shared_transient_resources = NULL;
+
+void Inbuild::option(int id, int val, text_stream *arg, void *state) {
+	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	switch (id) {
+		case NEST_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
+		case INTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
+		case EXTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
+		case TRANSIENT_CLSW: shared_transient_resources = Pathnames::from_text(arg); break;
+		case KIT_CLSW: Inbuild::request_kit(arg); break;
+		case PROJECT_CLSW:
+			if (Inbuild::set_I7_bundle(arg) == FALSE)
+				Errors::fatal_with_text("can't specify the project twice: '%S'", arg);
+			break;
+		case SOURCE_CLSW:
+			if (Inbuild::set_I7_source(arg) == FALSE)
+				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
+			break;
+	}
+}
+
+@ Once the tool has finished with the command line, it should call this
+function.Inbuild rapidly runs through the next few phases as it does so.
+From the "nested" phase, the final list of nests in the search path for
+finding kits, extensions and so on exists; from the "projected" phase,
+the main Inform project exists. As we shall see, Inbuild deals with only
+one Inform project at a time, though it may be handling many kits and
+extensions, and so on, which are needed by that project.
+
+=
+inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
+	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	inbuild_phase = PRETINKERING_INBUILD_PHASE;
+	Inbuild::create_shared_project(C);
+	inbuild_phase = TINKERING_INBUILD_PHASE;
+	Inbuild::sort_nest_list();
+	inbuild_phase = NESTED_INBUILD_PHASE;
+	Inbuild::pass_kit_requests();
+	inbuild_phase = PROJECTED_INBUILD_PHASE;
+	inform_project *project = Inbuild::project();
+	return (project)?(project->as_copy):NULL;
+}
+
+@ Inbuild is now in the "projected" phase, then. The idea is that this
+is a short interval during which the tool can if it wishes add further
+kit dependencies to the main project. Once that sort of thing is done,
+the tool should call the following, which puts Inbuild into its
+final "operational" phase -- at this point Inbuild is fully configured
+and ready for use.
+
+The brief "going operational" phase is used, for example, to build out
+dependency graphs.
+
+=
+void Inbuild::go_operational(void) {
+	RUN_ONLY_IN_PHASE(PROJECTED_INBUILD_PHASE)
+	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
+	inbuild_copy *C;
+	LOOP_OVER(C, inbuild_copy)
+		Model::cppy_go_operational(C);
+	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
+}
 
 @h The nest list.
 Nests used by the Inform and Inbuild tools are tagged with the following
@@ -38,8 +153,8 @@ inbuild_nest *shared_internal_nest = NULL;
 inbuild_nest *shared_external_nest = NULL;
 inbuild_nest *shared_materials_nest = NULL;
 
-inbuild_nest *SharedCLI::add_nest(pathname *P, int tag) {
-	if (inbuild_phase > CONFIGURATION_INBUILD_PHASE) internal_error("too late");
+inbuild_nest *Inbuild::add_nest(pathname *P, int tag) {
+	RUN_ONLY_BEFORE_PHASE(TINKERING_INBUILD_PHASE)
 	if (unsorted_nest_list == NULL)
 		unsorted_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N = Nests::new(P);
@@ -59,9 +174,8 @@ are given precedence over those in the external folder, and so on.
 
 =
 linked_list *shared_nest_list = NULL;
-void SharedCLI::sort_nest_list(void) {
-	if (inbuild_phase < TINKERING_INBUILD_PHASE) internal_error("too soon");
-	if (inbuild_phase > TINKERING_INBUILD_PHASE) internal_error("too late");
+void Inbuild::sort_nest_list(void) {
+	RUN_ONLY_IN_PHASE(TINKERING_INBUILD_PHASE)
 	shared_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, unsorted_nest_list)
@@ -81,20 +195,24 @@ void SharedCLI::sort_nest_list(void) {
 @ And the rest of Inform or Inbuild can now use:
 
 =
-linked_list *SharedCLI::nest_list(void) {
+linked_list *Inbuild::nest_list(void) {
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_nest_list == NULL) internal_error("nest list never sorted");
 	return shared_nest_list;
 }
 
-inbuild_nest *SharedCLI::internal(void) {
+inbuild_nest *Inbuild::internal(void) {
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_internal_nest;
 }
 
-inbuild_nest *SharedCLI::external(void) {
+inbuild_nest *Inbuild::external(void) {
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_external_nest;
 }
 
-pathname *SharedCLI::materials(void) {
+pathname *Inbuild::materials(void) {
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_materials_nest == NULL) return NULL;
 	return shared_materials_nest->location;
 }
@@ -104,8 +222,8 @@ documentation and telemetry files. |-transient| sets it, but otherwise
 the external nest is used.
 
 =
-pathname *shared_transient_resources = NULL;
-pathname *SharedCLI::transient(void) {
+pathname *Inbuild::transient(void) {
+	RUN_ONLY_FROM_PHASE(PROJECTED_INBUILD_PHASE)
 	if (shared_transient_resources == NULL)
 		if (shared_external_nest)
 			return shared_external_nest->location;
@@ -127,17 +245,19 @@ specify the bundle twice, or specify the file twice.
 text_stream *project_bundle_request = NULL;
 text_stream *project_file_request = NULL;
 
-int SharedCLI::set_I7_source(text_stream *loc) {
+int Inbuild::set_I7_source(text_stream *loc) {
+	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_file_request) > 0) return FALSE;
 	project_file_request = Str::duplicate(loc);
 	return TRUE;
 }
 
-int SharedCLI::set_I7_bundle(text_stream *loc) {
+int Inbuild::set_I7_bundle(text_stream *loc) {
+	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_bundle_request) > 0) return FALSE;
 	project_bundle_request = Str::duplicate(loc);
 	pathname *pathname_of_bundle = Pathnames::from_text(project_bundle_request);
-	pathname *materials = SharedCLI::pathname_of_materials(pathname_of_bundle);
+	pathname *materials = Inbuild::pathname_of_materials(pathname_of_bundle);
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%s-settings.txt", INTOOL_NAME);
 	filename *expert_settings = Filenames::in_folder(materials, leaf);
@@ -155,7 +275,8 @@ int SharedCLI::set_I7_bundle(text_stream *loc) {
 =
 inform_project *shared_project = NULL;
 
-void SharedCLI::create_shared_project(inbuild_copy *C) {
+void Inbuild::create_shared_project(inbuild_copy *C) {
+	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 	filename *filename_of_i7_source = NULL;
 	pathname *pathname_of_bundle = NULL;
 	if (Str::len(project_bundle_request) > 0) {
@@ -192,19 +313,20 @@ void SharedCLI::create_shared_project(inbuild_copy *C) {
 @<Create the materials nest@> =
 	pathname *materials = NULL;
 	if (pathname_of_bundle) {
-		materials = SharedCLI::pathname_of_materials(pathname_of_bundle);
+		materials = Inbuild::pathname_of_materials(pathname_of_bundle);
 		Pathnames::create_in_file_system(materials);
 	} else if (filename_of_i7_source) {
 		materials = Pathnames::from_text(I"inform.materials");
 	}
 	if (materials) {
-		shared_materials_nest = SharedCLI::add_nest(materials, MATERIALS_NEST_TAG);
+		shared_materials_nest = Inbuild::add_nest(materials, MATERIALS_NEST_TAG);
 	}
 
 @ And the rest of Inform or Inbuild can now use:
 
 =
-inform_project *SharedCLI::project(void) {
+inform_project *Inbuild::project(void) {
+	RUN_ONLY_FROM_PHASE(PROJECTED_INBUILD_PHASE)
 	return shared_project;
 }
 
@@ -212,7 +334,7 @@ inform_project *SharedCLI::project(void) {
 but ending |.materials| instead of |.inform|.
 
 =
-pathname *SharedCLI::pathname_of_materials(pathname *pathname_of_bundle) {
+pathname *Inbuild::pathname_of_materials(pathname *pathname_of_bundle) {
 	TEMPORARY_TEXT(mf);
 	WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_bundle));
 	int i = Str::len(mf)-1;
@@ -227,10 +349,14 @@ pathname *SharedCLI::pathname_of_materials(pathname *pathname_of_bundle) {
 }
 
 @h Kit requests.
+These are triggered by, for example, |-kit MyFancyKit| at the command line.
+For timing reasons, we store those up in the configuration phase and then
+add them as dependencies only when a project exists.
 
 =
 linked_list *kits_requested_at_command_line = NULL;
-void SharedCLI::request_kit(text_stream *name) {
+void Inbuild::request_kit(text_stream *name) {
+	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (kits_requested_at_command_line == NULL)
 		kits_requested_at_command_line = NEW_LINKED_LIST(text_stream);
 	text_stream *kit_name;
@@ -240,7 +366,8 @@ void SharedCLI::request_kit(text_stream *name) {
 	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
 }
 
-void SharedCLI::pass_kit_requests(void) {
+void Inbuild::pass_kit_requests(void) {
+	RUN_ONLY_IN_PHASE(NESTED_INBUILD_PHASE)
 	if ((shared_project) && (kits_requested_at_command_line)) {
 		text_stream *kit_name;
 		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line) {
@@ -250,65 +377,4 @@ void SharedCLI::pass_kit_requests(void) {
 	}
 }
 
-@h Command line.
-We add the following switches:
 
-@e INBUILD_CLSG
-
-@e NEST_CLSW
-@e INTERNAL_CLSW
-@e EXTERNAL_CLSW
-@e TRANSIENT_CLSW
-@e KIT_CLSW
-@e PROJECT_CLSW
-@e SOURCE_CLSW
-
-=
-void SharedCLI::declare_options(void) {
-	CommandLine::begin_group(INBUILD_CLSG);
-	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
-		L"add the nest at pathname X to the search list");
-	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
-		L"use X as the location of built-in material such as the Standard Rules");
-	CommandLine::declare_switch(EXTERNAL_CLSW, L"external", 2,
-		L"use X as the user's home for installed material such as extensions");
-	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
-		L"use X for transient data such as the extensions census");
-	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
-		L"load the Inform kit called X");
-	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
-		L"work within the Inform project X");
-	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
-		L"use file X as the Inform source text");
-	CommandLine::end_group();
-}
-
-void SharedCLI::option(int id, int val, text_stream *arg, void *state) {
-	switch (id) {
-		case NEST_CLSW: SharedCLI::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
-		case INTERNAL_CLSW: SharedCLI::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
-		case EXTERNAL_CLSW: SharedCLI::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
-		case TRANSIENT_CLSW: shared_transient_resources = Pathnames::from_text(arg); break;
-		case KIT_CLSW: SharedCLI::request_kit(arg); break;
-		case PROJECT_CLSW:
-			if (SharedCLI::set_I7_bundle(arg) == FALSE)
-				Errors::fatal_with_text("can't specify the project twice: '%S'", arg);
-			break;
-		case SOURCE_CLSW:
-			if (SharedCLI::set_I7_source(arg) == FALSE)
-				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
-			break;
-	}
-}
-
-@ The client tool (i.e., Inform or Inbuild) should call this when no further
-options remain to be processed.
-
-=
-inbuild_copy *SharedCLI::optioneering_complete(inbuild_copy *C) {
-	SharedCLI::create_shared_project(C);
-	inbuild_phase = TINKERING_INBUILD_PHASE;
-	SharedCLI::sort_nest_list();
-	SharedCLI::pass_kit_requests();
-	return (shared_project)?(shared_project->as_copy):NULL;
-}

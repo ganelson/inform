@@ -16,7 +16,7 @@ typedef struct extension_census {
 
 extension_census *Extensions::Census::new(void) {
 	extension_census *C = CREATE(extension_census);
-	C->search_list = SharedCLI::nest_list();
+	C->search_list = Inbuild::nest_list();
 	C->built_in_tag = INTERNAL_NEST_TAG;
 	C->materials_tag = MATERIALS_NEST_TAG;
 	C->external_tag = EXTERNAL_NEST_TAG;

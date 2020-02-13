@@ -12,6 +12,7 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
+	METHOD_ADD(project_file_genre, GENRE_GO_OPERATIONAL_MTID, ProjectFileManager::go_operational);
 }
 
 void ProjectFileManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -92,4 +93,11 @@ The build graph for a project will need further thought.
 =
 void ProjectFileManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
+}
+
+@ which it will get here:
+
+=
+void ProjectFileManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+	Projects::construct_graph(ProjectFileManager::from_copy(C));
 }
