@@ -19,7 +19,6 @@ typedef struct inform_language {
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
-	int kit_required; /* do we need to load a kit for this language? */
 	int adaptive_person; /* which person (one of constants below) text subs are written from */
 	MEMORY_MANAGEMENT
 } inform_language;
@@ -33,7 +32,6 @@ inform_language *Languages::new_il(text_stream *name, pathname *P) {
 	L->instance_name = Feeds::feed_stream(sentence_format);
 	DISCARD_TEXT(sentence_format);
 	L->nl_instance = NULL;
-	L->kit_required = FALSE;
 	L->adaptive_person = -1; /* i.e., none yet specified */
 	for (int n=0; n<MAX_LANGUAGE_FIELDS; n++) L->language_field[n] = EMPTY_WORDING;
 	@<Read the about.txt file for the bundle@>;
@@ -113,30 +111,17 @@ void Languages::write_ISO_code(OUTPUT_STREAM, inform_language *L) {
 	else WRITE("en");
 }
 
-@h Including language extensions.
-Most extensions are included with explicit Inform source text:
-
->> Include Locksmith by Emily Short.
-
-But the Standard Rules are an exception -- they're always included -- and so
-are the languages used in the source text and for play. Note that French
-games, say, involve loading two language extensions: English Language, because
-that's the language in which the SR are written, and French Language, because
-that's the language of play.
+@h Kit.
+Each language needs its own kit of Inter code, named as follows:
 
 =
-void Languages::request_required_kits(inform_project *project) {
-	inform_language *L;
-	LOOP_OVER(L, inform_language)
-		if (L->kit_required) {
-			TEMPORARY_TEXT(TEMP);
-			if (Wordings::nonempty(L->language_field[KIT_LFIELD]))
-				WRITE_TO(TEMP, "%+W", L->language_field[KIT_LFIELD]);
-			else
-				WRITE_TO(TEMP, "%+WLanguageKit", L->language_field[NAME_IN_ENGLISH_LFIELD]);
-			Projects::add_kit_dependency(project, TEMP);
-			DISCARD_TEXT(TEMP);
-		}
+text_stream *Languages::kit_name(inform_language *L) {
+	text_stream *T = Str::new();
+	if (Wordings::nonempty(L->language_field[KIT_LFIELD]))
+		WRITE_TO(T, "%+W", L->language_field[KIT_LFIELD]);
+	else
+		WRITE_TO(T, "%+WLanguageKit", L->language_field[NAME_IN_ENGLISH_LFIELD]);
+	return T;
 }
 
 @h Finding by name.

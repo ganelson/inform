@@ -501,7 +501,7 @@ stop -- it's needed before sentence-breaking has even taken place.
 			ParseTree::set_type(new, ssnt);
 			#ifdef IF_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)
-				NaturalLanguages::set_language_of_play(
+				Projects::set_language_of_play(Inbuild::project(),
 					PL::Bibliographic::scan_language(new));
 			#endif
 			return;

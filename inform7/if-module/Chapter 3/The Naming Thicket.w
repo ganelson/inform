@@ -170,8 +170,8 @@ from sentences, and this can include I6 properties with no I7 analogue.
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Compare::lt(K, K_object)) {
-			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE, language_of_play);
-			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE, language_of_play);
+			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Inbuild::project()));
+			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Inbuild::project()));
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);
 			@<Issue problem message if the name contains a comma@>;
 			@<Assert the printed plural name property for kinds other than thing or kinds of room@>;
@@ -189,7 +189,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 				this_is_named_for_something_with_a_printed_name = TRUE;
 		@<Issue problem message if the name contains a comma@>;
 		if (this_has_a_printed_name == FALSE) @<Assert the printed name property@>;
-		if (language_of_play != English_language)
+		if (Projects::get_language_of_play(Inbuild::project()) != English_language)
 			@<Assert male, female, neuter adjectives from grammatical gender@>;
 	}
 
@@ -229,7 +229,7 @@ a comma, and that's caught here:
 		wording W = Instances::get_name_in_play(I, FALSE);
 		if (Wordings::empty(W)) {
 			kind *k = Instances::to_kind(I);
-			W = Kinds::Behaviour::get_name_in_play(k, FALSE, language_of_play);
+			W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Inbuild::project()));
 		}
 		int begins_with_lower_case = FALSE;
 		if (Wordings::nonempty(W)) {

@@ -1114,7 +1114,7 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 @ =
 <adjective-definition-subject> ::=
 	in <natural-language> ... |		==> TRUE; *XP = RP[1];
-	...								==> TRUE; *XP = language_of_play;
+	...								==> TRUE; *XP = Projects::get_language_of_play(Inbuild::project());
 
 @ =
 void NewVerbs::declare_meaningless_adjective(parse_node *p) {

@@ -211,7 +211,7 @@ whole thing into a |specification| for the rest of Inform to use.
 void Semantics::read_preform(void) {
 	@<Mark certain nonterminals to have their vocabularies numbered and flagged@>;
 	NaturalLanguages::scan();
-	wording W = NaturalLanguages::load_preform(language_of_syntax);
+	wording W = NaturalLanguages::load_preform(Projects::get_language_of_syntax(Inbuild::project()));
 	int nonterminals_declared = Preform::parse_preform(W, FALSE);
 	language_definition_top = lexer_wordcount - 1;
 

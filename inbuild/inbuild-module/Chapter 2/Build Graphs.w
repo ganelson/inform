@@ -109,9 +109,13 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V, int recurse, 
 	}
 	DISCARD_TEXT(S);
 	DISCARD_TEXT(T);
-	Graphs::update_timestamp(V);
-	if (V->timestamp != (time_t) 0) WRITE(" -- %s", ctime(&(V->timestamp)));
-	else WRITE(" -- no time stamp\n");
+	if (V->type == FILE_VERTEX) {
+		Graphs::update_timestamp(V);
+		if (V->timestamp != (time_t) 0) WRITE(" -- %s", ctime(&(V->timestamp)));
+		else WRITE(" -- no time stamp\n");
+	} else {
+		WRITE("\n");
+	}
 	if (recurse) {
 		if (V->buildable_if_copy) stem = V->buildable_if_copy->location_if_path;
 		if (V->buildable_if_internal_file) stem = Filenames::get_path_to(V->buildable_if_internal_file);

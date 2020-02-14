@@ -9,6 +9,9 @@ typedef struct inform_project {
 	struct linked_list *source_vertices; /* of |build_vertex| */
 	int assumed_to_be_parser_IF;
 	struct linked_list *kits_to_include; /* of |inform_kit| */
+	struct inform_language *language_of_play;
+	struct inform_language *language_of_syntax;
+	struct inform_language *language_of_index;
 	MEMORY_MANAGEMENT
 } inform_project;
 
@@ -19,7 +22,40 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->source_vertices = NEW_LINKED_LIST(build_vertex);
 	project->kits_to_include = NEW_LINKED_LIST(inform_kit);
 	project->assumed_to_be_parser_IF = TRUE;
+	project->language_of_play = NULL;
+	project->language_of_syntax = NULL;
+	project->language_of_index = NULL;
 	return project;
+}
+
+void Projects::set_language_of_play(inform_project *proj, inform_language *L) {
+	if (proj == NULL) internal_error("no project");
+	proj->language_of_play = L;
+}
+inform_language *Projects::get_language_of_play(inform_project *proj) {
+	if (proj == NULL) return NULL;
+	return proj->language_of_play;
+}
+
+void Projects::set_language_of_index(inform_project *proj, inform_language *L) {
+	if (proj == NULL) internal_error("no project");
+	proj->language_of_index = L;
+}
+inform_language *Projects::get_language_of_index(inform_project *proj) {
+	if (proj == NULL) return NULL;
+	return proj->language_of_index;
+}
+
+void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) {
+	if (proj == NULL) internal_error("no project");
+	proj->language_of_syntax = L;
+	#ifdef CORE_MODULE
+	English_language = L;
+	#endif
+}
+inform_language *Projects::get_language_of_syntax(inform_project *proj) {
+	if (proj == NULL) return NULL;
+	return proj->language_of_syntax;
 }
 
 void Projects::not_necessarily_parser_IF(inform_project *project) {
@@ -83,7 +119,11 @@ int Projects::uses_kit(inform_project *project, text_stream *name) {
 void Projects::finalise_kit_dependencies(inform_project *project) {
 	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	Projects::add_kit_dependency(project, I"BasicInformKit");
-	Languages::request_required_kits(project);
+	inform_language *L = project->language_of_play;
+	if (L) {
+		text_stream *kit_name = Languages::kit_name(L);
+		Projects::add_kit_dependency(project, kit_name);
+	}
 	if (project->assumed_to_be_parser_IF)
 		Projects::add_kit_dependency(project, I"CommandParserKit");
 
@@ -200,5 +240,20 @@ void Projects::construct_graph(inform_project *project) {
 	build_vertex *S;
 	LOOP_OVER_LINKED_LIST(S, build_vertex, project->source_vertices) {
 		 Graphs::need_this_to_build(V, S);
+	}
+	inform_language *L = project->language_of_play;
+	if (L) {
+		build_vertex *LV = L->as_copy->vertex;
+		Graphs::need_this_to_build(V, LV);
+	}
+	L = project->language_of_syntax;
+	if (L) {
+		build_vertex *LV = L->as_copy->vertex;
+		Graphs::need_this_to_build(V, LV);
+	}
+	L = project->language_of_index;
+	if (L) {
+		build_vertex *LV = L->as_copy->vertex;
+		Graphs::need_this_to_build(V, LV);
 	}
 }

@@ -1285,10 +1285,10 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 =
 <adaptive-adjective> internal {
-	if (language_of_play == English_language) return FALSE;
+	if (Projects::get_language_of_play(Inbuild::project()) == English_language) return FALSE;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording AW = Clusters::get_name_general(aph->adjective_names, language_of_play, 1, -1);
+		wording AW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Inbuild::project()), 1, -1);
 		if (Wordings::match(AW, W)) {
 			*XP = aph; *X = FALSE; return TRUE;
 		}
@@ -1300,10 +1300,10 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 =
 void Adjectives::Meanings::agreements(void) {
-	if (language_of_play == English_language) return;
+	if (Projects::get_language_of_play(Inbuild::project()) == English_language) return;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording PW = Clusters::get_name_general(aph->adjective_names, language_of_play, 1, -1);
+		wording PW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Inbuild::project()), 1, -1);
 		if (Wordings::empty(PW)) continue;
 
 		packaging_state save = Routines::begin(aph->aph_iname);
@@ -1405,7 +1405,7 @@ void Adjectives::Meanings::agreements(void) {
 								if (gna%3 == 1) gender_sought = FEMININE_GENDER;
 								if (gna >= 3) number_sought = 2;
 								wording AW = Clusters::get_name_general(aph->adjective_names,
-									language_of_play, number_sought, gender_sought);
+									Projects::get_language_of_play(Inbuild::project()), number_sought, gender_sought);
 								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
 								else WRITE_TO(T, "%W", PW);
 								Produce::val_text(Emit::tree(), T);

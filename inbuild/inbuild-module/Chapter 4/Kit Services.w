@@ -12,7 +12,7 @@ typedef struct inform_kit {
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
 	struct linked_list *kind_definitions; /* of |text_stream| */
-	struct linked_list *extensions; /* of |text_stream| */
+	struct linked_list *extensions; /* of |inbuild_requirement| */
 	struct linked_list *activations; /* of |element_activation| */
 	struct text_stream *index_template;
 	struct inbuild_version_number version;
@@ -56,7 +56,7 @@ inform_kit *Kits::new_ik(text_stream *name, pathname *P) {
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
 	K->kind_definitions = NEW_LINKED_LIST(text_stream);
-	K->extensions = NEW_LINKED_LIST(text_stream);
+	K->extensions = NEW_LINKED_LIST(inbuild_requirement);
 	K->activations = NEW_LINKED_LIST(element_activation);
 	K->defines_Main = FALSE;
 	K->supports_inform_language = FALSE;
@@ -114,8 +114,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		K->priority = Str::atoi(mr.exp[0], 0);
 	} else if (Regexp::match(&mr, text, L"kinds: (%C+)")) {
 		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->kind_definitions);
-	} else if (Regexp::match(&mr, text, L"extension: (%c+)")) {
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->extensions);
+	} else if (Regexp::match(&mr, text, L"extension: (%c+) by (%c+)")) {
+		inbuild_work *work = Works::new(extension_genre, mr.exp[0], mr.exp[1]);
+		inbuild_requirement *req = Requirements::any_version_of(work);
+		ADD_TO_LINKED_LIST(req, inbuild_requirement, K->extensions);
 	} else if (Regexp::match(&mr, text, L"activate: (%c+)")) {
 		Kits::activation(K, mr.exp[0], TRUE);
 	} else if (Regexp::match(&mr, text, L"deactivate: (%c+)")) {
@@ -176,16 +178,14 @@ void Kits::activate_plugins(inform_kit *K) {
 #endif
 
 void Kits::early_source_text(OUTPUT_STREAM, inform_kit *K) {
-	text_stream *X;
-	LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions)
-		WRITE("Include %S.\n\n", X);
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions)
+		WRITE("Include %S by %S.\n\n", req->work->title, req->work->author_name);
 	if (K->early_source) WRITE("%S\n\n", K->early_source);
 }
 
 int Kits::number_of_early_fed_sentences(inform_kit *K) {
-	int N = 0;
-	text_stream *X;
-	LOOP_OVER_LINKED_LIST(X, text_stream, K->extensions) N++;
+	int N = LinkedLists::len(K->extensions);
 	if (K->early_source) N++;
 	return N;
 }
@@ -197,4 +197,44 @@ linked_list *Kits::inter_paths(void) {
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
 	return inter_paths;
+}
+
+void Kits::construct_graph(inform_kit *K) {
+	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
+	if (K == NULL) return;
+	inbuild_copy *C = K->as_copy;
+	pathname *P = C->location_if_path;
+	build_vertex *KV = C->vertex;
+	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
+	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
+	build_vertex *BV[4];
+	for (int i=0; i<4; i++) {
+		filename *FV = Filenames::in_folder(P, binaries[i]);
+		BV[i] = Graphs::file_vertex(FV);
+		Graphs::need_this_to_build(KV, BV[i]);
+		build_step *BS = BuildSteps::new_step(ASSIMILATE_BSTEP, P, archs[i]);
+		BuildSteps::add_step(BV[i]->script, BS);
+	}
+
+	filename *contents_page = Filenames::in_folder(C->location_if_path, I"Contents.w");
+	build_vertex *CV = Graphs::file_vertex(contents_page);
+	for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], CV);
+
+	kit_contents_section_state CSS;
+	CSS.active = FALSE;
+	CSS.sects = NEW_LINKED_LIST(text_stream);
+	TextFiles::read(contents_page, FALSE, NULL, FALSE, KitManager::read_contents, NULL, (void *) &CSS);
+	text_stream *segment;
+	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
+		filename *SF = Filenames::in_folder(
+			Pathnames::subfolder(C->location_if_path, I"Sections"), segment);
+		build_vertex *SV = Graphs::file_vertex(SF);
+		for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], SV);
+	}
+
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions) {
+		build_vertex *EV = Graphs::req_vertex(req);
+		Graphs::need_this_to_use(KV, EV);
+	}
 }

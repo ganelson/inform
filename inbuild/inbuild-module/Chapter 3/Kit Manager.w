@@ -12,6 +12,7 @@ void KitManager::start(void) {
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);
 	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, KitManager::copy_to_nest);
+	METHOD_ADD(kit_genre, GENRE_GO_OPERATIONAL_MTID, KitManager::go_operational);
 }
 
 void KitManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -167,34 +168,11 @@ If there are $S$ sections then the graph has $S+5$ vertices and $4(S+1)$ edges.
 
 =
 void KitManager::build_vertex(inbuild_copy *C) {
-	pathname *P = C->location_if_path;
-	build_vertex *KV = Graphs::copy_vertex(C);
-	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
-	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
-	build_vertex *BV[4];
-	for (int i=0; i<4; i++) {
-		filename *FV = Filenames::in_folder(P, binaries[i]);
-		BV[i] = Graphs::file_vertex(FV);
-		Graphs::need_this_to_build(KV, BV[i]);
-		build_step *BS = BuildSteps::new_step(ASSIMILATE_BSTEP, P, archs[i]);
-		BuildSteps::add_step(BV[i]->script, BS);
-	}
+	Graphs::copy_vertex(C);
+}
 
-	filename *contents_page = Filenames::in_folder(C->location_if_path, I"Contents.w");
-	build_vertex *CV = Graphs::file_vertex(contents_page);
-	for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], CV);
-
-	kit_contents_section_state CSS;
-	CSS.active = FALSE;
-	CSS.sects = NEW_LINKED_LIST(text_stream);
-	TextFiles::read(contents_page, FALSE, NULL, FALSE, KitManager::read_contents, NULL, (void *) &CSS);
-	text_stream *segment;
-	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
-		filename *SF = Filenames::in_folder(
-			Pathnames::subfolder(C->location_if_path, I"Sections"), segment);
-		build_vertex *SV = Graphs::file_vertex(SF);
-		for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], SV);
-	}
+void KitManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+	Kits::construct_graph(KitManager::from_copy(C));
 }
 
 typedef struct kit_contents_section_state {

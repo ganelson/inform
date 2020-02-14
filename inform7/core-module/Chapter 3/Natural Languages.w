@@ -27,33 +27,14 @@ void NaturalLanguages::scan(void) {
 }
 
 @h Language of play.
-The followin
 
 =
-inform_language *language_of_play = NULL; 
-inform_language *language_of_syntax = NULL;
-inform_language *language_of_index = NULL;
-
-@ =
 void NaturalLanguages::default_to_English(void) {
 	inform_language *E = NaturalLanguages::English();
-	NaturalLanguages::set_language_of_syntax(E);
-	NaturalLanguages::set_language_of_index(E);
-	NaturalLanguages::set_language_of_play(E);
-}
-
-void NaturalLanguages::set_language_of_play(inform_language *L) {
-	language_of_play = L;
-	if (L) L->kit_required = TRUE;
-}
-
-void NaturalLanguages::set_language_of_index(inform_language *L) {
-	language_of_index = L;
-}
-
-void NaturalLanguages::set_language_of_syntax(inform_language *L) {
-	language_of_syntax = L;
-	English_language = L;
+	inform_project *proj = Inbuild::project();
+	Projects::set_language_of_syntax(proj, E);
+	Projects::set_language_of_index(proj, E);
+	Projects::set_language_of_play(proj, E);
 }
 
 inform_language *NaturalLanguages::English(void) {
@@ -67,9 +48,12 @@ inform_language *NaturalLanguages::English(void) {
 
 =
 void NaturalLanguages::produce_index(void) {
+	inform_project *project = Inbuild::project();
 	I6T::interpret_indext(
 		Filenames::in_folder(
-			Languages::path_to_bundle(language_of_index), Projects::index_template(Inbuild::project())));
+			Languages::path_to_bundle(
+				Projects::get_language_of_index(project)),
+			Projects::index_template(project)));
 }
 
 @

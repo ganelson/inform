@@ -272,7 +272,7 @@ wording Instances::get_name(instance *I, int plural) {
 
 wording Instances::get_name_in_play(instance *I, int plural) {
 	if ((I == NULL) || (I->tag == NULL)) return EMPTY_WORDING;
-	return Nouns::get_name_in_play(I->tag, plural, language_of_play);
+	return Nouns::get_name_in_play(I->tag, plural, Projects::get_language_of_play(Inbuild::project()));
 }
 
 int Instances::full_name_includes(instance *I, vocabulary_entry *wd) {
@@ -543,7 +543,7 @@ void Instances::index_name(OUTPUT_STREAM, instance *I) {
 		return;
 	}
 	kind *K = Instances::to_kind(I);
-	W = Kinds::Behaviour::get_name_in_play(K, FALSE, language_of_play);
+	W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Inbuild::project()));
 	if (Wordings::nonempty(W)) {
 		WRITE("%+W", W);
 		return;
