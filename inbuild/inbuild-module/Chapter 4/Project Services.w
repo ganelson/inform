@@ -257,3 +257,35 @@ void Projects::construct_graph(inform_project *project) {
 		Graphs::need_this_to_build(V, LV);
 	}
 }
+
+@
+
+=
+void Projects::read_source_text_for(inform_project *project, linked_list *errors) {
+	TEMPORARY_TEXT(early);
+	Projects::early_source_text(early, project);
+	if (Str::len(early) > 0) Feeds::feed_stream(early);
+	DISCARD_TEXT(early);
+	#ifdef CORE_MODULE
+	SourceFiles::read_further_mandatory_text();
+	#endif
+	linked_list *L = Projects::source(project);
+	if (L) {
+		build_vertex *N;
+		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
+			filename *F = N->buildable_if_internal_file;
+			N->read_as = SourceText::read_file(F, N->annotation, FALSE, errors, TRUE);
+		}
+	}
+}
+
+int Projects::draws_from_source_file(inform_project *project, source_file *sf) {
+	linked_list *L = Projects::source(project);
+	if (L) {
+		build_vertex *N;
+		LOOP_OVER_LINKED_LIST(N, build_vertex, L)
+			if (sf == N->read_as)
+				return TRUE;
+	}
+	return FALSE;
+}

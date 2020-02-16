@@ -27,6 +27,7 @@ Chapter 3: Managing Genres of Work
 	Pipeline Manager
 
 Chapter 4: Services for the Inform Compiler
+	Source Text
 	Kit Services
 	Extension Services
 	Extension Census

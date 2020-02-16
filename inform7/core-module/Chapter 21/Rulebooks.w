@@ -964,7 +964,7 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 			@<Index the segment for new rulebooks and activities@>;
 		extension_file *ef;
 		LOOP_OVER(ef, extension_file)
-			if (ef != standard_rules_extension)
+			if (Extensions::Files::is_SR(ef) == FALSE)
 				if (Rulebooks::noteworthy_rulebooks(ef) > 0)
 					@<Index the segment for the rulebooks in this extension@>;
 	}

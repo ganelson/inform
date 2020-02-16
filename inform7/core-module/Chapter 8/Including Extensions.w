@@ -125,10 +125,54 @@ parse tree.
 	if (version_word >= 0)
 		Extensions::Inclusion::parse_version(version_word); /* this checks the formatting of the version number */
 
-	extension_file *requested_extension =
-		Extensions::Inclusion::load(AW, W, version_word, RW);
+	TEMPORARY_TEXT(violation);
+	TEMPORARY_TEXT(exft);
+	TEMPORARY_TEXT(exfa);
+	WRITE_TO(exft, "%+W", W);
+	WRITE_TO(exfa, "%+W", AW);
+	if (Extensions::Census::currently_recording_errors() == FALSE) {
+		if (Str::len(exfa) >= MAX_EXTENSION_AUTHOR_LENGTH) {
+			WRITE_TO(violation,
+				"has an author's name which is too long, exceeding the maximum "
+				"allowed (%d characters) by %d",
+				MAX_EXTENSION_AUTHOR_LENGTH-1,
+				(int) (1+Str::len(exfa)-MAX_EXTENSION_AUTHOR_LENGTH));
+			Str::truncate(exfa, MAX_EXTENSION_AUTHOR_LENGTH-1);
+		}
+		if (Str::len(exft) >= MAX_EXTENSION_AUTHOR_LENGTH) {
+			WRITE_TO(violation,
+				"has a title which is too long, exceeding the maximum allowed "
+				"(%d characters) by %d",
+				MAX_EXTENSION_TITLE_LENGTH-1,
+				(int) (1+Str::len(exft)-MAX_EXTENSION_TITLE_LENGTH));
+			Str::truncate(exft, MAX_EXTENSION_AUTHOR_LENGTH-1);
+		}
+	}
+	inbuild_work *work = Works::new(extension_genre, exft, exfa);
+	Works::add_to_database(work, LOADED_WDBC);
+	inbuild_version_number min = VersionNumbers::null();
+	if (version_word >= 0) min = Extensions::Inclusion::parse_version(version_word);
+	inbuild_requirement *req = Requirements::new(work, min, VersionNumbers::null());
+	DISCARD_TEXT(exft);
+	DISCARD_TEXT(exfa);
+	if (Str::len(violation) > 0) {
+		Problems::quote_wording(1, W);
+		Problems::quote_wording(2, AW);
+		Problems::quote_stream(3, violation);
+		Problems::Issue::handmade_problem(_p_(PM_IncludesTooLong));
+		Problems::issue_problem_segment(
+			"The extension %1 by %2, which your source text requests, %3.");
+		Problems::issue_problem_end();
+	}
+	DISCARD_TEXT(violation);
+
+	extension_file *requested_extension = Extensions::Inclusion::load(req);
 
 	inform_extension *E = Extensions::Files::find(requested_extension);
+	if (E) {
+		Extensions::set_inclusion_sentence(E, current_sentence);
+		Extensions::set_VM_text(E, RW);
+	}
 	if ((E) && (E->body_text_unbroken)) {
 		Sentences::break(E->body_text, requested_extension);
 		E->body_text_unbroken = FALSE;
@@ -138,18 +182,18 @@ parse tree.
 Extensions are loaded here.
 
 =
-extension_file *Extensions::Inclusion::load(wording A, wording T,
-	int version_word, wording VMW) {
+extension_file *Extensions::Inclusion::load(inbuild_requirement *req) {
 	NaturalLanguages::scan(); /* to avoid wording from those interleaving with extension wording */
+	@<Do not load the same extension work twice@>;
 
-	extension_file *ef;
-	LOOP_OVER(ef, extension_file)
-		if ((Wordings::match(ef->author_text, A)) && (Wordings::match(ef->title_text, T)))
-			@<This is an extension already loaded, so note any version number hike and return@>;
+	inform_extension *E = NULL;
+	@<Read the extension file into the lexer, and break it into body and documentation@>;
 
-	ef = Extensions::Files::new(A, T, VMW, version_word);
-	if (problem_count == 0)
-		@<Read the extension file into the lexer, and break it into body and documentation@>;
+	extension_file *ef = Extensions::Files::new(req);
+	if (E) {
+		ef->found = E->as_copy;
+		E->ef = ef;
+	}
 	return ef;
 }
 
@@ -165,140 +209,103 @@ then we need to note that the version requirement on PS has been raised to 3.
 (This is why version numbers are not checked at load time: in general, we
 can't know at load time what we will ultimately require.)
 
-@<This is an extension already loaded, so note any version number hike and return@> =
-	if (version_word >= 0) {
-		inbuild_version_number V = Extensions::Inclusion::parse_version(version_word);
-		if (Requirements::ratchet_minimum(V, ef->ef_req))
-			ef->inclusion_sentence = current_sentence;
-	}
-	return ef;
+@<Do not load the same extension work twice@> =
+	extension_file *ef;
+	LOOP_OVER(ef, extension_file)
+		if (ef->found)
+			if (Requirements::meets(ef->found->edition, req)) {
+				inbuild_version_number V = req->min_version;
+				if (VersionNumbers::is_null(V) == FALSE)
+					if (Requirements::ratchet_minimum(V, ef->ef_req))
+						Extensions::Files::set_where_included(ef, current_sentence);
+				return ef;
+			}
 
 @ We finally make our call out of the Extensions section, down through the
 trap-door into Read Source Text, to seek and open the file.
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	TEMPORARY_TEXT(synopsis);
-	@<Concoct a synopsis for the extension to be read@>;
-	feed_t id = Feeds::begin();
-	int origin = SourceFiles::read_extension_source_text(ef, synopsis, census_mode);
-	inform_extension *E = Extensions::Files::find(ef);
-	if (E) {
+	int found_to_be_malformed = FALSE;
+	req->allow_malformed = TRUE;
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(req, Inbuild::nest_list(), L);
+	inbuild_search_result *search_result;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+		E = ExtensionManager::from_copy(search_result->copy);
+		int origin = Nests::get_tag(search_result->nest);
 		switch (origin) {
 			case MATERIALS_NEST_TAG:
 			case EXTERNAL_NEST_TAG:
 				E->loaded_from_built_in_area = FALSE; break;
 			case INTERNAL_NEST_TAG:
 				E->loaded_from_built_in_area = TRUE; break;
-			default: /* which can happen if the extension file cannot be found */
-				E->loaded_from_built_in_area = FALSE; break;
 		}
-		wording EXW = Feeds::end(id);
-		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
+		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
+			SourceFiles::issue_problems_arising(search_result->copy);
+			E = NULL;
+			found_to_be_malformed = TRUE;
+		}
+		break;
 	}
-	DISCARD_TEXT(synopsis);
-
-@ We concoct a textual synopsis in the form
-
-	|"Pantomime Sausages by Mr Punch"|
-
-to be used by |SourceFiles::read_extension_source_text| for printing to |stdout|. Since
-we dare not assume |stdout| can manage characters outside the basic ASCII
-range, we flatten them from general ISO to plain ASCII.
-
-@<Concoct a synopsis for the extension to be read@> =
-	WRITE_TO(synopsis, "%+W by %+W", T, A);
-	LOOP_THROUGH_TEXT(pos, synopsis)
-		Str::put(pos,
-			Characters::make_filename_safe(Str::get(pos)));
-
-@  If an extension file contains the special text (outside literal mode) of
-
-	|---- Documentation ----|
-
-then this is taken as the end of the Inform source, and the beginning of a
-snippet of documentation about the extension; text from that point on is
-saved until later, but not broken into sentences for the parse tree, and it
-is therefore invisible to the rest of Inform. If this division line is not
-present then the extension contains only body source and no documentation.
-
-=
-<extension-body> ::=
-	*** ---- documentation ---- ... |	==> TRUE
-	...									==> FALSE
-
-@<Break the extension's text into body and documentation@> =
-	<extension-body>(EXW);
-	E->body_text = GET_RW(<extension-body>, 1);
-	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
-	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
-
-@h Parsing extension version numbers.
-Extensions can have versions in the form N/DDDDDD, a format which was chosen
-for sentimental reasons: IF enthusiasts know it well from the banner text of
-the Infocom titles of the 1980s. This story file, for instance, was compiled
-at the time of the Reykjavik summit between Presidents Gorbachev and Reagan:
-
-	|Moonmist|
-	|Infocom interactive fiction - a mystery story|
-	|Copyright (c) 1986 by Infocom, Inc. All rights reserved.|
-	|Moonmist is a trademark of Infocom, Inc.|
-	|Release number 9 / Serial number 861022|
-
-Story file collectors customarily abbreviate this in catalogues to |9/861022|.
-
-In our scheme, DDDDDD can be omitted (in which case so must the slash be).
-Spacing is not allowed around the slash (if present), so the version number
-always occupies a single lexical word.
-
-The following routine parses the version number at word |vwn| to give an
-non-negative integer -- in fact it really just construes the whole thing,
-with the slash removed, as a 7-digit number -- in such a way that an earlier
-version always has a lower integer than a later one. It is legal for |vwn|
-to be $-1$, which means "no version number quoted", and evaluates as
-0 -- corresponding to |0/000000|, lower than the lowest version number it is
-legal to quote explicitly, which is |1|. (It follows that requiring no
-version in particular is equivalent to requiring |0/000000| or better, since
-every extension passes that test.)
-
-In order that the numerical form of a version number should be a signed
-32-bit integer which does not overflow, we require that the release number
-|N| be at most 999. It could in fact rise to 2146 without incident, but
-it seems cleaner to constrain the number of digits than the value.
-
-=
-inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
-	int i, slashes = 0, digits = 0, slash_at = 0;
-	wchar_t *p, *q;
-	if (vwn == -1) return VersionNumbers::from_pair(0, 0); /* an unspecified version equates to |0/000000| */
-	p = Lexer::word_text(vwn); q = p;
-	for (i=0; p[i] != 0; i++)
-		if (p[i] == '/') {
-			slashes++; if ((i == 0) || (slashes > 1)) goto Malformed;
-			slash_at = i; q = p+i+1;
-		} else {
-			if (!(Characters::isdigit(p[i]))) goto Malformed;
-			digits++;
+	if (found_to_be_malformed == FALSE) {
+		if (E == NULL) @<Issue a cannot-find problem@>
+		else {
+			inbuild_copy *C = E->as_copy;
+			Model::read_source_text_for(C);
+			SourceFiles::issue_problems_arising(C);
 		}
-	if ((p[0] == '0') || (digits == 0)) goto Malformed;
+	}
 
-	if ((slashes == 0) && (digits <= 3)) /* so that |p| points to 1 to 3 digits, not starting with |0| */
-		return VersionNumbers::from_major(Wide::atoi(p));
-	p[slash_at] = 0; /* temporarily replace the slash with a null, making |p| and |q| distinct C strings */
-	if (Wide::len(p) > 3) goto Malformed; /* now |p| points to 1 to 3 digits, not starting with |0| */
-	if (Wide::len(q) != 6) goto Malformed;
-	while (*q == '0') q++; /* now |q| points to 0 to 6 digits, not starting with |0| */
-	if (q[0] == 0) q--; /* if it was 0 digits, backspace to make it a single digit |0| */
-	inbuild_version_number V = VersionNumbers::from_pair(Wide::atoi(p), Wide::atoi(q));
-	p[slash_at] = '/'; /* put the slash back over the null byte temporarily dividing the string */
+@<Issue a cannot-find problem@> =
+	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(req2, Inbuild::nest_list(), L);
+	if (LinkedLists::len(L) == 0) {
+		LOG("Author: %W\n", req->work->author_name);
+		LOG("Title: %W\n", req->work->title);
+		Problems::quote_source(1, current_sentence);
+		Problems::Issue::handmade_problem(_p_(PM_BogusExtension));
+		Problems::issue_problem_segment(
+			"I can't find the extension requested by: %1. %P"
+			"You can get hold of extensions which people have made public at "
+			"the Inform website, www.inform7.com, or by using the Public "
+			"Library in the Extensions panel.");
+		Problems::issue_problem_end();
+	} else {
+		TEMPORARY_TEXT(versions);
+		inbuild_search_result *search_result;
+		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+			if (Str::len(versions) > 0) WRITE_TO(versions, " or ");
+			inbuild_version_number V = search_result->copy->edition->version;
+			if (VersionNumbers::is_null(V)) WRITE_TO(versions, "an unnumbered version");
+			else WRITE_TO(versions, "version %v", &V);
+		}
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_stream(2, versions);
+		Problems::Issue::handmade_problem(_p_(PM_ExtVersionTooLow));
+		Problems::issue_problem_segment(
+			"I can't find the right version of the extension requested by %1 - "
+			"I can only find %2. %P"
+			"You can get hold of extensions which people have made public at "
+			"the Inform website, www.inform7.com, or by using the Public "
+			"Library in the Extensions panel.");
+		Problems::issue_problem_end();
+		DISCARD_TEXT(versions);
+	}
+
+@ =
+inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
+	TEMPORARY_TEXT(vtext);
+	WRITE_TO(vtext, "%N", vwn, vwn);
+	inbuild_version_number V = VersionNumbers::from_text(vtext);
+	if (VersionNumbers::is_null(V)) @<Issue a problem message for a malformed version number@>;
 	return V;
-
-	Malformed: @<Issue a problem message for a malformed version number@>;
 }
 
-@ Because we tend to call |Extensions::Inclusion::parse_version| repeatedly on the same word, we
-want to recover tidily from this problem, and not report it over and over.
-We do this by altering the text to |1|, the lowest well-formed version
-number text.
+@ Because we tend to call |Extensions::Inclusion::parse_version| repeatedly on
+the same word, we want to recover tidily from this problem, and not report it
+over and over. We do this by altering the text to |1|, the lowest well-formed
+version number text.
 
 @<Issue a problem message for a malformed version number@> =
 	LOG("Offending word number %d <%N>\n", vwn, vwn);
@@ -356,19 +363,10 @@ void Extensions::Inclusion::check_begins_here(parse_node *PN, extension_file *ef
 	Problems::quote_wording(2, ParseTree::get_text(PN));
 
 	<begins-here-sentence-subject>(ParseTree::get_text(PN));
-	wording W = Wordings::new(<<t1>>, <<t2>>);
-	wording AW = Wordings::new(<<auth1>>, <<auth2>>);
-	if (Wordings::empty(AW)) return;
-	if (<<r>> < 0) Extensions::Files::set_version(ef, VersionNumbers::null());
-	else Extensions::Files::set_version(ef, Extensions::Inclusion::parse_version(<<r>>));
-	ef->VM_restriction_text = Wordings::new(<<rest1>>, <<rest2>>);
+	Extensions::Files::set_VM_text(ef, Wordings::new(<<rest1>>, <<rest2>>));
 
-	if (Wordings::nonempty(ef->VM_restriction_text))
+	if (Wordings::nonempty(Extensions::Files::VM_text(ef)))
 		@<Check that the extension's stipulation about the virtual machine can be met@>;
-
-	if ((Wordings::match(ef->title_text, W) == FALSE) ||
-		(Wordings::match(ef->author_text, AW) == FALSE))
-		@<Issue a problem message pointing out that name and author do not agree with filename@>;
 }
 
 @ On the other hand, we do already know what virtual machine we are compiling
@@ -376,38 +374,19 @@ for, so we can immediately object if the loaded extension cannot be used
 with our VM de jour.
 
 @<Check that the extension's stipulation about the virtual machine can be met@> =
-	if (<platform-qualifier>(ef->VM_restriction_text)) {
+	if (<platform-qualifier>(Extensions::Files::VM_text(ef))) {
 		if (<<r>> == PLATFORM_UNMET_HQ)
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 	} else {
 		@<Issue a problem message saying that the VM requirements are malformed@>;
 	}
 
-@ Suppose we wanted Onion Cookery by Delia Smith. We loaded the extension
-file called Onion Cookery in the Delia Smith folder of the (probably external)
-extensions area: but suppose that file turns out instead to be French Cuisine
-by Elizabeth David, according to its "begins here" sentence? Then the
-following problem message is produced. (In fact it's now hard to get this
-problem to arise, because inbuild searches for extensions much more carefully
-than Inform 7 used to.)
-
-@<Issue a problem message pointing out that name and author do not agree with filename@> =
-	Problems::quote_extension(1, ef);
-	Problems::quote_wording(2, ParseTree::get_text(PN));
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
-	Problems::issue_problem_segment(
-		"The extension %1, which your source text makes use of, seems to be "
-		"misidentified: its 'begins here' sentence declares it as '%2'. "
-		"(Perhaps it was wrongly installed?)");
-	Problems::issue_problem_end();
-	return;
-
 @ See Virtual Machines for the grammar of what can be given as a VM
 requirement.
 
 @<Issue a problem message saying that the VM requirements are malformed@> =
 	Problems::quote_extension(1, ef);
-	Problems::quote_wording(2, ef->VM_restriction_text);
+	Problems::quote_wording(2, Extensions::Files::VM_text(ef));
 	Problems::Issue::handmade_problem(_p_(PM_ExtMalformedVM));
 	Problems::issue_problem_segment(
 		"Your source text makes use of the extension %1: but my copy "
@@ -422,15 +401,14 @@ matter of removing the inclusion, not of altering the extension, so we
 report this problem at the inclusion line.
 
 @<Issue a problem message saying that the VM does not meet requirements@> =
-	current_sentence = ef->inclusion_sentence;
+	current_sentence = Extensions::Files::where_included(ef);
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ef->title_text);
-	Problems::quote_wording(3, ef->author_text);
-	Problems::quote_wording(4, ef->VM_restriction_text);
+	Problems::quote_copy(2, ef->found);
+	Problems::quote_wording(3, Extensions::Files::VM_text(ef));
 	Problems::Issue::handmade_problem(_p_(PM_ExtInadequateVM));
 	Problems::issue_problem_segment(
-		"You wrote %1: but my copy of %2 by %3 stipulates that it "
-		"is '%4'. That means it can only be used with certain of "
+		"You wrote %1: but my copy of %2 stipulates that it "
+		"is '%3'. That means it can only be used with certain of "
 		"the possible compiled story file formats, and at the "
 		"moment, we don't fit the requirements. (You can change "
 		"the format used for this project on the Settings panel.)");
@@ -445,7 +423,8 @@ that the extension isn't the one he thinks it is.
 =
 void Extensions::Inclusion::check_ends_here(parse_node *PN, extension_file *ef) {
 	wording W = Articles::remove_the(ParseTree::get_text(PN));
-	if ((problem_count == 0) && (Wordings::match(ef->title_text, W) == FALSE)) {
+	wording T = Feeds::feed_stream(ef->found->edition->work->title);
+	if ((problem_count == 0) && (Wordings::match(T, W) == FALSE)) {
 		current_sentence = PN;
 		Problems::quote_extension(1, ef);
 		Problems::quote_wording(2, ParseTree::get_text(PN));

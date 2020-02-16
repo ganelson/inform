@@ -13,6 +13,7 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
 	METHOD_ADD(project_file_genre, GENRE_GO_OPERATIONAL_MTID, ProjectFileManager::go_operational);
+	METHOD_ADD(project_file_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectFileManager::read_source_text_for);
 }
 
 void ProjectFileManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -100,4 +101,11 @@ void ProjectFileManager::build_vertex(inbuild_copy *C) {
 =
 void ProjectFileManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectFileManager::from_copy(C));
+}
+
+@h Source text.
+
+=
+void ProjectFileManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C, linked_list *errors) {
+	Projects::read_source_text_for(ProjectBundleManager::from_copy(C), errors);
 }

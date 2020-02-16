@@ -1,50 +1,34 @@
-Inform 7 build 6L26 has started.
-I've now read your source text, which is 171 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+Inform 7.10.1 build 6Q21 has started.
+I've now read your source text, which is 72 words long.
+I've also read Basic Inform by Graham Nelson, which is 7645 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32123 words long.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version / of Standard Rules by Graham Nelson' (source
-    text, line 2): but a version number must have the form N/DDDDDD, as in the
+    text, line 1): but a version number must have the form N/DDDDDD, as in the
     example '2/040426' for release 2 made on 26 April 2004. (The DDDDDD part is
     optional, so '3' is a legal version number too. N must be between 1 and
     999: in particular, there is no version 0.)
 Problem__ PM_ExtVersionMalformed
-  >--> You wrote 'Include version 0 of Standard Rules by Graham Nelson' (source
-    text, line 3): again, a version number must have the form N/DDDDDD.
-Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 012 of Standard Rules by Graham Nelson' (source
-    text, line 4): again, a version number must have the form N/DDDDDD.
+    text, line 2): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 1/ of Standard Rules by Graham Nelson' (source
-    text, line 5): again, a version number must have the form N/DDDDDD.
+    text, line 3): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version /000000 of Standard Rules by Graham Nelson' (source
-    text, line 6): again, a version number must have the form N/DDDDDD.
+    text, line 4): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 1/01234 of Standard Rules by Graham Nelson' (source
-    text, line 7): again, a version number must have the form N/DDDDDD.
+    text, line 5): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 1/0123456 of Standard Rules by Graham Nelson'
-    (source text, line 8): again, a version number must have the form N/DDDDDD.
+    (source text, line 6): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 1//010101 of Standard Rules by Graham Nelson'
-    (source text, line 10): again, a version number must have the form
-    N/DDDDDD.
+    (source text, line 7): again, a version number must have the form N/DDDDDD.
 Problem__ PM_ExtVersionMalformed
   >--> You wrote 'Include version 1/23/010101 of Standard Rules by Graham
-    Nelson' (source text, line 11): again, a version number must have the form
+    Nelson' (source text, line 8): again, a version number must have the form
     N/DDDDDD.
-Problem__ PM_ExtVersionMalformed
-  >--> You wrote 'Include version 1000/010101 of Standard Rules by Graham
-    Nelson' (source text, line 13): again, a version number must have the form
-    N/DDDDDD.
-Problem__ PM_ExtVersionMalformed
-  >--> You wrote 'Include version 1000 of Standard Rules by Graham Nelson' (source
-    text, line 15): again, a version number must have the form N/DDDDDD.
-Problem__ PM_ExtVersionMalformed
-  >--> You wrote 'Include version 0.1 of Standard Rules by Graham Nelson' (source
-    text, line 16): again, a version number must have the form N/DDDDDD.
-Problem__ PM_ExtVersionMalformed
-  >--> You wrote 'Include version three of Standard Rules by Graham Nelson' (source
-    text, line 17): again, a version number must have the form N/DDDDDD.
-Inform 7 has finished: 10 centiseconds used.
+Inform 7 has finished: 12 centiseconds used.

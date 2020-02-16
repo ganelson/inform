@@ -344,7 +344,9 @@ void PL::Bibliographic::index_library_card(OUTPUT_STREAM) {
 	PL::Bibliographic::library_card_entry(OUT, "Release number", story_release_number_VAR, I"1");
 	PL::Bibliographic::library_card_entry(OUT, "Story creation year", story_creation_year_VAR, I"(This year)");
 	TEMPORARY_TEXT(lang);
-	WRITE_TO(lang, "%X", Projects::get_language_of_play(Inbuild::project())->as_copy->edition->work);
+	inform_language *L = Projects::get_language_of_play(Inbuild::project());
+	if (L == NULL) WRITE_TO(lang, "English");
+	else WRITE_TO(lang, "%X", L->as_copy->edition->work);
 	PL::Bibliographic::library_card_entry(OUT, "Language of play", NULL, lang);
 	DISCARD_TEXT(lang);
 	PL::Bibliographic::library_card_entry(OUT, "IFID number", NULL, PL::Bibliographic::IFID::read_uuid());

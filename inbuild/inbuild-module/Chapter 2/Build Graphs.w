@@ -23,6 +23,7 @@ typedef struct build_vertex {
 	struct filename *buildable_if_internal_file;
 	struct inbuild_requirement *findable;
 	struct text_stream *annotation;
+	struct source_file *read_as;
 	struct linked_list *build_edges; /* of |build_vertex| */
 	struct linked_list *use_edges; /* of |build_vertex| */
 	struct build_script *script;
@@ -41,6 +42,7 @@ build_vertex *Graphs::file_vertex(filename *F) {
 	V->timestamp = (time_t) 0;
 	V->script = BuildSteps::new_script();
 	V->annotation = NULL;
+	V->read_as = NULL;
 	V->last_described = 0;
 	return V;
 }

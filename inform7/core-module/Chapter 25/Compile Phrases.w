@@ -53,12 +53,6 @@ void Routines::Compile::routine(phrase *ph,
 }
 
 @<Compile some commentary about the routine to follow@> =
-	heading *definition_area =
-		Sentences::Headings::of_wording(ParseTree::get_text(ph->declaration_node));
-	extension_file *definition_extension =
-		Sentences::Headings::get_extension_containing(definition_area);
-	if (definition_extension)
-		Extensions::Files::write_I6_comment_describing(definition_extension);
 	Routines::ToPhrases::comment_on_request(req);
 	Phrases::Usage::write_I6_comment_describing(&(ph->usage_data));
 

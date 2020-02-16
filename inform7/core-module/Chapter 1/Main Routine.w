@@ -549,6 +549,10 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	Inbuild::option(id, val, arg, state);
 }
 
+int CoreMain::census_mode(void) {
+	return census_mode;
+}
+
 void CoreMain::bareword(int id, text_stream *opt, void *state) {
 	if (Inbuild::set_I7_source(opt) == FALSE)
 		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);

@@ -123,7 +123,8 @@ calls.
 	Feeds::feed_text(L"This sentence provides a firebreak, no more. ");
 	if (<unsuitable-name>(AW)) return 0;
 	if (<unsuitable-name>(TW)) return 0;
-	ef = Extensions::Inclusion::load(AW, TW, -1, EMPTY_WORDING);
+	inbuild_requirement *req = Requirements::any_version_of(work);
+	ef = Extensions::Inclusion::load(req);
 	if (ef == NULL) return 0; /* shouldn't happen: it was there only moments ago */
 	Extensions::Documentation::write_extension_documentation(NULL, ef);
 
@@ -181,10 +182,10 @@ different template:
 	WRITE("&nbsp;");
 
 @<Write up any restrictions on VM usage@> =
-	if (Wordings::nonempty(ef->VM_restriction_text)) {
-		WRITE("%+W", ef->VM_restriction_text);
+	if (Wordings::nonempty(Extensions::Files::VM_text(ef))) {
+		WRITE("%+W", Extensions::Files::VM_text(ef));
 		WRITE("&nbsp;");
-		VirtualMachines::write_icons(OUT, ef->VM_restriction_text);
+		VirtualMachines::write_icons(OUT, Extensions::Files::VM_text(ef));
 	}
 
 @<Write up the version number, if any, and location@> =

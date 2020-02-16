@@ -1332,7 +1332,7 @@ int Tables::index_tables_in(OUTPUT_STREAM, extension_file *ef, int efc) {
 	if (tc > 0) {
 		if (ef) {
 			HTML_OPEN("p");
-			WRITE("<i>%+W</i>", ef->title_text);
+			WRITE("<i>%S</i>", ef->found->edition->work->title);
 			HTML_CLOSE("p");
 		}
 		HTML::begin_plain_html_table(OUT);

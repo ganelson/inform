@@ -274,16 +274,6 @@ void Problems::Issue::extension_problem(SIGIL_ARGUMENTS, extension_file *ef, cha
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::extension_problem_S(SIGIL_ARGUMENTS, extension_file *ef, text_stream *message) {
-	ACT_ON_SIGIL
-	Problems::quote_extension(1, ef);
-	Problems::quote_stream(2, message);
-	Problems::issue_problem_begin("");
-	Problems::issue_problem_segment(
-		"The extension %1, which your source text makes use of, %2.");
-	Problems::issue_problem_end();
-}
-
 @h Releasing problems.
 These occur when the release instructions do not make sense. Sometimes it's
 possible to pin down an exact place where the difficulty occurs, but

@@ -2,7 +2,8 @@
 
 Semantic version numbers such as 3.7.1.
 
-@ For example, 4, 7.1, and 0.2.3 are all version numbers. Up to |VERSION_NUMBER_DEPTH|
+@ Traditional semantic version numbers look like dot-divided runs of
+non-negative integers: for example, 4, 7.1, and 0.2.3. Up to |VERSION_NUMBER_DEPTH|
 components can be given. The tail of the array should be padded with |-1| values;
 otherwise, components should all be non-negative integers.
 
@@ -12,6 +13,24 @@ otherwise, components should all be non-negative integers.
 typedef struct inbuild_version_number {
 	int version_numbers[VERSION_NUMBER_DEPTH];
 } inbuild_version_number;
+
+@ However, Inform 7 extensions have for many years allowed two forms of
+version number: either just |N|, which clearly fits the scheme above, or
+|N/DDDDDD|, which does not. This is a format which was chosen for sentimental
+reasons: IF enthusiasts know it well from the banner text of the Infocom
+titles of the 1980s. This story file, for instance, was compiled at the
+time of the Reykjavik summit between Presidents Gorbachev and Reagan:
+
+	|Moonmist|
+	|Infocom interactive fiction - a mystery story|
+	|Copyright (c) 1986 by Infocom, Inc. All rights reserved.|
+	|Moonmist is a trademark of Infocom, Inc.|
+	|Release number 9 / Serial number 861022|
+
+Story file collectors customarily abbreviate this in catalogues to |9/861022|.
+
+We will therefore allow this notation, and convert it silently each way.
+|N/DDDDDD| is equivalent to |N.DDDDDD|.
 
 @ All invalid strings of numbers -- i.e., breaking the above rules -- are
 called "null" versions, and can never be valid as the version of anything.
@@ -72,20 +91,30 @@ void VersionNumbers::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 
 inbuild_version_number VersionNumbers::from_text(text_stream *T) {
 	inbuild_version_number V;
-	int component = 0, val = -1;
+	int component = 0, val = -1, dots_used = 0, slashes_used = 0, count = 0;
 	LOOP_THROUGH_TEXT(pos, T) {
 		wchar_t c = Str::get(pos);
-		if (c == '.') {
+		if (c == '.') dots_used++;
+		if (c == '/') slashes_used++;
+		if ((c == '.') || (c == '/')) {
 			if (val == -1) return VersionNumbers::null();
 			if (component >= VERSION_NUMBER_DEPTH) return VersionNumbers::null();
 			V.version_numbers[component] = val;
-			component++; val = -1;
+			component++; val = -1; count = 0;
 		} else if (Characters::isdigit(c)) {
 			int digit = c - '0';
+			if ((val == 0) && (slashes_used == 0))
+				return VersionNumbers::null();
 			if (val < 0) val = digit; else val = 10*val + digit;
+			count++;
 		} else return VersionNumbers::null();
 	}
 	if (val == -1) return VersionNumbers::null();
+	if ((dots_used > 0) && (slashes_used > 0)) return VersionNumbers::null();
+	if (slashes_used > 0) {
+		if (component > 1) return VersionNumbers::null();
+		if (count != 6) return VersionNumbers::null();
+	}
 	if (component >= VERSION_NUMBER_DEPTH) return VersionNumbers::null();
 	V.version_numbers[component] = val;
 	for (int i=component+1; i<VERSION_NUMBER_DEPTH; i++) V.version_numbers[i] = -1;

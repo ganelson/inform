@@ -43,6 +43,7 @@
 	endif
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+	debugger: lldb -f $I7 -- `$I7OPTIONS -project $WORK/Example.inform -crash-all
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 

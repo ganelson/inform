@@ -512,9 +512,9 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, extens
 			WRITE("the Options.txt configuration file");
 			Index::DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
-			if (ef == standard_rules_extension) WRITE("the ");
+			if (Extensions::Files::is_SR(ef)) WRITE("the ");
 			else WRITE("the extension ");
-			WRITE("%+W", ef->title_text);
+			WRITE("%S", ef->found->edition->work->title);
 			break;
 	}
 	WRITE(":");

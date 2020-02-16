@@ -13,6 +13,7 @@ void ProjectBundleManager::start(void) {
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);
 	METHOD_ADD(project_bundle_genre, GENRE_COPY_TO_NEST_MTID, ProjectBundleManager::copy_to_nest);
 	METHOD_ADD(project_bundle_genre, GENRE_GO_OPERATIONAL_MTID, ProjectBundleManager::go_operational);
+	METHOD_ADD(project_bundle_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectBundleManager::read_source_text_for);
 }
 
 void ProjectBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -99,4 +100,9 @@ void ProjectBundleManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectBundleManager::from_copy(C));
 }
 
+@h Source text.
 
+=
+void ProjectBundleManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C, linked_list *errors) {
+	Projects::read_source_text_for(ProjectBundleManager::from_copy(C), errors);
+}

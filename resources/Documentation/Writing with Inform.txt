@@ -17479,7 +17479,7 @@ A second double-quoted text can also, optionally, be added in yet a third specia
 
 Note the typical style here: it's a phrase rather than a sentence, and neither starts with an upper-case letter nor ends with a full stop. (The additional credit is then used in documentation and also in the VERSION text of any Inform story file using the extension.)
 
-[x] Version numbering {PM_ExtVersionTooLow} {PM_ExtNoVersion}
+[x] Version numbering {PM_ExtVersionTooLow}
 
 ^^{version number (of extension)}
 ^^{extensions: writing: version number}

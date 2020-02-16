@@ -279,7 +279,7 @@ int PL::Player::player_complete_model(int stage) {
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL)
-			&& (Instances::get_creating_file(I) == primary_source_file))
+			&& (Projects::draws_from_source_file(Inbuild::project(), Instances::get_creating_file(I))))
 			start_room = I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL))

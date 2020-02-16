@@ -168,7 +168,7 @@ void Index::DocReferences::doc_mark_used(text_stream *symb, int at_word) {
 					source_file *pos = Lexer::file_of_origin(at_word);
 					loc = SourceFiles::get_extension_corresponding(pos);
 					if (loc == NULL) dr->usage_count++;
-					else if (loc == standard_rules_extension) dr->sr_usage_count++;
+					else if (Extensions::Files::is_SR(loc)) dr->sr_usage_count++;
 					else dr->ext_usage_count++;
 				} else dr->sr_usage_count++;
 				return;

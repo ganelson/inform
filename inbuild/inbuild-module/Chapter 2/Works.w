@@ -188,6 +188,7 @@ int Works::is_standard_rules(inbuild_work *work) {
 			Works::new(extension_genre, I"Standard Rules", I"Graham Nelson");
 		Works::add_to_database(a_work_for_standard_rules, HYPOTHETICAL_WDBC);
 	}
+	if (work == NULL) return FALSE;
 	return Works::match(work, a_work_for_standard_rules);
 }
 
@@ -198,6 +199,7 @@ int Works::is_basic_inform(inbuild_work *work) {
 			Works::new(extension_genre, I"Basic Inform", I"Graham Nelson");
 		Works::add_to_database(a_work_for_basic_inform, HYPOTHETICAL_WDBC);
 	}
+	if (work == NULL) return FALSE;
 	return Works::match(work, a_work_for_basic_inform);
 }
 

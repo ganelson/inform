@@ -12,35 +12,19 @@ does this), and some extensions, such as Basic Inform, need to be given
 inclusion sentences -- see Kits.
 
 =
-source_file *primary_source_file = NULL; /* first to be opened */
-
-@ There is no real difference between the loading of the primary source text
-and the loading of an extension's text, except for the descriptions we
-supply in case of any problem messages which might need to be issued,
-and for the fact that the mandatory insertion text is loaded before the
-primary source text.
-
-=
-int SourceFiles::read_extension_source_text(extension_file *EF,
-	text_stream *synopsis, int documentation_only) {
-	int rv = SourceFiles::read_file(NULL, synopsis, EF, documentation_only);
-	if (Log::aspect_switched_on(LEXICAL_OUTPUT_DA)) Word::log_lexer_output();
-	return rv;
+void SourceFiles::read_primary_source_text(void) {
+	inbuild_copy *C = Inbuild::project()->as_copy;
+	Model::read_source_text_for(C);
+	SourceFiles::issue_problems_arising(C);
 }
 
-void SourceFiles::read_primary_source_text(void) {
-	TEMPORARY_TEXT(early);
-	Projects::early_source_text(early, Inbuild::project());
-	if (Str::len(early) > 0) Feeds::feed_stream(early);
-	DISCARD_TEXT(early);
-	SourceFiles::read_further_mandatory_text();
-	linked_list *L = Projects::source(Inbuild::project());
-	if (L) {
-		build_vertex *N;
-		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
-			filename *F = N->buildable_if_internal_file;
-			if (TextFiles::exists(F) == FALSE) {
-				Problems::quote_stream(1, Filenames::get_leafname(F));
+void SourceFiles::issue_problems_arising(inbuild_copy *C) {
+	if (C == NULL) return;
+	source_text_error *ste;
+	LOOP_OVER_LINKED_LIST(ste, source_text_error, C->errors_reading_source_text) {
+		switch (ste->ste_code) {
+			case OPEN_FAILED_STE:
+				Problems::quote_stream(1, Filenames::get_leafname(ste->file));
 				Problems::Issue::handmade_problem(_p_(Untestable));
 				Problems::issue_problem_segment(
 					"I can't open the file '%1' of source text. %P"
@@ -48,9 +32,18 @@ void SourceFiles::read_primary_source_text(void) {
 					"hold your source text, maybe your 'Contents.txt' has a "
 					"typo in it?");
 				Problems::issue_problem_end();		
-			} else {
-				SourceFiles::read_file(F, N->annotation, NULL, FALSE);
-			}
+				break;
+			case EXT_MISWORDED_STE:
+				Problems::quote_work(1, ste->copy->found_by->work);
+				Problems::quote_stream(2, ste->notes);
+				Problems::Issue::handmade_problem(_p_(PM_ExtMiswordedBeginsHere));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, seems to be "
+					"damaged or incorrect: its identifying opening line is wrong. "
+					"Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
+			default: internal_error("an unknown error occurred");
 		}
 	}
 }
@@ -81,124 +74,14 @@ int SourceFiles::increase_sentence_count(wording W) {
 	return FALSE;
 }
 
-@ Either way, we use the following code. The |SourceFiles::read_file| function returns
-one of the following values to indicate the source of the source: the value
-only really tells us something we didn't know in the case of extensions,
-but in that event the Extensions.w routines do indeed want to know this.
-
-=
-int SourceFiles::read_file(filename *F, text_stream *synopsis, extension_file *EF,
-	int documentation_only) {
-	source_file *sf = NULL;
-	int area = -1;
-	if (EF)
-		area = SourceFiles::read_file_inner(F, synopsis,
-			Inbuild::nest_list(), documentation_only, &sf,
-			STORE_POINTER_extension_file(EF), FALSE, EF);
-	else
-		area = SourceFiles::read_file_inner(F, synopsis,
-			NULL, documentation_only, &sf,
-			STORE_POINTER_extension_file(NULL), TRUE, NULL);
-	if (area == -1) {
-		if (EF) {
-			LOG("Author: %W\n", EF->author_text);
-			LOG("Title: %W\n", EF->title_text);
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_stream(2, synopsis);
-			Problems::Issue::handmade_problem(_p_(PM_BogusExtension));
-			Problems::issue_problem_segment(
-				"I can't find the extension '%2', which seems not to be installed, "
-				"but was requested by: %1. %P"
-				"You can get hold of extensions which people have made public at "
-				"the Inform website, www.inform7.com, or by using the Public "
-				"Library in the Extensions panel.");
-			Problems::issue_problem_end();
-		} else {
-			Problems::Fatal::filename_related(
-				"Error: can't open source text file", F);
-		}
-	} else {
-		if (EF == NULL) primary_source_file = sf;
-		else Extensions::Files::set_corresponding_source_file(EF, sf);
-		if (documentation_only == FALSE) @<Tell console output about the file@>;
-	}
-	return area;
-}
-
-@ This is where messages like
-
-	|I've also read Standard Rules by Graham Nelson, which is 27204 words long.|
-
-are printed to |stdout| (not |stderr|), in something of an affectionate nod
-to \TeX's traditional console output, though occasionally I think silence is
-golden and that the messages could go. It's a moot point for almost all users,
-though, because the console output is concealed from them by the Inform
-application.
-
-@<Tell console output about the file@> =
-	int wc;
-	char *message;
-	if (EF == NULL) message = "I've now read %S, which is %d words long.\n";
-	else message = "I've also read %S, which is %d words long.\n";
-	wc = TextFromFiles::total_word_count(sf);
-	WRITE_TO(STDOUT, message, synopsis, wc);
-	STREAM_FLUSH(STDOUT);
-	LOG(message, synopsis, wc);
-
-@ =
-int SourceFiles::read_file_inner(filename *F, text_stream *synopsis,
-	linked_list *search_list, int documentation_only, source_file **S,
-	general_pointer ref, int primary, extension_file *EF) {
-	int origin_tried = 1;
-
-	FILE *handle = NULL; filename *eventual = F;
-	@<Set pathname and filename, and open file@>;
-	if (handle == NULL) return -1;
-	text_stream *leaf = Filenames::get_leafname(eventual);
-	if (primary) leaf = I"main source text";
-	source_file *sf = TextFromFiles::feed_open_file_into_lexer(eventual, handle,
-		leaf, documentation_only, ref);
-	fclose(handle);
-
-	if (S) *S = sf;
-	return origin_tried;
-}
-
-@ The primary source text must be found where we expect it, or a fatal
-error is issued. An extension, however, can be in one of two places: the
-user's own repository of installed extensions, or the built-in stock. We
-must try each possibility -- in that order, so that the user can supplant
-the built-in extensions by installing hacked versions of her own -- and in
-the event of failing, we issue only a standard Inform problem message and
-continue. While meaningful compilation is unlikely to succeed now, this is
-not a fatal error, because fatality would cause the user interface
-application to communicate the problem badly.
-
-@<Set pathname and filename, and open file@> =
-	handle = NULL;
-	if (search_list) {
-		text_stream *author_name = EF->ef_req->work->author_name;
-		text_stream *title = EF->ef_req->work->title;
-		inbuild_work *work = Works::new(extension_genre, title, author_name);
-		inbuild_requirement *req = Requirements::any_version_of(work);
-		req->allow_malformed = TRUE;
-		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, search_list, L);
-		inbuild_search_result *search_result;
-		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
-			eventual = search_result->copy->location_if_file;
-			handle = Filenames::fopen_caseless(eventual, "r");
-			origin_tried = Nests::get_tag(search_result->nest);
-			break;
-		}
-	} else {
-		handle = Filenames::fopen(F, "r");
-	}
-
-@ =
 extension_file *SourceFiles::get_extension_corresponding(source_file *sf) {
 	if (sf == NULL) return NULL;
-	return RETRIEVE_POINTER_extension_file(sf->your_ref);
+	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
+	if (C == NULL) return NULL;
+	if (C->edition->work->genre != extension_genre) return NULL;
+	inform_extension *E = ExtensionManager::from_copy(C);
+	if (E == NULL) return NULL;
+	return E->ef;
 }
 
 @ And the following converts lexer error conditions into I7 problem messages.

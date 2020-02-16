@@ -64,7 +64,7 @@ the extension's name as a major subheading in our index.
 		HTML_OPEN_WITH("p", "class=\"in1\"");
 		WRITE("<b>Defined in the source</b>");
 		HTML_CLOSE("p");
-	} else if (this_extension != standard_rules_extension) {
+	} else if (Extensions::Files::is_SR(this_extension) == FALSE) {
 		if (pass == 2) HTML_TAG("hr");
 		HTML_OPEN_WITH("p", "class=\"in1\"");
 		WRITE("<b>From the extension ");
@@ -83,7 +83,7 @@ each has a paragraph of its own.
 	wording HW = Sentences::Headings::get_text(this_heading);
 	if (Wordings::nonempty(HW)) {
 		if (pass == 1) @<Strip away bracketed matter in the heading name@>;
-		if (this_extension == standard_rules_extension)
+		if (Extensions::Files::is_SR(this_extension))
 			@<Mark a faked division due to inter-hyphen clue in SR heading@>;
 	}
 

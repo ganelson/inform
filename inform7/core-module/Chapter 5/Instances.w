@@ -575,7 +575,7 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 		parse_node *at = IU->where_instance_used;
 		if (at) {
 			source_file *sf = Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(at)));
-			if (sf == primary_source_file) {
+			if (Projects::draws_from_source_file(Inbuild::project(), sf)) {
 				k++;
 				if (k == 1) {
 					HTMLFiles::open_para(OUT, 1, "tight");

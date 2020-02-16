@@ -97,7 +97,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL,
 					req->allow_malformed);
 				if ((C) && (Requirements::meets(C->edition, req))) {
-					Nests::add_search_result(search_results, N, C);
+					Nests::add_search_result(search_results, N, C, req);
 				}
 			}
 		}

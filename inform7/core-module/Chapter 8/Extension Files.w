@@ -137,34 +137,25 @@ its purpose.
 =
 typedef struct extension_file {
 	struct inbuild_requirement *ef_req; /* Work and version needed */
-	struct wording author_text; /* Author's name */
-	struct wording title_text; /* Extension name */
-	struct wording VM_restriction_text; /* Restricting use to certain VMs */
-	struct parse_node *inclusion_sentence; /* Where the source called for this */
 	struct inbuild_copy *found;
 	MEMORY_MANAGEMENT
 } extension_file;
-
-extension_file *standard_rules_extension; /* the Standard Rules by Graham Nelson */
 
 @ We begin with some housekeeping, really: the code required to create new
 extension file structures, and to manage existing ones.
 
 =
-extension_file *Extensions::Files::new(wording AW, wording NW, wording VMW, int version_word) {
-	TEMPORARY_TEXT(violation);
+int Extensions::Files::is_SR(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) return FALSE;
+	if (Extensions::is_standard(E)) return TRUE;
+	return FALSE;
+}
+
+extension_file *Extensions::Files::new(inbuild_requirement *req) {
 	extension_file *ef = CREATE(extension_file);
-	ef->author_text = AW;
-	ef->title_text = NW;
-	@<Create work for new extension file@>;
-	ef->inclusion_sentence = current_sentence;
-	ef->VM_restriction_text = VMW;
+	ef->ef_req = req;
 	ef->found = NULL;
-	if (Str::len(violation) > 0) {
-		LOG("So %S\n", violation);
-		Problems::Issue::extension_problem_S(_p_(PM_IncludesTooLong), ef, violation); /* see below */
-	}
-	DISCARD_TEXT(violation);
 	return ef;
 }
 
@@ -174,42 +165,29 @@ inform_extension *Extensions::Files::find(extension_file *ef) {
 	return ExtensionManager::from_copy(ef->found);
 }
 
-@ We protect ourselves a little against absurdly long requested author or
-title names, and then produce problem messages in the event of only longish
-ones, unless the census is going on: in which case it's better to leave the
-matter to the census errors system elsewhere.
+parse_node *Extensions::Files::where_included(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) return NULL;
+	return E->inclusion_sentence;
+}
 
-@<Create work for new extension file@> =
-	TEMPORARY_TEXT(exft);
-	TEMPORARY_TEXT(exfa);
-	WRITE_TO(exft, "%+W", ef->title_text);
-	WRITE_TO(exfa, "%+W", ef->author_text);
-	if (Extensions::Census::currently_recording_errors() == FALSE) {
-		if (Str::len(exfa) >= MAX_EXTENSION_AUTHOR_LENGTH) {
-			WRITE_TO(violation,
-				"has an author's name which is too long, exceeding the maximum "
-				"allowed (%d characters) by %d",
-				MAX_EXTENSION_AUTHOR_LENGTH-1,
-				(int) (1+Str::len(exfa)-MAX_EXTENSION_AUTHOR_LENGTH));
-			Str::truncate(exfa, MAX_EXTENSION_AUTHOR_LENGTH-1);
-		}
-		if (Str::len(exft) >= MAX_EXTENSION_AUTHOR_LENGTH) {
-			WRITE_TO(violation,
-				"has a title which is too long, exceeding the maximum allowed "
-				"(%d characters) by %d",
-				MAX_EXTENSION_TITLE_LENGTH-1,
-				(int) (1+Str::len(exft)-MAX_EXTENSION_TITLE_LENGTH));
-			Str::truncate(exft, MAX_EXTENSION_AUTHOR_LENGTH-1);
-		}
-	}
-	inbuild_work *work = Works::new(extension_genre, exft, exfa);
-	Works::add_to_database(work, LOADED_WDBC);
-	inbuild_version_number min = VersionNumbers::null();
-	if (version_word >= 0) min = Extensions::Inclusion::parse_version(version_word);
-	ef->ef_req = Requirements::new(work, min, VersionNumbers::null());
-	if (Works::is_standard_rules(work)) standard_rules_extension = ef;
-	DISCARD_TEXT(exft);
-	DISCARD_TEXT(exfa);
+void Extensions::Files::set_where_included(extension_file *ef, parse_node *N) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	Extensions::set_inclusion_sentence(E, N);
+}
+
+wording Extensions::Files::VM_text(extension_file *ef) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) return EMPTY_WORDING;
+	return E->VM_restriction_text;
+}
+
+void Extensions::Files::set_VM_text(extension_file *ef, wording W) {
+	inform_extension *E = Extensions::Files::find(ef);
+	if (E == NULL) internal_error("unfound ef");
+	Extensions::set_VM_text(E, W);
+}
 
 @ Three pieces of information (not available when the EF is created) will
 be set later on, by other parts of Inform calling the routines below.
@@ -242,26 +220,6 @@ when the EF structure is created, we don't know that yet), we need to tally
 it up with the corresponding source file structure.
 
 =
-void Extensions::Files::set_corresponding_source_file(extension_file *ef, source_file *sf) {
-	TEMPORARY_TEXT(error_text);
-	inbuild_copy *C = ExtensionManager::claim_file_as_copy(sf->name, error_text, TRUE);
-	if (Str::len(error_text) > 0) {
-		Problems::quote_extension(1, ef);
-		Problems::quote_stream(2, error_text);
-		Problems::Issue::handmade_problem(_p_(PM_ExtMiswordedBeginsHere));
-		Problems::issue_problem_segment(
-			"The extension %1, which your source text makes use of, seems to be "
-			"damaged or incorrect: its identifying opening line is wrong. "
-			"Specifically, %2.");
-		Problems::issue_problem_end();
-	} else {
-		ef->found = C;
-		inform_extension *E = ExtensionManager::from_copy(C);
-		E->read_into_file = sf;
-	}
-	DISCARD_TEXT(error_text);
-}
-
 source_file *Extensions::Files::source(extension_file *ef) {
 	inform_extension *E = Extensions::Files::find(ef);
 	if (E) return E->read_into_file;
@@ -317,11 +275,11 @@ First, printing the name to an arbitrary UTF-8 file:
 
 =
 void Extensions::Files::write_name_to_file(extension_file *ef, OUTPUT_STREAM) {
-	WRITE("%+W", ef->title_text);
+	WRITE("%+W", ef->found->edition->work->title);
 }
 
 void Extensions::Files::write_author_to_file(extension_file *ef, OUTPUT_STREAM) {
-	WRITE("%+W", ef->author_text);
+	WRITE("%+W", ef->found->edition->work->author_name);
 }
 
 @ Next, the debugging log:
@@ -329,29 +287,14 @@ void Extensions::Files::write_author_to_file(extension_file *ef, OUTPUT_STREAM) 
 =
 void Extensions::Files::log(extension_file *ef) {
 	if (ef == NULL) { LOG("<null-extension-file>"); return; }
-	LOG("%W by %W", ef->title_text, ef->author_text);
-}
-
-@ Next, printing the name in the form of a comment in an (ISO Latin-1)
-Inform 6 source file:
-
-=
-void Extensions::Files::write_I6_comment_describing(extension_file *ef) {
-	if (ef == standard_rules_extension) {
-		Produce::comment(Emit::tree(), I"From the Standard Rules");
-	} else {
-		TEMPORARY_TEXT(C);
-		WRITE_TO(C, "From \"%~W\" by %~W", ef->title_text, ef->author_text);
-		Produce::comment(Emit::tree(), C);
-		DISCARD_TEXT(C);
-	}
+	LOG("%X", ef->found);
 }
 
 @ And finally printing the name to a C string:
 
 =
 void Extensions::Files::write_full_title_to_stream(OUTPUT_STREAM, extension_file *ef) {
-	WRITE("%+W by %+W", ef->title_text, ef->author_text);
+	WRITE("%X", ef->found->edition->work);
 }
 
 @h Checking version numbers.
@@ -371,20 +314,20 @@ void Extensions::Files::check_versions(void) {
 		if (Requirements::meets(Extensions::Files::get_edition(ef), ef->ef_req) == FALSE) {
 			inbuild_version_number have = Extensions::Files::get_version(ef);
 			LOG("Need %v, have %v\n", &(ef->ef_req->min_version), &have);
-			current_sentence = ef->inclusion_sentence;
+			current_sentence = Extensions::Files::where_included(ef);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_extension(2, ef);
 			if (VersionNumbers::is_null(have) == FALSE) {
 				TEMPORARY_TEXT(vn);
 				VersionNumbers::to_text(vn, have);
 				Problems::quote_stream(3, vn);
-				Problems::Issue::handmade_problem(_p_(PM_ExtVersionTooLow));
+				Problems::Issue::handmade_problem(_p_(BelievedImpossible));
 				Problems::issue_problem_segment(
 					"You wrote %1: but my copy of %2 is only version %3.");
 				Problems::issue_problem_end();
 				DISCARD_TEXT(vn);
 			} else {
-				Problems::Issue::handmade_problem(_p_(PM_ExtNoVersion));
+				Problems::Issue::handmade_problem(_p_(BelievedImpossible));
 				Problems::issue_problem_segment(
 					"You wrote %1: but my copy of %2 contains no version "
 					"number, and is therefore considered to be earlier than "
@@ -421,7 +364,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
 		TEMPORARY_TEXT(the_author_name);
-		WRITE_TO(the_author_name, "%+W", ef->author_text);
+		WRITE_TO(the_author_name, "%S", ef->found->edition->work->author_name);
 		int self_penned = FALSE;
 		#ifdef IF_MODULE
 		if (PL::Bibliographic::story_author_is(the_author_name)) self_penned = TRUE;
@@ -509,9 +452,11 @@ void Extensions::Files::index(OUTPUT_STREAM) {
 	Extensions::Files::index_extensions_from(OUT, NULL);
 	extension_file *from;
 	LOOP_OVER(from, extension_file)
-		if (from != standard_rules_extension)
+		if (Extensions::Files::is_SR(from) == FALSE)
 			Extensions::Files::index_extensions_from(OUT, from);
-	Extensions::Files::index_extensions_from(OUT, standard_rules_extension);
+	LOOP_OVER(from, extension_file)
+		if (Extensions::Files::is_SR(from))
+			Extensions::Files::index_extensions_from(OUT, from);
 	HTML_OPEN("p"); HTML_CLOSE("p");
 }
 
@@ -520,22 +465,22 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 	extension_file *ef;
 	LOOP_OVER(ef, extension_file) {
 		extension_file *owner = NULL;
-		if (ef == standard_rules_extension) owner = standard_rules_extension;
-		else if (Wordings::nonempty(ParseTree::get_text(ef->inclusion_sentence))) {
-			source_location sl = Wordings::location(ParseTree::get_text(ef->inclusion_sentence));
-			if (sl.file_of_origin == NULL) owner = standard_rules_extension;
+		parse_node *N = Extensions::Files::where_included(from);
+		if (Wordings::nonempty(ParseTree::get_text(N))) {
+			source_location sl = Wordings::location(ParseTree::get_text(N));
+			if (sl.file_of_origin == NULL) owner = NULL;
 			else owner = SourceFiles::get_extension_corresponding(
-				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(ef->inclusion_sentence))));
+				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(N))));
 		}
 		if (owner != from) continue;
 		if (show_head) {
 			HTMLFiles::open_para(OUT, 2, "hanging");
 			HTML::begin_colour(OUT, I"808080");
 			WRITE("Included ");
-			if (from == standard_rules_extension) WRITE("automatically by Inform");
+			if (Extensions::Files::is_SR(from)) WRITE("automatically by Inform");
 			else if (from == NULL) WRITE("from the source text");
 			else {
-				WRITE("by the extension %+W", from->title_text);
+				WRITE("by the extension %S", from->found->edition->work->title);
 			}
 			show_head = FALSE;
 			HTML::end_colour(OUT);
@@ -544,12 +489,12 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 		HTML_OPEN_WITH("ul", "class=\"leaders\"");
 		HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
 		HTML_OPEN("span");
-		WRITE("%+W ", ef->title_text);
+		WRITE("%S ", ef->found->edition->work->title);
 		Works::begin_extension_link(OUT, ef->ef_req->work, NULL);
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
 		Works::end_extension_link(OUT, ef->ef_req->work);
-		if (ef != standard_rules_extension) { /* give author and inclusion links, but not for SR */
-			WRITE(" by %+W", ef->author_text);
+		if (Extensions::Files::is_SR(ef) == FALSE) { /* give author and inclusion links, but not for SR */
+			WRITE(" by %X", ef->found->edition->work->author_name);
 		}
 		if (VersionNumbers::is_null(Extensions::Files::get_version(ef)) == FALSE) {
 			WRITE(" ");
@@ -568,7 +513,7 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, extension_file *fro
 		HTML_CLOSE("span");
 		HTML_OPEN("span");
 		WRITE("%d words", TextFromFiles::total_word_count(Extensions::Files::source(ef)));
-		if (from == NULL) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ef->inclusion_sentence)));
+		if (from == NULL) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(Extensions::Files::where_included(ef))));
 		HTML_CLOSE("span");
 		HTML_CLOSE("li");
 		HTML_CLOSE("ul");

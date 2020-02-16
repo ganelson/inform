@@ -43,8 +43,9 @@ void Modules::look_for_cu(parse_node *p) {
 compilation_module *Modules::new(parse_node *from) {
 	extension_file *owner = NULL;
 	source_location sl = Wordings::location(ParseTree::get_text(from));
-	if (sl.file_of_origin == NULL) owner = standard_rules_extension;
-	else owner = SourceFiles::get_extension_corresponding(
+	if (sl.file_of_origin == NULL) internal_error("null foo");
+//	if (sl.file_of_origin == NULL) owner = standard_rules_extension; else 
+	owner = SourceFiles::get_extension_corresponding(
 		Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
 
 	compilation_module *C = Packaging::new_cm();
@@ -67,7 +68,7 @@ compilation_module *Modules::new(parse_node *from) {
 		DISCARD_TEXT(V);
 	}
 
-	if (owner == standard_rules_extension) SR_module = C;
+	if (Extensions::Files::is_SR(owner)) SR_module = C;
 	if (owner == NULL) source_text_module = C;
 	return C;
 }
@@ -76,7 +77,7 @@ compilation_module *Modules::new(parse_node *from) {
 compiled from the compilation module will go into a package of that name.
 
 @<Compose a name for the module package this will lead to@> =
-	if (owner == standard_rules_extension) WRITE_TO(pname, "standard_rules");
+	if (Extensions::Files::is_SR(owner)) WRITE_TO(pname, "standard_rules");
 	else if (owner == NULL) WRITE_TO(pname, "source_text");
 	else {
 		WRITE_TO(pname, "%X", Extensions::Files::get_work(owner));

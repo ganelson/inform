@@ -11,6 +11,7 @@ few of these.
 @e GENRE_SEARCH_NEST_FOR_MTID
 @e GENRE_COPY_TO_NEST_MTID
 @e GENRE_GO_OPERATIONAL_MTID
+@e GENRE_READ_SOURCE_TEXT_FOR_MTID
 
 =
 typedef struct inbuild_genre {
@@ -24,6 +25,7 @@ VMETHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID, inbuild_genre *gen, inbuild_copy **C, tex
 VMETHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID, inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req, linked_list *search_results)
 VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID, inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing, build_methodology *meth)
 VMETHOD_TYPE(GENRE_GO_OPERATIONAL_MTID, inbuild_genre *gen, inbuild_copy *C)
+VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID, inbuild_genre *gen, inbuild_copy *C, linked_list *errors)
 
 @ =
 inbuild_genre *Model::genre(text_stream *name) {
@@ -72,6 +74,9 @@ typedef struct inbuild_copy {
 	struct filename *location_if_file;
 	general_pointer content; /* the type of which depends on the work's genre */
 	struct build_vertex *vertex;
+	struct wording source_text;
+	struct linked_list *errors_reading_source_text;
+	struct inbuild_requirement *found_by;
 	MEMORY_MANAGEMENT
 } inbuild_copy;
 
@@ -82,6 +87,9 @@ inbuild_copy *Model::copy_in_file(inbuild_edition *edition, filename *F, general
 	copy->location_if_file = F;
 	copy->content = C;
 	copy->vertex = NULL;
+	copy->source_text = EMPTY_WORDING;
+	copy->errors_reading_source_text = NEW_LINKED_LIST(source_text_error);
+	copy->found_by = NULL;
 	return copy;
 }
 
@@ -92,6 +100,9 @@ inbuild_copy *Model::copy_in_directory(inbuild_edition *edition, pathname *P, ge
 	copy->location_if_file = NULL;
 	copy->content = C;
 	copy->vertex = NULL;
+	copy->source_text = EMPTY_WORDING;
+	copy->errors_reading_source_text = NEW_LINKED_LIST(source_text_error);
+	copy->found_by = NULL;
 	return copy;
 }
 
@@ -130,4 +141,11 @@ inbuild_copy *Model::claim(text_stream *arg) {
 
 void Model::cppy_go_operational(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
+}
+
+void Model::read_source_text_for(inbuild_copy *C) {
+	feed_t id = Feeds::begin();
+	VMETHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C, C->errors_reading_source_text);
+	wording W = Feeds::end(id);
+	if (Wordings::nonempty(W)) C->source_text = W;
 }

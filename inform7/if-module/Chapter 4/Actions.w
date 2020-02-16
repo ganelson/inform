@@ -1381,7 +1381,7 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 				HTML_TAG("br");
 				f = FALSE;
 				*new_par = TRUE;
-			} else if (*ext != standard_rules_extension) {
+			} else if (Extensions::Files::is_SR(*ext) == FALSE) {
 				if (f) HTML_CLOSE("p");
 				HTML_OPEN("p");
 				WRITE("<b>Actions defined by the extension ");
@@ -1394,7 +1394,7 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 				*new_par = TRUE;
 			}
 		}
-		if ((definition_area != *current_area) && (*ext == standard_rules_extension)) {
+		if ((definition_area != *current_area) && (Extensions::Files::is_SR(*ext))) {
 			if (f) HTML_CLOSE("p");
 			HTML_OPEN("p");
 			wording W = Sentences::Headings::get_text(definition_area);

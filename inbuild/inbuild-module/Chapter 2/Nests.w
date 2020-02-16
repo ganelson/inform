@@ -41,10 +41,12 @@ void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
 }
 
-void Nests::add_search_result(linked_list *results, inbuild_nest *N, inbuild_copy *C) {
+void Nests::add_search_result(linked_list *results, inbuild_nest *N, inbuild_copy *C,
+	inbuild_requirement *req) {
 	inbuild_search_result *R = CREATE(inbuild_search_result);
 	R->nest = N;
 	R->copy = C;
+	C->found_by = req;
 	ADD_TO_LINKED_LIST(R, inbuild_search_result, results);
 }
 

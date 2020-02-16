@@ -93,7 +93,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
 				inbuild_copy *C = TemplateManager::claim_folder_as_copy(Q);
 				if ((C) && (Requirements::meets(C->edition, req))) {
-					Nests::add_search_result(search_results, N, C);
+					Nests::add_search_result(search_results, N, C, req);
 				}
 			}
 		}

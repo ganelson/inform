@@ -342,7 +342,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 				#ifndef IF_MODULE
 				source_file *pos = Lexer::file_of_origin(Wordings::first_wn(MW));
 				extension_file *loc = SourceFiles::get_extension_corresponding(pos);
-				if (loc == standard_rules_extension) return;
+				if (Extensions::Files::is_SR(loc)) return;
 				#endif
 				Problems::Issue::sentence_problem(_p_(PM_NoSuchBuiltInMeaning),
 					"that's not one of the built-in meanings I know",

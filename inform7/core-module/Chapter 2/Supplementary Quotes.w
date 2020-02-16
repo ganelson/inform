@@ -32,6 +32,18 @@ void Problems::quote_extension(int t, extension_file *p) {
 void Problems::expand_extension(OUTPUT_STREAM, void *p) {
 	Extensions::Files::write_full_title_to_stream(OUT, (extension_file *) p);
 }
+void Problems::quote_copy(int t, inbuild_copy *p) {
+	Problems::problem_quote(t, (void *) p, Problems::expand_copy);
+}
+void Problems::expand_copy(OUTPUT_STREAM, void *p) {
+	Model::write_copy(OUT, (inbuild_copy *) p);
+}
+void Problems::quote_work(int t, inbuild_work *p) {
+	Problems::problem_quote(t, (void *) p, Problems::expand_work);
+}
+void Problems::expand_work(OUTPUT_STREAM, void *p) {
+	Works::write(OUT, (inbuild_work *) p);
+}
 void Problems::quote_object(int t, instance *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_object);
 }

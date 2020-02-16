@@ -1,19 +1,8 @@
-Include version 1 of Standard Rules by Graham Nelson. [Legal.]
 Include version / of Standard Rules by Graham Nelson.
-Include version 0 of Standard Rules by Graham Nelson.
 Include version 012 of Standard Rules by Graham Nelson.
 Include version 1/ of Standard Rules by Graham Nelson.
 Include version /000000 of Standard Rules by Graham Nelson.
 Include version 1/01234 of Standard Rules by Graham Nelson.
 Include version 1/0123456 of Standard Rules by Graham Nelson.
-Include version 1/010101 of Standard Rules by Graham Nelson. [Legal.]
 Include version 1//010101 of Standard Rules by Graham Nelson.
 Include version 1/23/010101 of Standard Rules by Graham Nelson.
-Include version 999/010101 of Standard Rules by Graham Nelson. [Legal.]
-Include version 1000/010101 of Standard Rules by Graham Nelson.
-Include version 999 of Standard Rules by Graham Nelson. [Legal.]
-Include version 1000 of Standard Rules by Graham Nelson.
-Include version 0.1 of Standard Rules by Graham Nelson.
-Include version three of Standard Rules by Graham Nelson.
-Include version 21 of Standard Rules by Graham Nelson. [Legal.]
-Include version 321 of Standard Rules by Graham Nelson. [Legal.]
