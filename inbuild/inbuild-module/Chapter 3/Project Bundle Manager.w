@@ -7,7 +7,7 @@ A project bundle is a folder holding an Inform 7 work. The app creates these.
 =
 inbuild_genre *project_bundle_genre = NULL;
 void ProjectBundleManager::start(void) {
-	project_bundle_genre = Model::genre(I"projectbundle");
+	project_bundle_genre = Genres::new(I"projectbundle");
 	METHOD_ADD(project_bundle_genre, GENRE_WRITE_WORK_MTID, ProjectBundleManager::write_work);
 	METHOD_ADD(project_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectBundleManager::claim_as_copy);
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);
@@ -34,8 +34,8 @@ inform_project *ProjectBundleManager::from_copy(inbuild_copy *C) {
 inbuild_copy *ProjectBundleManager::new_copy(text_stream *name, pathname *P) {
 	inform_project *K = Projects::new_ip(name, NULL, P);
 	inbuild_work *work = Works::new(project_bundle_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_project(K));
+	inbuild_edition *edition = Copies::edition(work, K->version);
+	K->as_copy = Copies::new_in_path(edition, P, STORE_POINTER_inform_project(K));
 	return K->as_copy;
 }
 

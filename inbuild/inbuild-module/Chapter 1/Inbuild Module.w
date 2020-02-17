@@ -30,7 +30,7 @@ Setting up the use of this module.
 @e inform_project_MT
 @e inform_language_MT
 @e inform_pipeline_MT
-@e source_text_error_MT
+@e copy_error_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -54,7 +54,7 @@ ALLOCATE_INDIVIDUALLY(inform_template)
 ALLOCATE_INDIVIDUALLY(inform_project)
 ALLOCATE_INDIVIDUALLY(inform_language)
 ALLOCATE_INDIVIDUALLY(inform_pipeline)
-ALLOCATE_INDIVIDUALLY(source_text_error)
+ALLOCATE_INDIVIDUALLY(copy_error)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 

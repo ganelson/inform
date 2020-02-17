@@ -89,7 +89,8 @@ int description_round = 1;
 void Graphs::describe(OUTPUT_STREAM, build_vertex *V, int recurse) {
 	Graphs::describe_r(OUT, 0, V, recurse, NULL, NOT_A_GB, description_round++);
 }
-void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V, int recurse, pathname *stem, int which, int description_round) {
+void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
+	int recurse, pathname *stem, int which, int description_round) {
 	for (int i=0; i<depth; i++) WRITE("  ");
 	if (which == BUILD_GB) WRITE("--build-> ");
 	if (which == USE_GB)   WRITE("--use---> ");
@@ -98,7 +99,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V, int recurse, 
 	if (V->last_described == description_round) { WRITE("q.v.\n"); return; }
 	TEMPORARY_TEXT(T);
 	switch (V->type) {
-		case COPY_VERTEX: Model::write_copy(T, V->buildable_if_copy); break;
+		case COPY_VERTEX: Copies::write_copy(T, V->buildable_if_copy); break;
 		case REQUIREMENT_VERTEX: Requirements::write(T, V->findable); break;
 		case FILE_VERTEX: WRITE("%f", V->buildable_if_internal_file); break;
 	}
@@ -120,7 +121,8 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V, int recurse, 
 	}
 	if (recurse) {
 		if (V->buildable_if_copy) stem = V->buildable_if_copy->location_if_path;
-		if (V->buildable_if_internal_file) stem = Filenames::get_path_to(V->buildable_if_internal_file);
+		if (V->buildable_if_internal_file)
+			stem = Filenames::get_path_to(V->buildable_if_internal_file);
 		build_vertex *W;
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 			Graphs::describe_r(OUT, depth+1, W, TRUE, stem, BUILD_GB, description_round);

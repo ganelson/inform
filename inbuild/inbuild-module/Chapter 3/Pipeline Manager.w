@@ -9,7 +9,7 @@ inbuild_genre *pipeline_genre = NULL;
 
 @ =
 void PipelineManager::start(void) {
-	pipeline_genre = Model::genre(I"pipeline");
+	pipeline_genre = Genres::new(I"pipeline");
 	METHOD_ADD(pipeline_genre, GENRE_WRITE_WORK_MTID, PipelineManager::write_work);
 	METHOD_ADD(pipeline_genre, GENRE_CLAIM_AS_COPY_MTID, PipelineManager::claim_as_copy);
 	METHOD_ADD(pipeline_genre, GENRE_SEARCH_NEST_FOR_MTID, PipelineManager::search_nest_for);
@@ -41,7 +41,7 @@ inform_pipeline *PipelineManager::from_copy(inbuild_copy *C) {
 
 inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F) {
 	inform_pipeline *E = Pipelines::new_ip(edition->work->title, F);
-	inbuild_copy *C = Model::copy_in_file(edition, F, STORE_POINTER_inform_pipeline(E));
+	inbuild_copy *C = Copies::new_in_file(edition, F, STORE_POINTER_inform_pipeline(E));
 	E->as_copy = C;
 	return C;
 }
@@ -72,7 +72,7 @@ inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *erro
 	TEMPORARY_TEXT(unext);
 	Filenames::write_unextended_leafname(unext, F);
 	inbuild_copy *C = PipelineManager::new_copy(
-		Model::edition(Works::new_raw(pipeline_genre, unext, NULL), V), F);
+		Copies::edition(Works::new_raw(pipeline_genre, unext, NULL), V), F);
 	DISCARD_TEXT(unext);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	PipelineManager::build_vertex(C);

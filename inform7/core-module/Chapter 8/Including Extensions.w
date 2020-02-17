@@ -239,7 +239,7 @@ trap-door into Read Source Text, to seek and open the file.
 		if (E == NULL) @<Issue a cannot-find problem@>
 		else {
 			inbuild_copy *C = E->as_copy;
-			Model::read_source_text_for(C);
+			Copies::read_source_text_for(C);
 			SourceFiles::issue_problems_arising(C);
 		}
 	}

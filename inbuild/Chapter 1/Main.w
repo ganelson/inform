@@ -55,17 +55,7 @@ int main(int argc, char **argv) {
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
 		switch (inbuild_task) {
-			case INSPECT_TTASK: 
-				WRITE_TO(STDOUT, "%S: ", Model::genre_name(C->edition->work->genre));
-				Model::write_copy(STDOUT, C);
-				if (C->location_if_path) {
-					WRITE_TO(STDOUT, " at path %p", C->location_if_path);
-				}
-				if (C->location_if_file) {
-					WRITE_TO(STDOUT, " in directory %p", Filenames::get_path_to(C->location_if_file));
-				}
-				WRITE_TO(STDOUT, "\n");
-				break;
+			case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
 			case GRAPH_TTASK: Graphs::describe(STDOUT, C->vertex, TRUE); break;
 			case BUILD_TTASK: Graphs::build(C->vertex, BM); break;
 			case REBUILD_TTASK: Graphs::rebuild(C->vertex, BM); break;
@@ -184,7 +174,7 @@ void Main::load_many(pathname *P) {
 }
 
 void Main::load_one(text_stream *arg, int throwing_error) {
-	inbuild_copy *C = Model::claim(arg);
+	inbuild_copy *C = Copies::claim(arg);
 	if (C == NULL) {
 		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
 		return;

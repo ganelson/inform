@@ -9,7 +9,7 @@ inbuild_genre *language_genre = NULL;
 
 @ =
 void LanguageManager::start(void) {
-	language_genre = Model::genre(I"language");
+	language_genre = Genres::new(I"language");
 	METHOD_ADD(language_genre, GENRE_WRITE_WORK_MTID, LanguageManager::write_work);
 	METHOD_ADD(language_genre, GENRE_CLAIM_AS_COPY_MTID, LanguageManager::claim_as_copy);
 	METHOD_ADD(language_genre, GENRE_SEARCH_NEST_FOR_MTID, LanguageManager::search_nest_for);
@@ -50,8 +50,8 @@ inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inform_language *K = Languages::new_il(name, P);
 		inbuild_work *work = Works::new(language_genre, Str::duplicate(name), NULL);
-		inbuild_edition *edition = Model::edition(work, K->version);
-		C = Model::copy_in_directory(edition, P, STORE_POINTER_inform_language(K));
+		inbuild_edition *edition = Copies::edition(work, K->version);
+		C = Copies::new_in_path(edition, P, STORE_POINTER_inform_language(K));
 		K->as_copy = C;
 		Dictionaries::create(language_copy_cache, key);
 		Dictionaries::write_value(language_copy_cache, key, C);

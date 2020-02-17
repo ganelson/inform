@@ -150,7 +150,7 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	#endif
 	TEMPORARY_TEXT(synopsis);
 	@<Concoct a synopsis for the extension to be read@>;
-	E->read_into_file = SourceText::read_file(F, synopsis, doc_only, E->as_copy->errors_reading_source_text, FALSE);
+	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
 	DISCARD_TEXT(synopsis);
 	if (E->read_into_file) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);

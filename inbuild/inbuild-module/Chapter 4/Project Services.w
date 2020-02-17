@@ -274,8 +274,8 @@ void Projects::read_source_text_for(inform_project *project) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
 			filename *F = N->buildable_if_internal_file;
-			N->read_as = SourceText::read_file(F, N->annotation,
-				FALSE, project->as_copy->errors_reading_source_text, TRUE);
+			N->read_as = SourceText::read_file(project->as_copy, F, N->annotation,
+				FALSE, TRUE);
 		}
 	}
 }

@@ -7,7 +7,7 @@ A project file is a plain text file of Inform 7 source text.
 =
 inbuild_genre *project_file_genre = NULL;
 void ProjectFileManager::start(void) {
-	project_file_genre = Model::genre(I"projectfile");
+	project_file_genre = Genres::new(I"projectfile");
 	METHOD_ADD(project_file_genre, GENRE_WRITE_WORK_MTID, ProjectFileManager::write_work);
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);
@@ -34,8 +34,8 @@ inform_project *ProjectFileManager::from_copy(inbuild_copy *C) {
 inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
 	inform_project *K = Projects::new_ip(name, F, NULL);
 	inbuild_work *work = Works::new(project_file_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_file(edition, F, STORE_POINTER_inform_project(K));
+	inbuild_edition *edition = Copies::edition(work, K->version);
+	K->as_copy = Copies::new_in_file(edition, F, STORE_POINTER_inform_project(K));
 	return K->as_copy;
 }
 

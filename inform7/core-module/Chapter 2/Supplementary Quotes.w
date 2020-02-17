@@ -36,7 +36,7 @@ void Problems::quote_copy(int t, inbuild_copy *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_copy);
 }
 void Problems::expand_copy(OUTPUT_STREAM, void *p) {
-	Model::write_copy(OUT, (inbuild_copy *) p);
+	Copies::write_copy(OUT, (inbuild_copy *) p);
 }
 void Problems::quote_work(int t, inbuild_work *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_work);

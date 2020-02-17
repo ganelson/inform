@@ -7,7 +7,7 @@ A kit is a combination of Inter code with an Inform 7 extension.
 =
 inbuild_genre *kit_genre = NULL;
 void KitManager::start(void) {
-	kit_genre = Model::genre(I"kit");
+	kit_genre = Genres::new(I"kit");
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, KitManager::write_work);
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);
@@ -49,8 +49,8 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inform_kit *K = Kits::new_ik(name, P);
 		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
-		inbuild_edition *edition = Model::edition(work, K->version);
-		C = Model::copy_in_directory(edition, P, STORE_POINTER_inform_kit(K));
+		inbuild_edition *edition = Copies::edition(work, K->version);
+		C = Copies::new_in_path(edition, P, STORE_POINTER_inform_kit(K));
 		K->as_copy = C;
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);

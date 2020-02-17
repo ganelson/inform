@@ -7,7 +7,7 @@ A template is the outline for a website presenting an Inform work.
 =
 inbuild_genre *template_genre = NULL;
 void TemplateManager::start(void) {
-	template_genre = Model::genre(I"template");
+	template_genre = Genres::new(I"template");
 	METHOD_ADD(template_genre, GENRE_WRITE_WORK_MTID, TemplateManager::write_work);
 	METHOD_ADD(template_genre, GENRE_CLAIM_AS_COPY_MTID, TemplateManager::claim_as_copy);
 	METHOD_ADD(template_genre, GENRE_SEARCH_NEST_FOR_MTID, TemplateManager::search_nest_for);
@@ -40,8 +40,8 @@ inform_template *TemplateManager::from_copy(inbuild_copy *C) {
 inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P) {
 	inform_template *K = Templates::new_it(name, P);
 	inbuild_work *work = Works::new(template_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Model::edition(work, K->version);
-	K->as_copy = Model::copy_in_directory(edition, P, STORE_POINTER_inform_template(K));
+	inbuild_edition *edition = Copies::edition(work, K->version);
+	K->as_copy = Copies::new_in_path(edition, P, STORE_POINTER_inform_template(K));
 	return K->as_copy;
 }
 

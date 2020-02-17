@@ -15,7 +15,7 @@ length to one character less than the following constants:
 
 @ =
 void ExtensionManager::start(void) {
-	extension_genre = Model::genre(I"extension");
+	extension_genre = Genres::new(I"extension");
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
@@ -56,7 +56,7 @@ inbuild_copy *ExtensionManager::new_copy(inbuild_edition *edition, filename *F) 
 		C = Dictionaries::read_value(ext_copy_cache, key);
 	if (C == NULL) {
 		inform_extension *E = Extensions::new_ie();
-		C = Model::copy_in_file(edition, F, STORE_POINTER_inform_extension(E));
+		C = Copies::new_in_file(edition, F, STORE_POINTER_inform_extension(E));
 		E->as_copy = C;
 		if (Works::is_standard_rules(C->edition->work)) Extensions::make_standard(E);
 		Dictionaries::create(ext_copy_cache, key);
@@ -100,12 +100,9 @@ inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F,
 	inbuild_version_number V =
 		ExtensionManager::scan_file(F, title, author, rubric_text, requirement_text, error_text);
 	inbuild_copy *C = ExtensionManager::new_copy(
-		Model::edition(Works::new(extension_genre, title, author), V), F);
-	if (Str::len(error_text) > 0) {
-		source_text_error *ste = SourceText::ste_text(EXT_MISWORDED_STE, error_text);
-		ste->copy = C;
-		ADD_TO_LINKED_LIST(ste, source_text_error, C->errors_reading_source_text);
-	}
+		Copies::edition(Works::new(extension_genre, title, author), V), F);
+	if (Str::len(error_text) > 0)
+		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
 	if ((allow_malformed) || (Str::len(error_text) == 0)) {
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		ExtensionManager::build_vertex(C);

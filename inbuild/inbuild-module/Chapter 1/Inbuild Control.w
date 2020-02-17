@@ -124,7 +124,7 @@ void Inbuild::go_operational(void) {
 	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
 	inbuild_copy *C;
 	LOOP_OVER(C, inbuild_copy)
-		Model::cppy_go_operational(C);
+		Copies::go_operational(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 }
 

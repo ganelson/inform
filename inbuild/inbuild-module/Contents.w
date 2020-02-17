@@ -9,9 +9,10 @@ Chapter 1: Setting Up
 	Inbuild Control
 
 Chapter 2: Conceptual Framework
-	Conceptual Model
+	Genres
 	Works
 	Version Numbers
+	Copies
 	Requirements
 	Build Graphs
 	Build Steps

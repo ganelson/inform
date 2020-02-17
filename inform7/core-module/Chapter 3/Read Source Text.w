@@ -14,17 +14,17 @@ inclusion sentences -- see Kits.
 =
 void SourceFiles::read_primary_source_text(void) {
 	inbuild_copy *C = Inbuild::project()->as_copy;
-	Model::read_source_text_for(C);
+	Copies::read_source_text_for(C);
 	SourceFiles::issue_problems_arising(C);
 }
 
 void SourceFiles::issue_problems_arising(inbuild_copy *C) {
 	if (C == NULL) return;
-	source_text_error *ste;
-	LOOP_OVER_LINKED_LIST(ste, source_text_error, C->errors_reading_source_text) {
-		switch (ste->ste_code) {
-			case OPEN_FAILED_STE:
-				Problems::quote_stream(1, Filenames::get_leafname(ste->file));
+	copy_error *CE;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		switch (CE->error_category) {
+			case OPEN_FAILED_CE:
+				Problems::quote_stream(1, Filenames::get_leafname(CE->file));
 				Problems::Issue::handmade_problem(_p_(Untestable));
 				Problems::issue_problem_segment(
 					"I can't open the file '%1' of source text. %P"
@@ -33,9 +33,9 @@ void SourceFiles::issue_problems_arising(inbuild_copy *C) {
 					"typo in it?");
 				Problems::issue_problem_end();		
 				break;
-			case EXT_MISWORDED_STE:
-				Problems::quote_work(1, ste->copy->found_by->work);
-				Problems::quote_stream(2, ste->notes);
+			case EXT_MISWORDED_CE:
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_stream(2, CE->notes);
 				Problems::Issue::handmade_problem(_p_(PM_ExtMiswordedBeginsHere));
 				Problems::issue_problem_segment(
 					"The extension %1, which your source text makes use of, seems to be "
