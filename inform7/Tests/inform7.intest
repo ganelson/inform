@@ -18,6 +18,8 @@
 -examples		[Main] resources/Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 
+-groups 'inform7/Tests/Groups'
+
 -recipe [Main]
 
 	set: $I6 = inform6/Tangled/inform6

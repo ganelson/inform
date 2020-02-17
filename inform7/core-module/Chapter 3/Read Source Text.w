@@ -43,6 +43,75 @@ void SourceFiles::issue_problems_arising(inbuild_copy *C) {
 					"Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case LEXER_CE:
+				switch (CE->error_subcategory) {
+					case STRING_TOO_LONG_LEXERERROR:
+						Problems::Issue::lexical_problem(_p_(PM_TooMuchQuotedText),
+							"Too much text in quotation marks", CE->word,
+							"...\" The maximum length is very high, so this is more "
+							"likely to be because a close quotation mark was "
+							"forgotten.");
+						break;
+					case WORD_TOO_LONG_LEXERERROR:
+						  Problems::Issue::lexical_problem(_p_(PM_WordTooLong),
+							"Word too long", CE->word,
+							"(Individual words of unquoted text can run up to "
+							"128 letters long, which ought to be plenty. The longest "
+							"recognised place name in the English speaking world is "
+							"a hill in New Zealand called Taumatawhakatang-"
+							"ihangakoauauot-amateaturipukaka-pikimaunga-"
+							"horonuku-pokaiwhenuak-itanatahu. (You say tomato, "
+							"I say taumatawhakatang-...) The longest word found in a "
+							"classic novel is bababadalgharaghtakamminarronnkonnbronntonn"
+							"erronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk, "
+							"creation's thunderclap from Finnegan's Wake. And both of those "
+							"words are fine.)");
+						break;
+					case I6_TOO_LONG_LEXERERROR:
+						Problems::Issue::lexical_problem(_p_(Untestable), /* well, not at all conveniently */
+							"Verbatim Inform 6 extract too long", CE->word,
+							"... -). The maximum length is quite high, so this "
+							"may be because a '-)' was forgotten. Still, if "
+							"you do need to paste a huge I6 program in, try "
+							"using several verbatim inclusions in a row.");
+						break;
+					case STRING_NEVER_ENDS_LEXERERROR:
+						Problems::Issue::lexical_problem_S(_p_(PM_UnendingQuote),
+							"Some source text ended in the middle of quoted text",
+							CE->details,
+							"This probably means that a quotation mark is missing "
+							"somewhere. If you are using Inform with syntax colouring, "
+							"look for where the quoted-text colour starts. (Sometimes "
+							"this problem turns up because a piece of quoted text contains "
+							"a text substitution in square brackets which in turn contains "
+							"another piece of quoted text - this is not allowed, and causes "
+							"me to lose track.)");
+						break;
+					case COMMENT_NEVER_ENDS_LEXERERROR:
+						Problems::Issue::lexical_problem_S(_p_(PM_UnendingComment),
+							"Some source text ended in the middle of a comment",
+							CE->details,
+							"This probably means that a ']' is missing somewhere. "
+							"(If you are using Inform with syntax colouring, look for "
+							"where the comment colour starts.) Inform's convention on "
+							"'nested comments' is that each '[' in a comment must be "
+							"matched by a corresponding ']': so for instance '[This "
+							"[even nested like so] acts as a comment]' is a single "
+							"comment - the first ']' character matches the second '[' "
+							"and so doesn't end the comment: only the second ']' ends "
+							"the comment.");
+						break;
+					case I6_NEVER_ENDS_LEXERERROR:
+						Problems::Issue::lexical_problem_S(_p_(PM_UnendingI6),
+							"Some source text ended in the middle of a verbatim passage "
+							"of Inform 6 code",
+							CE->details,
+							"This probably means that a '-)' is missing.");
+						break;
+					default:
+						internal_error("unknown lexer error");
+				}
+				break;
 			default: internal_error("an unknown error occurred");
 		}
 	}
@@ -80,82 +149,4 @@ inform_extension *SourceFiles::get_extension_corresponding(source_file *sf) {
 	if (C == NULL) return NULL;
 	if (C->edition->work->genre != extension_genre) return NULL;
 	return ExtensionManager::from_copy(C);
-}
-
-@ And the following converts lexer error conditions into I7 problem messages.
-
-@d LEXER_PROBLEM_HANDLER SourceFiles::lexer_problem_handler
-
-=
-void SourceFiles::lexer_problem_handler(int err, text_stream *problem_source_description, wchar_t *word) {
-	switch (err) {
-		case MEMORY_OUT_LEXERERROR:
-			Problems::Fatal::issue("Out of memory: unable to create lexer workspace");
-			break;
-		case STRING_TOO_LONG_LEXERERROR:
-            Problems::Issue::lexical_problem(_p_(PM_TooMuchQuotedText),
-                "Too much text in quotation marks", word,
-                "...\" The maximum length is very high, so this is more "
-                "likely to be because a close quotation mark was "
-                "forgotten.");
-			break;
-		case WORD_TOO_LONG_LEXERERROR:
-              Problems::Issue::lexical_problem(_p_(PM_WordTooLong),
-                "Word too long", word,
-                "(Individual words of unquoted text can run up to "
-                "128 letters long, which ought to be plenty. The longest "
-                "recognised place name in the English speaking world is "
-                "a hill in New Zealand called Taumatawhakatang-"
-                "ihangakoauauot-amateaturipukaka-pikimaunga-"
-                "horonuku-pokaiwhenuak-itanatahu. (You say tomato, "
-                "I say taumatawhakatang-...) The longest word found in a "
-                "classic novel is bababadalgharaghtakamminarronnkonnbronntonn"
-                "erronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk, "
-                "creation's thunderclap from Finnegan's Wake. And both of those "
-                "words are fine.)");
-			break;
-		case I6_TOO_LONG_LEXERERROR:
-			Problems::Issue::lexical_problem(_p_(Untestable), /* well, not at all conveniently */
-				"Verbatim Inform 6 extract too long", word,
-				"... -). The maximum length is quite high, so this "
-				"may be because a '-)' was forgotten. Still, if "
-				"you do need to paste a huge I6 program in, try "
-				"using several verbatim inclusions in a row.");
-			break;
-		case STRING_NEVER_ENDS_LEXERERROR:
-			Problems::Issue::lexical_problem_S(_p_(PM_UnendingQuote),
-				"Some source text ended in the middle of quoted text",
-				problem_source_description,
-				"This probably means that a quotation mark is missing "
-				"somewhere. If you are using Inform with syntax colouring, "
-				"look for where the quoted-text colour starts. (Sometimes "
-				"this problem turns up because a piece of quoted text contains "
-				"a text substitution in square brackets which in turn contains "
-				"another piece of quoted text - this is not allowed, and causes "
-				"me to lose track.)");
-			break;
-		case COMMENT_NEVER_ENDS_LEXERERROR:
-			Problems::Issue::lexical_problem_S(_p_(PM_UnendingComment),
-				"Some source text ended in the middle of a comment",
-				problem_source_description,
-				"This probably means that a ']' is missing somewhere. "
-				"(If you are using Inform with syntax colouring, look for "
-				"where the comment colour starts.) Inform's convention on "
-				"'nested comments' is that each '[' in a comment must be "
-				"matched by a corresponding ']': so for instance '[This "
-				"[even nested like so] acts as a comment]' is a single "
-				"comment - the first ']' character matches the second '[' "
-				"and so doesn't end the comment: only the second ']' ends "
-				"the comment.");
-			break;
-		case I6_NEVER_ENDS_LEXERERROR:
-			Problems::Issue::lexical_problem_S(_p_(PM_UnendingI6),
-				"Some source text ended in the middle of a verbatim passage "
-				"of Inform 6 code",
-				problem_source_description,
-				"This probably means that a '-)' is missing.");
-			break;
-		default:
-			internal_error("unknown lexer error");
-    }
 }

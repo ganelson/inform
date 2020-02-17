@@ -1,4 +1,5 @@
 Inform 7.10.1 build 6Q21 has started.
+I've now read your source text, which is 1414 words long.
 Problem__ PM_TooMuchQuotedText
   >--> Too much text in quotation marks: "It was really most
     extraordinary.There was Philip Mannering, doing his best to puzzle out
@@ -115,5 +116,4 @@ Problem__ PM_TooMuchQuotedText
     its head that it worked up and down. It gazed at Philip with bright black
     eyes, its head on one side, . ..." The maximum length is very high, so this
     is more likely to be because a close quotation mark was forgotten.
-I've now read your source text, which is 1414 words long.
-Inform 7 has finished: 10 centiseconds used.
+Inform 7 has finished: 11 centiseconds used.

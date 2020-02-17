@@ -1,6 +1,6 @@
-Inform 7 build 6L26 has started.
+Inform 7.10.1 build 6Q21 has started.
+I've now read your source text, which is 1 words long.
 Problem__ PM_UnendingI6
   >--> Some source text ended in the middle of a verbatim passage of Inform 6
     code: main source text. This probably means that a '-)' is missing.
-I've now read your source text, which is 1 words long.
-Inform 7 has finished: 3 centiseconds used.
+Inform 7 has finished: 7 centiseconds used.

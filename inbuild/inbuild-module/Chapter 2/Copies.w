@@ -132,6 +132,9 @@ void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
 		if (N > 1) WRITE("s");
 	}
 	WRITE("\n");
+	if (N > 0) {
+		INDENT; Copies::list_problems_arising(OUT, C); OUTDENT;
+	}
 }
 
 @h Errors.
@@ -151,6 +154,8 @@ typedef struct copy_error {
 	struct filename *file;
 	struct text_file_position pos;
 	struct text_stream *notes;
+	struct text_stream *details;
+	wchar_t *word;
 	MEMORY_MANAGEMENT
 } copy_error;
 
@@ -160,8 +165,10 @@ copy_error *Copies::new_error(int cat, text_stream *NB) {
 	CE->error_subcategory = -1;
 	CE->file = NULL;
 	CE->notes = Str::duplicate(NB);
+	CE->details = NULL;
 	CE->pos = TextFiles::nowhere();
 	CE->copy = NULL;
+	CE->word = NULL;
 	return CE;
 }
 
@@ -175,4 +182,20 @@ void Copies::attach(inbuild_copy *C, copy_error *CE) {
 	if (C == NULL) internal_error("no copy to attach to");
 	CE->copy = C;
 	ADD_TO_LINKED_LIST(CE, copy_error, C->errors_reading_source_text);
+}
+
+void Copies::list_problems_arising(OUTPUT_STREAM, inbuild_copy *C) {
+	if (C == NULL) return;
+	copy_error *CE;
+	int c = 1;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		WRITE("%d. ", c++);
+		switch (CE->error_category) {
+			case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
+			case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
+			case LEXER_CE: WRITE("%S", CE->notes); break;
+			default: internal_error("an unknown error occurred");
+		}
+		WRITE("\n");
+	}
 }
