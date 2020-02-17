@@ -1317,8 +1317,8 @@ void Tables::index(OUTPUT_STREAM) {
 	else WRITE("Show tables inside extensions (there are none in the main text)");
 	HTML_CLOSE("p");
 	Index::extra_div_open(OUT, 2, 1, "e0e0e0");
-	extension_file *ef; int efc = 0;
-	LOOP_OVER(ef, extension_file) Tables::index_tables_in(OUT, ef, efc++);
+	inform_extension *E; int efc = 0;
+	LOOP_OVER(E, inform_extension) Tables::index_tables_in(OUT, E, efc++);
 	Index::extra_div_close(OUT, "e0e0e0");
 }
 
@@ -1326,18 +1326,18 @@ void Tables::index(OUTPUT_STREAM) {
 and does nothing at all if that number is 0.
 
 =
-int Tables::index_tables_in(OUTPUT_STREAM, extension_file *ef, int efc) {
+int Tables::index_tables_in(OUTPUT_STREAM, inform_extension *E, int efc) {
 	int tc = 0; table *t;
-	LOOP_OVER(t, table) if (Tables::table_within(t, ef)) tc++;
+	LOOP_OVER(t, table) if (Tables::table_within(t, E)) tc++;
 	if (tc > 0) {
-		if (ef) {
+		if (E) {
 			HTML_OPEN("p");
-			WRITE("<i>%S</i>", ef->found->edition->work->title);
+			WRITE("<i>%S</i>", E->as_copy->edition->work->title);
 			HTML_CLOSE("p");
 		}
 		HTML::begin_plain_html_table(OUT);
 		LOOP_OVER(t, table)
-			if (Tables::table_within(t, ef))
+			if (Tables::table_within(t, E))
 				@<Index this table@>;
 		HTML::end_html_table(OUT);
 	}
@@ -1421,10 +1421,10 @@ Helvetica-style lower case "x", but life is full of compromises.
 given extension:
 
 =
-int Tables::table_within(table *t, extension_file *ef) {
+int Tables::table_within(table *t, inform_extension *E) {
 	if (t->amendment_of) return FALSE;
 	heading *at_heading = Sentences::Headings::of_wording(ParseTree::get_text(t->table_created_at->source_table));
-	extension_file *at_ef = Sentences::Headings::get_extension_containing(at_heading);
-	if (ef == at_ef) return TRUE;
+	inform_extension *at_E = Sentences::Headings::get_extension_containing(at_heading);
+	if (E == at_E) return TRUE;
 	return FALSE;
 }

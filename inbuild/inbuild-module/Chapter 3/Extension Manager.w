@@ -385,6 +385,6 @@ void ExtensionManager::build_vertex(inbuild_copy *C) {
 @h Source text.
 
 =
-void ExtensionManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C, linked_list *errors) {
-	Extensions::read_source_text_for(ExtensionManager::from_copy(C), errors);
+void ExtensionManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C) {
+	Extensions::read_source_text_for(ExtensionManager::from_copy(C));
 }

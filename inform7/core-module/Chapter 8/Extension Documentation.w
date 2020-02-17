@@ -9,8 +9,8 @@ if Inform has detected the extension but never used it (and so does not really
 understand what it entails). The following routine writes both kinds of page.
 
 =
-void Extensions::Documentation::write_detailed(extension_file *ef) {
-	Extensions::Documentation::write_extension_documentation(NULL, ef);
+void Extensions::Documentation::write_detailed(inform_extension *E) {
+	Extensions::Documentation::write_extension_documentation(NULL, E);
 }
 void Extensions::Documentation::write_sketchy(extension_census_datum *ecd) {
 	Extensions::Documentation::write_extension_documentation(ecd, NULL);
@@ -35,11 +35,11 @@ in sequence,
 where these are pathnames relative to the external resources area.
 
 =
-void Extensions::Documentation::write_extension_documentation(extension_census_datum *ecd, extension_file *ef) {
+void Extensions::Documentation::write_extension_documentation(extension_census_datum *ecd, inform_extension *E) {
 	int c, eg_count;
-	eg_count = Extensions::Documentation::write_extension_documentation_page(ecd, ef, -1);
+	eg_count = Extensions::Documentation::write_extension_documentation_page(ecd, E, -1);
 	for (c=1; c<=eg_count; c++)
-		Extensions::Documentation::write_extension_documentation_page(ecd, ef, c);
+		Extensions::Documentation::write_extension_documentation_page(ecd, E, c);
 }
 
 @ Here then is the nub of it. An ECD is not really enough information to go on.
@@ -56,7 +56,7 @@ will at least provide the extension author's supplied documentation, if there
 is any, as well as the correct identifying headings and requirements.
 
 =
-int Extensions::Documentation::write_extension_documentation_page(extension_census_datum *ecd, extension_file *ef,
+int Extensions::Documentation::write_extension_documentation_page(extension_census_datum *ecd, inform_extension *E,
 	int eg_number) {
 	inbuild_work *work = NULL;
 	text_stream DOCF_struct;
@@ -64,7 +64,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 	FILE *TEST_DOCF;
 	int page_exists_already, no_egs = 0;
 
-	if (ecd) work = ecd->ecd_work; else if (ef) work = ef->ef_req->work;
+	if (ecd) work = ecd->ecd_work; else if (E) work = E->as_copy->edition->work;
 	else internal_error("WEDP incorrectly called");
 	LOGIF(EXTENSIONS_CENSUS, "WEDP %s (%X)/%d\n", (ecd)?"ecd":" ef", work, eg_number);
 
@@ -84,7 +84,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 			@<Convert ECD to a text-only EF@>;
 		return 0; /* ensure no requests sent for further pages about the ECD: see below */
 	}
-	if (ef == NULL) internal_error("null EF in extension documentation writer");
+	if (E == NULL) internal_error("null E in extension documentation writer");
 
 	if (Pathnames::create_in_file_system(
 			Pathnames::subfolder(pathname_of_extension_docs_inner, work->author_name)) == 0)
@@ -124,9 +124,9 @@ calls.
 	if (<unsuitable-name>(AW)) return 0;
 	if (<unsuitable-name>(TW)) return 0;
 	inbuild_requirement *req = Requirements::any_version_of(work);
-	ef = Extensions::Inclusion::load(req);
-	if (ef == NULL) return 0; /* shouldn't happen: it was there only moments ago */
-	Extensions::Documentation::write_extension_documentation(NULL, ef);
+	E = Extensions::Inclusion::load(req);
+	if (E == NULL) return 0; /* shouldn't happen: it was there only moments ago */
+	Extensions::Documentation::write_extension_documentation(NULL, E);
 
 @ We now make much the same "paste into the gap in the template" copying
 exercise as when generating the home pages for extensions, though with a
@@ -168,7 +168,7 @@ different template:
 	HTML_CLOSE("p");
 	@<Write up the rubric, if any@>;
 	@<Write up the table of contents for the extension author's supplied documentation, if any@>;
-	@<Document and dictionary the definitions made in extension file ef@>;
+	@<Document and dictionary the definitions made in extension file E@>;
 	HTML_TAG("hr");
 	@<Write up the extension author's supplied documentation, if any@>;
 
@@ -182,16 +182,15 @@ different template:
 	WRITE("&nbsp;");
 
 @<Write up any restrictions on VM usage@> =
-	if (Wordings::nonempty(Extensions::Files::VM_text(ef))) {
-		WRITE("%+W", Extensions::Files::VM_text(ef));
+	if (Wordings::nonempty(Extensions::get_VM_text(E))) {
+		WRITE("%+W", Extensions::get_VM_text(E));
 		WRITE("&nbsp;");
-		VirtualMachines::write_icons(OUT, Extensions::Files::VM_text(ef));
+		VirtualMachines::write_icons(OUT, Extensions::get_VM_text(E));
 	}
 
 @<Write up the version number, if any, and location@> =
-	inform_extension *E = Extensions::Files::find(ef);
 	if (E) {
-		inbuild_version_number V = Extensions::Files::get_version(ef);
+		inbuild_version_number V = E->as_copy->edition->version;
 		if (VersionNumbers::is_null(V) == FALSE) WRITE("Version %v", &V);
 		if (E->loaded_from_built_in_area) {
 			if (VersionNumbers::is_null(V)) { WRITE("Extension"); }
@@ -200,7 +199,6 @@ different template:
 	}
 
 @<Write up the rubric, if any@> =
-	inform_extension *E = Extensions::Files::find(ef);
 	if (E) {
 		if (Str::len(E->rubric_as_lexed) > 0) {
 			HTML_OPEN("p"); WRITE("%S", E->rubric_as_lexed); HTML_CLOSE("p");
@@ -216,7 +214,6 @@ If the TOC were directly at the top of the supplied documentation, it might
 easily be scrolled down off screen when the user first visits the page.
 
 @<Write up the table of contents for the extension author's supplied documentation, if any@> =
-	inform_extension *E = Extensions::Files::find(ef);
 	if (E) {
 		if (Wordings::nonempty(E->documentation_text)) {
 			HTML_OPEN("p");
@@ -226,7 +223,6 @@ easily be scrolled down off screen when the user first visits the page.
 	}
 
 @<Write up the extension author's supplied documentation, if any@> =
-	inform_extension *E = Extensions::Files::find(ef);
 	if (E) {
 		if (Wordings::nonempty(E->documentation_text))
 			no_egs = HTML::Documentation::set_body_text(E->documentation_text, OUT, eg_number, leaf);
@@ -244,9 +240,8 @@ paragraphs, as in Roget's Thesaurus, tries to proceed from solid things
 through to diffuse linguistic ones. But the reader of the resulting
 documentation page could be forgiven for thinking it a miscellany.
 
-@<Document and dictionary the definitions made in extension file ef@> =
-	Extensions::Dictionary::erase_entries(ef);
-	inform_extension *E = Extensions::Files::find(ef);
+@<Document and dictionary the definitions made in extension file E@> =
+	Extensions::Dictionary::erase_entries(E);
 	if (E) Extensions::Dictionary::time_stamp(E);
 
 	@<Document and dictionary the kinds made in extension@>;
@@ -272,9 +267,9 @@ documentation page could be forgiven for thinking it a miscellany.
 	LOOP_OVER_BASE_KINDS(K) {
 		parse_node *S = Kinds::Behaviour::get_creating_sentence(K);
 		if (S) {
-			if (Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(S))) == Extensions::Files::source(ef)) {
+			if (Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(S))) == E->read_into_file) {
 				wording W = Kinds::Behaviour::get_name(K, FALSE);
-				kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Kinds", I"kind", W);
+				kc = Extensions::Documentation::document_headword(OUT, kc, E, "Kinds", I"kind", W);
 				kind *S = Kinds::Compare::super(K);
 				if (S) {
 					W = Kinds::Behaviour::get_name(S, FALSE);
@@ -295,12 +290,12 @@ documentation page could be forgiven for thinking it a miscellany.
 		if ((Instances::get_creating_sentence(I)) && (Wordings::nonempty(OW))) {
 			if (Lexer::file_of_origin(
 				Wordings::first_wn(ParseTree::get_text(Instances::get_creating_sentence(I))))
-					== Extensions::Files::source(ef)) {
+					== E->read_into_file) {
 				TEMPORARY_TEXT(name_of_its_kind);
 				kind *k = Instances::to_kind(I);
 				wording W = Kinds::Behaviour::get_name(k, FALSE);
 				WRITE_TO(name_of_its_kind, "%+W", W);
-				kc = Extensions::Documentation::document_headword(OUT, kc, ef,
+				kc = Extensions::Documentation::document_headword(OUT, kc, E,
 					"Physical creations", name_of_its_kind, OW);
 				WRITE(" (a %S)", name_of_its_kind);
 				DISCARD_TEXT(name_of_its_kind);
@@ -317,11 +312,11 @@ documentation page could be forgiven for thinking it a miscellany.
 	LOOP_OVER(q, nonlocal_variable)
 		if ((Wordings::first_wn(q->name) >= 0) &&
 			(NonlocalVariables::is_global(q)) &&
-			(Lexer::file_of_origin(Wordings::first_wn(q->name)) == Extensions::Files::source(ef)) &&
+			(Lexer::file_of_origin(Wordings::first_wn(q->name)) == E->read_into_file) &&
 			(Sentences::Headings::indexed(Sentences::Headings::of_wording(q->name)))) {
 			if (<value-understood-variable-name>(q->name) == FALSE)
 				kc = Extensions::Documentation::document_headword(OUT,
-					kc, ef, "Values that vary", I"value", q->name);
+					kc, E, "Values that vary", I"value", q->name);
 		}
 	if (kc != 0) HTML_CLOSE("p");
 
@@ -332,8 +327,8 @@ documentation page could be forgiven for thinking it a miscellany.
 	int kc = 0;
 	LOOP_OVER_ENUMERATION_INSTANCES(q) {
 		wording NW = Instances::get_name(q, FALSE);
-		if ((Wordings::nonempty(NW)) && (Lexer::file_of_origin(Wordings::first_wn(NW)) == Extensions::Files::source(ef)))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Values", I"value", NW);
+		if ((Wordings::nonempty(NW)) && (Lexer::file_of_origin(Wordings::first_wn(NW)) == E->read_into_file))
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Values", I"value", NW);
 	}
 	if (kc != 0) HTML_CLOSE("p");
 
@@ -341,20 +336,20 @@ documentation page could be forgiven for thinking it a miscellany.
 
 @<Document and dictionary the kinds of action made in extension@> =
 	#ifdef IF_MODULE
-	PL::Actions::Patterns::Named::index_for_extension(OUT, Extensions::Files::source(ef), ef);
+	PL::Actions::Patterns::Named::index_for_extension(OUT, E->read_into_file, E);
 	#endif
 
 @ Actions:
 
 @<Document and dictionary the actions made in extension@> =
 	#ifdef IF_MODULE
-	PL::Actions::Index::index_for_extension(OUT, Extensions::Files::source(ef), ef);
+	PL::Actions::Index::index_for_extension(OUT, E->read_into_file, E);
 	#endif
 
 @ Verbs (this one we delegate):
 
 @<Document and dictionary the verbs made in extension@> =
-	Index::Lexicon::list_verbs_in_file(OUT, Extensions::Files::source(ef), ef);
+	Index::Lexicon::list_verbs_in_file(OUT, E->read_into_file, E);
 
 @ Adjectival phrases:
 
@@ -364,8 +359,8 @@ documentation page could be forgiven for thinking it a miscellany.
 	LOOP_OVER(adj, adjectival_phrase) {
 		wording W = Adjectives::get_text(adj, FALSE);
 		if ((Wordings::nonempty(W)) &&
-			(Lexer::file_of_origin(Wordings::first_wn(W)) == Extensions::Files::source(ef)))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Adjectives", I"adjective", W);
+			(Lexer::file_of_origin(Wordings::first_wn(W)) == E->read_into_file))
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Adjectives", I"adjective", W);
 	}
 	if (kc != 0) HTML_CLOSE("p");
 
@@ -377,8 +372,8 @@ documentation page could be forgiven for thinking it a miscellany.
 	LOOP_OVER(prn, property)
 		if ((Wordings::nonempty(prn->name)) &&
 			(Properties::is_shown_in_index(prn)) &&
-			(Lexer::file_of_origin(Wordings::first_wn(prn->name)) == Extensions::Files::source(ef)))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Properties", I"property",
+			(Lexer::file_of_origin(Wordings::first_wn(prn->name)) == E->read_into_file))
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Properties", I"property",
 				prn->name);
 	if (kc != 0) HTML_CLOSE("p");
 
@@ -389,8 +384,8 @@ documentation page could be forgiven for thinking it a miscellany.
 	int kc = 0;
 	LOOP_OVER(uo, use_option)
 		if ((Wordings::first_wn(uo->name) >= 0) &&
-			(Lexer::file_of_origin(Wordings::first_wn(uo->name)) == Extensions::Files::source(ef)))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Use options", I"use option",
+			(Lexer::file_of_origin(Wordings::first_wn(uo->name)) == E->read_into_file))
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Use options", I"use option",
 				uo->name);
 	if (kc != 0) HTML_CLOSE("p");
 
@@ -399,12 +394,12 @@ suitable lists, while entering each entry in turn into the extension
 dictionary.
 
 =
-int Extensions::Documentation::document_headword(OUTPUT_STREAM, int kc, extension_file *ef, char *par_heading,
+int Extensions::Documentation::document_headword(OUTPUT_STREAM, int kc, inform_extension *E, char *par_heading,
 	text_stream *category, wording W) {
 	if (kc++ == 0) { HTML_OPEN("p"); WRITE("%s: ", par_heading); }
 	else WRITE(", ");
 	WRITE("<b>%+W</b>", W);
-	Extensions::Dictionary::new_entry(category, ef, W);
+	Extensions::Dictionary::new_entry(category, E, W);
 	return kc;
 }
 

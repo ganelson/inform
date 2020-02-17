@@ -116,9 +116,9 @@ which they differ.
 		}
 	if (f == FALSE) WRITE_TO(PBUFF, " the main source text");
 	if (pos) {
-		#ifdef CORE_MODULE
-		extension_file *ef = SourceFiles::get_extension_corresponding(pos);
-		if (ef) WRITE_TO(PBUFF, "</b> in the extension <b>%X", Extensions::Files::get_work(ef));
+		#ifdef INBUILD_MODULE
+		inform_extension *E = SourceFiles::get_extension_corresponding(pos);
+		if (E) WRITE_TO(PBUFF, "</b> in the extension <b>%X", E->as_copy->edition->work);
 		#endif
 	}
 	WRITE_TO(PBUFF, "</b>:");

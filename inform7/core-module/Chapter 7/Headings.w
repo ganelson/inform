@@ -501,7 +501,7 @@ int Sentences::Headings::indexed(heading *h) {
 @ A utility to do with the file of origin:
 
 =
-extension_file *Sentences::Headings::get_extension_containing(heading *h) {
+inform_extension *Sentences::Headings::get_extension_containing(heading *h) {
 	if ((h == NULL) || (h->start_location.file_of_origin == NULL)) return NULL;
 	return SourceFiles::get_extension_corresponding(h->start_location.file_of_origin);
 }
@@ -589,8 +589,7 @@ void Sentences::Headings::satisfy_individual_heading_dependency(heading *h) {
 					if ((Wordings::nonempty(h2->heading_text)) &&
 						(Wordings::match_perhaps_quoted(S, h2->heading_text)) &&
 						(Works::match(
-							Extensions::Files::get_work(
-								Sentences::Headings::get_extension_containing(h2)), work))) {
+							Sentences::Headings::get_extension_containing(h2)->as_copy->edition->work, work))) {
 						found = TRUE;
 						if (h->level != h2->level)
 							@<Can't replace heading unless level matches@>;
@@ -684,10 +683,10 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 	Problems::quote_wording(3, h->in_place_of_text);
 	Problems::quote_text(4,
 		"unspecified, that is, the extension didn't have a version number");
-	extension_file *ef;
-	LOOP_OVER(ef, extension_file)
-		if (Works::match(h->for_use_with, Extensions::Files::get_work(ef))) {
-			VersionNumbers::to_text(vt, Extensions::Files::get_version(ef));
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		if (Works::match(h->for_use_with, E->as_copy->edition->work)) {
+			VersionNumbers::to_text(vt, E->as_copy->edition->version);
 			Problems::quote_stream(4, vt);
 		}
 	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnknown));

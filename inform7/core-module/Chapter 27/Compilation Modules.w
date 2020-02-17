@@ -41,11 +41,9 @@ void Modules::look_for_cu(parse_node *p) {
 }
 
 compilation_module *Modules::new(parse_node *from) {
-	extension_file *owner = NULL;
 	source_location sl = Wordings::location(ParseTree::get_text(from));
 	if (sl.file_of_origin == NULL) internal_error("null foo");
-//	if (sl.file_of_origin == NULL) owner = standard_rules_extension; else 
-	owner = SourceFiles::get_extension_corresponding(
+	inform_extension *owner = SourceFiles::get_extension_corresponding(
 		Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
 
 	compilation_module *C = Packaging::new_cm();
@@ -59,16 +57,16 @@ compilation_module *Modules::new(parse_node *from) {
 	DISCARD_TEXT(pname);
 
 	if (owner) {
-		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->ef_req->work->raw_author_name);
-		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->ef_req->work->raw_title);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->as_copy->edition->work->raw_author_name);
+		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->as_copy->edition->work->raw_title);
 		TEMPORARY_TEXT(V);
-		inbuild_version_number N = Extensions::Files::get_version(owner);
+		inbuild_version_number N = owner->as_copy->edition->version;
 		WRITE_TO(V, "%v", &N);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
 		DISCARD_TEXT(V);
 	}
 
-	if (Extensions::Files::is_SR(owner)) SR_module = C;
+	if (Extensions::is_standard(owner)) SR_module = C;
 	if (owner == NULL) source_text_module = C;
 	return C;
 }
@@ -77,10 +75,10 @@ compilation_module *Modules::new(parse_node *from) {
 compiled from the compilation module will go into a package of that name.
 
 @<Compose a name for the module package this will lead to@> =
-	if (Extensions::Files::is_SR(owner)) WRITE_TO(pname, "standard_rules");
+	if (Extensions::is_standard(owner)) WRITE_TO(pname, "standard_rules");
 	else if (owner == NULL) WRITE_TO(pname, "source_text");
 	else {
-		WRITE_TO(pname, "%X", Extensions::Files::get_work(owner));
+		WRITE_TO(pname, "%X", owner->as_copy->edition->work);
 		LOOP_THROUGH_TEXT(pos, pname)
 			if (Str::get(pos) == ' ')
 				Str::put(pos, '_');

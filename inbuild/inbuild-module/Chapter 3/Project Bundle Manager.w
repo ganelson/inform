@@ -103,6 +103,6 @@ void ProjectBundleManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 @h Source text.
 
 =
-void ProjectBundleManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C, linked_list *errors) {
-	Projects::read_source_text_for(ProjectBundleManager::from_copy(C), errors);
+void ProjectBundleManager::read_source_text_for(inbuild_genre *G, inbuild_copy *C) {
+	Projects::read_source_text_for(ProjectBundleManager::from_copy(C));
 }

@@ -74,14 +74,12 @@ int SourceFiles::increase_sentence_count(wording W) {
 	return FALSE;
 }
 
-extension_file *SourceFiles::get_extension_corresponding(source_file *sf) {
+inform_extension *SourceFiles::get_extension_corresponding(source_file *sf) {
 	if (sf == NULL) return NULL;
 	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
 	if (C == NULL) return NULL;
 	if (C->edition->work->genre != extension_genre) return NULL;
-	inform_extension *E = ExtensionManager::from_copy(C);
-	if (E == NULL) return NULL;
-	return E->ef;
+	return ExtensionManager::from_copy(C);
 }
 
 @ And the following converts lexer error conditions into I7 problem messages.

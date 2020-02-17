@@ -221,7 +221,7 @@ void PL::Actions::Index::page(OUTPUT_STREAM) {
 	int f = FALSE, par_count = 0;
 	action_name *an;
 	heading *current_area = NULL;
-	extension_file *ext = NULL;
+	inform_extension *ext = NULL;
 	LOOP_OVER(an, action_name) {
 		int new_par = FALSE;
 		f = PL::Actions::index(OUT, an, 1, &ext, &current_area, f, &new_par, FALSE, FALSE);
@@ -235,7 +235,7 @@ void PL::Actions::Index::detail_pages(void) {
 	int f = FALSE;
 	action_name *an;
 	heading *current_area = NULL;
-	extension_file *ext = NULL;
+	inform_extension *ext = NULL;
 	LOOP_OVER(an, action_name) {
 		text_stream *OUT = Index::open_file(I"A.html", I"<Actions",
 			an->allocation_id, I"Detail view");
@@ -269,12 +269,12 @@ void PL::Actions::Index::tokens(OUTPUT_STREAM) {
 	PL::Parsing::Verbs::index_tokens(OUT);
 }
 
-void PL::Actions::Index::index_for_extension(OUTPUT_STREAM, source_file *sf, extension_file *ef) {
+void PL::Actions::Index::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	action_name *acn;
 	int kc = 0;
 	LOOP_OVER(acn, action_name)
-		if (Lexer::file_of_origin(Wordings::first_wn(acn->present_name)) == Extensions::Files::source(ef))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Actions", I"action",
+		if (Lexer::file_of_origin(Wordings::first_wn(acn->present_name)) == E->read_into_file)
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Actions", I"action",
 				acn->present_name);
 	if (kc != 0) HTML_CLOSE("p");
 }

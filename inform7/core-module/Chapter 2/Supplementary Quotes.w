@@ -26,11 +26,11 @@ void Problems::quote_phrase(int t, phrase *p) {
 void Problems::expand_phrase(OUTPUT_STREAM, void *p) {
 	Phrases::write_HTML_representation(OUT, (phrase *) p, INDEX_PHRASE_FORMAT);
 }
-void Problems::quote_extension(int t, extension_file *p) {
+void Problems::quote_extension(int t, inform_extension *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_extension);
 }
 void Problems::expand_extension(OUTPUT_STREAM, void *p) {
-	Extensions::Files::write_full_title_to_stream(OUT, (extension_file *) p);
+	Extensions::write(OUT, (inform_extension *) p);
 }
 void Problems::quote_copy(int t, inbuild_copy *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_copy);

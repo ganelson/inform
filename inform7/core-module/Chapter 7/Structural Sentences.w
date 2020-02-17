@@ -35,7 +35,7 @@ int StructuralSentences::new_heading(parse_node *new) {
 @d NEW_BEGINEND_HANDLER StructuralSentences::new_beginend
 
 =
-void StructuralSentences::new_beginend(parse_node *new, extension_file *ef) {
+void StructuralSentences::new_beginend(parse_node *new, inform_extension *E) {
 	if (ParseTree::get_type(new) == BEGINHERE_NT)
 		Extensions::Inclusion::check_begins_here(new, sfsm_extension);
 	if (ParseTree::get_type(new) == ENDHERE_NT)
@@ -52,10 +52,6 @@ void StructuralSentences::new_language(wording W) {
 		"the ability to activate or deactivate compiler elements in source text has been withdrawn",
 		"in favour of a new system with Inform kits.");
 }
-
-@
-
-@d EXTENSION_FILE_TYPE extension_file
 
 @h Sentence division.
 Sentence division can happen either early in Inform's run, when the vast bulk
@@ -245,22 +241,22 @@ void StructuralSentences::syntax_problem_handler(int err_no, wording W, void *re
 			Problems::issue_problem_end();
 			break;
 		case ExtNoBeginsHere_SYNERROR: {
-			extension_file *ef = (extension_file *) ref;
+			inform_extension *E = (inform_extension *) ref;
 			Problems::Issue::extension_problem(_p_(PM_ExtNoBeginsHere),
-				ef, "has no 'begins here' sentence");
+				E, "has no 'begins here' sentence");
 			break;
 		}
 		case ExtNoEndsHere_SYNERROR: {
-			extension_file *ef = (extension_file *) ref;
+			inform_extension *E = (inform_extension *) ref;
 			Problems::Issue::extension_problem(_p_(PM_ExtNoEndsHere),
-				ef, "has no 'ends here' sentence");
+				E, "has no 'ends here' sentence");
 			break;
 		}
 		case ExtSpuriouslyContinues_SYNERROR: {
-			extension_file *ef = (extension_file *) ref;
+			inform_extension *E = (inform_extension *) ref;
 			LOG("Spurious text: %W\n", W);
 			Problems::Issue::extension_problem(_p_(PM_ExtSpuriouslyContinues),
-				ef, "continues after the 'ends here' sentence");
+				E, "continues after the 'ends here' sentence");
 			break;
 		}
 		case HeadingOverLine_SYNERROR:

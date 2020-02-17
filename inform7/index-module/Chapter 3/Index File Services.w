@@ -776,13 +776,13 @@ void Index::link_to(OUTPUT_STREAM, int wn, int nonbreaking_space) {
 }
 
 void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
-	extension_file *ef = SourceFiles::get_extension_corresponding(sl.file_of_origin);
-	if (ef) {
-		if (Extensions::Files::is_SR(ef) == FALSE) {
+	inform_extension *E = SourceFiles::get_extension_corresponding(sl.file_of_origin);
+	if (E) {
+		if (Extensions::is_standard(E) == FALSE) {
 			if (nonbreaking_space) WRITE("&nbsp;"); else WRITE(" ");
-			Works::begin_extension_link(OUT, Extensions::Files::get_work(ef), NULL);
+			Works::begin_extension_link(OUT, E->as_copy->edition->work, NULL);
 			HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Revealext.png");
-			Works::end_extension_link(OUT, Extensions::Files::get_work(ef));
+			Works::end_extension_link(OUT, E->as_copy->edition->work);
 		}
 		return;
 	}

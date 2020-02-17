@@ -20,8 +20,8 @@ suppress indexing of their definitions.
 =
 void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 	for (int pass=1; pass<=2; pass++) {
-		extension_file *last_extension_named = NULL;
-		for (int division = 0, N = NUMBER_CREATED(extension_file); division <= N; division++) {
+		inform_extension *last_extension_named = NULL;
+		for (int division = 0, N = NUMBER_CREATED(inform_extension); division <= N; division++) {
 			heading *last_heading_named = NULL;
 			int no_subdivision_yet = TRUE;
 			wording CLW = EMPTY_WORDING;
@@ -35,7 +35,7 @@ void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 					Sentences::Headings::of_wording(ParseTree::get_text(Phrases::declaration_node(ph)));
 				if (Sentences::Headings::indexed(this_heading) == FALSE) continue;
 				/* and only if that heading lies in the piece of source for this division */
-				extension_file *this_extension =
+				inform_extension *this_extension =
 					Sentences::Headings::get_extension_containing(this_heading);
 				if (division == N) { /* skip phrase unless it's in the source text */
 					if (this_extension != NULL) continue;
@@ -64,13 +64,13 @@ the extension's name as a major subheading in our index.
 		HTML_OPEN_WITH("p", "class=\"in1\"");
 		WRITE("<b>Defined in the source</b>");
 		HTML_CLOSE("p");
-	} else if (Extensions::Files::is_SR(this_extension) == FALSE) {
+	} else if (Extensions::is_standard(this_extension) == FALSE) {
 		if (pass == 2) HTML_TAG("hr");
 		HTML_OPEN_WITH("p", "class=\"in1\"");
 		WRITE("<b>From the extension ");
-		Extensions::Files::write_name_to_file(this_extension, OUT);
+		Extensions::write_name_to_file(this_extension, OUT);
 		WRITE(" by ");
-		Extensions::Files::write_author_to_file(this_extension, OUT);
+		Extensions::write_author_to_file(this_extension, OUT);
 		WRITE("</b>");
 		HTML_CLOSE("p");
 	}
@@ -83,7 +83,7 @@ each has a paragraph of its own.
 	wording HW = Sentences::Headings::get_text(this_heading);
 	if (Wordings::nonempty(HW)) {
 		if (pass == 1) @<Strip away bracketed matter in the heading name@>;
-		if (Extensions::Files::is_SR(this_extension))
+		if (Extensions::is_standard(this_extension))
 			@<Mark a faked division due to inter-hyphen clue in SR heading@>;
 	}
 

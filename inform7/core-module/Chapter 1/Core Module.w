@@ -15,7 +15,6 @@ We need to itemise the structures we'll want to allocate:
 @e inference_MT
 @e property_MT
 @e property_permission_MT
-@e extension_file_MT
 @e rulebook_MT
 @e booking_MT
 @e phrase_option_array_MT
@@ -116,7 +115,6 @@ ALLOCATE_INDIVIDUALLY(equation_node)
 ALLOCATE_INDIVIDUALLY(equation_symbol)
 ALLOCATE_INDIVIDUALLY(equation)
 ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
-ALLOCATE_INDIVIDUALLY(extension_file)
 ALLOCATE_INDIVIDUALLY(generalisation)
 ALLOCATE_INDIVIDUALLY(heading)
 ALLOCATE_INDIVIDUALLY(i6_inclusion_matter)
@@ -235,7 +233,6 @@ COMPILE_WRITER(adjective_usage *, AdjectiveUsages::log)
 COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
 COMPILE_WRITER(kind *, Kinds::Textual::log)
 COMPILE_WRITER_I(int, Sentences::VPs::log)
-COMPILE_WRITER(extension_file *, Extensions::Files::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 COMPILE_WRITER(noun *, Nouns::log)
@@ -400,7 +397,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('U', Phrases::Usage::log);
 	REGISTER_WRITER('u', Kinds::Textual::log);
 	REGISTER_WRITER_I('V', Sentences::VPs::log)
-	REGISTER_WRITER('x', Extensions::Files::log);
 	REGISTER_WRITER('Y', Properties::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);
 	REGISTER_WRITER('z', Nouns::log);

@@ -166,15 +166,13 @@ parse tree.
 	}
 	DISCARD_TEXT(violation);
 
-	extension_file *requested_extension = Extensions::Inclusion::load(req);
-
-	inform_extension *E = Extensions::Files::find(requested_extension);
+	inform_extension *E = Extensions::Inclusion::load(req);
 	if (E) {
 		Extensions::set_inclusion_sentence(E, current_sentence);
 		Extensions::set_VM_text(E, RW);
 	}
 	if ((E) && (E->body_text_unbroken)) {
-		Sentences::break(E->body_text, requested_extension);
+		Sentences::break(E->body_text, E);
 		E->body_text_unbroken = FALSE;
 	}
 
@@ -182,19 +180,13 @@ parse tree.
 Extensions are loaded here.
 
 =
-extension_file *Extensions::Inclusion::load(inbuild_requirement *req) {
+inform_extension *Extensions::Inclusion::load(inbuild_requirement *req) {
 	NaturalLanguages::scan(); /* to avoid wording from those interleaving with extension wording */
 	@<Do not load the same extension work twice@>;
 
 	inform_extension *E = NULL;
 	@<Read the extension file into the lexer, and break it into body and documentation@>;
-
-	extension_file *ef = Extensions::Files::new(req);
-	if (E) {
-		ef->found = E->as_copy;
-		E->ef = ef;
-	}
-	return ef;
+	return E;
 }
 
 @ Note that we ignore a request for an extension which has already been
@@ -210,16 +202,12 @@ then we need to note that the version requirement on PS has been raised to 3.
 can't know at load time what we will ultimately require.)
 
 @<Do not load the same extension work twice@> =
-	extension_file *ef;
-	LOOP_OVER(ef, extension_file)
-		if (ef->found)
-			if (Requirements::meets(ef->found->edition, req)) {
-				inbuild_version_number V = req->min_version;
-				if (VersionNumbers::is_null(V) == FALSE)
-					if (Requirements::ratchet_minimum(V, ef->ef_req))
-						Extensions::Files::set_where_included(ef, current_sentence);
-				return ef;
-			}
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		if (Requirements::meets(E->as_copy->edition, req)) {
+			Extensions::must_satisfy(E, req);
+			return E;
+		}
 
 @ We finally make our call out of the Extensions section, down through the
 trap-door into Read Source Text, to seek and open the file.
@@ -357,15 +345,15 @@ problem messages if it is malformed.
 	Problems::issue_problem_end();
 
 @ =
-void Extensions::Inclusion::check_begins_here(parse_node *PN, extension_file *ef) {
+void Extensions::Inclusion::check_begins_here(parse_node *PN, inform_extension *E) {
 	current_sentence = PN; /* in case problem messages need to be issued */
-	Problems::quote_extension(1, ef);
+	Problems::quote_extension(1, E);
 	Problems::quote_wording(2, ParseTree::get_text(PN));
 
 	<begins-here-sentence-subject>(ParseTree::get_text(PN));
-	Extensions::Files::set_VM_text(ef, Wordings::new(<<rest1>>, <<rest2>>));
+	Extensions::set_VM_text(E, Wordings::new(<<rest1>>, <<rest2>>));
 
-	if (Wordings::nonempty(Extensions::Files::VM_text(ef)))
+	if (Wordings::nonempty(Extensions::get_VM_text(E)))
 		@<Check that the extension's stipulation about the virtual machine can be met@>;
 }
 
@@ -374,7 +362,7 @@ for, so we can immediately object if the loaded extension cannot be used
 with our VM de jour.
 
 @<Check that the extension's stipulation about the virtual machine can be met@> =
-	if (<platform-qualifier>(Extensions::Files::VM_text(ef))) {
+	if (<platform-qualifier>(Extensions::get_VM_text(E))) {
 		if (<<r>> == PLATFORM_UNMET_HQ)
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 	} else {
@@ -385,8 +373,8 @@ with our VM de jour.
 requirement.
 
 @<Issue a problem message saying that the VM requirements are malformed@> =
-	Problems::quote_extension(1, ef);
-	Problems::quote_wording(2, Extensions::Files::VM_text(ef));
+	Problems::quote_extension(1, E);
+	Problems::quote_wording(2, Extensions::get_VM_text(E));
 	Problems::Issue::handmade_problem(_p_(PM_ExtMalformedVM));
 	Problems::issue_problem_segment(
 		"Your source text makes use of the extension %1: but my copy "
@@ -401,10 +389,10 @@ matter of removing the inclusion, not of altering the extension, so we
 report this problem at the inclusion line.
 
 @<Issue a problem message saying that the VM does not meet requirements@> =
-	current_sentence = Extensions::Files::where_included(ef);
+	current_sentence = Extensions::get_inclusion_sentence(E);
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_copy(2, ef->found);
-	Problems::quote_wording(3, Extensions::Files::VM_text(ef));
+	Problems::quote_copy(2, E->as_copy);
+	Problems::quote_wording(3, Extensions::get_VM_text(E));
 	Problems::Issue::handmade_problem(_p_(PM_ExtInadequateVM));
 	Problems::issue_problem_segment(
 		"You wrote %1: but my copy of %2 stipulates that it "
@@ -421,12 +409,12 @@ since we don't want to keep on nagging somebody who has already been told
 that the extension isn't the one he thinks it is.
 
 =
-void Extensions::Inclusion::check_ends_here(parse_node *PN, extension_file *ef) {
+void Extensions::Inclusion::check_ends_here(parse_node *PN, inform_extension *E) {
 	wording W = Articles::remove_the(ParseTree::get_text(PN));
-	wording T = Feeds::feed_stream(ef->found->edition->work->title);
+	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
 	if ((problem_count == 0) && (Wordings::match(T, W) == FALSE)) {
 		current_sentence = PN;
-		Problems::quote_extension(1, ef);
+		Problems::quote_extension(1, E);
 		Problems::quote_wording(2, ParseTree::get_text(PN));
 		Problems::Issue::handmade_problem(_p_(PM_ExtMisidentifiedEnds));
 		Problems::issue_problem_segment(

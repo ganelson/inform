@@ -381,8 +381,8 @@ no subsequent lines are looked at.
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ARGUMENTTYPEFAILED_HL));
 	Produce::down(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sl.line_number);
-		extension_file *ef = SourceFiles::get_extension_corresponding(sl.file_of_origin);
-		if (ef) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ef->allocation_id + 1);
+		inform_extension *E = SourceFiles::get_extension_corresponding(sl.file_of_origin);
+		if (E) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) E->allocation_id + 1);
 	Produce::up(Emit::tree());
 
 @<Compile code to apply this invocation if it's applicable@> =

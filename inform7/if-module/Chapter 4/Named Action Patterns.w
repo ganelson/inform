@@ -112,12 +112,12 @@ void PL::Actions::Patterns::Named::compile(void) {
 	}
 }
 
-void PL::Actions::Patterns::Named::index_for_extension(OUTPUT_STREAM, source_file *sf, extension_file *ef) {
+void PL::Actions::Patterns::Named::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	named_action_pattern *nap;
 	int kc = 0;
 	LOOP_OVER(nap, named_action_pattern)
-		if (Lexer::file_of_origin(Wordings::first_wn(nap->text_of_declaration)) == Extensions::Files::source(ef))
-			kc = Extensions::Documentation::document_headword(OUT, kc, ef, "Kinds of action", I"kind of action",
+		if (Lexer::file_of_origin(Wordings::first_wn(nap->text_of_declaration)) == E->read_into_file)
+			kc = Extensions::Documentation::document_headword(OUT, kc, E, "Kinds of action", I"kind of action",
 				nap->text_of_declaration);
 	if (kc != 0) HTML_CLOSE("p");
 }

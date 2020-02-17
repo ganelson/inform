@@ -264,9 +264,9 @@ void Problems::Issue::property_problem(SIGIL_ARGUMENTS, property *prn, char *mes
 These are generated when the user tries to employ a malformed extension.
 
 =
-void Problems::Issue::extension_problem(SIGIL_ARGUMENTS, extension_file *ef, char *message) {
+void Problems::Issue::extension_problem(SIGIL_ARGUMENTS, inform_extension *E, char *message) {
 	ACT_ON_SIGIL
-	Problems::quote_extension(1, ef);
+	Problems::quote_extension(1, E);
 	Problems::quote_text(2, message);
 	Problems::issue_problem_begin(message);
 	Problems::issue_problem_segment(

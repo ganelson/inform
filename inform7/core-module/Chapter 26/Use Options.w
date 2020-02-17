@@ -248,11 +248,11 @@ void UseOptions::set_use_options(parse_node *p) {
 	wording OW = GET_RW(<use-sentence-object>, 1);
 	use_option *uo = UseOptions::parse_uo(OW);
 	if (uo) {
-		extension_file *ef = NULL;
+		inform_extension *E = NULL;
 		@<Adjust the minimum setting@>;
 		if (uo->source_file_scoped) {
-			ef = SourceFiles::get_extension_corresponding(Lexer::file_of_origin(Wordings::first_wn(OW)));
-			if (ef == NULL) { /* that is, if used in the main source text */
+			E = SourceFiles::get_extension_corresponding(Lexer::file_of_origin(Wordings::first_wn(OW)));
+			if (E == NULL) { /* that is, if used in the main source text */
 				uo->option_used = TRUE;
 				uo->where_used = current_sentence;
 			}
@@ -332,11 +332,11 @@ those which need immediate action.
 @<Act on this use option immediately@> =
 	switch (R[1]) {
 		case AUTHORIAL_MODESTY_UO: {
-			extension_file *ef =
+			inform_extension *E =
 				SourceFiles::get_extension_corresponding(
 					Lexer::file_of_origin(Wordings::first_wn(W)));
-			if (ef == NULL) Extensions::Files::set_general_authorial_modesty();
-			else Extensions::Files::set_authorial_modesty(ef);
+			if (E == NULL) Extensions::set_general_authorial_modesty();
+			else Extensions::set_authorial_modesty(E);
 			break;
 		}
 		case DYNAMIC_MEMORY_ALLOCATION_UO:
@@ -387,13 +387,13 @@ int UseOptions::get_index_figure_thumbnails(void) {
 pragma is set:
 
 =
-int UseOptions::uo_set_from(use_option *uo, int category, extension_file *ef) {
+int UseOptions::uo_set_from(use_option *uo, int category, inform_extension *E) {
 	source_file *sf = (uo->where_used)?(Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(uo->where_used)))):NULL;
-	extension_file *efo = (sf)?(SourceFiles::get_extension_corresponding(sf)):NULL;
+	inform_extension *efo = (sf)?(SourceFiles::get_extension_corresponding(sf)):NULL;
 	switch (category) {
 		case 1: if ((sf) && (efo == NULL)) return TRUE; break;
 		case 2: if (sf == NULL) return TRUE; break;
-		case 3: if ((sf) && (efo == ef)) return TRUE; break;
+		case 3: if ((sf) && (efo == E)) return TRUE; break;
 	}
 	return FALSE;
 }
@@ -448,8 +448,9 @@ void UseOptions::index(OUTPUT_STREAM) {
 	HTML_OPEN("p"); WRITE("The following use options are in force:"); HTML_CLOSE("p");
 	UseOptions::index_options_in_force_from(OUT, MAIN_TEXT_UO_ORIGIN, NULL);
 	UseOptions::index_options_in_force_from(OUT, OPTIONS_FILE_UO_ORIGIN, NULL);
-	extension_file *ef;
-	LOOP_OVER(ef, extension_file) UseOptions::index_options_in_force_from(OUT, EXTENSION_UO_ORIGIN, ef);
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		UseOptions::index_options_in_force_from(OUT, EXTENSION_UO_ORIGIN, E);
 	int nt = 0;
 	use_option *uo;
 	LOOP_OVER(uo, use_option) {
@@ -480,13 +481,13 @@ void UseOptions::index(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
 
 @ =
-void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, extension_file *ef) {
+void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform_extension *E) {
 	int N = 0;
 	use_option *uo;
 	LOOP_OVER(uo, use_option) {
 		if (uo->source_file_scoped) continue;
 		if ((uo->option_used) && (uo->minimum_setting_value < 0) &&
-			(UseOptions::uo_set_from(uo, category, ef))) {
+			(UseOptions::uo_set_from(uo, category, E))) {
 			if (N++ == 0) @<Write in the use option subheading@>;
 			@<Write in the index line for a use option taken@>;
 		}
@@ -494,7 +495,7 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, extens
 	LOOP_OVER(uo, use_option) {
 		if (uo->source_file_scoped) continue;
 		if (((uo->option_used) && (uo->minimum_setting_value >= 0)) &&
-			(UseOptions::uo_set_from(uo, category, ef))) {
+			(UseOptions::uo_set_from(uo, category, E))) {
 			if (N++ == 0) @<Write in the use option subheading@>;
 			@<Write in the index line for a use option taken@>;
 		}
@@ -512,9 +513,9 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, extens
 			WRITE("the Options.txt configuration file");
 			Index::DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
-			if (Extensions::Files::is_SR(ef)) WRITE("the ");
+			if (Extensions::is_standard(E)) WRITE("the ");
 			else WRITE("the extension ");
-			WRITE("%S", ef->found->edition->work->title);
+			WRITE("%S", E->as_copy->edition->work->title);
 			break;
 	}
 	WRITE(":");

@@ -962,10 +962,10 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 	} else {
 		if (Rulebooks::noteworthy_rulebooks(NULL) > 0)
 			@<Index the segment for new rulebooks and activities@>;
-		extension_file *ef;
-		LOOP_OVER(ef, extension_file)
-			if (Extensions::Files::is_SR(ef) == FALSE)
-				if (Rulebooks::noteworthy_rulebooks(ef) > 0)
+		inform_extension *E;
+		LOOP_OVER(E, inform_extension)
+			if (Extensions::is_standard(E) == FALSE)
+				if (Rulebooks::noteworthy_rulebooks(E) > 0)
 					@<Index the segment for the rulebooks in this extension@>;
 	}
 }
@@ -1108,12 +1108,12 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 
 @<Index the segment for new rulebooks and activities@> =
 	HTML_OPEN("p"); WRITE("<b>From the source text</b>"); HTML_CLOSE("p");
-	extension_file *ef = NULL; /* that is, not in an extension at all */
+	inform_extension *E = NULL; /* that is, not in an extension at all */
 	@<Index rulebooks occurring in this part of the source text@>;
 
 @<Index the segment for the rulebooks in this extension@> =
 	HTML_OPEN("p"); WRITE("<b>From the extension ");
-	Works::write_to_HTML_file(OUT, Extensions::Files::get_work(ef), FALSE);
+	Works::write_to_HTML_file(OUT, E->as_copy->edition->work, FALSE);
 	WRITE("</b>"); HTML_CLOSE("p");
 	@<Index rulebooks occurring in this part of the source text@>;
 
@@ -1123,32 +1123,32 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 	LOOP_OVER(rb, rulebook) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
 		if (rb->automatically_generated) continue;
-		if (((ef == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == ef))
+		if (((E == NULL) && (sf == NULL)) ||
+			(SourceFiles::get_extension_corresponding(sf) == E))
 			Rulebooks::index_rules_box(OUT, NULL, rb->primary_name, NULL, rb, NULL, NULL, 1, TRUE);
 	}
 	LOOP_OVER(av, activity) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((ef == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == ef))
+		if (((E == NULL) && (sf == NULL)) ||
+			(SourceFiles::get_extension_corresponding(sf) == E))
 			Activities::index(OUT, av, 1);
 	}
 
 @ =
-int Rulebooks::noteworthy_rulebooks(extension_file *ef) {
+int Rulebooks::noteworthy_rulebooks(inform_extension *E) {
 	int nb = 0;
 	activity *av;
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
 		if (rb->automatically_generated) continue;
-		if (((ef == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == ef)) nb++;
+		if (((E == NULL) && (sf == NULL)) ||
+			(SourceFiles::get_extension_corresponding(sf) == E)) nb++;
 	}
 	LOOP_OVER(av, activity) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((ef == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == ef)) nb++;
+		if (((E == NULL) && (sf == NULL)) ||
+			(SourceFiles::get_extension_corresponding(sf) == E)) nb++;
 	}
 	return nb;
 }

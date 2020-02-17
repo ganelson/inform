@@ -143,12 +143,12 @@ for the same extension which are left in the dictionary from some previous
 run of Inform, as those are now out of date.
 
 =
-void Extensions::Dictionary::erase_entries(extension_file *ef) {
+void Extensions::Dictionary::erase_entries(inform_extension *E) {
 	extension_dictionary_entry *ede;
-	LOGIF(EXTENSIONS_CENSUS, "Erasure of dictionary entries for $x\n", ef);
+	LOGIF(EXTENSIONS_CENSUS, "Erasure of dictionary entries for %X\n", E->as_copy->edition->work);
 	LOOP_OVER(ede, extension_dictionary_entry)
 		if ((ede->erased == FALSE) &&
-			(Works::match(ede->ede_work, ef->ef_req->work))) {
+			(Works::match(ede->ede_work, E->as_copy->edition->work))) {
 			ede->erased = TRUE;
 			LOGIF(EXTENSIONS_CENSUS, "Erased $d", ede);
 		}
@@ -158,11 +158,11 @@ void Extensions::Dictionary::erase_entries(extension_file *ef) {
 We provide two ways to add a new entry: from a C string or from a word range.
 
 =
-void Extensions::Dictionary::new_entry(text_stream *category, extension_file *ef, wording W) {
+void Extensions::Dictionary::new_entry(text_stream *category, inform_extension *E, wording W) {
 	if (Wordings::nonempty(W)) { /* a safety precaution: never index the empty text */
 		TEMPORARY_TEXT(headword);
 		WRITE_TO(headword, "%+W", W);
-		Extensions::Dictionary::new_dictionary_entry_raw(category, ef->ef_req->work->author_name, ef->ef_req->work->title, headword);
+		Extensions::Dictionary::new_dictionary_entry_raw(category, E->as_copy->edition->work->raw_author_name, E->as_copy->edition->work->raw_title, headword);
 		DISCARD_TEXT(headword);
 	}
 }

@@ -375,9 +375,9 @@ divided up by the extensions containing the rules which produce them.
 @<Compile the Response Divisions array@> =
 	inter_name *iname = Hierarchy::find(RESPONSEDIVISIONS_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_value);
-	extension_file *group_ef = NULL;
+	inform_extension *group_E = NULL;
 	@<Make a ResponseDivisions entry@>;
-	LOOP_OVER(group_ef, extension_file)
+	LOOP_OVER(group_E, inform_extension)
 		@<Make a ResponseDivisions entry@>;
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
@@ -392,9 +392,9 @@ divided up by the extensions containing the rules which produce them.
 		for (int marker = 0; marker < 26; marker++)
 			if (Rules::rule_defines_response(R, marker)) {
 				tally++;
-				extension_file *ef = SourceFiles::get_extension_corresponding(
+				inform_extension *E = SourceFiles::get_extension_corresponding(
 					Lexer::file_of_origin(Wordings::first_wn(R->name)));
-				if (ef == group_ef) @<Start a possible run of matches@>
+				if (E == group_E) @<Start a possible run of matches@>
 				else @<End a possible run of matches@>;
 			}
 	@<End a possible run of matches@>;
@@ -404,7 +404,7 @@ divided up by the extensions containing the rules which produce them.
 		contiguous_match = TRUE;
 		if (no_cms++ == 0) {
 			TEMPORARY_TEXT(QT);
-			WRITE_TO(QT, "%<X", Extensions::Files::get_work(ef));
+			WRITE_TO(QT, "%<X", E->as_copy->edition->work);
 			Emit::array_text_entry(QT);
 			DISCARD_TEXT(QT);
 		} else

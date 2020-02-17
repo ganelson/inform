@@ -10,6 +10,7 @@ but in that event the Extensions.w routines do indeed want to know this.
 
 @e SEARCH_FAILED_STE from 1
 @e OPEN_FAILED_STE
+@e EXT_MISWORDED_STE
 
 =
 typedef struct source_text_error {

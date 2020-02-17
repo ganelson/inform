@@ -742,10 +742,10 @@ author's source text.)
 		(Wordings::nonempty(ParseTree::get_text(am2->defined_at))) &&
 		(am1->adjective_form != ENUMERATIVE_KADJ) &&
 		(am2->adjective_form != ENUMERATIVE_KADJ)) {
-		extension_file *ef1 =
+		inform_extension *ef1 =
 			SourceFiles::get_extension_corresponding(
 				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am1->defined_at))));
-		extension_file *ef2 =
+		inform_extension *ef2 =
 			SourceFiles::get_extension_corresponding(
 				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am2->defined_at))));
 		if ((ef1 == ef2) || ((ef1) && (ef2))) {
