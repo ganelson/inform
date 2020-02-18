@@ -103,6 +103,12 @@ inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F,
 		Copies::edition(Works::new(extension_genre, title, author), V), F);
 	if (Str::len(error_text) > 0)
 		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
+	if (Str::len(title) > MAX_EXTENSION_TITLE_LENGTH) {
+		Copies::attach(C, Copies::new_error_N(EXT_TITLE_TOO_LONG_CE, Str::len(title)));
+	}
+	if (Str::len(author) > MAX_EXTENSION_AUTHOR_LENGTH) {
+		Copies::attach(C, Copies::new_error_N(EXT_AUTHOR_TOO_LONG_CE, Str::len(author)));
+	}
 	if ((allow_malformed) || (Str::len(error_text) == 0)) {
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		ExtensionManager::build_vertex(C);

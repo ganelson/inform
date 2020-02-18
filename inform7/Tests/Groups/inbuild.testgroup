@@ -1,4 +1,6 @@
 PM_ExtMiswordedBeginsHere
+PM_ExtTitleTooLong
+PM_ExtAuthorTooLong
 PM_TooMuchQuotedText
 PM_WordTooLong
 PM_UnendingQuote

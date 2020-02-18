@@ -1,0 +1,10 @@
+Inform 7.10.1 build 6Q21 has started.
+I've now read your source text, which is 19 words long.
+I've also read Basic Inform by Graham Nelson, which is 7645 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32123 words long.
+Problem__ PM_ExtTitleTooLong
+  >--> The extension When To The Sessions Of Sweet Silent Thought I Conjure Up
+    by Araminta Intest, which your source text makes use of, has a title which
+    is too long, exceeding the maximum allowed (51 characters) by 6.
+Inform 7 has finished: 12 centiseconds used.

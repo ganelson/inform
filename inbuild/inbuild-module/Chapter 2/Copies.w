@@ -144,6 +144,8 @@ therefore has a list attached of errors which occurred in reading it.
 
 @e OPEN_FAILED_CE from 1
 @e EXT_MISWORDED_CE
+@e EXT_TITLE_TOO_LONG_CE
+@e EXT_AUTHOR_TOO_LONG_CE
 @e LEXER_CE
 
 =
@@ -155,6 +157,7 @@ typedef struct copy_error {
 	struct text_file_position pos;
 	struct text_stream *notes;
 	struct text_stream *details;
+	int details_N;
 	wchar_t *word;
 	MEMORY_MANAGEMENT
 } copy_error;
@@ -166,9 +169,16 @@ copy_error *Copies::new_error(int cat, text_stream *NB) {
 	CE->file = NULL;
 	CE->notes = Str::duplicate(NB);
 	CE->details = NULL;
+	CE->details_N = -1;
 	CE->pos = TextFiles::nowhere();
 	CE->copy = NULL;
 	CE->word = NULL;
+	return CE;
+}
+
+copy_error *Copies::new_error_N(int cat, int N) {
+	copy_error *CE = Copies::new_error(cat, NULL);
+	CE->details_N = N;
 	return CE;
 }
 
@@ -193,6 +203,10 @@ void Copies::list_problems_arising(OUTPUT_STREAM, inbuild_copy *C) {
 		switch (CE->error_category) {
 			case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
 			case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
+			case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
+				CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
+			case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",
+				CE->details_N, MAX_EXTENSION_AUTHOR_LENGTH); break;
 			case LEXER_CE: WRITE("%S", CE->notes); break;
 			default: internal_error("an unknown error occurred");
 		}

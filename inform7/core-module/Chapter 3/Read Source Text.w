@@ -12,8 +12,7 @@ does this), and some extensions, such as Basic Inform, need to be given
 inclusion sentences -- see Kits.
 
 =
-void SourceFiles::read_primary_source_text(void) {
-	inbuild_copy *C = Inbuild::project()->as_copy;
+void SourceFiles::read(inbuild_copy *C) {
 	Copies::read_source_text_for(C);
 	SourceFiles::issue_problems_arising(C);
 }
@@ -43,6 +42,34 @@ void SourceFiles::issue_problems_arising(inbuild_copy *C) {
 					"Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case EXT_TITLE_TOO_LONG_CE: {
+				int max = MAX_EXTENSION_TITLE_LENGTH;
+				int overage = CE->details_N - MAX_EXTENSION_TITLE_LENGTH;
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_number(2, &max);
+				Problems::quote_number(3, &overage);
+				Problems::Issue::handmade_problem(_p_(PM_ExtTitleTooLong));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, has a "
+					"title which is too long, exceeding the maximum allowed "
+					"(%2 characters) by %3.");
+				Problems::issue_problem_end();
+				break;
+			}
+			case EXT_AUTHOR_TOO_LONG_CE: {
+				int max = MAX_EXTENSION_AUTHOR_LENGTH;
+				int overage = CE->details_N - MAX_EXTENSION_AUTHOR_LENGTH;
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_number(2, &max);
+				Problems::quote_number(3, &overage);
+				Problems::Issue::handmade_problem(_p_(PM_ExtAuthorTooLong));
+				Problems::issue_problem_segment(
+					"The extension %1, which your source text makes use of, has an "
+					"author name which is too long, exceeding the maximum allowed "
+					"(%2 characters) by %3.");
+				Problems::issue_problem_end();
+				break;
+			}
 			case LEXER_CE:
 				switch (CE->error_subcategory) {
 					case STRING_TOO_LONG_LEXERERROR:

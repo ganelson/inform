@@ -125,29 +125,10 @@ parse tree.
 	if (version_word >= 0)
 		Extensions::Inclusion::parse_version(version_word); /* this checks the formatting of the version number */
 
-	TEMPORARY_TEXT(violation);
 	TEMPORARY_TEXT(exft);
 	TEMPORARY_TEXT(exfa);
 	WRITE_TO(exft, "%+W", W);
 	WRITE_TO(exfa, "%+W", AW);
-	if (Extensions::Census::currently_recording_errors() == FALSE) {
-		if (Str::len(exfa) >= MAX_EXTENSION_AUTHOR_LENGTH) {
-			WRITE_TO(violation,
-				"has an author's name which is too long, exceeding the maximum "
-				"allowed (%d characters) by %d",
-				MAX_EXTENSION_AUTHOR_LENGTH-1,
-				(int) (1+Str::len(exfa)-MAX_EXTENSION_AUTHOR_LENGTH));
-			Str::truncate(exfa, MAX_EXTENSION_AUTHOR_LENGTH-1);
-		}
-		if (Str::len(exft) >= MAX_EXTENSION_AUTHOR_LENGTH) {
-			WRITE_TO(violation,
-				"has a title which is too long, exceeding the maximum allowed "
-				"(%d characters) by %d",
-				MAX_EXTENSION_TITLE_LENGTH-1,
-				(int) (1+Str::len(exft)-MAX_EXTENSION_TITLE_LENGTH));
-			Str::truncate(exft, MAX_EXTENSION_AUTHOR_LENGTH-1);
-		}
-	}
 	inbuild_work *work = Works::new(extension_genre, exft, exfa);
 	Works::add_to_database(work, LOADED_WDBC);
 	inbuild_version_number min = VersionNumbers::null();
@@ -155,16 +136,6 @@ parse tree.
 	inbuild_requirement *req = Requirements::new(work, min, VersionNumbers::null());
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
-	if (Str::len(violation) > 0) {
-		Problems::quote_wording(1, W);
-		Problems::quote_wording(2, AW);
-		Problems::quote_stream(3, violation);
-		Problems::Issue::handmade_problem(_p_(PM_IncludesTooLong));
-		Problems::issue_problem_segment(
-			"The extension %1 by %2, which your source text requests, %3.");
-		Problems::issue_problem_end();
-	}
-	DISCARD_TEXT(violation);
 
 	inform_extension *E = Extensions::Inclusion::load(req);
 	if (E) {
@@ -238,9 +209,7 @@ trap-door into Read Source Text, to seek and open the file.
 	if (found_to_be_malformed == FALSE) {
 		if (E == NULL) @<Issue a cannot-find problem@>
 		else {
-			inbuild_copy *C = E->as_copy;
-			Copies::read_source_text_for(C);
-			SourceFiles::issue_problems_arising(C);
+			SourceFiles::read(E->as_copy);
 		}
 	}
 

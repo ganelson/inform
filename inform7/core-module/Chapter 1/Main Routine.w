@@ -217,7 +217,7 @@ list is not exhaustive.
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Lexical analysis");
-	COMPILATION_STEP(SourceFiles::read_primary_source_text, I"SourceFiles::read_primary_source_text")
+	SourceFiles::read(Inbuild::project()->as_copy);
 	COMPILATION_STEP(Sentences::RuleSubtrees::create_standard_csps, I"Sentences::RuleSubtrees::create_standard_csps")
 
 @<Perform semantic analysis@> =
