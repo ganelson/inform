@@ -2,36 +2,18 @@
 
 To deal with multiple inter architectures.
 
-@h Architectures.
-These are simply enumerated, for now.
-
-@e NO_ARCHITECTURE from 0
-@e A_16_ARCHITECTURE
-@e A_16D_ARCHITECTURE
-@e A_32_ARCHITECTURE
-@e A_32D_ARCHITECTURE
+@h Current architecture.
 
 =
-int current_architecture = NO_ARCHITECTURE;
+inter_architecture *current_architecture = NULL;
 int CodeGen::Architecture::set(text_stream *name) {
-	int setting = NO_ARCHITECTURE;
-	if (Str::eq_insensitive(name, I"16")) setting = A_16_ARCHITECTURE;
-	if (Str::eq_insensitive(name, I"32")) setting = A_32_ARCHITECTURE;
-	if (Str::eq_insensitive(name, I"16d")) setting = A_16D_ARCHITECTURE;
-	if (Str::eq_insensitive(name, I"32d")) setting = A_32D_ARCHITECTURE;
-	if (setting == NO_ARCHITECTURE) return FALSE;
-	current_architecture = setting;
-	return TRUE;
+	current_architecture = Architectures::from_codename(name);
+	if (current_architecture) return TRUE;
+	return FALSE;
 }
 
-text_stream *CodeGen::Architecture::leafname(void) {
-	switch (current_architecture) {
-		case A_16_ARCHITECTURE: return I"arch-16";
-		case A_16D_ARCHITECTURE: return I"arch-16d";
-		case A_32_ARCHITECTURE: return I"arch-32";
-		case A_32D_ARCHITECTURE: return I"arch-32d";
-	}
-	return NULL;
+inter_architecture *CodeGen::Architecture::current(void) {
+	return current_architecture;
 }
 
 @h Prepare stage.
@@ -42,14 +24,10 @@ void CodeGen::Architecture::create_pipeline_stage(void) {
 }
 
 int CodeGen::Architecture::run_prepare_stage(pipeline_step *step) {
-	switch (current_architecture) {
-		case NO_ARCHITECTURE: internal_error("no architecture set");
-		case A_16_ARCHITECTURE: return CodeGen::Architecture::run_prepare_stage_inner(step, TRUE, FALSE);
-		case A_16D_ARCHITECTURE: return CodeGen::Architecture::run_prepare_stage_inner(step, TRUE, TRUE);
-		case A_32_ARCHITECTURE: return CodeGen::Architecture::run_prepare_stage_inner(step, FALSE, FALSE);
-		case A_32D_ARCHITECTURE: return CodeGen::Architecture::run_prepare_stage_inner(step, FALSE, TRUE);
-	}
-	return FALSE;
+	if (current_architecture == NULL) internal_error("no architecture set");
+	return CodeGen::Architecture::run_prepare_stage_inner(step,
+		Architectures::sixteen_bit(current_architecture),
+		Architectures::debug_enabled(current_architecture));
 }
 
 int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {

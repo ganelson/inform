@@ -29,11 +29,10 @@ void CodeGen::LinkInstructions::create_pipeline_stage(void) {
 int CodeGen::LinkInstructions::run_link_stage(pipeline_step *step) {
 	link_instruction *req;
 	LOOP_OVER_LINKED_LIST(req, link_instruction, step->requirements_list) {
-		TEMPORARY_TEXT(leafname);
-		WRITE_TO(leafname, "%S.interb", CodeGen::Architecture::leafname());
-		filename *arch_file = Filenames::in_folder(req->location, leafname);
+		inter_architecture *A = CodeGen::Architecture::current();
+		if (A == NULL) Errors::fatal("no -architecture given");
+		filename *arch_file = Architectures::canonical_binary(req->location, A);
 		if (TextFiles::exists(arch_file) == FALSE) internal_error("no arch file for requirement");
-		DISCARD_TEXT(leafname);
 
 		inter_tree *sidecar = Inter::Tree::new();
 		if (Inter::Binary::test_file(arch_file)) Inter::Binary::read(sidecar, arch_file);

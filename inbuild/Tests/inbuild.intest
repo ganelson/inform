@@ -1,0 +1,18 @@
+-cases [Units] 'inbuild/Tests/Units'
+
+-recipe [Units]
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	debugger: llvm -f inbuild/Tangled/inbuild -- -unit-test $CASE
+	step: inbuild/Tangled/inbuild -unit-test $CASE >$A 2>&1
+	or: 'failed to produce output' $A
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+-end

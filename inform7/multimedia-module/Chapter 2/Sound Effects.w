@@ -151,7 +151,7 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 	DISCARD_TEXT(leaf);
 
 	bs->name = F;
-	bs->sound_number = VirtualMachines::get_next_free_blorb_resource_ID();
+	bs->sound_number = Projects::get_next_free_blorb_resource_ID(Inbuild::project());
 	bs->alt_description = <<alttext>>;
 
 	LOGIF(FIGURE_CREATIONS,

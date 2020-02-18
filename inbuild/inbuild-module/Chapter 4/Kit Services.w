@@ -205,20 +205,22 @@ void Kits::construct_graph(inform_kit *K) {
 	inbuild_copy *C = K->as_copy;
 	pathname *P = C->location_if_path;
 	build_vertex *KV = C->vertex;
-	text_stream *archs[4] = { I"16", I"32", I"16d", I"32d" };
-	text_stream *binaries[4] = { I"arch-16.interb", I"arch-32.interb", I"arch-16d.interb", I"arch-32d.interb" };
-	build_vertex *BV[4];
-	for (int i=0; i<4; i++) {
-		filename *FV = Filenames::in_folder(P, binaries[i]);
-		BV[i] = Graphs::file_vertex(FV);
-		Graphs::need_this_to_build(KV, BV[i]);
-		build_step *BS = BuildSteps::new_step(ASSIMILATE_BSTEP, P, archs[i]);
-		BuildSteps::add_step(BV[i]->script, BS);
+	linked_list *BVL = NEW_LINKED_LIST(build_vertex);	
+	inter_architecture *A;
+	LOOP_OVER(A, inter_architecture) {
+		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
+		Graphs::need_this_to_build(KV, BV);
+		build_step *BS = BuildSteps::new_step(
+			ASSIMILATE_BSTEP, P, Architectures::to_codename(A));
+		BuildSteps::add_step(BV->script, BS);
+		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
 	}
 
 	filename *contents_page = Filenames::in_folder(C->location_if_path, I"Contents.w");
 	build_vertex *CV = Graphs::file_vertex(contents_page);
-	for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], CV);
+	build_vertex *BV;
+	LOOP_OVER_LINKED_LIST(BV, build_vertex, BVL)
+		Graphs::need_this_to_build(BV, CV);
 
 	kit_contents_section_state CSS;
 	CSS.active = FALSE;
@@ -229,7 +231,9 @@ void Kits::construct_graph(inform_kit *K) {
 		filename *SF = Filenames::in_folder(
 			Pathnames::subfolder(C->location_if_path, I"Sections"), segment);
 		build_vertex *SV = Graphs::file_vertex(SF);
-		for (int i=0; i<4; i++) Graphs::need_this_to_build(BV[i], SV);
+		build_vertex *BV;
+		LOOP_OVER_LINKED_LIST(BV, build_vertex, BVL)
+			Graphs::need_this_to_build(BV, SV);
 	}
 
 	inbuild_requirement *req;

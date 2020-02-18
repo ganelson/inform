@@ -32,6 +32,7 @@ linked_list *requirements_list = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
+	ArchModule::start();
 	InterModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
@@ -70,22 +71,17 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
 	if (template_action == ASSIMILATE_CLSW) {
-		text_stream *name = CodeGen::Architecture::leafname();
-		if (Str::len(name) == 0) Errors::fatal("no -architecture given");
+		inter_architecture *A = CodeGen::Architecture::current();
+		if (A == NULL) Errors::fatal("no -architecture given");
+		filename *assim = Architectures::canonical_binary(template_path, A);
+		filename *assim_t = Architectures::canonical_textual(template_path, A);
 		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
-		TEMPORARY_TEXT(leafname);
-		WRITE_TO(leafname, "%S.interb", name);
-		filename *assim = Filenames::in_folder(template_path, leafname);
 		TEMPORARY_TEXT(fullname);
 		WRITE_TO(fullname, "%f", assim);
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), fullname);
-		Str::clear(leafname);
 		Str::clear(fullname);
-		WRITE_TO(leafname, "%S.intert", name);
-		filename *assim_t = Filenames::in_folder(template_path, leafname);
 		WRITE_TO(fullname, "%f", assim_t);
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
-		DISCARD_TEXT(leafname);
 		DISCARD_TEXT(fullname);
 		match_results mr = Regexp::create_mr();
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(template_path));
@@ -97,6 +93,7 @@ int main(int argc, char **argv) {
 	InterModule::end();
 	BuildingModule::end();
 	CodegenModule::end();
+	ArchModule::end();
 	Foundation::end();
 
 	if (Errors::have_occurred()) return 1;

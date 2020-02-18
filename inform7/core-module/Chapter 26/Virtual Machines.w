@@ -645,22 +645,3 @@ int VirtualMachines::compare_usage(const void *ent1, const void *ent2) {
 	if (v2->bytes_used != v1->bytes_used) return v2->bytes_used - v1->bytes_used;
 	return Wordings::first_wn(v1->structure_name) - Wordings::first_wn(v2->structure_name);
 }
-
-@h Resource ID numbers.
-Resources in a Blorb file have unique ID numbers which are positive integers,
-but these are not required to start from 1, nor to be contiguous. For Inform,
-ID number 1 is reserved for the cover image (whether or not any cover image
-is provided: it is legal for there to be figures but no cover, and vice versa).
-Other figures, and sound effects, then mix freely as needed from ID number 3
-on upwards. We skip 2 so that it can be guaranteed that no sound resource
-has ID 1 or 2: this is to help people trying to play sounds in the Z-machine,
-where operand 1 or 2 in the |@sound| opcode signifies not a sound resource
-number but a long or short beep. If a genuine sound effect had resource ID
-1 or 2, therefore, it would be unplayable on the Z-machine.
-
-=
-int next_free_resource_ID = 3;
-
-int VirtualMachines::get_next_free_blorb_resource_ID(void) {
-	return next_free_resource_ID++;
-}

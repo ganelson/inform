@@ -8,6 +8,7 @@ Version Name: Avignon
 
 Import: foundation
 Import: inform7/words
+Import: arch
 Import: inbuild
 
 Preliminaries

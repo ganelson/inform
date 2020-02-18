@@ -1,0 +1,143 @@
+schema
+	alpha.beta()
+end
+schema
+	alpha.beta(x)
+end
+schema
+	routine.call(x)
+end
+schema
+	(alpha.beta)(x)
+end
+schema
+	debug_rules = 2; say__p = 1;
+	"Rules tracing now switched to ~all~. Type ~rules off~ to switch it off again.";
+end
+schema
+	@erase_window -1;
+end
+schema
+	restore Somewhere;
+	.Somewhere; print "Here!";
+end
+schema
+	"Hello, this
+	is a multiline string literal";
+end
+schema
+	for (n=0:((n<RE_Subexpressions-->10) && (n<10)): n++)
+		print n;
+end
+schema
+	spaces j;
+	print (I7_string) str; 
+end
+schema
+	if (i == 1) print "Okay";
+	else "*** Arrcpy doesn't support this ***";
+end
+schema
+	a-1
+end
+schema
+	do {
+		print "Hi!";
+	} until (x);
+end
+schema
+    do {
+        if (a) return wd;
+    } until (a);
+end
+schema
+    do {
+        if (line_tdata-->index == wd) return wd;
+        index++;
+    } until ((line_token-->index == ENDIT_TOKEN) || (((line_token-->index)->0 & $10) == 0));
+end
+schema
+    print "<string ~", (string) o, "~>"; 
+end
+schema
+    switch (Y) {
+		X:   print "A ", (string) o;
+    }
+end
+schema
+	#ifdef RANKING_TABLE;
+	ANNOUNCE_SCORE_RM('B');
+	j = TableRows(RANKING_TABLE);
+	for (i=j:i>=1:i--)
+		if (score >= TableLookUpEntry(RANKING_TABLE, 1, i)) {
+		    v = TableLookUpEntry(RANKING_TABLE, 2, i);
+		    TEXT_TY_Say(v);
+		    ".";
+		}
+	#endif;
+	".";'
+end
+schema
+	if (B) if (A) { print "Yes"; }
+	print "No";
+end
+schema
+	switch (scope_stage) {
+		2: objectloop (obj)
+        	PlaceInScope(obj, true);
+    }
+end
+schema
+	while (token ~= NULL) {
+		switch (token-->RE_CCLASS) {
+			DISJUNCTION_RE_CC: token-->RE_CONSTRAINT = -1;
+			QUANTIFIER_RE_CC: token-->RE_CONSTRAINT = -1;
+		}
+		if (token-->RE_DOWN) TEXT_TY_RE_EraseConstraints(token-->RE_DOWN);
+		token = token-->RE_NEXT;
+	}
+end
+schema
+		if (b) print 1; else print 2;
+end
+schema
+		a: if (b) print 1; else print 2;
+end
+schema
+	print_ret "This is ", (char) X, ".";
+end
+schema
+	@jl y 0 ?X;
+	@jl y 0 ?~X;
+	@jl y 0 ?rtrue;
+	@jl y 0 ?rfalse;
+	@jl y 0 ?~rtrue;
+	@jl y 0 ?~rfalse;
+end
+schema
+		switch (token-->RE_CCLASS) {
+			
+			! Should never happen
+			
+			CHOICE_RE_CC: return "internal error";
+			
+			! Mode switches
+			
+			SENSITIVITY_RE_CC:
+				if (token-->RE_PAR1) mode_flags = mode_flags | CIS_MFLAG;
+				else mode_flags = mode_flags & (~CIS_MFLAG);
+				outcome = true;
+		
+			! Zero-length positional markers
+			
+			ALWAYS_RE_CC:
+				outcome = true;
+			NEVER_RE_CC:
+			START_RE_CC:
+				if (ipos == 0) outcome = true;
+			END_RE_CC:
+				if (BlkValueRead(txt, ipos) == 0) outcome = true;
+			SOMETIMES_RE_CC:
+				outcome = true;
+		}
+end

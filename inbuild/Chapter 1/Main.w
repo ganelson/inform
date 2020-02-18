@@ -23,11 +23,13 @@ int dry_run_mode = FALSE;
 linked_list *targets = NULL; /* of |inbuild_copy| */
 inbuild_nest *destination_nest = NULL;
 text_stream *filter_text = NULL;
+text_stream *unit_test = NULL;
 linked_list *inbuild_nest_list = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
 	WordsModule::start();
+	ArchModule::start();
 	InbuildModule::start();
 	targets = NEW_LINKED_LIST(inbuild_copy);
 	@<Read the command line@>;
@@ -37,33 +39,40 @@ int main(int argc, char **argv) {
 	if (path_to_tools) BM = BuildSteps::methodology(path_to_tools, FALSE);
 	else BM = BuildSteps::methodology(Pathnames::up(path_to_inbuild), TRUE);
 	if (dry_run_mode == FALSE) BM->methodology = SHELL_METHODOLOGY;
-	if (Str::len(filter_text) > 0) {
-		TEMPORARY_TEXT(errors);
-		inbuild_requirement *req = Requirements::from_text(filter_text, errors);
-		if (Str::len(errors) > 0) {
-			Errors::with_text("requirement malformed: %S", errors);
-		} else {
-			linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-			Nests::search_for(req, inbuild_nest_list, L);
-			inbuild_search_result *R;
-			LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
-				ADD_TO_LINKED_LIST(R->copy, inbuild_copy, targets);
+	if (Str::len(unit_test) > 0) {
+		BM->methodology = DRY_RUN_METHODOLOGY;
+		if (Str::eq(unit_test, I"compatibility")) Compatibility::test(STDOUT);
+		else Errors::with_text("no such unit test: %S", unit_test);
+	} else {
+		if (Str::len(filter_text) > 0) {
+			TEMPORARY_TEXT(errors);
+			inbuild_requirement *req = Requirements::from_text(filter_text, errors);
+			if (Str::len(errors) > 0) {
+				Errors::with_text("requirement malformed: %S", errors);
+			} else {
+				linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+				Nests::search_for(req, inbuild_nest_list, L);
+				inbuild_search_result *R;
+				LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
+					ADD_TO_LINKED_LIST(R->copy, inbuild_copy, targets);
+				}
 			}
+			DISCARD_TEXT(errors);
 		}
-		DISCARD_TEXT(errors);
-	}
-	inbuild_copy *C;
-	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
-		switch (inbuild_task) {
-			case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
-			case GRAPH_TTASK: Graphs::describe(STDOUT, C->vertex, TRUE); break;
-			case BUILD_TTASK: Graphs::build(C->vertex, BM); break;
-			case REBUILD_TTASK: Graphs::rebuild(C->vertex, BM); break;
-			case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
-			case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE, BM); break;
+		inbuild_copy *C;
+		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
+			switch (inbuild_task) {
+				case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
+				case GRAPH_TTASK: Graphs::describe(STDOUT, C->vertex, TRUE); break;
+				case BUILD_TTASK: Graphs::build(C->vertex, BM); break;
+				case REBUILD_TTASK: Graphs::rebuild(C->vertex, BM); break;
+				case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
+				case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE, BM); break;
+			}
 		}
 	}
 	WordsModule::end();
+	ArchModule::end();
 	InbuildModule::end();
 	Foundation::end();
 	return 0;
@@ -81,6 +90,7 @@ int main(int argc, char **argv) {
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
+@e UNIT_TEST_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -106,6 +116,8 @@ int main(int argc, char **argv) {
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_switch(UNIT_TEST_CLSW, L"unit-test", 2,
+		L"perform unit test X (for debugging inbuild only)");
 	Inbuild::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -152,6 +164,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
+		case UNIT_TEST_CLSW: unit_test = Str::duplicate(arg); break;
 	}
 	Inbuild::option(id, val, arg, state);
 }

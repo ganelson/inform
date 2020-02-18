@@ -55,6 +55,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	IFModule::start();
 	MultimediaModule::start();
 	IndexModule::start();
+	ArchModule::start();
 	InterModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
@@ -73,6 +74,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	IFModule::end();
 	IndexModule::end();
 	InterModule::end();
+	ArchModule::end();
 	BuildingModule::end();
 	CodegenModule::end();
 	InbuildModule::end();

@@ -12,6 +12,7 @@ typedef struct inform_project {
 	struct inform_language *language_of_play;
 	struct inform_language *language_of_syntax;
 	struct inform_language *language_of_index;
+	int next_resource_number;
 	MEMORY_MANAGEMENT
 } inform_project;
 
@@ -25,6 +26,7 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->language_of_play = NULL;
 	project->language_of_syntax = NULL;
 	project->language_of_index = NULL;
+	project->next_resource_number = 3;
 	return project;
 }
 
@@ -60,6 +62,22 @@ inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 
 void Projects::not_necessarily_parser_IF(inform_project *project) {
 	project->assumed_to_be_parser_IF = FALSE;
+}
+
+@ Resources in a Blorb file have unique ID numbers which are positive integers,
+but these are not required to start from 1, nor to be contiguous. For Inform,
+ID number 1 is reserved for the cover image (whether or not any cover image
+is provided: it is legal for there to be figures but no cover, and vice versa).
+Other figures, and sound effects, then mix freely as needed from ID number 3
+on upwards. We skip 2 so that it can be guaranteed that no sound resource
+has ID 1 or 2: this is to help people trying to play sounds in the Z-machine,
+where operand 1 or 2 in the |@sound| opcode signifies not a sound resource
+number but a long or short beep. If a genuine sound effect had resource ID
+1 or 2, therefore, it would be unplayable on the Z-machine.
+
+=
+int Projects::get_next_free_blorb_resource_ID(inform_project *project) {
+	return project->next_resource_number++;
 }
 
 void Projects::set_source_filename(inform_project *project, pathname *P, filename *F) {

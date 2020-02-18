@@ -8,6 +8,7 @@ Version Name: Axion
 
 Import: foundation
 Import: inform7/words
+Import: inbuild/arch
 Import: inter
 Import: building
 Import: codegen
