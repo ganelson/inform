@@ -42,6 +42,16 @@ void SourceFiles::issue_problems_arising(inbuild_copy *C) {
 					"Specifically, %2.");
 				Problems::issue_problem_end();
 				break;
+			case KIT_MISWORDED_CE:
+				Problems::quote_work(1, CE->copy->found_by->work);
+				Problems::quote_stream(2, CE->notes);
+				Problems::Issue::handmade_problem(_p_(Untestable));
+				Problems::issue_problem_segment(
+					"The kit %1, which your source text makes use of, seems to be "
+					"damaged or incorrect: its identifying opening line is wrong. "
+					"Specifically, %2.");
+				Problems::issue_problem_end();
+				break;
 			case EXT_TITLE_TOO_LONG_CE: {
 				int max = MAX_EXTENSION_TITLE_LENGTH;
 				int overage = CE->details_N - MAX_EXTENSION_TITLE_LENGTH;

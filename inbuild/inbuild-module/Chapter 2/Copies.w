@@ -47,12 +47,20 @@ inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, general
 	return copy;
 }
 
+void Copies::set_content(inbuild_copy *C, general_pointer ref) {
+	C->content = ref;
+}
+
 void Copies::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
 	Editions::write(OUT, C->edition);
 }
 
 void Copies::go_operational(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
+}
+
+void Copies::scan(inbuild_copy *C) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_SCAN_COPY_MTID, C);
 }
 
 wording Copies::read_source_text_for(inbuild_copy *C) {
@@ -117,6 +125,7 @@ extension files but have a mangled identification line. Each copy structure
 therefore has a list attached of errors which occurred in reading it.
 
 @e OPEN_FAILED_CE from 1
+@e KIT_MISWORDED_CE
 @e EXT_MISWORDED_CE
 @e EXT_TITLE_TOO_LONG_CE
 @e EXT_AUTHOR_TOO_LONG_CE
@@ -177,6 +186,7 @@ void Copies::list_problems_arising(OUTPUT_STREAM, inbuild_copy *C) {
 		switch (CE->error_category) {
 			case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
 			case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
+			case KIT_MISWORDED_CE: WRITE("kit has incorrect metadata: %S", CE->notes); break;
 			case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
 				CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
 			case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",

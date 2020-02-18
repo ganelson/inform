@@ -33,6 +33,7 @@ text_stream *Genres::name(inbuild_genre *G) {
 
 @e GENRE_WRITE_WORK_MTID
 @e GENRE_CLAIM_AS_COPY_MTID
+@e GENRE_SCAN_COPY_MTID
 @e GENRE_SEARCH_NEST_FOR_MTID
 @e GENRE_COPY_TO_NEST_MTID
 @e GENRE_GO_OPERATIONAL_MTID
@@ -44,6 +45,8 @@ VMETHOD_TYPE(GENRE_WRITE_WORK_MTID,
 VMETHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID,
 	inbuild_genre *gen, inbuild_copy **C, text_stream *arg, text_stream *ext,
 	int directory_status)
+VMETHOD_TYPE(GENRE_SCAN_COPY_MTID,
+	inbuild_genre *gen, inbuild_copy *C)
 VMETHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID,
 	inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req,
 	linked_list *search_results)

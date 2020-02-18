@@ -308,8 +308,10 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
-				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
-				ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+				if (Str::ne(LEAFNAME, I"Reserved")) {
+					pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+				}
 			} else {
 				filename *F = Filenames::in_folder(P, LEAFNAME);
 				ExtensionManager::search_nest_for_single_file(F, N, req, search_results);

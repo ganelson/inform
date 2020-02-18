@@ -1,0 +1,11 @@
+Staircases.
+
+These lead in surprising directions.
+
+@h Functions.
+
+=
+[ UpOrDown;
+	print "Both!^";
+	rfalse;
+];

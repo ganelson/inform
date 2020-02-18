@@ -129,7 +129,7 @@ void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name
 int Projects::uses_kit(inform_project *project, text_stream *name) {
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		if (Str::eq(K->name, name))
+		if (Str::eq(K->as_copy->edition->work->title, name))
 			return TRUE;
 	return FALSE;
 }
@@ -161,7 +161,7 @@ void Projects::finalise_kit_dependencies(inform_project *project) {
 	project->kits_to_include = sorted;
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		LOG("Using Inform kit '%S' (priority %d).\n", K->name, K->priority);
+		LOG("Using Inform kit '%S' (priority %d).\n", K->as_copy->edition->work->title, K->priority);
 }
 
 @<Perform if-this-then-that@> =

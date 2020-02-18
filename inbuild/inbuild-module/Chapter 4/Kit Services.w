@@ -7,7 +7,6 @@ A kit is a combination of Inter code with an Inform 7 extension.
 =
 typedef struct inform_kit {
 	struct inbuild_copy *as_copy;
-	struct text_stream *name;
 	struct text_stream *attachment_point;
 	struct text_stream *early_source;
 	struct linked_list *ittt; /* of |inform_kit_ittt| */
@@ -15,7 +14,6 @@ typedef struct inform_kit {
 	struct linked_list *extensions; /* of |inbuild_requirement| */
 	struct linked_list *activations; /* of |element_activation| */
 	struct text_stream *index_template;
-	struct inbuild_version_number version;
 	int defines_Main;
 	int supports_inform_language;
 	int priority;
@@ -46,12 +44,13 @@ pathname *Kits::find(text_stream *name, linked_list *nest_list) {
 	return NULL;
 }
 
-inform_kit *Kits::new_ik(text_stream *name, pathname *P) {
+void Kits::scan(inbuild_genre *G, inbuild_copy *C) {
+	if (C == NULL) internal_error("no copy to scan");
+
 	inform_kit *K = CREATE(inform_kit);
-	K->as_copy = NULL;
-	K->name = Str::duplicate(name);
+	K->as_copy = C;
+	Copies::set_content(C, STORE_POINTER_inform_kit(K));
 	K->attachment_point = Str::new();
-	WRITE_TO(K->attachment_point, "/main/%S", name);
 	K->early_source = NULL;
 	K->priority = 10;
 	K->ittt = NEW_LINKED_LIST(inform_kit_ittt);
@@ -61,44 +60,31 @@ inform_kit *Kits::new_ik(text_stream *name, pathname *P) {
 	K->defines_Main = FALSE;
 	K->supports_inform_language = FALSE;
 	K->index_template = NULL;
-	K->version = VersionNumbers::null();
-	
-	filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
+
+	filename *F = Filenames::in_folder(C->location_if_path, I"kit_metadata.txt");
 	TextFiles::read(F, FALSE,
-		NULL, FALSE, Kits::read_metadata, NULL, (void *) K);
-	return K;
-}
+		NULL, FALSE, Kits::read_metadata, NULL, (void *) C);
 
-inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
-	pathname *P = Kits::find(name, nest_list);
-	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
-	inbuild_copy *C = KitManager::new_copy(name, P);
-	if (C->vertex == NULL) KitManager::build_vertex(C);
-	return KitManager::from_copy(C);
-}
-
-void Kits::dependency(inform_kit *K, text_stream *if_text, int inc, text_stream *then_text) {
-	inform_kit_ittt *ITTT = CREATE(inform_kit_ittt);
-	ITTT->if_name = Str::duplicate(if_text);
-	ITTT->if_included = inc;
-	ITTT->then_name = Str::duplicate(then_text);
-	ADD_TO_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt);
-}
-
-void Kits::activation(inform_kit *K, text_stream *name, int act) {
-	element_activation *EA = CREATE(element_activation);
-	EA->element_name = Str::duplicate(name);
-	EA->activate = act;
-	ADD_TO_LINKED_LIST(EA, element_activation, K->activations);
+	WRITE_TO(K->attachment_point, "/main/%S", C->edition->work->title);
 }
 
 void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state) {
-	inform_kit *K = (inform_kit *) state;
+	inbuild_copy *C = (inbuild_copy *) state;
+	inform_kit *K = KitManager::from_copy(C);
 	match_results mr = Regexp::create_mr();
 	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
 		;
 	} else if (Regexp::match(&mr, text, L"version: (%C+)")) {
-		K->version = VersionNumbers::from_text(mr.exp[0]);
+		C->edition->version = VersionNumbers::from_text(mr.exp[0]);
+	} else if (Regexp::match(&mr, text, L"compatibility: (%c+)")) {
+		compatibility_specification *CS = Compatibility::from_text(mr.exp[0]);
+		if (CS) C->edition->compatibility = CS;
+		else {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "cannot read compatibility '%S'", mr.exp[0]);
+			Copies::attach(C, Copies::new_error(KIT_MISWORDED_CE, err));
+			DISCARD_TEXT(err);
+		}
 	} else if (Regexp::match(&mr, text, L"defines Main: yes")) {
 		K->defines_Main = TRUE;
 	} else if (Regexp::match(&mr, text, L"defines Main: no")) {
@@ -129,10 +115,35 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	} else if (Regexp::match(&mr, text, L"index from: (%c*)")) {
 		K->index_template = Str::duplicate(mr.exp[0]);
 	} else {
-		Errors::in_text_file("illegible line in kit metadata file", tfp);
-		WRITE_TO(STDERR, "'%S'\n", text);
+		TEMPORARY_TEXT(err);
+		WRITE_TO(err, "unreadable instruction '%S'", text);
+		Copies::attach(C, Copies::new_error(KIT_MISWORDED_CE, err));
+		DISCARD_TEXT(err);	
 	}
 	Regexp::dispose_of(&mr);
+}
+
+inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
+	pathname *P = Kits::find(name, nest_list);
+	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
+	inbuild_copy *C = KitManager::new_copy(name, P);
+	if (C->vertex == NULL) KitManager::build_vertex(C);
+	return KitManager::from_copy(C);
+}
+
+void Kits::dependency(inform_kit *K, text_stream *if_text, int inc, text_stream *then_text) {
+	inform_kit_ittt *ITTT = CREATE(inform_kit_ittt);
+	ITTT->if_name = Str::duplicate(if_text);
+	ITTT->if_included = inc;
+	ITTT->then_name = Str::duplicate(then_text);
+	ADD_TO_LINKED_LIST(ITTT, inform_kit_ittt, K->ittt);
+}
+
+void Kits::activation(inform_kit *K, text_stream *name, int act) {
+	element_activation *EA = CREATE(element_activation);
+	EA->element_name = Str::duplicate(name);
+	EA->activate = act;
+	ADD_TO_LINKED_LIST(EA, element_activation, K->activations);
 }
 
 int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {

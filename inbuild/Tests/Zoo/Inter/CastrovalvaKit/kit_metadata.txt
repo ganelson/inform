@@ -1,0 +1,3 @@
+version: 2.7.1
+compatibility: not for 32 or 32d
+priority: 1
