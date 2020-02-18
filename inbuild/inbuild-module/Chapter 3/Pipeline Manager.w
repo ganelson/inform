@@ -72,7 +72,7 @@ inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *erro
 	TEMPORARY_TEXT(unext);
 	Filenames::write_unextended_leafname(unext, F);
 	inbuild_copy *C = PipelineManager::new_copy(
-		Copies::edition(Works::new_raw(pipeline_genre, unext, NULL), V), F);
+		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F);
 	DISCARD_TEXT(unext);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	PipelineManager::build_vertex(C);

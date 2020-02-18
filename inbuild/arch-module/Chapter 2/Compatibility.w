@@ -18,6 +18,13 @@ compatibility_specification *Compatibility::all(void) {
 	return C;
 }
 
+int Compatibility::universal(compatibility_specification *C) {
+	if (C == NULL) return FALSE;
+	if (LinkedLists::len(C->exceptions) > 0) return FALSE;
+	if (C->default_allows == FALSE) return FALSE;
+	return TRUE;
+}
+
 void Compatibility::write(OUTPUT_STREAM, compatibility_specification *C) {
 	if (C == NULL) { WRITE("for none"); return; }
 	int x = LinkedLists::len(C->exceptions);

@@ -12,6 +12,7 @@ Chapter 2: Conceptual Framework
 	Genres
 	Works
 	Version Numbers
+	Editions
 	Copies
 	Requirements
 	Build Graphs

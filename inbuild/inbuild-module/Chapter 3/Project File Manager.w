@@ -34,7 +34,7 @@ inform_project *ProjectFileManager::from_copy(inbuild_copy *C) {
 inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
 	inform_project *K = Projects::new_ip(name, F, NULL);
 	inbuild_work *work = Works::new(project_file_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Copies::edition(work, K->version);
+	inbuild_edition *edition = Editions::new(work, K->version);
 	K->as_copy = Copies::new_in_file(edition, F, STORE_POINTER_inform_project(K));
 	return K->as_copy;
 }

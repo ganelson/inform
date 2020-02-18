@@ -2,32 +2,6 @@
 
 A copy is an instance in the file system of a specific edition of a work.
 
-@h Editions.
-An "edition" of a work is a particular version numbered form of it. For
-example, release 7 of Bronze by Emily Short would be an edition of Bronze.
-
-=
-typedef struct inbuild_edition {
-	struct inbuild_work *work;
-	struct inbuild_version_number version;
-	MEMORY_MANAGEMENT
-} inbuild_edition;
-
-inbuild_edition *Copies::edition(inbuild_work *work, inbuild_version_number version) {
-	inbuild_edition *edition = CREATE(inbuild_edition);
-	edition->work = work;
-	edition->version = version;
-	return edition;
-}
-
-void Copies::write_edition(OUTPUT_STREAM, inbuild_edition *E) {
-	Works::write(OUT, E->work);
-	inbuild_version_number V = E->version;
-	if (VersionNumbers::is_null(V) == FALSE) {
-		WRITE(" v%v", &V);
-	}
-}
-
 @h Copies.
 A "copy" of a work exists in the file system when we've actually got hold of
 some edition of it. For some genres, copies will be files; for others,
@@ -74,7 +48,7 @@ inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, general
 }
 
 void Copies::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
-	Copies::write_edition(OUT, C->edition);
+	Editions::write(OUT, C->edition);
 }
 
 void Copies::go_operational(inbuild_copy *C) {

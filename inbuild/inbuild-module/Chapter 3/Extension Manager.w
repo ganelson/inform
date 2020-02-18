@@ -100,7 +100,7 @@ inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F,
 	inbuild_version_number V =
 		ExtensionManager::scan_file(F, title, author, rubric_text, requirement_text, error_text);
 	inbuild_copy *C = ExtensionManager::new_copy(
-		Copies::edition(Works::new(extension_genre, title, author), V), F);
+		Editions::new(Works::new(extension_genre, title, author), V), F);
 	if (Str::len(error_text) > 0)
 		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
 	if (Str::len(title) > MAX_EXTENSION_TITLE_LENGTH) {

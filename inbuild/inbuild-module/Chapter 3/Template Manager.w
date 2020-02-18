@@ -40,7 +40,7 @@ inform_template *TemplateManager::from_copy(inbuild_copy *C) {
 inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P) {
 	inform_template *K = Templates::new_it(name, P);
 	inbuild_work *work = Works::new(template_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Copies::edition(work, K->version);
+	inbuild_edition *edition = Editions::new(work, K->version);
 	K->as_copy = Copies::new_in_path(edition, P, STORE_POINTER_inform_template(K));
 	return K->as_copy;
 }
