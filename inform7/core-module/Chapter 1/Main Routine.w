@@ -169,7 +169,10 @@ list is not exhaustive.
 
 @<With that done, configure all other settings@> =
 	Inbuild::optioneering_complete(NULL);
-	VirtualMachines::set_identifier(story_filename_extension);
+	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
+		VirtualMachines::set_identifier(story_filename_extension, TRUE);
+	else
+		VirtualMachines::set_identifier(story_filename_extension, FALSE	);
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
 	Log::set_debug_log_filename(filename_of_debugging_log);

@@ -9,12 +9,12 @@ example, release 7 of Bronze by Emily Short would be an edition of Bronze.
 =
 typedef struct inbuild_edition {
 	struct inbuild_work *work;
-	struct inbuild_version_number version;
+	struct semantic_version_number version;
 	struct compatibility_specification *compatibility;
 	MEMORY_MANAGEMENT
 } inbuild_edition;
 
-inbuild_edition *Editions::new(inbuild_work *work, inbuild_version_number version) {
+inbuild_edition *Editions::new(inbuild_work *work, semantic_version_number version) {
 	inbuild_edition *edition = CREATE(inbuild_edition);
 	edition->work = work;
 	edition->version = version;
@@ -24,7 +24,7 @@ inbuild_edition *Editions::new(inbuild_work *work, inbuild_version_number versio
 
 void Editions::write(OUTPUT_STREAM, inbuild_edition *E) {
 	Works::write(OUT, E->work);
-	inbuild_version_number V = E->version;
+	semantic_version_number V = E->version;
 	if (VersionNumbers::is_null(V) == FALSE) {
 		WRITE(" v%v", &V);
 	}

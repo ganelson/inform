@@ -18,7 +18,7 @@ any "Release along with..." sentences, in fact.
 int release_website = FALSE; /* Release along with a website? */
 wchar_t *website_template_leafname = L"Standard"; /* If so, the template name for it */
 int release_interpreter = FALSE; /* Release along with an interpreter? */
-wchar_t *interpreter_template_leafname = NULL; /* If so, the template name for it */
+text_stream *interpreter_template_leafname = NULL; /* If so, the template name for it */
 int release_booklet = FALSE; /* Release along with introductory booklet? */
 int release_postcard = FALSE; /* Release along with Zarf's IF card? */
 int release_cover = FALSE; /* Release along with cover art? */
@@ -274,7 +274,8 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		case THEMED_INTERPRETER_PAYLOAD: {
 			wording TW = GET_RW(<release-sentence-object>, 1);
 			Word::dequote(Wordings::first_wn(TW));
-			interpreter_template_leafname = Lexer::word_text(Wordings::first_wn(TW));
+			interpreter_template_leafname = Str::new();
+			WRITE_TO(interpreter_template_leafname, "%W", Wordings::first_wn(TW));
 			release_interpreter = TRUE; release_website = TRUE;
 			break;
 		}
@@ -841,7 +842,7 @@ the Blorb-file's filename won't be too long for the file system.
 		PL::Bibliographic::Release::write_var_to_text(TEMP, story_title_VAR);
 		END_COMPILATION_MODE;
 	} else WRITE_TO(TEMP, "story");
-	WRITE_TO(TEMP, ".%s", VirtualMachines::get_blorbed_extension());
+	WRITE_TO(TEMP, ".%S", VirtualMachines::get_blorbed_extension());
 
 @<Write the body of the Blurb file@> =
 	@<Tell Inblorb where to write its report to@>;
@@ -993,9 +994,9 @@ file online.
 	WRITE(".js\"\n");
 	@<Tell Inblorb where to find the website templates@>;
 
-	if (interpreter_template_leafname == NULL)
+	if (Str::len(interpreter_template_leafname) == 0)
 		interpreter_template_leafname = VirtualMachines::get_default_interpreter();
-	char *ext = VirtualMachines::get_blorbed_extension();
+	text_stream *ext = VirtualMachines::get_blorbed_extension();
 	WRITE("placeholder [INTERPRETERSCRIPTS] = \" ");
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file)
@@ -1013,7 +1014,7 @@ file online.
 			DISCARD_TEXT(rel);
 		}
 	WRITE("\"\n");
-	WRITE("interpreter \"%w\" \"%c\"\n", interpreter_template_leafname, ext[0]);
+	WRITE("interpreter \"%S\" \"%c\"\n", interpreter_template_leafname, Str::get_first_char(ext));
 	WRITE("base64 \"%f\" to \"%p%c",
 		filename_of_story_file, pathname_of_released_interpreter, FOLDER_SEPARATOR);
 	STREAM_COPY(OUT, TEMP);

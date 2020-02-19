@@ -1,1 +1,7 @@
 kit: CastrovalvaKit v2.7.1 (not for 32 or 32d) at path inbuild/Tests/Zoo/Inter/CastrovalvaKit
+extension: New Standard Tuning by Robert Fripp v3 (for 32 or 32d) in directory inbuild/Tests/Zoo/Extensions/Robert Fripp
+extension: Damaged by Anonymous in directory inbuild/Tests/Zoo/Extensions/Robert Fripp - 4 errors
+    1. extension misworded: the opening line does not end 'begin(s) here'
+    2. extension misworded: the titling line does not give both author and title
+    3. extension misworded: the version number '3a' is malformed
+    4. extension misworded: cannot read compatibility '(For Geeks Only)'

@@ -5,7 +5,7 @@ An Inform 7 website template.
 @ =
 typedef struct inform_template {
 	struct inbuild_copy *as_copy;
-	struct inbuild_version_number version;
+	struct semantic_version_number version;
 	MEMORY_MANAGEMENT
 } inform_template;
 

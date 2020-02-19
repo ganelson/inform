@@ -26,7 +26,7 @@ void CodeGen::Architecture::create_pipeline_stage(void) {
 int CodeGen::Architecture::run_prepare_stage(pipeline_step *step) {
 	if (current_architecture == NULL) internal_error("no architecture set");
 	return CodeGen::Architecture::run_prepare_stage_inner(step,
-		Architectures::sixteen_bit(current_architecture),
+		Architectures::is_16_bit(current_architecture),
 		Architectures::debug_enabled(current_architecture));
 }
 

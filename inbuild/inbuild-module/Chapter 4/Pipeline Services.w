@@ -6,7 +6,7 @@ the back end of the Inform compiler.
 @ =
 typedef struct inform_pipeline {
 	struct inbuild_copy *as_copy;
-	struct inbuild_version_number version;
+	struct semantic_version_number version;
 	MEMORY_MANAGEMENT
 } inform_pipeline;
 

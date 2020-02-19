@@ -299,7 +299,7 @@ allowed; they should probably be withdrawn.
 <platform-identifier> ::=
 	<language-element> language element |	==> R[1]
 	...... language element |				==>	@<Issue PM_UnknownLanguageElement problem@>
-	<virtual-machine> |						==> R[1]
+	<current-virtual-machine> |				==> R[1]
 	......									==> @<Issue PM_UnknownVirtualMachine problem@>
 
 <extension-qualifier> ::=

@@ -1,14 +1,84 @@
-'for all': for all: 16=yes 16d=yes 32=yes 32d=yes
-'all': for all: 16=yes 16d=yes 32=yes 32d=yes
+'for all': for all:
+    Z-Machine version 5
+    Z-Machine version 5 with debugging
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+    Glulx version 3.1.2
+    Glulx version 3.1.2 with debugging
+
+'all': for all:
+    Z-Machine version 5
+    Z-Machine version 5 with debugging
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+    Glulx version 3.1.2
+    Glulx version 3.1.2 with debugging
+
 'not for all': not a valid compatibility specification
+
 'not all': not a valid compatibility specification
-'for none': for none: 16=no 16d=no 32=no 32d=no
-'none': for none: 16=no 16d=no 32=no 32d=no
+
+'for none': for none:
+
+'none': for none:
+
 'not for none': not a valid compatibility specification
+
 'not none': not a valid compatibility specification
-'for 16d': for 16d: 16=no 16d=yes 32=no 32d=no
-'not for 32': not for 32: 16=yes 16d=yes 32=no 32d=yes
-'for 16d or 32d': for 16d or 32d: 16=no 16d=yes 32=no 32d=yes
-'not for 32 or 16': not for 32 or 16: 16=no 16d=yes 32=no 32d=yes
-'for 16d, 32d or 32': for 16d, 32d or 32: 16=no 16d=yes 32=yes 32d=yes
-'not for 16d, 32d or 32': not for 16d, 32d or 32: 16=yes 16d=no 32=no 32d=no
+
+'for 16-bit with debugging': for Z-Machine version 5 with debugging or Z-Machine version 8 with debugging:
+    Z-Machine version 5 with debugging
+    Z-Machine version 8 with debugging
+
+'not for 32-bit': not for Glulx version 3.1.2 or Glulx version 3.1.2 with debugging:
+    Z-Machine version 5
+    Z-Machine version 5 with debugging
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+
+'for 16-bit with debugging or 32-bit with debugging': for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging or Glulx version 3.1.2 with debugging:
+    Z-Machine version 5 with debugging
+    Z-Machine version 8 with debugging
+    Glulx version 3.1.2 with debugging
+
+'not for 32-bit or 16-bit': not for Glulx version 3.1.2, Glulx version 3.1.2 with debugging, Z-Machine version 5, Z-Machine version 5 with debugging, Z-Machine version 8 or Z-Machine version 8 with debugging:
+
+'for 16-bit with debugging, 32-bit with debugging or 32-bit': for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging, Glulx version 3.1.2 with debugging or Glulx version 3.1.2:
+    Z-Machine version 5 with debugging
+    Z-Machine version 8 with debugging
+    Glulx version 3.1.2
+    Glulx version 3.1.2 with debugging
+
+'not for 16-bit with debugging, 32-bit with debugging or 32-bit': not for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging, Glulx version 3.1.2 with debugging or Glulx version 3.1.2:
+    Z-Machine version 5
+    Z-Machine version 8
+
+'for glulx': for Glulx version 3.1.2 or Glulx version 3.1.2 with debugging:
+    Glulx version 3.1.2
+    Glulx version 3.1.2 with debugging
+
+'for glulx or z-machine version 8': for Z-Machine version 8 or Z-Machine version 8 with debugging:
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+
+'for glulx without debugging': for Glulx version 3.1.2:
+    Glulx version 3.1.2
+
+'for z-machine version 8': for Z-Machine version 8 or Z-Machine version 8 with debugging:
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+
+'for z-machine version 5 with debugging': for Z-Machine version 5 with debugging:
+    Z-Machine version 5 with debugging
+
+'for z-machine version 8, or Glulx without debugging': for Z-Machine version 8, Z-Machine version 8 with debugging or Glulx version 3.1.2:
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+    Glulx version 3.1.2
+
+'for z-machine version 5 or 8': for Z-Machine version 5, Z-Machine version 5 with debugging, Z-Machine version 8 or Z-Machine version 8 with debugging:
+    Z-Machine version 5
+    Z-Machine version 5 with debugging
+    Z-Machine version 8
+    Z-Machine version 8 with debugging
+

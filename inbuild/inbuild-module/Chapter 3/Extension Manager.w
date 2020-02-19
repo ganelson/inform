@@ -18,6 +18,7 @@ void ExtensionManager::start(void) {
 	extension_genre = Genres::new(I"extension");
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
+	METHOD_ADD(extension_genre, GENRE_SCAN_COPY_MTID, Extensions::scan);
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
 	METHOD_ADD(extension_genre, GENRE_COPY_TO_NEST_MTID, ExtensionManager::copy_to_nest);
 	METHOD_ADD(extension_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionManager::read_source_text_for);
@@ -47,7 +48,7 @@ inform_extension *ExtensionManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *ext_copy_cache = NULL;
-inbuild_copy *ExtensionManager::new_copy(inbuild_edition *edition, filename *F) {
+inbuild_copy *ExtensionManager::new_copy(filename *F) {
 	if (ext_copy_cache == NULL) ext_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key);
 	WRITE_TO(key, "%f", F);
@@ -55,14 +56,14 @@ inbuild_copy *ExtensionManager::new_copy(inbuild_edition *edition, filename *F) 
 	if (Dictionaries::find(ext_copy_cache, key))
 		C = Dictionaries::read_value(ext_copy_cache, key);
 	if (C == NULL) {
-		inform_extension *E = Extensions::new_ie();
-		C = Copies::new_in_file(edition, F, STORE_POINTER_inform_extension(E));
-		E->as_copy = C;
-		if (Works::is_standard_rules(C->edition->work)) Extensions::make_standard(E);
+		C = Copies::new_in_file(
+			Editions::new(Works::new(extension_genre, I"Untitled", I"Anonymous"),
+				VersionNumbers::null()), F, NULL_GENERAL_POINTER);
+		Copies::scan(C);
+		if (Works::is_standard_rules(C->edition->work))
+			Extensions::make_standard(ExtensionManager::from_copy(C));
 		Dictionaries::create(ext_copy_cache, key);
 		Dictionaries::write_value(ext_copy_cache, key, C);
-	} else {
-		C->edition = edition;
 	}
 	DISCARD_TEXT(key);
 	return C;
@@ -85,182 +86,17 @@ void ExtensionManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == TRUE) return;
 	if (Str::eq_insensitive(ext, I"i7x")) {
 		filename *F = Filenames::from_text(arg);
-		*C = ExtensionManager::claim_file_as_copy(F, FALSE);
+		*C = ExtensionManager::claim_file_as_copy(F);
 	}
 }
 
-inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F,
-	int allow_malformed) {
-	if ((allow_malformed) && (TextFiles::exists(F) == FALSE)) return NULL;
-	TEMPORARY_TEXT(author);
-	TEMPORARY_TEXT(title);
-	TEMPORARY_TEXT(rubric_text);
-	TEMPORARY_TEXT(requirement_text);
-	TEMPORARY_TEXT(error_text);
-	inbuild_version_number V =
-		ExtensionManager::scan_file(F, title, author, rubric_text, requirement_text, error_text);
-	inbuild_copy *C = ExtensionManager::new_copy(
-		Editions::new(Works::new(extension_genre, title, author), V), F);
-	if (Str::len(error_text) > 0)
-		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
-	if (Str::len(title) > MAX_EXTENSION_TITLE_LENGTH) {
-		Copies::attach(C, Copies::new_error_N(EXT_TITLE_TOO_LONG_CE, Str::len(title)));
-	}
-	if (Str::len(author) > MAX_EXTENSION_AUTHOR_LENGTH) {
-		Copies::attach(C, Copies::new_error_N(EXT_AUTHOR_TOO_LONG_CE, Str::len(author)));
-	}
-	if ((allow_malformed) || (Str::len(error_text) == 0)) {
-		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-		ExtensionManager::build_vertex(C);
-	} else {
-		C = NULL;
-	}
-	DISCARD_TEXT(author);
-	DISCARD_TEXT(title);
-	DISCARD_TEXT(rubric_text);
-	DISCARD_TEXT(requirement_text);
-	DISCARD_TEXT(error_text);
+inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F) {
+	if (TextFiles::exists(F) == FALSE) return NULL;
+	inbuild_copy *C = ExtensionManager::new_copy(F);
+	ExtensionManager::build_vertex(C);
+	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
-
-@ The following scans a potential extension file. If it seems malformed, a
-suitable error is written to the stream |error_text|. If not, this is left
-alone, and the version number is returned.
-
-=
-inbuild_version_number ExtensionManager::scan_file(filename *F,
-	text_stream *claimed_title, text_stream *claimed_author_name,
-	text_stream *rubric_text, text_stream *requirement_text, text_stream *error_text) {
-	inbuild_version_number V = VersionNumbers::null();
-	TEMPORARY_TEXT(titling_line);
-	TEMPORARY_TEXT(version_text);
-	FILE *EXTF = Filenames::fopen_caseless(F, "r");
-	if (EXTF == NULL) {
-		if (error_text) WRITE_TO(error_text, "this file cannot be read");
-		return V;
-	}
-	@<Read the titling line of the extension and normalise its casing@>;
-	@<Read the rubric text, if any is present@>;
-	@<Parse the version, title, author and VM requirements from the titling line@>;
-	fclose(EXTF);
-	if (Str::len(version_text) > 0) {
-		V = VersionNumbers::from_text(version_text);
-		if (VersionNumbers::is_null(V)) {
-			if (error_text)
-				WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
-			return V;
-		}
-	}
-	DISCARD_TEXT(titling_line);
-	DISCARD_TEXT(version_text);
-	return V;
-}
-
-@ The actual maximum number of characters in the titling line is one less
-than |MAX_TITLING_LINE_LENGTH|, to allow for the null terminator. The titling
-line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or by the local
-|\n| for good measure.
-
-@<Read the titling line of the extension and normalise its casing@> =
-	int titling_chars_read = 0, c;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
-		if (c == 0xFEFF) return V; /* skip the optional Unicode BOM pseudo-character */
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
-		if (titling_chars_read < MAX_TITLING_LINE_LENGTH - 1) PUT_TO(titling_line, c);
-	}
-	Works::normalise_casing(titling_line);
-
-@ In the following, all possible newlines are converted to white space, and
-all white space before a quoted rubric text is ignored. We need to do this
-partly because users have probably keyed a double line break before the
-rubric, but also because we might have stopped reading the titling line
-halfway through a line division combination like |0A 0D|, so that the first
-thing we read here is a meaningless |0D|.
-
-@<Read the rubric text, if any is present@> =
-	int c, found_start = FALSE;
-	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
-		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
-		if ((c != ' ') && (found_start == FALSE)) {
-			if (c == '"') found_start = TRUE;
-			else break;
-		} else {
-			if (c == '"') break;
-			if (found_start) PUT_TO(rubric_text, c);
-		}
-	}
-
-@ In general, once case-normalised, a titling line looks like this:
-
->> Version 2/070423 Of Going To The Zoo (For Glulx Only) By Cary Grant Begins Here.
-
-and the version information, the VM restriction and the full stop are all
-optional, but the division word "of" and the concluding "begin[s] here"
-are not. We break it up into pieces, so that
-
-	|version_text = "2/070423"|
-	|claimed_title = "Going To The Zoo"|
-	|claimed_author_name = "Cary Grant"|
-	|requirement_text = "(For Glulx Only)"|
-
-It's tempting to do this by feeding it into the Inform lexer and then reusing
-some of the code which parses these lines during sentence-breaking, but in fact
-we want to use the information rather differently, and besides: it seems
-useful to record some C code here which correctly parses a titling line,
-since this can easily be extracted and used in other utilities handling
-Inform extensions.
-
-@<Parse the version, title, author and VM requirements from the titling line@> =
-	match_results mr = Regexp::create_mr();
-	if (Str::get_last_char(titling_line) == '.') Str::delete_last_character(titling_line);
-	if ((Regexp::match(&mr, titling_line, L"(%c*) Begin Here")) ||
-		(Regexp::match(&mr, titling_line, L"(%c*) Begins Here"))) {
-		Str::copy(titling_line, mr.exp[0]);
-	} else {
-		if (error_text) WRITE_TO(error_text, 
-			"the first line of this file does not end 'begin(s) here'");
-		return V;
-	}
-
-	@<Scan the version text, if any, and advance to the position past Version... Of@>;
-	if (Regexp::match(&mr, titling_line, L"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
-	@<Divide the remaining text into a claimed author name and title, divided by By@>;
-	@<Extract the VM requirements text, if any, from the claimed title@>;
-	Regexp::dispose_of(&mr);
-
-@ We make no attempt to check the version number for validity: the purpose
-of the census is to identify extensions and reject accidentally included
-other files, not to syntax-check all extensions to see if they would work
-if used.
-
-@<Scan the version text, if any, and advance to the position past Version... Of@> =
-	if (Regexp::match(&mr, titling_line, L"Version (%c*?) Of (%c*)")) {
-		Str::copy(version_text, mr.exp[0]);
-		Str::copy(titling_line, mr.exp[1]);
-	}
-
-@ The earliest "by" is the divider: note that extension titles are not
-allowed to contain this word, so "North By Northwest By Cary Grant" is
-not a situation we need to contend with.
-
-@<Divide the remaining text into a claimed author name and title, divided by By@> =
-	if (Regexp::match(&mr, titling_line, L"(%c*?) By (%c*)")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(claimed_author_name, mr.exp[1]);
-	} else {
-		if (error_text) WRITE_TO(error_text,
-			"the titling line does not give both author and title");
-		return V;
-	}
-
-@ Similarly, extension titles are not allowed to contain parentheses, so
-this is unambiguous.
-
-@<Extract the VM requirements text, if any, from the claimed title@> =
-	if (Regexp::match(&mr, claimed_title, L"(%c*?) *(%(%c*%))")) {
-		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(requirement_text, mr.exp[1]);
-	}
 
 @h Searching.
 Here we look through a nest to find all extensions matching the supplied
@@ -324,7 +160,7 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 
 void ExtensionManager::search_nest_for_single_file(filename *F, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
-	inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, req->allow_malformed);
+	inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
 	if ((C) && (Requirements::meets(C->edition, req))) {
 		Nests::add_search_result(search_results, N, C, req);
 	}

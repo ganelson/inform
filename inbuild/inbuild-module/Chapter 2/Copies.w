@@ -182,18 +182,20 @@ void Copies::list_problems_arising(OUTPUT_STREAM, inbuild_copy *C) {
 	copy_error *CE;
 	int c = 1;
 	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
-		WRITE("%d. ", c++);
-		switch (CE->error_category) {
-			case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
-			case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
-			case KIT_MISWORDED_CE: WRITE("kit has incorrect metadata: %S", CE->notes); break;
-			case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
-				CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
-			case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",
-				CE->details_N, MAX_EXTENSION_AUTHOR_LENGTH); break;
-			case LEXER_CE: WRITE("%S", CE->notes); break;
-			default: internal_error("an unknown error occurred");
-		}
-		WRITE("\n");
+		WRITE("%d. ", c++); Copies::write_problem(OUT, CE); WRITE("\n");
+	}
+}
+
+void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
+	switch (CE->error_category) {
+		case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
+		case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
+		case KIT_MISWORDED_CE: WRITE("kit has incorrect metadata: %S", CE->notes); break;
+		case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
+			CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
+		case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",
+			CE->details_N, MAX_EXTENSION_AUTHOR_LENGTH); break;
+		case LEXER_CE: WRITE("%S", CE->notes); break;
+		default: internal_error("an unknown error occurred");
 	}
 }

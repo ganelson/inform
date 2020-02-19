@@ -156,7 +156,7 @@ void Extensions::Files::check_versions(void) {
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension) {
 		if (Extensions::satisfies(E) == FALSE) {
-			inbuild_version_number have = E->as_copy->edition->version;
+			semantic_version_number have = E->as_copy->edition->version;
 			current_sentence = Extensions::get_inclusion_sentence(E);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_extension(2, E);
@@ -276,7 +276,7 @@ and author. These are printed as I6 strings, hence the ISO encoding.
 void Extensions::Files::credit_ef(OUTPUT_STREAM, inform_extension *E, int with_newline) {
 	if (E == NULL) internal_error("unfound ef");
 	WRITE("%S", E->as_copy->edition->work->raw_title);
-	inbuild_version_number V = E->as_copy->edition->version;
+	semantic_version_number V = E->as_copy->edition->version;
 	if (VersionNumbers::is_null(V) == FALSE) WRITE(" version %v", &V);
 	WRITE(" by %S", E->as_copy->edition->work->raw_author_name);
 	if (Str::len(E->extra_credit_as_lexed) > 0) WRITE(" (%S)", E->extra_credit_as_lexed);
@@ -340,7 +340,7 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 		if (VersionNumbers::is_null(E->as_copy->edition->version) == FALSE) {
 			WRITE(" ");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			inbuild_version_number V = E->as_copy->edition->version;
+			semantic_version_number V = E->as_copy->edition->version;
 			WRITE("version %v", &V);
 			HTML_CLOSE("span");
 		}

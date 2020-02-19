@@ -58,7 +58,7 @@ inter_architecture *Architectures::from_codename(text_stream *name) {
 	return NULL;
 }
 
-int Architectures::sixteen_bit(inter_architecture *A) {
+int Architectures::is_16_bit(inter_architecture *A) {
 	if (A == NULL) internal_error("no arch");
 	return A->sixteen_bit;
 }

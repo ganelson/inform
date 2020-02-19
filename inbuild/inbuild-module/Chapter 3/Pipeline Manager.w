@@ -68,7 +68,7 @@ void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text,
 	int allow_malformed) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
-	inbuild_version_number V = VersionNumbers::null();
+	semantic_version_number V = VersionNumbers::null();
 	TEMPORARY_TEXT(unext);
 	Filenames::write_unextended_leafname(unext, F);
 	inbuild_copy *C = PipelineManager::new_copy(

@@ -15,7 +15,8 @@ typedef struct inform_extension {
 	struct wording VM_restriction_text; /* Restricting use to certain VMs */
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
-	struct text_stream *rubric_as_lexed;
+	struct text_stream *rubric_as_lexed; /* brief description found in opening lines */
+	struct text_stream *reqs_as_lexed; /* such as "(for Z-machine only)" */
 	struct text_stream *extra_credit_as_lexed;
 	struct source_file *read_into_file; /* Which source file loaded this */
 	struct inbuild_requirement *must_satisfy;
@@ -26,9 +27,10 @@ typedef struct inform_extension {
 	MEMORY_MANAGEMENT
 } inform_extension;
 
-inform_extension *Extensions::new_ie(void) {
+void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	inform_extension *E = CREATE(inform_extension);
-	E->as_copy = NULL;
+	E->as_copy = C;
+	Copies::set_content(C, STORE_POINTER_inform_extension(E));
 	E->body_text = EMPTY_WORDING;
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
@@ -36,16 +38,169 @@ inform_extension *Extensions::new_ie(void) {
 	E->standard = FALSE;
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
-	E->rubric_as_lexed = NULL;
+	E->rubric_as_lexed = Str::new();
+	E->reqs_as_lexed = Str::new();
 	E->extra_credit_as_lexed = NULL;	
 	E->must_satisfy = NULL;
 	#ifdef CORE_MODULE
 	E->loaded_from_built_in_area = FALSE;
 	E->inclusion_sentence = NULL;
 	#endif
-	return E;
+
+	TEMPORARY_TEXT(claimed_author_name);
+	TEMPORARY_TEXT(claimed_title);
+	filename *F = C->location_if_file;
+	semantic_version_number V = VersionNumbers::null();
+	@<Scan the file@>;
+	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
+	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
+	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH) {
+		Copies::attach(C, Copies::new_error_N(EXT_TITLE_TOO_LONG_CE, Str::len(claimed_title)));
+	}
+	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH) {
+		Copies::attach(C, Copies::new_error_N(EXT_AUTHOR_TOO_LONG_CE, Str::len(claimed_author_name)));
+	}
+	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
+	if (Str::len(E->reqs_as_lexed) > 0) {
+		compatibility_specification *CS = Compatibility::from_text(E->reqs_as_lexed);
+		if (CS) C->edition->compatibility = CS;
+		else {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "cannot read compatibility '%S'", E->reqs_as_lexed);
+			Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, err));
+			DISCARD_TEXT(err);
+		}
+	}
+	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
+	DISCARD_TEXT(claimed_author_name);
+	DISCARD_TEXT(claimed_title);
 }
 
+@ The following scans a potential extension file. If it seems malformed, a
+suitable error is written to the stream |error_text|. If not, this is left
+alone, and the version number is returned.
+
+=
+@<Scan the file@> =
+	TEMPORARY_TEXT(titling_line);
+	TEMPORARY_TEXT(version_text);
+	FILE *EXTF = Filenames::fopen_caseless(F, "r");
+	if (EXTF == NULL) {
+		Copies::attach(C, Copies::new_error_on_file(OPEN_FAILED_CE, F));
+	} else {
+		@<Read the titling line of the extension and normalise its casing@>;
+		@<Read the rubric text, if any is present@>;
+		@<Parse the version, title, author and VM requirements from the titling line@>;
+		fclose(EXTF);
+		if (Str::len(version_text) > 0) {
+			V = VersionNumbers::from_text(version_text);
+			if (VersionNumbers::is_null(V)) {
+				TEMPORARY_TEXT(error_text);
+				WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
+				Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
+				DISCARD_TEXT(error_text);
+			}
+		}
+	}
+	DISCARD_TEXT(titling_line);
+	DISCARD_TEXT(version_text);
+
+@ The titling line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or
+by the local |\n| for good measure.
+
+@<Read the titling line of the extension and normalise its casing@> =
+	int c;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
+		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
+		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
+		PUT_TO(titling_line, c);
+	}
+	Works::normalise_casing(titling_line);
+
+@ In the following, all possible newlines are converted to white space, and
+all white space before a quoted rubric text is ignored. We need to do this
+partly because users have probably keyed a double line break before the
+rubric, but also because we might have stopped reading the titling line
+halfway through a line division combination like |0A 0D|, so that the first
+thing we read here is a meaningless |0D|.
+
+@<Read the rubric text, if any is present@> =
+	int c, found_start = FALSE;
+	while ((c = TextFiles::utf8_fgetc(EXTF, NULL, FALSE, NULL)) != EOF) {
+		if ((c == '\x0a') || (c == '\x0d') || (c == '\n') || (c == '\t')) c = ' ';
+		if ((c != ' ') && (found_start == FALSE)) {
+			if (c == '"') found_start = TRUE;
+			else break;
+		} else {
+			if (c == '"') break;
+			if (found_start) PUT_TO(E->rubric_as_lexed, c);
+		}
+	}
+
+@ In general, once case-normalised, a titling line looks like this:
+
+>> Version 2/070423 Of Going To The Zoo (For Glulx Only) By Cary Grant Begins Here.
+
+and the version information, the VM restriction and the full stop are all
+optional, but the division word "of" and the concluding "begin[s] here"
+are not. We break it up into pieces; for speed, we won't use the lexer to
+load the entire file.
+
+@<Parse the version, title, author and VM requirements from the titling line@> =
+	match_results mr = Regexp::create_mr();
+	if (Str::get_last_char(titling_line) == '.') Str::delete_last_character(titling_line);
+	if ((Regexp::match(&mr, titling_line, L"(%c*) Begin Here")) ||
+		(Regexp::match(&mr, titling_line, L"(%c*) Begins Here"))) {
+		Str::copy(titling_line, mr.exp[0]);
+	} else {
+		if ((Regexp::match(&mr, titling_line, L"(%c*) Start Here")) ||
+			(Regexp::match(&mr, titling_line, L"(%c*) Starts Here"))) {
+			Str::copy(titling_line, mr.exp[0]);
+		}
+		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE,
+			I"the opening line does not end 'begin(s) here'"));
+	}
+	@<Scan the version text, if any, and advance to the position past Version... Of@>;
+	if (Regexp::match(&mr, titling_line, L"The (%c*)")) Str::copy(titling_line, mr.exp[0]);
+	@<Divide the remaining text into a claimed author name and title, divided by By@>;
+	@<Extract the VM requirements text, if any, from the claimed title@>;
+	Regexp::dispose_of(&mr);
+
+@ We make no attempt to check the version number for validity: the purpose
+of the census is to identify extensions and reject accidentally included
+other files, not to syntax-check all extensions to see if they would work
+if used.
+
+@<Scan the version text, if any, and advance to the position past Version... Of@> =
+	if (Regexp::match(&mr, titling_line, L"Version (%c*?) Of (%c*)")) {
+		Str::copy(version_text, mr.exp[0]);
+		Str::copy(titling_line, mr.exp[1]);
+	}
+
+@ The earliest "by" is the divider: note that extension titles are not
+allowed to contain this word, so "North By Northwest By Cary Grant" is
+not a situation we need to contend with.
+
+@<Divide the remaining text into a claimed author name and title, divided by By@> =
+	if (Regexp::match(&mr, titling_line, L"(%c*?) By (%c*)")) {
+		Str::copy(claimed_title, mr.exp[0]);
+		Str::copy(claimed_author_name, mr.exp[1]);
+	} else {
+		Str::copy(claimed_title, titling_line);
+		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, 
+			I"the titling line does not give both author and title"));
+	}
+
+@ Similarly, extension titles are not allowed to contain parentheses, so
+this is unambiguous.
+
+@<Extract the VM requirements text, if any, from the claimed title@> =
+	if (Regexp::match(&mr, claimed_title, L"(%c*?) *(%(%c*%))")) {
+		Str::copy(claimed_title, mr.exp[0]);
+		Str::copy(E->reqs_as_lexed, mr.exp[1]);
+	}
+
+@ =
 void Extensions::write(OUTPUT_STREAM, inform_extension *E) {
 	if (E == NULL) WRITE("none");
 	else WRITE("%X", E->as_copy->edition->work);
@@ -75,6 +230,11 @@ void Extensions::set_rubric(inform_extension *E, text_stream *text) {
 	if (E == NULL) internal_error("unfound ef");
 	E->rubric_as_lexed = Str::duplicate(text);
 	LOGIF(EXTENSIONS_CENSUS, "Extension rubric: %S\n", E->rubric_as_lexed);
+}
+
+text_stream *Extensions::get_rubric(inform_extension *E) {
+	if (E == NULL) return NULL;
+	return E->rubric_as_lexed;
 }
 
 void Extensions::set_extra_credit(inform_extension *E, text_stream *text) {
@@ -126,7 +286,7 @@ void Extensions::make_standard(inform_extension *E) {
 void Extensions::must_satisfy(inform_extension *E, inbuild_requirement *req) {
 	if (E->must_satisfy == NULL) E->must_satisfy = req;
 	else {
-		inbuild_version_number V = req->min_version;
+		semantic_version_number V = req->min_version;
 		if (VersionNumbers::is_null(V) == FALSE)
 			if (Requirements::ratchet_minimum(V, E->must_satisfy))
 				Extensions::set_inclusion_sentence(E, current_sentence);

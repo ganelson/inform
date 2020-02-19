@@ -131,7 +131,7 @@ parse tree.
 	WRITE_TO(exfa, "%+W", AW);
 	inbuild_work *work = Works::new(extension_genre, exft, exfa);
 	Works::add_to_database(work, LOADED_WDBC);
-	inbuild_version_number min = VersionNumbers::null();
+	semantic_version_number min = VersionNumbers::null();
 	if (version_word >= 0) min = Extensions::Inclusion::parse_version(version_word);
 	inbuild_requirement *req = Requirements::new(work, min, VersionNumbers::null());
 	DISCARD_TEXT(exft);
@@ -233,7 +233,7 @@ trap-door into Read Source Text, to seek and open the file.
 		inbuild_search_result *search_result;
 		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 			if (Str::len(versions) > 0) WRITE_TO(versions, " or ");
-			inbuild_version_number V = search_result->copy->edition->version;
+			semantic_version_number V = search_result->copy->edition->version;
 			if (VersionNumbers::is_null(V)) WRITE_TO(versions, "an unnumbered version");
 			else WRITE_TO(versions, "version %v", &V);
 		}
@@ -251,11 +251,15 @@ trap-door into Read Source Text, to seek and open the file.
 	}
 
 @ =
-inbuild_version_number Extensions::Inclusion::parse_version(int vwn) {
-	TEMPORARY_TEXT(vtext);
-	WRITE_TO(vtext, "%N", vwn, vwn);
-	inbuild_version_number V = VersionNumbers::from_text(vtext);
-	if (VersionNumbers::is_null(V)) @<Issue a problem message for a malformed version number@>;
+semantic_version_number Extensions::Inclusion::parse_version(int vwn) {
+	semantic_version_number V = VersionNumbers::from_pair(1, 0); /* which equates to |1/000000| */
+	wording W = Wordings::one_word(vwn);
+	if (<version-number>(W)) {
+		semantic_version_number_holder *H = (semantic_version_number_holder *) <<rp>>;
+		V = H->version;
+	} else {
+		@<Issue a problem message for a malformed version number@>;
+	}
 	return V;
 }
 
@@ -272,7 +276,6 @@ version number text.
 		"(The DDDDDD part is optional, so '3' is a legal version number too. "
 		"N must be between 1 and 999: in particular, there is no version 0.)");
 	Vocabulary::change_text_of_word(vwn, L"1");
-	return VersionNumbers::from_pair(1, 0); /* which equates to |1/000000| */
 
 @h Checking the begins here and ends here sentences.
 When a newly loaded extension is being sentence-broken, problem messages

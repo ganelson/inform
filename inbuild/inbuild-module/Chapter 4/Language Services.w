@@ -15,7 +15,7 @@ of the following structure.
 =
 typedef struct inform_language {
 	struct inbuild_copy *as_copy;
-	struct inbuild_version_number version;
+	struct semantic_version_number version;
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */

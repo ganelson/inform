@@ -8,5 +8,7 @@ Chapter 1: Setting Up
 	Arch Module
 
 Chapter 2: Architectures
+	Version Numbers
 	Architectures
+	Target Virtual Machines
 	Compatibility

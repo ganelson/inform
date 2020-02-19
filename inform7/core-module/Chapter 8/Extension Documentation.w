@@ -64,7 +64,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 	FILE *TEST_DOCF;
 	int page_exists_already, no_egs = 0;
 
-	if (ecd) work = ecd->ecd_work; else if (E) work = E->as_copy->edition->work;
+	if (ecd) work = ecd->found_as->copy->edition->work; else if (E) work = E->as_copy->edition->work;
 	else internal_error("WEDP incorrectly called");
 	LOGIF(EXTENSIONS_CENSUS, "WEDP %s (%X)/%d\n", (ecd)?"ecd":" ef", work, eg_number);
 
@@ -190,7 +190,7 @@ different template:
 
 @<Write up the version number, if any, and location@> =
 	if (E) {
-		inbuild_version_number V = E->as_copy->edition->version;
+		semantic_version_number V = E->as_copy->edition->version;
 		if (VersionNumbers::is_null(V) == FALSE) WRITE("Version %v", &V);
 		if (E->loaded_from_built_in_area) {
 			if (VersionNumbers::is_null(V)) { WRITE("Extension"); }

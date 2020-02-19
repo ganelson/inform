@@ -8,14 +8,14 @@ with a given title, and/or version number.
 =
 typedef struct inbuild_requirement {
 	struct inbuild_work *work;
-	struct inbuild_version_number min_version;
-	struct inbuild_version_number max_version;
+	struct semantic_version_number min_version;
+	struct semantic_version_number max_version;
 	int allow_malformed;
 	MEMORY_MANAGEMENT
 } inbuild_requirement;
 
 inbuild_requirement *Requirements::new(inbuild_work *work,
-	inbuild_version_number min, inbuild_version_number max) {
+	semantic_version_number min, semantic_version_number max) {
 	inbuild_requirement *req = CREATE(inbuild_requirement);
 	req->work = work;
 	req->min_version = min;
@@ -95,7 +95,7 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 		} else if (Str::eq(clause, I"title")) Str::copy(req->work->title, value);
 		else if (Str::eq(clause, I"author")) Str::copy(req->work->author_name, value);
 		else if (Str::eq(clause, I"version")) {
-			inbuild_version_number V = VersionNumbers::from_text(value);
+			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
@@ -103,14 +103,14 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 			req->min_version = V;
 			req->max_version = V;
 		} else if (Str::eq(clause, I"min")) {
-			inbuild_version_number V = VersionNumbers::from_text(value);
+			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
 			req->min_version = V;
 		} else if (Str::eq(clause, I"max")) {
-			inbuild_version_number V = VersionNumbers::from_text(value);
+			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
@@ -184,7 +184,7 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 	return TRUE;
 }
 
-int Requirements::ratchet_minimum(inbuild_version_number V, inbuild_requirement *req) {
+int Requirements::ratchet_minimum(semantic_version_number V, inbuild_requirement *req) {
 	if (req == NULL) internal_error("no requirement");
 	if (VersionNumbers::is_null(V)) return FALSE;
 	if ((VersionNumbers::is_null(req->min_version)) ||

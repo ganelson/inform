@@ -60,7 +60,7 @@ compilation_module *Modules::new(parse_node *from) {
 		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->as_copy->edition->work->raw_author_name);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->as_copy->edition->work->raw_title);
 		TEMPORARY_TEXT(V);
-		inbuild_version_number N = owner->as_copy->edition->version;
+		semantic_version_number N = owner->as_copy->edition->version;
 		WRITE_TO(V, "%v", &N);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
 		DISCARD_TEXT(V);

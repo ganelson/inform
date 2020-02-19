@@ -5,7 +5,7 @@ An Inform 7 project.
 @ =
 typedef struct inform_project {
 	struct inbuild_copy *as_copy;
-	struct inbuild_version_number version;
+	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
 	int assumed_to_be_parser_IF;
 	struct linked_list *kits_to_include; /* of |inform_kit| */

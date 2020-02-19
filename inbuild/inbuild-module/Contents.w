@@ -11,7 +11,6 @@ Chapter 1: Setting Up
 Chapter 2: Conceptual Framework
 	Genres
 	Works
-	Version Numbers
 	Editions
 	Copies
 	Requirements
@@ -30,6 +29,7 @@ Chapter 3: Managing Genres of Work
 
 Chapter 4: Services for the Inform Compiler
 	Source Text
+	Virtual Machine Grammar
 	Kit Services
 	Extension Services
 	Extension Census
