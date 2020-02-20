@@ -35,8 +35,6 @@ void Properties::Emit::emit_subject(inference_subject *subj) {
 			if (K2) nw += World::Compile::get_rough_memory_usage(K2);
 		}
 		nw += 16;
-		wording KW = Kinds::Behaviour::get_name(K, FALSE);
-		VirtualMachines::note_usage("object", KW, NULL, nw, 0, TRUE);
 		LOGIF(OBJECT_COMPILATION, "Rough size estimate: %d words\n", nw);
 	}
 	LOGIF(OBJECT_COMPILATION, "Compilation of $j complete\n", subj);

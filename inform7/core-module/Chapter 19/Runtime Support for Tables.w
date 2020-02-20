@@ -10,7 +10,6 @@ void Tables::Support::compile(void) {
 	@<Compile the blanks bitmap table@>;
 	@<Compile the Table of Tables@>;
 	Tables::Columns::compile_run_time_support();
-	@<Note the usage of run-time memory for tables@>;
 }
 
 @<Compile the data structures for entry storage@> =
@@ -252,14 +251,6 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
-
-@<Note the usage of run-time memory for tables@> =
-	table *t;
-	LOOP_OVER(t, table)
-		if (t->amendment_of == FALSE)
-			VirtualMachines::note_usage("table",
-				ParseTree::get_text(t->headline_fragment),
-				NULL, t->approximate_array_space_needed, 0, FALSE);
 
 @ The following allows tables to be said: it's a routine which switches on
 table values and prints the (title-cased) name of the one which matches.

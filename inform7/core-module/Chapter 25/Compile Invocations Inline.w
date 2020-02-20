@@ -1354,7 +1354,7 @@ because neither syntax will compile when I6 is compiling for the other VM.
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));
 		Specifications::Compiler::emit_to_kind(to_say, K);
 	Produce::up(Emit::tree());
-	if (VirtualMachines::is_16_bit()) {
+	if (TargetVMs::is_16_bit(Inbuild::current_vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(UNICODE_TEMP_HL));

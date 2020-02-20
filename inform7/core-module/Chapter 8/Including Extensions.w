@@ -337,7 +337,7 @@ with our VM de jour.
 
 @<Check that the extension's stipulation about the virtual machine can be met@> =
 	compatibility_specification *C = E->as_copy->edition->compatibility;
-	if (VirtualMachines::compatible_with(C) == FALSE)
+	if (Compatibility::with(C, Inbuild::current_vm()) == FALSE)
 		@<Issue a problem message saying that the VM does not meet requirements@>;
 
 @ Here the problem is not that the extension is broken in some way: it's

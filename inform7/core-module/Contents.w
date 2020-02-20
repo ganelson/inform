@@ -258,7 +258,7 @@ Chapter 25: Compilation
 
 Chapter 26: Compilation Utilities
 "Mainly low-level utilities for compiling code."
-	Virtual Machines
+	Fundamental Constants
 	Inform 6 Inclusions
 	Use Options
 	List Together

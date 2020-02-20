@@ -429,9 +429,6 @@ at run-time, so we can't know now how many we will need.
 	}
 	Emit::array_end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
-	VirtualMachines::note_usage("map", EMPTY_WORDING, I"map of rooms and doors",
-		words_used, 0, FALSE);
-
 
 @h Door connectivity.
 We've seen how most of the map is represented, in the |exits| arrays. The

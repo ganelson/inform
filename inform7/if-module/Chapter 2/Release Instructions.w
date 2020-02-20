@@ -197,7 +197,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			break;
 		case EXISTING_STORY_FILE_PAYLOAD:
 		case NAMED_EXISTING_STORY_FILE_PAYLOAD:
-			if (VirtualMachines::is_16_bit() == FALSE) {
+			if (TargetVMs::is_16_bit(Inbuild::current_vm()) == FALSE) {
 				Problems::Issue::sentence_problem(_p_(BelievedImpossible), /* not usefully testable */
 					"existing story files can only be used with the Z-machine",
 					"not with the Glulx setting.");
@@ -463,7 +463,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	}
 
 @<Read header of existing story file if present@> =
-	if (this_is_a_release_compile == FALSE)
+	if (Inbuild::currently_releasing() == FALSE)
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(filename_of_existing_story_file, "rb");
 	if (STORYF == NULL) {
@@ -544,8 +544,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 }
 
 @<Write the body of the iFiction record@> =
-	char *story_format = "zcode";
-	if (Str::eq_wide_string(story_filename_extension, L"ulx")) story_format = "glulx";
+	text_stream *story_format = TargetVMs::get_iFiction_format(Inbuild::current_vm());
 
 	@<Write the identification tag of the iFiction record@>;
 	@<Write the bibliographic tag of the iFiction record@>;
@@ -555,9 +554,9 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		@<Write the cover tag of the iFiction record@>;
 	@<Write the releases tag of the iFiction record@>;
 	@<Write the colophon tag of the iFiction record@>;
-	WRITE("<%s>\n", story_format); INDENT;
+	WRITE("<%S>\n", story_format); INDENT;
 	@<Write the format-specific tag of the iFiction record@>;
-	OUTDENT; WRITE("</%s>\n", story_format);
+	OUTDENT; WRITE("</%S>\n", story_format);
 
 @<Write the identification tag of the iFiction record@> =
 	WRITE("<identification>\n"); INDENT;
@@ -571,7 +570,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 			WRITE("-%04x", header[0x1c]*256 + header[0x1d]);
 		WRITE("</ifid>\n");
 	}
-	WRITE("<format>%s</format>\n", story_format);
+	WRITE("<format>%S</format>\n", story_format);
 	OUTDENT; WRITE("</identification>\n");
 
 @<Write the bibliographic tag of the iFiction record@> =
@@ -842,7 +841,7 @@ the Blorb-file's filename won't be too long for the file system.
 		PL::Bibliographic::Release::write_var_to_text(TEMP, story_title_VAR);
 		END_COMPILATION_MODE;
 	} else WRITE_TO(TEMP, "story");
-	WRITE_TO(TEMP, ".%S", VirtualMachines::get_blorbed_extension());
+	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Inbuild::current_vm()));
 
 @<Write the body of the Blurb file@> =
 	@<Tell Inblorb where to write its report to@>;
@@ -995,8 +994,8 @@ file online.
 	@<Tell Inblorb where to find the website templates@>;
 
 	if (Str::len(interpreter_template_leafname) == 0)
-		interpreter_template_leafname = VirtualMachines::get_default_interpreter();
-	text_stream *ext = VirtualMachines::get_blorbed_extension();
+		interpreter_template_leafname = TargetVMs::get_default_interpreter(Inbuild::current_vm());
+	text_stream *ext = TargetVMs::get_blorbed_extension(Inbuild::current_vm());
 	WRITE("placeholder [INTERPRETERSCRIPTS] = \" ");
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file)

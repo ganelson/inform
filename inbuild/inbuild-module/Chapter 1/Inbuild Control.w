@@ -43,6 +43,9 @@ to add and process command line switches handled by inbuild:
 @e KIT_CLSW
 @e PROJECT_CLSW
 @e SOURCE_CLSW
+@e DEBUG_CLSW
+@e FORMAT_CLSW
+@e RELEASE_CLSW
 
 =
 void Inbuild::declare_options(void) {
@@ -60,16 +63,28 @@ void Inbuild::declare_options(void) {
 		L"load the Inform kit called X");
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
+	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
+		L"compile with debugging features even on a Release");
+	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
+		L"compile a version suitable for a Release build");
+	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
+		L"compile I6 code suitable for the virtual machine X");
 	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
 		L"use file X as the Inform source text");
 	CommandLine::end_group();
 }
 
 pathname *shared_transient_resources = NULL;
+int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
+int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
+text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
+		case DEBUG_CLSW: this_is_a_debug_compile = val; break;
+		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
+		case RELEASE_CLSW: this_is_a_release_compile = val; break;
 		case NEST_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
 		case INTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
@@ -87,7 +102,7 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 }
 
 @ Once the tool has finished with the command line, it should call this
-function.Inbuild rapidly runs through the next few phases as it does so.
+function. Inbuild rapidly runs through the next few phases as it does so.
 From the "nested" phase, the final list of nests in the search path for
 finding kits, extensions and so on exists; from the "projected" phase,
 the main Inform project exists. As we shall see, Inbuild deals with only
@@ -95,6 +110,7 @@ one Inform project at a time, though it may be handling many kits and
 extensions, and so on, which are needed by that project.
 
 =
+target_vm *current_target_VM = NULL;
 inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
@@ -105,7 +121,19 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
 	Inbuild::pass_kit_requests();
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 	inform_project *project = Inbuild::project();
+	if (Str::len(story_filename_extension) == 0) story_filename_extension = I"ulx";
+	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
+		current_target_VM = TargetVMs::find(story_filename_extension, TRUE);
+	else
+		current_target_VM = TargetVMs::find(story_filename_extension, FALSE);
 	return (project)?(project->as_copy):NULL;
+}
+
+target_vm *Inbuild::current_vm(void) {
+	return current_target_VM;
+}
+int Inbuild::currently_releasing(void) {
+	return this_is_a_release_compile;
 }
 
 @ Inbuild is now in the "projected" phase, then. The idea is that this

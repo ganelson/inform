@@ -280,7 +280,7 @@ will produce if this is a Release run.
 	filename_of_compiled_i6_code = Filenames::in_folder(build_folder, I"auto.inf");
 
 	TEMPORARY_TEXT(story_file_leafname);
-	WRITE_TO(story_file_leafname, "output.%S", story_filename_extension);
+	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(Inbuild::current_vm()));
 	filename_of_story_file = Filenames::in_folder(build_folder, story_file_leafname);
 	DISCARD_TEXT(story_file_leafname);
 
@@ -359,7 +359,7 @@ have by default, if so.
 
 @<Existing story file@> =
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "story.%S", story_filename_extension);
+	WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Inbuild::current_vm()));
 	filename_of_existing_story_file =
 		Filenames::in_folder(Inbuild::materials(), leaf);
 	DISCARD_TEXT(leaf);

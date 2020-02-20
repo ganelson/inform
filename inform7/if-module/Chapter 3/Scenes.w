@@ -196,7 +196,7 @@ int PL::Scenes::parse_scene_end_name(scene *sc, wording EW, int create) {
 	if (create) {
 		int end = sc->no_ends++;
 		int max = 31;
-		if (VirtualMachines::is_16_bit()) max = 15;
+		if (TargetVMs::is_16_bit(Inbuild::current_vm())) max = 15;
 		if (end >= max) @<Issue a too-many-ends problem message@>
 		else {
 			sc->end_names[end] = EW;

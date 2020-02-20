@@ -4,30 +4,13 @@ As with all C programs, Inform begins execution in a |main| routine,
 reading command-line arguments to modify its behaviour.
 
 @h Flags.
-These flags are set by command-line parameters. |for_release| will be set
-when Inform is used in a run started by clicking on the Release button in the
-application. |rng_seed_at_start_of_play| is not used by the application,
-but the |intest| program makes use of this feature to make repeated
-tests of the Z-machine story file produce identical sequences of random
-numbers: without this, we would have difficulty comparing a transcript of
-text produced by the story file on one compilation from another.
-
-|story_filename_extension| is also set as a result of information passed
-from the application via the command line to Inform. In order for Inform to
-write good releasing instructions, it needs to know the story file format
-(".z5", ".z8", etc.) of the finally produced story file. But since Inform 7
-compiles only to Inter and thence to Inform 6 code, and does not run I6
-itself, it has no way of telling what the application intends to do on this.
-So the application is required to give Inform advance notice of this via a
-command-line option.
+These are not all of the options, because Inform shares a whole range of
+options with inbuild: see that module for more.
 
 =
-int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
-int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 int existing_story_file = FALSE; /* Ignore source text to blorb existing story file? */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 int census_mode = FALSE; /* Inform running only to update extension documentation */
-text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
 int disable_import = FALSE;
@@ -100,7 +83,6 @@ int CoreMain::main(int argc, char *argv[]) {
 
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
-	story_filename_extension = I"ulx";
 	inter_processing_pipeline = Str::new();
 	inter_processing_file = I"compile";
 
@@ -114,12 +96,9 @@ list is not exhaustive.
 @e CASE_CLSW
 @e CENSUS_CLSW
 @e CLOCK_CLSW
-@e DEBUG_CLSW
-@e FORMAT_CLSW
 @e CRASHALL_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
-@e RELEASE_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e RNG_CLSW
 @e SIGILS_CLSW
@@ -132,22 +111,16 @@ list is not exhaustive.
 		L"inform7: a compiler from source text to Inform 6 code\n\n"
 		L"Usage: inform7 [OPTIONS] [SOURCETEXT]\n");
 
-	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
-		L"compile I6 code suitable for the virtual machine X");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
 		L"perform an extensions census (rather than compile)");
 	CommandLine::declare_boolean_switch(CLOCK_CLSW, L"clock", 1,
 		L"time how long inform7 takes to run");
-	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
-		L"compile with debugging features even on a Release");
 	CommandLine::declare_boolean_switch(CRASHALL_CLSW, L"crash-all", 1,
 		L"crash intentionally on Problem messages (for debugger backtraces)");
 	CommandLine::declare_boolean_switch(NOINDEX_CLSW, L"noindex", 1,
 		L"don't produce an Index");
 	CommandLine::declare_boolean_switch(NOPROGRESS_CLSW, L"noprogress", 1,
 		L"don't display progress percentages");
-	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
-		L"compile a version suitable for a Release build");
 	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
 		L"fix the random number generator of the story file (for testing)");
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
@@ -169,10 +142,6 @@ list is not exhaustive.
 
 @<With that done, configure all other settings@> =
 	Inbuild::optioneering_complete(NULL);
-	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
-		VirtualMachines::set_identifier(story_filename_extension, TRUE);
-	else
-		VirtualMachines::set_identifier(story_filename_extension, FALSE	);
 	if (Locations::set_defaults(census_mode) == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
 	Log::set_debug_log_filename(filename_of_debugging_log);
@@ -313,7 +282,7 @@ with "Output.i6t".
 	ProgressBar::update_progress_bar(4, 0);
 	if (problem_count == 0) CoreMain::go_to_log_phase(I"Generating inter");
 	COMPILATION_STEP(UseOptions::compile_icl_commands, I"UseOptions::compile_icl_commands")
-	COMPILATION_STEP(VirtualMachines::compile_build_number, I"VirtualMachines::compile_build_number")
+	COMPILATION_STEP(FundamentalConstants::emit_build_number, I"FundamentalConstants::emit_build_number")
 	COMPILATION_STEP(PL::Bibliographic::compile_constants, I"PL::Bibliographic::compile_constants")
 	COMPILATION_STEP(Extensions::Files::ShowExtensionVersions_routine, I"Extensions::Files::ShowExtensionVersions_routine")
 	COMPILATION_STEP(Kinds::Constructors::compile_I6_constants, I"Kinds::Constructors::compile_I6_constants")
@@ -361,7 +330,7 @@ with "Output.i6t".
 	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs, I"PL::Parsing::Tokens::Values::compile_type_gprs")
 	COMPILATION_STEP(NewVerbs::ConjugateVerb, I"NewVerbs::ConjugateVerb")
 	COMPILATION_STEP(Adjectives::Meanings::agreements, I"Adjectives::Meanings::agreements")
-	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+	if (TargetVMs::debug_enabled(Inbuild::current_vm())) {
 		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
 		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
 		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
@@ -411,17 +380,7 @@ with "Output.i6t".
 		LOG("Front end elapsed time: %dcs\n", ((int) (front_end - start)) / (CLOCKS_PER_SEC/100));
 		CoreMain::go_to_log_phase(I"Converting inter to Inform 6");
 		if (existing_story_file == FALSE) {
-			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
-				if (VirtualMachines::is_16_bit())
-					CodeGen::Architecture::set(I"16d");
-				else
-					CodeGen::Architecture::set(I"32d");
-			} else {
-				if (VirtualMachines::is_16_bit())
-					CodeGen::Architecture::set(I"16");
-				else
-					CodeGen::Architecture::set(I"32");
-			}
+			CodeGen::Architecture::set(Architectures::to_codename(TargetVMs::get_architecture(Inbuild::current_vm())));
 			@<Ensure inter pipeline variables dictionary@>;
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
 			Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), Filenames::get_leafname(filename_of_compiled_i6_code));
@@ -517,10 +476,8 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case CENSUS_CLSW: census_mode = val; break;
 		case CLOCK_CLSW: report_clock_time = val; break;
 		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
-		case DEBUG_CLSW: this_is_a_debug_compile = val; break;
 		case NOINDEX_CLSW: do_not_generate_index = val; break;
 		case NOPROGRESS_CLSW: show_progress_indicator = val?FALSE:TRUE; break;
-		case RELEASE_CLSW: this_is_a_release_compile = val; break;
 		case RNG_CLSW:
 			if (val) rng_seed_at_start_of_play = -16339;
 			else rng_seed_at_start_of_play = 0;
@@ -528,7 +485,6 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
 
 		/* Other settings */
-		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;

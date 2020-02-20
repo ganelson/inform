@@ -1203,8 +1203,6 @@ void PL::Actions::ActionData(void) {
 	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
 	Hierarchy::make_available(Emit::tree(), ad_iname);
 
-	VirtualMachines::note_usage("action", EMPTY_WORDING, NULL, 12, 0, TRUE);
-
 	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
 	save = Routines::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");

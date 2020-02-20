@@ -114,7 +114,7 @@ project, with the user not realising the consequences.
 
 @<In Inform 7 only, check that the number is representable in the VM@> =
 	#ifdef CORE_MODULE
-	if (VirtualMachines::veto_number(*X)) {
+	if (FundamentalConstants::veto_number(*X)) {
 		/* to prevent repetitions: */
 		Vocabulary::set_literal_number_value(Lexer::word(Wordings::first_wn(W)), 1);
 		return FALSE;

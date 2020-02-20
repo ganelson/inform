@@ -365,7 +365,7 @@ just a blank image used for horizontal spacing to keep margins straight.
 		if (key_vms) {
 			#ifdef CORE_MODULE
 			HTML_TAG("br");
-			VirtualMachines::write_key(OUT);
+			Extensions::Census::write_key(OUT);
 			#endif
 		}
 		HTML_CLOSE("p");
@@ -578,7 +578,7 @@ the first and last word and just look at what is in between:
 @<Append icons which signify the VM requirements of the extension@> =
 	WRITE("&nbsp;%S", C->parsed_from);
 	#ifdef CORE_MODULE
-	VirtualMachines::write_icons(OUT, C);
+	Extensions::Census::write_icons(OUT, C);
 	#endif
 
 @<Print column 2 of the census line@> =
@@ -681,4 +681,50 @@ int Extensions::Census::compare_ecd_by_length(const void *ecd1, const void *ecd2
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	return Works::compare_by_length(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
+}
+
+@h Icons for virtual machines.
+And everything else is cosmetic: printing, or showing icons to signify,
+the current VM or some set of permitted VMs. The following plots the
+icon associated with a given minor VM, and explicates what the icons mean:
+
+=
+void Extensions::Census::plot_icon(OUTPUT_STREAM, target_vm *VM) {
+	if (Str::len(VM->VM_image) > 0) {
+		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%S", VM->VM_image);
+		WRITE("&nbsp;");
+	}
+}
+
+void Extensions::Census::write_key(OUTPUT_STREAM) {
+	WRITE("Extensions compatible with specific story file formats only: ");
+	int i = 0;
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm) {
+		if (VM->with_debugging_enabled) continue; /* avoids listing twice */
+    	if (i++ > 0) WRITE(", ");
+    	Extensions::Census::plot_icon(OUT, VM);
+		TargetVMs::write(OUT, VM);
+	}
+}
+
+@h Displaying VM restrictions.
+Given a word range, we describe the result as concisely as we can with a
+row of icons (but do not bother for the common case where some extension
+has no restriction on its use).
+
+=
+void Extensions::Census::write_icons(OUTPUT_STREAM, compatibility_specification *C) {
+	int something = FALSE, everything = TRUE;
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if (Compatibility::with(C, VM))
+			something = TRUE;
+		else
+			everything = FALSE;
+	if (something == FALSE) WRITE("none");
+	if (everything == FALSE)
+		LOOP_OVER(VM, target_vm)
+			if (Compatibility::with(C, VM))
+				Extensions::Census::plot_icon(OUT, VM);
 }

@@ -276,7 +276,7 @@ turn by turn.
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
 		Produce::down(Emit::tree());
-			if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile)) {
+			if (TargetVMs::debug_enabled(Inbuild::current_vm())) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ALLOWINSHOWME_HL));
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));

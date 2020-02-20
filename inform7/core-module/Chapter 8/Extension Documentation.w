@@ -185,7 +185,7 @@ different template:
 	compatibility_specification *C = E->as_copy->edition->compatibility;
 	if (Str::len(C->parsed_from) > 0) {
 		WRITE("%S&nbsp;", C->parsed_from);
-		VirtualMachines::write_icons(OUT, C);
+		Extensions::Census::write_icons(OUT, C);
 	}
 
 @<Write up the version number, if any, and location@> =

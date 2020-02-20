@@ -61,7 +61,6 @@ We need to itemise the structures we'll want to allocate:
 @e equation_node_MT
 @e placement_affecting_array_MT
 @e activity_crossref_array_MT
-@e VM_usage_note_MT
 @e invocation_options_array_MT
 @e inv_token_problem_token_MT
 @e application_array_MT
@@ -160,7 +159,6 @@ ALLOCATE_INDIVIDUALLY(text_substitution)
 ALLOCATE_INDIVIDUALLY(to_phrase_request)
 ALLOCATE_INDIVIDUALLY(use_as_event)
 ALLOCATE_INDIVIDUALLY(use_option)
-ALLOCATE_INDIVIDUALLY(VM_usage_note)
 ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
 ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
 ALLOCATE_INDIVIDUALLY(label_namespace)

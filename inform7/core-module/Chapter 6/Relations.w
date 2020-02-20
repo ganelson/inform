@@ -871,7 +871,7 @@ void Relations::compile_defined_relation_constants(void) {
 	RELS_LOOKUP_ALL_X_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_X_HL, 0x0004);
 	RELS_LOOKUP_ALL_Y_iname = Relations::compile_defined_relation_constant(RELS_LOOKUP_ALL_Y_HL, 0x0002);
 	RELS_LIST_iname = Relations::compile_defined_relation_constant(RELS_LIST_HL, 0x0001);
-	if (VirtualMachines::is_16_bit()) {
+	if (TargetVMs::is_16_bit(Inbuild::current_vm())) {
 		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_HL, 0x100*5 + 13); /* $2^5 = 32$ bytes block */
 	} else {
 		REL_BLOCK_HEADER_symbol = Relations::compile_defined_relation_constant(REL_BLOCK_HEADER_HL, (0x100*6 + 13)*0x10000);
@@ -1817,11 +1817,6 @@ void Relations::compile_vtov_storage(binary_predicate *bp) {
 
 	Emit::array_end(save);
 
-	TEMPORARY_TEXT(rname);
-	WRITE_TO(rname, "%A", &(bp->relation_name));
-	VirtualMachines::note_usage("relation",
-		ParseTree::get_text(bp->bp_created_at), rname, words_used, bytes_used, FALSE);
-	DISCARD_TEXT(rname);
 	Relations::free_index_storage();
 }
 

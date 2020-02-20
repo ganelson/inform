@@ -16,13 +16,14 @@ typedef struct target_vm {
 	struct text_stream *VM_image; /* filename of image for icon denoting VM */
 	int max_locals; /* upper limit on local variables per stack frame */
 	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
+	struct text_stream *iFiction_format_name; /* e.g., "zcode": see the Treaty of Babel */
 	int supports_floating_point;
 	MEMORY_MANAGEMENT
 } target_vm;
 
 target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version_number V,
 	text_stream *image, text_stream *interpreter, text_stream *blorbed, text_stream *arch,
-	int debug, int max_locals) {
+	int debug, int max_locals, text_stream *iFiction) {
 	target_vm *VM = CREATE(target_vm);
 	VM->family_name = Str::duplicate(code);
 	VM->version = V;
@@ -37,6 +38,7 @@ target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version
 	VM->with_debugging_enabled = debug;
 	VM->supports_floating_point = TRUE;
 	if (Architectures::is_16_bit(VM->architecture)) VM->supports_floating_point = FALSE;
+	VM->iFiction_format_name = Str::duplicate(iFiction);
 	return VM;
 }
 
@@ -53,20 +55,20 @@ void TargetVMs::write(OUTPUT_STREAM, target_vm *VM) {
 void TargetVMs::create(void) {
 	/* hat tip: Joel Berez and Marc Blank, 1979, and later hands */
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16", FALSE, 15);
+		I"vm_z5.png", I"Parchment", I"zblorb", I"16", FALSE, 15, I"zcode");
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16d", TRUE, 15);
+		I"vm_z5.png", I"Parchment", I"zblorb", I"16d", TRUE, 15, I"zcode");
 
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16", FALSE, 15);
+		I"vm_z8.png", I"Parchment", I"zblorb", I"16", FALSE, 15, I"zcode");
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16d", TRUE, 15);
+		I"vm_z8.png", I"Parchment", I"zblorb", I"16d", TRUE, 15, I"zcode");
 
 	/* hat tip: Andrew Plotkin, 2000 */
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32", FALSE, 256);
+		I"vm_glulx.png", I"Quixe", I"gblorb", I"32", FALSE, 256, I"glulx");
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32d", TRUE, 256);
+		I"vm_glulx.png", I"Quixe", I"gblorb", I"32d", TRUE, 256, I"glulx");
 }
 
 target_vm *TargetVMs::find(text_stream *ext, int debug) {
@@ -107,4 +109,55 @@ int TargetVMs::debug_enabled(target_vm *VM) {
 int TargetVMs::supports_floating_point(target_vm *VM) {
 	if (VM == NULL) internal_error("no VM");
 	return VM->supports_floating_point;
+}
+
+@ The limits are different on each platform. On Z, the maximum is fixed
+at 15, but Glulx allows it to be set with an I6 memory setting.
+
+=
+int TargetVMs::allow_this_many_locals(target_vm *VM, int N) {
+	if (VM == NULL) internal_error("no VM");
+	if ((VM->max_locals >= 0) && (VM->max_locals < N)) return FALSE;
+	return TRUE;
+}
+int TargetVMs::allow_MAX_LOCAL_VARIABLES(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	if (VM->max_locals > 15) return TRUE;
+	return FALSE;
+}
+
+@ When releasing a blorbed story file, the file extension depends on the
+story file wrapped inside. (This is a dubious idea, in the opinion of
+the author of Inform -- should not blorb be one unified wrapper? -- but
+interpreter writers disagree.)
+
+=
+text_stream *TargetVMs::get_unblorbed_extension(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->VM_unblorbed_extension;
+}
+
+text_stream *TargetVMs::get_blorbed_extension(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->VM_blorbed_extension;
+}
+
+text_stream *TargetVMs::get_iFiction_format(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->iFiction_format_name;
+}
+
+inter_architecture *TargetVMs::get_architecture(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->architecture;
+}
+
+@ Different VMs have different in-browser interpreters, which means that
+Inblorb needs to be given different release instructions for them. If the
+user doesn't specify any particular interpreter, he gets:
+
+=
+text_stream *TargetVMs::get_default_interpreter(target_vm *VM) {
+	if (VM == NULL) internal_error("no VM");
+	return VM->default_browser_interpreter;
 }

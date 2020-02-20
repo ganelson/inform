@@ -193,5 +193,5 @@ void Graphs::build_r(int gb, build_vertex *V, build_methodology *meth) {
 				if (since < 0) { needs_building = TRUE; break; }
 			}
 	}
-	if (needs_building) BuildSteps::execute(V->script, meth);
+	if (needs_building) BuildSteps::execute(V, V->script, meth);
 }

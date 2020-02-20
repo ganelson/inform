@@ -251,6 +251,9 @@ void Projects::construct_graph(inform_project *project) {
 	if (project == NULL) return;
 	Projects::finalise_kit_dependencies(project);
 	build_vertex *V = project->as_copy->vertex;
+	build_step *BS = BuildSteps::new_step(
+		COMPILE_I7_TO_INTER_BSTEP, NULL, NULL);
+	BuildSteps::add_step(V->script, BS);
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
 		 Graphs::need_this_to_build(V, K->as_copy->vertex);

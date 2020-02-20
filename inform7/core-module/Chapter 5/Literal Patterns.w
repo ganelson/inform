@@ -258,7 +258,7 @@ equivalent to an exact value.
 
 	list_head = LiteralPatterns::lp_list_add_inner(list_head, new_lp);
 
-	if ((VirtualMachines::is_16_bit()) && (PM_ZMachineOverflow2_issued == FALSE))
+	if ((TargetVMs::is_16_bit(Inbuild::current_vm())) && (PM_ZMachineOverflow2_issued == FALSE))
 		for (lp = list_head; lp; lp = lp->next_for_this_kind)
 			if (Kinds::Scalings::quantum(lp->scaling) > 32767) {
 				Problems::Issue::sentence_problem(_p_(PM_ZMachineOverflow2),
@@ -600,7 +600,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 			"page of the Index.)");
 		return NULL;
 	}
-	if ((overflow_16_bit_flag) && (VirtualMachines::is_16_bit())) {
+	if ((overflow_16_bit_flag) && (TargetVMs::is_16_bit(Inbuild::current_vm()))) {
 		ISSUING_LP_PROBLEM;
 		Problems::Issue::sentence_problem(_p_(PM_ZMachineOverflow),
 			"you use a literal specification to make a value which is too large",

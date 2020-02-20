@@ -1270,7 +1270,7 @@ int Equations::enode_typecheck(equation *eqn, equation_node *tok) {
 				tok->gK_before =
 					Kinds::FloatingPoint::new_gk(
 						ParseTree::get_kind_of_value(tok->leaf_constant));
-				if ((tok->enode_promotion) && (VirtualMachines::supports(K_real_number)))
+				if ((tok->enode_promotion) && (Kinds::RunTime::target_VM_supports(K_real_number)))
 					tok->gK_before =
 						Kinds::FloatingPoint::to_real(tok->gK_before);
 				break;

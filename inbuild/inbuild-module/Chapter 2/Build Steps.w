@@ -22,12 +22,14 @@ typedef struct build_step {
 	int what_to_do;
 	struct pathname *arg_p1;
 	struct text_stream *arg_t1;
+	struct target_vm *arg_vm;
 	MEMORY_MANAGEMENT
 } build_step;
 
 @
 
 @e ASSIMILATE_BSTEP from 1
+@e COMPILE_I7_TO_INTER_BSTEP
 
 =
 build_script *BuildSteps::new_script(void) {
@@ -41,6 +43,7 @@ build_step *BuildSteps::new_step(int to_do, pathname *P, text_stream *T) {
 	S->what_to_do = to_do;
 	S->arg_p1 = P;
 	S->arg_t1 = T;
+	S->arg_vm = NULL;
 	return S;
 }
 
@@ -100,7 +103,7 @@ build_methodology *BuildSteps::methodology(pathname *tools_path, int dev) {
 	return meth;
 }
 
-void BuildSteps::execute(build_script *BS, build_methodology *meth) {
+void BuildSteps::execute(build_vertex *V, build_script *BS, build_methodology *meth) {
 	build_step *S;
 	LOOP_OVER_LINKED_LIST(S, build_step, BS->steps) {
 		TEMPORARY_TEXT(command);

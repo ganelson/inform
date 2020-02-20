@@ -339,6 +339,17 @@ allowed; they should probably be withdrawn.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
+@ =
+<current-virtual-machine> internal {
+	if (<virtual-machine>(W)) {
+		*X = Compatibility::with((compatibility_specification *) <<rp>>, Inbuild::current_vm());
+		return TRUE;
+	} else {
+		*X = FALSE;
+		return FALSE;
+	}
+}
+
 @h The heading tree.
 The headings were constructed above as freestanding nodes (except that the
 pseudo-heading already existed): here, we assemble them into a tree
@@ -487,8 +498,9 @@ if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
 int Sentences::Headings::include_material(heading *h) {
-	if ((h->for_release == TRUE) && (this_is_a_release_compile == FALSE)) return FALSE;
-	if ((h->for_release == FALSE) && (this_is_a_release_compile == TRUE)) return FALSE;
+	int releasing = Inbuild::currently_releasing();
+	if ((h->for_release == TRUE) && (releasing == FALSE)) return FALSE;
+	if ((h->for_release == FALSE) && (releasing == TRUE)) return FALSE;
 	if (h->omit_material) return FALSE;
 	return TRUE;
 }
