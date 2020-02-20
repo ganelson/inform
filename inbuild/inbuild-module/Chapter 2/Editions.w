@@ -28,6 +28,10 @@ void Editions::write(OUTPUT_STREAM, inbuild_edition *E) {
 	if (VersionNumbers::is_null(V) == FALSE) {
 		WRITE(" v%v", &V);
 	}
+}
+
+void Editions::inspect(OUTPUT_STREAM, inbuild_edition *E) {
+	Editions::write(OUT, E);
 	if (Compatibility::universal(E->compatibility) == FALSE) {
 		WRITE(" (");
 		Compatibility::write(OUT, E->compatibility);

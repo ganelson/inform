@@ -402,7 +402,7 @@ divided up by the extensions containing the rules which produce them.
 @<Start a possible run of matches@> =
 	if (contiguous_match == FALSE) {
 		contiguous_match = TRUE;
-		if (no_cms++ == 0) {
+		if ((no_cms++ == 0) && (E)) {
 			TEMPORARY_TEXT(QT);
 			WRITE_TO(QT, "%<X", E->as_copy->edition->work);
 			Emit::array_text_entry(QT);

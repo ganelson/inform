@@ -21,7 +21,8 @@ typedef struct target_vm {
 } target_vm;
 
 target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version_number V,
-	text_stream *image, text_stream *interpreter, text_stream *blorbed, text_stream *arch, int debug) {
+	text_stream *image, text_stream *interpreter, text_stream *blorbed, text_stream *arch,
+	int debug, int max_locals) {
 	target_vm *VM = CREATE(target_vm);
 	VM->family_name = Str::duplicate(code);
 	VM->version = V;
@@ -29,7 +30,7 @@ target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version
 	VM->VM_unblorbed_extension = Str::duplicate(nick);
 	VM->VM_blorbed_extension = Str::duplicate(blorbed);
 	VM->VM_image = Str::duplicate(image);
-	VM->max_locals = 15;
+	VM->max_locals = max_locals;
 	VM->default_browser_interpreter = Str::duplicate(interpreter);
 	VM->architecture = Architectures::from_codename(arch);
 	if (VM->architecture == NULL) internal_error("no such architecture");
@@ -52,20 +53,20 @@ void TargetVMs::write(OUTPUT_STREAM, target_vm *VM) {
 void TargetVMs::create(void) {
 	/* hat tip: Joel Berez and Marc Blank, 1979, and later hands */
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16", FALSE);
+		I"vm_z5.png", I"Parchment", I"zblorb", I"16", FALSE, 15);
 	TargetVMs::new(I"Z-Machine", I"z5", VersionNumbers::from_text(I"5"),
-		I"vm_z5.png", I"Parchment", I"zblorb", I"16d", TRUE);
+		I"vm_z5.png", I"Parchment", I"zblorb", I"16d", TRUE, 15);
 
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16", FALSE);
+		I"vm_z8.png", I"Parchment", I"zblorb", I"16", FALSE, 15);
 	TargetVMs::new(I"Z-Machine", I"z8", VersionNumbers::from_text(I"8"),
-		I"vm_z8.png", I"Parchment", I"zblorb", I"16d", TRUE);
+		I"vm_z8.png", I"Parchment", I"zblorb", I"16d", TRUE, 15);
 
 	/* hat tip: Andrew Plotkin, 2000 */
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32", FALSE);
+		I"vm_glulx.png", I"Quixe", I"gblorb", I"32", FALSE, 256);
 	TargetVMs::new(I"Glulx", I"ulx", VersionNumbers::from_text(I"3.1.2"),
-		I"vm_glulx.png", I"Quixe", I"gblorb", I"32d", TRUE);
+		I"vm_glulx.png", I"Quixe", I"gblorb", I"32d", TRUE, 256);
 }
 
 target_vm *TargetVMs::find(text_stream *ext, int debug) {

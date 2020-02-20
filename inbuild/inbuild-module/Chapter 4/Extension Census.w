@@ -563,8 +563,8 @@ where all is optional except the title part.
 	}
 	Works::end_extension_link(OUT, ecd->found_as->copy->edition->work);
 
-	text_stream *VMR = ExtensionManager::from_copy(ecd->found_as->copy)->reqs_as_lexed;
-	if (Str::len(VMR)) {
+	compatibility_specification *C = ecd->found_as->copy->edition->compatibility;
+	if (Str::len(C->parsed_from) > 0) {
 		@<Append icons which signify the VM requirements of the extension@>;
 		key_vms = TRUE;
 	}
@@ -576,13 +576,9 @@ brackets, which the lexer will split off as distinct words, we can ignore
 the first and last word and just look at what is in between:
 
 @<Append icons which signify the VM requirements of the extension@> =
-	WRITE("&nbsp;");
+	WRITE("&nbsp;%S", C->parsed_from);
 	#ifdef CORE_MODULE
-	wording W = Feeds::feed_stream(VMR);
-	VirtualMachines::write_icons(OUT, Wordings::trim_last_word(Wordings::trim_last_word(W)));
-	#endif
-	#ifndef CORE_MODULE
-	WRITE("%S", VMR);
+	VirtualMachines::write_icons(OUT, C);
 	#endif
 
 @<Print column 2 of the census line@> =

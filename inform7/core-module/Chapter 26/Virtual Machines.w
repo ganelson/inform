@@ -30,11 +30,13 @@ void VirtualMachines::set_identifier(text_stream *text, int debugging) {
 	current_target_VM = TargetVMs::find(text, debugging);
 }
 
+int VirtualMachines::compatible_with(compatibility_specification *C) {
+	return Compatibility::with(C, current_target_VM);
+}
+
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
-		*X = FALSE;
-		compatibility_specification *C = (compatibility_specification *) <<rp>>;
-		*X = Compatibility::with(C, current_target_VM);
+		*X = VirtualMachines::compatible_with((compatibility_specification *) <<rp>>);
 		return TRUE;
 	} else {
 		*X = FALSE;
@@ -311,22 +313,19 @@ row of icons (but do not bother for the common case where some extension
 has no restriction on its use).
 
 =
-void VirtualMachines::write_icons(OUTPUT_STREAM, wording W) {
-	if (<virtual-machine>(W)) {
-		compatibility_specification *C = (compatibility_specification *) <<rp>>;
-		int something = FALSE, everything = TRUE;
-		target_vm *VM;
+void VirtualMachines::write_icons(OUTPUT_STREAM, compatibility_specification *C) {
+	int something = FALSE, everything = TRUE;
+	target_vm *VM;
+	LOOP_OVER(VM, target_vm)
+		if (Compatibility::with(C, VM))
+			something = TRUE;
+		else
+			everything = FALSE;
+	if (something == FALSE) WRITE("none");
+	if (everything == FALSE)
 		LOOP_OVER(VM, target_vm)
 			if (Compatibility::with(C, VM))
-				something = TRUE;
-			else
-				everything = FALSE;
-		if (something == FALSE) WRITE("none");
-		if (everything == FALSE)
-			LOOP_OVER(VM, target_vm)
-				if (Compatibility::with(C, VM))
-					VirtualMachines::plot_icon(OUT, VM);
-	}
+				VirtualMachines::plot_icon(OUT, VM);
 }
 
 @ The following table in the index (on the Contents page) may be useful to a

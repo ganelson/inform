@@ -55,6 +55,10 @@ void Copies::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
 	Editions::write(OUT, C->edition);
 }
 
+void Copies::inspect_copy(OUTPUT_STREAM, inbuild_copy *C) {
+	Editions::inspect(OUT, C->edition);
+}
+
 void Copies::go_operational(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
 }
@@ -101,7 +105,7 @@ inbuild_copy *Copies::claim(text_stream *arg) {
 
 void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
 	WRITE("%S: ", Genres::name(C->edition->work->genre));
-	Copies::write_copy(STDOUT, C);
+	Copies::inspect_copy(STDOUT, C);
 	if (C->location_if_path) {
 		WRITE(" at path %p", C->location_if_path);
 	}

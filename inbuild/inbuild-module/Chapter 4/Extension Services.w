@@ -16,7 +16,6 @@ typedef struct inform_extension {
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
 	struct text_stream *rubric_as_lexed; /* brief description found in opening lines */
-	struct text_stream *reqs_as_lexed; /* such as "(for Z-machine only)" */
 	struct text_stream *extra_credit_as_lexed;
 	struct source_file *read_into_file; /* Which source file loaded this */
 	struct inbuild_requirement *must_satisfy;
@@ -39,7 +38,6 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
 	E->rubric_as_lexed = Str::new();
-	E->reqs_as_lexed = Str::new();
 	E->extra_credit_as_lexed = NULL;	
 	E->must_satisfy = NULL;
 	#ifdef CORE_MODULE
@@ -49,6 +47,7 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 
 	TEMPORARY_TEXT(claimed_author_name);
 	TEMPORARY_TEXT(claimed_title);
+	TEMPORARY_TEXT(reqs);
 	filename *F = C->location_if_file;
 	semantic_version_number V = VersionNumbers::null();
 	@<Scan the file@>;
@@ -61,12 +60,12 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 		Copies::attach(C, Copies::new_error_N(EXT_AUTHOR_TOO_LONG_CE, Str::len(claimed_author_name)));
 	}
 	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
-	if (Str::len(E->reqs_as_lexed) > 0) {
-		compatibility_specification *CS = Compatibility::from_text(E->reqs_as_lexed);
+	if (Str::len(reqs) > 0) {
+		compatibility_specification *CS = Compatibility::from_text(reqs);
 		if (CS) C->edition->compatibility = CS;
 		else {
 			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "cannot read compatibility '%S'", E->reqs_as_lexed);
+			WRITE_TO(err, "cannot read compatibility '%S'", reqs);
 			Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, err));
 			DISCARD_TEXT(err);
 		}
@@ -74,6 +73,7 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	DISCARD_TEXT(claimed_author_name);
 	DISCARD_TEXT(claimed_title);
+	DISCARD_TEXT(reqs);
 }
 
 @ The following scans a potential extension file. If it seems malformed, a
@@ -197,7 +197,7 @@ this is unambiguous.
 @<Extract the VM requirements text, if any, from the claimed title@> =
 	if (Regexp::match(&mr, claimed_title, L"(%c*?) *(%(%c*%))")) {
 		Str::copy(claimed_title, mr.exp[0]);
-		Str::copy(E->reqs_as_lexed, mr.exp[1]);
+		Str::copy(reqs, mr.exp[1]);
 	}
 
 @ =

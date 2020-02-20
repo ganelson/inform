@@ -251,8 +251,9 @@ trap-door into Read Source Text, to seek and open the file.
 	}
 
 @ =
+int last_PM_ExtVersionMalformed_at = -1;
 semantic_version_number Extensions::Inclusion::parse_version(int vwn) {
-	semantic_version_number V = VersionNumbers::from_pair(1, 0); /* which equates to |1/000000| */
+	semantic_version_number V = VersionNumbers::null();
 	wording W = Wordings::one_word(vwn);
 	if (<version-number>(W)) {
 		semantic_version_number_holder *H = (semantic_version_number_holder *) <<rp>>;
@@ -269,13 +270,15 @@ over and over. We do this by altering the text to |1|, the lowest well-formed
 version number text.
 
 @<Issue a problem message for a malformed version number@> =
-	LOG("Offending word number %d <%N>\n", vwn, vwn);
-	Problems::Issue::sentence_problem(_p_(PM_ExtVersionMalformed),
-		"a version number must have the form N/DDDDDD",
-		"as in the example '2/040426' for release 2 made on 26 April 2004. "
-		"(The DDDDDD part is optional, so '3' is a legal version number too. "
-		"N must be between 1 and 999: in particular, there is no version 0.)");
-	Vocabulary::change_text_of_word(vwn, L"1");
+	if (last_PM_ExtVersionMalformed_at != vwn) {
+		last_PM_ExtVersionMalformed_at = vwn;
+		LOG("Offending word number %d <%N>\n", vwn, vwn);
+		Problems::Issue::sentence_problem(_p_(PM_ExtVersionMalformed),
+			"a version number must have the form N/DDDDDD",
+			"as in the example '2/040426' for release 2 made on 26 April 2004. "
+			"(The DDDDDD part is optional, so '3' is a legal version number too. "
+			"N must be between 1 and 999: in particular, there is no version 0.)");
+	}
 
 @h Checking the begins here and ends here sentences.
 When a newly loaded extension is being sentence-broken, problem messages
@@ -325,8 +328,7 @@ void Extensions::Inclusion::check_begins_here(parse_node *PN, inform_extension *
 	<begins-here-sentence-subject>(ParseTree::get_text(PN));
 	Extensions::set_VM_text(E, Wordings::new(<<rest1>>, <<rest2>>));
 
-	if (Wordings::nonempty(Extensions::get_VM_text(E)))
-		@<Check that the extension's stipulation about the virtual machine can be met@>;
+	@<Check that the extension's stipulation about the virtual machine can be met@>;
 }
 
 @ On the other hand, we do already know what virtual machine we are compiling
@@ -334,26 +336,9 @@ for, so we can immediately object if the loaded extension cannot be used
 with our VM de jour.
 
 @<Check that the extension's stipulation about the virtual machine can be met@> =
-	if (<platform-qualifier>(Extensions::get_VM_text(E))) {
-		if (<<r>> == PLATFORM_UNMET_HQ)
-			@<Issue a problem message saying that the VM does not meet requirements@>;
-	} else {
-		@<Issue a problem message saying that the VM requirements are malformed@>;
-	}
-
-@ See Virtual Machines for the grammar of what can be given as a VM
-requirement.
-
-@<Issue a problem message saying that the VM requirements are malformed@> =
-	Problems::quote_extension(1, E);
-	Problems::quote_wording(2, Extensions::get_VM_text(E));
-	Problems::Issue::handmade_problem(_p_(PM_ExtMalformedVM));
-	Problems::issue_problem_segment(
-		"Your source text makes use of the extension %1: but my copy "
-		"stipulates that it is '%2', which is a description of the required "
-		"story file format which I can't understand, and should be "
-		"something like '(for Z-machine version 5 or 8 only)'.");
-	Problems::issue_problem_end();
+	compatibility_specification *C = E->as_copy->edition->compatibility;
+	if (VirtualMachines::compatible_with(C) == FALSE)
+		@<Issue a problem message saying that the VM does not meet requirements@>;
 
 @ Here the problem is not that the extension is broken in some way: it's
 just not what we can currently use. Therefore the correction should be a
@@ -364,7 +349,7 @@ report this problem at the inclusion line.
 	current_sentence = Extensions::get_inclusion_sentence(E);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_copy(2, E->as_copy);
-	Problems::quote_wording(3, Extensions::get_VM_text(E));
+	Problems::quote_stream(3, C->parsed_from);
 	Problems::Issue::handmade_problem(_p_(PM_ExtInadequateVM));
 	Problems::issue_problem_segment(
 		"You wrote %1: but my copy of %2 stipulates that it "

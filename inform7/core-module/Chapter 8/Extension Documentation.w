@@ -182,10 +182,10 @@ different template:
 	WRITE("&nbsp;");
 
 @<Write up any restrictions on VM usage@> =
-	if (Wordings::nonempty(Extensions::get_VM_text(E))) {
-		WRITE("%+W", Extensions::get_VM_text(E));
-		WRITE("&nbsp;");
-		VirtualMachines::write_icons(OUT, Extensions::get_VM_text(E));
+	compatibility_specification *C = E->as_copy->edition->compatibility;
+	if (Str::len(C->parsed_from) > 0) {
+		WRITE("%S&nbsp;", C->parsed_from);
+		VirtualMachines::write_icons(OUT, C);
 	}
 
 @<Write up the version number, if any, and location@> =
