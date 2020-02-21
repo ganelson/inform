@@ -113,20 +113,31 @@ extensions, and so on, which are needed by that project.
 target_vm *current_target_VM = NULL;
 inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+
+	target_vm *VM = NULL;
+	text_stream *ext = story_filename_extension;
+	if (Str::len(ext) == 0) ext = I"ulx";
+	int with_debugging = FALSE;
+	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
+		with_debugging = TRUE;
+	VM = TargetVMs::find(ext, with_debugging);
+
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
-	Inbuild::create_shared_project(C);
+	inform_project *project = Inbuild::create_shared_project(C);
+	
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
 	Inbuild::pass_kit_requests();
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
-	inform_project *project = Inbuild::project();
-	if (Str::len(story_filename_extension) == 0) story_filename_extension = I"ulx";
-	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
-		current_target_VM = TargetVMs::find(story_filename_extension, TRUE);
-	else
-		current_target_VM = TargetVMs::find(story_filename_extension, FALSE);
-	return (project)?(project->as_copy):NULL;
+
+	if (project) {
+		Projects::construct_build_target(project, VM, this_is_a_release_compile);
+		current_target_VM = VM;
+		return project->as_copy;
+	} else {
+		return NULL;
+	}
 }
 
 target_vm *Inbuild::current_vm(void) {
@@ -303,7 +314,7 @@ int Inbuild::set_I7_bundle(text_stream *loc) {
 =
 inform_project *shared_project = NULL;
 
-void Inbuild::create_shared_project(inbuild_copy *C) {
+inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 	filename *filename_of_i7_source = NULL;
 	pathname *pathname_of_bundle = NULL;
@@ -336,6 +347,7 @@ void Inbuild::create_shared_project(inbuild_copy *C) {
 		if (Str::len(project_file_request) > 0) P = NULL;
 		Projects::set_source_filename(shared_project, P, filename_of_i7_source);
 	}
+	return shared_project;
 }
 
 @<Create the materials nest@> =

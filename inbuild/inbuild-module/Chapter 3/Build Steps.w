@@ -29,7 +29,9 @@ typedef struct build_step {
 @
 
 @e ASSIMILATE_BSTEP from 1
-@e COMPILE_I7_TO_INTER_BSTEP
+@e COMPILE_I7_TO_GEN_BSTEP
+@e COMPILE_GEN_TO_STORY_FILE_BSTEP
+@e BLORB_STORY_FILE_BSTEP
 
 =
 build_script *BuildSteps::new_script(void) {

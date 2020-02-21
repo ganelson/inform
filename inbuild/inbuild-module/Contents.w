@@ -14,11 +14,13 @@ Chapter 2: Conceptual Framework
 	Editions
 	Copies
 	Requirements
-	Build Graphs
-	Build Steps
 	Nests
 
-Chapter 3: Managing Genres of Work
+Chapter 3: Incremental Builds
+	Build Graphs
+	Build Steps
+
+Chapter 4: Managing Genres of Work
 	Kit Manager
 	Extension Manager
 	Language Manager
@@ -27,7 +29,7 @@ Chapter 3: Managing Genres of Work
 	Template Manager
 	Pipeline Manager
 
-Chapter 4: Services for the Inform Compiler
+Chapter 5: Services for the Inform Compiler
 	Source Text
 	Virtual Machine Grammar
 	Kit Services

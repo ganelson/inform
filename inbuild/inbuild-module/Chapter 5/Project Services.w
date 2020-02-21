@@ -12,6 +12,7 @@ typedef struct inform_project {
 	struct inform_language *language_of_play;
 	struct inform_language *language_of_syntax;
 	struct inform_language *language_of_index;
+	struct build_vertex *chosen_build_target;
 	int next_resource_number;
 	MEMORY_MANAGEMENT
 } inform_project;
@@ -27,6 +28,7 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->language_of_syntax = NULL;
 	project->language_of_index = NULL;
 	project->next_resource_number = 3;
+	project->chosen_build_target = NULL;
 	return project;
 }
 
@@ -246,14 +248,50 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 }
 #endif
 
+void Projects::construct_build_target(inform_project *project, target_vm *VM, int releasing) {
+	pathname *proj = project->as_copy->location_if_path;
+	pathname *build_folder = NULL;
+	if (proj) build_folder = Pathnames::subfolder(proj, I"Build");
+
+	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
+	build_vertex *inf_V = Graphs::file_vertex(inf_F);
+	Graphs::need_this_to_build(inf_V, project->as_copy->vertex);
+	build_step *BS = BuildSteps::new_step(COMPILE_I7_TO_GEN_BSTEP, NULL, NULL);
+	BS->arg_vm = VM;
+	BuildSteps::add_step(inf_V->script, BS);
+
+	TEMPORARY_TEXT(story_file_leafname);
+	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
+	filename *unblorbed_F = Filenames::in_folder(build_folder, story_file_leafname);
+	DISCARD_TEXT(story_file_leafname);
+	build_vertex *unblorbed_V = Graphs::file_vertex(unblorbed_F);
+	Graphs::need_this_to_build(unblorbed_V, inf_V);
+	build_step *BS2 = BuildSteps::new_step(COMPILE_GEN_TO_STORY_FILE_BSTEP, NULL, NULL);
+	BS2->arg_vm = VM;
+	BuildSteps::add_step(unblorbed_V->script, BS2);
+
+	if (releasing) {
+		TEMPORARY_TEXT(story_file_leafname);
+		WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_blorbed_extension(VM));
+		filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname);
+		DISCARD_TEXT(story_file_leafname);
+		build_vertex *blorbed_V = Graphs::file_vertex(blorbed_F);
+		Graphs::need_this_to_build(unblorbed_V, inf_V);
+		build_step *BS3 = BuildSteps::new_step(BLORB_STORY_FILE_BSTEP, NULL, NULL);
+		BS3->arg_vm = VM;
+		BuildSteps::add_step(blorbed_V->script, BS3);		
+
+		project->chosen_build_target = blorbed_V;
+	} else {
+		project->chosen_build_target = unblorbed_V;
+	}
+}
+
 void Projects::construct_graph(inform_project *project) {
 	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	if (project == NULL) return;
 	Projects::finalise_kit_dependencies(project);
 	build_vertex *V = project->as_copy->vertex;
-	build_step *BS = BuildSteps::new_step(
-		COMPILE_I7_TO_INTER_BSTEP, NULL, NULL);
-	BuildSteps::add_step(V->script, BS);
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
 		 Graphs::need_this_to_build(V, K->as_copy->vertex);

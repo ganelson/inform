@@ -29,6 +29,7 @@ typedef struct build_vertex {
 	struct build_script *script;
 	time_t timestamp;
 	int last_described;
+	int built;
 	MEMORY_MANAGEMENT
 } build_vertex;
 
@@ -44,6 +45,7 @@ build_vertex *Graphs::file_vertex(filename *F) {
 	V->annotation = NULL;
 	V->read_as = NULL;
 	V->last_described = 0;
+	V->built = FALSE;
 	return V;
 }
 
@@ -170,6 +172,7 @@ void Graphs::rebuild(build_vertex *V, build_methodology *meth) {
 void Graphs::build_r(int gb, build_vertex *V, build_methodology *meth) {
 	int needs_building = FALSE;
 	if (gb & FORCE_GB) needs_building = TRUE;
+	else if (V->built) return;
 	if (V->buildable_if_internal_file)
 		if (TextFiles::exists(V->buildable_if_internal_file) == FALSE)
 			needs_building = TRUE;
@@ -193,5 +196,7 @@ void Graphs::build_r(int gb, build_vertex *V, build_methodology *meth) {
 				if (since < 0) { needs_building = TRUE; break; }
 			}
 	}
+	if (V->built) needs_building = FALSE;
 	if (needs_building) BuildSteps::execute(V, V->script, meth);
+	V->built = TRUE;
 }
