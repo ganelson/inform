@@ -3,6 +3,7 @@
 
 .DS_Store
 gameinfo.dbg
+gametext.txt
 
 makefile
 

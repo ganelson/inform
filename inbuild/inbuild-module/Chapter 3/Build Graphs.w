@@ -27,7 +27,6 @@ typedef struct build_vertex {
 	struct linked_list *build_edges; /* of |build_vertex| */
 	struct linked_list *use_edges; /* of |build_vertex| */
 	struct build_script *script;
-	time_t timestamp;
 	int last_described;
 	int built;
 	MEMORY_MANAGEMENT
@@ -40,8 +39,7 @@ build_vertex *Graphs::file_vertex(filename *F) {
 	V->buildable_if_internal_file = F;
 	V->build_edges = NEW_LINKED_LIST(build_vertex);
 	V->use_edges = NEW_LINKED_LIST(build_vertex);
-	V->timestamp = (time_t) 0;
-	V->script = BuildSteps::new_script();
+	V->script = BuildScripts::new();
 	V->annotation = NULL;
 	V->read_as = NULL;
 	V->last_described = 0;
@@ -114,13 +112,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	}
 	DISCARD_TEXT(S);
 	DISCARD_TEXT(T);
-	if (V->type == FILE_VERTEX) {
-		Graphs::update_timestamp(V);
-		if (V->timestamp != (time_t) 0) WRITE(" -- %s", ctime(&(V->timestamp)));
-		else WRITE(" -- no time stamp\n");
-	} else {
-		WRITE("\n");
-	}
+	WRITE("\n");
 	if (recurse) {
 		if (V->buildable_if_copy) stem = V->buildable_if_copy->location_if_path;
 		if (V->buildable_if_internal_file)
@@ -142,17 +134,48 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 	}
 }
 
-void Graphs::update_timestamp(build_vertex *V) {
-	if (V == NULL) return;
-	if (V->buildable_if_internal_file == NULL) return;
-	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(FN);
-	WRITE_TO(FN, "%f", V->buildable_if_internal_file);
-	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(FN);
-    struct stat filestat;
-	if (stat(transcoded_pathname, &filestat) == -1) { V->timestamp = (time_t) 0; return; }
-	V->timestamp = filestat.st_mtime;
+time_t Graphs::timestamp_for(build_vertex *V) {
+	time_t latest = (time_t) 0;
+
+	if (V->buildable_if_internal_file) {
+		char transcoded_pathname[4*MAX_FILENAME_LENGTH];
+		TEMPORARY_TEXT(FN);
+		WRITE_TO(FN, "%f", V->buildable_if_internal_file);
+		Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
+		DISCARD_TEXT(FN);
+		struct stat filestat;
+		if (stat(transcoded_pathname, &filestat) != -1) latest = filestat.st_mtime;
+	} else {
+		latest = Graphs::time_of_most_recent_ingredient(V);
+	}
+
+	return latest;
+}
+
+time_t Graphs::time_of_most_recent_ingredient(build_vertex *V) {
+	time_t latest = (time_t) 0;
+
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges) {
+		time_t inner = Graphs::timestamp_for(W);
+		if ((latest == (time_t) 0) || (difftime(inner, latest) > 0))
+			latest = inner;
+	}
+
+	return latest;
+}
+
+time_t Graphs::time_of_most_recent_used_resource(build_vertex *V) {
+	time_t latest = (time_t) 0;
+
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges) {
+		time_t inner = Graphs::timestamp_for(W);
+		if ((latest == (time_t) 0) || (difftime(inner, latest) > 0))
+			latest = inner;
+	}
+
+	return latest;
 }
 
 @
@@ -163,40 +186,61 @@ void Graphs::update_timestamp(build_vertex *V) {
 @d USE_GB 4
 
 =
-void Graphs::build(build_vertex *V, build_methodology *meth) {
-	Graphs::build_r(BUILD_GB, V, meth);
+int Graphs::build(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
+	return Graphs::build_r(OUT, BUILD_GB, V, meth);
 }
-void Graphs::rebuild(build_vertex *V, build_methodology *meth) {
-	Graphs::build_r(BUILD_GB + FORCE_GB, V, meth);
+int Graphs::rebuild(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
+	return Graphs::build_r(OUT, BUILD_GB + FORCE_GB, V, meth);
 }
-void Graphs::build_r(int gb, build_vertex *V, build_methodology *meth) {
-	int needs_building = FALSE;
-	if (gb & FORCE_GB) needs_building = TRUE;
-	else if (V->built) return;
-	if (V->buildable_if_internal_file)
-		if (TextFiles::exists(V->buildable_if_internal_file) == FALSE)
-			needs_building = TRUE;
+int trace_ibg = FALSE;
+int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *meth) {
+	if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
+
+	if (V->built) return TRUE;
+
+	STREAM_INDENT(STDOUT);
+	int rv = TRUE;
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-		Graphs::build_r(gb | USE_GB, W, meth);
+		if (rv)
+			rv = Graphs::build_r(OUT, gb | USE_GB, W, meth);
 	if (gb & USE_GB)
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-			Graphs::build_r(gb & (BUILD_GB + FORCE_GB), W, meth);
-	if (needs_building == FALSE) {
-		Graphs::update_timestamp(V);
-		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges) {
-			Graphs::update_timestamp(W);
-			double since = difftime(V->timestamp, W->timestamp);
-			if (since < 0) { needs_building = TRUE; break; }
+			if (rv)
+				rv = Graphs::build_r(OUT, gb & (BUILD_GB + FORCE_GB), W, meth);
+	STREAM_OUTDENT(STDOUT);
+	if (rv) {
+		int needs_building = FALSE;
+		if (gb & FORCE_GB) needs_building = TRUE;
+		else @<Decide based on timestamps@>;
+
+		if (needs_building) {
+			if (trace_ibg) { WRITE_TO(STDOUT, "Exec\n"); }
+			rv = BuildScripts::execute(V, V->script, meth);
 		}
-		if (gb & USE_GB)
-			LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges) {
-				Graphs::update_timestamp(W);
-				double since = difftime(V->timestamp, W->timestamp);
-				if (since < 0) { needs_building = TRUE; break; }
-			}
 	}
-	if (V->built) needs_building = FALSE;
-	if (needs_building) BuildSteps::execute(V, V->script, meth);
-	V->built = TRUE;
+	V->built = rv;
+	return rv;
 }
+
+@<Decide based on timestamps@> =
+	time_t last_built_at = Graphs::timestamp_for(V);
+	if (trace_ibg) { WRITE_TO(STDOUT, "Last built at: %08x\n", last_built_at); }
+	if (last_built_at == (time_t) 0)
+		needs_building = TRUE;
+	else {
+		time_t time_of_most_recent = Graphs::time_of_most_recent_ingredient(V);
+		if (time_of_most_recent != (time_t) 0) {
+			if (trace_ibg) { WRITE_TO(STDOUT, "Most recent: %08x\n", time_of_most_recent); }
+			if (difftime(time_of_most_recent, last_built_at) > 0)
+				needs_building = TRUE;
+		}
+		if (gb & USE_GB) {
+			time_t time_of_most_recent_used = Graphs::time_of_most_recent_used_resource(V);
+			if (time_of_most_recent_used != (time_t) 0) {
+				if (trace_ibg) { WRITE_TO(STDOUT, "Most recent use: %08x\n", time_of_most_recent_used); }
+				if (difftime(time_of_most_recent_used, last_built_at) > 0)
+					needs_building = TRUE;
+			}
+		}
+	}

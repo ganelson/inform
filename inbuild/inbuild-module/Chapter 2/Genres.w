@@ -38,6 +38,7 @@ text_stream *Genres::name(inbuild_genre *G) {
 @e GENRE_COPY_TO_NEST_MTID
 @e GENRE_GO_OPERATIONAL_MTID
 @e GENRE_READ_SOURCE_TEXT_FOR_MTID
+@e GENRE_BUILD_COPY_MTID
 
 =
 VMETHOD_TYPE(GENRE_WRITE_WORK_MTID,
@@ -57,3 +58,6 @@ VMETHOD_TYPE(GENRE_GO_OPERATIONAL_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
+VMETHOD_TYPE(GENRE_BUILD_COPY_MTID,
+	inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
+	build_methodology *BM, int rebuild, int describe_only)

@@ -340,6 +340,7 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 		if (C == NULL) C = ProjectFileManager::claim_file_as_copy(filename_of_i7_source);
 		shared_project = ProjectFileManager::from_copy(C);
 	}
+	@<Create the default externals nest@>;
 	@<Create the materials nest@>;
 	if (shared_project) {
 		pathname *P = (shared_materials_nest)?(shared_materials_nest->location):NULL;
@@ -349,6 +350,21 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 	}
 	return shared_project;
 }
+
+@<Create the default externals nest@> =
+	inbuild_nest *E = shared_external_nest;
+	if (E == NULL) {
+		pathname *P = home_path;
+		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
+		if (subfolder_within[0]) {
+			TEMPORARY_TEXT(SF);
+			WRITE_TO(SF, "%s", subfolder_within);
+			P = Pathnames::subfolder(home_path, SF);
+			DISCARD_TEXT(SF);
+		}
+		P = Pathnames::subfolder(P, I"Inform");
+		E = Inbuild::add_nest(P, EXTERNAL_NEST_TAG);
+	}
 
 @<Create the materials nest@> =
 	pathname *materials = NULL;

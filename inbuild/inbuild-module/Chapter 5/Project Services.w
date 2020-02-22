@@ -256,9 +256,8 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
 	build_vertex *inf_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inf_V, project->as_copy->vertex);
-	build_step *BS = BuildSteps::new_step(COMPILE_I7_TO_GEN_BSTEP, NULL, NULL);
-	BS->arg_vm = VM;
-	BuildSteps::add_step(inf_V->script, BS);
+	BuildSteps::attach(inf_V, COMPILE_I7_TO_GEN_BSTEP,
+		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	TEMPORARY_TEXT(story_file_leafname);
 	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
@@ -266,9 +265,8 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 	DISCARD_TEXT(story_file_leafname);
 	build_vertex *unblorbed_V = Graphs::file_vertex(unblorbed_F);
 	Graphs::need_this_to_build(unblorbed_V, inf_V);
-	build_step *BS2 = BuildSteps::new_step(COMPILE_GEN_TO_STORY_FILE_BSTEP, NULL, NULL);
-	BS2->arg_vm = VM;
-	BuildSteps::add_step(unblorbed_V->script, BS2);
+	BuildSteps::attach(unblorbed_V, COMPILE_GEN_TO_STORY_FILE_BSTEP,
+		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	if (releasing) {
 		TEMPORARY_TEXT(story_file_leafname);
@@ -277,9 +275,8 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 		DISCARD_TEXT(story_file_leafname);
 		build_vertex *blorbed_V = Graphs::file_vertex(blorbed_F);
 		Graphs::need_this_to_build(unblorbed_V, inf_V);
-		build_step *BS3 = BuildSteps::new_step(BLORB_STORY_FILE_BSTEP, NULL, NULL);
-		BS3->arg_vm = VM;
-		BuildSteps::add_step(blorbed_V->script, BS3);		
+		BuildSteps::attach(blorbed_V, BLORB_STORY_FILE_BSTEP,
+			Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
 		project->chosen_build_target = blorbed_V;
 	} else {

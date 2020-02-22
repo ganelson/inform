@@ -67,6 +67,16 @@ void Copies::scan(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_SCAN_COPY_MTID, C);
 }
 
+void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, FALSE, FALSE);
+}
+void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, TRUE, FALSE);
+}
+void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, TRUE);
+}
+
 wording Copies::read_source_text_for(inbuild_copy *C) {
 	if (C->source_text_read == FALSE) {
 		C->source_text_read = TRUE;

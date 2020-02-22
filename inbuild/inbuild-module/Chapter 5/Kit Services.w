@@ -210,6 +210,12 @@ linked_list *Kits::inter_paths(void) {
 	return inter_paths;
 }
 
+@ The build graph for a kit is quite extensive, since a kit contains Inter
+binaries for four different architectures; and each of those has a
+dependency on every section file of the web of Inform 6 source for the kit.
+If there are $S$ sections then the graph has $S+5$ vertices and $4(S+1)$ edges.
+
+=
 void Kits::construct_graph(inform_kit *K) {
 	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	if (K == NULL) return;
@@ -221,9 +227,8 @@ void Kits::construct_graph(inform_kit *K) {
 	LOOP_OVER(A, inter_architecture) {
 		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
 		Graphs::need_this_to_build(KV, BV);
-		build_step *BS = BuildSteps::new_step(
-			ASSIMILATE_BSTEP, P, Architectures::to_codename(A));
-		BuildSteps::add_step(BV->script, BS);
+		BuildSteps::attach(BV, ASSIMILATE_BSTEP,
+			Inbuild::nest_list(), FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
 	}
 

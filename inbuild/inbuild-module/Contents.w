@@ -18,6 +18,8 @@ Chapter 2: Conceptual Framework
 
 Chapter 3: Incremental Builds
 	Build Graphs
+	Build Methodology
+	Build Scripts
 	Build Steps
 
 Chapter 4: Managing Genres of Work

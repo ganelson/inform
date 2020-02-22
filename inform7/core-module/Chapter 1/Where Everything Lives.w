@@ -146,42 +146,12 @@ not distinguish between permanent and transient external resources.
 
 @<External resources@> =
 	inbuild_nest *E = Inbuild::external();
-	if (E == NULL) {
-		pathname *P = home_path;
-		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
-		if (subfolder_within[0]) {
-			TEMPORARY_TEXT(SF);
-			WRITE_TO(SF, "%s", subfolder_within);
-			P = Pathnames::subfolder(home_path, SF);
-			DISCARD_TEXT(SF);
-		}
-		P = Pathnames::subfolder(P, I"Inform");
-		E = Inbuild::add_nest(P, EXTERNAL_NEST_TAG);
-	}
 	pathname *pathname_of_external_folder = E->location;
-
-	if (Pathnames::create_in_file_system(pathname_of_external_folder) == 0) return FALSE;
-	@<Permanent external resources@>;
-
-	pathname *pathname_of_transient_external_resources = Inbuild::transient();
-	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
-	@<Transient external resources@>;
-
-@ The permanent resources are read-only as far as we are concerned. (The
-user interface application, and the user directly, write to this area when
-they (say) install new extensions. But the compiler only reads.)
-
-Once again we have a set of EILT resources, but we also have a curiosity:
-a useful little file to add source text to everything Inform compiles,
-generally to set use options.
-
-@<Permanent external resources@> =
 	filename_of_options =
 		Filenames::in_folder(pathname_of_external_folder, I"Options.txt");
 
-@ The transient resources are all written by us.
-
-@<Transient external resources@> =
+	pathname *pathname_of_transient_external_resources = Inbuild::transient();
+	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
 	@<Transient documentation@>;
 	@<Transient telemetry@>;
 

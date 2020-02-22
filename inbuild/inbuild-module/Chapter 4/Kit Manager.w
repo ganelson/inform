@@ -14,6 +14,7 @@ void KitManager::start(void) {
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);
 	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, KitManager::copy_to_nest);
 	METHOD_ADD(kit_genre, GENRE_GO_OPERATIONAL_MTID, KitManager::go_operational);
+	METHOD_ADD(kit_genre, GENRE_BUILD_COPY_MTID, KitManager::build);
 }
 
 void KitManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -161,12 +162,15 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 }
 
 @h Build graph.
-The build graph for a kit is quite extensive, since a kit contains Inter
-binaries for four different architectures; and each of those has a
-dependency on every section file of the web of Inform 6 source for the kit.
-If there are $S$ sections then the graph has $S+5$ vertices and $4(S+1)$ edges.
 
 =
+void KitManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
+	build_methodology *BM, int rebuild, int describe_only) {
+	if (describe_only) Graphs::describe(OUT, C->vertex, TRUE);
+	else if (rebuild) Graphs::rebuild(OUT, C->vertex, BM);
+	else Graphs::build(OUT, C->vertex, BM);
+}
+
 void KitManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

@@ -36,8 +36,8 @@ int main(int argc, char **argv) {
 	
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 	build_methodology *BM;
-	if (path_to_tools) BM = BuildSteps::methodology(path_to_tools, FALSE);
-	else BM = BuildSteps::methodology(Pathnames::up(path_to_inbuild), TRUE);
+	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE);
+	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE);
 	if (dry_run_mode == FALSE) BM->methodology = SHELL_METHODOLOGY;
 	if (Str::len(unit_test) > 0) {
 		BM->methodology = DRY_RUN_METHODOLOGY;
@@ -63,9 +63,9 @@ int main(int argc, char **argv) {
 		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) {
 			switch (inbuild_task) {
 				case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
-				case GRAPH_TTASK: Graphs::describe(STDOUT, C->vertex, TRUE); break;
-				case BUILD_TTASK: Graphs::build(C->vertex, BM); break;
-				case REBUILD_TTASK: Graphs::rebuild(C->vertex, BM); break;
+				case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
+				case BUILD_TTASK: Copies::build(STDOUT, C, BM); break;
+				case REBUILD_TTASK: Copies::rebuild(STDOUT, C, BM); break;
 				case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
 				case SYNC_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, TRUE, BM); break;
 			}

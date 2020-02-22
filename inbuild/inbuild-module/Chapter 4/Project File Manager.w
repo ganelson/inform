@@ -14,6 +14,7 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
 	METHOD_ADD(project_file_genre, GENRE_GO_OPERATIONAL_MTID, ProjectFileManager::go_operational);
 	METHOD_ADD(project_file_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectFileManager::read_source_text_for);
+	METHOD_ADD(project_file_genre, GENRE_BUILD_COPY_MTID, ProjectFileManager::build);
 }
 
 void ProjectFileManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -89,7 +90,18 @@ void ProjectFileManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbui
 }
 
 @h Build graph.
-The build graph for a project will need further thought.
+
+=
+void ProjectFileManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
+	build_methodology *BM, int rebuild, int describe_only) {
+	inform_project *project = ProjectBundleManager::from_copy(C);
+	build_vertex *V = project->chosen_build_target;
+	if (describe_only) Graphs::describe(OUT, V, TRUE);
+	else if (rebuild) Graphs::rebuild(OUT, V, BM);
+	else Graphs::build(OUT, V, BM);
+}
+
+@ The build graph for a project will need further thought...
 
 =
 void ProjectFileManager::build_vertex(inbuild_copy *C) {
