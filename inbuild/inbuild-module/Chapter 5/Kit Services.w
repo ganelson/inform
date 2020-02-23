@@ -227,7 +227,7 @@ void Kits::construct_graph(inform_kit *K) {
 	LOOP_OVER(A, inter_architecture) {
 		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
 		Graphs::need_this_to_build(KV, BV);
-		BuildSteps::attach(BV, ASSIMILATE_BSTEP,
+		BuildSteps::attach(BV, assimilate_using_inter_skill,
 			Inbuild::nest_list(), FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
 	}

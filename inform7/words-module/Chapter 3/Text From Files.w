@@ -130,6 +130,7 @@ the following routine, which combines them into one.
 
 =
 int TextFromFiles::total_word_count(source_file *sf) {
+	if (sf == NULL) return 0;
 	return sf->words_of_source + sf->words_of_quoted_text;
 }
 

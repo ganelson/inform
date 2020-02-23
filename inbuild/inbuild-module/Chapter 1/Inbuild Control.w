@@ -116,7 +116,7 @@ extensions, and so on, which are needed by that project.
 
 =
 target_vm *current_target_VM = NULL;
-inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
+inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 
 	target_vm *VM = NULL;
@@ -137,7 +137,7 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C) {
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
 	if (project) {
-		Projects::construct_build_target(project, VM, this_is_a_release_compile);
+		Projects::construct_build_target(project, VM, this_is_a_release_compile, compile_only);
 		current_target_VM = VM;
 		return project->as_copy;
 	} else {

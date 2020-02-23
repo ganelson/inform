@@ -19,32 +19,32 @@ typedef struct build_methodology {
 	MEMORY_MANAGEMENT
 } build_methodology;
 
-build_methodology *BuildMethodology::new(pathname *tools_path, int dev) {
-	build_methodology *meth = CREATE(build_methodology);
-	meth->methodology = DRY_RUN_METHODOLOGY;
+build_methodology *BuildMethodology::new(pathname *tools_path, int dev, int meth) {
+	build_methodology *BM = CREATE(build_methodology);
+	BM->methodology = meth;
 	pathname *inter_path = tools_path;
 	if (dev) {
 		inter_path = Pathnames::subfolder(inter_path, I"inter");
 		inter_path = Pathnames::subfolder(inter_path, I"Tangled");
 	}
-	meth->to_inter = Filenames::in_folder(inter_path, I"inter");
+	BM->to_inter = Filenames::in_folder(inter_path, I"inter");
 	pathname *inform6_path = tools_path;
 	if (dev) {
 		inform6_path = Pathnames::subfolder(inform6_path, I"inform6");
 		inform6_path = Pathnames::subfolder(inform6_path, I"Tangled");
 	}
-	meth->to_inform6 = Filenames::in_folder(inform6_path, I"inform6");
+	BM->to_inform6 = Filenames::in_folder(inform6_path, I"inform6");
 	pathname *inform7_path = tools_path;
 	if (dev) {
 		inform7_path = Pathnames::subfolder(inform7_path, I"inform7");
 		inform7_path = Pathnames::subfolder(inform7_path, I"Tangled");
 	}
-	meth->to_inform7 = Filenames::in_folder(inform7_path, I"inform7");
+	BM->to_inform7 = Filenames::in_folder(inform7_path, I"inform7");
 	pathname *inblorb_path = tools_path;
 	if (dev) {
 		inblorb_path = Pathnames::subfolder(inblorb_path, I"inblorb");
 		inblorb_path = Pathnames::subfolder(inblorb_path, I"Tangled");
 	}
-	meth->to_inblorb = Filenames::in_folder(inblorb_path, I"inblorb");
-	return meth;
+	BM->to_inblorb = Filenames::in_folder(inblorb_path, I"inblorb");
+	return BM;
 }

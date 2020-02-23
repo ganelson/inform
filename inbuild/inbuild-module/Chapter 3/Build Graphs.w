@@ -29,6 +29,7 @@ typedef struct build_vertex {
 	struct build_script *script;
 	int last_described;
 	int built;
+	int force_this;
 	MEMORY_MANAGEMENT
 } build_vertex;
 
@@ -44,6 +45,7 @@ build_vertex *Graphs::file_vertex(filename *F) {
 	V->read_as = NULL;
 	V->last_described = 0;
 	V->built = FALSE;
+	V->force_this = FALSE;
 	return V;
 }
 
@@ -211,7 +213,7 @@ int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *m
 	STREAM_OUTDENT(STDOUT);
 	if (rv) {
 		int needs_building = FALSE;
-		if (gb & FORCE_GB) needs_building = TRUE;
+		if ((gb & FORCE_GB) || (V->force_this)) needs_building = TRUE;
 		else @<Decide based on timestamps@>;
 
 		if (needs_building) {

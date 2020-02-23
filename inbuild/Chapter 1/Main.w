@@ -35,12 +35,13 @@ int main(int argc, char **argv) {
 	@<Read the command line@>;
 	
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
+	if (Str::len(unit_test) > 0) dry_run_mode = TRUE;
+	int use = SHELL_METHODOLOGY;
+	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
 	build_methodology *BM;
-	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE);
-	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE);
-	if (dry_run_mode == FALSE) BM->methodology = SHELL_METHODOLOGY;
+	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
+	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
 	if (Str::len(unit_test) > 0) {
-		BM->methodology = DRY_RUN_METHODOLOGY;
 		if (Str::eq(unit_test, I"compatibility")) Compatibility::test(STDOUT);
 		else Errors::with_text("no such unit test: %S", unit_test);
 	} else {
@@ -137,7 +138,7 @@ int main(int argc, char **argv) {
 			else proj = C;
 		}
 	
-	proj = Inbuild::optioneering_complete(proj);
+	proj = Inbuild::optioneering_complete(proj, FALSE);
 	if (proj) {
 		int found = FALSE;
 		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)

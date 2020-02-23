@@ -21,6 +21,10 @@ Chapter 3: Incremental Builds
 	Build Methodology
 	Build Scripts
 	Build Steps
+	Inter Skill
+	Inform7 Skill
+	Inform6 Skill
+	Inblorb Skill
 
 Chapter 4: Managing Genres of Work
 	Kit Manager

@@ -175,6 +175,7 @@ void Extensions::Dictionary::new_dictionary_entry_raw(text_stream *category,
 	text_stream *author, text_stream *title, text_stream *headword) {
 	extension_dictionary_entry *ede = CREATE(extension_dictionary_entry);
 	ede->ede_work = Works::new(extension_genre, title, author);
+	LOGIF(EXTENSIONS_CENSUS, "NDER %X\n", ede->ede_work);
 	Works::add_to_database(ede->ede_work, DICTIONARY_REFERRED_WDBC);
 	ede->entry_text = Str::duplicate(headword);
 	ede->type = Str::duplicate(category);

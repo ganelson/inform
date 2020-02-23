@@ -56,7 +56,10 @@ int CoreMain::main(int argc, char *argv[]) {
 		@<Boot up the compiler@>;
 		Inbuild::go_operational();
 		inform_project *project = Inbuild::project();
-		if (project) CoreMain::task(project);
+		if (project) {
+			Copies::build(STDOUT, project->as_copy,
+				BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY));
+		}
 	}
 	@<Shutdown and rennab@>;
 	if (problem_count > 0) Problems::Fatal::exit(1);
@@ -119,7 +122,7 @@ list is not exhaustive.
 	path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
 
 @<With that done, configure all other settings@> =
-	Inbuild::optioneering_complete(NULL);
+	Inbuild::optioneering_complete(NULL, TRUE);
 	if (Locations::set_defaults() == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
 	Log::set_debug_log_filename(filename_of_debugging_log);
@@ -134,7 +137,11 @@ list is not exhaustive.
 	Problems::Issue::start_problems_report();
 
 @ =
-void CoreMain::task(inform_project *project) {
+int CoreMain::task(build_step *S) {
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
+
 	clock_t start = clock();
 	@<Perform lexical analysis@>;
 	@<Perform semantic analysis@>;
@@ -149,6 +156,8 @@ void CoreMain::task(inform_project *project) {
 	clock_t end = clock();
 	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
 	LOG("CPU time: %d centiseconds\n", cpu_time_used);
+	if (problem_count > 0) return FALSE;
+	return TRUE;
 }
 
 @

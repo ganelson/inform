@@ -83,9 +83,7 @@ int main(int argc, char **argv) {
 		WRITE_TO(fullname, "%f", assim_t);
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
 		DISCARD_TEXT(fullname);
-		match_results mr = Regexp::create_mr();
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(template_path));
-		Regexp::dispose_of(&mr);
 	}
 
 	Main::act();

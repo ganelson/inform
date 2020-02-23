@@ -33,6 +33,7 @@ Setting up the use of this module.
 @e copy_error_MT
 @e extension_dictionary_entry_MT
 @e known_extension_clash_MT
+@e build_skill_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -59,6 +60,7 @@ ALLOCATE_INDIVIDUALLY(inform_pipeline)
 ALLOCATE_INDIVIDUALLY(copy_error)
 ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(known_extension_clash)
+ALLOCATE_INDIVIDUALLY(build_skill)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 
@@ -78,6 +80,10 @@ void InbuildModule::start(void) {
 	ProjectBundleManager::start();
 	ProjectFileManager::start();
 	PipelineManager::start();
+	InterSkill::create();
+	Inform7Skill::create();
+	Inform6Skill::create();
+	InblorbSkill::create();
 }
 
 @

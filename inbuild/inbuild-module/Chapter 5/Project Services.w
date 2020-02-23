@@ -248,7 +248,8 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 }
 #endif
 
-void Projects::construct_build_target(inform_project *project, target_vm *VM, int releasing) {
+void Projects::construct_build_target(inform_project *project, target_vm *VM,
+	int releasing, int compile_only) {
 	pathname *proj = project->as_copy->location_if_path;
 	pathname *build_folder = NULL;
 	if (proj) build_folder = Pathnames::subfolder(proj, I"Build");
@@ -256,7 +257,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
 	build_vertex *inf_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inf_V, project->as_copy->vertex);
-	BuildSteps::attach(inf_V, COMPILE_I7_TO_GEN_BSTEP,
+	BuildSteps::attach(inf_V, compile_using_inform7_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	TEMPORARY_TEXT(story_file_leafname);
@@ -265,7 +266,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 	DISCARD_TEXT(story_file_leafname);
 	build_vertex *unblorbed_V = Graphs::file_vertex(unblorbed_F);
 	Graphs::need_this_to_build(unblorbed_V, inf_V);
-	BuildSteps::attach(unblorbed_V, COMPILE_GEN_TO_STORY_FILE_BSTEP,
+	BuildSteps::attach(unblorbed_V, compile_using_inform6_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	if (releasing) {
@@ -275,12 +276,13 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM, in
 		DISCARD_TEXT(story_file_leafname);
 		build_vertex *blorbed_V = Graphs::file_vertex(blorbed_F);
 		Graphs::need_this_to_build(unblorbed_V, inf_V);
-		BuildSteps::attach(blorbed_V, BLORB_STORY_FILE_BSTEP,
+		BuildSteps::attach(blorbed_V, package_using_inblorb_skill,
 			Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
-
 		project->chosen_build_target = blorbed_V;
-	} else {
-		project->chosen_build_target = unblorbed_V;
+	} else project->chosen_build_target = unblorbed_V;
+	if (compile_only) {
+		project->chosen_build_target = inf_V;
+		inf_V->force_this = TRUE;
 	}
 }
 
