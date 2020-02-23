@@ -215,11 +215,20 @@ Not a surprising routine: open, convert one line at a time to dictionary
 entries, close.
 
 =
+filename *Extensions::Dictionary::filename(void) {
+	pathname *P = Inbuild::transient();
+	if (P == NULL) return NULL;
+	return Filenames::in_folder(P, I"Dictionary.txt");
+}
+
 void Extensions::Dictionary::load(void) {
+	filename *F = Extensions::Dictionary::filename();
+	if (F == NULL) return;
+
 	@<Ensure the serialised extensions dictionary file exists@>;
 
 	LOGIF(EXTENSIONS_CENSUS, "Reading dictionary file\n");
-	TextFiles::read(filename_of_extensions_dictionary, FALSE,
+	TextFiles::read(F, FALSE,
 		NULL, FALSE, Extensions::Dictionary::load_helper, NULL, NULL);
 	LOGIF(EXTENSIONS_CENSUS, "Finished reading dictionary file\n");
 }
@@ -233,10 +242,10 @@ file, we are then unable to open it again: that must mean a file I/O error of
 some kind, which is bad enough news to bother the user with.
 
 @<Ensure the serialised extensions dictionary file exists@> =
-	FILE *DICTF = Filenames::fopen(filename_of_extensions_dictionary, "r");
+	FILE *DICTF = Filenames::fopen(F, "r");
 	if (DICTF == NULL) {
 		LOGIF(EXTENSIONS_CENSUS, "Creating new empty dictionary file\n");
-		FILE *EMPTY_DICTF = Filenames::fopen(filename_of_extensions_dictionary, "w");
+		FILE *EMPTY_DICTF = Filenames::fopen(F, "w");
 		if (EMPTY_DICTF == NULL) return;
 		fclose(EMPTY_DICTF);
 	}
@@ -305,7 +314,9 @@ void Extensions::Dictionary::write_back(void) {
 	text_stream DICTF_struct;
 	text_stream *DICTF = &DICTF_struct;
 
-	if (STREAM_OPEN_TO_FILE(DICTF, filename_of_extensions_dictionary, UTF8_ENC) == FALSE) return;
+	filename *F = Extensions::Dictionary::filename();
+	if (F == NULL) return;
+	if (STREAM_OPEN_TO_FILE(DICTF, F, UTF8_ENC) == FALSE) return;
 
 	LOGIF(EXTENSIONS_CENSUS, "Writing dictionary file\n");
 

@@ -36,6 +36,8 @@ Chapter 5: Services for the Inform Compiler
 	Virtual Machine Grammar
 	Kit Services
 	Extension Services
+	Extension Dictionary
+	Extension Documentation
 	Extension Census
 	Template Services
 	Project Services

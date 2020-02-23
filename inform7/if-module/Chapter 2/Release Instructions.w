@@ -757,7 +757,7 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 			} else {
 				wording W = ParseTree::get_text(val);
 				int w1 = Wordings::first_wn(W);
-				HTMLFiles::compile_bibliographic_text(OUT, Lexer::word_text(w1));
+				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
 			}
 		}
 		return TRUE;
@@ -785,7 +785,7 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 			} else {
 				wording W = ParseTree::get_text(val);
 				int w1 = Wordings::first_wn(W);
-				HTMLFiles::compile_bibliographic_text(OUT, Lexer::word_text(w1));
+				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
 			}
 		}
 		return TRUE;

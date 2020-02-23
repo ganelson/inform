@@ -728,3 +728,148 @@ void Extensions::Census::write_icons(OUTPUT_STREAM, compatibility_specification 
 			if (Compatibility::with(C, VM))
 				Extensions::Census::plot_icon(OUT, VM);
 }
+
+@h Updating the documentation.
+This is done in the course of taking an extension census, which is called
+for in one of two circumstances: when Inform is being run in "census mode" to
+notify it that extensions have been installed or uninstalled; or when Inform
+has completed the successful compilation of a source text. In the latter
+case, it knows quite a lot about the extensions actually used in that
+compilation, and so can write detailed versions of their documentation:
+since it is updating extension documentation anyway, it conducts a census
+as well. (In both cases the extension dictionary is also worked upon.) The
+two alternatives are expressed here:
+
+=
+void Extensions::Census::handle_census_mode(void) {
+	extension_census *C = Extensions::Census::new();
+	Extensions::Dictionary::load();
+	Extensions::Census::perform(C);
+	Extensions::Census::write_top_level_of_extensions_documentation(C);
+	Extensions::Census::write_sketchy_documentation_for_extensions_found(TRUE);
+}
+
+void Extensions::Census::update_census(void) {
+	Extensions::Dictionary::load();
+	extension_census *C = Extensions::Census::new();
+	Extensions::Census::perform(C);
+	Extensions::Census::write_top_level_of_extensions_documentation(C);
+	#ifdef CORE_MODULE
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension) Extensions::Documentation::write_detailed(E);
+	#endif
+	Extensions::Census::write_sketchy_documentation_for_extensions_found(FALSE);
+	Extensions::Dictionary::write_back();
+	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Works::log_work_hash_table();
+}
+
+@ Documenting extensions seen but not used: we run through the census
+results in no particular order and create a sketchy page of documentation,
+if there's no better one already.
+
+=
+void Extensions::Census::write_sketchy_documentation_for_extensions_found(int census_mode) {
+	extension_census_datum *ecd;
+	LOOP_OVER(ecd, extension_census_datum)
+		Extensions::Documentation::write_sketchy(ecd, census_mode);
+}
+
+@h Writing the extensions home pages.
+Extensions documentation forms a mini-website within the Inform
+documentation. There is a top level consisting of two home pages: a
+directory of all installed extensions, and an index to the terms defined in
+those extensions. A cross-link switches between them. Each of these links
+down to the bottom level, where there is a page for every installed
+extension (wherever it is installed). The picture is therefore something
+like this:
+
+= (not code)
+    (Main documentation contents page)
+            |
+    Extensions.html--ExtIndex.html
+            |      \/      |
+            |      /\      |
+    Nigel Toad/Eggs  Barnabas Dundritch/Neopolitan Iced Cream   ...
+
+@ These pages are stored at the relative pathnames
+
+	|Extensions/Documentation/Extensions.html|
+	|Extensions/Documentation/ExtIndex.html|
+
+They are made by inserting content in place of the material between the
+HTML anchors |on| and |off| in a template version of the page built in
+to the application, with a leafname which varies from platform to
+platform, for reasons as always to do with the vagaries of Internet
+Explorer 7 for Windows.
+
+=
+void Extensions::Census::write_top_level_of_extensions_documentation(extension_census *C) {
+	Extensions::Census::write_top_level_extensions_page(I"Extensions.html", 1, C);
+	Extensions::Census::write_top_level_extensions_page(I"ExtIndex.html", 2, NULL);
+}
+
+@ =
+pathname *Extensions::Census::doc_pathname(void) {
+	pathname *P = Inbuild::transient();
+	if (P == NULL) return NULL;
+	if (Pathnames::create_in_file_system(P) == 0) return NULL;
+	P = Pathnames::subfolder(P, I"Documentation");
+	if (Pathnames::create_in_file_system(P) == 0) return NULL;
+	return P;
+}
+pathname *Extensions::Census::doc_models(void) {
+	inbuild_nest *I = Inbuild::internal(); if (I == NULL) return NULL;
+	return Pathnames::subfolder(I->location, I"HTML");
+}
+void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
+	pathname *P = Extensions::Census::doc_pathname();
+	if (P == NULL) return;
+	filename *F = Filenames::in_folder(P, leaf);
+
+	pathname *models = Extensions::Census::doc_models();
+	if (models == NULL) return;
+
+	text_stream HOMEPAGE_struct;
+	text_stream *OUT = &HOMEPAGE_struct;
+	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) {
+		#ifdef CORE_MODULE
+		Problems::Fatal::filename_related(
+			"Unable to open extensions documentation index for writing", F);
+		#endif
+		#ifndef CORE_MODULE
+		Errors::fatal_with_file("extensions documentation index for writing: %f", F);
+		#endif
+	}
+
+	HTML::declare_as_HTML(OUT, FALSE);
+
+	HTML::begin_head(OUT, NULL);
+	HTML::title(OUT, I"Extensions");
+	HTML::incorporate_javascript(OUT, TRUE,
+		Filenames::in_folder(models, I"extensions.js"));
+	HTML::incorporate_CSS(OUT,
+		Filenames::in_folder(models, I"main.css"));
+	HTML::end_head(OUT);
+
+	HTML::begin_body(OUT, NULL);
+	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
+	HTML::first_html_column(OUT, 0);
+	HTML_TAG_WITH("img", "src='inform:/doc_images/extensions@2x.png' border=0 width=150 height=150");
+	HTML::next_html_column(OUT, 0);
+
+	HTML_OPEN_WITH("div", "class=\"headingboxDark\"");
+	HTML_OPEN_WITH("div", "class=\"headingtextWhite\"");
+	WRITE("Installed Extensions");
+	HTML_CLOSE("div");
+	HTML_OPEN_WITH("div", "class=\"headingrubricWhite\"");
+	WRITE("Bundles of extra rules or phrases to extend what Inform can do");
+	HTML_CLOSE("div");
+	HTML_CLOSE("div");
+
+	switch (content) {
+		case 1: Extensions::Census::write_results(OUT, C); break;
+		case 2: Extensions::Dictionary::write_to_HTML(OUT); break;
+	}
+
+	HTML::end_body(OUT);
+}

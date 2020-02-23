@@ -28,7 +28,7 @@ linked_list *inbuild_nest_list = NULL;
 
 int main(int argc, char **argv) {
 	Foundation::start();
-	WordsModule::start();
+	HTMLModule::start();
 	ArchModule::start();
 	InbuildModule::start();
 	targets = NEW_LINKED_LIST(inbuild_copy);
@@ -74,6 +74,7 @@ int main(int argc, char **argv) {
 	WordsModule::end();
 	ArchModule::end();
 	InbuildModule::end();
+	HTMLModule::end();
 	Foundation::end();
 	return 0;
 }

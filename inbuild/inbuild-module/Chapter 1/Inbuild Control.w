@@ -46,6 +46,7 @@ to add and process command line switches handled by inbuild:
 @e DEBUG_CLSW
 @e FORMAT_CLSW
 @e RELEASE_CLSW
+@e CENSUS_CLSW
 
 =
 void Inbuild::declare_options(void) {
@@ -71,6 +72,8 @@ void Inbuild::declare_options(void) {
 		L"compile I6 code suitable for the virtual machine X");
 	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
 		L"use file X as the Inform source text");
+	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
+		L"perform an extensions census");
 	CommandLine::end_group();
 }
 
@@ -78,6 +81,7 @@ pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
+int census_mode = FALSE; /* Running only to update extension documentation */
 
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
@@ -98,6 +102,7 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 			if (Inbuild::set_I7_source(arg) == FALSE)
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
+		case CENSUS_CLSW: census_mode = val; break;
 	}
 }
 
@@ -165,6 +170,7 @@ void Inbuild::go_operational(void) {
 	LOOP_OVER(C, inbuild_copy)
 		Copies::go_operational(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
+	if (census_mode) Extensions::Census::handle_census_mode();
 }
 
 @h The nest list.

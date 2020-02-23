@@ -361,122 +361,177 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 	}
 }
 
-@h Updating the documentation.
-This is done in the course of taking an extension census, which is called
-for in one of two circumstances: when Inform is being run in "census mode" to
-notify it that extensions have been installed or uninstalled; or when Inform
-has completed the successful compilation of a source text. In the latter
-case, it knows quite a lot about the extensions actually used in that
-compilation, and so can write detailed versions of their documentation:
-since it is updating extension documentation anyway, it conducts a census
-as well. (In both cases the extension dictionary is also worked upon.) The
-two alternatives are expressed here:
+@ Nothing can prevent a certain repetitiousness intruding here, but there is
+just enough local knowledge required to make it foolhardy to try to automate
+this from a dump of the excerpt meanings table (say). The ordering of
+paragraphs, as in Roget's Thesaurus, tries to proceed from solid things
+through to diffuse linguistic ones. But the reader of the resulting
+documentation page could be forgiven for thinking it a miscellany.
 
 =
-void Extensions::Files::handle_census_mode(void) {
-	if (census_mode) {
-		extension_census *C = Extensions::Census::new();
-		Extensions::Dictionary::load();
-		Extensions::Census::perform(C);
-		Extensions::Files::write_top_level_of_extensions_documentation(C);
-		Extensions::Files::write_sketchy_documentation_for_extensions_found();
+void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
+	Extensions::Dictionary::erase_entries(E);
+	if (E) Extensions::Dictionary::time_stamp(E);
+
+	@<Document and dictionary the kinds made in extension@>;
+	@<Document and dictionary the objects made in extension@>;
+
+	@<Document and dictionary the global variables made in extension@>;
+	@<Document and dictionary the enumerated constant values made in extension@>;
+
+	@<Document and dictionary the kinds of action made in extension@>;
+	@<Document and dictionary the actions made in extension@>;
+
+	@<Document and dictionary the verbs made in extension@>;
+	@<Document and dictionary the adjectival phrases made in extension@>;
+	@<Document and dictionary the property names made in extension@>;
+
+	@<Document and dictionary the use options made in extension@>;
+}
+
+@ Off we go, then. Kinds of object:
+
+@<Document and dictionary the kinds made in extension@> =
+	kind *K;
+	int kc = 0;
+	LOOP_OVER_BASE_KINDS(K) {
+		parse_node *S = Kinds::Behaviour::get_creating_sentence(K);
+		if (S) {
+			if (Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(S))) == E->read_into_file) {
+				wording W = Kinds::Behaviour::get_name(K, FALSE);
+				kc = Extensions::Files::document_headword(OUT, kc, E, "Kinds", I"kind", W);
+				kind *S = Kinds::Compare::super(K);
+				if (S) {
+					W = Kinds::Behaviour::get_name(S, FALSE);
+					if (Wordings::nonempty(W)) WRITE(" (a kind of %+W)", W);
+				}
+			}
+		}
 	}
-}
+	if (kc != 0) HTML_CLOSE("p");
 
-void Extensions::Files::update_census(void) {
-	Extensions::Dictionary::load();
-	extension_census *C = Extensions::Census::new();
-	Extensions::Census::perform(C);
-	Extensions::Files::write_top_level_of_extensions_documentation(C);
-	inform_extension *E;
-	LOOP_OVER(E, inform_extension) Extensions::Documentation::write_detailed(E);
-	Extensions::Files::write_sketchy_documentation_for_extensions_found();
-	Extensions::Dictionary::write_back();
-	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Works::log_work_hash_table();
-}
+@ Actual objects:
 
-@ Documenting extensions seen but not used: we run through the census
-results in no particular order and create a sketchy page of documentation,
-if there's no better one already.
-
-=
-void Extensions::Files::write_sketchy_documentation_for_extensions_found(void) {
-	extension_census_datum *ecd;
-	LOOP_OVER(ecd, extension_census_datum)
-		Extensions::Documentation::write_sketchy(ecd);
-}
-
-@h Writing the extensions home pages.
-Extensions documentation forms a mini-website within the Inform
-documentation. There is a top level consisting of two home pages: a
-directory of all installed extensions, and an index to the terms defined in
-those extensions. A cross-link switches between them. Each of these links
-down to the bottom level, where there is a page for every installed
-extension (wherever it is installed). The picture is therefore something
-like this:
-
-= (not code)
-    (Main documentation contents page)
-            |
-    Extensions.html--ExtIndex.html
-            |      \/      |
-            |      /\      |
-    Nigel Toad/Eggs  Barnabas Dundritch/Neopolitan Iced Cream   ...
-
-@ These pages are stored at the relative pathnames
-
-	|Extensions/Documentation/Extensions.html|
-	|Extensions/Documentation/ExtIndex.html|
-
-They are made by inserting content in place of the material between the
-HTML anchors |on| and |off| in a template version of the page built in
-to the application, with a leafname which varies from platform to
-platform, for reasons as always to do with the vagaries of Internet
-Explorer 7 for Windows.
-
-=
-void Extensions::Files::write_top_level_of_extensions_documentation(extension_census *C) {
-	Extensions::Files::write_top_level_extensions_page(I"Extensions.html", 1, C);
-	Extensions::Files::write_top_level_extensions_page(I"ExtIndex.html", 2, NULL);
-}
-
-@ =
-void Extensions::Files::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
-	text_stream HOMEPAGE_struct;
-	text_stream *OUT = &HOMEPAGE_struct;
-	filename *F = Filenames::in_folder(pathname_of_extension_docs, leaf);
-	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related(
-			"Unable to open extensions documentation index for writing", F);
-	HTML::declare_as_HTML(OUT, FALSE);
-
-	HTML::begin_head(OUT, NULL);
-	HTML::title(OUT, I"Extensions");
-	HTML::incorporate_javascript(OUT, TRUE,
-		Filenames::in_folder(pathname_of_HTML_models, I"extensions.js"));
-	HTML::incorporate_CSS(OUT,
-		Filenames::in_folder(pathname_of_HTML_models, I"main.css"));
-	HTML::end_head(OUT);
-
-	HTML::begin_body(OUT, NULL);
-	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
-	HTML::first_html_column(OUT, 0);
-	HTML_TAG_WITH("img", "src='inform:/doc_images/extensions@2x.png' border=0 width=150 height=150");
-	HTML::next_html_column(OUT, 0);
-
-	HTML_OPEN_WITH("div", "class=\"headingboxDark\"");
-	HTML_OPEN_WITH("div", "class=\"headingtextWhite\"");
-	WRITE("Installed Extensions");
-	HTML_CLOSE("div");
-	HTML_OPEN_WITH("div", "class=\"headingrubricWhite\"");
-	WRITE("Bundles of extra rules or phrases to extend what Inform can do");
-	HTML_CLOSE("div");
-	HTML_CLOSE("div");
-
-	switch (content) {
-		case 1: Extensions::Census::write_results(OUT, C); break;
-		case 2: Extensions::Dictionary::write_to_HTML(OUT); break;
+@<Document and dictionary the objects made in extension@> =
+	instance *I;
+	int kc = 0;
+	LOOP_OVER_OBJECT_INSTANCES(I) {
+		wording OW = Instances::get_name(I, FALSE);
+		if ((Instances::get_creating_sentence(I)) && (Wordings::nonempty(OW))) {
+			if (Lexer::file_of_origin(
+				Wordings::first_wn(ParseTree::get_text(Instances::get_creating_sentence(I))))
+					== E->read_into_file) {
+				TEMPORARY_TEXT(name_of_its_kind);
+				kind *k = Instances::to_kind(I);
+				wording W = Kinds::Behaviour::get_name(k, FALSE);
+				WRITE_TO(name_of_its_kind, "%+W", W);
+				kc = Extensions::Files::document_headword(OUT, kc, E,
+					"Physical creations", name_of_its_kind, OW);
+				WRITE(" (a %S)", name_of_its_kind);
+				DISCARD_TEXT(name_of_its_kind);
+			}
+		}
 	}
+	if (kc != 0) HTML_CLOSE("p");
 
-	HTML::end_body(OUT);
+@ Global variables:
+
+@<Document and dictionary the global variables made in extension@> =
+	nonlocal_variable *q;
+	int kc = 0;
+	LOOP_OVER(q, nonlocal_variable)
+		if ((Wordings::first_wn(q->name) >= 0) &&
+			(NonlocalVariables::is_global(q)) &&
+			(Lexer::file_of_origin(Wordings::first_wn(q->name)) == E->read_into_file) &&
+			(Sentences::Headings::indexed(Sentences::Headings::of_wording(q->name)))) {
+			if (<value-understood-variable-name>(q->name) == FALSE)
+				kc = Extensions::Files::document_headword(OUT,
+					kc, E, "Values that vary", I"value", q->name);
+		}
+	if (kc != 0) HTML_CLOSE("p");
+
+@ Constants:
+
+@<Document and dictionary the enumerated constant values made in extension@> =
+	instance *q;
+	int kc = 0;
+	LOOP_OVER_ENUMERATION_INSTANCES(q) {
+		wording NW = Instances::get_name(q, FALSE);
+		if ((Wordings::nonempty(NW)) && (Lexer::file_of_origin(Wordings::first_wn(NW)) == E->read_into_file))
+			kc = Extensions::Files::document_headword(OUT, kc, E, "Values", I"value", NW);
+	}
+	if (kc != 0) HTML_CLOSE("p");
+
+@ Kinds of action:
+
+@<Document and dictionary the kinds of action made in extension@> =
+	#ifdef IF_MODULE
+	PL::Actions::Patterns::Named::index_for_extension(OUT, E->read_into_file, E);
+	#endif
+
+@ Actions:
+
+@<Document and dictionary the actions made in extension@> =
+	#ifdef IF_MODULE
+	PL::Actions::Index::index_for_extension(OUT, E->read_into_file, E);
+	#endif
+
+@ Verbs (this one we delegate):
+
+@<Document and dictionary the verbs made in extension@> =
+	Index::Lexicon::list_verbs_in_file(OUT, E->read_into_file, E);
+
+@ Adjectival phrases:
+
+@<Document and dictionary the adjectival phrases made in extension@> =
+	adjectival_phrase *adj;
+	int kc = 0;
+	LOOP_OVER(adj, adjectival_phrase) {
+		wording W = Adjectives::get_text(adj, FALSE);
+		if ((Wordings::nonempty(W)) &&
+			(Lexer::file_of_origin(Wordings::first_wn(W)) == E->read_into_file))
+			kc = Extensions::Files::document_headword(OUT, kc, E, "Adjectives", I"adjective", W);
+	}
+	if (kc != 0) HTML_CLOSE("p");
+
+@ Other adjectives:
+
+@<Document and dictionary the property names made in extension@> =
+	property *prn;
+	int kc = 0;
+	LOOP_OVER(prn, property)
+		if ((Wordings::nonempty(prn->name)) &&
+			(Properties::is_shown_in_index(prn)) &&
+			(Lexer::file_of_origin(Wordings::first_wn(prn->name)) == E->read_into_file))
+			kc = Extensions::Files::document_headword(OUT, kc, E, "Properties", I"property",
+				prn->name);
+	if (kc != 0) HTML_CLOSE("p");
+
+@ Use options:
+
+@<Document and dictionary the use options made in extension@> =
+	use_option *uo;
+	int kc = 0;
+	LOOP_OVER(uo, use_option)
+		if ((Wordings::first_wn(uo->name) >= 0) &&
+			(Lexer::file_of_origin(Wordings::first_wn(uo->name)) == E->read_into_file))
+			kc = Extensions::Files::document_headword(OUT, kc, E, "Use options", I"use option",
+				uo->name);
+	if (kc != 0) HTML_CLOSE("p");
+
+@ Finally, the utility routine which keeps count (hence |kc|) and displays
+suitable lists, while entering each entry in turn into the extension
+dictionary.
+
+=
+int Extensions::Files::document_headword(OUTPUT_STREAM, int kc, inform_extension *E, char *par_heading,
+	text_stream *category, wording W) {
+	if (kc++ == 0) { HTML_OPEN("p"); WRITE("%s: ", par_heading); }
+	else WRITE(", ");
+	WRITE("<b>%+W</b>", W);
+	Extensions::Dictionary::new_entry(category, E, W);
+	return kc;
 }
+
+@ And that at last brings us to a milestone: the end of the Land of Extensions.
+We can return to Inform's more usual concerns.

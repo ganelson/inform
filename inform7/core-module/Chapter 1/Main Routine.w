@@ -10,7 +10,6 @@ options with inbuild: see that module for more.
 =
 int existing_story_file = FALSE; /* Ignore source text to blorb existing story file? */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
-int census_mode = FALSE; /* Inform running only to update extension documentation */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
 int disable_import = FALSE;
@@ -40,7 +39,6 @@ int model_world_constructed = FALSE; /* World model is now constructed */
 int indexing_stage = FALSE; /* Everything is done except indexing */
 
 @ =
-int report_clock_time = FALSE;
 time_t right_now;
 text_stream *inter_processing_file = NULL;
 text_stream *inter_processing_pipeline = NULL;
@@ -48,7 +46,6 @@ dictionary *pipeline_vars = NULL;
 pathname *path_to_inform7 = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
-	clock_t start = clock();
 	@<Banner and startup@>;
 	@<Register command-line arguments@>;
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
@@ -57,23 +54,10 @@ int CoreMain::main(int argc, char *argv[]) {
 		@<With that done, configure all other settings@>;
 		@<Open the debugging log and the problems report@>;
 		@<Boot up the compiler@>;
-		if (census_mode)
-			Extensions::Files::handle_census_mode();
-		else {
-			@<Work out our kit requirements@>;
-			@<Perform lexical analysis@>;
-			@<Perform semantic analysis@>;
-			@<Read the assertions in two passes@>;
-			@<Make the model world@>;
-			@<Tables and grammar@>;
-			@<Phrases and rules@>;
-			@<Generate inter@>;
-			@<Convert inter to Inform 6@>;
-			@<Generate metadata@>;
-			@<Post mortem logging@>;
-		}
+		Inbuild::go_operational();
+		inform_project *project = Inbuild::project();
+		if (project) CoreMain::task(project);
 	}
-	clock_t end = clock();
 	@<Shutdown and rennab@>;
 	if (problem_count > 0) Problems::Fatal::exit(1);
 	return 0;
@@ -94,8 +78,6 @@ arguments in order to set certain pathnames or filenames, so the following
 list is not exhaustive.
 
 @e CASE_CLSW
-@e CENSUS_CLSW
-@e CLOCK_CLSW
 @e CRASHALL_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
@@ -111,10 +93,6 @@ list is not exhaustive.
 		L"inform7: a compiler from source text to Inform 6 code\n\n"
 		L"Usage: inform7 [OPTIONS] [SOURCETEXT]\n");
 
-	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
-		L"perform an extensions census (rather than compile)");
-	CommandLine::declare_boolean_switch(CLOCK_CLSW, L"clock", 1,
-		L"time how long inform7 takes to run");
 	CommandLine::declare_boolean_switch(CRASHALL_CLSW, L"crash-all", 1,
 		L"crash intentionally on Problem messages (for debugger backtraces)");
 	CommandLine::declare_boolean_switch(NOINDEX_CLSW, L"noindex", 1,
@@ -142,7 +120,7 @@ list is not exhaustive.
 
 @<With that done, configure all other settings@> =
 	Inbuild::optioneering_complete(NULL);
-	if (Locations::set_defaults(census_mode) == FALSE)
+	if (Locations::set_defaults() == FALSE)
 		Problems::Fatal::issue("Unable to create folders in local file system");
 	Log::set_debug_log_filename(filename_of_debugging_log);
 	NaturalLanguages::default_to_English();
@@ -154,6 +132,24 @@ list is not exhaustive.
 	LOG("\n");
 	CommandLine::play_back_log();
 	Problems::Issue::start_problems_report();
+
+@ =
+void CoreMain::task(inform_project *project) {
+	clock_t start = clock();
+	@<Perform lexical analysis@>;
+	@<Perform semantic analysis@>;
+	@<Read the assertions in two passes@>;
+	@<Make the model world@>;
+	@<Tables and grammar@>;
+	@<Phrases and rules@>;
+	@<Generate inter@>;
+	@<Convert inter to Inform 6@>;
+	@<Generate metadata@>;
+	@<Post mortem logging@>;
+	clock_t end = clock();
+	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
+	LOG("CPU time: %d centiseconds\n", cpu_time_used);
+}
 
 @
 
@@ -182,9 +178,6 @@ list is not exhaustive.
 	COMPILATION_STEP(InferenceSubjects::begin, I"InferenceSubjects::begin")
 	COMPILATION_STEP(Index::DocReferences::read_xrefs, I"Index::DocReferences::read_xrefs")
 	doc_references_top = lexer_wordcount - 1;
-
-@<Work out our kit requirements@> =
-	Inbuild::go_operational();
 
 @<Perform lexical analysis@> =
 	ProgressBar::update_progress_bar(0, 0);
@@ -448,14 +441,9 @@ with "Output.i6t".
 		Problems::write_reports(FALSE);
 
 		LOG("Total of %d files written as streams.\n", total_file_writes);
-		int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
-		LOG("CPU time: %d centiseconds\n", cpu_time_used);
 		Writers::log_escape_usage();
 
-		WRITE_TO(STDOUT, "%s has finished", HUMAN_READABLE_INTOOL_NAME);
-		if (report_clock_time)
-			WRITE_TO(STDOUT, ": %d centiseconds used", cpu_time_used);
-		WRITE_TO(STDOUT, ".\n");
+		WRITE_TO(STDOUT, "%s has finished.\n", HUMAN_READABLE_INTOOL_NAME);
 	}
 
 
@@ -473,8 +461,6 @@ void CoreMain::go_to_log_phase(text_stream *argument) {
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		/* Miscellaneous boolean settings */
-		case CENSUS_CLSW: census_mode = val; break;
-		case CLOCK_CLSW: report_clock_time = val; break;
 		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
 		case NOINDEX_CLSW: do_not_generate_index = val; break;
 		case NOPROGRESS_CLSW: show_progress_indicator = val?FALSE:TRUE; break;
@@ -506,10 +492,6 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		}
 	}
 	Inbuild::option(id, val, arg, state);
-}
-
-int CoreMain::census_mode(void) {
-	return census_mode;
 }
 
 void CoreMain::bareword(int id, text_stream *opt, void *state) {

@@ -150,14 +150,20 @@ int outcome_image_style = SIDE_OUTCOME_IMAGE_STYLE;
 
 void HTMLFiles::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {
 	char *vn = "";
-	if (internal_error_thrown == FALSE) {
+	int be_festive = TRUE;
+	#ifdef CORE_MODULE
+	if (internal_error_thrown == FALSE) be_festive = FALSE;
+	#endif
+	if (be_festive) {
 		switch (Time::feast()) {
 			case CHRISTMAS_FEAST: vn = "_2"; break;
 			case EASTER_FEAST: vn = "_3"; break;
 		}
 		if (vn[0]) outcome_image_style = CENTRED_OUTCOME_IMAGE_STYLE;
 	}
+	#ifdef PROBLEMS_MODULE
 	Problems::Issue::issue_problems_banner(OUT, verdict);
+	#endif
 	switch (outcome_image_style) {
 		case CENTRED_OUTCOME_IMAGE_STYLE:
 			HTML_OPEN("p");
@@ -197,11 +203,16 @@ void HTMLFiles::outcome_image_tail(OUTPUT_STREAM) {
 void HTMLFiles::html_header(OUTPUT_STREAM, text_stream *title) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	HTML::begin_head(OUT, NULL);
-	HTML::incorporate_CSS(OUT,
-		Filenames::in_folder(pathname_of_HTML_models, I"main.css"));
-	HTML::incorporate_javascript(OUT, TRUE,
-		Filenames::in_folder(pathname_of_HTML_models, I"main.js"));
+	pathname *models = Extensions::Census::doc_models();
+	if (models) {
+		HTML::incorporate_CSS(OUT,
+			Filenames::in_folder(models, I"main.css"));
+		HTML::incorporate_javascript(OUT, TRUE,
+			Filenames::in_folder(models, I"main.js"));
+	}
+	#ifdef INDEX_MODULE
 	Index::scripting(OUT);
+	#endif
 	HTML::end_head(OUT);
 	HTML::begin_body(OUT, NULL);
 	HTML::comment(OUT, I"CONTENT BEGINS");
@@ -250,7 +261,12 @@ int source_ref_field = -1; /* which field we are buffering */
 void HTMLFiles::char_out(OUTPUT_STREAM, int charcode) {
 	if (source_ref_field >= 0) {
 		if (source_ref_fields[source_ref_field] == NULL) source_ref_fields[source_ref_field] = Str::new();
+		#ifdef PROBLEMS_MODULE
 		if (charcode != SOURCE_REF_CHAR) { PUT_TO(source_ref_fields[source_ref_field], charcode); return; }
+		#endif
+		#ifndef PROBLEMS_MODULE
+			PUT_TO(source_ref_fields[source_ref_field], charcode); return;
+		#endif
 	}
 	switch(charcode) {
 		case '"': WRITE("&quot;"); return;
@@ -258,6 +274,7 @@ void HTMLFiles::char_out(OUTPUT_STREAM, int charcode) {
 		case '>': WRITE("&gt;"); return;
 		case '&': WRITE("&amp;"); break;
 		case NEWLINE_IN_STRING: HTML_TAG("br"); return;
+		#ifdef PROBLEMS_MODULE
 		case FORCE_NEW_PARA_CHAR: HTML_CLOSE("p"); HTML_OPEN_WITH("p", "class=\"in2\"");
 			HTMLFiles::html_icon_with_tooltip(OUT, "ornament_flower.png", NULL, NULL);
 			WRITE("&nbsp;"); return;
@@ -271,6 +288,7 @@ void HTMLFiles::char_out(OUTPUT_STREAM, int charcode) {
 				HTMLFiles::html_source_link(OUT, sl, TRUE);
 			} else Str::clear(source_ref_fields[source_ref_field]);
 			return;
+		#endif
 		default:
 			PUT(charcode);
 			return;
@@ -291,189 +309,3 @@ void HTMLFiles::write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 		}
 	}
 }
-
-@h Bibliographic text.
-"Bibliographic text" is text used in bibliographic data about the work
-of IF compiled: for instance, in the iFiction record, or in the Library
-Card section of the HTML index. Note that the exact output format depends
-on global variables, which allow the bibliographic text writing code to
-configure NI for its current purposes. On non-empty strings this routine
-therefore splits into one of three independent methods.
-
-=
-void HTMLFiles::compile_bibliographic_text(OUTPUT_STREAM, wchar_t *p) {
-	if (p == NULL) return;
-	if (TEST_COMPILATION_MODE(COMPILE_TEXT_TO_XML_CMODE))
-		@<Compile bibliographic text as XML respecting Treaty of Babel rules@>;
-	if (TEST_COMPILATION_MODE(TRUNCATE_TEXT_CMODE))
-		@<Compile bibliographic text as a truncated filename@>;
-	if (TEST_COMPILATION_MODE(COMPILE_TEXT_TO_I6_CMODE))
-		@<Compile bibliographic text as an I6 string@>
-	@<Compile bibliographic text as HTML@>;
-}
-
-@ This looks like a standard routine for converting ISO Latin-1 to UTF-8
-with XML escapes, but there are a few conventions on whitespace, too, in order
-to comply with a strict reading of the Treaty of Babel. (This is intended
-for fields in iFiction records.)
-
-@<Compile bibliographic text as XML respecting Treaty of Babel rules@> =
-	int i = 0, i2 = Wide::len(p)-1, snl, wsc;
-	if ((p[0] == '"') && (p[i2] == '"')) { i++; i2--; } /* omit surrounding double-quotes */
-	while (Characters::is_babel_whitespace(p[i])) i++; /* omit leading whitespace */
-	while ((i2>=0) && (Characters::is_babel_whitespace(p[i2]))) i2--; /* omit trailing whitespace */
-	for (snl = FALSE, wsc = 0; i<=i2; i++) {
-		switch(p[i]) {
-			case ' ': case '\x0a': case '\x0d': case '\t':
-				snl = FALSE;
-				wsc++;
-				int k = i;
-				while ((p[k] == ' ') || (p[k] == '\x0a') || (p[k] == '\x0d') || (p[k] == '\t')) k++;
-				if ((wsc == 1) && (p[k] != NEWLINE_IN_STRING)) WRITE(" ");
-				break;
-			case NEWLINE_IN_STRING:
-				if (snl) break;
-				WRITE("<br/>");
-				snl = TRUE; wsc = 1; break;
-			case '[':
-				if ((p[i+1] == '\'') && (p[i+2] == ']')) {
-					i += 2;
-					WRITE("'"); break;
-				}
-				int n = CompiledText::expand_unisub(OUT, p, i);
-				if (n >= 0) { i = n; break; }
-				/* and otherwise fall through to the default case */
-			default:
-				snl = FALSE;
-				wsc = 0;
-				switch(p[i]) {
-					case '&': WRITE("&amp;"); break;
-					case '<': WRITE("&lt;"); break;
-					case '>': WRITE("&gt;"); break;
-					default: PUT(p[i]); break;
-				}
-				break;
-		}
-	}
-	return;
-
-@ In the HTML version, we want to respect the forcing of newlines, and
-also the |[']| escape to obtain a literal single quotation mark.
-
-@<Compile bibliographic text as HTML@> =
-	int i, whitespace_count=0;
-	if (p[0] == '"') p++;
-	for (i=0; p[i]; i++) {
-		if ((p[i] == '"') && (p[i+1] == 0)) break;
-		switch(p[i]) {
-			case ' ': case '\x0a': case '\x0d': case '\t':
-				whitespace_count++;
-				if (whitespace_count == 1) PUT(' ');
-				break;
-			case NEWLINE_IN_STRING:
-				while (p[i+1] == NEWLINE_IN_STRING) i++;
-				PUT('<');
-				PUT('p');
-				PUT('>');
-				whitespace_count = 1;
-				break;
-			case '[':
-				if ((p[i+1] == '\'') && (p[i+2] == ']')) {
-					i += 2;
-					PUT('\''); break;
-				}
-				int n = CompiledText::expand_unisub(OUT, p, i);
-				if (n >= 0) { i = n; break; }
-				/* and otherwise fall through to the default case */
-			default:
-				whitespace_count = 0;
-				PUT(p[i]);
-				break;
-		}
-	}
-	return;
-
-@ In the Inform 6 string version, we suppress the forcing of newlines, but
-otherwise it's much the same.
-
-@<Compile bibliographic text as an I6 string@> =
-	int i, whitespace_count=0;
-	if (p[0] == '"') p++;
-	for (i=0; p[i]; i++) {
-		if ((p[i] == '"') && (p[i+1] == 0)) break;
-		switch(p[i]) {
-			case ' ': case '\x0a': case '\x0d': case '\t': case NEWLINE_IN_STRING:
-				whitespace_count++;
-				if (whitespace_count == 1) PUT(' ');
-				break;
-			case '[':
-				if ((p[i+1] == '\'') && (p[i+2] == ']')) {
-					i += 2;
-					PUT('\''); break;
-				} /* and otherwise fall through to the default case */
-			default:
-				whitespace_count = 0;
-				PUT(p[i]);
-				break;
-		}
-	}
-	return;
-
-@ This code is used to work out a good filename for something given a name
-inside NI. For instance, if a project is called
-
->> "St. Bartholemew's Fair: \'Etude for a Push-Me/Pull-You Machine"
-
-then what would be a good filename for its released story file?
-
-In the filename version we must forcibly truncate the text to ensure
-that it does not exceed a certain length, and must also make it filename-safe,
-omitting characters used as folder separators on various platforms and
-(for good measure) removing accents from accented letters, so that we can
-arrive at a sequence of ASCII characters. Each run of whitespace is also
-converted to a single space. If this would result in an empty text or only
-a single space, we return the text "story" instead.
-
-Our example (if not truncated) then emerges as:
-
-	|St- Bartholemew's Fair- Etude for a Push-Me-Pull-You Machine|
-
-Note that we do not write any filename extension (e.g., |.z5|) here.
-
-We change possible filename separators or extension indicators to hyphens,
-and remove accents from each possible ISO Latin-1 accented letter. This does
-still mean that the OE and AE digraphs will simply be omitted, while the
-German eszet will be barbarously shortened to a single "s", but life is
-just too short to care overmuch about this.
-
-@<Compile bibliographic text as a truncated filename@> =
-	int i, pos = STREAM_EXTENT(OUT), whitespace_count=0, black_chars_written = 0;
-	int N = 100;
-	#ifdef IF_MODULE
-	N = BIBLIOGRAPHIC_TEXT_TRUNCATION;
-	#endif
-	if (p[0] == '"') p++;
-	for (i=0; p[i]; i++) {
-		if (STREAM_EXTENT(OUT) - pos >= N) break;
-		if ((p[i] == '"') && (p[i+1] == 0)) break;
-		switch(p[i]) {
-			case ' ': case '\x0a': case '\x0d': case '\t': case NEWLINE_IN_STRING:
-				whitespace_count++;
-				if (whitespace_count == 1) PUT(' ');
-				break;
-			case '?': case '*':
-				if ((p[i+1]) && (p[i+1] != '\"')) PUT('-');
-				break;
-			default: {
-				int charcode = p[i];
-				charcode = Characters::make_filename_safe(charcode);
-				whitespace_count = 0;
-				if (charcode < 128) {
-					PUT(charcode); black_chars_written++;
-				}
-				break;
-			}
-		}
-	}
-	if (black_chars_written == 0) WRITE("story");
-	return;

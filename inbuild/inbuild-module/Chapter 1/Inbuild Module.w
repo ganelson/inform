@@ -31,6 +31,8 @@ Setting up the use of this module.
 @e inform_language_MT
 @e inform_pipeline_MT
 @e copy_error_MT
+@e extension_dictionary_entry_MT
+@e known_extension_clash_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -55,6 +57,8 @@ ALLOCATE_INDIVIDUALLY(inform_project)
 ALLOCATE_INDIVIDUALLY(inform_language)
 ALLOCATE_INDIVIDUALLY(inform_pipeline)
 ALLOCATE_INDIVIDUALLY(copy_error)
+ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
+ALLOCATE_INDIVIDUALLY(known_extension_clash)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 

@@ -61,6 +61,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {module} INTER inter inter/inter-module
 {module} BUILDING building inter/building-module
 {module} CODEGEN codegen inter/codegen-module
+{module} HTML html inbuild/html-module
 {module} ARCH arch inbuild/arch-module
 {module} INBUILD inbuild inbuild/inbuild-module
 
@@ -88,6 +89,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {dep} INFORM7 on IF
 {dep} INFORM7 on MULTIMEDIA
 {dep} INFORM7 on INDEX
+{dep} INFORM7 on HTML
 {dep} INFORM7 on ARCH
 {dep} INFORM7 on INTER
 {dep} INFORM7 on BUILDING
@@ -103,6 +105,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {tool} INBUILDTOOL inbuild inbuild
 {dep} INBUILDTOOL on FOUNDATION
 {dep} INBUILDTOOL on WORDS
+{dep} INBUILDTOOL on HTML
 {dep} INBUILDTOOL on ARCH
 {dep} INBUILDTOOL on INBUILD
 

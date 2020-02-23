@@ -11,8 +11,6 @@ these are stored in the following globals. Explanations are given below,
 not here.
 
 = (early code)
-pathname *pathname_of_extension_docs = NULL;
-pathname *pathname_of_extension_docs_inner = NULL;
 pathname *pathname_of_HTML_models = NULL;
 pathname *pathname_of_materials_figures = NULL;
 pathname *pathname_of_materials_release = NULL;
@@ -22,7 +20,6 @@ pathname *pathname_of_project_index_folder = NULL;
 pathname *pathname_of_released_figures = NULL;
 pathname *pathname_of_released_interpreter = NULL;
 pathname *pathname_of_released_sounds = NULL;
-pathname *pathname_of_transient_census_data = NULL;
 
 @ And secondly, the files:
 
@@ -35,7 +32,6 @@ filename *filename_of_debugging_log = NULL;
 filename *filename_of_documentation_snippets = NULL;
 filename *filename_of_epsfile = NULL;
 filename *filename_of_existing_story_file = NULL;
-filename *filename_of_extensions_dictionary = NULL;
 filename *filename_of_headings = NULL;
 filename *filename_of_ifiction_record = NULL;
 filename *filename_of_intro_booklet = NULL;
@@ -66,16 +62,11 @@ Inform can run in two modes: regular mode, when it's compiling source text,
 and census mode, when it's scanning the file system for extensions.
 
 =
-int Locations::set_defaults(int census_mode) {
+int Locations::set_defaults(void) {
 	@<Internal resources@>;
 	@<External resources@>;
 	@<Project resources@>;
 	@<Materials resources@>;
-	inform_project *project = Inbuild::project();
-	if ((census_mode == FALSE) && (project == NULL))
-		Problems::Fatal::issue("Except in census mode, source text must be supplied");
-	if ((census_mode) && (project))
-		Problems::Fatal::issue("In census mode, no source text may be supplied");
 	return TRUE;
 }
 
@@ -152,29 +143,7 @@ not distinguish between permanent and transient external resources.
 
 	pathname *pathname_of_transient_external_resources = Inbuild::transient();
 	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
-	@<Transient documentation@>;
 	@<Transient telemetry@>;
-
-@ The documentation folder is in effect a little website of its own, generated
-automatically by Inform. There'll be some files at the top level, and then
-there are files on each extension, in suitable subfolders. The census data
-subfolder is not browsable or linked to, but holds working files needed when
-assembling all this.
-
-@<Transient documentation@> =
-	pathname_of_extension_docs =
-		Pathnames::subfolder(pathname_of_transient_external_resources, I"Documentation");
-	if (Pathnames::create_in_file_system(pathname_of_extension_docs) == 0) return FALSE;
-
-	pathname_of_transient_census_data =
-		Pathnames::subfolder(pathname_of_extension_docs, I"Census");
-	if (Pathnames::create_in_file_system(pathname_of_transient_census_data) == 0) return FALSE;
-	filename_of_extensions_dictionary =
-		Filenames::in_folder(pathname_of_transient_census_data, I"Dictionary.txt");
-
-	pathname_of_extension_docs_inner =
-		Pathnames::subfolder(pathname_of_extension_docs, I"Extensions");
-	if (Pathnames::create_in_file_system(pathname_of_extension_docs_inner) == 0) return FALSE;
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.
@@ -225,7 +194,7 @@ during the compilation process. The opening part here may be a surprise:
 In extension census mode, Inform is running not to compile something but to
 extract details of all the extensions installed. But it still needs somewhere
 to write its temporary and debugging files, and there is no project bundle
-to write into. To get round this, we use the census data area as if it
+to write into. To get round this, we use the transient data area as if it
 were indeed a project bundle.
 
 Briefly: we aim to compile the source text to an Inform 6 program; we issue
@@ -236,12 +205,8 @@ called; and similarly for the report which the releasing tool Inblorb
 will produce if this is a Release run.
 
 @<The Build folder within the project@> =
-	pathname *build_folder = pathname_of_transient_census_data;
-
-	if (census_mode == FALSE) {
-		build_folder = Pathnames::subfolder(proj, I"Build");
-		if (Pathnames::create_in_file_system(build_folder) == 0) return FALSE;
-	}
+	pathname *build_folder = Pathnames::subfolder(proj, I"Build");
+	if (Pathnames::create_in_file_system(build_folder) == 0) return FALSE;
 
 	filename_of_report = Filenames::in_folder(build_folder, I"Problems.html");
 	filename_of_debugging_log = Filenames::in_folder(build_folder, I"Debug log.txt");
@@ -271,10 +236,9 @@ the index as seen by the user.
 	pathname_of_project_index_details_folder =
 		Pathnames::subfolder(pathname_of_project_index_folder, I"Details");
 
-	if (census_mode == FALSE)
-		if ((Pathnames::create_in_file_system(pathname_of_project_index_folder) == 0) ||
-			(Pathnames::create_in_file_system(pathname_of_project_index_details_folder) == 0))
-			return FALSE;
+	if ((Pathnames::create_in_file_system(pathname_of_project_index_folder) == 0) ||
+		(Pathnames::create_in_file_system(pathname_of_project_index_details_folder) == 0))
+		return FALSE;
 
 	filename_of_headings =
 		Filenames::in_folder(pathname_of_project_index_folder, I"Headings.xml");
@@ -356,18 +320,6 @@ filename *Locations::of_extension(pathname *E, text_stream *title, text_stream *
 	if (i7x_flag) WRITE_TO(leaf, "%S.i7x", title);
 	else WRITE_TO(leaf, "%S", title);
 	filename *F = Filenames::in_folder(Pathnames::subfolder(E, author), leaf);
-	DISCARD_TEXT(leaf);
-	return F;
-}
-
-@ Documentation is similarly arranged:
-
-=
-filename *Locations::of_extension_documentation(text_stream *title, text_stream *author) {
-	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.html", title);
-	filename *F = Filenames::in_folder(
-		Pathnames::subfolder(pathname_of_extension_docs_inner, author), leaf);
 	DISCARD_TEXT(leaf);
 	return F;
 }

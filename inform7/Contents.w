@@ -16,6 +16,7 @@ Import: syntax
 Import: problems
 Import: linguistics
 Import: kinds
+Import: inbuild/html
 Import: inbuild/arch
 Import: inter/inter
 Import: inbuild/inbuild

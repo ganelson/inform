@@ -235,6 +235,12 @@ far as the user is concerned it opens the example and goes there.
 	HTML_CLOSE("a");
 	HTML_TAG("br");
 
+@
+
+=
+<table-sentence> ::=
+	<if-start-of-paragraph> table ...
+
 @h Setting the body text.
 
 @d EDOC_ALL_EXAMPLES_CLOSED -1 /* do not change this without also changing Extensions */
@@ -406,7 +412,7 @@ need to achieve with an HTML |<table>|.
 		HTML_OPEN("blockquote");
 		HTML::begin_colour(OUT, I"000080");
 		mid_displayed_source_text = TRUE;
-		if ((<structural-sentence>(Wordings::from(W, i))) && (ssnt == TABLE_NT))
+		if (<table-sentence>(Wordings::from(W, i)))
 			start_table_next_line = TRUE;
 	}
 	indentation--;

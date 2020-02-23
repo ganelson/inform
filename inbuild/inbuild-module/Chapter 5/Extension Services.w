@@ -19,8 +19,8 @@ typedef struct inform_extension {
 	struct text_stream *extra_credit_as_lexed;
 	struct source_file *read_into_file; /* Which source file loaded this */
 	struct inbuild_requirement *must_satisfy;
-	#ifdef CORE_MODULE
 	int loaded_from_built_in_area; /* Located within Inform application */
+	#ifdef CORE_MODULE
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
 	#endif
 	MEMORY_MANAGEMENT
@@ -40,8 +40,8 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	E->rubric_as_lexed = Str::new();
 	E->extra_credit_as_lexed = NULL;	
 	E->must_satisfy = NULL;
-	#ifdef CORE_MODULE
 	E->loaded_from_built_in_area = FALSE;
+	#ifdef CORE_MODULE
 	E->inclusion_sentence = NULL;
 	#endif
 
@@ -282,17 +282,18 @@ void Extensions::make_standard(inform_extension *E) {
 	E->standard = TRUE;
 }
 
-#ifdef CORE_MODULE
 void Extensions::must_satisfy(inform_extension *E, inbuild_requirement *req) {
 	if (E->must_satisfy == NULL) E->must_satisfy = req;
 	else {
 		semantic_version_number V = req->min_version;
 		if (VersionNumbers::is_null(V) == FALSE)
-			if (Requirements::ratchet_minimum(V, E->must_satisfy))
+			if (Requirements::ratchet_minimum(V, E->must_satisfy)) {
+				#ifdef CORE_MODULE
 				Extensions::set_inclusion_sentence(E, current_sentence);
+				#endif
+			}
 	}
 }
-#endif
 
 int Extensions::satisfies(inform_extension *E) {
 	if (E == NULL) return FALSE;
@@ -305,9 +306,7 @@ int Extensions::satisfies(inform_extension *E) {
 void Extensions::read_source_text_for(inform_extension *E) {
 	filename *F = E->as_copy->location_if_file;
 	int doc_only = FALSE;
-	#ifdef CORE_MODULE
-	if (CoreMain::census_mode()) doc_only = TRUE;
-	#endif
+	if (census_mode) doc_only = TRUE;
 	TEMPORARY_TEXT(synopsis);
 	@<Concoct a synopsis for the extension to be read@>;
 	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);

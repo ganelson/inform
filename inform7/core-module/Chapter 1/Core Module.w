@@ -36,8 +36,6 @@ We need to itemise the structures we'll want to allocate:
 @e pcalc_prop_deferral_MT
 @e literal_pattern_MT
 @e generalisation_MT
-@e extension_dictionary_entry_MT
-@e known_extension_clash_MT
 @e i6_schema_array_MT
 @e list_together_routine_MT
 @e past_tense_condition_record_MT
@@ -113,7 +111,6 @@ ALLOCATE_INDIVIDUALLY(dval_written)
 ALLOCATE_INDIVIDUALLY(equation_node)
 ALLOCATE_INDIVIDUALLY(equation_symbol)
 ALLOCATE_INDIVIDUALLY(equation)
-ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(generalisation)
 ALLOCATE_INDIVIDUALLY(heading)
 ALLOCATE_INDIVIDUALLY(i6_inclusion_matter)
@@ -125,7 +122,6 @@ ALLOCATE_INDIVIDUALLY(instance)
 ALLOCATE_INDIVIDUALLY(internal_test_case)
 ALLOCATE_INDIVIDUALLY(inv_token_problem_token)
 ALLOCATE_INDIVIDUALLY(kind_interaction)
-ALLOCATE_INDIVIDUALLY(known_extension_clash)
 ALLOCATE_INDIVIDUALLY(list_together_routine)
 ALLOCATE_INDIVIDUALLY(literal_list)
 ALLOCATE_INDIVIDUALLY(literal_pattern_name)
