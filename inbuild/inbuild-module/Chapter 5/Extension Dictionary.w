@@ -219,6 +219,8 @@ entries, close.
 filename *Extensions::Dictionary::filename(void) {
 	pathname *P = Inbuild::transient();
 	if (P == NULL) return NULL;
+	P = Pathnames::subfolder(P, I"Documentation");
+	P = Pathnames::subfolder(P, I"Census");
 	return Filenames::in_folder(P, I"Dictionary.txt");
 }
 
@@ -228,7 +230,7 @@ void Extensions::Dictionary::load(void) {
 
 	@<Ensure the serialised extensions dictionary file exists@>;
 
-	LOGIF(EXTENSIONS_CENSUS, "Reading dictionary file\n");
+	LOGIF(EXTENSIONS_CENSUS, "Reading dictionary file %f\n", F);
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Extensions::Dictionary::load_helper, NULL, NULL);
 	LOGIF(EXTENSIONS_CENSUS, "Finished reading dictionary file\n");

@@ -39,6 +39,7 @@ Tests/Test Inter/_Inter_Textual/
 Tests/Test Inter/_Inter_Binary/
 Tests/Test Maps/_Maps_Actual/
 Tests/Test Problems/_Results_Actual/
+Tests/Documentation/
 
 Internal/Inter/BasicInformKit/*.interb
 Internal/Inter/BasicInformExtrasKit/*.interb

@@ -103,9 +103,9 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 pathname *Extensions::Documentation::path(void) {
 	pathname *P = Inbuild::transient();
 	if ((P == NULL) || (Pathnames::create_in_file_system(P) == 0)) return NULL;
-	P = Pathnames::subfolder(P, I"Extensions");
-	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	P = Pathnames::subfolder(P, I"Documentation");
+	if (Pathnames::create_in_file_system(P) == 0) return NULL;
+	P = Pathnames::subfolder(P, I"Extensions");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	return P;
 }
