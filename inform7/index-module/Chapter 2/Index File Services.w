@@ -85,7 +85,6 @@ text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int s
 			"../Actions.html");
 		HTML_TAG("hr");
 	} else @<Write the periodic table@>;
-	indexing_stage = TRUE;
 	if ((Str::get_first_char(title) != '<') && (Str::eq_wide_string(index_leaf, L"Welcome.html") == FALSE))
 		@<Write the index elements@>;
 	return OUT;

@@ -4,11 +4,14 @@ A build step is a task such as running inform7 or inblorb on some file.
 
 @ =
 build_skill *assimilate_using_inter_skill = NULL;
+build_skill *code_generate_using_inter_skill = NULL;
 
 void InterSkill::create(void) {
 	assimilate_using_inter_skill = BuildSteps::new_skill(I"assimilate using inter");
 	METHOD_ADD(assimilate_using_inter_skill, BUILD_SKILL_COMMAND_MTID, InterSkill::assimilate_via_shell);
 	METHOD_ADD(assimilate_using_inter_skill, BUILD_SKILL_INTERNAL_MTID, InterSkill::assimilate_internally);
+	code_generate_using_inter_skill = BuildSteps::new_skill(I"code generate using inter");
+	METHOD_ADD(code_generate_using_inter_skill, BUILD_SKILL_INTERNAL_MTID, InterSkill::code_generate_internally);
 }
 
 int InterSkill::assimilate_via_shell(build_skill *skill, build_step *S, text_stream *command, build_methodology *meth) {
@@ -67,6 +70,14 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S, build_m
 		Errors::nowhere("assimilate pipeline could not be parsed");
 		return FALSE;
 	}
+	#endif
+	return FALSE;
+}
+
+int InterSkill::code_generate_internally(build_skill *skill, build_step *S, build_methodology *meth) {
+	#ifdef CORE_MODULE
+	int rv = CoreMain::task2(S);
+	return rv;
 	#endif
 	return FALSE;
 }

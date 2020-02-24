@@ -28,15 +28,10 @@ it compiles the phrases and grammar to go with it.
 |model_world_constructed| records which of these halves we are
 currently in: |FALSE| in the first half, |TRUE| in the second.
 
-If there were a third stage, it would be indexing, and during that
-period |indexing_stage| is |TRUE|. But by that time the compilation of
-Inform 6 code is complete.
-
 =
 int text_loaded_from_source = FALSE; /* Lexical scanning is done */
 int model_world_under_construction = FALSE; /* World model is being constructed */
 int model_world_constructed = FALSE; /* World model is now constructed */
-int indexing_stage = FALSE; /* Everything is done except indexing */
 
 @ =
 time_t right_now;
@@ -61,6 +56,7 @@ int CoreMain::main(int argc, char *argv[]) {
 				BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY));
 		}
 	}
+	@<Post mortem logging@>;
 	@<Shutdown and rennab@>;
 	if (problem_count > 0) Problems::Fatal::exit(1);
 	return 0;
@@ -136,6 +132,26 @@ list is not exhaustive.
 	CommandLine::play_back_log();
 	Problems::Issue::start_problems_report();
 
+@<Post mortem logging@> =
+	if (problem_count == 0) {
+		TemplateReader::report_unacted_upon_interventions();
+//		ParseTreeUsage::write_main_source_to_log();
+//		Memory::log_statistics();
+//		Preform::log_language();
+//		Index::DocReferences::log_statistics();
+//		NewVerbs::log_all();
+	}
+
+@<Shutdown and rennab@> =
+	if (proceed) {
+		Problems::write_reports(FALSE);
+
+		LOG("Total of %d files written as streams.\n", total_file_writes);
+		Writers::log_escape_usage();
+
+		WRITE_TO(STDOUT, "%s has finished.\n", HUMAN_READABLE_INTOOL_NAME);
+	}
+
 @ =
 int CoreMain::task(build_step *S) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
@@ -150,12 +166,24 @@ int CoreMain::task(build_step *S) {
 	@<Tables and grammar@>;
 	@<Phrases and rules@>;
 	@<Generate inter@>;
-	@<Convert inter to Inform 6@>;
-	@<Generate metadata@>;
-	@<Post mortem logging@>;
+	@<Generate index and bibliographic file@>;
 	clock_t end = clock();
 	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
-	LOG("CPU time: %d centiseconds\n", cpu_time_used);
+	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
+	if (problem_count > 0) return FALSE;
+	return TRUE;
+}
+
+int CoreMain::task2(build_step *S) {
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
+
+	clock_t start = clock();
+	@<Convert inter to Inform 6@>;
+	clock_t end = clock();
+	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
+	LOG("Code generation CPU time: %d centiseconds\n", cpu_time_used);
 	if (problem_count > 0) return FALSE;
 	return TRUE;
 }
@@ -429,31 +457,11 @@ with "Output.i6t".
 
 @ Metadata.
 
-@<Generate metadata@> =
+@<Generate index and bibliographic file@> =
 	if (Plugins::Manage::plugged_in(bibliographic_plugin))
 		PL::Bibliographic::Release::write_ifiction_and_blurb();
 	if (problem_count == 0)
 		NaturalLanguages::produce_index();
-
-@<Post mortem logging@> =
-	if (problem_count == 0) {
-		TemplateReader::report_unacted_upon_interventions();
-//		ParseTreeUsage::write_main_source_to_log();
-//		Memory::log_statistics();
-//		Preform::log_language();
-//		Index::DocReferences::log_statistics();
-//		NewVerbs::log_all();
-	}
-
-@<Shutdown and rennab@> =
-	if (proceed) {
-		Problems::write_reports(FALSE);
-
-		LOG("Total of %d files written as streams.\n", total_file_writes);
-		Writers::log_escape_usage();
-
-		WRITE_TO(STDOUT, "%s has finished.\n", HUMAN_READABLE_INTOOL_NAME);
-	}
 
 
 @ =

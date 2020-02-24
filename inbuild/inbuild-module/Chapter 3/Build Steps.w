@@ -65,8 +65,7 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *meth)
 	int rv = TRUE;
 	TEMPORARY_TEXT(command);
 	VMETHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, meth);
-	if (Str::len(command) == 0) rv = FALSE;
-	if (rv) rv = BuildSteps::shell(command, meth);
+	if ((rv) && (Str::len(command) > 0)) rv = BuildSteps::shell(command, meth);
 	if ((rv) && (meth->methodology == INTERNAL_METHODOLOGY)) {
 		int returned = 0;
 		IMETHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, meth);
