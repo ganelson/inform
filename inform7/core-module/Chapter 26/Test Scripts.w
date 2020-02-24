@@ -455,7 +455,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 				Equations::internal_test(itc->text_supplying_the_case);
 				break;
 			case VERB_INTT:
-				Conjugation::test(OUT, itc->text_supplying_the_case, Projects::get_language_of_play(Inbuild::project()));
+				Conjugation::test(OUT, itc->text_supplying_the_case, Projects::get_language_of_play(Task::project()));
 				break;
 			case ADJECTIVE_INTT:
 				Adjectives::test_adjective(OUT, itc->text_supplying_the_case);

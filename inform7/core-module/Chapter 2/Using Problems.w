@@ -13,9 +13,9 @@ non-problem messages when everything was fine. That all happens here:
 @d PROBLEMS_FINAL_REPORTER Problems::Using::final_report
 
 =
-void Problems::Using::start_problems_report(void) {
-	if (STREAM_OPEN_TO_FILE(problems_file, filename_of_report, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open problem log", filename_of_report);
+void Problems::Using::start_problems_report(filename *F) {
+	if (STREAM_OPEN_TO_FILE(problems_file, F, UTF8_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open problem log", F);
 	HTMLFiles::html_header(problems_file, I"Translating the Source");
 }
 

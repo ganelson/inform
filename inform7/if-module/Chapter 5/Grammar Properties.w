@@ -189,10 +189,10 @@ for the kinds we inherit from.
 		inter_name *name_array = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 		packaging_state save = Emit::named_array_begin(name_array, K_value);
 		wording W = Instances::get_name_in_play(I, FALSE);
-		if (Wordings::empty(W)) W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Inbuild::project()));
+		if (Wordings::empty(W)) W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Task::project()));
 		wording PW = Instances::get_name_in_play(I, TRUE);
 		if (Wordings::empty(PW)) {
-			from_kind = TRUE; PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Inbuild::project()));
+			from_kind = TRUE; PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Task::project()));
 		}
 
 		LOOP_THROUGH_WORDING(j, W) {

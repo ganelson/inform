@@ -68,7 +68,7 @@ int index_file_counter = 0;
 text_stream *ifl = NULL; /* Current destination of index text */
 text_stream index_file_struct; /* The current index file being written */
 text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int sub, text_stream *explanation) {
-	filename *F = Locations::in_index(index_leaf, sub);
+	filename *F = Task::location_in_index(index_leaf, sub);
 	if (ifl) Index::close_index_file();
 	if (STREAM_OPEN_TO_FILE(&index_file_struct, F, UTF8_ENC) == FALSE)
 		Problems::Fatal::filename_related("Can't open index file", F);

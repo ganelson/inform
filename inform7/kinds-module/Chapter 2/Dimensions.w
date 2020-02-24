@@ -885,13 +885,13 @@ scaling this can appear to be much lower.
 
 @<Index the maximum positive value for a quasinumerical kind@> =
 	if (Kinds::Compare::eq(R, K_number)) {
-		if (TargetVMs::is_16_bit(Inbuild::current_vm())) WRITE("32767");
+		if (TargetVMs::is_16_bit(Task::vm())) WRITE("32767");
 		else WRITE("2147483647");
 	} else {
 		text_stream *p = Kinds::Behaviour::get_index_maximum_value(R);
 		if (Str::len(p) > 0) WRITE("%S", p);
 		else {
-			if (TargetVMs::is_16_bit(Inbuild::current_vm()))
+			if (TargetVMs::is_16_bit(Task::vm()))
 				LiteralPatterns::index_value(OUT,
 					LiteralPatterns::list_of_literal_forms(R), 32767);
 			else

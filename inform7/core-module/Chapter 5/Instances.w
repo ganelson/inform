@@ -272,7 +272,7 @@ wording Instances::get_name(instance *I, int plural) {
 
 wording Instances::get_name_in_play(instance *I, int plural) {
 	if ((I == NULL) || (I->tag == NULL)) return EMPTY_WORDING;
-	return Nouns::get_name_in_play(I->tag, plural, Projects::get_language_of_play(Inbuild::project()));
+	return Nouns::get_name_in_play(I->tag, plural, Projects::get_language_of_play(Task::project()));
 }
 
 int Instances::full_name_includes(instance *I, vocabulary_entry *wd) {
@@ -543,7 +543,7 @@ void Instances::index_name(OUTPUT_STREAM, instance *I) {
 		return;
 	}
 	kind *K = Instances::to_kind(I);
-	W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Inbuild::project()));
+	W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Task::project()));
 	if (Wordings::nonempty(W)) {
 		WRITE("%+W", W);
 		return;
@@ -575,7 +575,7 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 		parse_node *at = IU->where_instance_used;
 		if (at) {
 			source_file *sf = Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(at)));
-			if (Projects::draws_from_source_file(Inbuild::project(), sf)) {
+			if (Projects::draws_from_source_file(Task::project(), sf)) {
 				k++;
 				if (k == 1) {
 					HTMLFiles::open_para(OUT, 1, "tight");

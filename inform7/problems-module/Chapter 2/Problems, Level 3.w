@@ -539,9 +539,9 @@ We are at last able to print the text which appears at the top of the
 Problems report; and this completes the code for errors. In my end is my beginning.
 
 =
-void Problems::Issue::start_problems_report(void) {
+void Problems::Issue::start_problems_report(filename *F) {
 	#ifdef PROBLEMS_INITIAL_REPORTER
-	PROBLEMS_INITIAL_REPORTER();
+	PROBLEMS_INITIAL_REPORTER(F);
 	#endif
 }
 

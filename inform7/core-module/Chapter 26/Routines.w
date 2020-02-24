@@ -70,7 +70,7 @@ void Routines::end(packaging_state save) {
 
 	int needed = LocalVariables::count(currently_compiling_in_frame);
 	if (kernel_name) needed++;
-	if (TargetVMs::allow_this_many_locals(Inbuild::current_vm(), needed) == FALSE)
+	if (TargetVMs::allow_this_many_locals(Task::vm(), needed) == FALSE)
 		@<Issue a problem for too many locals@>;
 
 	LocalVariables::declare(currently_compiling_in_frame, FALSE);

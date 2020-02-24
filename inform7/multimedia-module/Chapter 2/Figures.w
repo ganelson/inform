@@ -160,7 +160,7 @@ void PL::Figures::register_figure(wording F, wording FN) {
 
 	bf->name = F;
 	if (wn >= 0) {
-		bf->figure_number = Projects::get_next_free_blorb_resource_ID(Inbuild::project());
+		bf->figure_number = Projects::get_next_free_blorb_resource_ID(Task::project());
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%N", wn);
 		bf->filename_of_image_file = Filenames::in_folder(pathname_of_materials_figures, leaf);

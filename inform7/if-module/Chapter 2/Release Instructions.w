@@ -197,7 +197,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			break;
 		case EXISTING_STORY_FILE_PAYLOAD:
 		case NAMED_EXISTING_STORY_FILE_PAYLOAD:
-			if (TargetVMs::is_16_bit(Inbuild::current_vm()) == FALSE) {
+			if (TargetVMs::is_16_bit(Task::vm()) == FALSE) {
 				Problems::Issue::sentence_problem(_p_(BelievedImpossible), /* not usefully testable */
 					"existing story files can only be used with the Z-machine",
 					"not with the Glulx setting.");
@@ -544,7 +544,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 }
 
 @<Write the body of the iFiction record@> =
-	text_stream *story_format = TargetVMs::get_iFiction_format(Inbuild::current_vm());
+	text_stream *story_format = TargetVMs::get_iFiction_format(Task::vm());
 
 	@<Write the identification tag of the iFiction record@>;
 	@<Write the bibliographic tag of the iFiction record@>;
@@ -598,7 +598,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		WRITE("</description>\n");
 	}
 	WRITE("<language>");
-	Languages::write_ISO_code(OUT, Projects::get_language_of_play(Inbuild::project()));
+	Languages::write_ISO_code(OUT, Projects::get_language_of_play(Task::project()));
 	WRITE("</language>\n");
 	WRITE("<group>Inform</group>\n");
 	if (episode_number >= 0) {
@@ -841,7 +841,7 @@ the Blorb-file's filename won't be too long for the file system.
 		PL::Bibliographic::Release::write_var_to_text(TEMP, story_title_VAR);
 		END_COMPILATION_MODE;
 	} else WRITE_TO(TEMP, "story");
-	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Inbuild::current_vm()));
+	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Task::vm()));
 
 @<Write the body of the Blurb file@> =
 	@<Tell Inblorb where to write its report to@>;
@@ -867,7 +867,7 @@ the Blorb-file's filename won't be too long for the file system.
 		filename_of_cblorb_report);
 
 @<Tell Inblorb where the project and release folders are@> =
-	WRITE("project folder \"%p\"\n", Projects::path(Inbuild::project()));
+	WRITE("project folder \"%p\"\n", Projects::path(Task::project()));
 	if (create_Materials)
 		WRITE("release to \"%p\"\n", pathname_of_materials_release);
 
@@ -994,8 +994,8 @@ file online.
 	@<Tell Inblorb where to find the website templates@>;
 
 	if (Str::len(interpreter_template_leafname) == 0)
-		interpreter_template_leafname = TargetVMs::get_default_interpreter(Inbuild::current_vm());
-	text_stream *ext = TargetVMs::get_blorbed_extension(Inbuild::current_vm());
+		interpreter_template_leafname = TargetVMs::get_default_interpreter(Task::vm());
+	text_stream *ext = TargetVMs::get_blorbed_extension(Task::vm());
 	WRITE("placeholder [INTERPRETERSCRIPTS] = \" ");
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file)

@@ -92,6 +92,7 @@ We need to itemise the structures we'll want to allocate:
 @e value_holster_array_MT
 @e adjective_iname_holder_MT
 @e label_namespace_MT
+@e compile_task_data_MT
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -158,6 +159,7 @@ ALLOCATE_INDIVIDUALLY(use_option)
 ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
 ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
 ALLOCATE_INDIVIDUALLY(label_namespace)
+ALLOCATE_INDIVIDUALLY(compile_task_data)
 
 @ So much for the managed structures: now for the unmanaged structures.
 

@@ -288,7 +288,7 @@ a request for a new text substitution to be compiled later...
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
 
-	if (TargetVMs::debug_enabled(Inbuild::current_vm())) {
+	if (TargetVMs::debug_enabled(Task::vm())) {
 		Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 		Produce::down(Emit::tree());
 			Produce::code(Emit::tree());

@@ -1,6 +1,44 @@
-[Locations::] Where Everything Lives.
+[Task::] What To Compile.
 
 To configure the many locations used in the host filing system.
+
+@ =
+typedef struct compile_task_data {
+	struct build_step *task;
+	struct inform_project *project;
+	MEMORY_MANAGEMENT
+} compile_task_data;
+
+compile_task_data *inform7_task = NULL;
+
+int Task::carry_out(build_step *S) {
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
+
+	if (inform7_task) internal_error("cannot re-enter with new task");
+	inform7_task = CREATE(compile_task_data);
+	inform7_task->task = S;
+	inform7_task->project = project;
+
+	NaturalLanguages::default_to_English();
+	Task::set_more_defaults();
+
+	int rv = Sequence::carry_out(inform7_task);
+	inform7_task = NULL;
+	return rv;
+}
+
+@ =
+inform_project *Task::project(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->project;
+}
+
+target_vm *Task::vm(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->task->for_vm;
+}
 
 @h Definitions.
 
@@ -11,7 +49,6 @@ these are stored in the following globals. Explanations are given below,
 not here.
 
 = (early code)
-pathname *pathname_of_HTML_models = NULL;
 pathname *pathname_of_materials_figures = NULL;
 pathname *pathname_of_materials_release = NULL;
 pathname *pathname_of_materials_sounds = NULL;
@@ -27,8 +64,6 @@ pathname *pathname_of_released_sounds = NULL;
 filename *filename_of_blurb = NULL;
 filename *filename_of_cblorb_report = NULL;
 filename *filename_of_cblorb_report_model = NULL;
-filename *filename_of_compiled_i6_code = NULL;
-filename *filename_of_debugging_log = NULL;
 filename *filename_of_documentation_snippets = NULL;
 filename *filename_of_epsfile = NULL;
 filename *filename_of_existing_story_file = NULL;
@@ -42,7 +77,6 @@ filename *filename_of_large_default_cover_art = NULL;
 filename *filename_of_manifest = NULL;
 filename *filename_of_options = NULL;
 filename *filename_of_parse_tree = NULL;
-filename *filename_of_report = NULL;
 filename *filename_of_small_cover_art_jpeg = NULL;
 filename *filename_of_small_cover_art_png = NULL;
 filename *filename_of_small_default_cover_art = NULL;
@@ -62,7 +96,7 @@ Inform can run in two modes: regular mode, when it's compiling source text,
 and census mode, when it's scanning the file system for extensions.
 
 =
-int Locations::set_defaults(void) {
+int Task::set_more_defaults(void) {
 	@<Internal resources@>;
 	@<External resources@>;
 	@<Project resources@>;
@@ -108,10 +142,10 @@ Inform". This is used to generate the Phrasebook index.
 	filename_of_intro_postcard = Filenames::in_folder(misc, I"Postcard.pdf");
 	filename_of_intro_booklet = Filenames::in_folder(misc, I"IntroductionToIF.pdf");
 
-	pathname_of_HTML_models = Pathnames::subfolder(pathname_of_internal_folder, I"HTML");
-	filename_of_cblorb_report_model = Filenames::in_folder(pathname_of_HTML_models, I"CblorbModel.html");
+	pathname *models = Pathnames::subfolder(pathname_of_internal_folder, I"HTML");
+	filename_of_cblorb_report_model = Filenames::in_folder(models, I"CblorbModel.html");
 
-	filename_of_xrefs = Filenames::in_folder(pathname_of_HTML_models, I"xrefs.txt");
+	filename_of_xrefs = Filenames::in_folder(models, I"xrefs.txt");
 
 	filename_of_documentation_snippets = Filenames::in_folder(misc, I"definitions.html");
 
@@ -179,7 +213,7 @@ have no purpose unless Inform is in a release run (with |-release| set on
 the command line), but they take no time to generate so we make them anyway.
 
 @<Project resources@> =
-	pathname *proj = Projects::path(Inbuild::project());
+	pathname *proj = Projects::path(Task::project());
 	@<The Build folder within the project@>;
 	@<The Index folder within the project@>;
 
@@ -208,14 +242,10 @@ will produce if this is a Release run.
 	pathname *build_folder = Pathnames::subfolder(proj, I"Build");
 	if (Pathnames::create_in_file_system(build_folder) == 0) return FALSE;
 
-	filename_of_report = Filenames::in_folder(build_folder, I"Problems.html");
-	filename_of_debugging_log = Filenames::in_folder(build_folder, I"Debug log.txt");
 	filename_of_parse_tree = Filenames::in_folder(build_folder, I"Parse tree.txt");
 
-	filename_of_compiled_i6_code = Filenames::in_folder(build_folder, I"auto.inf");
-
 	TEMPORARY_TEXT(story_file_leafname);
-	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(Inbuild::current_vm()));
+	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
 	filename_of_story_file = Filenames::in_folder(build_folder, story_file_leafname);
 	DISCARD_TEXT(story_file_leafname);
 
@@ -293,36 +323,10 @@ have by default, if so.
 
 @<Existing story file@> =
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Inbuild::current_vm()));
+	WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
 	filename_of_existing_story_file =
 		Filenames::in_folder(Inbuild::materials(), leaf);
 	DISCARD_TEXT(leaf);
-
-@h Location of extensions.
-When Inform needs one of the EILT resources, it now has three places to look:
-the internal resources folder, the external one, and the materials folder.
-In fact, it checks them in reverse order, thus allowing the user to override
-default resources.
-
-To take the E part, within an Extensions folder, the extensions are stored
-within subfolders named for their authors:
-
-	|Extensions|
-	|    Emily Short|
-	|        Locksmith.i7x|
-
-This is now very much deprecated, but at one time the filename extension
-|.i7x| was optional.
-
-=
-filename *Locations::of_extension(pathname *E, text_stream *title, text_stream *author, int i7x_flag) {
-	TEMPORARY_TEXT(leaf);
-	if (i7x_flag) WRITE_TO(leaf, "%S.i7x", title);
-	else WRITE_TO(leaf, "%S", title);
-	filename *F = Filenames::in_folder(Pathnames::subfolder(E, author), leaf);
-	DISCARD_TEXT(leaf);
-	return F;
-}
 
 @h Location of index files.
 Filenames within the |Index| subfolder. Filenames in |Details| have the form
@@ -331,8 +335,8 @@ Filenames within the |Index| subfolder. Filenames in |Details| have the form
 leafname |A.html|.
 
 =
-filename *Locations::in_index(text_stream *leafname, int sub) {
-	pathname *proj = Projects::path(Inbuild::project());
+filename *Task::location_in_index(text_stream *leafname, int sub) {
+	pathname *proj = Projects::path(Task::project());
 	if (proj == NULL) return Filenames::in_folder(NULL, leafname);
 	if (sub >= 0) {
 		TEMPORARY_TEXT(full_leafname);

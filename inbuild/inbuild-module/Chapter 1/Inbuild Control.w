@@ -47,6 +47,9 @@ to add and process command line switches handled by inbuild:
 @e FORMAT_CLSW
 @e RELEASE_CLSW
 @e CENSUS_CLSW
+@e PIPELINE_CLSW
+@e PIPELINE_FILE_CLSW
+@e PIPELINE_VARIABLE_CLSW
 
 =
 void Inbuild::declare_options(void) {
@@ -74,14 +77,30 @@ void Inbuild::declare_options(void) {
 		L"use file X as the Inform source text");
 	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
 		L"perform an extensions census");
+	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
+		L"specify code-generation pipeline");
+	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
+		L"specify code-generation pipeline from file X");
+	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
+		L"set pipeline variable X (in form name=value)");
 	CommandLine::end_group();
+	
+	Inbuild::set_defaults();
 }
 
+text_stream *inter_processing_file = NULL;
+text_stream *inter_processing_pipeline = NULL;
+dictionary *pipeline_vars = NULL;
 pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int census_mode = FALSE; /* Running only to update extension documentation */
+
+void Inbuild::set_defaults(void) {
+	inter_processing_pipeline = Str::new();
+	inter_processing_file = I"compile";
+}
 
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
@@ -103,6 +122,26 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
 		case CENSUS_CLSW: census_mode = val; break;
+		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
+		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
+		case PIPELINE_VARIABLE_CLSW: {
+			match_results mr = Regexp::create_mr();
+			if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+				if (Str::get_first_char(arg) != '*') {
+					Errors::fatal("-variable names must begin with '*'");
+				} else {
+					#ifdef CODEGEN_MODULE
+					if (pipeline_vars == NULL)
+						pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.z8");
+					Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
+					#endif
+				}
+			} else {
+				Errors::fatal("-variable should take the form 'name=value'");
+			}
+			Regexp::dispose_of(&mr);
+			break;
+		}
 	}
 }
 
@@ -118,6 +157,11 @@ extensions, and so on, which are needed by that project.
 target_vm *current_target_VM = NULL;
 inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+
+	#ifdef CODEGEN_MODULE
+	if (pipeline_vars == NULL)
+		pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.z8");
+	#endif
 
 	target_vm *VM = NULL;
 	text_stream *ext = story_filename_extension;
@@ -163,7 +207,7 @@ The brief "going operational" phase is used, for example, to build out
 dependency graphs.
 
 =
-void Inbuild::go_operational(void) {
+inform_project *Inbuild::go_operational(void) {
 	RUN_ONLY_IN_PHASE(PROJECTED_INBUILD_PHASE)
 	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
 	inbuild_copy *C;
@@ -171,6 +215,7 @@ void Inbuild::go_operational(void) {
 		Copies::go_operational(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) Extensions::Census::handle_census_mode();
+	return Inbuild::project();
 }
 
 @h The nest list.

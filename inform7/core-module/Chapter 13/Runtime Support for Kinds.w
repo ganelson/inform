@@ -805,7 +805,7 @@ has essentially no memory constraints compared with the Z-machine.
 	if (total_heap_allocation < UseOptions::get_dynamic_memory_allocation())
 		total_heap_allocation = UseOptions::get_dynamic_memory_allocation();
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
-	if (TargetVMs::is_16_bit(Inbuild::current_vm()))
+	if (TargetVMs::is_16_bit(Task::vm()))
 		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), max_heap);
 	else
 		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), 4*max_heap);
@@ -874,12 +874,12 @@ void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {
 void Kinds::RunTime::emit_block_value_header(kind *K, int individual, int size) {
 	if (individual == FALSE) Emit::array_numeric_entry(0);
 	int n = 0, c = 1, w = 4;
-	if (TargetVMs::is_16_bit(Inbuild::current_vm())) w = 2;
+	if (TargetVMs::is_16_bit(Task::vm())) w = 2;
 	while (c < (size + 3)*w) { n++; c = c*2; }
 	int flags = BLK_FLAG_RESIDENT + BLK_FLAG_WORD;
 	if (Kinds::get_construct(K) == CON_list_of) flags += BLK_FLAG_TRUNCMULT;
 	if (Kinds::get_construct(K) == CON_relation) flags += BLK_FLAG_MULTIPLE;
-	if (TargetVMs::is_16_bit(Inbuild::current_vm()))
+	if (TargetVMs::is_16_bit(Task::vm()))
 		Emit::array_numeric_entry((inter_t) (0x100*n + flags));
 	else
 		Emit::array_numeric_entry((inter_t) (0x1000000*n + 0x10000*flags));
@@ -1832,7 +1832,7 @@ void Kinds::RunTime::notify_of_use(kind *K) {
 }
 
 int Kinds::RunTime::target_VM_supports(kind *K) {
-	target_vm *VM = Inbuild::current_vm();
+	target_vm *VM = Task::vm();
 	if (VM == NULL) internal_error("target VM not set yet");
 	if ((Kinds::FloatingPoint::uses_floating_point(K)) &&
 		(TargetVMs::supports_floating_point(VM) == FALSE)) return FALSE;

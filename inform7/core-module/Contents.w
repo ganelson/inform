@@ -10,7 +10,8 @@ execution, and which reads command-line switches supplied by its customers."
 	Main Routine
 	Core Module
 	Progress Percentages
-	Where Everything Lives
+	What To Compile
+	How To Compile
 
 Chapter 2: Bridge to Problems Module
 "The issuing of Problem messages, and the debugging log file."

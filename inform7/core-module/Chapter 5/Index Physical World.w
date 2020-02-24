@@ -211,10 +211,10 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	}
 
 @<Quote the name of the object being indexed@> =
-	wording W = Nouns::get_name_in_play(nt, FALSE, Projects::get_language_of_play(Inbuild::project()));
+	wording W = Nouns::get_name_in_play(nt, FALSE, Projects::get_language_of_play(Task::project()));
 	if ((Wordings::empty(W)) && (I)) {
 		kind *IK = Instances::to_kind(I);
-		W = Kinds::Behaviour::get_name_in_play(IK, FALSE, Projects::get_language_of_play(Inbuild::project()));
+		W = Kinds::Behaviour::get_name_in_play(IK, FALSE, Projects::get_language_of_play(Task::project()));
 	}
 	if (Wordings::empty(W)) {
 		WRITE("nameless");
@@ -233,13 +233,13 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	if (I) {
 		kind *k = Instances::to_kind(I);
 		if (Kinds::Compare::lt(k, K_object)) {
-			wording W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Inbuild::project()));
+			wording W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Task::project()));
 			if (Wordings::nonempty(W)) {
 				WRITE(", a kind of %+W", W);
 			}
 		}
 	}
-	wording PW = Nouns::get_name_in_play(nt, TRUE, Projects::get_language_of_play(Inbuild::project()));
+	wording PW = Nouns::get_name_in_play(nt, TRUE, Projects::get_language_of_play(Task::project()));
 	if (Wordings::nonempty(PW)) WRITE(" (<i>plural</i> %+W)", PW);
 
 @<Index the kind attribution part of the object citation@> =

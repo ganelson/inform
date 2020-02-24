@@ -75,9 +75,52 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S, build_m
 }
 
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S, build_methodology *meth) {
-	#ifdef CORE_MODULE
-	int rv = CoreMain::task2(S);
-	return rv;
+	#ifdef CODEGEN_MODULE
+	clock_t back_end = clock();
+	CodeGen::Architecture::set(
+		Architectures::to_codename(
+			TargetVMs::get_architecture(S->for_vm)));
+	Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
+	Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"),
+		Filenames::get_leafname(S->vertex->buildable_if_internal_file));
+	
+	codegen_pipeline *SS = NULL;
+	if (Str::len(inter_processing_pipeline) > 0) {
+		SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
+		if (SS == NULL) {
+			Errors::nowhere("inter pipeline text could not be parsed");
+			return FALSE;
+		}
+	} else {
+		inbuild_requirement *req =
+			Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
+		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+		Nests::search_for(req, Inbuild::nest_list(), L);
+		if (LinkedLists::len(L) == 0) {
+			WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
+			Errors::nowhere("inter pipeline file could not be found");
+			return FALSE;
+		} else {
+			inbuild_search_result *R;
+			LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
+				inbuild_copy *C = R->copy;
+				filename *F = C->location_if_file;
+				SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
+				if (SS == NULL) {
+					Errors::nowhere("inter pipeline file could not be parsed");
+					return FALSE;
+				}
+				break;
+			}
+		}
+	}
+	CodeGen::Pipeline::set_repository(SS, Emit::tree());
+	CodeGen::Pipeline::run(Filenames::get_path_to(S->vertex->buildable_if_internal_file),
+		SS, Kits::inter_paths(), Projects::list_of_inter_libraries(Inbuild::project()));
+	LOG("Back end elapsed time: %dcs\n", ((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
+	return TRUE;
 	#endif
+	#ifndef CORE_MODULE
 	return FALSE;
+	#endif
 }

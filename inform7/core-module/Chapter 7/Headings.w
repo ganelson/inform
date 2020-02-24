@@ -259,7 +259,6 @@ heading *Sentences::Headings::declare(parse_node *PN) {
 			case IN_PLACE_OF_HQ:
 				h->use_with_or_without = TRUE;
 				h->in_place_of_text = GET_RW(<extension-qualifier>, 1);
-				CoreMain::disable_importation();
 				break;
 		}
 		W = GET_RW(<heading-qualifier>, 1);
@@ -342,7 +341,7 @@ allowed; they should probably be withdrawn.
 @ =
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
-		*X = Compatibility::with((compatibility_specification *) <<rp>>, Inbuild::current_vm());
+		*X = Compatibility::with((compatibility_specification *) <<rp>>, Task::vm());
 		return TRUE;
 	} else {
 		*X = FALSE;

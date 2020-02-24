@@ -433,7 +433,7 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 	int scale_factor, int to_add, inter_symbol *var_to_add, inter_symbol *label) {
 	if (scale_factor > 1) {
 		long long int max = 2147483647LL;
-		if (TargetVMs::is_16_bit(Inbuild::current_vm())) max = 32767LL;
+		if (TargetVMs::is_16_bit(Task::vm())) max = 32767LL;
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -508,30 +508,6 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-
-@ =
-void Kinds::Scalings::compile_scale_and_add_oldschool(OUTPUT_STREAM, char *var,
-	int scale_factor, text_stream *to_add, int label) {
-	if (scale_factor > 1) {
-		long long int max = 2147483647LL;
-		#ifdef CORE_MODULE
-		if (TargetVMs::is_16_bit(Inbuild::current_vm())) max = 32767LL;
-		#endif
-		WRITE("if (sgn == 1) {\n"); INDENT;
-		WRITE("if ((%s > %d) || ((%s == %d) && (%S > %d)))\n",
-			var, (int) (max/scale_factor), var, (int) (max/scale_factor),
-			to_add, (int) (max%scale_factor)); INDENT;
-		WRITE("jump Failed_LP_%d;\n", label);
-		OUTDENT; OUTDENT; WRITE("} else {\n"); INDENT;
-		max++;
-		WRITE("if ((%s > %d) || ((%s == %d) && (%S > %d)))\n",
-			var, (int) (max/scale_factor), var, (int) (max/scale_factor),
-			to_add, (int) (max%scale_factor)); INDENT;
-		WRITE("jump Failed_LP_%d;\n", label);
-		OUTDENT; OUTDENT; WRITE("}\n");
-	}
-	WRITE("%s = %d*%s + %S;\n", var, scale_factor, var, to_add);
-}
 
 @ And conversely... Note that in the real case, the remainder variable |R_var|
 is ignored, since the division can be performed "exactly".

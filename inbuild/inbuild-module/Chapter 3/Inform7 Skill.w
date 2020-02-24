@@ -43,7 +43,7 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S, text_stre
 
 int Inform7Skill::inform7_internally(build_skill *skill, build_step *S, build_methodology *meth) {
 	#ifdef CORE_MODULE
-	int rv = CoreMain::task(S);
+	int rv = Task::carry_out(S);
 	return rv;
 	#endif
 	return FALSE;

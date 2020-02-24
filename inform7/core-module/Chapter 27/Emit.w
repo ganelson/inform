@@ -56,7 +56,7 @@ void Emit::begin(void) {
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
-	FundamentalConstants::emit(Inbuild::current_vm());
+	FundamentalConstants::emit(Task::vm());
 	NewVerbs::ConjugateVerbDefinitions();
 	
 	Hierarchy::find(INFORMLIBRARY_HL);

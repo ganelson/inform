@@ -428,7 +428,7 @@ void UseOptions::compile_icl_commands(void) {
 	i6_memory_setting *ms;
 	LOOP_OVER(ms, i6_memory_setting) {
 		if ((Str::eq_wide_string(ms->ICL_identifier, L"MAX_LOCAL_VARIABLES")) &&
-			(TargetVMs::allow_MAX_LOCAL_VARIABLES(Inbuild::current_vm()) == FALSE))
+			(TargetVMs::allow_MAX_LOCAL_VARIABLES(Task::vm()) == FALSE))
 			continue;
 		TEMPORARY_TEXT(prag);
 		WRITE_TO(prag, "$%S=%d", ms->ICL_identifier, ms->number);

@@ -122,7 +122,7 @@ void FundamentalConstants::emit_build_number(void) {
 =
 int FundamentalConstants::veto_number(int X) {
 	if (((X > 32767) || (X < -32768)) &&
-		(TargetVMs::is_16_bit(Inbuild::current_vm()))) {
+		(TargetVMs::is_16_bit(Task::vm()))) {
 		Problems::Issue::sentence_problem(_p_(PM_LiteralOverflow),
 			"you use a number which is too large",
 			"at least with the Settings for this project as they currently "

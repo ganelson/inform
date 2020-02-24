@@ -31,7 +31,7 @@ void NaturalLanguages::scan(void) {
 =
 void NaturalLanguages::default_to_English(void) {
 	inform_language *E = NaturalLanguages::English();
-	inform_project *proj = Inbuild::project();
+	inform_project *proj = Task::project();
 	Projects::set_language_of_syntax(proj, E);
 	Projects::set_language_of_index(proj, E);
 	Projects::set_language_of_play(proj, E);
@@ -48,7 +48,7 @@ inform_language *NaturalLanguages::English(void) {
 
 =
 void NaturalLanguages::produce_index(void) {
-	inform_project *project = Inbuild::project();
+	inform_project *project = Task::project();
 	I6T::interpret_indext(
 		Filenames::in_folder(
 			Languages::path_to_bundle(
