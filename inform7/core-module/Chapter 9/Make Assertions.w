@@ -1523,7 +1523,7 @@ suite: it would be annoying to verify this problem message otherwise.)
 @<Choose random antagonists for variety@> =
 	char *P, *Q, *In;
 	int variant = 0;
-	if (rng_seed_at_start_of_play == 0) variant = (time(0))&15;
+	if (Task::rng_seed() == 0) variant = (time(0))&15;
 	switch(variant) {
 		case 1: P = "the chalk"; Q = "the cheese"; In = "Dairy Products School"; break;
 		case 2: P = "St Peter"; Q = "St Paul"; In = "Pearly Gates"; break;

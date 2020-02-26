@@ -50,6 +50,8 @@ to add and process command line switches handled by inbuild:
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
+@e RNG_CLSW
+@e CASE_CLSW
 
 =
 void Inbuild::declare_options(void) {
@@ -83,6 +85,10 @@ void Inbuild::declare_options(void) {
 		L"specify code-generation pipeline from file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
+	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
+		L"fix the random number generator of the story file (for testing)");
+	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
+		L"make any source links refer to the source in extension example X");
 	CommandLine::end_group();
 	
 	Inbuild::set_defaults();
@@ -96,6 +102,7 @@ int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug featu
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
 text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
 int census_mode = FALSE; /* Running only to update extension documentation */
+int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Inbuild::set_defaults(void) {
 	inter_processing_pipeline = Str::new();
@@ -142,6 +149,11 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 			Regexp::dispose_of(&mr);
 			break;
 		}
+		case RNG_CLSW:
+			if (val) rng_seed_at_start_of_play = -16339;
+			else rng_seed_at_start_of_play = 0;
+			break;
+		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
 	}
 }
 
@@ -220,6 +232,27 @@ inform_project *Inbuild::go_operational(void) {
 }
 
 @h The nest list.
+Nests are directories which hold resources to be used by the Intools, and
+one of Inbuild's main roles is to search and manage nests. All nests can
+hold extensions, kits, language definitions, and so on.
+
+But among nests three are special, and can hold other things as well.
+
+(a) The "internal" nest is part of the installation of Inform as software.
+It contains, for example, the build-in extensions. But it also contains
+miscellaneous other files needed by Infomr (see below).
+
+(b) The "external" nest is the one to which the user installs her own
+selection of extensions, and so on. On most platforms, the external nest
+is also the default home of "transient" storage, for more ephemeral content,
+such as the mechanically generated extension documentation. Some mobile
+operating systems are aggressive about wanting to delete ephemeral files
+used by applications, so |-transient| can be used to divert these.
+
+(c) Every project has its own private nest, in the form of its associated
+Materials folder. For example, in |Jane Eyre.inform| is a project, then
+alongside it is |Jane Eyre.materials| and this is a nest.
+
 Nests used by the Inform and Inbuild tools are tagged with the following
 comstamts, except that no nest is ever tagged |NOT_A_NEST_TAG|.
 (There used to be quite a good joke here, but refactoring of the
@@ -308,8 +341,8 @@ pathname *Inbuild::materials(void) {
 	return shared_materials_nest->location;
 }
 
-@ The transient area is used for ephemera such as dynamically written
-documentation and telemetry files. |-transient| sets it, but otherwise
+@ As noted above, the transient area is used for ephemera such as dynamically
+written documentation and telemetry files. |-transient| sets it, but otherwise
 the external nest is used.
 
 =
@@ -399,6 +432,8 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 		if (P) P = Pathnames::subfolder(P, I"Source");
 		if (Str::len(project_file_request) > 0) P = NULL;
 		Projects::set_source_filename(shared_project, P, filename_of_i7_source);
+		if (rng_seed_at_start_of_play != 0)
+			Projects::fix_rng(shared_project, rng_seed_at_start_of_play);
 	}
 	return shared_project;
 }
@@ -486,9 +521,30 @@ void Inbuild::pass_kit_requests(void) {
 }
 
 @h Installation.
-Inform and its associated tools need to be able to see certain files stored
-in the internal nest: if they aren't there, then Inform is not properly
-installed on disc.
+Inform needs a whole pile of files to have been installed on the host computer
+before it can run: everything from the Standard Rules to a PDF file explaining
+what interactive fiction is. They're never written to, only read. They are
+referred to as "internal" or "built-in", and they occupy a folder called the
+"internal resources" folder.
+
+Unfortunately we don't know where it is. Typically this compiler will be an
+executable sitting somewhere inside a user interface application, and the
+internal resources folder will be somewhere else inside it. But we don't
+know how to find that folder, and we don't want to make any assumptions.
+This is the purpose of the internal nest, and this is why inform7 can only
+be run if an |-internal| switch has been used specifying where it is.
+
+The internal nest has two additional subfolders (additional in that they
+don't hold copies in the Inbuild sense, just a bunch of loose odds and ends):
+|Miscellany| and |HTML|. Many of these files are to help Inblorb to perform
+a release.
+
+The documentation snippets file is generated by |indoc| and contains
+brief specifications of phrases, extracted from the manual "Writing with
+Inform". This is used to generate the Phrasebook index.
+
+Anyway, Inform and its associated tools can then access these files using the
+following routine:
 
 @e CBLORB_REPORT_MODEL_IRES from 1
 @e DOCUMENTATION_SNIPPETS_IRES
@@ -510,19 +566,20 @@ filename *Inbuild::file_from_installation(int ires) {
 	pathname *misc = Pathnames::subfolder(I->location, I"Miscellany");
 	pathname *models = Pathnames::subfolder(I->location, I"HTML");
 	switch (ires) {
-		case CBLORB_REPORT_MODEL_IRES: return Filenames::in_folder(models, I"CblorbModel.html");
 		case DOCUMENTATION_SNIPPETS_IRES: return Filenames::in_folder(misc, I"definitions.html");
 		case INTRO_BOOKLET_IRES: return Filenames::in_folder(misc, I"IntroductionToIF.pdf");
 		case INTRO_POSTCARD_IRES: return Filenames::in_folder(misc, I"Postcard.pdf");
 		case LARGE_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Cover.jpg");
 		case SMALL_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Small Cover.jpg");
+
+		case CBLORB_REPORT_MODEL_IRES: return Filenames::in_folder(models, I"CblorbModel.html");
 		case DOCUMENTATION_XREFS_IRES: return Filenames::in_folder(models, I"xrefs.txt");
 		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.js");
 		case JAVASCRIPT_FOR_EXTENSIONS_IRES: return Filenames::in_folder(models, I"extensions.js");
 		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: return Filenames::in_folder(models, I"extensionfile.js");
 		case CSS_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.css");
 		case EXTENSION_DOCUMENTATION_MODEL_IRES: return Filenames::in_folder(models, I"extensionfile.html");
-	}
+		}
 	internal_error("unknown installation resource file");
 	return NULL;
 }

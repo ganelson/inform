@@ -15,6 +15,7 @@ typedef struct inform_project {
 	struct build_vertex *unblorbed_vertex;
 	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
+	int fix_rng;
 	MEMORY_MANAGEMENT
 } inform_project;
 
@@ -31,6 +32,7 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->chosen_build_target = NULL;
 	project->unblorbed_vertex = NULL;
 	project->blorbed_vertex = NULL;
+	project->fix_rng = 0;
 	return project;
 }
 
@@ -77,6 +79,10 @@ void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) 
 inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	return proj->language_of_syntax;
+}
+
+void Projects::fix_rng(inform_project *project, int seed) {
+	project->fix_rng = seed;
 }
 
 void Projects::not_necessarily_parser_IF(inform_project *project) {

@@ -9,7 +9,6 @@ options with inbuild: see that module for more.
 
 =
 int existing_story_file = FALSE; /* Ignore source text to blorb existing story file? */
-int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
 int do_not_generate_index = FALSE; /* Set by the |-noindex| command line option */
@@ -84,6 +83,11 @@ int CoreMain::main(int argc, char *argv[]) {
 
 	Problems::Issue::start_problems_report(PF);
 
+@ Telemetry is not as sinister as it sounds: the app isn't sending data out
+on the Internet, only (if requested) logging what it's doing to a local file.
+This was provided for classroom use, so that teachers can see what their
+students have been getting stuck on.
+
 @<Open the telemetry@> =
 	pathname *P = Pathnames::subfolder(Inbuild::transient(), I"Telemetry");
 	if (Pathnames::create_in_file_system(P)) {
@@ -131,12 +135,10 @@ int CoreMain::read_command_line(int argc, char *argv[]) {
 arguments in order to set certain pathnames or filenames, so the following
 list is not exhaustive.
 
-@e CASE_CLSW
 @e CRASHALL_CLSW
 @e NOINDEX_CLSW
 @e NOPROGRESS_CLSW
 @e REQUIRE_PROBLEM_CLSW
-@e RNG_CLSW
 @e SIGILS_CLSW
 
 @<Register command-line arguments@> =
@@ -150,12 +152,8 @@ list is not exhaustive.
 		L"don't produce an Index");
 	CommandLine::declare_boolean_switch(NOPROGRESS_CLSW, L"noprogress", 1,
 		L"don't display progress percentages");
-	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
-		L"fix the random number generator of the story file (for testing)");
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
 		L"print Problem message sigils (for testing)");
-	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
-		L"make any source links refer to the source in extension example X");
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated (for testing)");
 	Inbuild::declare_options();
@@ -163,18 +161,10 @@ list is not exhaustive.
 @=
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		/* Miscellaneous boolean settings */
 		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
 		case NOINDEX_CLSW: do_not_generate_index = val; break;
 		case NOPROGRESS_CLSW: show_progress_indicator = val?FALSE:TRUE; break;
-		case RNG_CLSW:
-			if (val) rng_seed_at_start_of_play = -16339;
-			else rng_seed_at_start_of_play = 0;
-			break;
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
-
-		/* Other settings */
-		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 	}
 	Inbuild::option(id, val, arg, state);

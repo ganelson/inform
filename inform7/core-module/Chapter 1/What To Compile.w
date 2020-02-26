@@ -97,7 +97,47 @@ int Task::get_next_free_blorb_resource_ID(void) {
 	return inform7_task->next_resource_number++;
 }
 
+@ This seed is ordinarily 0, causing no fix to occur, but can be set to
+a non-zero value to make testing Inform easier.
+
+=
+int Task::rng_seed(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->project->fix_rng;
+}
+
 @h Project-related files and file paths.
+An Inform compilation can touch dozens of different files, and the rest
+of this section is a tour through the ones which are associated with the
+project itself. (Common resources, used for all compilations, or optional
+add-ins such as extensions are the business of Inbuild.)
+
+If a project is called, say, Wuthering Heights, and is a "bundle" as created
+and compiled by the Inform app, then:
+
+(a) The project path will be |Wuthering Heights.inform|. This looks opaque
+on MacOS, as if a file, but on all platforms it is in fact a directory.
+(b) Within it is |Wuthering Heights.inform/Build|, the "build folder".
+(c) Alongside it is |Wuthering Heights.materials|. This is also a directory,
+but is openly accessible even on MacOS.
+
+If Inform is working on a single source text file, not a bundle, then the
+project will be the current working directory, but now the build folder will
+be the Inbuild transient area, and materials (if present) will again be
+alongside.
+
+To begin: what's in the project area? |story.ni| and |auto.inf|, neither
+one very helpfully named, are defined in Inbuild rather than here: these
+are the I7 source text and its compilation down to I6, respectively.
+In addition we have:
+
+The UUID file records an ISBN-like identifying number for the project. This
+is read-only for us.
+
+The iFiction record, manifest and blurb file are all files that we generate
+to give instructions to the releasing agent Inblorb. This means that they
+have no purpose unless Inform is in a release run (with |-release| set on
+the command line), but they take no time to generate so we make them anyway.
 
 =
 filename *Task::uuid_file(void) {
@@ -117,6 +157,12 @@ filename *Task::blurb_file(void) {
 	return Filenames::in_folder(inform7_task->path, I"Release.blurb");
 }
 
+@ The build folder for a project contains all of the working files created
+during the compilation process. The debugging log and Inform problems report
+(its HTML file of error messages) are both written there: see the Main Routine
+section for details. In addition we have:
+
+=
 filename *Task::cblorb_report_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Filenames::in_folder(inform7_task->build, I"StatusCblorb.html");
@@ -125,6 +171,11 @@ filename *Task::parse_tree_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Filenames::in_folder(inform7_task->build, I"Parse tree.txt");
 }
+
+@ The name of the unblorbed story file is chosen for us by Inbuild, so
+we have to extract it from the build graph:
+
+=
 filename *Task::storyfile_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	build_vertex *V = inform7_task->project->unblorbed_vertex;
@@ -132,11 +183,11 @@ filename *Task::storyfile_file(void) {
 	return V->buildable_if_internal_file;
 }
 
-@ Location of index files.
-Filenames within the |Index| subfolder. Filenames in |Details| have the form
-|N_S| where |N| is the integer supplied and |S| the leafname; for instance,
-|21_A.html| provides details page number 21 about actions, derived from the
-leafname |A.html|.
+@ Deeper inside the|Build| subfolder is an (also ephemeral) |Index| subfolder,
+which holds the mini-website of the Index for a project.
+
+The main index files (|Phrasebook.html| and so on) live at the top level,
+details on actions live in the subfolder |Details|: see below.
 
 =
 pathname *Task::index_path(void) {
@@ -145,14 +196,34 @@ pathname *Task::index_path(void) {
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
 }
+
+@ An oddity in the Index folder is an XML file recording where the headings
+are in the source text: this is for the benefit of the user interface
+application, if it wants it, but is not linked to or used by the HTML of
+the index as seen by the user.
+
+=
+filename *Task::xml_headings_file(void) {
+	return Filenames::in_folder(Task::index_path(), I"Headings.xml");
+}
+
+@ Within the Index is a deeper level, into the weeds as it were, called
+|Details|.
+
+=
 pathname *Task::index_details_path(void) {
 	pathname *P = Pathnames::subfolder(Task::index_path(), I"Details");
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
 }
-filename *Task::xml_headings_file(void) {
-	return Filenames::in_folder(Task::index_path(), I"Headings.xml");
-}
+
+@ And the following routine determines the filename for a page in this
+mini-website. Filenames down in the |Details| area have the form
+|N_S| where |N| is an integer supplied and |S| the leafname; for instance,
+|21_A.html| provides details page number 21 about actions, derived from the
+leafname |A.html|.
+
+=
 filename *Task::index_file(text_stream *leafname, int sub) {
 	if (sub >= 0) {
 		TEMPORARY_TEXT(full_leafname);
@@ -165,6 +236,21 @@ filename *Task::index_file(text_stream *leafname, int sub) {
 	}
 }
 
+@ That's it for the project folder, but other project-related stuff is in
+the materials folder, which we turn to next.
+
+Inform is occasionally run in a mode where it performs a release on an
+existing story file (for example a 1980s Infocom one) rather than on one
+that it has newly generated. This is the filename such a story file would
+have by default, if so.
+
+By default the story file will be called something like |story.z8|, but
+its leafname is actually declared from the source text of the Inform
+project created to do this wrapping-up. So we need a way to set as well
+as read this filename. Whatever the leafname, though, it lives in the top
+level of materuals.
+
+=
 void Task::set_existing_storyfile(text_stream *name) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (name == NULL) {
@@ -180,6 +266,17 @@ filename *Task::existing_storyfile_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return inform7_task->existing_storyfile;
 }
+
+@ Materials is also where cover art lives: it could have either the file
+extension |.jpg| or |.png|, and we generate both sets of filenames, even
+though at most one will actually work. This is also where we generate the EPS
+file of the map, if so requested; a bit anomalously, it's the only file in
+Materials but outside Release which we write to.
+
+This is also where the originals (not the released copies) of the Figures
+and Sounds, if any, live: in their own subfolders.
+
+=
 filename *Task::large_cover_art_file(int JPEG) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (JPEG) return Filenames::in_folder(inform7_task->materials, I"Cover.jpg");
@@ -199,6 +296,12 @@ pathname *Task::sounds_path(void) {
 	return Pathnames::subfolder(inform7_task->materials, I"Sounds");
 }
 
+@ On a release run, Inblorb will populate the Release subfolder of Materials;
+figures and sounds will be copied into the relevant subfolders. The principle
+is that everything in Release can always be thrown away without loss, because
+it can all be generated again.
+
+=
 pathname *Task::release_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Pathnames::subfolder(inform7_task->materials, I"Release");
@@ -212,163 +315,3 @@ pathname *Task::released_sounds_path(void) {
 pathname *Task::released_interpreter_path(void) {
 	return Pathnames::subfolder(Task::release_path(), I"interpreter");
 }
-
-@h Establishing the defaults.
-Inform's file access happens inside four different areas: the internal
-resources area, usually inside the Inform application; the external resources
-area, which is where the user (or the application acting on the user's behalf)
-installs extensions; the project bundle, say |Example.inform|; and, alongside
-that, the materials folder, |Example.materials|.
-
-=
-int Task::set_more_defaults(void) {
-	@<Internal resources@>;
-	@<External resources@>;
-	@<Project resources@>;
-	@<Materials resources@>;
-	return TRUE;
-}
-
-@h Internal resources.
-Inform needs a whole pile of files to have been installed on the host computer
-before it can run: everything from the Standard Rules to a PDF file explaining
-what interactive fiction is. They're never written to, only read. They are
-referred to as "internal" or "built-in", and they occupy a folder called the
-"internal resources" folder.
-
-Unfortunately we don't know where it is. Typically this compiler will be an
-executable sitting somewhere inside a user interface application, and the
-internal resources folder will be somewhere else inside it. But we don't
-know how to find that folder, and we don't want to make any assumptions.
-Inform therefore requires on every run that it be told via the |-internal|
-switch where the internal resources folder is.
-
-@<Internal resources@> =
-
-	@<Miscellaneous other stuff@>;
-
-@ Most of these files are to help Inblorb to perform a release. The
-documentation models are used when making extension documentation; the
-leafname is platform-dependent so that Windows can use different models
-from everybody else.
-
-The documentation snippets file is generated by |indoc| and contains
-brief specifications of phrases, extracted from the manual "Writing with
-Inform". This is used to generate the Phrasebook index.
-
-@<Miscellaneous other stuff@> =
-	;
-
-@h External resources.
-This is where the user can install downloaded extensions, new interpreters,
-website templates and so on; so-called "permanent" external resources, since
-the user expects them to stay put once installed. But there is also a
-"transient" external resources area, for more ephemeral content, such as
-the mechanically generated extension documentation. On most platforms the
-permanent and transient external areas will be the same, but some mobile
-operating systems are aggressive about wanting to delete ephemeral files
-used by applications.
-
-The locations of the permanent and transient external folders can be set
-using |-external| and |-transient| respectively. If no |-external| is
-specified, the location depends on the platform settings: for example on
-Mac OS X it will typically be
-
-	|/Library/Users/hclinton/Library/Inform|
-
-If |-transient| is not specified, it's the same folder, i.e., Inform does
-not distinguish between permanent and transient external resources.
-
-@<External resources@> =
-	@<Transient telemetry@>;
-
-@ Telemetry is not as sinister as it sounds: the app isn't sending data out
-on the Internet, only (if requested) logging what it's doing to a local file.
-This was provided for classroom use, so that teachers can see what their
-students have been getting stuck on.
-
-@<Transient telemetry@> =
-	;
-
-@h Project resources.
-Although on some platforms it may look like a single file, an Inform project
-is a folder whose name has the dot-extension |.inform|. We'll call this the
-"project folder", and it contains a whole bundle of useful files.
-
-The UUID file records an ISBN-like identifying number for the project. This
-is read-only for us.
-
-The iFiction record, manifest and blurb file are all files that we generate
-to give instructions to the releasing agent Inblorb. This means that they
-have no purpose unless Inform is in a release run (with |-release| set on
-the command line), but they take no time to generate so we make them anyway.
-
-@<Project resources@> =
-	@<The Build folder within the project@>;
-	@<The Index folder within the project@>;
-
-
-@ The build folder for a project contains all of the working files created
-during the compilation process. The opening part here may be a surprise:
-In extension census mode, Inform is running not to compile something but to
-extract details of all the extensions installed. But it still needs somewhere
-to write its temporary and debugging files, and there is no project bundle
-to write into. To get round this, we use the transient data area as if it
-were indeed a project bundle.
-
-Briefly: we aim to compile the source text to an Inform 6 program; we issue
-an HTML report on our success or failure, listing problem messages if they
-occurred; we track our progress in the debugging log. We don't produce the
-story file ourselves, I6 will do that, but we do need to know what it's
-called; and similarly for the report which the releasing tool Inblorb
-will produce if this is a Release run.
-
-@<The Build folder within the project@> =
-	;
-
-@ We're going to write into the Index folder, so we must ensure it exists.
-The main index files (|Phrasebook.html| and so on) live at the top level,
-details on actions live in the subfolder |Details|: see below.
-
-An oddity in the Index folder is an XML file recording where the headings
-are in the source text: this is for the benefit of the user interface
-application, if it wants it, but is not linked to or used by the HTML of
-the index as seen by the user.
-
-@<The Index folder within the project@> =
-	;
-
-@h Materials resources.
-
-@<Materials resources@> =
-	@<Figures and sounds@>;
-	@<The Release folder@>;
-	@<Existing story file@>;
-
-@ This is where cover art lives: it could have either the file extension |.jpg|
-or |.png|, and we generate both sets of filenames, even though at most one will
-actually work. This is also where we generate the EPS file of the map, if
-so requested; a bit anomalously, it's the only file in Materials but outside
-Release which we write to.
-
-This is also where the originals (not the released copies) of the Figures
-and Sounds, if any, live: in their own subfolders.
-
-@<Figures and sounds@> =
-	;
-
-@ On a release run, Inblorb will populate the Release subfolder of Materials;
-figures and sounds will be copied into the relevant subfolders. The principle
-is that everything in Release can always be thrown away without loss, because
-it can all be generated again.
-
-@<The Release folder@> =
-	;
-
-@ Inform is occasionally run in a mode where it performs a release on an
-existing story file (for example a 1980s Infocom one) rather than on one
-that it has newly generated. This is the filename such a story file would
-have by default, if so.
-
-@<Existing story file@> =
-	;

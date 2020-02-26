@@ -1089,7 +1089,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	#endif
 	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), Strings::TextLiterals::CCOUNT_QUOTATIONS());
 	Kinds::RunTime::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), max_frame_size_needed);
-	Kinds::RunTime::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), rng_seed_at_start_of_play);
+	Kinds::RunTime::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }
 
 void Kinds::RunTime::compile_data_type_support_routines(void) {
