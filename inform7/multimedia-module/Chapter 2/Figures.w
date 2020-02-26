@@ -160,10 +160,10 @@ void PL::Figures::register_figure(wording F, wording FN) {
 
 	bf->name = F;
 	if (wn >= 0) {
-		bf->figure_number = Projects::get_next_free_blorb_resource_ID(Task::project());
+		bf->figure_number = Task::get_next_free_blorb_resource_ID();
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%N", wn);
-		bf->filename_of_image_file = Filenames::in_folder(pathname_of_materials_figures, leaf);
+		bf->filename_of_image_file = Filenames::in_folder(Task::figures_path(), leaf);
 		DISCARD_TEXT(leaf);
 		bf->alt_description = <<alttext>>;
 	} else {
@@ -202,9 +202,9 @@ void PL::Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 		WRITE("<key>1</key>\n");
 		filename *large = NULL;
 		if (strcmp(cover_art_format, "jpg") == 0)
-			large = filename_of_large_cover_art_jpeg;
+			large = Task::large_cover_art_file(TRUE);
 		else
-			large = filename_of_large_cover_art_png;
+			large = Task::large_cover_art_file(FALSE);
 		WRITE("<string>%f</string>\n", large);
 	}
 	LOOP_OVER(bf, blorb_figure)
@@ -249,7 +249,7 @@ void PL::Figures::write_copy_commands(void) {
 	LOOP_OVER(bf, blorb_figure)
 		if (bf->figure_number > 1)
 			PL::Bibliographic::Release::create_aux_file(bf->filename_of_image_file,
-				pathname_of_released_figures, L"--", SEPARATE_FIGURES_PAYLOAD);
+				Task::released_figures_path(), L"--", SEPARATE_FIGURES_PAYLOAD);
 }
 
 @ =

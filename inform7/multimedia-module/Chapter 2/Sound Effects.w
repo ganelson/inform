@@ -147,11 +147,11 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%N", wn);
-	bs->filename_of_sound_file = Filenames::in_folder(pathname_of_materials_sounds, leaf);
+	bs->filename_of_sound_file = Filenames::in_folder(Task::sounds_path(), leaf);
 	DISCARD_TEXT(leaf);
 
 	bs->name = F;
-	bs->sound_number = Projects::get_next_free_blorb_resource_ID(Task::project());
+	bs->sound_number = Task::get_next_free_blorb_resource_ID();
 	bs->alt_description = <<alttext>>;
 
 	LOGIF(FIGURE_CREATIONS,
@@ -209,7 +209,7 @@ void PL::Sounds::write_copy_commands(void) {
 	LOOP_OVER(bs, blorb_sound)
 		PL::Bibliographic::Release::create_aux_file(
 			bs->filename_of_sound_file,
-			pathname_of_released_sounds,
+			Task::released_sounds_path(),
 			L"--",
 			SEPARATE_SOUNDS_PAYLOAD);
 }

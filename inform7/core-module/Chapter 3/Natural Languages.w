@@ -29,14 +29,6 @@ void NaturalLanguages::scan(void) {
 @h Language of play.
 
 =
-void NaturalLanguages::default_to_English(void) {
-	inform_language *E = NaturalLanguages::English();
-	inform_project *proj = Task::project();
-	Projects::set_language_of_syntax(proj, E);
-	Projects::set_language_of_index(proj, E);
-	Projects::set_language_of_play(proj, E);
-}
-
 inform_language *NaturalLanguages::English(void) {
 	NaturalLanguages::scan();
 	inform_language *L = Languages::from_name(I"english");

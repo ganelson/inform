@@ -208,8 +208,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 				Word::dequote(Wordings::first_wn(SW));
 				TEMPORARY_TEXT(leaf);
 				WRITE_TO(leaf, "%N", Wordings::first_wn(SW));
-				filename_of_existing_story_file =
-					Filenames::in_folder(Inbuild::materials(), leaf);
+				Task::set_existing_storyfile(leaf);
 				DISCARD_TEXT(leaf);
 			}
 			existing_story_file = TRUE;
@@ -224,7 +223,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			filename *A = Filenames::in_folder(Inbuild::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
-				pathname_of_materials_release,
+				Task::release_path(),
 				Lexer::word_text(Wordings::first_wn(DW)),
 				payload);
 			break;
@@ -237,7 +236,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			filename *A = Filenames::in_folder(Inbuild::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
-				pathname_of_materials_release,
+				Task::release_path(),
 				L"--",
 				payload);
 			break;
@@ -253,7 +252,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			DISCARD_TEXT(leaf);
 			TEMPORARY_TEXT(folder);
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
-			pathname *P = Pathnames::subfolder(pathname_of_materials_release, folder);
+			pathname *P = Pathnames::subfolder(Task::release_path(), folder);
 			DISCARD_TEXT(folder);
 			PL::Bibliographic::Release::create_aux_file(A, P, L"--", payload);
 			break;
@@ -364,13 +363,13 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	}
 
 @<Create the Release subfolder if not already present@> =
-	if (Pathnames::create_in_file_system(pathname_of_materials_release) == FALSE) {
+	if (Pathnames::create_in_file_system(Task::release_path()) == FALSE) {
 		Problems::Issue::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
 			"was to have been called",
-			pathname_of_materials_release);
+			Task::release_path());
 		return;
 	}
 	auxiliary_file *af;
@@ -386,13 +385,13 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 		}
 
 @<Create the Interpreter subfolder if not already present@> =
-	if (Pathnames::create_in_file_system(pathname_of_released_interpreter) == FALSE) {
+	if (Pathnames::create_in_file_system(Task::released_interpreter_path()) == FALSE) {
 		Problems::Issue::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with an "
 			"interpreter, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
 			"was to have been called",
-			pathname_of_released_interpreter);
+			Task::released_interpreter_path());
 		return;
 	}
 
@@ -403,11 +402,11 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	if (release_cover) {
 		current_sentence = cover_filename_sentence;
 		cover_art_format = "";
-		filename *cover_filename = filename_of_large_cover_art_jpeg;
+		filename *cover_filename = Task::large_cover_art_file(TRUE);
 		FILE *COVER_FILE = Filenames::fopen(cover_filename, "rb" );
 		if (COVER_FILE) @<The cover seems to be a JPEG@>
 		else {
-			cover_filename = filename_of_large_cover_art_png;
+			cover_filename = Task::large_cover_art_file(FALSE);
 			COVER_FILE = Filenames::fopen(cover_filename, "rb" );
 			if (COVER_FILE) @<The cover seems to be a PNG@>
 			else @<There seems to be no cover at all@>;
@@ -465,14 +464,14 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 @<Read header of existing story file if present@> =
 	if (Inbuild::currently_releasing() == FALSE)
 		@<Issue a problem if this isn't a Release run@>;
-	FILE *STORYF = Filenames::fopen(filename_of_existing_story_file, "rb");
+	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
 		Problems::Issue::unlocated_problem_on_file(
 			_p_(BelievedImpossible), /* i.e., not testable by intest */
 			"The instruction 'Release along with an existing story file' "
 			"means that I need to bind up a story file called '%1', in "
 			"the .materials folder for this project. But it doesn't seem "
-			"to be there.", filename_of_existing_story_file);
+			"to be there.", Task::existing_storyfile_file());
 		return;
 	}
 	int i;
@@ -506,8 +505,9 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 
 @<Write iFiction record@> =
 	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, filename_of_ifiction_record, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open metadata file", filename_of_ifiction_record);
+	filename *F = Task::ifiction_record_file();
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open metadata file", F);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 	PL::Bibliographic::Release::write_ifiction_record(xf, header, cover_picture_number, cover_art_format, height, width);
@@ -515,16 +515,18 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	STREAM_CLOSE(xf);
 
 @<Write release blurb@> =
+	filename *F = Task::blurb_file();
 	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, filename_of_blurb, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open blurb file", filename_of_blurb);
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open blurb file", F);
 	PL::Bibliographic::Release::write_release_blurb(xf, cover_picture_number, cover_art_format);
 	STREAM_CLOSE(xf);
 
 @<Write manifest file@> =
+	filename *F = Task::manifest_file();
 	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, filename_of_manifest, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open manifest file", filename_of_manifest);
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open manifest file", F);
 	PL::Figures::write_picture_manifest(xf, release_cover, cover_art_format);
 	STREAM_CLOSE(xf);
 
@@ -863,21 +865,21 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where to write its report to@> =
 	WRITE("status \"%f\" \"%f\"\n\n",
-		filename_of_cblorb_report_model,
-		filename_of_cblorb_report);
+		Inbuild::file_from_installation(CBLORB_REPORT_MODEL_IRES),
+		Task::cblorb_report_file());
 
 @<Tell Inblorb where the project and release folders are@> =
 	WRITE("project folder \"%p\"\n", Projects::path(Task::project()));
 	if (create_Materials)
-		WRITE("release to \"%p\"\n", pathname_of_materials_release);
+		WRITE("release to \"%p\"\n", Task::release_path());
 
 @<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
 	if (existing_story_file)
-		WRITE("storyfile \"%f\" include\n", filename_of_existing_story_file);
+		WRITE("storyfile \"%f\" include\n", Task::existing_storyfile_file());
 	else
-		WRITE("storyfile \"%f\" include\n", filename_of_story_file);
-	WRITE("ifiction \"%f\" include\n", filename_of_ifiction_record);
+		WRITE("storyfile \"%f\" include\n", Task::storyfile_file());
+	WRITE("ifiction \"%f\" include\n", Task::ifiction_record_file());
 
 @ A controversial point here is that if the author supplies no cover art, we
 supply it for him, and if necessary copy a suitable image into any website
@@ -887,17 +889,17 @@ released along with the work.
 	if (release_cover) {
 		filename *large = NULL;
 		if (strcmp(cover_art_format, "jpg") == 0)
-			large = filename_of_large_cover_art_jpeg;
+			large = Task::large_cover_art_file(TRUE);
 		else
-			large = filename_of_large_cover_art_png;
+			large = Task::large_cover_art_file(FALSE);
 		WRITE("cover \"%f\"\n", large);
 		WRITE("picture %d \"%f\"\n", cover_picture_number, large);
 	} else {
-		WRITE("cover \"%f\"\n", filename_of_large_default_cover_art);
-		WRITE("picture %d \"%f\"\n", 1, filename_of_large_default_cover_art);
+		WRITE("cover \"%f\"\n", Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+		WRITE("picture %d \"%f\"\n", 1, Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
 		if (release_website) {
-			WRITE("release file \"%f\"\n", filename_of_large_default_cover_art);
-			WRITE("release file \"%f\"\n", filename_of_small_default_cover_art);
+			WRITE("release file \"%f\"\n", Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+			WRITE("release file \"%f\"\n", Inbuild::file_from_installation(SMALL_DEFAULT_COVER_ART_IRES));
 		}
 	}
 
@@ -967,7 +969,7 @@ own credits.
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file) {
 		TEMPORARY_TEXT(rel);
-		Pathnames::to_text_relative(rel, af->folder_to_release_to, pathname_of_materials_release);
+		Pathnames::to_text_relative(rel, af->folder_to_release_to, Task::release_path());
 		WRITE("auxiliary \"%f\" \"%S\" \"%S\"\n",
 			af->name_of_original_file,
 			(Str::len(af->brief_description) > 0)?(af->brief_description):I"--",
@@ -975,10 +977,10 @@ own credits.
 		DISCARD_TEXT(rel);
 	}
 	if (release_booklet) {
-		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", filename_of_intro_booklet);
+		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", Inbuild::file_from_installation(INTRO_BOOKLET_IRES));
 	}
 	if (release_postcard) {
-		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n", filename_of_intro_postcard);
+		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n", Inbuild::file_from_installation(INTRO_POSTCARD_IRES));
 		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
 			"and designed by Lea Albaugh.\"\n");
 	}
@@ -1015,7 +1017,7 @@ file online.
 	WRITE("\"\n");
 	WRITE("interpreter \"%S\" \"%c\"\n", interpreter_template_leafname, Str::get_first_char(ext));
 	WRITE("base64 \"%f\" to \"%p%c",
-		filename_of_story_file, pathname_of_released_interpreter, FOLDER_SEPARATOR);
+		Task::storyfile_file(), Task::released_interpreter_path(), FOLDER_SEPARATOR);
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
 

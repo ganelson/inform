@@ -1,14 +1,42 @@
 [Task::] What To Compile.
 
-To configure the many locations used in the host filing system.
+To receive an instruction to compile something from Inbuild, and then to
+sort out the many locations then used in the host filing system.
 
-@ =
+@h Task data.
+When Inbuild (a copy of which is included in the Inform 7 executable) decides
+that an Inform source text must be compiled, it calls |Task::carry_out|. By
+this point Inbuild will have set up an |inform_project| structure to
+represent the program we have to compile; but we will need additional data
+about that compilation, and it's stored in the following.
+
+=
 typedef struct compile_task_data {
 	struct build_step *task;
 	struct inform_project *project;
+	
+	struct pathname *path;
+	struct pathname *materials;
+	struct pathname *build;
+	struct filename *existing_storyfile;
+	
+	int next_resource_number;
+
 	MEMORY_MANAGEMENT
 } compile_task_data;
 
+@ An early and perhaps arguable design decision for inform7 was that it would
+compile just one source text in its lifetime as a process: and because of that,
+|Task::carry_out| can only in fact be called once, and Inbuild only does so
+once. But the following routine allows in principle for multiple calls,
+against the day when we change our minds about all this.
+
+Something we will never do is attempt to make |inform7| thread-safe in the
+sense of being able to compile two source texts simultaneously. The global
+|inform7_task| is null when nothing is being compiled, or set to the unique
+thing which is being compiled when it is.
+
+=
 compile_task_data *inform7_task = NULL;
 
 int Task::carry_out(build_step *S) {
@@ -20,16 +48,28 @@ int Task::carry_out(build_step *S) {
 	inform7_task = CREATE(compile_task_data);
 	inform7_task->task = S;
 	inform7_task->project = project;
+	inform7_task->path = S->associated_copy->location_if_path;
+	inform7_task->build = Inbuild::transient();
+	if (inform7_task->path)
+		inform7_task->build = Pathnames::subfolder(inform7_task->path, I"Build");
+	if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
+	inform7_task->materials = Inbuild::materials();
+	Task::set_existing_storyfile(NULL);
+	inform7_task->next_resource_number = 3;
 
-	NaturalLanguages::default_to_English();
-	Task::set_more_defaults();
+	inform_language *E = NaturalLanguages::English();
+	Projects::set_language_of_syntax(project, E);
+	Projects::set_language_of_index(project, E);
+	Projects::set_language_of_play(project, E);
 
 	int rv = Sequence::carry_out(inform7_task);
 	inform7_task = NULL;
 	return rv;
 }
 
-@ =
+@ The current project and the virtual machine we want to compile it for:
+
+=
 inform_project *Task::project(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return inform7_task->project;
@@ -40,50 +80,138 @@ target_vm *Task::vm(void) {
 	return inform7_task->task->for_vm;
 }
 
-@h Definitions.
+@ Resources in a Blorb file have unique ID numbers which are positive integers,
+but these are not required to start from 1, nor to be contiguous. For Inform,
+ID number 1 is reserved for the cover image (whether or not any cover image
+is provided: it is legal for there to be figures but no cover, and vice versa).
+Other figures, and sound effects, then mix freely as needed from ID number 3
+on upwards. We skip 2 so that it can be guaranteed that no sound resource
+has ID 1 or 2: this is to help people trying to play sounds in the Z-machine,
+where operand 1 or 2 in the |@sound| opcode signifies not a sound resource
+number but a long or short beep. If a genuine sound effect had resource ID
+1 or 2, therefore, it would be unplayable on the Z-machine.
 
-@ This section of the Inform source is intended to give a single description
-of where everything lives in the filing system. Very early in Inform's run,
-it works out the filenames of everything it will ever need to refer to, and
-these are stored in the following globals. Explanations are given below,
-not here.
+=
+int Task::get_next_free_blorb_resource_ID(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->next_resource_number++;
+}
 
-= (early code)
-pathname *pathname_of_materials_figures = NULL;
-pathname *pathname_of_materials_release = NULL;
-pathname *pathname_of_materials_sounds = NULL;
-pathname *pathname_of_project_index_details_folder = NULL;
-pathname *pathname_of_project_index_folder = NULL;
-pathname *pathname_of_released_figures = NULL;
-pathname *pathname_of_released_interpreter = NULL;
-pathname *pathname_of_released_sounds = NULL;
+@h Project-related files and file paths.
 
-@ And secondly, the files:
+=
+filename *Task::uuid_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->path, I"uuid.txt");
+}
+filename *Task::ifiction_record_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->path, I"Metadata.iFiction");
+}
+filename *Task::manifest_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->path, I"manifest.plist");
+}
+filename *Task::blurb_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->path, I"Release.blurb");
+}
 
-= (early code)
-filename *filename_of_blurb = NULL;
-filename *filename_of_cblorb_report = NULL;
-filename *filename_of_cblorb_report_model = NULL;
-filename *filename_of_documentation_snippets = NULL;
-filename *filename_of_epsfile = NULL;
-filename *filename_of_existing_story_file = NULL;
-filename *filename_of_headings = NULL;
-filename *filename_of_ifiction_record = NULL;
-filename *filename_of_intro_booklet = NULL;
-filename *filename_of_intro_postcard = NULL;
-filename *filename_of_large_cover_art_jpeg = NULL;
-filename *filename_of_large_cover_art_png = NULL;
-filename *filename_of_large_default_cover_art = NULL;
-filename *filename_of_manifest = NULL;
-filename *filename_of_options = NULL;
-filename *filename_of_parse_tree = NULL;
-filename *filename_of_small_cover_art_jpeg = NULL;
-filename *filename_of_small_cover_art_png = NULL;
-filename *filename_of_small_default_cover_art = NULL;
-filename *filename_of_story_file = NULL;
-filename *filename_of_telemetry = NULL;
-filename *filename_of_uuid = NULL;
-filename *filename_of_xrefs = NULL;
+filename *Task::cblorb_report_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->build, I"StatusCblorb.html");
+}
+filename *Task::parse_tree_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->build, I"Parse tree.txt");
+}
+filename *Task::storyfile_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	build_vertex *V = inform7_task->project->unblorbed_vertex;
+	if (V == NULL) internal_error("project graph not ready");
+	return V->buildable_if_internal_file;
+}
+
+@ Location of index files.
+Filenames within the |Index| subfolder. Filenames in |Details| have the form
+|N_S| where |N| is the integer supplied and |S| the leafname; for instance,
+|21_A.html| provides details page number 21 about actions, derived from the
+leafname |A.html|.
+
+=
+pathname *Task::index_path(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	pathname *P = Pathnames::subfolder(inform7_task->build, I"Index");
+	if (Pathnames::create_in_file_system(P)) return P;
+	return NULL;
+}
+pathname *Task::index_details_path(void) {
+	pathname *P = Pathnames::subfolder(Task::index_path(), I"Details");
+	if (Pathnames::create_in_file_system(P)) return P;
+	return NULL;
+}
+filename *Task::xml_headings_file(void) {
+	return Filenames::in_folder(Task::index_path(), I"Headings.xml");
+}
+filename *Task::index_file(text_stream *leafname, int sub) {
+	if (sub >= 0) {
+		TEMPORARY_TEXT(full_leafname);
+		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
+		filename *F = Filenames::in_folder(Task::index_details_path(), full_leafname);
+		DISCARD_TEXT(full_leafname);
+		return F;
+	} else {
+		return Filenames::in_folder(Task::index_path(), leafname);
+	}
+}
+
+void Task::set_existing_storyfile(text_stream *name) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (name == NULL) {
+		TEMPORARY_TEXT(leaf);
+		WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
+		inform7_task->existing_storyfile = Filenames::in_folder(inform7_task->materials, leaf);
+		DISCARD_TEXT(leaf);
+	} else {
+		inform7_task->existing_storyfile = Filenames::in_folder(inform7_task->materials, name);
+	}
+}
+filename *Task::existing_storyfile_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->existing_storyfile;
+}
+filename *Task::large_cover_art_file(int JPEG) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (JPEG) return Filenames::in_folder(inform7_task->materials, I"Cover.jpg");
+	return Filenames::in_folder(inform7_task->materials, I"Cover.png");
+}
+filename *Task::epsmap_file(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Filenames::in_folder(inform7_task->materials, I"Inform Map.eps");
+}
+
+pathname *Task::figures_path(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Pathnames::subfolder(inform7_task->materials, I"Figures");
+}
+pathname *Task::sounds_path(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Pathnames::subfolder(inform7_task->materials, I"Sounds");
+}
+
+pathname *Task::release_path(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Pathnames::subfolder(inform7_task->materials, I"Release");
+}
+pathname *Task::released_figures_path(void) {
+	return Pathnames::subfolder(Task::release_path(), I"Figures");
+}
+pathname *Task::released_sounds_path(void) {
+	return Pathnames::subfolder(Task::release_path(), I"Sounds");
+}
+pathname *Task::released_interpreter_path(void) {
+	return Pathnames::subfolder(Task::release_path(), I"interpreter");
+}
 
 @h Establishing the defaults.
 Inform's file access happens inside four different areas: the internal
@@ -91,9 +219,6 @@ resources area, usually inside the Inform application; the external resources
 area, which is where the user (or the application acting on the user's behalf)
 installs extensions; the project bundle, say |Example.inform|; and, alongside
 that, the materials folder, |Example.materials|.
-
-Inform can run in two modes: regular mode, when it's compiling source text,
-and census mode, when it's scanning the file system for extensions.
 
 =
 int Task::set_more_defaults(void) {
@@ -119,9 +244,6 @@ Inform therefore requires on every run that it be told via the |-internal|
 switch where the internal resources folder is.
 
 @<Internal resources@> =
-	inbuild_nest *I = Inbuild::internal();
-	if (I == NULL) Problems::Fatal::issue("Did not set -internal when calling");
-	pathname *pathname_of_internal_folder = I->location;
 
 	@<Miscellaneous other stuff@>;
 
@@ -135,19 +257,7 @@ brief specifications of phrases, extracted from the manual "Writing with
 Inform". This is used to generate the Phrasebook index.
 
 @<Miscellaneous other stuff@> =
-	pathname *misc = Pathnames::subfolder(pathname_of_internal_folder, I"Miscellany");
-
-	filename_of_large_default_cover_art = Filenames::in_folder(misc, I"Cover.jpg");
-	filename_of_small_default_cover_art = Filenames::in_folder(misc, I"Small Cover.jpg");
-	filename_of_intro_postcard = Filenames::in_folder(misc, I"Postcard.pdf");
-	filename_of_intro_booklet = Filenames::in_folder(misc, I"IntroductionToIF.pdf");
-
-	pathname *models = Pathnames::subfolder(pathname_of_internal_folder, I"HTML");
-	filename_of_cblorb_report_model = Filenames::in_folder(models, I"CblorbModel.html");
-
-	filename_of_xrefs = Filenames::in_folder(models, I"xrefs.txt");
-
-	filename_of_documentation_snippets = Filenames::in_folder(misc, I"definitions.html");
+	;
 
 @h External resources.
 This is where the user can install downloaded extensions, new interpreters,
@@ -170,13 +280,6 @@ If |-transient| is not specified, it's the same folder, i.e., Inform does
 not distinguish between permanent and transient external resources.
 
 @<External resources@> =
-	inbuild_nest *E = Inbuild::external();
-	pathname *pathname_of_external_folder = E->location;
-	filename_of_options =
-		Filenames::in_folder(pathname_of_external_folder, I"Options.txt");
-
-	pathname *pathname_of_transient_external_resources = Inbuild::transient();
-	if (Pathnames::create_in_file_system(pathname_of_transient_external_resources) == 0) return FALSE;
 	@<Transient telemetry@>;
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
@@ -185,19 +288,7 @@ This was provided for classroom use, so that teachers can see what their
 students have been getting stuck on.
 
 @<Transient telemetry@> =
-	pathname *pathname_of_telemetry_data =
-		Pathnames::subfolder(pathname_of_transient_external_resources, I"Telemetry");
-	if (Pathnames::create_in_file_system(pathname_of_telemetry_data) == 0) return FALSE;
-	TEMPORARY_TEXT(leafname_of_telemetry);
-	int this_month = the_present->tm_mon + 1;
-	int this_day = the_present->tm_mday;
-	int this_year = the_present->tm_year + 1900;
-	WRITE_TO(leafname_of_telemetry,
-		"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
-	filename_of_telemetry =
-		Filenames::in_folder(pathname_of_telemetry_data, leafname_of_telemetry);
-	Telemetry::locate_telemetry_file(filename_of_telemetry);
-	DISCARD_TEXT(leafname_of_telemetry);
+	;
 
 @h Project resources.
 Although on some platforms it may look like a single file, an Inform project
@@ -213,15 +304,9 @@ have no purpose unless Inform is in a release run (with |-release| set on
 the command line), but they take no time to generate so we make them anyway.
 
 @<Project resources@> =
-	pathname *proj = Projects::path(Task::project());
 	@<The Build folder within the project@>;
 	@<The Index folder within the project@>;
 
-	filename_of_uuid = Filenames::in_folder(proj, I"uuid.txt");
-
-	filename_of_ifiction_record = Filenames::in_folder(proj, I"Metadata.iFiction");
-	filename_of_manifest = Filenames::in_folder(proj, I"manifest.plist");
-	filename_of_blurb = Filenames::in_folder(proj, I"Release.blurb");
 
 @ The build folder for a project contains all of the working files created
 during the compilation process. The opening part here may be a surprise:
@@ -239,17 +324,7 @@ called; and similarly for the report which the releasing tool Inblorb
 will produce if this is a Release run.
 
 @<The Build folder within the project@> =
-	pathname *build_folder = Pathnames::subfolder(proj, I"Build");
-	if (Pathnames::create_in_file_system(build_folder) == 0) return FALSE;
-
-	filename_of_parse_tree = Filenames::in_folder(build_folder, I"Parse tree.txt");
-
-	TEMPORARY_TEXT(story_file_leafname);
-	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
-	filename_of_story_file = Filenames::in_folder(build_folder, story_file_leafname);
-	DISCARD_TEXT(story_file_leafname);
-
-	filename_of_cblorb_report = Filenames::in_folder(build_folder, I"StatusCblorb.html");
+	;
 
 @ We're going to write into the Index folder, so we must ensure it exists.
 The main index files (|Phrasebook.html| and so on) live at the top level,
@@ -261,17 +336,7 @@ application, if it wants it, but is not linked to or used by the HTML of
 the index as seen by the user.
 
 @<The Index folder within the project@> =
-	pathname_of_project_index_folder =
-		Pathnames::subfolder(proj, I"Index");
-	pathname_of_project_index_details_folder =
-		Pathnames::subfolder(pathname_of_project_index_folder, I"Details");
-
-	if ((Pathnames::create_in_file_system(pathname_of_project_index_folder) == 0) ||
-		(Pathnames::create_in_file_system(pathname_of_project_index_details_folder) == 0))
-		return FALSE;
-
-	filename_of_headings =
-		Filenames::in_folder(pathname_of_project_index_folder, I"Headings.xml");
+	;
 
 @h Materials resources.
 
@@ -290,17 +355,7 @@ This is also where the originals (not the released copies) of the Figures
 and Sounds, if any, live: in their own subfolders.
 
 @<Figures and sounds@> =
-	pathname *M = Inbuild::materials();
-
-	pathname_of_materials_figures =    Pathnames::subfolder(M, I"Figures");
-	pathname_of_materials_sounds =     Pathnames::subfolder(M, I"Sounds");
-
-	filename_of_large_cover_art_jpeg = Filenames::in_folder(M, I"Cover.jpg");
-	filename_of_large_cover_art_png =  Filenames::in_folder(M, I"Cover.png");
-	filename_of_small_cover_art_jpeg = Filenames::in_folder(M, I"Small Cover.jpg");
-	filename_of_small_cover_art_png =  Filenames::in_folder(M, I"Small Cover.png");
-
-	filename_of_epsfile =              Filenames::in_folder(M, I"Inform Map.eps");
+	;
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
@@ -308,13 +363,7 @@ is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
 
 @<The Release folder@> =
-	pathname *M = Inbuild::materials();
-
-	pathname_of_materials_release =    Pathnames::subfolder(M, I"Release");
-
-	pathname_of_released_interpreter = Pathnames::subfolder(pathname_of_materials_release, I"interpreter");
-	pathname_of_released_figures =     Pathnames::subfolder(pathname_of_materials_release, I"Figures");
-	pathname_of_released_sounds =      Pathnames::subfolder(pathname_of_materials_release, I"Sounds");
+	;
 
 @ Inform is occasionally run in a mode where it performs a release on an
 existing story file (for example a 1980s Infocom one) rather than on one
@@ -322,29 +371,4 @@ that it has newly generated. This is the filename such a story file would
 have by default, if so.
 
 @<Existing story file@> =
-	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
-	filename_of_existing_story_file =
-		Filenames::in_folder(Inbuild::materials(), leaf);
-	DISCARD_TEXT(leaf);
-
-@h Location of index files.
-Filenames within the |Index| subfolder. Filenames in |Details| have the form
-|N_S| where |N| is the integer supplied and |S| the leafname; for instance,
-|21_A.html| provides details page number 21 about actions, derived from the
-leafname |A.html|.
-
-=
-filename *Task::location_in_index(text_stream *leafname, int sub) {
-	pathname *proj = Projects::path(Task::project());
-	if (proj == NULL) return Filenames::in_folder(NULL, leafname);
-	if (sub >= 0) {
-		TEMPORARY_TEXT(full_leafname);
-		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
-		filename *F = Filenames::in_folder(pathname_of_project_index_details_folder, full_leafname);
-		DISCARD_TEXT(full_leafname);
-		return F;
-	} else {
-		return Filenames::in_folder(pathname_of_project_index_folder, leafname);
-	}
-}
+	;

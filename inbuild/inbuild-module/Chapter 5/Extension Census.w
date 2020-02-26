@@ -817,17 +817,11 @@ pathname *Extensions::Census::doc_pathname(void) {
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	return P;
 }
-pathname *Extensions::Census::doc_models(void) {
-	inbuild_nest *I = Inbuild::internal(); if (I == NULL) return NULL;
-	return Pathnames::subfolder(I->location, I"HTML");
-}
+
 void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
 	pathname *P = Extensions::Census::doc_pathname();
 	if (P == NULL) return;
 	filename *F = Filenames::in_folder(P, leaf);
-
-	pathname *models = Extensions::Census::doc_models();
-	if (models == NULL) return;
 
 	text_stream HOMEPAGE_struct;
 	text_stream *OUT = &HOMEPAGE_struct;
@@ -846,9 +840,9 @@ void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int 
 	HTML::begin_head(OUT, NULL);
 	HTML::title(OUT, I"Extensions");
 	HTML::incorporate_javascript(OUT, TRUE,
-		Filenames::in_folder(models, I"extensions.js"));
+		Inbuild::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
 	HTML::incorporate_CSS(OUT,
-		Filenames::in_folder(models, I"main.css"));
+		Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
 	HTML::end_head(OUT);
 
 	HTML::begin_body(OUT, NULL);

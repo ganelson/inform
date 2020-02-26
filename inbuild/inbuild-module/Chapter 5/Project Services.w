@@ -12,8 +12,9 @@ typedef struct inform_project {
 	struct inform_language *language_of_play;
 	struct inform_language *language_of_syntax;
 	struct inform_language *language_of_index;
+	struct build_vertex *unblorbed_vertex;
+	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
-	int next_resource_number;
 	MEMORY_MANAGEMENT
 } inform_project;
 
@@ -27,9 +28,25 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->language_of_play = NULL;
 	project->language_of_syntax = NULL;
 	project->language_of_index = NULL;
-	project->next_resource_number = 3;
 	project->chosen_build_target = NULL;
+	project->unblorbed_vertex = NULL;
+	project->blorbed_vertex = NULL;
 	return project;
+}
+
+void Projects::set_to_English(inform_project *proj) {
+	if (proj == NULL) internal_error("no project");
+	inform_language *E = NULL;
+	inbuild_requirement *req = Requirements::any_version_of(Works::new(language_genre, I"English", I""));
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(req, Inbuild::nest_list(), L);
+	inbuild_search_result *R;
+	LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L)
+		if (E == NULL)
+			E = LanguageManager::from_copy(R->copy);
+	proj->language_of_play = E;
+	proj->language_of_syntax = E;
+	proj->language_of_index = E;
 }
 
 void Projects::set_language_of_play(inform_project *proj, inform_language *L) {
@@ -64,22 +81,6 @@ inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 
 void Projects::not_necessarily_parser_IF(inform_project *project) {
 	project->assumed_to_be_parser_IF = FALSE;
-}
-
-@ Resources in a Blorb file have unique ID numbers which are positive integers,
-but these are not required to start from 1, nor to be contiguous. For Inform,
-ID number 1 is reserved for the cover image (whether or not any cover image
-is provided: it is legal for there to be figures but no cover, and vice versa).
-Other figures, and sound effects, then mix freely as needed from ID number 3
-on upwards. We skip 2 so that it can be guaranteed that no sound resource
-has ID 1 or 2: this is to help people trying to play sounds in the Z-machine,
-where operand 1 or 2 in the |@sound| opcode signifies not a sound resource
-number but a long or short beep. If a genuine sound effect had resource ID
-1 or 2, therefore, it would be unplayable on the Z-machine.
-
-=
-int Projects::get_next_free_blorb_resource_ID(inform_project *project) {
-	return project->next_resource_number++;
 }
 
 void Projects::set_source_filename(inform_project *project, pathname *P, filename *F) {
@@ -270,26 +271,25 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
 	filename *unblorbed_F = Filenames::in_folder(build_folder, story_file_leafname);
 	DISCARD_TEXT(story_file_leafname);
-	build_vertex *unblorbed_V = Graphs::file_vertex(unblorbed_F);
-	Graphs::need_this_to_build(unblorbed_V, inf_V);
-	BuildSteps::attach(unblorbed_V, compile_using_inform6_skill,
+	project->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
+	Graphs::need_this_to_build(project->unblorbed_vertex, inf_V);
+	BuildSteps::attach(project->unblorbed_vertex, compile_using_inform6_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
-	if (releasing) {
-		TEMPORARY_TEXT(story_file_leafname);
-		WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_blorbed_extension(VM));
-		filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname);
-		DISCARD_TEXT(story_file_leafname);
-		build_vertex *blorbed_V = Graphs::file_vertex(blorbed_F);
-		Graphs::need_this_to_build(unblorbed_V, inf_V);
-		BuildSteps::attach(blorbed_V, package_using_inblorb_skill,
-			Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
-		project->chosen_build_target = blorbed_V;
-	} else project->chosen_build_target = unblorbed_V;
+	TEMPORARY_TEXT(story_file_leafname2);
+	WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
+	filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname2);
+	DISCARD_TEXT(story_file_leafname2);
+	project->blorbed_vertex = Graphs::file_vertex(blorbed_F);
+	Graphs::need_this_to_build(project->blorbed_vertex, project->unblorbed_vertex);
+	BuildSteps::attach(project->blorbed_vertex, package_using_inblorb_skill,
+		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
+
 	if (compile_only) {
 		project->chosen_build_target = inf_V;
 		inf_V->force_this = TRUE;
-	}
+	} else if (releasing) project->chosen_build_target = project->blorbed_vertex;
+	else project->chosen_build_target = project->unblorbed_vertex;
 }
 
 void Projects::construct_graph(inform_project *project) {
@@ -331,7 +331,9 @@ void Projects::read_source_text_for(inform_project *project) {
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
 	#ifdef CORE_MODULE
-	SourceFiles::read_further_mandatory_text();
+	inbuild_nest *E = Inbuild::external();
+	if (E) SourceFiles::read_further_mandatory_text(
+		Filenames::in_folder(E->location, I"Options.txt"));
 	#endif
 	linked_list *L = Projects::source(project);
 	if (L) {

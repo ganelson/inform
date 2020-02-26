@@ -845,9 +845,10 @@ void PL::EPSMap::render_map_as_EPS(void) {
 			PF_I(map, R)->world_index_colour);
 
 @<Open a stream and write the EPS map to it@> =
+	filename *F = Task::epsmap_file();
 	text_stream EPS_struct; text_stream *EPS = &EPS_struct;
-	if (STREAM_OPEN_TO_FILE(EPS, filename_of_epsfile, ISO_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open EPS map file", filename_of_epsfile);
+	if (STREAM_OPEN_TO_FILE(EPS, F, ISO_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open EPS map file", F);
 	PL::EPSMap::EPS_compile_map(EPS);
 	STREAM_CLOSE(EPS);
 

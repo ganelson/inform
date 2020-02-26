@@ -730,7 +730,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 
 @ =
 void ParseTreeUsage::write_to_file(void) {
-	ParseTree::write_to_file(filename_of_parse_tree);
+	ParseTree::write_to_file(Task::parse_tree_file());
 }
 void ParseTreeUsage::plant_parse_tree(void) {
 	ParseTree::plant_parse_tree();

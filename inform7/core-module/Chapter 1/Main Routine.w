@@ -41,6 +41,7 @@ int CoreMain::main(int argc, char *argv[]) {
 	int proceed = CoreMain::read_command_line(argc, argv);
 	if (proceed) {
 		@<Open the debugging log and the problems report@>;
+		@<Open the telemetry@>;
 		inform_project *project = Inbuild::go_operational();
 		if (project)
 			Copies::build(STDOUT, project->as_copy,
@@ -82,6 +83,20 @@ int CoreMain::main(int argc, char *argv[]) {
 	CommandLine::play_back_log();
 
 	Problems::Issue::start_problems_report(PF);
+
+@<Open the telemetry@> =
+	pathname *P = Pathnames::subfolder(Inbuild::transient(), I"Telemetry");
+	if (Pathnames::create_in_file_system(P)) {
+		TEMPORARY_TEXT(leafname_of_telemetry);
+		int this_month = the_present->tm_mon + 1;
+		int this_day = the_present->tm_mday;
+		int this_year = the_present->tm_year + 1900;
+		WRITE_TO(leafname_of_telemetry,
+			"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
+		filename *F = Filenames::in_folder(P, leafname_of_telemetry);
+		Telemetry::locate_telemetry_file(F);
+		DISCARD_TEXT(leafname_of_telemetry);
+	}
 
 @<Post mortem logging@> =
 	if (problem_count == 0) {

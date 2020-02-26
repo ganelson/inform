@@ -161,9 +161,9 @@ this has been created, producing no problem message if it hasn't.
 
 =
 wording options_file_wording = EMPTY_WORDING_INIT;
-void SourceFiles::read_further_mandatory_text(void) {
+void SourceFiles::read_further_mandatory_text(filename *F) {
 	feed_t id = Feeds::begin();
-	TextFiles::read(filename_of_options, TRUE,
+	TextFiles::read(F, TRUE,
 		NULL, FALSE, SourceFiles::read_further_mandatory_text_helper, NULL, NULL);
 	options_file_wording = Feeds::end(id);
 }

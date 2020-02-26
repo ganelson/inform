@@ -177,6 +177,7 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
+	if (project) Projects::set_to_English(project);
 	Inbuild::pass_kit_requests();
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
@@ -484,4 +485,44 @@ void Inbuild::pass_kit_requests(void) {
 	}
 }
 
+@h Installation.
+Inform and its associated tools need to be able to see certain files stored
+in the internal nest: if they aren't there, then Inform is not properly
+installed on disc.
 
+@e CBLORB_REPORT_MODEL_IRES from 1
+@e DOCUMENTATION_SNIPPETS_IRES
+@e INTRO_BOOKLET_IRES
+@e INTRO_POSTCARD_IRES
+@e LARGE_DEFAULT_COVER_ART_IRES
+@e SMALL_DEFAULT_COVER_ART_IRES
+@e DOCUMENTATION_XREFS_IRES
+@e JAVASCRIPT_FOR_STANDARD_PAGES_IRES
+@e JAVASCRIPT_FOR_EXTENSIONS_IRES
+@e JAVASCRIPT_FOR_ONE_EXTENSION_IRES
+@e CSS_FOR_STANDARD_PAGES_IRES
+@e EXTENSION_DOCUMENTATION_MODEL_IRES
+
+=
+filename *Inbuild::file_from_installation(int ires) {
+	inbuild_nest *I = Inbuild::internal();
+	if (I == NULL) Errors::fatal("Did not set -internal when calling");
+	pathname *misc = Pathnames::subfolder(I->location, I"Miscellany");
+	pathname *models = Pathnames::subfolder(I->location, I"HTML");
+	switch (ires) {
+		case CBLORB_REPORT_MODEL_IRES: return Filenames::in_folder(models, I"CblorbModel.html");
+		case DOCUMENTATION_SNIPPETS_IRES: return Filenames::in_folder(misc, I"definitions.html");
+		case INTRO_BOOKLET_IRES: return Filenames::in_folder(misc, I"IntroductionToIF.pdf");
+		case INTRO_POSTCARD_IRES: return Filenames::in_folder(misc, I"Postcard.pdf");
+		case LARGE_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Cover.jpg");
+		case SMALL_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Small Cover.jpg");
+		case DOCUMENTATION_XREFS_IRES: return Filenames::in_folder(models, I"xrefs.txt");
+		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.js");
+		case JAVASCRIPT_FOR_EXTENSIONS_IRES: return Filenames::in_folder(models, I"extensions.js");
+		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: return Filenames::in_folder(models, I"extensionfile.js");
+		case CSS_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.css");
+		case EXTENSION_DOCUMENTATION_MODEL_IRES: return Filenames::in_folder(models, I"extensionfile.html");
+	}
+	internal_error("unknown installation resource file");
+	return NULL;
+}

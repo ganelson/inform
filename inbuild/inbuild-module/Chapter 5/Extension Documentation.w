@@ -144,25 +144,20 @@ exercise as when generating the home pages for extensions, though with a
 different template:
 
 @<Write the actual extension documentation page to DOCF@> =
-	pathname *models = Extensions::Census::doc_models();
-	if (models) {
-		text_stream *OUT = DOCF;
-		HTML::declare_as_HTML(OUT, FALSE);
+	text_stream *OUT = DOCF;
+	HTML::declare_as_HTML(OUT, FALSE);
 
-		HTML::begin_head(OUT, NULL);
-		HTML::title(OUT, I"Extension");
-		HTML::incorporate_javascript(OUT, TRUE,
-			Filenames::in_folder(models, I"extensionfile.js"));
-		HTML::incorporate_CSS(OUT,
-			Filenames::in_folder(models, I"main.css"));
-		HTML::end_head(OUT);
+	HTML::begin_head(OUT, NULL);
+	HTML::title(OUT, I"Extension");
+	HTML::incorporate_javascript(OUT, TRUE,
+		Inbuild::file_from_installation(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
+	HTML::incorporate_CSS(OUT, Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
+	HTML::end_head(OUT);
 
-		HTML::begin_body(OUT, NULL);
-		HTML::incorporate_HTML(OUT,
-			Filenames::in_folder(models, I"extensionfile.html"));
-		@<Write documentation for a specific extension into the page@>;
-		HTML::end_body(OUT);
-	}
+	HTML::begin_body(OUT, NULL);
+	HTML::incorporate_HTML(OUT, Inbuild::file_from_installation(EXTENSION_DOCUMENTATION_MODEL_IRES));
+	@<Write documentation for a specific extension into the page@>;
+	HTML::end_body(OUT);
 
 @ And this is the body:
 

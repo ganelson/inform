@@ -24,7 +24,7 @@ text_stream *PL::Bibliographic::IFID::read_uuid(void) {
 	if (uuid_read >= 0) return uuid_text;
 	uuid_text = Str::new();
 	uuid_read = 0;
-	FILE *xf = Filenames::fopen(filename_of_uuid, "r");
+	FILE *xf = Filenames::fopen(Task::uuid_file(), "r");
 	if (xf == NULL) return uuid_text; /* the UUID is the empty string if the file is missing */
 	int c;
 	while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */

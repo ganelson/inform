@@ -46,7 +46,7 @@ int xrefs_read = FALSE;
 void Index::DocReferences::read_xrefs(void) {
 	if (xrefs_read == FALSE) {
 		xrefs_read = TRUE;
-		TextFiles::read(filename_of_xrefs, TRUE,
+		TextFiles::read(Inbuild::file_from_installation(DOCUMENTATION_XREFS_IRES), TRUE,
 			NULL, FALSE, Index::DocReferences::read_xrefs_helper, NULL, NULL);
 	}
 }
@@ -261,7 +261,7 @@ void Index::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 @d MAX_EXTENT_OF_FRAGMENTS 256*1024
 
 @<Load in the documentation fragments file@> =
-	FILE *FRAGMENTS = Filenames::fopen(filename_of_documentation_snippets, "r");
+	FILE *FRAGMENTS = Filenames::fopen(Inbuild::file_from_installation(DOCUMENTATION_SNIPPETS_IRES), "r");
 	if (FRAGMENTS) {
 		char *p = Memory::I7_malloc(MAX_EXTENT_OF_FRAGMENTS, DOC_FRAGMENT_MREASON);
 		@<Scan the file into memory, translating from UTF-8@>;

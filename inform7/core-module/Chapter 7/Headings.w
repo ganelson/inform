@@ -1186,8 +1186,9 @@ Version", contains the Inform build number in its usual form: "4Q34", for instan
 =
 void Sentences::Headings::write_as_xml(void) {
 	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, filename_of_headings, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open headings file", filename_of_headings);
+	filename *F = Task::xml_headings_file();
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::Fatal::filename_related("Can't open headings file", F);
 	Sentences::Headings::write_headings_as_xml_inner(xf);
 	STREAM_CLOSE(xf);
 }

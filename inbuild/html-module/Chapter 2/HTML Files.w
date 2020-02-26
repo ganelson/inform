@@ -203,13 +203,10 @@ void HTMLFiles::outcome_image_tail(OUTPUT_STREAM) {
 void HTMLFiles::html_header(OUTPUT_STREAM, text_stream *title) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	HTML::begin_head(OUT, NULL);
-	pathname *models = Extensions::Census::doc_models();
-	if (models) {
-		HTML::incorporate_CSS(OUT,
-			Filenames::in_folder(models, I"main.css"));
-		HTML::incorporate_javascript(OUT, TRUE,
-			Filenames::in_folder(models, I"main.js"));
-	}
+	HTML::incorporate_CSS(OUT,
+		Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
+	HTML::incorporate_javascript(OUT, TRUE,
+		Inbuild::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 	#ifdef INDEX_MODULE
 	Index::scripting(OUT);
 	#endif
