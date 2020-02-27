@@ -89,7 +89,7 @@ name of a new constant.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::traverse_for_names is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
+<p class="endnote">The function Phrases::Manager::traverse_for_names is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
 <p class="endnote">The function Phrases::Manager::visit_for_names appears nowhere else.</p>
 
@@ -189,7 +189,7 @@ placement later on.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::visit_to_create</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">progress_target</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">progress_made</span><span class="plain">) {</span>
         <span class="plain">(*</span><span class="identifier">progress_made</span><span class="plain">)++;</span>
         <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">progress_made</span><span class="plain">) % 10 == 0)</span>
-            <span class="functiontext">ProgressBar::update_progress_bar</span><span class="plain">(3,</span>
+            <span class="functiontext">ProgressBar::update</span><span class="plain">(3,</span>
                 <span class="plain">((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">progress_made</span><span class="plain">))/((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">progress_target</span><span class="plain">)));</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">ROUTINE_NT</span><span class="plain">) {</span>
@@ -200,7 +200,7 @@ placement later on.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::traverse is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Phrases::Manager::traverse is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Phrases::Manager::visit_to_count appears nowhere else.</p>
 
@@ -227,7 +227,7 @@ counting local variables, whose names only exist fleetingly).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::register_meanings is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Phrases::Manager::register_meanings is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Noon. </b>When the final phrase is registered, the hour chimes. From this point
 onwards, there's no longer any text which can't be parsed because some
@@ -276,7 +276,7 @@ correctly refer to the most recently mentioned action.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::parse_rule_parameters is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Phrases::Manager::parse_rule_parameters is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We can finally make the automatic placements of rules into rulebooks: so
 our "fire alarm rule" will at last be placed in the "Instead" rulebook. The
@@ -296,7 +296,7 @@ PHRCDs are used to make sure it appears in the right position.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::add_rules_to_rulebooks is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Phrases::Manager::add_rules_to_rulebooks is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>It might seem as if the rulebooks are now complete, but this is not true,
 because we still have to take care of manual placements like:
@@ -333,7 +333,7 @@ only conditionally, or substituted by other rules.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::parse_rule_placements is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Phrases::Manager::parse_rule_placements is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Phrases::Manager::visit_to_parse_placements appears nowhere else.</p>
 
@@ -363,7 +363,7 @@ adjective definitions.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::compile_first_block is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::compile_first_block is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Count up the scale of the task</span> <span class="cwebmacronumber">10.1</span>&gt; =
@@ -598,11 +598,11 @@ noted down:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
-<p class="endnote">The function Phrases::Manager::compile_rulebooks is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::compile_rulebooks is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
-<p class="endnote">The function Phrases::Manager::RulebookNames_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::RulebookNames_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And finally, just as the sun slips below the horizon, we compile the code
 which prints out values of the kind "rule" at run-time &mdash; for example, taking
@@ -620,7 +620,7 @@ printing out "fire alarm rule".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::RulePrintingRule_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::RulePrintingRule_routine is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Evening. </b>The twilight gathers, but our work is far from done. Recall that we have
 accumulated compilation requests for "To..." phrases, but haven't actually
@@ -692,7 +692,7 @@ can be called multiple times in the course of the evening.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Manager::compile_as_needed is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::Manager::compile_as_needed is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="22-itp.html">Back to 'Introduction to Phrases'</a></li><li><a href="22-ph.html">Continue with 'Phrases'</a></li></ul><hr class="tocbar">

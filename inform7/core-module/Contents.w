@@ -5,16 +5,15 @@ Language: InC
 Licence: Artistic License 2.0
 
 Chapter 1: Configuration and Control
-"The chief executive: the main routine through which Inform 7 begins
-execution, and which reads command-line switches supplied by its customers."
-	Main Routine
+"The management and the production line for the compilation process."
 	Core Module
-	Progress Percentages
+	Main Routine
 	What To Compile
 	How To Compile
+	Progress Percentages
 
 Chapter 2: Bridge to Problems Module
-"The issuing of Problem messages, and the debugging log file."
+"The issuing of Problem messages."
 	Using Problems
 	Supplementary Quotes
 	Supplementary Issues

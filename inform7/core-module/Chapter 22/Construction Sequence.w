@@ -139,7 +139,7 @@ void Phrases::Manager::visit_to_count(parse_node *p, int *progress_target) {
 void Phrases::Manager::visit_to_create(parse_node *p, int *progress_target, int *progress_made) {
 	(*progress_made)++;
 	if ((*progress_made) % 10 == 0)
-		ProgressBar::update_progress_bar(3,
+		ProgressBar::update(3,
 			((float) (*progress_made))/((float) (*progress_target)));
 
 	if (ParseTree::get_type(p) == ROUTINE_NT) {

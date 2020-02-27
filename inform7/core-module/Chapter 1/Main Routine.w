@@ -7,9 +7,7 @@ and preparing the way.
 All C programs begin execution in |main|, but the function below is not it.
 This is because the compiler proper is a tiny wrapper around a collection of
 modules, of which |core| is only one. |main| is found in that wrapper. On the
-other hand, all it does is to start up the modules (making it safe to use
-the memory manager, and so on) and then hand over the command line to
-|CoreMain::main| below.
+other hand, |main| simply starts up the modules and hands straight over to us.
 
 So the |CoreMain::main| function certainly has the opportunity to be head
 honcho, and for the first fifteen years of Inform 7, it was exactly that. In
@@ -94,17 +92,17 @@ seems to want to build (as expressed on the command line), and then we ask
 it to go ahead and build that project.
 
 But the art of leadership is delegation and what |inbuild| then does is to
-call |core| back again: see the What To Compile section for the function it
-calls. That sounds like an unnecessary round trip, but in fact it's not,
-because |inbuild| also incrementally builds some of the resources we will
-be using. That business is helpfully invisible to us: so it turns out that
-CEOs do something, after all.
+call |core| back again to do the actual work: see the What To Compile section.
+That sounds like an unnecessary round trip, but in fact it's not, because
+|inbuild| also incrementally builds some of the resources we will be using.
+That business is helpfully invisible to us: so it turns out that CEOs do
+something, after all.
 
 @<Build the project identified for us by Inbuild@> =
 	inform_project *project = Inbuild::go_operational();
 	if (project)
 		Copies::build(STDOUT, project->as_copy,
-			BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY));
+			BuildMethodology::stay_in_current_process());
 
 @ The options commented out here are very rarely useful, and some generate
 gargantuan debugging logs if enabled.
@@ -129,13 +127,16 @@ gargantuan debugging logs if enabled.
 @h Command line processing.
 The bulk of the command-line options are both registered and processed by
 |inbuild| rather than here: in particular, every switch ever used by the
-Inform UI apps is really a command to |inbuild| not to |inform7|. What
-remains here are just some eldritch options for testing the |inform7|
-compiler via Delia scripts in |intest|.
+Inform UI apps is really a command to |inbuild| not to |inform7|.
 
 =
 int CoreMain::read_command_line(int argc, char *argv[]) {
+	CommandLine::declare_heading(
+		L"inform7: a compiler from source text to Inter code\n\n"
+		L"Usage: inform7 [OPTIONS]\n");
+
 	@<Register command-line arguments@>;
+	Inbuild::declare_options();
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
 	if (proceed) {
 		path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
@@ -144,9 +145,8 @@ int CoreMain::read_command_line(int argc, char *argv[]) {
 	return proceed;
 }
 
-@ Note that the locations manager is also allowed to process command-line
-arguments in order to set certain pathnames or filenames, so the following
-list is not exhaustive.
+@ What remains here are just some eldritch options for testing the |inform7|
+compiler via Delia scripts in |intest|.
 
 @e INFORM_TESTING_CLSG
 
@@ -157,10 +157,6 @@ list is not exhaustive.
 @e SIGILS_CLSW
 
 @<Register command-line arguments@> =
-	CommandLine::declare_heading(
-		L"inform7: a compiler from source text to Inform 6 code\n\n"
-		L"Usage: inform7 [OPTIONS] [SOURCETEXT]\n");
-
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
 	CommandLine::declare_boolean_switch(CRASHALL_CLSW, L"crash-all", 1,
 		L"intentionally crash on Problem messages, for debugger backtracing", FALSE);
@@ -173,9 +169,11 @@ list is not exhaustive.
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated");
 	CommandLine::end_group();
-	Inbuild::declare_options();
 
-@ =
+@ Three of the five options here actually configure the |problems| module
+rather than |core|.
+
+=
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
 int do_not_generate_index = FALSE; /* Set by the |-noindex| command line option */
 

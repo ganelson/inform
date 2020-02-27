@@ -2,7 +2,11 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ There is no interesting code in this section: all Intools modules open with
+a section like this one, configuring the memory management and debugging log
+features we will use from |foundation|.
+
+The following symbol is defined in every tool incorporating this module:
 
 @d CORE_MODULE TRUE
 

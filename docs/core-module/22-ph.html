@@ -639,7 +639,7 @@ response to "requests". All other phrases are compiled just once.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain">) {</span>
             <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">(*</span><span class="identifier">i</span><span class="plain">)++;</span>
-            <span class="functiontext">ProgressBar::update_progress_bar</span><span class="plain">(4, ((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">i</span><span class="plain">))/((</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">max_i</span><span class="plain">));</span>
+            <span class="functiontext">ProgressBar::update</span><span class="plain">(4, ((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">i</span><span class="plain">))/((</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">max_i</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>
 
@@ -652,48 +652,50 @@ response to "requests". All other phrases are compiled just once.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::invoke_to_begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SUBMAIN_HL</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
-        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain">) {</span>
-                <span class="identifier">n</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; 1) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
-                        <span class="string">"there seem to be multiple 'to begin' phrases"</span><span class="plain">,</span>
-                        <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
-                        <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::begin_execution_at_to_begin</span><span class="plain">()) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SUBMAIN_HL</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
+            <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain">) {</span>
+                    <span class="identifier">n</span><span class="plain">++;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; 1) {</span>
                         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
-                            <span class="string">"the 'to begin' phrase seems to be defined inline"</span><span class="plain">,</span>
-                            <span class="string">"which in Basic mode is not allowed."</span><span class="plain">);</span>
+                            <span class="string">"there seem to be multiple 'to begin' phrases"</span><span class="plain">,</span>
+                            <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
+                            <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">void_kind</span><span class="plain"> = </span><span class="identifier">Kinds::function_kind</span><span class="plain">(0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
-                        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">IS</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
-                            <span class="functiontext">Routines::ToPhrases::make_request</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
-                                <span class="identifier">void_kind</span><span class="plain">,</span>
-                                <span class="identifier">NULL</span><span class="plain">,</span>
-                                <span class="identifier">EMPTY_WORDING</span><span class="plain">));</span>
-                        <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IS</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) {</span>
+                            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
+                                <span class="string">"the 'to begin' phrase seems to be defined inline"</span><span class="plain">,</span>
+                                <span class="string">"which in Basic mode is not allowed."</span><span class="plain">);</span>
+                        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">void_kind</span><span class="plain"> = </span><span class="identifier">Kinds::function_kind</span><span class="plain">(0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
+                            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">IS</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
+                                <span class="functiontext">Routines::ToPhrases::make_request</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
+                                    <span class="identifier">void_kind</span><span class="plain">,</span>
+                                    <span class="identifier">NULL</span><span class="plain">,</span>
+                                    <span class="identifier">EMPTY_WORDING</span><span class="plain">));</span>
+                            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IS</span><span class="plain">);</span>
+                        <span class="plain">}</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 0) {</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
+                    <span class="string">"there seems not to be a 'to begin' phrase"</span><span class="plain">,</span>
+                    <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
+                    <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 0) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
-                <span class="string">"there seems not to be a 'to begin' phrase"</span><span class="plain">,</span>
-                <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
-                <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
+            <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::invoke_to_begin is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Phrases::invoke_to_begin is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="22-cs.html">Back to 'Construction Sequence'</a></li><li><a href="22-pu.html">Continue with 'Phrase Usage'</a></li></ul><hr class="tocbar">

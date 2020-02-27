@@ -48,6 +48,7 @@ void Index::DocReferences::read_xrefs(void) {
 		xrefs_read = TRUE;
 		TextFiles::read(Inbuild::file_from_installation(DOCUMENTATION_XREFS_IRES), TRUE,
 			NULL, FALSE, Index::DocReferences::read_xrefs_helper, NULL, NULL);
+		doc_references_top = lexer_wordcount - 1;
 	}
 }
 

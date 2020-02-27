@@ -376,6 +376,9 @@ pages:
 	$(INWEBX) inform7/Internal/Inter/EnglishLanguageKit -weave-docs -weave-into docs/EnglishLanguageKit
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) inbuild -weave-docs -weave-into docs/inbuild
+	$(INWEBX) inbuild/arch-module -weave-docs -weave-into docs/arch-module
+	$(INWEBX) inbuild/inbuild-module -weave-docs -weave-into docs/inbuild-module
+	$(INWEBX) inbuild/html-module -weave-docs -weave-into docs/html-module
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7
 	$(INWEBX) inform7/core-module -weave-docs -weave-into docs/core-module

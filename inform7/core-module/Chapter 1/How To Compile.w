@@ -1,13 +1,25 @@
 [Sequence::] How To Compile.
 
-To configure the many locations used in the host filing system.
+The long production line on which products of Inform are built, one step at a time.
 
-@ We run through the following stages in sequence:
+@ Having seen the top management of the factory, we now reach the factory
+floor, which is one long production line: around 150 steps must be performed
+in sequence to finish making the product. We can picture each of these
+steps as carried out by a worker function: each does its work and passes
+on to the next.
 
-@e STARTED_CSEQ from 1
+150 is a great many, so we group the stages into 16 departments, which are,
+in order of when they work:
+
+@e STARTED_CSEQ from 0
 @e LEXICAL_CSEQ
-@e SEMANTIC_CSEQ
-@e ASSERTIONS_CSEQ
+@e SEMANTIC_IA_CSEQ
+@e SEMANTIC_LANGUAGE_CSEQ
+@e SEMANTIC_IB_CSEQ
+@e SEMANTIC_II_CSEQ
+@e SEMANTIC_III_CSEQ
+@e ASSERTIONS_PASS_1_CSEQ
+@e ASSERTIONS_PASS_2_CSEQ
 @e MODEL_CSEQ
 @e MODEL_COMPLETE_CSEQ
 @e TABLES_CSEQ
@@ -16,14 +28,25 @@ To configure the many locations used in the host filing system.
 @e BIBLIOGRAPHIC_CSEQ
 @e FINISHED_CSEQ
 
-@ =
-int no_compile_tasks_carried_out = 0;
+@ The aim of this section is to contain as little logic as possible. However,
+a few of the steps are carried out only if debugging features are enabled,
+or disabled; or only if certain elements of the Inform language are enabled.
+For example, a Basic Inform source text is not allowed to contain command
+parser grammar in the way that an IF source text would, so the steps to do
+with building that grammar are skipped unless the relevant language element
+is active.
 
-int Sequence::carry_out(compile_task_data *ctd) {
-	Task::advance_stage_to(STARTED_CSEQ);
+=
+int compiler_booted_up = FALSE;
 
-	if (no_compile_tasks_carried_out == 0) @<Boot up the compiler@>;
+int Sequence::carry_out(int debugging) {
 	clock_t start = clock();
+	Task::advance_stage_to(STARTED_CSEQ, I"Starting", -1);
+
+	if (compiler_booted_up == FALSE) {
+		@<Boot up the compiler@>;
+		compiler_booted_up = TRUE;
+	}
 	@<Perform lexical analysis@>;
 	@<Perform semantic analysis@>;
 	@<Read the assertions in two passes@>;
@@ -33,7 +56,7 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	@<Generate inter@>;
 	@<Generate index and bibliographic file@>;
 
-	Task::advance_stage_to(FINISHED_CSEQ);
+	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1);
 	clock_t end = clock();
 	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
@@ -41,9 +64,21 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	return TRUE;
 }
 
-@
+@ Here are macros for the unconditional and conditional steps, respectively,
+taking place at what we think of as benches in the production line. Continuing
+the analogy, there is an ongoing time and motion study: any step which takes
+more than 1 centisecond of CPU time is reported to the debugging log. That
+isn't necessarily a sign of something wrong: a few of these steps are always
+going to take serious computation. But we want to know which ones.
 
-@d COMPILATION_STEP(routine, mark) {
+As soon as any step generates problem messages, all subsequent steps are
+skipped, so that each of the worker functions can assume that the
+part-assembled state they receive is correct so far. This greatly simplifies
+error recovery, prevents small errors in the source text leading to
+cascades of problem messages, and ensures that we report problems as quickly
+as possible.
+
+@d BENCH(routine) {
 	if (problem_count == 0) {
 		clock_t now = clock();
 		routine();
@@ -52,7 +87,7 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	}
 }
 
-@d COMPILATION_STEP_IF(plugin, routine, mark) {
+@d BENCH_IF(plugin, routine) {
 	if ((problem_count == 0) && (Plugins::Manage::plugged_in(plugin))) {
 		clock_t now = clock();
 		routine();
@@ -61,227 +96,199 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	}
 }
 
+@ Here, then, are the steps in the production line, presented without
+commentary. For what they do, see the relevant sections. Note that although
+most of these worker functions are in the |core| module, some are not.
+
 @<Boot up the compiler@> =
-	Emit::begin();
-	Semantics::read_preform();
-	Plugins::Manage::start();
-	InferenceSubjects::begin();
-	Index::DocReferences::read_xrefs();
-	doc_references_top = lexer_wordcount - 1;
+	BENCH(Emit::begin);
+	BENCH(Semantics::read_preform);
+	BENCH(Plugins::Manage::start);
+	BENCH(InferenceSubjects::begin);
+	BENCH(Index::DocReferences::read_xrefs);
 
 @<Perform lexical analysis@> =
-	Task::advance_stage_to(LEXICAL_CSEQ);
-	ProgressBar::update_progress_bar(0, 0);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Lexical analysis");
-	SourceFiles::read(Task::project()->as_copy);
-	COMPILATION_STEP(Sentences::RuleSubtrees::create_standard_csps, I"Sentences::RuleSubtrees::create_standard_csps")
+	Task::advance_stage_to(LEXICAL_CSEQ, I"Lexical analysis", 0);
+	BENCH(Task::read_source_text)
+	BENCH(Sentences::RuleSubtrees::create_standard_csps)
 
 @<Perform semantic analysis@> =
-	Task::advance_stage_to(SEMANTIC_CSEQ);
-	ProgressBar::update_progress_bar(1, 0);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Semantic analysis Ia");
-	Projects::activate_plugins(Task::project());
-	COMPILATION_STEP(ParseTreeUsage::plant_parse_tree, I"ParseTreeUsage::plant_parse_tree")
-	COMPILATION_STEP(StructuralSentences::break_source, I"StructuralSentences::break_source")
-	COMPILATION_STEP(Extensions::Inclusion::traverse, I"Extensions::Inclusion::traverse")
-	COMPILATION_STEP(Sentences::Headings::satisfy_dependencies, I"Sentences::Headings::satisfy_dependencies")
+	Task::advance_stage_to(SEMANTIC_IA_CSEQ, I"Semantic analysis Ia", 1);
+	BENCH(Task::activate_language_elements)
+	BENCH(ParseTreeUsage::plant_parse_tree)
+	BENCH(StructuralSentences::break_source)
+	BENCH(Extensions::Inclusion::traverse)
+	BENCH(Sentences::Headings::satisfy_dependencies)
 
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Initialise language semantics");
-	COMPILATION_STEP(Plugins::Manage::start_plugins, I"Plugins::Manage::start_plugins");
-	Projects::load_types(Task::project());
-	COMPILATION_STEP(BinaryPredicates::make_built_in, I"BinaryPredicates::make_built_in")
-	COMPILATION_STEP(NewVerbs::add_inequalities, I"NewVerbs::add_inequalities")
+	Task::advance_stage_to(SEMANTIC_LANGUAGE_CSEQ, I"Initialise language semantics", -1);
+	BENCH(Plugins::Manage::start_plugins);
+	BENCH(Task::load_types);
+	BENCH(BinaryPredicates::make_built_in)
+	BENCH(NewVerbs::add_inequalities)
 
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Semantic analysis Ib");
-	COMPILATION_STEP(Sentences::VPs::traverse, I"Sentences::VPs::traverse")
-	COMPILATION_STEP(Sentences::Rearrangement::tidy_up_ofs_and_froms, I"Sentences::Rearrangement::tidy_up_ofs_and_froms")
-	COMPILATION_STEP(Sentences::RuleSubtrees::register_recently_lexed_phrases, I"Sentences::RuleSubtrees::register_recently_lexed_phrases")
-	COMPILATION_STEP(StructuralSentences::declare_source_loaded, I"StructuralSentences::declare_source_loaded")
-	COMPILATION_STEP(Kinds::Interpreter::include_templates_for_kinds, I"Kinds::Interpreter::include_templates_for_kinds")
+	Task::advance_stage_to(SEMANTIC_IB_CSEQ, I"Semantic analysis Ib", -1);
+	BENCH(Sentences::VPs::traverse)
+	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
+	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
+	BENCH(StructuralSentences::declare_source_loaded)
+	BENCH(Kinds::Interpreter::include_templates_for_kinds)
 
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Semantic analysis II");
-	COMPILATION_STEP(ParseTreeUsage::verify, I"ParseTreeUsage::verify")
-	COMPILATION_STEP(Extensions::Files::check_versions, I"Extensions::Files::check_versions")
-	COMPILATION_STEP(Sentences::Headings::make_tree, I"Sentences::Headings::make_tree")
-	COMPILATION_STEP(Sentences::Headings::write_as_xml, I"Sentences::Headings::write_as_xml")
-	COMPILATION_STEP(Sentences::Headings::write_as_xml, I"Sentences::Headings::write_as_xml")
-	COMPILATION_STEP(Modules::traverse_to_define, I"Modules::traverse_to_define")
+	Task::advance_stage_to(SEMANTIC_II_CSEQ, I"Semantic analysis II", -1);
+	BENCH(ParseTreeUsage::verify)
+	BENCH(Extensions::Files::check_versions)
+	BENCH(Sentences::Headings::make_tree)
+	BENCH(Sentences::Headings::write_as_xml)
+	BENCH(Sentences::Headings::write_as_xml)
+	BENCH(Modules::traverse_to_define)
 
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Semantic analysis III");
-	COMPILATION_STEP(Phrases::Adjectives::traverse, I"Phrases::Adjectives::traverse")
-	COMPILATION_STEP(Equations::traverse_to_create, I"Equations::traverse_to_create")
-	COMPILATION_STEP(Tables::traverse_to_create, I"Tables::traverse_to_create")
-	COMPILATION_STEP(Phrases::Manager::traverse_for_names, I"Phrases::Manager::traverse_for_names")
+	Task::advance_stage_to(SEMANTIC_III_CSEQ, I"Semantic analysis III", -1);
+	BENCH(Phrases::Adjectives::traverse)
+	BENCH(Equations::traverse_to_create)
+	BENCH(Tables::traverse_to_create)
+	BENCH(Phrases::Manager::traverse_for_names)
 
 @<Read the assertions in two passes@> =
-	Task::advance_stage_to(ASSERTIONS_CSEQ);
-	ProgressBar::update_progress_bar(2, 0);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"First pass through assertions");
-	if (problem_count == 0) Assertions::Traverse::traverse(1);
-	COMPILATION_STEP(Tables::traverse_to_stock, I"Tables::traverse_to_stock")
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Second pass through assertions");
-	if (problem_count == 0) Assertions::Traverse::traverse(2);
-	COMPILATION_STEP(Kinds::RunTime::kind_declarations, I"Kinds::RunTime::kind_declarations")
+	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through assertions", 2);
+	BENCH(Assertions::Traverse::traverse1)
+	BENCH(Tables::traverse_to_stock)
+	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through assertions", -1);
+	BENCH(Assertions::Traverse::traverse2)
+	BENCH(Kinds::RunTime::kind_declarations)
 
 @<Make the model world@> =
-	Task::advance_stage_to(MODEL_CSEQ);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Making the model world");
-	COMPILATION_STEP(UseOptions::compile, I"UseOptions::compile")
-	COMPILATION_STEP(Properties::emit, I"Properties::emit")
-	COMPILATION_STEP(Properties::Emit::allocate_attributes, I"Properties::Emit::allocate_attributes")
-	COMPILATION_STEP(PL::Actions::name_all, I"PL::Actions::name_all")
-	COMPILATION_STEP(UseNouns::name_all, I"UseNouns::name_all")
-	COMPILATION_STEP(Instances::place_objects_in_definition_sequence, I"Instances::place_objects_in_definition_sequence")
-	Task::advance_stage_to(MODEL_COMPLETE_CSEQ);
-	COMPILATION_STEP(World::complete, I"World::complete")
+	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
+	BENCH(UseOptions::compile)
+	BENCH(Properties::emit)
+	BENCH(Properties::Emit::allocate_attributes)
+	BENCH(PL::Actions::name_all)
+	BENCH(UseNouns::name_all)
+	BENCH(Instances::place_objects_in_definition_sequence)
+	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world", -1);
+	BENCH(World::complete)
 
 @<Tables and grammar@> =
-	Task::advance_stage_to(TABLES_CSEQ);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Tables and grammar");
-	COMPILATION_STEP(Properties::Measurement::validate_definitions, I"Properties::Measurement::validate_definitions")
-	COMPILATION_STEP(BinaryPredicates::make_built_in_further, I"BinaryPredicates::make_built_in_further")
-	COMPILATION_STEP(PL::Bibliographic::IFID::define_UUID, I"PL::Bibliographic::IFID::define_UUID")
-	COMPILATION_STEP(PL::Figures::compile_ResourceIDsOfFigures_array, I"PL::Figures::compile_ResourceIDsOfFigures_array")
-	COMPILATION_STEP(PL::Sounds::compile_ResourceIDsOfSounds_array, I"PL::Sounds::compile_ResourceIDsOfSounds_array")
-	COMPILATION_STEP(PL::Player::InitialSituation, I"PL::Player::InitialSituation")
-	COMPILATION_STEP(Tables::check_tables_for_kind_clashes, I"Tables::check_tables_for_kind_clashes")
-	COMPILATION_STEP(Tables::Support::compile_print_table_names, I"Tables::Support::compile_print_table_names")
-	COMPILATION_STEP(PL::Parsing::traverse, I"PL::Parsing::traverse")
-	COMPILATION_STEP(World::complete_additions, I"World::complete_additions")
+	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
+	BENCH(Properties::Measurement::validate_definitions)
+	BENCH(BinaryPredicates::make_built_in_further)
+	BENCH(PL::Bibliographic::IFID::define_UUID)
+	BENCH(PL::Figures::compile_ResourceIDsOfFigures_array)
+	BENCH(PL::Sounds::compile_ResourceIDsOfSounds_array)
+	BENCH(PL::Player::InitialSituation)
+	BENCH(Tables::check_tables_for_kind_clashes)
+	BENCH(Tables::Support::compile_print_table_names)
+	BENCH(PL::Parsing::traverse)
+	BENCH(World::complete_additions)
 
 @<Phrases and rules@> =
-	Task::advance_stage_to(PHRASES_CSEQ);
-	ProgressBar::update_progress_bar(3, 0);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Phrases and rules");
-	COMPILATION_STEP(LiteralPatterns::define_named_phrases, I"LiteralPatterns::define_named_phrases")
-	COMPILATION_STEP(Phrases::Manager::traverse, I"Phrases::Manager::traverse")
-	COMPILATION_STEP(Phrases::Manager::register_meanings, I"Phrases::Manager::register_meanings")
-	COMPILATION_STEP(Phrases::Manager::parse_rule_parameters, I"Phrases::Manager::parse_rule_parameters")
-	COMPILATION_STEP(Phrases::Manager::add_rules_to_rulebooks, I"Phrases::Manager::add_rules_to_rulebooks")
-	COMPILATION_STEP(Phrases::Manager::parse_rule_placements, I"Phrases::Manager::parse_rule_placements")
-	COMPILATION_STEP(Equations::traverse_to_stock, I"Equations::traverse_to_stock")
-	COMPILATION_STEP(Tables::traverse_to_stock, I"Tables::traverse_to_stock")
-	COMPILATION_STEP(Properties::annotate_attributes, I"Properties::annotate_attributes")
-	COMPILATION_STEP(Rulebooks::Outcomes::RulebookOutcomePrintingRule, I"Rulebooks::Outcomes::RulebookOutcomePrintingRule")
-	COMPILATION_STEP(Kinds::RunTime::compile_instance_counts, I"Kinds::RunTime::compile_instance_counts")
-
-@ This is where we hand over to regular template files -- containing code
-passed through as I6 source, as well as a few further commands -- starting
-with "Output.i6t".
+	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules", 3);
+	BENCH(LiteralPatterns::define_named_phrases)
+	BENCH(Phrases::Manager::traverse)
+	BENCH(Phrases::Manager::register_meanings)
+	BENCH(Phrases::Manager::parse_rule_parameters)
+	BENCH(Phrases::Manager::add_rules_to_rulebooks)
+	BENCH(Phrases::Manager::parse_rule_placements)
+	BENCH(Equations::traverse_to_stock)
+	BENCH(Tables::traverse_to_stock)
+	BENCH(Properties::annotate_attributes)
+	BENCH(Rulebooks::Outcomes::RulebookOutcomePrintingRule)
+	BENCH(Kinds::RunTime::compile_instance_counts)
 
 @<Generate inter@> =
-	Task::advance_stage_to(INTER_CSEQ);
-	ProgressBar::update_progress_bar(4, 0);
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Generating inter");
-	COMPILATION_STEP(UseOptions::compile_icl_commands, I"UseOptions::compile_icl_commands")
-	COMPILATION_STEP(FundamentalConstants::emit_build_number, I"FundamentalConstants::emit_build_number")
-	COMPILATION_STEP(PL::Bibliographic::compile_constants, I"PL::Bibliographic::compile_constants")
-	COMPILATION_STEP(Extensions::Files::ShowExtensionVersions_routine, I"Extensions::Files::ShowExtensionVersions_routine")
-	COMPILATION_STEP(Kinds::Constructors::compile_I6_constants, I"Kinds::Constructors::compile_I6_constants")
-	COMPILATION_STEP_IF(scoring_plugin, PL::Score::compile_max_score, I"PL::Score::compile_max_score")
-	COMPILATION_STEP(UseOptions::TestUseOption_routine, I"UseOptions::TestUseOption_routine")
-	COMPILATION_STEP(Activities::compile_activity_constants, I"Activities::compile_activity_constants")
-	COMPILATION_STEP(Activities::Activity_before_rulebooks_array, I"Activities::Activity_before_rulebooks_array")
-	COMPILATION_STEP(Activities::Activity_for_rulebooks_array, I"Activities::Activity_for_rulebooks_array")
-	COMPILATION_STEP(Activities::Activity_after_rulebooks_array, I"Activities::Activity_after_rulebooks_array")
-	COMPILATION_STEP(Activities::Activity_atb_rulebooks_array, I"Activities::Activity_atb_rulebooks_array")
-	COMPILATION_STEP(Relations::compile_defined_relation_constants, I"Relations::compile_defined_relation_constants")
-	COMPILATION_STEP(Kinds::RunTime::compile_data_type_support_routines, I"Kinds::RunTime::compile_data_type_support_routines")
-	COMPILATION_STEP(Kinds::RunTime::I7_Kind_Name_routine, I"Kinds::RunTime::I7_Kind_Name_routine")
-	COMPILATION_STEP(World::Compile::compile, I"World::Compile::compile")
-	COMPILATION_STEP_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines, I"PL::Backdrops::write_found_in_routines")
-	COMPILATION_STEP_IF(map_plugin, PL::Map::write_door_dir_routines, I"PL::Map::write_door_dir_routines")
-	COMPILATION_STEP_IF(map_plugin, PL::Map::write_door_to_routines, I"PL::Map::write_door_to_routines")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::General::write_parse_name_routines, I"PL::Parsing::Tokens::General::write_parse_name_routines")
-	COMPILATION_STEP_IF(regions_plugin, PL::Regions::write_regional_found_in_routines, I"PL::Regions::write_regional_found_in_routines")
-	COMPILATION_STEP(Tables::complete, I"Tables::complete")
-	COMPILATION_STEP(Tables::Support::compile, I"Tables::Support::compile")
-	COMPILATION_STEP(Equations::compile, I"Equations::compile")
-	COMPILATION_STEP_IF(actions_plugin, PL::Actions::Patterns::Named::compile, I"PL::Actions::Patterns::Named::compile")
-	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionData, I"PL::Actions::ActionData")
-	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionCoding_array, I"PL::Actions::ActionCoding_array")
-	COMPILATION_STEP_IF(actions_plugin, PL::Actions::ActionHappened, I"PL::Actions::ActionHappened")
-	COMPILATION_STEP_IF(actions_plugin, PL::Actions::compile_action_routines, I"PL::Actions::compile_action_routines")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Lines::MistakeActionSub_routine, I"PL::Parsing::Lines::MistakeActionSub_routine")
-	COMPILATION_STEP(Phrases::Manager::compile_first_block, I"Phrases::Manager::compile_first_block")
-	COMPILATION_STEP(Phrases::Manager::compile_rulebooks, I"Phrases::Manager::compile_rulebooks")
-	COMPILATION_STEP(Phrases::Manager::rulebooks_array, I"Phrases::Manager::rulebooks_array")
-	COMPILATION_STEP_IF(scenes_plugin, PL::Scenes::DetectSceneChange_routine, I"PL::Scenes::DetectSceneChange_routine")
-	COMPILATION_STEP_IF(scenes_plugin, PL::Scenes::ShowSceneStatus_routine, I"PL::Scenes::ShowSceneStatus_routine")
-	COMPILATION_STEP(PL::Files::arrays, I"PL::Files::arrays")
-	COMPILATION_STEP(Rulebooks::rulebook_var_creators, I"Rulebooks::rulebook_var_creators")
-	COMPILATION_STEP(Activities::activity_var_creators, I"Activities::activity_var_creators")
-	COMPILATION_STEP(Relations::IterateRelations, I"Relations::IterateRelations")
-	COMPILATION_STEP(Phrases::Manager::RulebookNames_array, I"Phrases::Manager::RulebookNames_array")
-	COMPILATION_STEP(Phrases::Manager::RulePrintingRule_routine, I"Phrases::Manager::RulePrintingRule_routine")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::prepare, I"PL::Parsing::Verbs::prepare")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::compile_conditions, I"PL::Parsing::Verbs::compile_conditions")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::number, I"PL::Parsing::Tokens::Values::number")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state, I"PL::Parsing::Tokens::Values::truth_state")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::time, I"PL::Parsing::Tokens::Values::time")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs, I"PL::Parsing::Tokens::Values::compile_type_gprs")
-	COMPILATION_STEP(NewVerbs::ConjugateVerb, I"NewVerbs::ConjugateVerb")
-	COMPILATION_STEP(Adjectives::Meanings::agreements, I"Adjectives::Meanings::agreements")
-	if (TargetVMs::debug_enabled(Task::vm())) {
-		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::write_text, I"PL::Parsing::TestScripts::write_text")
-		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine, I"PL::Parsing::TestScripts::TestScriptSub_routine")
-		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::InternalTestCases_routine, I"PL::Parsing::TestScripts::InternalTestCases_routine")
+	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
+	BENCH(UseOptions::compile_icl_commands)
+	BENCH(FundamentalConstants::emit_build_number)
+	BENCH(PL::Bibliographic::compile_constants)
+	BENCH(Extensions::Files::ShowExtensionVersions_routine)
+	BENCH(Kinds::Constructors::compile_I6_constants)
+	BENCH_IF(scoring_plugin, PL::Score::compile_max_score)
+	BENCH(UseOptions::TestUseOption_routine)
+	BENCH(Activities::compile_activity_constants)
+	BENCH(Activities::Activity_before_rulebooks_array)
+	BENCH(Activities::Activity_for_rulebooks_array)
+	BENCH(Activities::Activity_after_rulebooks_array)
+	BENCH(Activities::Activity_atb_rulebooks_array)
+	BENCH(Relations::compile_defined_relation_constants)
+	BENCH(Kinds::RunTime::compile_data_type_support_routines)
+	BENCH(Kinds::RunTime::I7_Kind_Name_routine)
+	BENCH(World::Compile::compile)
+	BENCH_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines)
+	BENCH_IF(map_plugin, PL::Map::write_door_dir_routines)
+	BENCH_IF(map_plugin, PL::Map::write_door_to_routines)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::General::write_parse_name_routines)
+	BENCH_IF(regions_plugin, PL::Regions::write_regional_found_in_routines)
+	BENCH(Tables::complete)
+	BENCH(Tables::Support::compile)
+	BENCH(Equations::compile)
+	BENCH_IF(actions_plugin, PL::Actions::Patterns::Named::compile)
+	BENCH_IF(actions_plugin, PL::Actions::ActionData)
+	BENCH_IF(actions_plugin, PL::Actions::ActionCoding_array)
+	BENCH_IF(actions_plugin, PL::Actions::ActionHappened)
+	BENCH_IF(actions_plugin, PL::Actions::compile_action_routines)
+	BENCH_IF(parsing_plugin, PL::Parsing::Lines::MistakeActionSub_routine)
+	BENCH(Phrases::Manager::compile_first_block)
+	BENCH(Phrases::Manager::compile_rulebooks)
+	BENCH(Phrases::Manager::rulebooks_array)
+	BENCH_IF(scenes_plugin, PL::Scenes::DetectSceneChange_routine)
+	BENCH_IF(scenes_plugin, PL::Scenes::ShowSceneStatus_routine)
+	BENCH(PL::Files::arrays)
+	BENCH(Rulebooks::rulebook_var_creators)
+	BENCH(Activities::activity_var_creators)
+	BENCH(Relations::IterateRelations)
+	BENCH(Phrases::Manager::RulebookNames_array)
+	BENCH(Phrases::Manager::RulePrintingRule_routine)
+	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::prepare)
+	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::compile_conditions)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::number)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::time)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs)
+	BENCH(NewVerbs::ConjugateVerb)
+	BENCH(Adjectives::Meanings::agreements)
+
+	if (debugging) {
+		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::write_text)
+		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine)
+		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::InternalTestCases_routine)
 	} else {
-		COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_stub_routine, I"PL::Parsing::TestScripts::TestScriptSub_stub_routine")
+		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_stub_routine)
 	}
 
-	COMPILATION_STEP(Lists::check, I"Lists::check")
-	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	if (Projects::Main_defined(Task::project()) == FALSE)
-		COMPILATION_STEP(Phrases::invoke_to_begin, I"Phrases::invoke_to_begin")
-	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
-	COMPILATION_STEP(Strings::compile_responses, I"Strings::compile_responses")
-	COMPILATION_STEP(Lists::check, I"Lists::check")
-	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	COMPILATION_STEP(Relations::compile_defined_relations, I"Relations::compile_defined_relations")
-	COMPILATION_STEP(Phrases::Manager::compile_as_needed, I"Phrases::Manager::compile_as_needed")
-	COMPILATION_STEP(Strings::TextSubstitutions::allow_no_further_text_subs, I"Strings::TextSubstitutions::allow_no_further_text_subs")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
-	COMPILATION_STEP_IF(actions_plugin, Chronology::past_actions_i6_routines, I"Chronology::past_actions_i6_routines")
-	COMPILATION_STEP_IF(chronology_plugin, Chronology::chronology_extents_i6_escape, I"Chronology::chronology_extents_i6_escape")
-	COMPILATION_STEP_IF(chronology_plugin, Chronology::past_tenses_i6_escape, I"Chronology::past_tenses_i6_escape")
-	COMPILATION_STEP_IF(chronology_plugin, Chronology::allow_no_further_past_tenses, I"Chronology::allow_no_further_past_tenses")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Verbs::compile_all, I"PL::Parsing::Verbs::compile_all")
-	COMPILATION_STEP_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile, I"PL::Parsing::Tokens::Filters::compile")
-	COMPILATION_STEP(Properties::Measurement::compile_MADJ_routines, I"Properties::Measurement::compile_MADJ_routines")
-	COMPILATION_STEP(Calculus::Propositions::Deferred::compile_remaining_deferred, I"Calculus::Propositions::Deferred::compile_remaining_deferred")
-	COMPILATION_STEP(Calculus::Deferrals::allow_no_further_deferrals, I"Calculus::Deferrals::allow_no_further_deferrals")
-	COMPILATION_STEP(Lists::check, I"Lists::check")
-	COMPILATION_STEP(Lists::compile, I"Lists::compile")
-	COMPILATION_STEP(Strings::TextLiterals::compile, I"Strings::TextLiterals::compile")
-	COMPILATION_STEP(JumpLabels::compile_necessary_storage, I"JumpLabels::compile_necessary_storage")
-	COMPILATION_STEP(Kinds::RunTime::compile_heap_allocator, I"Kinds::RunTime::compile_heap_allocator")
-	COMPILATION_STEP(Phrases::Constants::compile_closures, I"Phrases::Constants::compile_closures")
-	COMPILATION_STEP(Kinds::RunTime::compile_structures, I"Kinds::RunTime::compile_structures")
-	COMPILATION_STEP(Rules::check_response_usages, I"Rules::check_response_usages")
-	COMPILATION_STEP(Phrases::Timed::check_for_unused, I"Phrases::Timed::check_for_unused")
-	COMPILATION_STEP(PL::Showme::compile_SHOWME_details, I"PL::Showme::compile_SHOWME_details")
-	COMPILATION_STEP(Phrases::Timed::TimedEventsTable, I"Phrases::Timed::TimedEventsTable")
-	COMPILATION_STEP(Phrases::Timed::TimedEventTimesTable, I"Phrases::Timed::TimedEventTimesTable")
-	COMPILATION_STEP(PL::Naming::compile_cap_short_name, I"PL::Naming::compile_cap_short_name")
-	COMPILATION_STEP(UseOptions::configure_template, I"UseOptions::configure_template")
-
-@ Metadata.
+	BENCH(Lists::check)
+	BENCH(Lists::compile)
+	BENCH(Phrases::invoke_to_begin)
+	BENCH(Phrases::Manager::compile_as_needed)
+	BENCH(Strings::compile_responses)
+	BENCH(Lists::check)
+	BENCH(Lists::compile)
+	BENCH(Relations::compile_defined_relations)
+	BENCH(Phrases::Manager::compile_as_needed)
+	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)
+	BENCH_IF(actions_plugin, Chronology::past_actions_i6_routines)
+	BENCH_IF(chronology_plugin, Chronology::chronology_extents_i6_escape)
+	BENCH_IF(chronology_plugin, Chronology::past_tenses_i6_escape)
+	BENCH_IF(chronology_plugin, Chronology::allow_no_further_past_tenses)
+	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::compile_all)
+	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)
+	BENCH(Properties::Measurement::compile_MADJ_routines)
+	BENCH(Calculus::Propositions::Deferred::compile_remaining_deferred)
+	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
+	BENCH(Lists::check)
+	BENCH(Lists::compile)
+	BENCH(Strings::TextLiterals::compile)
+	BENCH(JumpLabels::compile_necessary_storage)
+	BENCH(Kinds::RunTime::compile_heap_allocator)
+	BENCH(Phrases::Constants::compile_closures)
+	BENCH(Kinds::RunTime::compile_structures)
+	BENCH(Rules::check_response_usages)
+	BENCH(Phrases::Timed::check_for_unused)
+	BENCH(PL::Showme::compile_SHOWME_details)
+	BENCH(Phrases::Timed::TimedEventsTable)
+	BENCH(Phrases::Timed::TimedEventTimesTable)
+	BENCH(PL::Naming::compile_cap_short_name)
+	BENCH(UseOptions::configure_template)
 
 @<Generate index and bibliographic file@> =
-	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ);
-	if (Plugins::Manage::plugged_in(bibliographic_plugin))
-		PL::Bibliographic::Release::write_ifiction_and_blurb();
-	if (problem_count == 0)
-		NaturalLanguages::produce_index();
-
-
-@ =
-int no_log_phases = 0;
-void Sequence::go_to_log_phase(text_stream *argument) {
-	char *phase_names[] = {
-		"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
-		"XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII" };
-	Log::new_phase(phase_names[no_log_phases], argument);
-	if (no_log_phases < 21) no_log_phases++;
-}
+	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);
+	BENCH_IF(bibliographic_plugin, PL::Bibliographic::Release::write_ifiction_and_blurb);
+	BENCH(NaturalLanguages::produce_index);

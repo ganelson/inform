@@ -101,6 +101,12 @@ we don't bother to print details of the closing |TRACE_NT| node.
 int sentence_handlers_initialised = FALSE;
 parse_node *assembly_position = NULL; /* where assembled sentences are added */
 
+void Assertions::Traverse::traverse1(void) {
+	Assertions::Traverse::traverse(1);
+}
+void Assertions::Traverse::traverse2(void) {
+	Assertions::Traverse::traverse(2);
+}
 void Assertions::Traverse::traverse(int pass) {
 	Assertions::Traverse::new_discussion(); /* clear memory of what the subject and object of discussion are */
 	traverse = pass;

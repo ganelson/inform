@@ -117,6 +117,7 @@ This repository is where development is done on the following executables:
 	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
 @primaryd(inblorb, 'Web of InC', 'P-ui')
 @primaryd(inbuild, 'Web of InC', 'P-ui')
+	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html)
 @primaryd(indoc, 'Web of InC', 'P-iti')
 @primaryd(inpolicy, 'Web of InC', 'P-ui')
 @primaryd(inrtps, 'Web of InC', 'P-ui')
@@ -264,6 +265,12 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 		<span class="purpose">@purpose(@owner/@module-module)</span></p>
 	</li>
 @end
+@define modib(owner, module)
+	<li>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module of both inform7 and inbuild) -
+		<span class="purpose">@purpose(@owner/@module-module)</span></p>
+	</li>
+@end
 @define extweb(program, explanation)
 	<li>
 		<p>&#9733; <a href="../../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
@@ -311,6 +318,10 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@mod('inform7', 'if')
 			@mod('inform7', 'multimedia')
 			@mod('inform7', 'index')
+			@web('inbuild', 'P-ui')
+			@modib('inbuild', 'arch')
+			@modib('inbuild', 'inbuild')
+			@modib('inbuild', 'html')
 			@web('inter', 'P-ui')
 			@modi('inter', 'inter')
 			@modi('inter', 'building')
@@ -335,7 +346,6 @@ These pages showcase the woven form, and are for human eyes only.</p>
 		<p class="chapter">Other webs in this repository:</p>
 		<ul class="sectionlist">
 			@web('inblorb', 'P-ui')
-			@web('inbuild', 'P-ui')
 			@web('indoc', 'P-iti')
 			@web('inpolicy', 'P-ui')
 			@web('inrtps', 'P-ui')

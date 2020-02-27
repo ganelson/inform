@@ -48,3 +48,7 @@ build_methodology *BuildMethodology::new(pathname *tools_path, int dev, int meth
 	BM->to_inblorb = Filenames::in_folder(inblorb_path, I"inblorb");
 	return BM;
 }
+
+build_methodology *BuildMethodology::stay_in_current_process(void) {
+	return BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY);
+}

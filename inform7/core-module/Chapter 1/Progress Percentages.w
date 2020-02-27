@@ -1,8 +1,8 @@
 [ProgressBar::] Progress Percentages.
 
 This tiny section, the Lichtenstein of Inform, prints percentage of
-completion estimates onto |stderr| so that the host application can intercept
-them and update its graphical progress bar.
+completion estimates so that the host application can intercept them and
+update its graphical progress bar.
 
 @ Clearly we can only estimate how far Inform has progressed. While we could in
 principle measure the number of CPU-seconds it has run for, we don't know
@@ -33,7 +33,7 @@ char *progress_stage_name[] = {
 	"Generating code"
 };
 
-void ProgressBar::update_progress_bar(int stage, float proportion) {
+void ProgressBar::update(int stage, float proportion) {
 	int r1 = progress_stage_from[stage], r2 = progress_stage_from[stage+1];
 	int pc = r1 + ((int) (proportion*(r2-r1)));
 	if (show_progress_indicator == FALSE) return;

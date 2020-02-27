@@ -71,6 +71,7 @@ file is read on demand; in some runs, it won't be needed.
             <span class="identifier">xrefs_read</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">Inbuild::file_from_installation</span><span class="plain">(</span><span class="identifier">DOCUMENTATION_XREFS_IRES</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">,</span>
                 <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Index::DocReferences::read_xrefs_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">doc_references_top</span><span class="plain"> = </span><span class="identifier">lexer_wordcount</span><span class="plain"> - 1;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

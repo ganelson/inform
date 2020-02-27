@@ -394,47 +394,49 @@ void Phrases::compile(phrase *ph, int *i, int max_i,
 	if (ph->at_least_one_compiled_form_needed) {
 		ph->at_least_one_compiled_form_needed = FALSE;
 		(*i)++;
-		ProgressBar::update_progress_bar(4, ((float) (*i))/((float) max_i));
+		ProgressBar::update(4, ((float) (*i))/((float) max_i));
 	}
 
 @h Basic mode main.
 
 =
 void Phrases::invoke_to_begin(void) {
-	inter_name *iname = Hierarchy::find(SUBMAIN_HL);
-	packaging_state save = Routines::begin(iname);
-	int n = 0;
-	phrase *ph;
-	LOOP_OVER(ph, phrase)
-		if (ph->to_begin) {
-			n++;
-			if (n > 1) {
-				Problems::Issue::sentence_problem(_p_(...),
-					"there seem to be multiple 'to begin' phrases",
-					"but in Basic mode, Inform expects to see exactly one of "
-					"these, specifying where execution should begin.");
-			} else {
-				if (Phrases::compiled_inline(ph)) {
+	if (Task::begin_execution_at_to_begin()) {
+		inter_name *iname = Hierarchy::find(SUBMAIN_HL);
+		packaging_state save = Routines::begin(iname);
+		int n = 0;
+		phrase *ph;
+		LOOP_OVER(ph, phrase)
+			if (ph->to_begin) {
+				n++;
+				if (n > 1) {
 					Problems::Issue::sentence_problem(_p_(...),
-						"the 'to begin' phrase seems to be defined inline",
-						"which in Basic mode is not allowed.");
+						"there seem to be multiple 'to begin' phrases",
+						"but in Basic mode, Inform expects to see exactly one of "
+						"these, specifying where execution should begin.");
 				} else {
-					kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
-					inter_name *IS = Routines::Compile::iname(ph,
-						Routines::ToPhrases::make_request(ph,
-							void_kind,
-							NULL,
-							EMPTY_WORDING));
-					Produce::inv_call_iname(Emit::tree(), IS);
+					if (Phrases::compiled_inline(ph)) {
+						Problems::Issue::sentence_problem(_p_(...),
+							"the 'to begin' phrase seems to be defined inline",
+							"which in Basic mode is not allowed.");
+					} else {
+						kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
+						inter_name *IS = Routines::Compile::iname(ph,
+							Routines::ToPhrases::make_request(ph,
+								void_kind,
+								NULL,
+								EMPTY_WORDING));
+						Produce::inv_call_iname(Emit::tree(), IS);
+					}
 				}
 			}
+		if (n == 0) {
+			Problems::Issue::sentence_problem(_p_(...),
+				"there seems not to be a 'to begin' phrase",
+				"but in Basic mode, Inform expects to see exactly one of "
+				"these, specifying where execution should begin.");
 		}
-	if (n == 0) {
-		Problems::Issue::sentence_problem(_p_(...),
-			"there seems not to be a 'to begin' phrase",
-			"but in Basic mode, Inform expects to see exactly one of "
-			"these, specifying where execution should begin.");
+		Routines::end(save);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
-	Routines::end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
 }

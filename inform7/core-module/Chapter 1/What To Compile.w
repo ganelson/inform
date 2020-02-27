@@ -61,19 +61,27 @@ int Task::carry_out(build_step *S) {
 	Projects::set_language_of_syntax(project, E);
 	Projects::set_language_of_index(project, E);
 	Projects::set_language_of_play(project, E);
-
-	int rv = Sequence::carry_out(inform7_task);
+	
+	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	inform7_task = NULL;
 	return rv;
 }
 
 @ We will keep track of how far along the process has advanced, in very
-rough terms.
+rough stages. Twenty is plenty.
 
 =
-void Task::advance_stage_to(int stage) {
+void Task::advance_stage_to(int stage, text_stream *name, int X) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (stage <= inform7_task->stage_of_compilation) internal_error("not an advance");
+	if (stage >= 20) internal_error("went too far");
+	char *roman[] = {
+		"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+		"XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" };
+	if (problem_count == 0) {
+		Log::new_phase(roman[stage], name);
+		if (X >= 0) ProgressBar::update(X, 0);
+	}
 	inform7_task->stage_of_compilation = stage;
 }
 int Task::is_before_stage(int stage) {
@@ -129,6 +137,31 @@ a non-zero value to make testing Inform easier.
 int Task::rng_seed(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return inform7_task->project->fix_rng;
+}
+
+@ These four functions are for steps on the production line which involve
+referring something back up to Inbuild.
+
+=
+void Task::read_source_text(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	SourceFiles::read(inform7_task->project->as_copy);
+}
+
+void Task::activate_language_elements(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	Projects::activate_plugins(inform7_task->project);
+}
+
+void Task::load_types(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	Projects::load_types(inform7_task->project);
+}
+
+int Task::begin_execution_at_to_begin(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (Projects::Main_defined(inform7_task->project)) return FALSE;
+	return TRUE;
 }
 
 @h Project-related files and file paths.

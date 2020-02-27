@@ -107,9 +107,9 @@ used in the Intest scripts for testing Inform 7 and Inblorb.
 (b) |-crash-all| performs a deliberate hard crash, dividing by zero, in
 the event of any Problem message being issues -- this makes it easier to
 obtain stack backtraces in a debugger.
-(c) |-noindex| skips the production of an Index, which reduces file system
+(c) |-no-index| skips the production of an Index, which reduces file system
 writes in a big testing run, and also saves a little time.
-(d) |-noprogress| suppresses console output of the "++ 26% (Binding rulebooks)"
+(d) |-no-progress| suppresses console output of the "++ 26% (Binding rulebooks)"
 kind.
 (e) |-sigils| causes each Problem message to be preceded in console output
 by its "sigil", that is, its internal code. A typical sigil is
