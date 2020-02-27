@@ -569,7 +569,7 @@ quick. But I don't look at the code and immediately see this, myself.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::Dimensions::gcd is used in <a href="#SP21">&#167;21</a>, 2/sav (<a href="2-sav.html#SP9_2_2">&#167;9.2.2</a>, <a href="2-sav.html#SP22_1_2">&#167;22.1.2</a>).</p>
+<p class="endnote">The function Kinds::Dimensions::gcd is used in <a href="#SP21">&#167;21</a>, 2/sav (<a href="2-sav.html#SP9_2_2">&#167;9.2.2</a>, <a href="2-sav.html#SP21_1_2">&#167;21.1.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>The sequence of operation here is to reduce the risk of integer overflows
 when multiplying <code class="display"><span class="extract">m</span></code> by <code class="display"><span class="extract">n</span></code>.
@@ -1285,13 +1285,13 @@ scaling this can appear to be much lower.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VirtualMachines::is_16_bit</span><span class="plain">()) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"32767"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"32767"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"2147483647"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_index_maximum_value</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VirtualMachines::is_16_bit</span><span class="plain">())</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">()))</span>
                     <span class="identifier">LiteralPatterns::index_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
                         <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), 32767);</span>
                 <span class="reserved">else</span>

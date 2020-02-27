@@ -67,7 +67,8 @@ int Task::carry_out(build_step *S) {
 	return rv;
 }
 
-@
+@ We will keep track of how far along the process has advanced, in very
+rough terms.
 
 =
 void Task::advance_stage_to(int stage) {

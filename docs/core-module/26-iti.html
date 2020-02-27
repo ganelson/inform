@@ -67,9 +67,9 @@ and <code class="display"><span class="extract">+)</span></code> Inform 7 escape
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function I6T::interpret_kindt is used in 1/kts (<a href="1-kts.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function I6T::interpret_kindt appears nowhere else.</p>
 
-<p class="endnote">The function I6T::interpret_indext is used in 1/mr (<a href="1-mr.html#SP4_17">&#167;4.17</a>).</p>
+<p class="endnote">The function I6T::interpret_indext is used in 3/nl (<a href="3-nl.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function I6T::interpret_i6t is used in 26/i6i (<a href="26-i6i.html#SP7">&#167;7</a>, <a href="26-i6i.html#SP8">&#167;8</a>), 26/uo (<a href="26-uo.html#SP17">&#167;17</a>).</p>
 
@@ -166,7 +166,11 @@ file.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; 0) {</span>
-            &lt;<span class="cwebmacro">Open the I6 template file</span> <span class="cwebmacronumber">2.1.1</span>&gt;<span class="plain">;</span>
+            <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"inform: Unable to open segment &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">);</span>
+            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
+                <span class="string">"I couldn't open a requested I6T segment: see the console "</span>
+                <span class="string">"output for details."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">index_template</span><span class="plain">) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">index_template</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
@@ -180,41 +184,6 @@ file.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b>We look for the <code class="display"><span class="extract">.i6t</span></code> files first in the materials folder, then in the
-installed area and lastly (but almost always) in the built-in resources.
-Within those, we look inside <code class="display"><span class="extract">Inter/kinds</span></code> for <code class="display"><span class="extract">*.kindt</span></code> files,
-and <code class="display"><span class="extract">Inter/miscellaneous</span></code> for <code class="display"><span class="extract">*.i6t</span></code> files (though at present Inform makes
-no use of this ability).
-</p>
-
-
-<p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Open the I6 template file</span> <span class="cwebmacronumber">2.1.1</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">area</span><span class="plain">=0; </span><span class="identifier">area</span><span class="plain">&lt;</span><span class="constant">NO_FS_AREAS</span><span class="plain">; </span><span class="identifier">area</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">pathname_of_inter_resources</span><span class="plain">[</span><span class="identifier">area</span><span class="plain">];</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">int_mode</span><span class="plain"> == </span><span class="constant">KINDT_MODE</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kinds"</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"miscellaneous"</span><span class="plain">);</span>
-                <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span>
-                    <span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">), </span><span class="string">"r"</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"inform: Unable to open segment &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
-                <span class="string">"I couldn't open a requested I6T segment: see the console "</span>
-                <span class="string">"output for details."</span><span class="plain">);</span>
-        <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP2_1">&#167;2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b>I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
 ordinary <code class="display"><span class="extract">fgetc</span></code> is used, and no BOM marker is parsed. Lines are assumed

@@ -1219,7 +1219,7 @@ logical properties of the two terms of the BP being defined.
             <span class="identifier">RELS_LOOKUP_ALL_X_iname</span><span class="plain"> = </span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="constant">RELS_LOOKUP_ALL_X_HL</span><span class="plain">, 0</span><span class="identifier">x0004</span><span class="plain">);</span>
             <span class="identifier">RELS_LOOKUP_ALL_Y_iname</span><span class="plain"> = </span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="constant">RELS_LOOKUP_ALL_Y_HL</span><span class="plain">, 0</span><span class="identifier">x0002</span><span class="plain">);</span>
             <span class="identifier">RELS_LIST_iname</span><span class="plain"> = </span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="constant">RELS_LIST_HL</span><span class="plain">, 0</span><span class="identifier">x0001</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">()) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) {</span>
                 <span class="identifier">REL_BLOCK_HEADER_symbol</span><span class="plain"> = </span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="constant">REL_BLOCK_HEADER_HL</span><span class="plain">, 0</span><span class="identifier">x100</span><span class="plain">*5 + 13); </span>    <span class="comment">2^5 = 32 bytes block</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">REL_BLOCK_HEADER_symbol</span><span class="plain"> = </span><span class="functiontext">Relations::compile_defined_relation_constant</span><span class="plain">(</span><span class="constant">REL_BLOCK_HEADER_HL</span><span class="plain">, (0</span><span class="identifier">x100</span><span class="plain">*6 + 13)*0</span><span class="identifier">x10000</span><span class="plain">);</span>
@@ -1233,7 +1233,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="endnote">The function Relations::compile_defined_relation_constant appears nowhere else.</p>
 
-    <p class="endnote">The function Relations::compile_defined_relation_constants is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+    <p class="endnote">The function Relations::compile_defined_relation_constants is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
 
@@ -2385,7 +2385,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function Relations::IterateRelations is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+    <p class="endnote">The function Relations::IterateRelations is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. The bitmap for various-to-various relations. </b>It is unavoidable that a general V-to-V relation will take at least LR bits
     of storage, where L is the size of the left domain and R the size of the
@@ -2460,11 +2460,6 @@ logical properties of the two terms of the BP being defined.
 
             <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">, </span><span class="string">"%A"</span><span class="plain">, &amp;(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;relation_name</span><span class="plain">));</span>
-            <span class="functiontext">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"relation"</span><span class="plain">,</span>
-                <span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_created_at</span><span class="plain">), </span><span class="identifier">rname</span><span class="plain">, </span><span class="identifier">words_used</span><span class="plain">, </span><span class="identifier">bytes_used</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">rname</span><span class="plain">);</span>
             <span class="functiontext">Relations::free_index_storage</span><span class="plain">();</span>
         <span class="plain">}</span>
     </pre>
@@ -3146,7 +3141,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function Relations::compile_defined_relations is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+    <p class="endnote">The function Relations::compile_defined_relations is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP29_1"></a><b>&#167;29.1.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Compile RProperty routine</span> <span class="cwebmacronumber">29.1</span>&gt; =

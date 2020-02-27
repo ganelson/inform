@@ -100,7 +100,7 @@ instance, the Standard Rules want the player-character object to be called
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseNouns::name_all is used in 1/mr (<a href="1-mr.html#SP4_12">&#167;4.12</a>).</p>
+<p class="endnote">The function UseNouns::name_all is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="endnote">The function UseNouns::visit_to_name appears nowhere else.</p>
 
@@ -163,7 +163,7 @@ and is a somewhat provisional feature for now.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseNouns::nl_translates</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="comment">the object</span>
-        <span class="reserved">natural_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">ParseTree::get_defn_language</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+        <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">ParseTree::get_defn_language</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">gender_reference_ANNOT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"No such NL"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">English_language</span><span class="plain">) {</span>

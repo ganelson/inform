@@ -27,8 +27,7 @@ have no meaningful contents when the step is not running.
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">target_argument</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">package_argument</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">parsed_filename</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">the_PP</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_N</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">the_PP</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">pathname</span></code></span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_debugging_log</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_memory</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">repository_argument</span><span class="plain">;</span>
@@ -64,7 +63,6 @@ have no meaningful contents when the step is not running.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::clean_step</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;text_out_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain"> = -1;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;to_debugging_log</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;from_memory</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -275,7 +273,7 @@ logging:
         <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;memory_repository</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> **</span><span class="identifier">PP</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Pipeline::run</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">codegen_pipeline</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">PP</span><span class="plain">,</span>
         <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">requirements_list</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">start</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
@@ -295,7 +293,6 @@ logging:
                 <span class="functiontext">CodeGen::Pipeline::lint</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
 
                 <span class="functiontext">CodeGen::Pipeline::clean_step</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">);</span>
-                <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_N</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;the_PP</span><span class="plain"> = </span><span class="identifier">PP</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
                 <span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;pipeline</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>

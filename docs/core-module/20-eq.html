@@ -70,7 +70,7 @@ instance has its own <code class="display"><span class="extract">equation_symbol
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure equation_symbol is accessed in 1/kts, 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 8/ed2, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ef, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In addition, there are some standing symbols used by all equations: the
 constant "pi", for example. They're stored in this linked list:
@@ -183,7 +183,7 @@ value <code class="display"><span class="extract">pi</span></code>.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::traverse_to_create is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function Equations::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Equations::visit_to_create appears nowhere else.</p>
 
@@ -419,7 +419,7 @@ source text:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::traverse_to_stock is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
+<p class="endnote">The function Equations::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And, as with creation, <code class="display"><span class="extract">Equations::examine</span></code> is called explicitly in the meaning
 list converter when an equation is found inline. So in all cases, we call the
@@ -1824,7 +1824,7 @@ are obliged to issue a problem message.
                     <span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;gK_before</span><span class="plain"> =</span>
                         <span class="identifier">Kinds::FloatingPoint::new_gk</span><span class="plain">(</span>
                             <span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;leaf_constant</span><span class="plain">));</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;enode_promotion</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VirtualMachines::supports</span><span class="plain">(</span><span class="identifier">K_real_number</span><span class="plain">)))</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;enode_promotion</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Kinds::RunTime::target_VM_supports</span><span class="plain">(</span><span class="identifier">K_real_number</span><span class="plain">)))</span>
                         <span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;gK_before</span><span class="plain"> =</span>
                             <span class="identifier">Kinds::FloatingPoint::to_real</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">-</span><span class="element">&gt;gK_before</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
@@ -2197,7 +2197,7 @@ for equations a value; they are never called.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::compile is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Equations::compile is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP44"></a><b>&#167;44.  </b>These identifiers are used to compile equation names as values, so:
 </p>

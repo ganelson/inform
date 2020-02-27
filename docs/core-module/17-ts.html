@@ -162,7 +162,7 @@ to do but panic.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Strings::TextSubstitutions::allow_no_further_text_subs is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Strings::TextSubstitutions::allow_no_further_text_subs is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>For some years these were compiled to routines verbosely called
 <code class="display"><span class="extract">text_routine_1</span></code> and so on, but no longer:
@@ -405,7 +405,7 @@ a request for a new text substitution to be compiled later...
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::debug_enabled</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFDEBUG_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>

@@ -236,9 +236,9 @@ whole thing into a <code class="display"><span class="extract">specification</sp
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">natural_language</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inform_language</span>
     <span class="definitionkeyword">define</span> <span class="constant">PREFORM_ADAPTIVE_PERSON</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::adaptive_person</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_LANGUAGE_FROM_NAME</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::get_nl</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_LANGUAGE_FROM_NAME</span><span class="plain"> </span><span class="identifier">Languages::from_name</span>
     <span class="definitionkeyword">define</span> <span class="constant">PREFORM_OPTIMISER</span><span class="plain"> </span><span class="functiontext">Semantics::mark_preform_requirements</span>
     <span class="definitionkeyword">define</span> <span class="constant">PREFORM_CIRCULARITY_BREAKER</span><span class="plain"> </span><span class="functiontext">Semantics::break_preform_circularities</span>
     <span class="definitionkeyword">define</span> <span class="constant">PREFORM_ERROR_HANDLER</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::preform_error</span>
@@ -248,7 +248,7 @@ whole thing into a <code class="display"><span class="extract">specification</sp
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Semantics::read_preform</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Mark certain nonterminals to have their vocabularies numbered and flagged</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
         <span class="functiontext">NaturalLanguages::scan</span><span class="plain">();</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NaturalLanguages::load_preform</span><span class="plain">(</span><span class="functiontext">NaturalLanguages::English</span><span class="plain">());</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NaturalLanguages::load_preform</span><span class="plain">(</span><span class="identifier">Projects::get_language_of_syntax</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nonterminals_declared</span><span class="plain"> = </span><span class="identifier">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">language_definition_top</span><span class="plain"> = </span><span class="identifier">lexer_wordcount</span><span class="plain"> - 1;</span>
 
@@ -258,7 +258,7 @@ whole thing into a <code class="display"><span class="extract">specification</sp
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Semantics::read_preform is used in 1/mr (<a href="1-mr.html#SP4_7">&#167;4.7</a>).</p>
+<p class="endnote">The function Semantics::read_preform is used in 1/htc (<a href="1-htc.html#SP2_1">&#167;2.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Mark certain nonterminals to have their vocabularies numbered and flagged</span> <span class="cwebmacronumber">7.1</span>&gt; =

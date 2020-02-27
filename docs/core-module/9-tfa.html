@@ -159,7 +159,7 @@ we don't bother to print details of the closing <code class="display"><span clas
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Assertions::Traverse::traverse is used in 1/mr (<a href="1-mr.html#SP4_11">&#167;4.11</a>).</p>
+<p class="endnote">The function Assertions::Traverse::traverse is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>Here's a tricky timing problem, or rather, here's the fix for it. Assemblies
 are made when the kinds of objects are set, and they're made by inserting
@@ -651,14 +651,14 @@ is the rubric, the second the credit line.
 
 <pre class="displaydefn">
         <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain">) {</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) {</span>
             <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">));</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">near_start_of_extension</span><span class="plain">++) {</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Extensions::Files::set_rubric</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">txt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Extensions::Files::set_extra_credit</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">txt</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">Extensions::set_rubric</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">txt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">Extensions::set_extra_credit</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">txt</span><span class="plain">);</span>
                     <span class="identifier">near_start_of_extension</span><span class="plain"> = 0; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
@@ -808,7 +808,7 @@ subject carried over from previous sentences.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Assertions::Traverse::new_discussion is used in <a href="#SP7">&#167;7</a>, 7/hdn (<a href="7-hdn.html#SP30">&#167;30</a>), 8/ie (<a href="8-ie.html#SP11">&#167;11</a>), 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
+<p class="endnote">The function Assertions::Traverse::new_discussion is used in <a href="#SP7">&#167;7</a>, 7/hdn (<a href="7-hdn.html#SP31">&#167;31</a>), 8/ie (<a href="8-ie.html#SP11">&#167;11</a>), 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
 
 <p class="endnote">The function Assertions::Traverse::change_discussion_topic is used in 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
 

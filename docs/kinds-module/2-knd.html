@@ -300,7 +300,7 @@ Inform. Some standard kinds:
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_action_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_equation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_grammatical_gender</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_natural_language</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_inform_language</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_number</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_real_number</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -945,7 +945,7 @@ is the super-kind ("value", "thing").
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">linguistic</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="functiontext">Kinds::Constructors::mark_as_linguistic</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">K_natural_language</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">K_inform_language</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NATURAL_LANGUAGES_PRESENT</span>
                     <span class="identifier">NaturalLanguages::stock_nl_kind</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="plain">#</span><span class="identifier">endif</span>

@@ -71,7 +71,7 @@ column ID numbers used at run-time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>These are convenient during parsing.
 </p>
@@ -121,7 +121,7 @@ established names of tables and columns:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::traverse_to_create is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function Tables::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Tables::visit_to_create appears nowhere else.</p>
 
@@ -148,7 +148,7 @@ see below.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::traverse_to_stock is used in 1/mr (<a href="1-mr.html#SP4_11">&#167;4.11</a>, <a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
+<p class="endnote">The function Tables::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>, <a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Last and least: a traverse existing just to issue a problem message in a
 case which Inform can often cope with, but which the experience of users
@@ -177,7 +177,7 @@ suggests is never a good idea.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::check_tables_for_kind_clashes is used in 1/mr (<a href="1-mr.html#SP4_13">&#167;4.13</a>).</p>
+<p class="endnote">The function Tables::check_tables_for_kind_clashes is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Table basics. </b>The following makes a blank structure for a table, but it isn't valid until
 some of these fields have been properly filled in.
@@ -1590,7 +1590,7 @@ people &mdash; it needs to be "yourself" instead, since "player" is a variable.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::complete is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Tables::complete is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP26_1"></a><b>&#167;26.1.  </b>For the actual code, see below.
 </p>
@@ -2012,8 +2012,8 @@ Rules, which of course are always present. So these are hidden by default.
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Show tables inside extensions (there are none in the main text)"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">Index::extra_div_open</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, 1, </span><span class="string">"e0e0e0"</span><span class="plain">);</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">efc</span><span class="plain"> = 0;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) </span><span class="functiontext">Tables::index_tables_in</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">efc</span><span class="plain">++);</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">efc</span><span class="plain"> = 0;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain">) </span><span class="functiontext">Tables::index_tables_in</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">efc</span><span class="plain">++);</span>
         <span class="identifier">Index::extra_div_close</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"e0e0e0"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -2028,18 +2028,18 @@ and does nothing at all if that number is 0.
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::index_tables_in</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">efc</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::index_tables_in</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">efc</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = 0; </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">)) </span><span class="identifier">tc</span><span class="plain">++;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">)) </span><span class="identifier">tc</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> &gt; 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) {</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%+W&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">-</span><span class="element">&gt;title_text</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%S&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">title</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">))</span>
                     &lt;<span class="cwebmacro">Index this table</span> <span class="cwebmacronumber">30.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">HTML::end_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -2142,11 +2142,11 @@ given extension:
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">at_heading</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::of_wording</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_created_at</span><span class="plain">-</span><span class="element">&gt;source_table</span><span class="plain">));</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">at_ef</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">at_heading</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">at_ef</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">at_E</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">at_heading</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">at_E</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

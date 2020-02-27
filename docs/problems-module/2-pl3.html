@@ -697,9 +697,9 @@ Problems report; and this completes the code for errors. In my end is my beginni
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::start_problems_report</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::start_problems_report</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PROBLEMS_INITIAL_REPORTER</span>
-        <span class="identifier">PROBLEMS_INITIAL_REPORTER</span><span class="plain">();</span>
+        <span class="identifier">PROBLEMS_INITIAL_REPORTER</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 

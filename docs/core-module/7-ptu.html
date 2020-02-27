@@ -41,7 +41,7 @@ constructs them:
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">constant_verb_form</span><span class="plain">, </span><span class="identifier">verb_form</span><span class="plain">)</span>
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">control_structure_used</span><span class="plain">, </span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">creation_proposition</span><span class="plain">, </span><span class="reserved">pcalc_prop</span><span class="plain">)</span>
-    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">defn_language</span><span class="plain">, </span><span class="reserved">natural_language</span><span class="plain">)</span>
+    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">defn_language</span><span class="plain">, </span><span class="identifier">inform_language</span><span class="plain">)</span>
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">end_control_structure_used</span><span class="plain">, </span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">evaluation</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain">)</span>
@@ -103,7 +103,7 @@ to provide their get and set functions:
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">constant_verb_form</span><span class="plain">, </span><span class="identifier">verb_form</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">control_structure_used</span><span class="plain">, </span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">creation_proposition</span><span class="plain">, </span><span class="reserved">pcalc_prop</span><span class="plain">)</span>
-    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">defn_language</span><span class="plain">, </span><span class="reserved">natural_language</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">defn_language</span><span class="plain">, </span><span class="identifier">inform_language</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">end_control_structure_used</span><span class="plain">, </span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">evaluation</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain">)</span>
@@ -290,7 +290,7 @@ goes. The annotations used are identified by nonzero ID numbers, as follows:
     <span class="definitionkeyword">enum</span> <span class="constant">converted_SN_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: marking descriptions</span>
     <span class="definitionkeyword">enum</span> <span class="constant">creation_proposition_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">pcalc_prop</span></code>: proposition which newly created value satisfies</span>
     <span class="definitionkeyword">enum</span> <span class="constant">creation_site_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: whether an instance was created from this node</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">defn_language_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">natural_language</span></code>: what language this definition is in</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">defn_language_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">inform_language</span></code>: what language this definition is in</span>
     <span class="definitionkeyword">enum</span> <span class="constant">embodying_heading_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">heading</span></code>: for parse nodes of headings</span>
     <span class="definitionkeyword">enum</span> <span class="constant">end_control_structure_used_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">control_structure_phrase</span></code>: for CODE BLOCK nodes only</span>
     <span class="definitionkeyword">enum</span> <span class="constant">epistemological_status_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: a bitmap of results from checking an ambiguous reading</span>
@@ -862,7 +862,7 @@ be such that their head nodes each pass this test:
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ParseTreeUsage::write_to_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::write_to_file</span><span class="plain">(</span><span class="identifier">filename_of_parse_tree</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::write_to_file</span><span class="plain">(</span><span class="functiontext">Task::parse_tree_file</span><span class="plain">());</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ParseTreeUsage::plant_parse_tree</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">ParseTree::plant_parse_tree</span><span class="plain">();</span>
@@ -879,11 +879,11 @@ be such that their head nodes each pass this test:
 
 <p class="endnote">The function ParseTreeUsage::write_to_file appears nowhere else.</p>
 
-<p class="endnote">The function ParseTreeUsage::plant_parse_tree is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function ParseTreeUsage::plant_parse_tree is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
-<p class="endnote">The function ParseTreeUsage::verify is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function ParseTreeUsage::verify is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
-<p class="endnote">The function ParseTreeUsage::write_main_source_to_log is used in 1/mr (<a href="1-mr.html#SP4_18">&#167;4.18</a>).</p>
+<p class="endnote">The function ParseTreeUsage::write_main_source_to_log is used in 1/mr (<a href="1-mr.html#SP1_5">&#167;1.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 

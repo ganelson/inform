@@ -55,7 +55,7 @@ set a use option applying only to itself.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure use_option is accessed in 1/kts, 2/sq, 2/si, 5/ins, 5/nv, 8/ed2, 9/ma, 9/pk, 11/sm, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/pu, 22/dptd, 22/po, 22/pav, 25/cii, 26/ts and here.</p>
+<p class="endnote">The structure use_option is accessed in 2/sq, 2/si, 5/ins, 5/nv, 8/ef, 9/ma, 9/pk, 11/sm, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/pu, 22/dptd, 22/po, 22/pav, 25/cii, 26/ts and here.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Five of the pragma-like settings are stored here:
 </p>
@@ -348,11 +348,11 @@ there is no need to translate this to other languages.)
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;, 1);</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain"> = </span><span class="functiontext">UseOptions::parse_uo</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">) {</span>
-            <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Adjust the minimum setting</span> <span class="cwebmacronumber">11.1.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) {</span>
-                <span class="identifier">ef</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">)));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span>    <span class="comment">that is, if used in the main source text</span>
+                <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">)));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span>    <span class="comment">that is, if used in the main source text</span>
                     <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -376,7 +376,7 @@ there is no need to translate this to other languages.)
 
 <pre class="displaydefn">
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;, 1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="functiontext">CoreMain::set_inter_pipeline</span><span class="plain">(</span><span class="identifier">CW</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="identifier">Inbuild::set_inter_pipeline</span><span class="plain">(</span><span class="identifier">CW</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -450,7 +450,7 @@ there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::set_immediate_option_flags is used in <a href="#SP11_1">&#167;11.1</a>, 3/rst (<a href="3-rst.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function UseOptions::set_immediate_option_flags is used in <a href="#SP11_1">&#167;11.1</a>, 3/rst (<a href="3-rst.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Some use options need to acted on immediately &mdash; for instance, if they're
 set in the "Options.txt" file and they affect how Inform parses subsequent
@@ -484,11 +484,11 @@ those which need immediate action.
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">[1]) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">AUTHORIAL_MODESTY_UO</span><span class="plain">: {</span>
-                <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> =</span>
+                <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> =</span>
                     <span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
                         <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Extensions::Files::set_general_authorial_modesty</span><span class="plain">();</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Extensions::Files::set_authorial_modesty</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Extensions::set_general_authorial_modesty</span><span class="plain">();</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Extensions::set_authorial_modesty</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DYNAMIC_MEMORY_ALLOCATION_UO</span><span class="plain">:</span>
@@ -560,13 +560,13 @@ pragma is set:
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">)?(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">)))):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">efo</span><span class="plain"> = (</span><span class="identifier">sf</span><span class="plain">)?(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">efo</span><span class="plain"> = (</span><span class="identifier">sf</span><span class="plain">)?(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">category</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> 1: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> 2: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">ef</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">E</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -603,7 +603,7 @@ and problem messages must be issued.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::compile is used in 1/mr (<a href="1-mr.html#SP4_12">&#167;4.12</a>).</p>
+<p class="endnote">The function UseOptions::compile is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>I6 memory settings need to be issued as ICL commands at the top of the I6
 source code: see the DM4 for details.
@@ -616,7 +616,7 @@ source code: see the DM4 for details.
         <span class="reserved">i6_memory_setting</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">i6_memory_setting</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"MAX_LOCAL_VARIABLES"</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">VirtualMachines::allow_MAX_LOCAL_VARIABLES</span><span class="plain">() == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+                <span class="plain">(</span><span class="identifier">TargetVMs::allow_MAX_LOCAL_VARIABLES</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">, </span><span class="string">"$%S=%d"</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain">);</span>
@@ -628,7 +628,7 @@ source code: see the DM4 for details.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::compile_icl_commands is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function UseOptions::compile_icl_commands is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>Now for indexing, where there's nothing much to see.
 </p>
@@ -645,8 +645,9 @@ source code: see the DM4 for details.
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"The following use options are in force:"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">MAIN_TEXT_UO_ORIGIN</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">OPTIONS_FILE_UO_ORIGIN</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">) </span><span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">);</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain">)</span>
+            <span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = 0;</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
@@ -670,7 +671,7 @@ source code: see the DM4 for details.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::index is used in 26/vm (<a href="26-vm.html#SP19">&#167;19</a>).</p>
+<p class="endnote">The function UseOptions::index is used in 26/pl (<a href="26-pl.html#SP12">&#167;12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP19_1"></a><b>&#167;19.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write in the index line for a use option not taken</span> <span class="cwebmacronumber">19.1</span>&gt; =
@@ -695,13 +696,13 @@ source code: see the DM4 for details.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &lt; 0) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">))) {</span>
+                <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">))) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == 0) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write in the index line for a use option taken</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -709,7 +710,7 @@ source code: see the DM4 for details.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">))) {</span>
+                <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">))) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == 0) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write in the index line for a use option taken</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -737,9 +738,9 @@ source code: see the DM4 for details.
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the Options.txt configuration file"</span><span class="plain">);</span>
                 <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"OPTIONSFILE"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">standard_rules_extension</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the "</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the "</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the extension "</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">ef</span><span class="plain">-</span><span class="element">&gt;title_text</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">title</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">":"</span><span class="plain">);</span>
@@ -793,7 +794,7 @@ one to test them, one to print them.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseOptions::TestUseOption_routine is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function UseOptions::TestUseOption_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP21_1"></a><b>&#167;21.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Compile the TestUseOption routine</span> <span class="cwebmacronumber">21.1</span>&gt; =
@@ -876,6 +877,16 @@ one to test them, one to print them.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_verb_verb_exists</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">story_author_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ranking_table_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span>    <span class="comment">Whether in this case a score is kept at run time</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_deprecated_features</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">forbid syntaxes marked as deprecated?</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b></p>
+
+
+<pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::no_verb_verb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">no_verb_verb_exists</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -916,7 +927,7 @@ one to test them, one to print them.
 
 <p class="endnote">The function UseOptions::ranking_table_given appears nowhere else.</p>
 
-<p class="endnote">The function UseOptions::configure_template is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function UseOptions::configure_template is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-i6i.html">Back to 'Inform 6 Inclusions'</a></li><li><a href="26-lt.html">Continue with 'List Together'</a></li></ul><hr class="tocbar">

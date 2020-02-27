@@ -303,7 +303,7 @@ absence of rooms would otherwise result in.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 0; </span><span class="reserved">return</span><span class="plain">; } </span>    <span class="comment">see above</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 0; </span><span class="reserved">return</span><span class="plain">; } </span>    <span class="comment">see above</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -855,7 +855,7 @@ K, we have also seen its bases.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::compile_structures is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_structures is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP16_1"></a><b>&#167;16.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Compile the runtime ID structure for this kind</span> <span class="cwebmacronumber">16.1</span>&gt; =
@@ -1057,7 +1057,7 @@ property values, table entries, list items) of pointer-value kinds:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::compile_heap_allocator is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_heap_allocator is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18_1"></a><b>&#167;18.1.  </b>By now, we know that we need at least <code class="display"><span class="extract">total_heap_allocation</span></code> bytes on the
 heap, but the initial heap size has to be a power of 2, so we compute the
@@ -1080,7 +1080,7 @@ has essentially no memory constraints compared with the Z-machine.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total_heap_allocation</span><span class="plain"> &lt; </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">())</span>
             <span class="identifier">total_heap_allocation</span><span class="plain"> = </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">max_heap</span><span class="plain"> &lt; </span><span class="identifier">total_heap_allocation</span><span class="plain">) </span><span class="identifier">max_heap</span><span class="plain"> = </span><span class="identifier">max_heap</span><span class="plain">*2;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))</span>
             <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">), </span><span class="identifier">max_heap</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">), 4*</span><span class="identifier">max_heap</span><span class="plain">);</span>
@@ -1169,12 +1169,12 @@ list of 20 texts. For the cases above, it's always 1.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">individual</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">individual</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0, </span><span class="identifier">c</span><span class="plain"> = 1, </span><span class="identifier">w</span><span class="plain"> = 4;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">()) </span><span class="identifier">w</span><span class="plain"> = 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) </span><span class="identifier">w</span><span class="plain"> = 2;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; (</span><span class="identifier">size</span><span class="plain"> + 3)*</span><span class="identifier">w</span><span class="plain">) { </span><span class="identifier">n</span><span class="plain">++; </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">*2; }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain"> = </span><span class="constant">BLK_FLAG_RESIDENT</span><span class="plain"> + </span><span class="constant">BLK_FLAG_WORD</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) </span><span class="identifier">flags</span><span class="plain"> += </span><span class="constant">BLK_FLAG_TRUNCMULT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">) </span><span class="identifier">flags</span><span class="plain"> += </span><span class="constant">BLK_FLAG_MULTIPLE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (0</span><span class="identifier">x100</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + </span><span class="identifier">flags</span><span class="plain">));</span>
         <span class="reserved">else</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (0</span><span class="identifier">x1000000</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + 0</span><span class="identifier">x10000</span><span class="plain">*</span><span class="identifier">flags</span><span class="plain">));</span>
@@ -1490,7 +1490,7 @@ each such kind, and needed at run-time.
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CCOUNT_QUOTATIONS_HL</span><span class="plain">), </span><span class="functiontext">Strings::TextLiterals::CCOUNT_QUOTATIONS</span><span class="plain">());</span>
         <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MAX_FRAME_SIZE_NEEDED_HL</span><span class="plain">), </span><span class="identifier">max_frame_size_needed</span><span class="plain">);</span>
-        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RNG_SEED_AT_START_OF_PLAY_HL</span><span class="plain">), </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RNG_SEED_AT_START_OF_PLAY_HL</span><span class="plain">), </span><span class="functiontext">Task::rng_seed</span><span class="plain">());</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_data_type_support_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1528,13 +1528,13 @@ each such kind, and needed at run-time.
 
 <p class="endnote">The function Kinds::RunTime::emit appears nowhere else.</p>
 
-<p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/mr (<a href="1-mr.html#SP4_11">&#167;4.11</a>).</p>
+<p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
 <p class="endnote">The function Kinds::RunTime::compile_nnci is used in <a href="#SP18_1">&#167;18.1</a>.</p>
 
-<p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
-<p class="endnote">The function Kinds::RunTime::compile_data_type_support_routines is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_data_type_support_routines is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP24_1"></a><b>&#167;24.1.  </b>A slightly bogus case first. If the source text declares a kind but never
 gives any enumerated values or literal patterns, then such values will never
@@ -2409,7 +2409,7 @@ Z-machine array space.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::I7_Kind_Name_routine is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Kinds::RunTime::I7_Kind_Name_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
@@ -2417,7 +2417,7 @@ Z-machine array space.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">VM_non_support_problem_issued</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::notify_of_use</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VirtualMachines::supports</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::target_VM_supports</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VM_non_support_problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">VM_non_support_problem_issued</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRequiresGlulx</span><span class="plain">));</span>
@@ -2432,11 +2432,21 @@ Z-machine array space.
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::target_VM_supports</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+        <span class="identifier">target_vm</span><span class="plain"> *</span><span class="identifier">VM</span><span class="plain"> = </span><span class="functiontext">Task::vm</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VM</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"target VM not set yet"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">TargetVMs::supports_floating_point</span><span class="plain">(</span><span class="identifier">VM</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Kinds::RunTime::notify_of_use is used in 14/cfs (<a href="14-cfs.html#SP7">&#167;7</a>, <a href="14-cfs.html#SP8">&#167;8</a>, <a href="14-cfs.html#SP9">&#167;9</a>), 20/eq (<a href="20-eq.html#SP50_3_1">&#167;50.3.1</a>).</p>
+
+<p class="endnote">The function Kinds::RunTime::target_VM_supports is used in 20/eq (<a href="20-eq.html#SP41">&#167;41</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="13-ca.html">Back to 'Compile Arithmetic'</a></li><li><a href="13-ki.html">Continue with 'Kinds Index'</a></li></ul><hr class="tocbar">

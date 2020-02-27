@@ -47,8 +47,6 @@ manage that here.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K2</span><span class="plain">) </span><span class="identifier">nw</span><span class="plain"> += </span><span class="functiontext">World::Compile::get_rough_memory_usage</span><span class="plain">(</span><span class="identifier">K2</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">nw</span><span class="plain"> += 16;</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">KW</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_name</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="functiontext">VirtualMachines::note_usage</span><span class="plain">(</span><span class="string">"object"</span><span class="plain">, </span><span class="identifier">KW</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">nw</span><span class="plain">, 0, </span><span class="identifier">TRUE</span><span class="plain">);</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_COMPILATION</span><span class="plain">, </span><span class="string">"Rough size estimate: %d words\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nw</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_COMPILATION</span><span class="plain">, </span><span class="string">"Compilation of $j complete\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">);</span>
@@ -293,7 +291,7 @@ For now, though, we make a parallel decision here.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Properties::Emit::allocate_attributes is used in 1/mr (<a href="1-mr.html#SP4_12">&#167;4.12</a>).</p>
+<p class="endnote">The function Properties::Emit::allocate_attributes is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Any either/or property which some value can hold is ineligible</span> <span class="cwebmacronumber">3.1</span>&gt; =

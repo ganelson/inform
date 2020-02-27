@@ -1,10 +1,26 @@
 [CoreMain::] Main Routine.
 
-As with all C programs, Inform begins execution in a |main| routine,
-reading command-line arguments to modify its behaviour.
+The top level of the Inform 7 compiler, reading command line arguments
+and preparing the way.
 
-@ =
-time_t right_now;
+@h The Management.
+All C programs begin execution in |main|, but the function below is not it.
+This is because the compiler proper is a tiny wrapper around a collection of
+modules, of which |core| is only one. |main| is found in that wrapper. On the
+other hand, all it does is to start up the modules (making it safe to use
+the memory manager, and so on) and then hand over the command line to
+|CoreMain::main| below.
+
+So the |CoreMain::main| function certainly has the opportunity to be head
+honcho, and for the first fifteen years of Inform 7, it was exactly that. In
+2020, though, it was deposed in a boardroom coup by a new CEO, the |inbuild|
+module. High-level decisions on what to compile, where to put the result, and
+so on, are all now taken by |inbuild|. Even the command line is very largely
+read and dealt with by |inbuild| and not by |core|, as we shall see. The
+upshot is that |CoreMain::main| is now a manager in name only, reduced to the
+equivalent of unlocking the doors and turning the lights on in the morning.
+
+=
 pathname *path_to_inform7 = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
@@ -13,10 +29,7 @@ int CoreMain::main(int argc, char *argv[]) {
 	if (proceed) {
 		@<Open the debugging log and the problems report@>;
 		@<Name the telemetry@>;
-		inform_project *project = Inbuild::go_operational();
-		if (project)
-			Copies::build(STDOUT, project->as_copy,
-				BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY));
+		@<Build the project identified for us by Inbuild@>;
 	}
 	@<Post mortem logging@>;
 	if (proceed) @<Shutdown and rennab@>;
@@ -24,16 +37,26 @@ int CoreMain::main(int argc, char *argv[]) {
 	return 0;
 }
 
-@ It is the dawn of time...
+@ The very first thing we do is to make sure internal errors, though they
+should never happen, are reported as problem messages (fed to our HTML
+problems report) rather than simply causing an abrupt exit with only a
+plain text error written to |stderr|. See the |problems| module for more.
 
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
 
+@ |inbuild| supplies us with a folder in which to write the debugging log
+and the Problems report (the HTML version of our error messages or success
+message, which is displayed in the Inform app when a compilation has finished).
+This folder will usually be the |Build| subfolder of the project folder,
+but we won't assume that. Remember, |inbuild| knows best.
+
 @<Open the debugging log and the problems report@> =
 	pathname *build_folder = Projects::build_pathname(Inbuild::project());
 	if (Pathnames::create_in_file_system(build_folder) == 0)
-		Problems::Fatal::issue("Unable to create Build folder for project: is it read-only?");
+		Problems::Fatal::issue(
+			"Unable to create Build folder for project: is it read-only?");
 
 	filename *DF = Filenames::in_folder(build_folder, I"Debug log.txt");
 	Log::set_debug_log_filename(DF);
@@ -49,7 +72,8 @@ int CoreMain::main(int argc, char *argv[]) {
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.
 This was provided for classroom use, so that teachers can see what their
-students have been getting stuck on.
+students have been getting stuck on. In any case, it needs to be activated
+with a use option, so by default this file will never be written.
 
 @<Name the telemetry@> =
 	pathname *P = Pathnames::subfolder(Inbuild::transient(), I"Telemetry");
@@ -65,6 +89,27 @@ students have been getting stuck on.
 		DISCARD_TEXT(leafname_of_telemetry);
 	}
 
+@ The compiler is now ready for use. We ask |inbuild| what project the user
+seems to want to build (as expressed on the command line), and then we ask
+it to go ahead and build that project.
+
+But the art of leadership is delegation and what |inbuild| then does is to
+call |core| back again: see the What To Compile section for the function it
+calls. That sounds like an unnecessary round trip, but in fact it's not,
+because |inbuild| also incrementally builds some of the resources we will
+be using. That business is helpfully invisible to us: so it turns out that
+CEOs do something, after all.
+
+@<Build the project identified for us by Inbuild@> =
+	inform_project *project = Inbuild::go_operational();
+	if (project)
+		Copies::build(STDOUT, project->as_copy,
+			BuildMethodology::new(NULL, FALSE, INTERNAL_METHODOLOGY));
+
+@ The options commented out here are very rarely useful, and some generate
+gargantuan debugging logs if enabled.
+
+=
 @<Post mortem logging@> =
 	if (problem_count == 0) {
 		TemplateReader::report_unacted_upon_interventions();
@@ -81,7 +126,12 @@ students have been getting stuck on.
 	Writers::log_escape_usage();
 	WRITE_TO(STDOUT, "%s has finished.\n", HUMAN_READABLE_INTOOL_NAME);
 
-@h Command Line.
+@h Command line processing.
+The bulk of the command-line options are both registered and processed by
+|inbuild| rather than here: in particular, every switch ever used by the
+Inform UI apps is really a command to |inbuild| not to |inform7|. What
+remains here are just some eldritch options for testing the |inform7|
+compiler via Delia scripts in |intest|.
 
 =
 int CoreMain::read_command_line(int argc, char *argv[]) {

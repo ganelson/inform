@@ -194,7 +194,7 @@ The rightmost element e_{n-1} is the least significant numerically.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure literal_pattern_element is accessed in 1/kts and here.</p>
+<p class="endnote">The structure literal_pattern_element is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,
@@ -233,7 +233,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure literal_pattern_name is accessed in 3/pd, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure literal_pattern_name is accessed in 3/pd, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Creating patterns, tokens and elements. </b></p>
 
@@ -375,7 +375,7 @@ equivalent to an exact value.
 
         <span class="identifier">list_head</span><span class="plain"> = </span><span class="functiontext">LiteralPatterns::lp_list_add_inner</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">, </span><span class="identifier">new_lp</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">()) &amp;&amp; (</span><span class="identifier">PM_ZMachineOverflow2_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) &amp;&amp; (</span><span class="identifier">PM_ZMachineOverflow2_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lp</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">lp</span><span class="plain">; </span><span class="identifier">lp</span><span class="plain"> = </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;next_for_this_kind</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Scalings::quantum</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;scaling</span><span class="plain">) &gt; 32767) {</span>
                     <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow2</span><span class="plain">),</span>
@@ -881,7 +881,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
                 <span class="string">"page of the Index.)"</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">overflow_16_bit_flag</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VirtualMachines::is_16_bit</span><span class="plain">())) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">overflow_16_bit_flag</span><span class="plain">) &amp;&amp; (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))) {</span>
             <span class="constant">ISSUING_LP_PROBLEM</span><span class="plain">;</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow</span><span class="plain">),</span>
                 <span class="string">"you use a literal specification to make a value which is too large"</span><span class="plain">,</span>
@@ -3924,7 +3924,7 @@ set.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function LiteralPatterns::define_named_phrases is used in 1/mr (<a href="1-mr.html#SP4_14">&#167;4.14</a>).</p>
+    <p class="endnote">The function LiteralPatterns::define_named_phrases is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
     <p class="inwebparagraph"><a id="SP40_1"></a><b>&#167;40.1.  </b>These text substitutions correspond exactly neither to the LPs nor to the
     names. For instance, "in tonnes" produces a text substitution which takes

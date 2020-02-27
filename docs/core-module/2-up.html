@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>1/wel</title>
+		<title>1/htc</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -15,7 +15,6 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">REDIRECT_PROBLEM_SOURCE_TO</span><span class="plain"> </span><span class="identifier">pathname_of_project</span>
     <span class="definitionkeyword">define</span> <span class="constant">PROBLEMS_HTML_EMITTER</span><span class="plain"> </span><span class="identifier">HTMLFiles::char_out</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Inform tops and tails its output of problem messages, and it also prints
@@ -29,9 +28,9 @@ non-problem messages when everything was fine. That all happens here:
 </pre>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Using::start_problems_report</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="identifier">filename_of_report</span><span class="plain">, </span><span class="identifier">UTF8_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">Problems::Fatal::filename_related</span><span class="plain">(</span><span class="string">"Can't open problem log"</span><span class="plain">, </span><span class="identifier">filename_of_report</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Using::start_problems_report</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">UTF8_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="identifier">Problems::Fatal::filename_related</span><span class="plain">(</span><span class="string">"Can't open problem log"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="identifier">HTMLFiles::html_header</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Translating the Source"</span><span class="plain">);</span>
     <span class="plain">}</span>
 

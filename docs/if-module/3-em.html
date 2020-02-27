@@ -1235,9 +1235,10 @@ For instance, <code class="display"><span class="extract">28&amp;-125</span></co
 
 
 <pre class="displaydefn">
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Task::epsmap_file</span><span class="plain">();</span>
         <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">EPS_struct</span><span class="plain">; </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">EPS</span><span class="plain"> = &amp;</span><span class="identifier">EPS_struct</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">EPS</span><span class="plain">, </span><span class="identifier">filename_of_epsfile</span><span class="plain">, </span><span class="identifier">ISO_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">Problems::Fatal::filename_related</span><span class="plain">(</span><span class="string">"Can't open EPS map file"</span><span class="plain">, </span><span class="identifier">filename_of_epsfile</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">EPS</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">ISO_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="identifier">Problems::Fatal::filename_related</span><span class="plain">(</span><span class="string">"Can't open EPS map file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="functiontext">PL::EPSMap::EPS_compile_map</span><span class="plain">(</span><span class="identifier">EPS</span><span class="plain">);</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">EPS</span><span class="plain">);</span>
 </pre>

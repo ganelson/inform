@@ -152,7 +152,7 @@ in quick succession, the second run-through does nothing.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Sentences::VPs::traverse is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function Sentences::VPs::traverse is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Sentences::VPs::visit appears nowhere else.</p>
 
@@ -678,7 +678,7 @@ new action.
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
-                    <span class="reserved">natural_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = (</span><span class="reserved">natural_language</span><span class="plain"> *) (&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
+                    <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = (</span><span class="identifier">inform_language</span><span class="plain"> *) (&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
                     <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>

@@ -161,7 +161,7 @@ project, with the user not realising the consequences.
 
 <pre class="displaydefn">
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VirtualMachines::veto_number</span><span class="plain">(*</span><span class="identifier">X</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FundamentalConstants::veto_number</span><span class="plain">(*</span><span class="identifier">X</span><span class="plain">)) {</span>
             <span class="comment">to prevent repetitions:</span>
             <span class="identifier">Vocabulary::set_literal_number_value</span><span class="plain">(</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)), 1);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>

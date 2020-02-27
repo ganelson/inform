@@ -487,9 +487,9 @@ into.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::Scalings::quantum is used in <a href="#SP21">&#167;21</a>.</p>
+<p class="endnote">The function Kinds::Scalings::quantum is used in <a href="#SP20">&#167;20</a>.</p>
 
-<p class="endnote">The function Kinds::Scalings::real_quantum is used in <a href="#SP21">&#167;21</a>.</p>
+<p class="endnote">The function Kinds::Scalings::real_quantum is used in <a href="#SP20">&#167;20</a>.</p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>More generally, the following takes a number of quanta and turns it into
 the run-time value that stores as:
@@ -634,7 +634,7 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scale_factor</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_add</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_to_add</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scale_factor</span><span class="plain"> &gt; 1) {</span>
             <span class="reserved">long</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = 2147483647</span><span class="identifier">LL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VirtualMachines::is_16_bit</span><span class="plain">()) </span><span class="identifier">max</span><span class="plain"> = 32767</span><span class="identifier">LL</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">max</span><span class="plain"> = 32767</span><span class="identifier">LL</span><span class="plain">;</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -725,39 +725,7 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 
 <p class="endnote">This code is used in <a href="#SP18">&#167;18</a> (twice).</p>
 
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
-
-
-<pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_scale_and_add_oldschool</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">var</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scale_factor</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">to_add</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">label</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scale_factor</span><span class="plain"> &gt; 1) {</span>
-            <span class="reserved">long</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = 2147483647</span><span class="identifier">LL</span><span class="plain">;</span>
-            <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VirtualMachines::is_16_bit</span><span class="plain">()) </span><span class="identifier">max</span><span class="plain"> = 32767</span><span class="identifier">LL</span><span class="plain">;</span>
-            <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"if (sgn == 1) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"if ((%s &gt; %d) || ((%s == %d) &amp;&amp; (%S &gt; %d)))\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">var</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">/</span><span class="identifier">scale_factor</span><span class="plain">), </span><span class="identifier">var</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">/</span><span class="identifier">scale_factor</span><span class="plain">),</span>
-                <span class="identifier">to_add</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">%</span><span class="identifier">scale_factor</span><span class="plain">)); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"jump Failed_LP_%d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
-            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"} else {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-            <span class="identifier">max</span><span class="plain">++;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"if ((%s &gt; %d) || ((%s == %d) &amp;&amp; (%S &gt; %d)))\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">var</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">/</span><span class="identifier">scale_factor</span><span class="plain">), </span><span class="identifier">var</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">/</span><span class="identifier">scale_factor</span><span class="plain">),</span>
-                <span class="identifier">to_add</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">max</span><span class="plain">%</span><span class="identifier">scale_factor</span><span class="plain">)); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"jump Failed_LP_%d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
-            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s = %d*%s + %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">var</span><span class="plain">, </span><span class="identifier">scale_factor</span><span class="plain">, </span><span class="identifier">var</span><span class="plain">, </span><span class="identifier">to_add</span><span class="plain">);</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Kinds::Scalings::compile_scale_and_add_oldschool appears nowhere else.</p>
-
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>And conversely... Note that in the real case, the remainder variable <code class="display"><span class="extract">R_var</span></code>
+<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>And conversely... Note that in the real case, the remainder variable <code class="display"><span class="extract">R_var</span></code>
 is ignored, since the division can be performed "exactly".
 </p>
 
@@ -830,9 +798,9 @@ is ignored, since the division can be performed "exactly".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::Scalings::compile_value_to_quanta is used in <a href="#SP22">&#167;22</a>.</p>
+<p class="endnote">The function Kinds::Scalings::compile_value_to_quanta is used in <a href="#SP21">&#167;21</a>.</p>
 
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>The following compiles a valid condition to test whether the value in the
+<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>The following compiles a valid condition to test whether the value in the
 named I6 variable is equal to, greater than, less than or equal to, etc., the
 quantum for the scaling. <code class="display"><span class="extract">op</span></code> contains the textual form of the comparison
 operator to use: say, <code class="display"><span class="extract">"&gt;="</span></code>.
@@ -871,7 +839,7 @@ operator to use: say, <code class="display"><span class="extract">"&gt;="</span>
 
 <p class="endnote">The function Kinds::Scalings::compile_threshold_test appears nowhere else.</p>
 
-<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>We now compile code to print the value in the variable <code class="display"><span class="extract">V_var</span></code> with
+<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>We now compile code to print the value in the variable <code class="display"><span class="extract">V_var</span></code> with
 respect to this scaling. We need two other variables at our disposal to
 do this: <code class="display"><span class="extract">R_var</span></code>, which is temporary storage to hold the remainder part;
 and <code class="display"><span class="extract">S_var</span></code>, which is a scratch variable used as a form of loop counter.
@@ -900,7 +868,7 @@ and <code class="display"><span class="extract">S_var</span></code>, which is a 
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    &lt;<span class="cwebmacro">Print a decimal expansion for the remainder</span> <span class="cwebmacronumber">22.1</span>&gt;<span class="plain">;</span>
+                    &lt;<span class="cwebmacro">Print a decimal expansion for the remainder</span> <span class="cwebmacronumber">21.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -917,7 +885,7 @@ and <code class="display"><span class="extract">S_var</span></code>, which is a 
 
 <p class="endnote">The function Kinds::Scalings::compile_print_in_quanta appears nowhere else.</p>
 
-<p class="inwebparagraph"><a id="SP22_1"></a><b>&#167;22.1.  </b>In the integer case, then, suppose we have determined that our value is
+<p class="inwebparagraph"><a id="SP21_1"></a><b>&#167;21.1.  </b>In the integer case, then, suppose we have determined that our value is
 2 quanta with remainder 26/Mths. We've already printed the 2, and it remains
 to print the best decimal expansion we can to represent 26/Mths.
 </p>
@@ -930,7 +898,7 @@ recurring decimals. If it can't, then we must approximate.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Print a decimal expansion for the remainder</span> <span class="cwebmacronumber">22.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Print a decimal expansion for the remainder</span> <span class="cwebmacronumber">21.1</span>&gt; =
 </code></p>
 
 
@@ -949,16 +917,16 @@ recurring decimals. If it can't, then we must approximate.
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl10M</span><span class="plain"> % </span><span class="identifier">M</span><span class="plain"> == 0)</span>
-            &lt;<span class="cwebmacro">Use an exact method, since the multiplier divides a power of 10</span> <span class="cwebmacronumber">22.1.1</span>&gt;
+            &lt;<span class="cwebmacro">Use an exact method, since the multiplier divides a power of 10</span> <span class="cwebmacronumber">21.1.1</span>&gt;
         <span class="reserved">else</span>
-            &lt;<span class="cwebmacro">Use an approximate method, since we can't have an exact one in all cases</span> <span class="cwebmacronumber">22.1.2</span>&gt;<span class="character">;</span>
+            &lt;<span class="cwebmacro">Use an approximate method, since we can't have an exact one in all cases</span> <span class="cwebmacronumber">21.1.2</span>&gt;<span class="character">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP22">&#167;22</a>.</p>
+<p class="endnote">This code is used in <a href="#SP21">&#167;21</a>.</p>
 
-<p class="inwebparagraph"><a id="SP22_1_1"></a><b>&#167;22.1.1.  </b>In this exact case,
+<p class="inwebparagraph"><a id="SP21_1_1"></a><b>&#167;21.1.1.  </b>In this exact case,
 </p>
 
 <p class="inwebparagraph"></p>
@@ -984,7 +952,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Use an exact method, since the multiplier divides a power of 10</span> <span class="cwebmacronumber">22.1.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Use an exact method, since the multiplier divides a power of 10</span> <span class="cwebmacronumber">21.1.1</span>&gt; =
 </code></p>
 
 
@@ -1087,16 +1055,16 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP22_1">&#167;22.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP21_1">&#167;21.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP22_1_2"></a><b>&#167;22.1.2.  </b>In this approximation, <code class="display"><span class="extract">R_var</span></code> is measured in units of <code class="display"><span class="extract">1/M</span></code>. Thus the first
+<p class="inwebparagraph"><a id="SP21_1_2"></a><b>&#167;21.1.2.  </b>In this approximation, <code class="display"><span class="extract">R_var</span></code> is measured in units of <code class="display"><span class="extract">1/M</span></code>. Thus the first
 digit after the decimal point should be <code class="display"><span class="extract">R_var</span></code> times <code class="display"><span class="extract">10/M</span></code>, the second
 <code class="display"><span class="extract">R_var</span></code> times <code class="display"><span class="extract">100/M</span></code>, and so on.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Use an approximate method, since we can't have an exact one in all cases</span> <span class="cwebmacronumber">22.1.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Use an approximate method, since we can't have an exact one in all cases</span> <span class="cwebmacronumber">21.1.2</span>&gt; =
 </code></p>
 
 
@@ -1134,9 +1102,9 @@ digit after the decimal point should be <code class="display"><span class="extra
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP22_1">&#167;22.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP21_1">&#167;21.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>And finally:
+<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>And finally:
 </p>
 
 

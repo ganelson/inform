@@ -1926,7 +1926,7 @@ empty.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_IV</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Task::wraps_existing_storyfile</span><span class="plain">()) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>

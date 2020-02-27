@@ -349,21 +349,11 @@ abstract, rather than with the actual property of some specific object.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
-        <span class="functiontext">Problems::quote_extension</span><span class="plain">(1, </span><span class="identifier">ef</span><span class="plain">);</span>
+        <span class="functiontext">Problems::quote_extension</span><span class="plain">(1, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
-            <span class="string">"The extension %1, which your source text makes use of, %2."</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::extension_problem_S</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
-        <span class="identifier">ACT_ON_SIGIL</span>
-        <span class="functiontext">Problems::quote_extension</span><span class="plain">(1, </span><span class="identifier">ef</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The extension %1, which your source text makes use of, %2."</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -372,9 +362,7 @@ abstract, rather than with the actual property of some specific object.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Problems::Issue::extension_problem is used in 7/ss (<a href="7-ss.html#SP9_1">&#167;9.1</a>, <a href="7-ss.html#SP9_2">&#167;9.2</a>, <a href="7-ss.html#SP12">&#167;12</a>).</p>
-
-<p class="endnote">The function Problems::Issue::extension_problem_S is used in 8/ef (<a href="8-ef.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Problems::Issue::extension_problem is used in 7/ss (<a href="7-ss.html#SP7_1">&#167;7.1</a>, <a href="7-ss.html#SP7_2">&#167;7.2</a>, <a href="7-ss.html#SP10">&#167;10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Releasing problems. </b>These occur when the release instructions do not make sense. Sometimes it's
 possible to pin down an exact place where the difficulty occurs, but

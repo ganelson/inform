@@ -182,6 +182,7 @@ the following routine, which combines them into one.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFromFiles::total_word_count</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_source</span><span class="plain"> + </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_quoted_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 

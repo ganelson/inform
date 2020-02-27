@@ -90,7 +90,7 @@ cleared.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function NewVerbs::add_inequalities is used in 1/mr (<a href="1-mr.html#SP4_10">&#167;4.10</a>).</p>
+<p class="endnote">The function NewVerbs::add_inequalities is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function NewVerbs::add_inequalities_inner appears nowhere else.</p>
 
@@ -129,8 +129,8 @@ as the object.
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">verb</span><span class="plain">-</span><span class="identifier">implies</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">in</span><span class="plain"> &lt;</span><span class="identifier">natural</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt; &lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]; &lt;&lt;</span><span class="reserved">natural_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt; = (</span><span class="reserved">natural_language</span><span class="plain"> *) (</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="plain">&lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt;							==&gt; </span><span class="identifier">R</span><span class="plain">[1]; &lt;&lt;</span><span class="reserved">natural_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt; = </span><span class="identifier">English_language</span><span class="plain">;</span>
+        <span class="identifier">in</span><span class="plain"> &lt;</span><span class="identifier">natural</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt; &lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]; &lt;&lt;</span><span class="identifier">inform_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt; = (</span><span class="identifier">inform_language</span><span class="plain"> *) (</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="plain">&lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt;							==&gt; </span><span class="identifier">R</span><span class="plain">[1]; &lt;&lt;</span><span class="identifier">inform_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt; = </span><span class="identifier">English_language</span><span class="plain">;</span>
 
     <span class="plain">&lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt; ::=</span>
         <span class="identifier">to</span><span class="plain"> &lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">usage</span><span class="plain">&gt; ( ... ) |		==&gt; </span><span class="identifier">R</span><span class="plain">[1]; &lt;&lt;</span><span class="identifier">giving</span><span class="plain">-</span><span class="identifier">parts</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
@@ -390,7 +390,7 @@ now absolutely any non-empty word range is accepted as the property name.
             &lt;<span class="cwebmacro">Find the underlying relation of the new verb or preposition</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">verb</span><span class="plain">-</span><span class="identifier">implies</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))) {</span>
-            <span class="reserved">natural_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = &lt;&lt;</span><span class="reserved">natural_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt;;</span>
+            <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = &lt;&lt;</span><span class="identifier">inform_language</span><span class="plain">:</span><span class="identifier">nl</span><span class="plain">&gt;&gt;;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">usage</span><span class="plain">&gt;, 1);</span>
             <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">giving</span><span class="plain">-</span><span class="identifier">parts</span><span class="plain">&gt;&gt;) </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt;, 1);</span>
@@ -485,8 +485,8 @@ now absolutely any non-empty word range is accepted as the property name.
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">MW</span><span class="plain">) != 1) || (</span><span class="identifier">VerbMeanings::is_meaningless</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">))) {</span>
                     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                     <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">MW</span><span class="plain">));</span>
-                    <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">loc</span><span class="plain"> == </span><span class="identifier">standard_rules_extension</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+                    <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchBuiltInMeaning</span><span class="plain">),</span>
                         <span class="string">"that's not one of the built-in meanings I know"</span><span class="plain">,</span>
@@ -1034,7 +1034,7 @@ foreign verbs (4).
 
 <p class="endnote">The function NewVerbs::ConjugateVerbDefinitions is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function NewVerbs::ConjugateVerb is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function NewVerbs::ConjugateVerb is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18_1"></a><b>&#167;18.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Compile ConjugateVerb routine</span> <span class="cwebmacronumber">18.1</span>&gt; =
@@ -1504,7 +1504,7 @@ foreign verbs (4).
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="identifier">in</span><span class="plain"> &lt;</span><span class="identifier">natural</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt; ... |		==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
-        <span class="plain">...								==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">language_of_play</span><span class="plain">;</span>
+        <span class="plain">...								==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">Projects::get_language_of_play</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">());</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1558,7 +1558,7 @@ usages to the debugging log.
 
 <p class="endnote">The function NewVerbs::log is used in 7/ptu (<a href="7-ptu.html#SP17_1">&#167;17.1</a>).</p>
 
-<p class="endnote">The function NewVerbs::log_all is used in 1/mr (<a href="1-mr.html#SP4_18">&#167;4.18</a>).</p>
+<p class="endnote">The function NewVerbs::log_all is used in 1/mr (<a href="1-mr.html#SP1_5">&#167;1.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25. Index tabulation. </b>The following produces the table of verbs in the Phrasebook Index page.
 </p>

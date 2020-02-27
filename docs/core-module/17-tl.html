@@ -437,7 +437,7 @@ number <code class="display"><span class="extract">-1</span></code>).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Strings::TextLiterals::compile is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Strings::TextLiterals::compile is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Strings::TextLiterals::traverse_lts appears nowhere else.</p>
 
@@ -447,7 +447,7 @@ number <code class="display"><span class="extract">-1</span></code>).
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_story_file</span><span class="plain">) { </span>    <span class="comment">to prevent trouble when no story file is really being made</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) { </span>    <span class="comment">to prevent trouble when no story file is really being made</span>
             <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;lt_iname</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"--"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TLT</span><span class="plain">);</span>

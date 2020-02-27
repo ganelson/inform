@@ -44,9 +44,9 @@
             <span class="identifier">L</span><span class="string">"write a read-me file following instructions in file X"</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">SILENCE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"silence"</span><span class="plain">, 1,</span>
-            <span class="identifier">L</span><span class="string">"print nothing unless there's something wrong"</span><span class="plain">);</span>
+            <span class="identifier">L</span><span class="string">"print nothing unless there's something wrong"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">VERBOSE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"verbose"</span><span class="plain">, 1,</span>
-            <span class="identifier">L</span><span class="string">"explain what inpolicy is doing"</span><span class="plain">);</span>
+            <span class="identifier">L</span><span class="string">"explain what inpolicy is doing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::respond</span><span class="plain">, &amp;</span><span class="functiontext">Main::disallow</span><span class="plain">);</span>
 

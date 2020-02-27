@@ -120,7 +120,7 @@ have affected it in this way:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure placement_affecting is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 8/ec, 8/ed, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure placement_affecting is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>As rulebooks are declared, the first few are quietly copied into
 a small array: that way, we can always obtain a pointer to, say, the
@@ -673,7 +673,7 @@ built (for instance, scene endings).
 
 <p class="endnote">The function Rulebooks::get_stv_creator_iname is used in <a href="#SP14_1">&#167;14.1</a>.</p>
 
-<p class="endnote">The function Rulebooks::rulebook_var_creators is used in 1/mr (<a href="1-mr.html#SP4_15">&#167;4.15</a>).</p>
+<p class="endnote">The function Rulebooks::rulebook_var_creators is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP14_1"></a><b>&#167;14.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Make slow lookup routine</span> <span class="cwebmacronumber">14.1</span>&gt; =
@@ -1231,10 +1231,10 @@ popular rulebooks, showing their contents in logical order.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rulebooks::noteworthy_rulebooks</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">) &gt; 0)</span>
                 &lt;<span class="cwebmacro">Index the segment for new rulebooks and activities</span> <span class="cwebmacronumber">23.10</span>&gt;<span class="plain">;</span>
-            <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">;</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">, </span><span class="reserved">extension_file</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ef</span><span class="plain"> != </span><span class="identifier">standard_rules_extension</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rulebooks::noteworthy_rulebooks</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">) &gt; 0)</span>
+            <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rulebooks::noteworthy_rulebooks</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">) &gt; 0)</span>
                         &lt;<span class="cwebmacro">Index the segment for the rulebooks in this extension</span> <span class="cwebmacronumber">23.11</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -1477,7 +1477,7 @@ popular rulebooks, showing their contents in logical order.
 
 <pre class="displaydefn">
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;From the source text&lt;/b&gt;"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">that is, not in an extension at all</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">that is, not in an extension at all</span>
         &lt;<span class="cwebmacro">Index rulebooks occurring in this part of the source text</span> <span class="cwebmacronumber">23.10.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -1492,7 +1492,7 @@ popular rulebooks, showing their contents in logical order.
 
 <pre class="displaydefn">
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;From the extension "</span><span class="plain">);</span>
-        <span class="functiontext">Extensions::IDs::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="functiontext">Extensions::Files::get_eid</span><span class="plain">(</span><span class="identifier">ef</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/b&gt;"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Index rulebooks occurring in this part of the source text</span> <span class="cwebmacronumber">23.10.1</span>&gt;<span class="plain">;</span>
 </pre>
@@ -1512,14 +1512,14 @@ popular rulebooks, showing their contents in logical order.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
             <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;automatically_generated</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">ef</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">E</span><span class="plain">))</span>
                 <span class="functiontext">Rulebooks::index_rules_box</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 1, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">ef</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">E</span><span class="plain">))</span>
                 <span class="functiontext">Activities::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">av</span><span class="plain">, 1);</span>
         <span class="plain">}</span>
 </pre>
@@ -1532,20 +1532,20 @@ popular rulebooks, showing their contents in logical order.
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rulebooks::noteworthy_rulebooks</span><span class="plain">(</span><span class="reserved">extension_file</span><span class="plain"> *</span><span class="identifier">ef</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rulebooks::noteworthy_rulebooks</span><span class="plain">(</span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nb</span><span class="plain"> = 0;</span>
         <span class="reserved">activity</span><span class="plain"> *</span><span class="identifier">av</span><span class="plain">;</span>
         <span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
             <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;automatically_generated</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">ef</span><span class="plain">)) </span><span class="identifier">nb</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">E</span><span class="plain">)) </span><span class="identifier">nb</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">,</span><span class="reserved"> activity</span><span class="plain">) {</span>
             <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ef</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">ef</span><span class="plain">)) </span><span class="identifier">nb</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">) == </span><span class="identifier">E</span><span class="plain">)) </span><span class="identifier">nb</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nb</span><span class="plain">;</span>
     <span class="plain">}</span>
