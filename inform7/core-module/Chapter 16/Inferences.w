@@ -94,7 +94,7 @@ inference *World::Inferences::create_inference(int type, int certitude) {
 	new_i->inferred_property = NULL;
 	new_i->inferred_property_value = NULL;
 	new_i->inferred_from = current_sentence;
-	new_i->added_in_construction = model_world_under_construction;
+	new_i->added_in_construction = Task::is_during_stage(MODEL_COMPLETE_CSEQ);
 	new_i->next = NULL;
 	return new_i;
 }

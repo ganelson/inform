@@ -400,7 +400,7 @@ at run-time, so we can't know now how many we will need.
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_object);
 	int words_used = 0;
-	if (existing_story_file) {
+	if (Task::wraps_existing_storyfile()) {
 		Emit::array_divider(I"minimal, as there are no rooms");
 		Emit::array_iname_entry(NULL);
 		Emit::array_iname_entry(NULL);

@@ -280,7 +280,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 }
 
 @<Compile a standard literal text@> =
-	if (existing_story_file) { /* to prevent trouble when no story file is really being made */
+	if (Task::wraps_existing_storyfile()) { /* to prevent trouble when no story file is really being made */
 		Emit::named_string_constant(lt->lt_iname, I"--");
 	} else {
 		TEMPORARY_TEXT(TLT);

@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 		L"usage: inblorb [-options] [blurbfile [blorbfile]]\n");
 
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"print running notes on what's happening");
+		L"print running notes on what's happening", FALSE);
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within Inform project X");
 

@@ -239,7 +239,6 @@ void CoreModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 }
 
 @ Not all of our memory will be claimed in the form of structures: now and then
@@ -396,9 +395,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('Y', Properties::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);
 	REGISTER_WRITER('z', Nouns::log);
-
-@<Register this module's command line switches@> =
-	;
 
 @ =
 void CoreModule::writer(OUTPUT_STREAM, char *format_string, int wn) {

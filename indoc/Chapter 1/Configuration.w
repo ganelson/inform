@@ -58,9 +58,9 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 		L"where TARGET must be one of those set up in the instructions.\n");
 
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what indoc is doing");
+		L"explain what indoc is doing", FALSE);
 	CommandLine::declare_boolean_switch(TEST_INDEX_CLSW, L"test-index", 1,
-		L"test indexing");
+		L"test indexing", FALSE);
 	CommandLine::declare_switch(XREFS_CLSW, L"xrefs", 2,
 		L"write a file of documentation cross-references to filename X");
 	CommandLine::declare_switch(FROM_CLSW, L"from", 2,

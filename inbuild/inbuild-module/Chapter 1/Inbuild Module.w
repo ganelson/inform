@@ -72,7 +72,6 @@ void InbuildModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 	KitManager::start();
 	ExtensionManager::start();
 	TemplateManager::start();
@@ -106,9 +105,6 @@ void InbuildModule::start(void) {
 
 @<Register this module's debugging log writers@> =
 	Writers::register_writer('J', &Languages::log);
-
-@<Register this module's command line switches@> =
-	;
 
 @h The end.
 

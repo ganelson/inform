@@ -2,12 +2,27 @@
 
 To configure the many locations used in the host filing system.
 
+@ We run through the following stages in sequence:
+
+@e STARTED_CSEQ from 1
+@e LEXICAL_CSEQ
+@e SEMANTIC_CSEQ
+@e ASSERTIONS_CSEQ
+@e MODEL_CSEQ
+@e MODEL_COMPLETE_CSEQ
+@e TABLES_CSEQ
+@e PHRASES_CSEQ
+@e INTER_CSEQ
+@e BIBLIOGRAPHIC_CSEQ
+@e FINISHED_CSEQ
+
 @ =
 int no_compile_tasks_carried_out = 0;
 
 int Sequence::carry_out(compile_task_data *ctd) {
+	Task::advance_stage_to(STARTED_CSEQ);
+
 	if (no_compile_tasks_carried_out == 0) @<Boot up the compiler@>;
-	
 	clock_t start = clock();
 	@<Perform lexical analysis@>;
 	@<Perform semantic analysis@>;
@@ -17,6 +32,8 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	@<Phrases and rules@>;
 	@<Generate inter@>;
 	@<Generate index and bibliographic file@>;
+
+	Task::advance_stage_to(FINISHED_CSEQ);
 	clock_t end = clock();
 	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
@@ -53,12 +70,14 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	doc_references_top = lexer_wordcount - 1;
 
 @<Perform lexical analysis@> =
+	Task::advance_stage_to(LEXICAL_CSEQ);
 	ProgressBar::update_progress_bar(0, 0);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"Lexical analysis");
 	SourceFiles::read(Task::project()->as_copy);
 	COMPILATION_STEP(Sentences::RuleSubtrees::create_standard_csps, I"Sentences::RuleSubtrees::create_standard_csps")
 
 @<Perform semantic analysis@> =
+	Task::advance_stage_to(SEMANTIC_CSEQ);
 	ProgressBar::update_progress_bar(1, 0);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"Semantic analysis Ia");
 	Projects::activate_plugins(Task::project());
@@ -95,6 +114,7 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	COMPILATION_STEP(Phrases::Manager::traverse_for_names, I"Phrases::Manager::traverse_for_names")
 
 @<Read the assertions in two passes@> =
+	Task::advance_stage_to(ASSERTIONS_CSEQ);
 	ProgressBar::update_progress_bar(2, 0);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"First pass through assertions");
 	if (problem_count == 0) Assertions::Traverse::traverse(1);
@@ -104,28 +124,33 @@ int Sequence::carry_out(compile_task_data *ctd) {
 	COMPILATION_STEP(Kinds::RunTime::kind_declarations, I"Kinds::RunTime::kind_declarations")
 
 @<Make the model world@> =
+	Task::advance_stage_to(MODEL_CSEQ);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"Making the model world");
 	COMPILATION_STEP(UseOptions::compile, I"UseOptions::compile")
 	COMPILATION_STEP(Properties::emit, I"Properties::emit")
 	COMPILATION_STEP(Properties::Emit::allocate_attributes, I"Properties::Emit::allocate_attributes")
 	COMPILATION_STEP(PL::Actions::name_all, I"PL::Actions::name_all")
 	COMPILATION_STEP(UseNouns::name_all, I"UseNouns::name_all")
+	COMPILATION_STEP(Instances::place_objects_in_definition_sequence, I"Instances::place_objects_in_definition_sequence")
+	Task::advance_stage_to(MODEL_COMPLETE_CSEQ);
 	COMPILATION_STEP(World::complete, I"World::complete")
+
+@<Tables and grammar@> =
+	Task::advance_stage_to(TABLES_CSEQ);
+	if (problem_count == 0) Sequence::go_to_log_phase(I"Tables and grammar");
 	COMPILATION_STEP(Properties::Measurement::validate_definitions, I"Properties::Measurement::validate_definitions")
 	COMPILATION_STEP(BinaryPredicates::make_built_in_further, I"BinaryPredicates::make_built_in_further")
 	COMPILATION_STEP(PL::Bibliographic::IFID::define_UUID, I"PL::Bibliographic::IFID::define_UUID")
 	COMPILATION_STEP(PL::Figures::compile_ResourceIDsOfFigures_array, I"PL::Figures::compile_ResourceIDsOfFigures_array")
 	COMPILATION_STEP(PL::Sounds::compile_ResourceIDsOfSounds_array, I"PL::Sounds::compile_ResourceIDsOfSounds_array")
 	COMPILATION_STEP(PL::Player::InitialSituation, I"PL::Player::InitialSituation")
-
-@<Tables and grammar@> =
-	if (problem_count == 0) Sequence::go_to_log_phase(I"Tables and grammar");
 	COMPILATION_STEP(Tables::check_tables_for_kind_clashes, I"Tables::check_tables_for_kind_clashes")
 	COMPILATION_STEP(Tables::Support::compile_print_table_names, I"Tables::Support::compile_print_table_names")
 	COMPILATION_STEP(PL::Parsing::traverse, I"PL::Parsing::traverse")
 	COMPILATION_STEP(World::complete_additions, I"World::complete_additions")
 
 @<Phrases and rules@> =
+	Task::advance_stage_to(PHRASES_CSEQ);
 	ProgressBar::update_progress_bar(3, 0);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"Phrases and rules");
 	COMPILATION_STEP(LiteralPatterns::define_named_phrases, I"LiteralPatterns::define_named_phrases")
@@ -145,6 +170,7 @@ passed through as I6 source, as well as a few further commands -- starting
 with "Output.i6t".
 
 @<Generate inter@> =
+	Task::advance_stage_to(INTER_CSEQ);
 	ProgressBar::update_progress_bar(4, 0);
 	if (problem_count == 0) Sequence::go_to_log_phase(I"Generating inter");
 	COMPILATION_STEP(UseOptions::compile_icl_commands, I"UseOptions::compile_icl_commands")
@@ -243,6 +269,7 @@ with "Output.i6t".
 @ Metadata.
 
 @<Generate index and bibliographic file@> =
+	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ);
 	if (Plugins::Manage::plugged_in(bibliographic_plugin))
 		PL::Bibliographic::Release::write_ifiction_and_blurb();
 	if (problem_count == 0)

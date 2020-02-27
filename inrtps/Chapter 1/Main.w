@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 		L"usage: inrtps from-folder to-folder [options]\n");
 
 	CommandLine::declare_boolean_switch(FONT_CLSW, L"font", 1,
-		L"explicitly set sans-serif fonts by name");
+		L"explicitly set sans-serif fonts by name", TRUE);
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 

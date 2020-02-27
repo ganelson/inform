@@ -233,7 +233,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 
 	if (Kinds::Compare::lt(K, K_object)) {
 		#ifdef IF_MODULE
-		if (existing_story_file) { *v1 = LITERAL_IVAL; *v2 = 0; return; } /* see above */
+		if (Task::wraps_existing_storyfile()) { *v1 = LITERAL_IVAL; *v2 = 0; return; } /* see above */
 		#endif
 		return;
 	}

@@ -28,7 +28,6 @@ void IndexModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 }
 
 @<Register this module's stream writers@> =
@@ -38,9 +37,6 @@ void IndexModule::start(void) {
 	;
 
 @<Register this module's debugging log writers@> =
-	;
-
-@<Register this module's command line switches@> =
 	;
 
 @h The end.

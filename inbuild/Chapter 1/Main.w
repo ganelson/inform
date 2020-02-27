@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
 	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
 		L"make X the directory of intools executables, and exit developer mode");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
-		L"make this a dry run (print but do not execute shell commands)");
+		L"make this a dry run (print but do not execute shell commands)", FALSE);
 	CommandLine::declare_switch(MATCHING_CLSW, L"matching", 2,
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,

@@ -31,9 +31,9 @@ int main(int argc, char **argv) {
 		L"write a read-me file following instructions in file X");
 
 	CommandLine::declare_boolean_switch(SILENCE_CLSW, L"silence", 1,
-		L"print nothing unless there's something wrong");
+		L"print nothing unless there's something wrong", FALSE);
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what inpolicy is doing");
+		L"explain what inpolicy is doing", FALSE);
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::disallow);
 

@@ -41,7 +41,7 @@ instance) Spatial.
 int suppress_panel_changes = FALSE;
 void Data::Objects::page_World(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
-	if (existing_story_file) return; /* in this case there is no model world */
+	if (Task::wraps_existing_storyfile()) return; /* in this case there is no model world */
 	if (Plugins::Manage::plugged_in(map_plugin) == FALSE) return; /* in this case there is no model world */
 
 	PL::SpatialMap::establish_benchmark_room();

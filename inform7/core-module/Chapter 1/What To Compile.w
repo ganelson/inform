@@ -20,6 +20,7 @@ typedef struct compile_task_data {
 	struct pathname *build;
 	struct filename *existing_storyfile;
 	
+	int stage_of_compilation;
 	int next_resource_number;
 
 	MEMORY_MANAGEMENT
@@ -49,12 +50,11 @@ int Task::carry_out(build_step *S) {
 	inform7_task->task = S;
 	inform7_task->project = project;
 	inform7_task->path = S->associated_copy->location_if_path;
-	inform7_task->build = Inbuild::transient();
-	if (inform7_task->path)
-		inform7_task->build = Pathnames::subfolder(inform7_task->path, I"Build");
+	inform7_task->build = Projects::build_pathname(project);
 	if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
 	inform7_task->materials = Inbuild::materials();
-	Task::set_existing_storyfile(NULL);
+	inform7_task->existing_storyfile = NULL;
+	inform7_task->stage_of_compilation = -1;
 	inform7_task->next_resource_number = 3;
 
 	inform_language *E = NaturalLanguages::English();
@@ -65,6 +65,30 @@ int Task::carry_out(build_step *S) {
 	int rv = Sequence::carry_out(inform7_task);
 	inform7_task = NULL;
 	return rv;
+}
+
+@
+
+=
+void Task::advance_stage_to(int stage) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (stage <= inform7_task->stage_of_compilation) internal_error("not an advance");
+	inform7_task->stage_of_compilation = stage;
+}
+int Task::is_before_stage(int stage) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (inform7_task->stage_of_compilation < stage) return TRUE;
+	return FALSE;
+}
+int Task::is_during_stage(int stage) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (inform7_task->stage_of_compilation == stage) return TRUE;
+	return FALSE;
+}
+int Task::is_after_stage(int stage) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	if (inform7_task->stage_of_compilation > stage) return TRUE;
+	return FALSE;
 }
 
 @ The current project and the virtual machine we want to compile it for:
@@ -251,6 +275,10 @@ as read this filename. Whatever the leafname, though, it lives in the top
 level of materuals.
 
 =
+int Task::wraps_existing_storyfile(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return (inform7_task->existing_storyfile != NULL)?TRUE:FALSE;
+}
 void Task::set_existing_storyfile(text_stream *name) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (name == NULL) {

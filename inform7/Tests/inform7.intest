@@ -62,7 +62,7 @@
 	extract: $WORK/Example.inform/Source/story.ni $VM
 
 	! Test cases from map indexing problem messages require ni to get as far as
-	! indexing, so the -noindex option mustn't be used in this case.
+	! indexing, so the -no-index option mustn't be used in this case.
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
@@ -71,9 +71,9 @@
 	mkdir: $PATH/_Results_Ideal
 
 	if: $CASE PM_Map%c*
-		set: $I7OPTIONS = -format=$FORMAT -noprogress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -format=$FORMAT -noprogress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -noindex -internal $INTERNAL
+		set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
 	if: $VM G
@@ -182,7 +182,7 @@
 	extract: $WORK/Example.inform/Source/story.ni $VM
 
 	! Test cases from map indexing problem messages require ni to get as far as
-	! indexing, so the -noindex option mustn't be used in this case.
+	! indexing, so the -no-index option mustn't be used in this case.
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
@@ -191,9 +191,9 @@
 	mkdir: $PATH/_Results_Ideal
 
 	if: $CASE PM_Map%c*
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -noprogress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	else
-		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -noprogress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -noindex -internal $INTERNAL
+		set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
 	endif
 
 	if: $VM G
@@ -273,7 +273,7 @@
 	set: $VM = G
 	extract: $WORK/Example.inform/Source/story.ni $VM
 
-	set: $I7OPTIONS = -fixtime -format=ulx -noprogress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+	set: $I7OPTIONS = -fixtime -format=ulx -no-progress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 
 	mkdir: $WORK/Transient
@@ -370,7 +370,7 @@
 	mkdir: $PATH/_Maps_Actual
 	mkdir: $PATH/_Maps_Ideal
 
-	set: $I7OPTIONS = -format=ulx -noprogress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
+	set: $I7OPTIONS = -format=ulx -no-progress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -internal $INTERNAL
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 
 	step: $I7 `$I7OPTIONS -project $WORK/Example.inform >$I7CONSOLE 2>&1
@@ -422,7 +422,7 @@
 		copy: $WORKSPACE/Samples/Powermac.aiff $WORK/Example.materials/Sounds/Powermac.aiff
 	endif
 
-	set: $I7OPTIONS = -fixtime -format=$FORMAT -noprogress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -noindex -internal $INTERNAL -release
+	set: $I7OPTIONS = -fixtime -format=$FORMAT -no-progress -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL -release
 
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete

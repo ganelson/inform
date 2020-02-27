@@ -266,7 +266,7 @@ void UseOptions::set_use_options(parse_node *p) {
 
 @<Set the chain given in this word range@> =
 	wording CW = GET_RW(<use-inter-pipeline>, 1);
-	if (traverse == 1) CoreMain::set_inter_pipeline(CW);
+	if (traverse == 1) Inbuild::set_inter_pipeline(CW);
 	return;
 
 @<Adjust the minimum setting@> =
@@ -605,10 +605,14 @@ void UseOptions::TestUseOption_routine(void) {
 
 @
 
-=
+= (early code)
 int no_verb_verb_exists = FALSE;
 int story_author_given = FALSE;
 int ranking_table_given = FALSE;
+int scoring_option_set = NOT_APPLICABLE; /* Whether in this case a score is kept at run time */
+int no_deprecated_features = FALSE; /* forbid syntaxes marked as deprecated? */
+
+@ =
 void UseOptions::no_verb_verb(void) {
 	no_verb_verb_exists = TRUE;
 }

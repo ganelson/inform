@@ -210,8 +210,9 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 				WRITE_TO(leaf, "%N", Wordings::first_wn(SW));
 				Task::set_existing_storyfile(leaf);
 				DISCARD_TEXT(leaf);
+			} else {
+				Task::set_existing_storyfile(NULL);
 			}
-			existing_story_file = TRUE;
 			break;
 		case AUXILIARY_FILE_PAYLOAD: {
 			wording DW = GET_RW(<release-sentence-object>, 1);
@@ -328,7 +329,7 @@ void PL::Bibliographic::Release::write_ifiction_and_blurb(void) {
 	@<Check cover art image if any@>;
 
 	zbyte header[LENGTH_OF_STORY_FILE_HEADER]; /* a sequence of bytes, not a C string */
-	if (existing_story_file) @<Read header of existing story file if present@>
+	if (Task::wraps_existing_storyfile()) @<Read header of existing story file if present@>
 
 	if (problem_count == 0) @<Finally, write out our three metadata files@>;
 }
@@ -342,7 +343,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	create_Materials = TRUE; /* thus making the next condition irrelevant */
 	if ((release_website) || (release_interpreter) || (release_booklet) || (release_postcard) ||
 		(release_cover) || (release_source) || (release_card) || (release_solution) ||
-		(existing_story_file) || (NUMBER_CREATED(blorb_figure) > 1)) {
+		(Task::wraps_existing_storyfile()) || (NUMBER_CREATED(blorb_figure) > 1)) {
 		create_Materials = TRUE;
 	}
 	if (create_Materials) {
@@ -563,7 +564,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 @<Write the identification tag of the iFiction record@> =
 	WRITE("<identification>\n"); INDENT;
 	WRITE("<ifid>%S</ifid>\n", PL::Bibliographic::IFID::read_uuid());
-	if (existing_story_file) {
+	if (Task::wraps_existing_storyfile()) {
 		WRITE("<ifid>ZCODE-%d-%c%c%c%c%c%c",
 			header[2]*256+header[3],
 			header[0x12], header[0x13], header[0x14],
@@ -649,7 +650,7 @@ in February 2014.
 	WRITE("<releases>\n"); INDENT;
 	WRITE("<attached>\n"); INDENT;
 	WRITE("<release>\n"); INDENT;
-	if (existing_story_file) @<Write release data for an existing story file@>
+	if (Task::wraps_existing_storyfile()) @<Write release data for an existing story file@>
 	else @<Write release data for an Inform 7 project@>;
 	OUTDENT; WRITE("</release>\n");
 	OUTDENT; WRITE("</attached>\n");
@@ -710,7 +711,7 @@ bytes of the header to store its own version number.
 LISP.
 
 @<Write the format-specific tag of the iFiction record@> =
-	if (existing_story_file) {
+	if (Task::wraps_existing_storyfile()) {
 		WRITE("<serial>%c%c%c%c%c%c</serial>\n",
 			header[0x12], header[0x13], header[0x14],
 			header[0x15], header[0x16], header[0x17]);
@@ -875,7 +876,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
-	if (existing_story_file)
+	if (Task::wraps_existing_storyfile())
 		WRITE("storyfile \"%f\" include\n", Task::existing_storyfile_file());
 	else
 		WRITE("storyfile \"%f\" include\n", Task::storyfile_file());

@@ -34,6 +34,9 @@ int inbuild_phase = CONFIGURATION_INBUILD_PHASE;
 line processing should be done, and the tool should use the following routines
 to add and process command line switches handled by inbuild:
 
+@e INBUILD_INFORM_CLSG
+@e INBUILD_RESOURCES_CLSG
+@e INBUILD_INTER_CLSG
 @e INBUILD_CLSG
 
 @e NEST_CLSW
@@ -56,7 +59,26 @@ to add and process command line switches handled by inbuild:
 =
 void Inbuild::declare_options(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
-	CommandLine::begin_group(INBUILD_CLSG);
+	CommandLine::begin_group(INBUILD_INFORM_CLSG, I"for translating Inform source text to Inter");
+	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
+		L"work within the Inform project X");
+	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
+		L"compile with debugging features even on a Release", FALSE);
+	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
+		L"compile a version suitable for a Release build", FALSE);
+	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
+		L"compile I6 code suitable for the virtual machine X");
+	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
+		L"use file X as the Inform source text");
+	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
+		L"perform an extensions census", FALSE);
+	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
+		L"fix the random number generator of the story file (for testing)", FALSE);
+	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
+		L"make any source links refer to the source in extension example X");
+	CommandLine::end_group();
+
+	CommandLine::begin_group(INBUILD_RESOURCES_CLSG, I"for locating resources in the file system");
 	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
 		L"add the nest at pathname X to the search list");
 	CommandLine::declare_switch(INTERNAL_CLSW, L"internal", 2,
@@ -65,30 +87,17 @@ void Inbuild::declare_options(void) {
 		L"use X as the user's home for installed material such as extensions");
 	CommandLine::declare_switch(TRANSIENT_CLSW, L"transient", 2,
 		L"use X for transient data such as the extensions census");
+	CommandLine::end_group();
+
+	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
-		L"load the Inform kit called X");
-	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
-		L"work within the Inform project X");
-	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
-		L"compile with debugging features even on a Release");
-	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
-		L"compile a version suitable for a Release build");
-	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
-		L"compile I6 code suitable for the virtual machine X");
-	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
-		L"use file X as the Inform source text");
-	CommandLine::declare_boolean_switch(CENSUS_CLSW, L"census", 1,
-		L"perform an extensions census");
+		L"include Inter code from the kit called X");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
 		L"specify code-generation pipeline");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
 		L"specify code-generation pipeline from file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
-	CommandLine::declare_boolean_switch(RNG_CLSW, L"rng", 1,
-		L"fix the random number generator of the story file (for testing)");
-	CommandLine::declare_switch(CASE_CLSW, L"case", 2,
-		L"make any source links refer to the source in extension example X");
 	CommandLine::end_group();
 	
 	Inbuild::set_defaults();
@@ -107,6 +116,14 @@ int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 void Inbuild::set_defaults(void) {
 	inter_processing_pipeline = Str::new();
 	inter_processing_file = I"compile";
+}
+
+void Inbuild::set_inter_pipeline(wording W) {
+	inter_processing_pipeline = Str::new();
+	WRITE_TO(inter_processing_pipeline, "%W", W);
+	Str::delete_first_character(inter_processing_pipeline);
+	Str::delete_last_character(inter_processing_pipeline);
+	LOG("Setting pipeline %S\n", inter_processing_pipeline);
 }
 
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {

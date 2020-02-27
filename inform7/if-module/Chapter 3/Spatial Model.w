@@ -1271,7 +1271,7 @@ empty.
 
 =
 int PL::Spatial::spatial_stage_IV(void) {
-	if (existing_story_file) {
+	if (Task::wraps_existing_storyfile()) {
 		instance *I;
 		LOOP_OVER_OBJECT_INSTANCES(I)
 			if (PL::Spatial::object_is_a_room(I)) {

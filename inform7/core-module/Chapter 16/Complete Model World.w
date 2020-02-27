@@ -45,15 +45,8 @@ The following routine, then, carries out stages II, III and IV.
 
 =
 void World::complete(void) {
-	Instances::place_objects_in_definition_sequence();
-
-	model_world_under_construction = TRUE;
-
 	@<Stages II and III of the completion process@>;
 	@<Stage IV of the completion process@>;
-
-	model_world_under_construction = FALSE;
-	model_world_constructed = TRUE;
 }
 
 @ The model world is a broth with many cooks. On the one hand, we have the

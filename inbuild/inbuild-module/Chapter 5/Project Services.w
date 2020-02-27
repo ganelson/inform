@@ -255,11 +255,15 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 }
 #endif
 
+pathname *Projects::build_pathname(inform_project *project) {
+	pathname *P = Projects::path(project);
+	if (P) return Pathnames::subfolder(P, I"Build");
+	return Inbuild::transient();
+}
+
 void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	int releasing, int compile_only) {
-	pathname *proj = project->as_copy->location_if_path;
-	pathname *build_folder = NULL;
-	if (proj) build_folder = Pathnames::subfolder(proj, I"Build");
+	pathname *build_folder = Projects::build_pathname(project);
 
 	filename *memory_F = Filenames::in_folder(build_folder, I"memory.interb");
 	build_vertex *inter_V = Graphs::file_vertex(memory_F);
