@@ -15,6 +15,7 @@ a different file inside the copy.
 @e COPY_VERTEX from 1
 @e REQUIREMENT_VERTEX
 @e FILE_VERTEX
+@e GHOST_VERTEX
 
 =
 typedef struct build_vertex {
@@ -67,6 +68,13 @@ build_vertex *Graphs::req_vertex(inbuild_requirement *R) {
 	return V;
 }
 
+build_vertex *Graphs::ghost_vertex(text_stream *S) {
+	build_vertex *V = Graphs::file_vertex(NULL);
+	V->type = GHOST_VERTEX;
+	V->annotation = Str::duplicate(S);
+	return V;
+}
+
 void Graphs::need_this_to_build(build_vertex *from, build_vertex *to) {
 	if (from == NULL) internal_error("no from");
 	if (to == NULL) internal_error("no to");
@@ -104,6 +112,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 		case COPY_VERTEX: Copies::write_copy(T, V->buildable_if_copy); break;
 		case REQUIREMENT_VERTEX: Requirements::write(T, V->findable); break;
 		case FILE_VERTEX: WRITE("%f", V->buildable_if_internal_file); break;
+		case GHOST_VERTEX: WRITE("(%S)", V->annotation); break;
 	}
 	TEMPORARY_TEXT(S);
 	WRITE_TO(S, "%p", stem);
@@ -133,6 +142,7 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 		case COPY_VERTEX: WRITE("[c%d]", V->allocation_id); break;
 		case REQUIREMENT_VERTEX: WRITE("[r%d]", V->allocation_id); break;
 		case FILE_VERTEX: WRITE("[f%d]", V->allocation_id); break;
+		case GHOST_VERTEX: WRITE("[g%d]", V->allocation_id); break;
 	}
 }
 
@@ -194,7 +204,7 @@ int Graphs::build(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
 int Graphs::rebuild(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
 	return Graphs::build_r(OUT, BUILD_GB + FORCE_GB, V, meth);
 }
-int trace_ibg = FALSE;
+int trace_ibg = TRUE;
 int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *meth) {
 	if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
 

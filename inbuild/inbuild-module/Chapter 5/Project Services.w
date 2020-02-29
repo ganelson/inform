@@ -265,8 +265,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	int releasing, int compile_only) {
 	pathname *build_folder = Projects::build_pathname(project);
 
-	filename *memory_F = Filenames::in_folder(build_folder, I"memory.interb");
-	build_vertex *inter_V = Graphs::file_vertex(memory_F);
+	build_vertex *inter_V = Graphs::ghost_vertex(I"binary inter in memory");
 	Graphs::need_this_to_build(inter_V, project->as_copy->vertex);
 	BuildSteps::attach(inter_V, compile_using_inform7_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
@@ -291,6 +290,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname2);
 	DISCARD_TEXT(story_file_leafname2);
 	project->blorbed_vertex = Graphs::file_vertex(blorbed_F);
+	project->blorbed_vertex->force_this = TRUE;
 	Graphs::need_this_to_build(project->blorbed_vertex, project->unblorbed_vertex);
 	BuildSteps::attach(project->blorbed_vertex, package_using_inblorb_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);

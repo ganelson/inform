@@ -11,7 +11,13 @@ void InblorbSkill::create(void) {
 }
 
 int InblorbSkill::inblorb_via_shell(build_skill *skill, build_step *S, text_stream *command, build_methodology *meth) {
-	if (command == NULL) internal_error("not available in-app");
-	WRITE_TO(command, "echo 'Not done yet'");
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
+
+	Shell::quote_file(command, meth->to_inblorb);
+	filename *blurb = Filenames::in_folder(S->associated_copy->location_if_path, I"Release.blurb");
+	Shell::quote_file(command, blurb);
+	Shell::quote_file(command, S->vertex->buildable_if_internal_file);
 	return TRUE;
 }
