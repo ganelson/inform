@@ -71,7 +71,9 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *meth)
 		IMETHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, meth);
 		if (returned != TRUE) rv = FALSE;
 	}
+	#ifndef CORE_MODULE
 	if (rv == FALSE) WRITE_TO(STDERR, "Build failed at '%S'\n", command);
+	#endif
 	DISCARD_TEXT(command);
 	return rv;
 }

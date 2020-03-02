@@ -298,6 +298,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	if (compile_only) {
 		project->chosen_build_target = inf_V;
 		inf_V->force_this = TRUE;
+		inter_V->force_this = TRUE;
 	} else if (releasing) project->chosen_build_target = project->blorbed_vertex;
 	else project->chosen_build_target = project->unblorbed_vertex;
 }

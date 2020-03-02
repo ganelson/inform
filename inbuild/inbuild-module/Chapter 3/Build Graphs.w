@@ -204,7 +204,7 @@ int Graphs::build(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
 int Graphs::rebuild(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
 	return Graphs::build_r(OUT, BUILD_GB + FORCE_GB, V, meth);
 }
-int trace_ibg = TRUE;
+int trace_ibg = FALSE;
 int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *meth) {
 	if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
 

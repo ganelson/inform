@@ -8,24 +8,21 @@ with a given title, and/or version number.
 =
 typedef struct inbuild_requirement {
 	struct inbuild_work *work;
-	struct semantic_version_number min_version;
-	struct semantic_version_number max_version;
+	struct semver_range *version_range;
 	int allow_malformed;
 	MEMORY_MANAGEMENT
 } inbuild_requirement;
 
-inbuild_requirement *Requirements::new(inbuild_work *work,
-	semantic_version_number min, semantic_version_number max) {
+inbuild_requirement *Requirements::new(inbuild_work *work, semver_range *R) {
 	inbuild_requirement *req = CREATE(inbuild_requirement);
 	req->work = work;
-	req->min_version = min;
-	req->max_version = max;
+	req->version_range = R;
 	req->allow_malformed = FALSE;
 	return req;
 }
 
 inbuild_requirement *Requirements::any_version_of(inbuild_work *work) {
-	return Requirements::new(work, VersionNumbers::null(), VersionNumbers::null());
+	return Requirements::new(work, VersionNumbers::any_range());
 }
 
 inbuild_requirement *Requirements::anything_of_genre(inbuild_genre *G) {
@@ -100,22 +97,21 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->min_version = V;
-			req->max_version = V;
+			req->version_range = VersionNumbers::compatibility_range(V);
 		} else if (Str::eq(clause, I"min")) {
 			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->min_version = V;
+			req->version_range = VersionNumbers::at_least_range(V);
 		} else if (Str::eq(clause, I"max")) {
 			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->max_version = V;
+			req->version_range = VersionNumbers::at_most_range(V);
 		} else {
 			if (Str::len(errors) == 0)
 				WRITE_TO(errors, "no such term as '%S'", clause);
@@ -144,13 +140,9 @@ void Requirements::write(OUTPUT_STREAM, inbuild_requirement *req) {
 		if (claused) WRITE(","); claused = TRUE;
 		WRITE("author=%S", req->work->author_name);
 	}
-	if (VersionNumbers::is_null(req->min_version) == FALSE) {
+	if (VersionNumbers::is_any_range(req->version_range) == FALSE) {
 		if (claused) WRITE(","); claused = TRUE;
-		WRITE("min=%v", &(req->min_version));
-	}
-	if (VersionNumbers::is_null(req->max_version) == FALSE) {
-		if (claused) WRITE(","); claused = TRUE;
-		WRITE("max=%v", &(req->max_version));
+		WRITE("range="); VersionNumbers::write_range(OUT, req->version_range);
 	}
 	if (claused == FALSE) WRITE("all");
 	if (req->allow_malformed) WRITE("*");
@@ -173,24 +165,5 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 				return FALSE;
 		}
 	}
-	if (VersionNumbers::is_null(req->min_version) == FALSE) {
-		if (VersionNumbers::is_null(edition->version)) return FALSE;
-		if (VersionNumbers::lt(edition->version, req->min_version)) return FALSE;
-	}
-	if (VersionNumbers::is_null(req->max_version) == FALSE) {
-		if (VersionNumbers::is_null(edition->version)) return TRUE;
-		if (VersionNumbers::gt(edition->version, req->max_version)) return FALSE;
-	}
-	return TRUE;
-}
-
-int Requirements::ratchet_minimum(semantic_version_number V, inbuild_requirement *req) {
-	if (req == NULL) internal_error("no requirement");
-	if (VersionNumbers::is_null(V)) return FALSE;
-	if ((VersionNumbers::is_null(req->min_version)) ||
-		(VersionNumbers::gt(V, req->min_version))) {
-		req->min_version = V;
-		return TRUE;
-	}
-	return FALSE;
+	return VersionNumbers::in_range(edition->version, req->version_range);
 }

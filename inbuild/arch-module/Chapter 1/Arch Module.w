@@ -12,12 +12,14 @@ Setting up the use of this module.
 @e target_vm_MT
 @e compatibility_specification_MT
 @e semantic_version_number_holder_MT
+@e semver_range_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inter_architecture)
 ALLOCATE_INDIVIDUALLY(target_vm)
 ALLOCATE_INDIVIDUALLY(compatibility_specification)
 ALLOCATE_INDIVIDUALLY(semantic_version_number_holder)
+ALLOCATE_INDIVIDUALLY(semver_range)
 
 @h The beginning.
 
@@ -38,7 +40,7 @@ void ArchModule::start(void) {
 	;
 
 @<Register this module's stream writers@> =
-	;
+	Writers::register_writer('v', &VersionNumbers::writer);
 
 @
 

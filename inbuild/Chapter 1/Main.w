@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
 	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
 	if (Str::len(unit_test) > 0) {
 		if (Str::eq(unit_test, I"compatibility")) Compatibility::test(STDOUT);
+		else if (Str::eq(unit_test, I"semver")) VersionNumbers::test(STDOUT);
 		else Errors::with_text("no such unit test: %S", unit_test);
 	} else {
 		if (Str::len(filter_text) > 0) {

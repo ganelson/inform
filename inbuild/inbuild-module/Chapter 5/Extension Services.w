@@ -284,14 +284,10 @@ void Extensions::make_standard(inform_extension *E) {
 
 void Extensions::must_satisfy(inform_extension *E, inbuild_requirement *req) {
 	if (E->must_satisfy == NULL) E->must_satisfy = req;
-	else {
-		semantic_version_number V = req->min_version;
-		if (VersionNumbers::is_null(V) == FALSE)
-			if (Requirements::ratchet_minimum(V, E->must_satisfy)) {
-				#ifdef CORE_MODULE
-				Extensions::set_inclusion_sentence(E, current_sentence);
-				#endif
-			}
+	else if (VersionNumbers::intersect_range(E->must_satisfy->version_range, req->version_range)) {
+		#ifdef CORE_MODULE
+		Extensions::set_inclusion_sentence(E, current_sentence);
+		#endif
 	}
 }
 

@@ -25,8 +25,8 @@
 	mkdir: $PATH/_Results_Actual
 	mkdir: $PATH/_Results_Ideal
 
-	debugger: lldb -f inbuild/Tangled/inbuild -- -nest inbuild/Tests/Zoo $[$PATH/$CASE.txt$]
-	step: inbuild/Tangled/inbuild  -nest inbuild/Tests/Zoo $[$PATH/$CASE.txt$] >$A 2>&1
+	debugger: lldb -f inbuild/Tangled/inbuild -- -external inbuild/Tests/Zoo $[$PATH/$CASE.txt$]
+	step: inbuild/Tangled/inbuild  -external inbuild/Tests/Zoo $[$PATH/$CASE.txt$] >$A 2>&1
 	or: 'failed to produce output' $A
 
 	show: $A

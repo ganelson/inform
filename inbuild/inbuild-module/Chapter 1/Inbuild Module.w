@@ -93,7 +93,6 @@ void InbuildModule::start(void) {
 	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
 
 @<Register this module's stream writers@> =
-	Writers::register_writer('v', &VersionNumbers::writer);
 	Writers::register_writer('X', &Works::writer);
 
 @
