@@ -310,7 +310,7 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 		if (Wordings::nonempty(ParseTree::get_text(N))) {
 			source_location sl = Wordings::location(ParseTree::get_text(N));
 			if (sl.file_of_origin == NULL) owner = NULL;
-			else owner = SourceFiles::get_extension_corresponding(
+			else owner = Extensions::corresponding_to(
 				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(N))));
 		}
 		if (owner != from) continue;

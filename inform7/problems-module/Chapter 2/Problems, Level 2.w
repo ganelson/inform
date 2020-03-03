@@ -117,7 +117,7 @@ which they differ.
 	if (f == FALSE) WRITE_TO(PBUFF, " the main source text");
 	if (pos) {
 		#ifdef INBUILD_MODULE
-		inform_extension *E = SourceFiles::get_extension_corresponding(pos);
+		inform_extension *E = Extensions::corresponding_to(pos);
 		if (E) WRITE_TO(PBUFF, "</b> in the extension <b>%X", E->as_copy->edition->work);
 		#endif
 	}

@@ -251,7 +251,7 @@ void UseOptions::set_use_options(parse_node *p) {
 		inform_extension *E = NULL;
 		@<Adjust the minimum setting@>;
 		if (uo->source_file_scoped) {
-			E = SourceFiles::get_extension_corresponding(Lexer::file_of_origin(Wordings::first_wn(OW)));
+			E = Extensions::corresponding_to(Lexer::file_of_origin(Wordings::first_wn(OW)));
 			if (E == NULL) { /* that is, if used in the main source text */
 				uo->option_used = TRUE;
 				uo->where_used = current_sentence;
@@ -333,7 +333,7 @@ those which need immediate action.
 	switch (R[1]) {
 		case AUTHORIAL_MODESTY_UO: {
 			inform_extension *E =
-				SourceFiles::get_extension_corresponding(
+				Extensions::corresponding_to(
 					Lexer::file_of_origin(Wordings::first_wn(W)));
 			if (E == NULL) Extensions::set_general_authorial_modesty();
 			else Extensions::set_authorial_modesty(E);
@@ -389,7 +389,7 @@ pragma is set:
 =
 int UseOptions::uo_set_from(use_option *uo, int category, inform_extension *E) {
 	source_file *sf = (uo->where_used)?(Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(uo->where_used)))):NULL;
-	inform_extension *efo = (sf)?(SourceFiles::get_extension_corresponding(sf)):NULL;
+	inform_extension *efo = (sf)?(Extensions::corresponding_to(sf)):NULL;
 	switch (category) {
 		case 1: if ((sf) && (efo == NULL)) return TRUE; break;
 		case 2: if (sf == NULL) return TRUE; break;

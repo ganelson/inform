@@ -392,7 +392,7 @@ divided up by the extensions containing the rules which produce them.
 		for (int marker = 0; marker < 26; marker++)
 			if (Rules::rule_defines_response(R, marker)) {
 				tally++;
-				inform_extension *E = SourceFiles::get_extension_corresponding(
+				inform_extension *E = Extensions::corresponding_to(
 					Lexer::file_of_origin(Wordings::first_wn(R->name)));
 				if (E == group_E) @<Start a possible run of matches@>
 				else @<End a possible run of matches@>;

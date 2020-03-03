@@ -75,6 +75,15 @@ void Nests::search_for(inbuild_requirement *req, linked_list *search_list, linke
 	}
 }
 
+inbuild_search_result *Nests::first_found(inbuild_requirement *req, linked_list *search_list) {
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(req, search_list, L);
+	inbuild_search_result *search_result;
+	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L)
+		return search_result;
+	return NULL;
+}
+
 void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
 	build_methodology *meth) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, C, destination_nest, syncing, meth);

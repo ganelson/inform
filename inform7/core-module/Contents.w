@@ -17,10 +17,10 @@ Chapter 2: Bridge to Problems Module
 	Using Problems
 	Supplementary Quotes
 	Supplementary Issues
+	Problems With Source Text
 
 Chapter 3: Bridge to Words Module
 "Reading source text as a stream of characters and dividing it up into words."
-	Read Source Text
 	Natural Languages
 	Plural Dictionary
 

@@ -88,6 +88,7 @@ void Basics::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
 	}
 	DISCARD_TEXT(text);
 }
+
 @
 
 @d LINGUISTICS_PROBLEM_HANDLER Basics::linguistics_problem_handler

@@ -381,7 +381,7 @@ no subsequent lines are looked at.
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ARGUMENTTYPEFAILED_HL));
 	Produce::down(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sl.line_number);
-		inform_extension *E = SourceFiles::get_extension_corresponding(sl.file_of_origin);
+		inform_extension *E = Extensions::corresponding_to(sl.file_of_origin);
 		if (E) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) E->allocation_id + 1);
 	Produce::up(Emit::tree());
 

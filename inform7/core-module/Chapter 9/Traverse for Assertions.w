@@ -416,7 +416,7 @@ is the rubric, the second the credit line.
 
 @<This is rubric or credit text for an extension@> =
 	source_file *pos = Lexer::file_of_origin(wn);
-	inform_extension *E = SourceFiles::get_extension_corresponding(pos);
+	inform_extension *E = Extensions::corresponding_to(pos);
 	if (E) {
 		Word::dequote(wn);
 		TEMPORARY_TEXT(txt);

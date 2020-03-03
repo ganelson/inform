@@ -86,7 +86,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	text_stream *paraphrase = file;
 	#ifdef INBUILD_MODULE
 	paraphrase = I"source text";
-	inform_extension *E = SourceFiles::get_extension_corresponding(referred);
+	inform_extension *E = Extensions::corresponding_to(referred);
 	if (E) {
 		inbuild_work *work = E->as_copy->edition->work;
 		if ((work) && (Works::is_standard_rules(work)))

@@ -6,3 +6,17 @@ PM_WordTooLong
 PM_UnendingQuote
 PM_UnendingComment
 PM_UnendingI6
+PM_UnexpectedSemicolon
+PM_ParaEndsInColon
+PM_SentenceEndsInColon
+PM_SentenceEndsInSemicolon
+PM_SemicolonAfterColon
+PM_SemicolonAfterStop
+PM_HeadingOverLine
+PM_HeadingStopsBeforeEndOfLine
+PM_ExtNoBeginsHere
+PM_ExtNoEndsHere
+PM_ExtSpuriouslyContinues
+PM_ExtMultipleEndsHere
+PM_ExtMultipleBeginsHere
+PM_ExtBeginsAfterEndsHere

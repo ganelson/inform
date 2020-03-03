@@ -65,7 +65,7 @@ which was used to end it. Each call to this routine represents one cycle of our
 finite state machine.
 
 =
-void Sentences::break(wording W, EXTENSION_FILE_TYPE *from_extension) {
+void Sentences::break(wording W, int is_extension, EXTENSION_FILE_TYPE *from_extension) {
 	int sentence_start = Wordings::first_wn(W);
 	ParseTree::enable_last_sentence_cacheing();
 
@@ -95,7 +95,7 @@ void Sentences::break(wording W, EXTENSION_FILE_TYPE *from_extension) {
 
 	ParseTree::disable_last_sentence_cacheing();
 
-	if (from_extension)
+	if (is_extension)
 		@<Issue a problem message if we are missing the begin and end here sentences@>;
 	@<Reset the sentence finite state machine@>;
 }
@@ -110,7 +110,7 @@ that is why these are global variables rather than locals in |Sentences::break|.
 	sfsm_inside_rule_mode = FALSE;
 	sfsm_skipping_material_at_level = -1;
 	sfsm_extension = from_extension;
-	if (from_extension) sfsm_extension_position = 1;
+	if (is_extension) sfsm_extension_position = 1;
 	else sfsm_extension_position = 0;
 
 @ A table is any sentence beginning with the word "Table". (Bad news for
@@ -199,19 +199,19 @@ sentence divisions. The other cases are more complicated: see below.
 			stop_character, no_stop_words, sentence_start, position);
 
 @<Issue problem for colon at end of paragraph@> =
-	SYNTAX_PROBLEM_HANDLER(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), NULL, 0);
+	SYNTAX_PROBLEM_HANDLER(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_extension, 0);
 
 @<Issue problem for colon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), NULL, 0);
+	SYNTAX_PROBLEM_HANDLER(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
 
 @<Issue problem for semicolon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), NULL, 0);
+	SYNTAX_PROBLEM_HANDLER(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
 
 @<Issue problem for semicolon after colon@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), NULL, 0);
+	SYNTAX_PROBLEM_HANDLER(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
 
 @<Issue problem for semicolon after full stop@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), NULL, 0);
+	SYNTAX_PROBLEM_HANDLER(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
 
 @ Colons are normally dividers, too, but an exception is made if they come
 between two apparently numerical constructions, because this suggests that
@@ -372,7 +372,7 @@ continuing regardless.
 	LOOP_THROUGH_WORDING(k, W)
 		if (k > Wordings::first_wn(W))
 			if ((Lexer::break_before(k) == '\n') || (Lexer::indentation_level(k) > 0)) {
-				SYNTAX_PROBLEM_HANDLER(HeadingOverLine_SYNERROR, W, NULL, k);
+				SYNTAX_PROBLEM_HANDLER(HeadingOverLine_SYNERROR, W, sfsm_extension, k);
 				break;
 			}
 
@@ -389,7 +389,7 @@ newlines automatically added at the end of the feed of any source file.
 		for (k = Wordings::last_wn(W)+1;
 			(k<=Wordings::last_wn(W)+8) && (k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
 			k++) ;
-		SYNTAX_PROBLEM_HANDLER(HeadingStopsBeforeEndOfLine_SYNERROR, W, NULL, k);
+		SYNTAX_PROBLEM_HANDLER(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_extension, k);
 	}
 
 @ We now have a genuine heading, and can declare it, calling a routine
@@ -463,16 +463,6 @@ source texts implicitly begin with an inclusion of the Standard Rules.)
 	return FALSE;
 }
 
-@ When Inform reads the (optional!) Options file, very early in its run, it
-tries to obey any use options in the file right away -- earlier even than
-<structural-sentence>. It spots these, very crudely, as sentences which
-match the following (that is, which start with "use"). Note the final full
-stop -- it's needed before sentence-breaking has even taken place.
-
-=
-<use-option-sentence-shape> ::=
-	use ... .
-
 @<Accept the new sentence as one or more nodes in the parse tree@> =
 	@<Convert comma-divided rule into two sentences, if this is allowed@>;
 	@<Otherwise, make a SENTENCE node@>;
@@ -481,7 +471,7 @@ stop -- it's needed before sentence-breaking has even taken place.
 	if (sfsm_inside_rule_mode)
 		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@>
 	else if (stop_character == ';') {
-		SYNTAX_PROBLEM_HANDLER(UnexpectedSemicolon_SYNERROR, W, NULL, 0);
+		SYNTAX_PROBLEM_HANDLER(UnexpectedSemicolon_SYNERROR, W, sfsm_extension, 0);
 		stop_character = '.';
 	}
 

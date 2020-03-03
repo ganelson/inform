@@ -743,10 +743,10 @@ author's source text.)
 		(am1->adjective_form != ENUMERATIVE_KADJ) &&
 		(am2->adjective_form != ENUMERATIVE_KADJ)) {
 		inform_extension *ef1 =
-			SourceFiles::get_extension_corresponding(
+			Extensions::corresponding_to(
 				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am1->defined_at))));
 		inform_extension *ef2 =
-			SourceFiles::get_extension_corresponding(
+			Extensions::corresponding_to(
 				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am2->defined_at))));
 		if ((ef1 == ef2) || ((ef1) && (ef2))) {
 			current_sentence = am1->defined_at;

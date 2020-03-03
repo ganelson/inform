@@ -341,7 +341,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 			if ((Wordings::length(MW) != 1) || (VerbMeanings::is_meaningless(&vm))) {
 				#ifndef IF_MODULE
 				source_file *pos = Lexer::file_of_origin(Wordings::first_wn(MW));
-				inform_extension *loc = SourceFiles::get_extension_corresponding(pos);
+				inform_extension *loc = Extensions::corresponding_to(pos);
 				if (Extensions::is_standard(loc)) return;
 				#endif
 				Problems::Issue::sentence_problem(_p_(PM_NoSuchBuiltInMeaning),

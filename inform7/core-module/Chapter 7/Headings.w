@@ -514,7 +514,7 @@ int Sentences::Headings::indexed(heading *h) {
 =
 inform_extension *Sentences::Headings::get_extension_containing(heading *h) {
 	if ((h == NULL) || (h->start_location.file_of_origin == NULL)) return NULL;
-	return SourceFiles::get_extension_corresponding(h->start_location.file_of_origin);
+	return Extensions::corresponding_to(h->start_location.file_of_origin);
 }
 
 @ Although File (0) headings do have text, contrary to the implication of
@@ -1131,7 +1131,7 @@ void Sentences::Headings::index_heading_recursively(OUTPUT_STREAM, heading *h) {
 	heading *next = h->child_heading;
 	if (next == NULL) next = h->next_heading;
 	if ((next) &&
-		(SourceFiles::get_extension_corresponding(next->start_location.file_of_origin)))
+		(Extensions::corresponding_to(next->start_location.file_of_origin)))
 		next = NULL;
 	if (h->level == 0) {
 		show_heading = FALSE;
@@ -1141,7 +1141,7 @@ void Sentences::Headings::index_heading_recursively(OUTPUT_STREAM, heading *h) {
 					Wordings::first_wn(ParseTree::get_text(h->sentence_declaring)))))
 			show_heading = TRUE;
 	}
-	if (SourceFiles::get_extension_corresponding(h->start_location.file_of_origin))
+	if (Extensions::corresponding_to(h->start_location.file_of_origin))
 		show_heading = FALSE;
 	if (show_heading) {
 		contents_entry *ce = CREATE(contents_entry);

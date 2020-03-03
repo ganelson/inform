@@ -775,7 +775,7 @@ void Index::link_to(OUTPUT_STREAM, int wn, int nonbreaking_space) {
 }
 
 void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
-	inform_extension *E = SourceFiles::get_extension_corresponding(sl.file_of_origin);
+	inform_extension *E = Extensions::corresponding_to(sl.file_of_origin);
 	if (E) {
 		if (Extensions::is_standard(E) == FALSE) {
 			if (nonbreaking_space) WRITE("&nbsp;"); else WRITE(" ");

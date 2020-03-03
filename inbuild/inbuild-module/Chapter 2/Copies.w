@@ -144,6 +144,7 @@ therefore has a list attached of errors which occurred in reading it.
 @e EXT_TITLE_TOO_LONG_CE
 @e EXT_AUTHOR_TOO_LONG_CE
 @e LEXER_CE
+@e SYNTAX_CE
 
 =
 typedef struct copy_error {
@@ -155,6 +156,7 @@ typedef struct copy_error {
 	struct text_stream *notes;
 	struct text_stream *details;
 	int details_N;
+	struct wording details_W;
 	wchar_t *word;
 	MEMORY_MANAGEMENT
 } copy_error;
@@ -167,6 +169,7 @@ copy_error *Copies::new_error(int cat, text_stream *NB) {
 	CE->notes = Str::duplicate(NB);
 	CE->details = NULL;
 	CE->details_N = -1;
+	CE->details_W = EMPTY_WORDING;
 	CE->pos = TextFiles::nowhere();
 	CE->copy = NULL;
 	CE->word = NULL;
@@ -210,6 +213,42 @@ void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
 		case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",
 			CE->details_N, MAX_EXTENSION_AUTHOR_LENGTH); break;
 		case LEXER_CE: WRITE("%S", CE->notes); break;
+		case SYNTAX_CE:
+			switch (CE->error_subcategory) {
+				case UnexpectedSemicolon_SYNERROR:
+					WRITE("unexpected semicolon in sentence"); break;
+				case ParaEndsInColon_SYNERROR:
+					WRITE("paragraph ends with a colon"); break;
+				case SentenceEndsInColon_SYNERROR:
+					WRITE("paragraph ends with a colon and full stop"); break;
+				case SentenceEndsInSemicolon_SYNERROR:
+					WRITE("paragraph ends with a semicolon and full stop"); break;
+				case SemicolonAfterColon_SYNERROR:
+					WRITE("paragraph ends with a colon and semicolon"); break;
+				case SemicolonAfterStop_SYNERROR:
+					WRITE("paragraph ends with a full stop and semicolon"); break;
+				case HeadingOverLine_SYNERROR:
+					WRITE("heading contains a line break"); break;
+				case HeadingStopsBeforeEndOfLine_SYNERROR:
+					WRITE("heading stops before end of line"); break;
+				case ExtNoBeginsHere_SYNERROR:
+					WRITE("extension has no beginning"); break;
+				case ExtNoEndsHere_SYNERROR:
+					WRITE("extension has no end"); break;
+				case ExtSpuriouslyContinues_SYNERROR:
+					WRITE("extension continues after end"); break;
+				case ExtMultipleBeginsHere_SYNERROR:
+					WRITE("extension has multiple 'begins here' sentences"); break;
+				case ExtBeginsAfterEndsHere_SYNERROR:
+					WRITE("extension has a 'begins here' after its 'ends here'"); break;
+				case ExtEndsWithoutBegins_SYNERROR:
+					WRITE("extension has an 'ends here' but no 'begins here'"); break;
+				case ExtMultipleEndsHere_SYNERROR:
+					WRITE("extension has multiple 'ends here' sentences"); break;
+				default:
+					WRITE("syntax error"); break;
+			}
+			break;
 		default: internal_error("an unknown error occurred");
 	}
 }

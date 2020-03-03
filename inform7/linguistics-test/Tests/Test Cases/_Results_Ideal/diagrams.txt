@@ -14,7 +14,7 @@ Passed
     PROPER_NOUN_NT'jane'
     PROPER_NOUN_NT'woman' (indefinite)
 Parsing the sentence: peter carries the torch
-    viable map: -- carries[1] -- -- 
+    viable map: -- carries[1] the[1] -- 
     Found usage, pass 1 tier 3: (peter) v=carry(2) (the torch)
     Accepted as v=carry(2) + ___ + ___
 Passed
@@ -44,7 +44,7 @@ Passed
     PROPER_NOUN_NT'there'
     PROPER_NOUN_NT'door' (indefinite)
 Parsing the sentence: the sailors carry a cask of rum
-    viable map: -- -- carry[1] -- -- -- -- 
+    viable map: the[1] -- carry[1] -- -- of[1] -- 
     Found usage, pass 1 tier 3: (the sailors) v=carry(2) (a cask of rum)
     Accepted as v=carry(2) + ___ + ___
 Passed
@@ -53,7 +53,7 @@ Passed
     RELATIONSHIP_NT'carry'
         PROPER_NOUN_NT'cask of rum' (indefinite)
 Parsing the sentence: the shovel has a handle
-    viable map: -- -- has[1] -- -- 
+    viable map: the[1] -- has[1] -- -- 
     Found usage, pass 1 tier 1: (the shovel) v=have(1) (a handle)
     Accepted as v=have(1) + ___ + ___
 Passed
@@ -61,7 +61,7 @@ Passed
     PROPER_NOUN_NT'shovel' (definite)
     PROPER_NOUN_NT'handle' (indefinite)
 Parsing the sentence: the does the player mean rules is a rulebook
-    viable map: -- does[1] -- -- mean[1] -- is[1] -- -- 
+    viable map: the[1] does[1] the[1] -- mean[1] -- is[1] -- -- 
     Found usage, pass 1 tier 2: (the does the player mean rules) v=be(0) (a rulebook)
     v=be(0) + p=had by + ___ : failed for lack of p=had by
     v=be(0) + p=carried by + ___ : failed for lack of p=carried by

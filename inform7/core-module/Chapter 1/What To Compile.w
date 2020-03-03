@@ -145,7 +145,8 @@ referring something back up to Inbuild.
 =
 void Task::read_source_text(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	SourceFiles::read(inform7_task->project->as_copy);
+	Copies::read_source_text_for(inform7_task->project->as_copy);
+	SourceProblems::issue_problems_arising(inform7_task->project->as_copy);
 }
 
 void Task::activate_language_elements(void) {

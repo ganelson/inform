@@ -55,6 +55,17 @@ application.
 
 @
 
+@d SENTENCE_COUNT_MONITOR SourceText::increase_sentence_count
+
+=
+wording options_file_wording = EMPTY_WORDING_INIT;
+int SourceText::increase_sentence_count(wording W) {
+	if (Wordings::within(W, options_file_wording) == FALSE) return TRUE;
+	return FALSE;
+}
+
+@
+
 @d LEXER_PROBLEM_HANDLER SourceText::lexer_problem_handler
 
 =
@@ -94,6 +105,23 @@ void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word
 	DISCARD_TEXT(erm);
 }
 
+@
+
+@d EXTENSION_FILE_TYPE inbuild_copy
+
+@
+
+@d SYNTAX_PROBLEM_HANDLER SourceText::syntax_problem_handler
+
+=
+void SourceText::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
+	inbuild_copy *C = (inbuild_copy *) ref;
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = err_no;
+	CE->details_W = W;
+	CE->details_N = k;
+	Copies::attach(C, CE);
+}
 
 @ Sentences in the source text are of five categories: dividing sentences,
 which divide up the source into segments; structural sentences, which split

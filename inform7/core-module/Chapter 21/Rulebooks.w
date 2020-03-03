@@ -1124,13 +1124,13 @@ void Rulebooks::index_page(OUTPUT_STREAM, int n) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
 		if (rb->automatically_generated) continue;
 		if (((E == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == E))
+			(Extensions::corresponding_to(sf) == E))
 			Rulebooks::index_rules_box(OUT, NULL, rb->primary_name, NULL, rb, NULL, NULL, 1, TRUE);
 	}
 	LOOP_OVER(av, activity) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
 		if (((E == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == E))
+			(Extensions::corresponding_to(sf) == E))
 			Activities::index(OUT, av, 1);
 	}
 
@@ -1143,12 +1143,12 @@ int Rulebooks::noteworthy_rulebooks(inform_extension *E) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
 		if (rb->automatically_generated) continue;
 		if (((E == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == E)) nb++;
+			(Extensions::corresponding_to(sf) == E)) nb++;
 	}
 	LOOP_OVER(av, activity) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
 		if (((E == NULL) && (sf == NULL)) ||
-			(SourceFiles::get_extension_corresponding(sf) == E)) nb++;
+			(Extensions::corresponding_to(sf) == E)) nb++;
 	}
 	return nb;
 }

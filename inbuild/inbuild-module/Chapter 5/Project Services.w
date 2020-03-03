@@ -342,11 +342,9 @@ void Projects::read_source_text_for(inform_project *project) {
 	Projects::early_source_text(early, project);
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
-	#ifdef CORE_MODULE
 	inbuild_nest *E = Inbuild::external();
-	if (E) SourceFiles::read_further_mandatory_text(
+	if (E) Projects::read_further_mandatory_text(
 		Filenames::in_folder(E->location, I"Options.txt"));
-	#endif
 	linked_list *L = Projects::source(project);
 	if (L) {
 		build_vertex *N;
@@ -358,11 +356,39 @@ void Projects::read_source_text_for(inform_project *project) {
 	}
 	ParseTree::plant_parse_tree();
 	int l = ParseTree::push_attachment_point(tree_root);
-	Sentences::break(Wordings::new(wc, lexer_wordcount-1), NULL);
+	Sentences::break(Wordings::new(wc, lexer_wordcount-1), FALSE, project->as_copy);
 	ParseTree::pop_attachment_point(l);
 	#ifdef CORE_MODULE
 	StructuralSentences::add_inventions_heading();
 	#endif
+}
+
+@ When Inform reads the (optional!) Options file, very early in its run, it
+tries to obey any use options in the file right away -- earlier even than
+<structural-sentence>. It spots these, very crudely, as sentences which
+match the following (that is, which start with "use"). Note the final full
+stop -- it's needed before sentence-breaking has even taken place.
+
+=
+<use-option-sentence-shape> ::=
+	use ... .
+
+void Projects::read_further_mandatory_text(filename *F) {
+	feed_t id = Feeds::begin();
+	TextFiles::read(F, TRUE,
+		NULL, FALSE, Projects::read_further_mandatory_text_helper, NULL, NULL);
+	options_file_wording = Feeds::end(id);
+}
+
+void Projects::read_further_mandatory_text_helper(text_stream *line,
+	text_file_position *tfp, void *unused_state) {
+	WRITE_TO(line, "\n");
+	wording W = Feeds::feed_stream(line);
+	if (<use-option-sentence-shape>(W)) {
+		#ifdef CORE_MODULE
+		UseOptions::set_immediate_option_flags(W, NULL);
+		#endif
+	}
 }
 
 int Projects::draws_from_source_file(inform_project *project, source_file *sf) {

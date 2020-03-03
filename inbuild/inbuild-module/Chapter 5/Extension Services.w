@@ -4,8 +4,6 @@ An Inform 7 extension.
 
 @
 
-@d EXTENSION_FILE_TYPE inform_extension
-
 =
 typedef struct inform_extension {
 	struct inbuild_copy *as_copy;
@@ -311,9 +309,17 @@ void Extensions::read_source_text_for(inform_extension *E) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		wording EXW = E->read_into_file->text_read;
 		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
-		Sentences::break(E->body_text, E);
+		Sentences::break(E->body_text, TRUE, E->as_copy);
 		E->body_text_unbroken = FALSE;
 	}
+}
+
+inform_extension *Extensions::corresponding_to(source_file *sf) {
+	if (sf == NULL) return NULL;
+	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
+	if (C == NULL) return NULL;
+	if (C->edition->work->genre != extension_genre) return NULL;
+	return ExtensionManager::from_copy(C);
 }
 
 @ We concoct a textual synopsis in the form

@@ -146,10 +146,6 @@ parse tree.
 		Extensions::set_inclusion_sentence(E, at);
 		Extensions::set_VM_text(E, RW);
 	}
-//	if ((E) && (E->body_text_unbroken)) {
-//		Sentences::break(E->body_text, E);
-//		E->body_text_unbroken = FALSE;
-//	}
 
 @h Extension loading.
 Extensions are loaded here.
@@ -184,38 +180,20 @@ can't know at load time what we will ultimately require.)
 			return E;
 		}
 
-@ We finally make our call out of the Extensions section, down through the
-trap-door into Read Source Text, to seek and open the file.
-
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	int found_to_be_malformed = FALSE;
 	req->allow_malformed = TRUE;
-	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Inbuild::nest_list(), L);
-	inbuild_search_result *search_result;
-	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
+	inbuild_search_result *search_result = Nests::first_found(req, Inbuild::nest_list());
+	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
-		int origin = Nests::get_tag(search_result->nest);
-		switch (origin) {
-			case MATERIALS_NEST_TAG:
-			case EXTERNAL_NEST_TAG:
-				E->loaded_from_built_in_area = FALSE; break;
-			case INTERNAL_NEST_TAG:
-				E->loaded_from_built_in_area = TRUE; break;
-		}
+		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)
+			E->loaded_from_built_in_area = TRUE;
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
-			SourceFiles::issue_problems_arising(search_result->copy);
 			E = NULL;
-			found_to_be_malformed = TRUE;
+		} else {
+			Copies::read_source_text_for(search_result->copy);
 		}
-		break;
-	}
-	if (found_to_be_malformed == FALSE) {
-		if (E == NULL) @<Issue a cannot-find problem@>
-		else {
-			SourceFiles::read(E->as_copy);
-		}
-	}
+		SourceProblems::issue_problems_arising(search_result->copy);
+	} else @<Issue a cannot-find problem@>;
 
 @<Issue a cannot-find problem@> =
 	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
