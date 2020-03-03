@@ -213,7 +213,6 @@ void Semantics::read_preform(void) {
 	NaturalLanguages::scan();
 	wording W = NaturalLanguages::load_preform(Projects::get_language_of_syntax(Task::project()));
 	int nonterminals_declared = Preform::parse_preform(W, FALSE);
-	language_definition_top = lexer_wordcount - 1;
 
 	LOG("%d declarations read (%d words)\n", nonterminals_declared, Wordings::length(W));
 }

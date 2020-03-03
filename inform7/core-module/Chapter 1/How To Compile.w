@@ -109,14 +109,12 @@ most of these worker functions are in the |core| module, some are not.
 
 @<Perform lexical analysis@> =
 	Task::advance_stage_to(LEXICAL_CSEQ, I"Lexical analysis", 0);
-	BENCH(Task::read_source_text)
 	BENCH(Sentences::RuleSubtrees::create_standard_csps)
+	BENCH(Task::read_source_text)
 
 @<Perform semantic analysis@> =
 	Task::advance_stage_to(SEMANTIC_IA_CSEQ, I"Semantic analysis Ia", 1);
 	BENCH(Task::activate_language_elements)
-	BENCH(ParseTreeUsage::plant_parse_tree)
-	BENCH(StructuralSentences::break_source)
 	BENCH(Extensions::Inclusion::traverse)
 	BENCH(Sentences::Headings::satisfy_dependencies)
 

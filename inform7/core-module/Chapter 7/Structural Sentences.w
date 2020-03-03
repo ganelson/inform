@@ -64,22 +64,11 @@ void StructuralSentences::new_language(wording W) {
 		"in favour of a new system with Inform kits.");
 }
 
-@h Sentence breaking.
-The |Sentences::break| routine is used for long stretches of text,
-normally entire files. The following provides a way for the |.i6t|
-interpreter to apply it to the whole text as lexed, which provides the
-original basis for parsing. (This won't be the entire source text,
-though: extensions, including the Standard Rules, have yet to be read.)
+@ This is for invented sentences, such as those creating the understood
+variables.
 
 =
-void StructuralSentences::break_source(void) {
-	int l = ParseTree::push_attachment_point(tree_root);
-	int n = 0;
-	if (language_definition_top >= n) n = language_definition_top+1;
-	if (doc_references_top >= n) n = doc_references_top+1;
-	if (language_scan_top >= n) n = language_scan_top+1;
-	Sentences::break(Wordings::new(n, lexer_wordcount-1), NULL);
-	ParseTree::pop_attachment_point(l);
+void StructuralSentences::add_inventions_heading(void) {
 	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
 	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
 	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
@@ -87,98 +76,6 @@ void StructuralSentences::break_source(void) {
 	ParseTree::insert_sentence(implicit_heading);
 	Sentences::Headings::declare(implicit_heading);
 }
-
-@ Sentences in the source text are of five categories: dividing sentences,
-which divide up the source into segments; structural sentences, which split
-the source into different forms (standard text, tables, equations, I6 matter,
-and so on); nonstructural sentences, which make grammatical definitions and
-give Inform other more or less direct instructions; rule declarations; and
-regular sentences, those which use the standard verbs. Examples:
-
->> Volume II [dividing]
->> Include Locksmith by Emily Short [structural]
->> Release along with a website [nonstructural]
->> Instead of looking [rule]
->> The cushion is on the wooden chair [regular]
-
-Dividing sentences are always read, whereas the others may be skipped in
-sections of source not being included for one reason or another. Dividing
-sentences must match the following. Note that the extension end markers are
-only read in extensions, so they can never accidentally match in the main
-source text.
-
-=
-<dividing-sentence> ::=
-	<if-start-of-paragraph> <heading> |	==> R[2]
-	<extension-end-marker-sentence>		==> R[1]
-
-<heading> ::=
-	volume ... |						==> 1
-	book ... |							==> 2
-	part ... |							==> 3
-	chapter ... |						==> 4
-	section ...							==> 5
-
-<extension-end-marker-sentence> ::=
-	... begin/begins here |				==> -1; @<Check we can begin an extension here@>;
-	... end/ends here					==> -2; @<Check we can end an extension here@>;
-
-@<Check we can begin an extension here@> =
-	switch (sfsm_extension_position) {
-		case 1: sfsm_extension_position++; break;
-		case 2: Problems::Issue::extension_problem(_p_(PM_ExtMultipleBeginsHere),
-			sfsm_extension, "has more than one 'begins here' sentence"); break;
-		case 3: Problems::Issue::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
-			sfsm_extension, "has a further 'begins here' after an 'ends here'"); break;
-	}
-
-@<Check we can end an extension here@> =
-	switch (sfsm_extension_position) {
-		case 1: Problems::Issue::extension_problem(_p_(BelievedImpossible),
-			sfsm_extension, "has an 'ends here' with nothing having begun"); break;
-		case 2: sfsm_extension_position++; break;
-		case 3: Problems::Issue::extension_problem(_p_(PM_ExtMultipleEndsHere),
-			sfsm_extension, "has more than one 'ends here' sentence"); break;
-	}
-
-@<Detect a dividing sentence@> =
-	if (<dividing-sentence>(W)) {
-		switch (<<r>>) {
-			case -1: if (sfsm_extension_position > 0) begins_or_ends = 1;
-				break;
-			case -2:
-				if (sfsm_extension_position > 0) begins_or_ends = -1;
-				break;
-			default:
-				heading_level = <<r>>;
-				break;
-		}
-	}
-
-@ Structural sentences are defined as follows. (The asterisk notation isn't
-known to most Inform users: it increases output to the debugging log.)
-
-=
-<structural-sentence> ::=
-	<if-start-of-source-text> <quoted-text> |				==> 0; ssnt = BIBLIOGRAPHIC_NT;
-	<if-start-of-source-text> <quoted-text> ... |			==> 0; ssnt = BIBLIOGRAPHIC_NT;
-	<language-modifying-sentence> |							==> R[1]
-	* |														==> 0; ssnt = TRACE_NT;
-	* <quoted-text-without-subs> |							==> 0; ssnt = TRACE_NT;
-	<if-start-of-paragraph> table ... |						==> 0; ssnt = TABLE_NT;
-	<if-start-of-paragraph> equation ... |					==> 0; ssnt = EQUATION_NT;
-	include <nounphrase-articled> by <nounphrase> |			==> 0; ssnt = INCLUDE_NT; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	include (- ...											==> 0; ssnt = INFORM6CODE_NT;
-
-@ Properly speaking, despite the definition above, language modifying sentences
-are nonstructural. So what are they doing here? The answer is that we need to
-read them early on, because they affect the way that they parse all other
-sentences. Whereas other nonstructural sentences can wait, these can't.
-
-=
-<language-modifying-sentence> ::=
-	include (- ### in the preform grammar |			==> -2; ssnt = INFORM6CODE_NT;
-	use ... language element/elements				==> -1
 
 @
 
@@ -288,6 +185,31 @@ void StructuralSentences::syntax_problem_handler(int err_no, wording W, void *re
 				"arises when a decimal point is misread as a full stop.)");
 			Problems::issue_problem_end();
 			break;
+		case ExtMultipleBeginsHere_SYNERROR: {
+			inform_extension *E = (inform_extension *) ref;
+			Problems::Issue::extension_problem(_p_(PM_ExtMultipleBeginsHere),
+				E, "has more than one 'begins here' sentence");
+			break;
+		}
+		case ExtBeginsAfterEndsHere_SYNERROR: {
+			inform_extension *E = (inform_extension *) ref;
+			Problems::Issue::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
+				E, "has a further 'begins here' after an 'ends here'");
+			break;
+		}
+		case ExtEndsWithoutBegins_SYNERROR: {
+			inform_extension *E = (inform_extension *) ref;
+			Problems::Issue::extension_problem(_p_(BelievedImpossible),
+				E, "has an 'ends here' with nothing having begun"); break;
+			break;
+		}
+		case ExtMultipleEndsHere_SYNERROR: {
+			inform_extension *E = (inform_extension *) ref;
+			Problems::Issue::extension_problem(_p_(PM_ExtMultipleEndsHere),
+				E, "has more than one 'ends here' sentence"); break;
+			break;
+		}
+
 		default: internal_error("unimplemented problem message");
 	}
 }

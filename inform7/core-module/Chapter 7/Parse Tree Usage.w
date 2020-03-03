@@ -134,13 +134,6 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 
 @
 
-@e BIBLIOGRAPHIC_NT     			/* For the initial title sentence */
-@e ROUTINE_NT           			/* "Instead of taking something, ..." */
-@e INFORM6CODE_NT       			/* "Include (- ... -) */
-@e TABLE_NT             			/* "Table 1 - Counties of England" */
-@e EQUATION_NT          			/* "Equation 2 - Newton's Second Law" */
-@e TRACE_NT             			/* A sentence consisting of an asterisk and optional quoted text */
-
 @e ALLOWED_NT           			/* "An animal is allowed to have a description" */
 @e EVERY_NT             			/* "every container" */
 @e COMMON_NOUN_NT       			/* "a container" */

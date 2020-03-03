@@ -14,7 +14,6 @@ can simply discard the search results.
 
 =
 int bundle_scan_made = FALSE;
-int language_scan_top = -1;
 
 void NaturalLanguages::scan(void) {
 	if (bundle_scan_made == FALSE) {
@@ -22,7 +21,6 @@ void NaturalLanguages::scan(void) {
 		inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 		Nests::search_for(req, Inbuild::nest_list(), L);
-		language_scan_top = lexer_wordcount - 1;
 	}
 }
 

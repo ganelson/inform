@@ -105,6 +105,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {tool} INBUILDTOOL inbuild inbuild
 {dep} INBUILDTOOL on FOUNDATION
 {dep} INBUILDTOOL on WORDS
+{dep} INBUILDTOOL on SYNTAX
 {dep} INBUILDTOOL on HTML
 {dep} INBUILDTOOL on ARCH
 {dep} INBUILDTOOL on INBUILD

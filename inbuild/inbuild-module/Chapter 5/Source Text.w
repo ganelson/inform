@@ -93,3 +93,104 @@ void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word
     }
 	DISCARD_TEXT(erm);
 }
+
+
+@ Sentences in the source text are of five categories: dividing sentences,
+which divide up the source into segments; structural sentences, which split
+the source into different forms (standard text, tables, equations, I6 matter,
+and so on); nonstructural sentences, which make grammatical definitions and
+give Inform other more or less direct instructions; rule declarations; and
+regular sentences, those which use the standard verbs. Examples:
+
+>> Volume II [dividing]
+>> Include Locksmith by Emily Short [structural]
+>> Release along with a website [nonstructural]
+>> Instead of looking [rule]
+>> The cushion is on the wooden chair [regular]
+
+Dividing sentences are always read, whereas the others may be skipped in
+sections of source not being included for one reason or another. Dividing
+sentences must match the following. Note that the extension end markers are
+only read in extensions, so they can never accidentally match in the main
+source text.
+
+@e ExtMultipleBeginsHere_SYNERROR
+@e ExtBeginsAfterEndsHere_SYNERROR
+@e ExtEndsWithoutBegins_SYNERROR
+@e ExtMultipleEndsHere_SYNERROR
+
+=
+<dividing-sentence> ::=
+	<if-start-of-paragraph> <heading> |	==> R[2]
+	<extension-end-marker-sentence>		==> R[1]
+
+<heading> ::=
+	volume ... |						==> 1
+	book ... |							==> 2
+	part ... |							==> 3
+	chapter ... |						==> 4
+	section ...							==> 5
+
+<extension-end-marker-sentence> ::=
+	... begin/begins here |				==> -1; @<Check we can begin an extension here@>;
+	... end/ends here					==> -2; @<Check we can end an extension here@>;
+
+@<Check we can begin an extension here@> =
+	switch (sfsm_extension_position) {
+		case 1: sfsm_extension_position++; break;
+		case 2: SYNTAX_PROBLEM_HANDLER(ExtMultipleBeginsHere_SYNERROR, W, sfsm_extension, 0); break;
+		case 3: SYNTAX_PROBLEM_HANDLER(ExtBeginsAfterEndsHere_SYNERROR, W, sfsm_extension, 0); break;
+	}
+
+@<Check we can end an extension here@> =
+	switch (sfsm_extension_position) {
+		case 1: SYNTAX_PROBLEM_HANDLER(ExtEndsWithoutBegins_SYNERROR, W, sfsm_extension, 0); break;
+		case 2: sfsm_extension_position++; break;
+		case 3: SYNTAX_PROBLEM_HANDLER(ExtMultipleEndsHere_SYNERROR, W, sfsm_extension, 0); break;
+	}
+
+@<Detect a dividing sentence@> =
+	if (<dividing-sentence>(W)) {
+		switch (<<r>>) {
+			case -1: if (sfsm_extension_position > 0) begins_or_ends = 1;
+				break;
+			case -2:
+				if (sfsm_extension_position > 0) begins_or_ends = -1;
+				break;
+			default:
+				heading_level = <<r>>;
+				break;
+		}
+	}
+
+@ Structural sentences are defined as follows. (The asterisk notation isn't
+known to most Inform users: it increases output to the debugging log.)
+
+@e BIBLIOGRAPHIC_NT     			/* For the initial title sentence */
+@e ROUTINE_NT           			/* "Instead of taking something, ..." */
+@e INFORM6CODE_NT       			/* "Include (- ... -) */
+@e TABLE_NT             			/* "Table 1 - Counties of England" */
+@e EQUATION_NT          			/* "Equation 2 - Newton's Second Law" */
+@e TRACE_NT             			/* A sentence consisting of an asterisk and optional quoted text */
+
+=
+<structural-sentence> ::=
+	<if-start-of-source-text> <quoted-text> |				==> 0; ssnt = BIBLIOGRAPHIC_NT;
+	<if-start-of-source-text> <quoted-text> ... |			==> 0; ssnt = BIBLIOGRAPHIC_NT;
+	<language-modifying-sentence> |							==> R[1]
+	* |														==> 0; ssnt = TRACE_NT;
+	* <quoted-text-without-subs> |							==> 0; ssnt = TRACE_NT;
+	<if-start-of-paragraph> table ... |						==> 0; ssnt = TABLE_NT;
+	<if-start-of-paragraph> equation ... |					==> 0; ssnt = EQUATION_NT;
+	include <nounphrase-articled> by <nounphrase> |			==> 0; ssnt = INCLUDE_NT; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	include (- ...											==> 0; ssnt = INFORM6CODE_NT;
+
+@ Properly speaking, despite the definition above, language modifying sentences
+are nonstructural. So what are they doing here? The answer is that we need to
+read them early on, because they affect the way that they parse all other
+sentences. Whereas other nonstructural sentences can wait, these can't.
+
+=
+<language-modifying-sentence> ::=
+	include (- ### in the preform grammar |			==> -2; ssnt = INFORM6CODE_NT;
+	use ... language element/elements				==> -1

@@ -337,6 +337,7 @@ void Projects::construct_graph(inform_project *project) {
 
 =
 void Projects::read_source_text_for(inform_project *project) {
+	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early);
 	Projects::early_source_text(early, project);
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
@@ -355,6 +356,13 @@ void Projects::read_source_text_for(inform_project *project) {
 				FALSE, TRUE);
 		}
 	}
+	ParseTree::plant_parse_tree();
+	int l = ParseTree::push_attachment_point(tree_root);
+	Sentences::break(Wordings::new(wc, lexer_wordcount-1), NULL);
+	ParseTree::pop_attachment_point(l);
+	#ifdef CORE_MODULE
+	StructuralSentences::add_inventions_heading();
+	#endif
 }
 
 int Projects::draws_from_source_file(inform_project *project, source_file *sf) {

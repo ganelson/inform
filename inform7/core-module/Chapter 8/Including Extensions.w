@@ -140,15 +140,16 @@ parse tree.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
+	parse_node *at = current_sentence;
 	inform_extension *E = Extensions::Inclusion::load(req);
 	if (E) {
-		Extensions::set_inclusion_sentence(E, current_sentence);
+		Extensions::set_inclusion_sentence(E, at);
 		Extensions::set_VM_text(E, RW);
 	}
-	if ((E) && (E->body_text_unbroken)) {
-		Sentences::break(E->body_text, E);
-		E->body_text_unbroken = FALSE;
-	}
+//	if ((E) && (E->body_text_unbroken)) {
+//		Sentences::break(E->body_text, E);
+//		E->body_text_unbroken = FALSE;
+//	}
 
 @h Extension loading.
 Extensions are loaded here.

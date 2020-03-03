@@ -29,6 +29,7 @@ linked_list *inbuild_nest_list = NULL;
 int main(int argc, char **argv) {
 	Foundation::start();
 	WordsModule::start();
+	SyntaxModule::start();
 	HTMLModule::start();
 	ArchModule::start();
 	InbuildModule::start();
@@ -74,10 +75,10 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
-	WordsModule::end();
 	ArchModule::end();
 	InbuildModule::end();
 	HTMLModule::end();
+	SyntaxModule::end();
 	WordsModule::end();
 	Foundation::end();
 	return 0;
@@ -222,3 +223,68 @@ vocabulary_meaning Main::ignore(vocabulary_entry *ve) {
 @
 
 @d PREFORM_LANGUAGE_TYPE void
+@d PARSE_TREE_TRAVERSE_TYPE void
+@d SENTENCE_NODE Main::sentence_level
+
+=
+int Main::sentence_level(node_type_t t) {
+	return FALSE;
+}
+
+@
+
+@d SYNTAX_PROBLEM_HANDLER Main::syntax_problem_handler
+
+=
+void Main::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
+	TEMPORARY_TEXT(text);
+	WRITE_TO(text, "%+W", W);
+	switch (err_no) {
+		case UnexpectedSemicolon_SYNERROR:
+			Errors::with_text("unexpected semicolon in sentence: %S", text);
+			break;
+		case ParaEndsInColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon: %S", text);
+			break;
+		case SentenceEndsInColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon and full stop: %S", text);
+			break;
+		case SentenceEndsInSemicolon_SYNERROR:
+			Errors::with_text("paragraph ends with a semicolon and full stop: %S", text);
+			break;
+		case SemicolonAfterColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon and semicolon: %S", text);
+			break;
+		case SemicolonAfterStop_SYNERROR:
+			Errors::with_text("paragraph ends with a full stop and semicolon: %S", text);
+			break;
+		case ExtNoBeginsHere_SYNERROR:
+			Errors::nowhere("extension has no beginning");
+			break;
+		case ExtNoEndsHere_SYNERROR:
+			Errors::nowhere("extension has no end");
+			break;
+		case ExtSpuriouslyContinues_SYNERROR:
+			Errors::with_text("extension continues after end: %S", text);
+			break;
+		case HeadingOverLine_SYNERROR:
+			Errors::with_text("heading contains a line break: %S", text);
+			break;
+		case HeadingStopsBeforeEndOfLine_SYNERROR:
+			Errors::with_text("heading stops before end of line: %S", text);
+			break;
+		case ExtMultipleBeginsHere_SYNERROR:
+			Errors::nowhere("extension has multiple 'begins here' sentences");
+			break;
+		case ExtBeginsAfterEndsHere_SYNERROR:
+			Errors::nowhere("extension has a 'begins here' after its 'ends here'");
+			break;
+		case ExtEndsWithoutBegins_SYNERROR:
+			Errors::nowhere("extension has an 'ends here' but no 'begins here'");
+			break;
+		case ExtMultipleEndsHere_SYNERROR:
+			Errors::nowhere("extension has multiple 'ends here' sentences");
+			break;
+	}
+	DISCARD_TEXT(text);
+}
