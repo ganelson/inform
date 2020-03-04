@@ -157,6 +157,7 @@ typedef struct copy_error {
 	struct text_stream *details;
 	int details_N;
 	struct wording details_W;
+	struct parse_node *details_node;
 	wchar_t *word;
 	MEMORY_MANAGEMENT
 } copy_error;
@@ -170,6 +171,7 @@ copy_error *Copies::new_error(int cat, text_stream *NB) {
 	CE->details = NULL;
 	CE->details_N = -1;
 	CE->details_W = EMPTY_WORDING;
+	CE->details_node = NULL;
 	CE->pos = TextFiles::nowhere();
 	CE->copy = NULL;
 	CE->word = NULL;
@@ -245,6 +247,8 @@ void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
 					WRITE("extension has an 'ends here' but no 'begins here'"); break;
 				case ExtMultipleEndsHere_SYNERROR:
 					WRITE("extension has multiple 'ends here' sentences"); break;
+				case BadTitleSentence_SYNERROR:
+					WRITE("bibliographic sentence at the start is malformed"); break;
 				default:
 					WRITE("syntax error"); break;
 			}

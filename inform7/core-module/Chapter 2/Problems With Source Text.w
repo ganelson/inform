@@ -260,6 +260,12 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							ExtensionManager::from_copy(C),
 							"has an 'ends here' with nothing having begun");
 						break;
+					case BadTitleSentence_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(_p_(PM_BadTitleSentence),
+							"the initial bibliographic sentence can only be a title in double-quotes",
+							"possibly followed with 'by' and the name of the author.");
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

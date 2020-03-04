@@ -206,7 +206,7 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
-	if (project) Projects::set_to_English(project);
+	if (project) Projects::read_source_text_for(project);
 	Inbuild::pass_kit_requests();
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
@@ -486,7 +486,7 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 
 =
 inform_project *Inbuild::project(void) {
-	RUN_ONLY_FROM_PHASE(PROJECTED_INBUILD_PHASE)
+	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
 	return shared_project;
 }
 

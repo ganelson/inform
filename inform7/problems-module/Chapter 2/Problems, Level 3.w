@@ -490,7 +490,7 @@ void Problems::Issue::diagnose_further(void) {
 			"be in double quotes, \"like this\" and not 'like this'.)");
 
 	control_structure_phrase *csp =
-		Sentences::RuleSubtrees::detect_control_structure(ParseTree::get_text(current_sentence));
+		ControlStructures::detect(ParseTree::get_text(current_sentence));
 	if (csp)
 		Problems::issue_problem_segment(
 			" %P(The way this sentence starts makes me think it might have been "

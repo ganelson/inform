@@ -195,12 +195,6 @@ void Kits::early_source_text(OUTPUT_STREAM, inform_kit *K) {
 	if (K->early_source) WRITE("%S\n\n", K->early_source);
 }
 
-int Kits::number_of_early_fed_sentences(inform_kit *K) {
-	int N = LinkedLists::len(K->extensions);
-	if (K->early_source) N++;
-	return N;
-}
-
 linked_list *Kits::inter_paths(void) {
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 	inbuild_nest *N;

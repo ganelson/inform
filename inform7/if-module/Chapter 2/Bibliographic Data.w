@@ -78,83 +78,35 @@ int PL::Bibliographic::bibliographic_new_variable_notify(nonlocal_variable *q) {
 	return FALSE;
 }
 
-@ This is what the top line of the main source text should look like, if it's
-to declare the title and author.
-
-=
-<titling-line> ::=
-	<plain-titling-line> ( in <natural-language> ) |	==> R[1]; *XP = RP[2];
-	<plain-titling-line>								==> R[1]; *XP = NULL;
-
-<plain-titling-line> ::=
-	{<quoted-text-without-subs>} by ... |	==> TRUE
-	{<quoted-text-without-subs>}			==> FALSE
-
-@ That grammar is used at two points: first, to spot the natural language
-being used in the source text, something we have to look ahead to since
-it affects the grammar needed to understand the rest of the file --
-
-=
-inform_language *PL::Bibliographic::scan_language(parse_node *PN) {
-	if (<titling-line>(ParseTree::get_text(PN))) return <<rp>>;
-	return NULL;
-}
-
-@ -- and secondly, to parse the titling-line sentence in the regular way,
-setting bibliographic variables as needed. The following is called on the
-first sentence in the source text if and only if it begins with text in
-double quotes:
+@ The following is called in response to the bibliographic sentence. That in
+fact has already been parsed by Inbuild, so we simply extract the results,
+and set the "story title" and "story author" variables accordingly.
 
 =
 void PL::Bibliographic::bibliographic_data(parse_node *PN) {
-	if (<titling-line>(ParseTree::get_text(PN))) {
-		wording TW = GET_RW(<plain-titling-line>, 1);
-		wording AW = EMPTY_WORDING;
-		if (<<r>>) AW = GET_RW(<plain-titling-line>, 2);
-		if ((story_title_VAR) && (story_author_VAR)) {
-			@<Set the story title from the titling line@>;
-			if (Wordings::nonempty(AW)) @<Set the author from the titling line@>;
-		}
-	} else {
-		Problems::Issue::sentence_problem(_p_(PM_BadTitleSentence),
-			"the initial bibliographic sentence can only be a title in double-quotes",
-			"possibly followed with 'by' and the name of the author.");
+	inbuild_edition *edn = Task::edition();
+	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(A);
+	WRITE_TO(T, "\"x%S\" ", edn->work->title);
+	WRITE_TO(A, "\"x%S\" ", edn->work->author_name);
+	wording TW = Feeds::feed_stream(T);
+	wording AW = Feeds::feed_stream(A);
+	DISCARD_TEXT(T);
+	DISCARD_TEXT(A);
+
+	if ((story_title_VAR) && (story_author_VAR)) {
+		parse_node *the_title;
+		if (<s-value>(TW)) the_title = <<rp>>;
+		else the_title = Specifications::new_UNKNOWN(TW);
+		Assertions::PropertyKnowledge::initialise_global_variable(story_title_VAR, the_title);
+		Strings::TextLiterals::suppress_quote_expansion(ParseTree::get_text(the_title));
+
+		parse_node *the_author;
+		if (<s-value>(AW)) the_author = <<rp>>;
+		else the_author = Specifications::new_UNKNOWN(AW);
+		Assertions::PropertyKnowledge::initialise_global_variable(story_author_VAR, the_author);
 	}
 }
-
-@ We must not of course simply write to the variables; we call the assertion
-machinery to generate an inference about their values, because that ensures
-that contradictions, and so forth, are properly complained about.
-
-@<Set the story title from the titling line@> =
-	parse_node *the_title;
-	if (<s-value>(TW)) the_title = <<rp>>;
-	else the_title = Specifications::new_UNKNOWN(TW);
-	Assertions::PropertyKnowledge::initialise_global_variable(story_title_VAR, the_title);
-	Strings::TextLiterals::suppress_quote_expansion(ParseTree::get_text(the_title));
-
-@ The author is often given outside of quotation marks:
-
->> "The Large Scale Structure of Space-Time" by Lindsay Lohan
-
-and in such cases we transcribe the name-words into quotes so that we can
-treat them as a text literal ("Lindsay Lohan").
-
-@<Set the author from the titling line@> =
-	TEMPORARY_TEXT(author_buffer);
-	if (<quoted-text>(AW) == FALSE) {
-		WRITE_TO(author_buffer, "\"%+W", AW);
-		for (int i=1, L=Str::len(author_buffer); i<L; i++)
-			if (Str::get_at(author_buffer, i) == '\"')
-				Str::put_at(author_buffer, i, '\'');
-		WRITE_TO(author_buffer, "\" ");
-		AW = Feeds::feed_stream(author_buffer);
-	}
-	DISCARD_TEXT(author_buffer);
-	parse_node *the_author;
-	if (<s-value>(AW)) the_author = <<rp>>;
-	else the_author = Specifications::new_UNKNOWN(AW);
-	Assertions::PropertyKnowledge::initialise_global_variable(story_author_VAR, the_author);
 
 @ This unattractive routine performs a string comparison of the author's name
 against one that's supplied, case sensitively, and is used when deciding

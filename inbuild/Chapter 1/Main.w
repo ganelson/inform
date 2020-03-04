@@ -36,7 +36,6 @@ int main(int argc, char **argv) {
 	targets = NEW_LINKED_LIST(inbuild_copy);
 	@<Read the command line@>;
 	
-	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 	if (Str::len(unit_test) > 0) dry_run_mode = TRUE;
 	int use = SHELL_METHODOLOGY;
 	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
@@ -131,6 +130,12 @@ int main(int argc, char **argv) {
 	if (LinkedLists::len(unsorted_nest_list) == 0)
 		Inbuild::add_nest(
 			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+
+	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
+	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
+	filename *S = Filenames::in_folder(P, I"Syntax.preform");
+	wording W = Preform::load_from_file(S);
+	Preform::parse_preform(W, FALSE);
 	
 	CommandLine::play_back_log();
 	inbuild_copy *proj = NULL, *C;
@@ -225,6 +230,7 @@ vocabulary_meaning Main::ignore(vocabulary_entry *ve) {
 @d PREFORM_LANGUAGE_TYPE void
 @d PARSE_TREE_TRAVERSE_TYPE void
 @d SENTENCE_NODE Main::sentence_level
+@d PARSE_TREE_METADATA_SETUP SourceText::node_metadata
 
 =
 int Main::sentence_level(node_type_t t) {

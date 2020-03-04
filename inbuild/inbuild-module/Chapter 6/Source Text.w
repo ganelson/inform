@@ -26,7 +26,9 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 			Copies::attach(C, Copies::new_error_on_file(OPEN_FAILED_CE, F));
 		} else {
 			fclose(handle);
+			#ifdef CORE_MODULE
 			if (documentation_only == FALSE) @<Tell console output about the file@>;
+			#endif
 		}
 	}
 	currently_lexing_into = NULL;
@@ -52,17 +54,6 @@ application.
 	WRITE_TO(STDOUT, message, synopsis, wc);
 	STREAM_FLUSH(STDOUT);
 	LOG(message, synopsis, wc);
-
-@
-
-@d SENTENCE_COUNT_MONITOR SourceText::increase_sentence_count
-
-=
-wording options_file_wording = EMPTY_WORDING_INIT;
-int SourceText::increase_sentence_count(wording W) {
-	if (Wordings::within(W, options_file_wording) == FALSE) return TRUE;
-	return FALSE;
-}
 
 @
 
@@ -200,6 +191,25 @@ known to most Inform users: it increases output to the debugging log.)
 @e TABLE_NT             			/* "Table 1 - Counties of England" */
 @e EQUATION_NT          			/* "Equation 2 - Newton's Second Law" */
 @e TRACE_NT             			/* A sentence consisting of an asterisk and optional quoted text */
+@e INVOCATION_LIST_NT   		    /* Single invocation of a (possibly compound) phrase */
+
+@d list_node_type ROUTINE_NT
+@d list_entry_node_type INVOCATION_LIST_NT
+
+@ =
+void SourceText::node_metadata(void) {
+	ParseTree::md((parse_tree_node_type) { BIBLIOGRAPHIC_NT, "BIBLIOGRAPHIC_NT",    					0, 0,		L2_NCAT, 0 });
+	ParseTree::md((parse_tree_node_type) { ROUTINE_NT, "ROUTINE_NT", 			   					0, INFTY,	L2_NCAT, 0 });
+	ParseTree::md((parse_tree_node_type) { INFORM6CODE_NT, "INFORM6CODE_NT",		   					0, 0,		L2_NCAT, 0 });
+	ParseTree::md((parse_tree_node_type) { TABLE_NT, "TABLE_NT",					   					0, 0,		L2_NCAT, TABBED_CONTENT_NFLAG });
+	ParseTree::md((parse_tree_node_type) { EQUATION_NT, "EQUATION_NT",			   					0, 0,		L2_NCAT, 0 });
+	ParseTree::md((parse_tree_node_type) { TRACE_NT, "TRACE_NT",					   					0, 0,		L2_NCAT, 0 });
+	#ifndef CORE_MODULE
+	ParseTree::md((parse_tree_node_type) { INVOCATION_LIST_NT, "INVOCATION_LIST_NT",		   			0, INFTY,	L2_NCAT, 0 });
+	#endif
+}
+
+@
 
 =
 <structural-sentence> ::=

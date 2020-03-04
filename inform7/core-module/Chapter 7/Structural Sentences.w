@@ -4,8 +4,6 @@ To parse structurally important sentences.
 
 @
 
-@d list_node_type ROUTINE_NT
-@d list_entry_node_type INVOCATION_LIST_NT
 
 @h Sentence division.
 Sentence division can happen either early in Inform's run, when the vast bulk

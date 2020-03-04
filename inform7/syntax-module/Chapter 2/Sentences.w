@@ -9,7 +9,6 @@ English sentences, and join each to the parse tree.
 position.
 
 =
-int no_sentences_read = 0;
 int sfsm_extension_position = 0; /* 0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after */
 node_type_t ssnt = 0;
 
@@ -57,6 +56,7 @@ source_file *sfsm_source_file = NULL;
 int sfsm_inside_rule_mode = FALSE;
 int sfsm_skipping_material_at_level = -1;
 int sfsm_in_tabbed_mode = FALSE;
+int sfsm_main_source_start_wn = -1;
 EXTENSION_FILE_TYPE *sfsm_extension = NULL;
 
 @ Now for the routine itself. We break into bite-sized chunks, each of which is
@@ -65,7 +65,12 @@ which was used to end it. Each call to this routine represents one cycle of our
 finite state machine.
 
 =
-void Sentences::break(wording W, int is_extension, EXTENSION_FILE_TYPE *from_extension) {
+void Sentences::break(wording W, int is_extension,
+	EXTENSION_FILE_TYPE *from_extension, int bwc) {
+	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
+		W = Wordings::trim_first_word(W);
+	if (Wordings::empty(W)) return;
+
 	int sentence_start = Wordings::first_wn(W);
 	ParseTree::enable_last_sentence_cacheing();
 
@@ -112,6 +117,7 @@ that is why these are global variables rather than locals in |Sentences::break|.
 	sfsm_extension = from_extension;
 	if (is_extension) sfsm_extension_position = 1;
 	else sfsm_extension_position = 0;
+	sfsm_main_source_start_wn = bwc;
 
 @ A table is any sentence beginning with the word "Table". (Bad news for
 anyone writing "Table Mountain is a room.", of course, but there are other
@@ -289,12 +295,6 @@ void Sentences::make_node(wording W, int stop_character) {
 
 	if (Wordings::empty(W)) internal_error("empty sentence generated");
 
-	#ifdef SENTENCE_COUNT_MONITOR
-	if (SENTENCE_COUNT_MONITOR(W)) no_sentences_read++;
-	#else
-	no_sentences_read++;
-	#endif
-
 	Vocabulary::identify_word_range(W); /* a precaution to catch any late unidentified text */
 
 	@<Detect a change of source file, and declare it as an implicit heading@>;
@@ -446,20 +446,17 @@ substitutions. For instance,
 >> "A Dream of Fair to Middling Women" by Samuel Beckett
 
 This sentence is at the position matched by <if-start-of-source-text>.
-(Strictly speaking it's the second sentence read, not the first, because all
-source texts implicitly begin with an inclusion of the Standard Rules.)
+(It may not be the first sentence read, because implied extension inclusion
+sentences and options-file sentences may have been read already.)
 
 =
 <if-start-of-source-text> internal 0 {
 	int w1 = Wordings::first_wn(W);
-	#ifdef CORE_MODULE
-	int N = 1 + Projects::number_of_early_fed_sentences(Inbuild::project());
-	#endif
-	#ifndef CORE_MODULE
-	int N = 3;
-	#endif
-	if ((no_sentences_read == N) &&
-		((w1 == 0) || (compare_word(w1-1, PARBREAK_V)))) return TRUE;
+	while (w1 >= 0) {
+		if (w1 == sfsm_main_source_start_wn) return TRUE;
+		if (compare_word(w1-1, PARBREAK_V) == FALSE) return FALSE;
+		w1--;
+	}
 	return FALSE;
 }
 
@@ -489,10 +486,9 @@ source texts implicitly begin with an inclusion of the Standard Rules.)
 				else if (language_extension_inclusion_point == NULL) language_extension_inclusion_point = new;
 			}
 			ParseTree::set_type(new, ssnt);
-			#ifdef IF_MODULE
+			#ifdef INBUILD_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)
-				Projects::set_language_of_play(Inbuild::project(),
-					PL::Bibliographic::scan_language(new));
+				Projects::notify_of_bibliographic_sentence(Inbuild::project(), new);
 			#endif
 			return;
 		}
@@ -614,9 +610,11 @@ instead of a semicolon. We may lament this, but it is so.)
 @<Convert a rule preamble to a ROUTINE node and enter rule mode@> =
 	#ifdef list_node_type
 	if (stop_character == ':') {
-		if ((sfsm_inside_rule_mode) && (Sentences::RuleSubtrees::detect_control_structure(W))) {
+		if ((sfsm_inside_rule_mode) && (ControlStructures::detect(W))) {
 			ParseTree::set_type(new, list_entry_node_type);
+			#ifdef CORE_MODULE
 			ParseTree::annotate_int(new, colon_block_command_ANNOT, TRUE);
+			#endif
 			sfsm_inside_rule_mode = TRUE;
 			return;
 		} else {

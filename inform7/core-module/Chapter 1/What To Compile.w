@@ -113,6 +113,11 @@ target_vm *Task::vm(void) {
 	return inform7_task->task->for_vm;
 }
 
+inbuild_edition *Task::edition(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return inform7_task->project->as_copy->edition;
+}
+
 @ Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image

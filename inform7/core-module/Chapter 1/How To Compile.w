@@ -13,9 +13,8 @@ in order of when they work:
 
 @e STARTED_CSEQ from 0
 @e LEXICAL_CSEQ
-@e SEMANTIC_IA_CSEQ
 @e SEMANTIC_LANGUAGE_CSEQ
-@e SEMANTIC_IB_CSEQ
+@e SEMANTIC_I_CSEQ
 @e SEMANTIC_II_CSEQ
 @e SEMANTIC_III_CSEQ
 @e ASSERTIONS_PASS_1_CSEQ
@@ -47,8 +46,7 @@ int Sequence::carry_out(int debugging) {
 		@<Boot up the compiler@>;
 		compiler_booted_up = TRUE;
 	}
-	@<Perform lexical analysis@>;
-	@<Perform semantic analysis@>;
+	@<Perform textual analysis@>;
 	@<Read the assertions in two passes@>;
 	@<Make the model world@>;
 	@<Tables and grammar@>;
@@ -107,13 +105,9 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(InferenceSubjects::begin);
 	BENCH(Index::DocReferences::read_xrefs);
 
-@<Perform lexical analysis@> =
-	Task::advance_stage_to(LEXICAL_CSEQ, I"Lexical analysis", 0);
-	BENCH(Sentences::RuleSubtrees::create_standard_csps)
+@<Perform textual analysis@> =
+	Task::advance_stage_to(LEXICAL_CSEQ, I"Textual analysis", 0);
 	BENCH(Task::read_source_text)
-
-@<Perform semantic analysis@> =
-	Task::advance_stage_to(SEMANTIC_IA_CSEQ, I"Semantic analysis Ia", 1);
 	BENCH(Task::activate_language_elements)
 	BENCH(Extensions::Inclusion::traverse)
 	BENCH(Sentences::Headings::satisfy_dependencies)
@@ -124,7 +118,7 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(BinaryPredicates::make_built_in)
 	BENCH(NewVerbs::add_inequalities)
 
-	Task::advance_stage_to(SEMANTIC_IB_CSEQ, I"Semantic analysis Ib", -1);
+	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
 	BENCH(Sentences::VPs::traverse)
 	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)

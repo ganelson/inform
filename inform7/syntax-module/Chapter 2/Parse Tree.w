@@ -78,7 +78,7 @@ Structural node types are enumerated first:
 
 @d BASE_OF_ENUMERATED_NTS    		0x80000000
 
-@e INVALID_NT from 0x80000000    /* No node with this node should ever exist */
+@e INVALID_NT from 0x80000000    /* No node with this node type should ever exist */
 
 @e ROOT_NT              			/* Only one such node exists: the tree root */
 @e INCLUSION_NT         			/* Holds a block of source material */

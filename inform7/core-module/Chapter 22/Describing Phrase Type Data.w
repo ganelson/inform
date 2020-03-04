@@ -396,7 +396,7 @@ void Phrases::TypeData::Textual::parse(ph_type_data *phtd, wording XW, wording *
 
 @<Does this comma presage phrase options?@> =
 	if ((<control-structure-phrase>(XW)) &&
-		(Sentences::RuleSubtrees::comma_possible(<<rp>>)))
+		(ControlStructures::comma_possible(<<rp>>)))
 		comma_presages_options = FALSE;
 
 @ If you find the explanation in this message unconvincing, you're not alone.

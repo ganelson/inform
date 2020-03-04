@@ -150,7 +150,7 @@ int Routines::Compile::code_block(int statement_count, parse_node *pn, int top_l
 int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	control_structure_phrase *csp = ParseTree::get_control_structure_used(p);
 	parse_node *to_compile = p;
-	if (Sentences::RuleSubtrees::opens_block(csp)) {
+	if (ControlStructures::opens_block(csp)) {
 		Frames::Blocks::beginning_block_phrase(csp);
 		to_compile = p->down;
 	}
@@ -509,7 +509,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	else if (csp == switch_CSP) @<Compile a switch tail@>
 	else if (csp == say_CSP) @<Compile a say tail@>
 	else if (csp == instead_CSP) @<Compile an instead tail@>
-	else if (Sentences::RuleSubtrees::opens_block(csp)) @<Compile a loop tail@>;
+	else if (ControlStructures::opens_block(csp)) @<Compile a loop tail@>;
 
 @<Compile an if tail@> =
 	;

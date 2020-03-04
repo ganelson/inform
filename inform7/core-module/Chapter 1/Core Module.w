@@ -53,7 +53,6 @@ We need to itemise the structures we'll want to allocate:
 @e ph_stack_frame_box_MT
 @e i6_inclusion_matter_MT
 @e literal_list_MT
-@e control_structure_phrase_MT
 @e adjective_meaning_MT
 @e adjective_meaning_block_MT
 @e measurement_definition_MT
@@ -109,7 +108,6 @@ ALLOCATE_INDIVIDUALLY(binary_predicate)
 ALLOCATE_INDIVIDUALLY(booking)
 ALLOCATE_INDIVIDUALLY(constant_phrase)
 ALLOCATE_INDIVIDUALLY(contents_entry)
-ALLOCATE_INDIVIDUALLY(control_structure_phrase)
 ALLOCATE_INDIVIDUALLY(counting_data)
 ALLOCATE_INDIVIDUALLY(definition)
 ALLOCATE_INDIVIDUALLY(dval_written)

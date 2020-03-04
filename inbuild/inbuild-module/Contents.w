@@ -36,8 +36,6 @@ Chapter 4: Managing Genres of Work
 	Pipeline Manager
 
 Chapter 5: Services for the Inform Compiler
-	Source Text
-	Virtual Machine Grammar
 	Kit Services
 	Extension Services
 	Extension Dictionary
@@ -47,3 +45,8 @@ Chapter 5: Services for the Inform Compiler
 	Project Services
 	Language Services
 	Pipeline Services
+
+Chapter 6: Handling Inform Source Text
+	Source Text
+	Control Structures
+	Virtual Machine Grammar

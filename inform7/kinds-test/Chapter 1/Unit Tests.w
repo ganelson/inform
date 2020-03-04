@@ -67,7 +67,7 @@ void Unit::test_kinds(text_stream *arg) {
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	ParseTree::plant_parse_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(W, FALSE, NULL);
+	Sentences::break(W, FALSE, NULL, -1);
 	ParseTree::traverse(Unit::diagram);
 
 	text_stream *save_DL = DL;

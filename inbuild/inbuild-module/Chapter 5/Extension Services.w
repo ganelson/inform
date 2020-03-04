@@ -309,7 +309,7 @@ void Extensions::read_source_text_for(inform_extension *E) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		wording EXW = E->read_into_file->text_read;
 		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
-		Sentences::break(E->body_text, TRUE, E->as_copy);
+		Sentences::break(E->body_text, TRUE, E->as_copy, -1);
 		E->body_text_unbroken = FALSE;
 	}
 }

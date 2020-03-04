@@ -70,7 +70,7 @@ void Unit::test_diagrams(text_stream *arg) {
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	ParseTree::plant_parse_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(W, FALSE, NULL);
+	Sentences::break(W, FALSE, NULL, -1);
 
 	text_stream *save_DL = DL;
 	DL = STDOUT;

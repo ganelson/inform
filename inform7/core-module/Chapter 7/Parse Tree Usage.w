@@ -146,7 +146,6 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 @e TOKEN_NT             			/* Used for tokens in grammar */
 
 @e CODE_BLOCK_NT       			/* Holds a block of source material */
-@e INVOCATION_LIST_NT   		    /* Single invocation of a (possibly compound) phrase */
 @e INVOCATION_LIST_SAY_NT		/* Single thing to be said */
 @e INVOCATION_NT      			/* Usage of a phrase */
 @e VOID_CONTEXT_NT  				/* When a void phrase is required */
@@ -331,12 +330,7 @@ goes. The annotations used are identified by nonzero ID numbers, as follows:
 =
 void ParseTreeUsage::md(void) {
     /* first, the structural nodes: */
-	ParseTree::md((parse_tree_node_type) { BIBLIOGRAPHIC_NT, "BIBLIOGRAPHIC_NT",    					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { ROUTINE_NT, "ROUTINE_NT", 			   					0, INFTY,	L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INFORM6CODE_NT, "INFORM6CODE_NT",		   					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TABLE_NT, "TABLE_NT",					   					0, 0,		L2_NCAT, TABBED_CONTENT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { EQUATION_NT, "EQUATION_NT",			   					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TRACE_NT, "TRACE_NT",					   					0, 0,		L2_NCAT, 0 });
+	SourceText::node_metadata();
 
 	ParseTree::md((parse_tree_node_type) { ALLOWED_NT, "ALLOWED_NT",				   					1, 1,		L3_NCAT, ASSERT_NFLAG });
 	ParseTree::md((parse_tree_node_type) { EVERY_NT, "EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
@@ -697,7 +691,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		case INVOCATION_LIST_NT:
 		case CODE_BLOCK_NT: {
 			control_structure_phrase *csp = ParseTree::get_control_structure_used(pn);
-			WRITE("  "); Sentences::RuleSubtrees::log_control_structure(csp); WRITE(" ");
+			WRITE("  "); ControlStructures::log(csp); WRITE(" ");
 			if (pn->node_type == INVOCATION_LIST_NT)
 				WRITE("%d", ParseTree::int_annotation(pn, indentation_level_ANNOT));
 			else WRITE(" ");

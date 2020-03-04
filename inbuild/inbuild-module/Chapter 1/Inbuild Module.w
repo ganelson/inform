@@ -34,6 +34,7 @@ Setting up the use of this module.
 @e extension_dictionary_entry_MT
 @e known_extension_clash_MT
 @e build_skill_MT
+@e control_structure_phrase_MT
 
 =
 ALLOCATE_INDIVIDUALLY(inform_kit)
@@ -61,6 +62,7 @@ ALLOCATE_INDIVIDUALLY(copy_error)
 ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(known_extension_clash)
 ALLOCATE_INDIVIDUALLY(build_skill)
+ALLOCATE_INDIVIDUALLY(control_structure_phrase)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 
@@ -83,6 +85,7 @@ void InbuildModule::start(void) {
 	Inform7Skill::create();
 	Inform6Skill::create();
 	InblorbSkill::create();
+	ControlStructures::create_standard();
 }
 
 @

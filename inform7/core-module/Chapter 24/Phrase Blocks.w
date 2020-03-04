@@ -205,7 +205,7 @@ Are we in the body of a loop, perhaps indirectly?
 int Frames::Blocks::inside_a_loop_body(void) {
 	int i;
 	for (i = current_block_stack.pb_sp-1; i >= 0; i--)
-		if (Sentences::RuleSubtrees::is_a_loop(current_block_stack.pb_stack[i].from_structure))
+		if (ControlStructures::is_a_loop(current_block_stack.pb_stack[i].from_structure))
 			return TRUE;
 	return FALSE;
 }
@@ -224,7 +224,7 @@ int Frames::Blocks::current_block_level(void) {
 
 wchar_t *Frames::Blocks::name_of_current_block(void) {
 	if (block_being_compiled == NULL) return NULL;
-	return Sentences::RuleSubtrees::incipit(block_being_compiled->from_structure);
+	return ControlStructures::incipit(block_being_compiled->from_structure);
 }
 
 parse_node *Frames::Blocks::start_of_current_block(void) {
@@ -248,7 +248,7 @@ So we do this by hand, jumping to a label placed just after the loop ends.
 int unique_breakage_count = 0;
 void Frames::Blocks::emit_break(void) {
 	for (int i = current_block_stack.pb_sp-1; i >= 0; i--)
-		if (Sentences::RuleSubtrees::permits_break(current_block_stack.pb_stack[i].from_structure)) {
+		if (ControlStructures::permits_break(current_block_stack.pb_stack[i].from_structure)) {
 			if (current_block_stack.pb_stack[i].label_following == -1)
 				current_block_stack.pb_stack[i].label_following =
 					unique_breakage_count++;
