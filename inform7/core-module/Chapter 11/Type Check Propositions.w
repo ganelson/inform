@@ -190,7 +190,7 @@ but it's a very subtle one, and we want to use it only when everything else
 				LOG("Rejecting as unarticled\n");
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
 			Problems::quote_source(1, current_sentence);
-			Problems::Issue::handmade_problem(_p_(PM_BareKindVariable));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BareKindVariable));
 			Problems::issue_problem_segment(
 				"The sentence %1 seems to use a kind variable by its letter "
 				"alone in the context of a noun, which Inform doesn't allow. "
@@ -232,7 +232,7 @@ problem message has already been issued, but just in case not...
 		if (tck->issue_error == FALSE) return NEVER_MATCH;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(spec));
-		Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to contain a value '%2' which I can't make "
 			"any sense of.");

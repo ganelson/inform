@@ -22,10 +22,10 @@ the next because it is not true that problems are always issued in source
 code order.
 
 =
-void Problems::find_headings_at(parse_node *sentence, parse_node **problem_headings) {
+void Problems::find_headings_at(parse_node_tree *T, parse_node *sentence, parse_node **problem_headings) {
 	for (int i=0; i<NO_HEADING_LEVELS; i++) problem_headings[i] = NULL;
 	if (sentence == NULL) return;
-	ParseTree::traverse_ppn_nocs(Problems::visit_for_headings, &sentence);
+	ParseTree::traverse_ppn_nocs(T, Problems::visit_for_headings, &sentence);
 	parse_node *p = ParseTree::get_problem_falls_under(sentence);
 	while (p) {
 		int L = ParseTree::int_annotation(p, heading_level_ANNOT);
@@ -69,7 +69,7 @@ the two possibilities.
 =
 int	do_not_locate_problems = FALSE;
 
-void Problems::show_problem_location(void) {
+void Problems::show_problem_location(parse_node_tree *T) {
 	parse_node *problem_headings[NO_HEADING_LEVELS];
 	int i, f = FALSE;
 	if (problem_count == 0) {
@@ -82,7 +82,7 @@ void Problems::show_problem_location(void) {
 		for (i=0; i<NO_HEADING_LEVELS; i++) last_problem_headings[i] = NULL;
 	}
 	if (do_not_locate_problems) return;
-	Problems::find_headings_at(current_sentence, problem_headings);
+	Problems::find_headings_at(T, current_sentence, problem_headings);
 	for (i=0; i<NO_HEADING_LEVELS; i++) if (problem_headings[i] != NULL) f = TRUE;
 	if (f)
 		for (i=1; i<NO_HEADING_LEVELS; i++)
@@ -282,7 +282,7 @@ set |shorten_problem_message| to remember whether to use the short or long
 form.
 
 =
-void Problems::issue_problem_begin(char *message) {
+void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
 	Problems::Buffer::clear();
 	if (strcmp(message, "*") == 0) {
 		WRITE_TO(PBUFF, ">++>");
@@ -296,7 +296,7 @@ void Problems::issue_problem_begin(char *message) {
 	} else if (strcmp(message, "**") == 0) {
 		shorten_problem_message = FALSE;
 	} else {
-		Problems::show_problem_location();
+		Problems::show_problem_location(T);
 		problem_count++;
 		WRITE_TO(PBUFF, ">--> ");
 		shorten_problem_message = Problems::explained_before(message);

@@ -218,7 +218,7 @@ charlatans" and what they "deserve". I'm a better person now.
 	*X = PROBLEM_INSUB;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_BadInlineExpansion));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadInlineExpansion));
 	Problems::issue_problem_segment(
 		"You wrote %1, but when I looked that phrase up I found that its inline "
 		"definition included the bracing {%2}. Text written in braces like this, "
@@ -292,7 +292,7 @@ the presence of annotations can change what we do.
 			Problems::quote_source(1, current_sentence);
 			if (nlv) Problems::quote_wording(2, nlv->name);
 			else Problems::quote_spec(2, supplied);
-			Problems::Issue::handmade_problem(_p_(PM_NotAnLvalue));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotAnLvalue));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that seems to mean changing '%2', which "
 				"is a constant and can't be altered.");
@@ -380,7 +380,7 @@ its own when kind variables are in play.
 @<Issue problem for no natural choice@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_kind(2, K);
-	Problems::Issue::handmade_problem(_p_(PM_NoNaturalDefault2));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoNaturalDefault2));
 	Problems::issue_problem_segment(
 		"To achieve %1, we'd need to be able to store a default value of "
 		"the kind '%2', but there's no natural choice for this.");
@@ -459,7 +459,7 @@ character:
 
 @<Inline command "backspace"@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(_p_(PM_BackspaceWithdrawn));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BackspaceWithdrawn));
 	Problems::issue_problem_segment(
 		"I attempted to compile %1 using its inline definition, "
 		"but this contained the invalid annotation '{backspace}', "
@@ -661,7 +661,7 @@ having this annotation seems the smaller of the two warts.
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_text) == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_spec(2, supplied);
-		Problems::Issue::handmade_problem(_p_(PM_Misboxed));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_Misboxed));
 		Problems::issue_problem_segment(
 			"I attempted to compile %1, but the text '%2' supplied to be a "
 			"boxed quotation wasn't a constant piece of text in double-quotes. "
@@ -741,14 +741,14 @@ the problem messages are phrased differently if something goes wrong.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_kind_of(2, supplied);
 	if (returning_from_rule) {
-		Problems::Issue::handmade_problem(_p_(PM_RuleNotAllowedOutcome));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RuleNotAllowedOutcome));
 		Problems::issue_problem_segment(
 			"You wrote %1 as something to be a successful outcome of a rule, which "
 			"has the kind %2; but this is not a rule which is allowed to have a value "
 			"as its outcome.");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Issue::handmade_problem(_p_(PM_RedundantReturnKOV));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RedundantReturnKOV));
 		Problems::issue_problem_segment(
 			"You wrote %1 as the outcome of a phrase, %2, but in the definition of "
 			"something which was not a phrase to decide a value.");
@@ -760,13 +760,13 @@ the problem messages are phrased differently if something goes wrong.
 	Problems::quote_kind(2, kind_supplied);
 	Problems::quote_kind(3, kind_needed);
 	if (returning_from_rule) {
-		Problems::Issue::handmade_problem(_p_(PM_RuleOutcomeWrongKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RuleOutcomeWrongKind));
 		Problems::issue_problem_segment(
 			"You wrote %1 as the outcome of a rule which produces a value, but this "
 			"was the wrong kind of value: %2 rather than %3.");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Issue::handmade_problem(_p_(PM_ReturnWrongKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnWrongKind));
 		Problems::issue_problem_segment(
 			"You wrote %1 as the outcome of a phrase to decide a value, but this was "
 			"the wrong kind of value: %2 rather than %3.");
@@ -873,7 +873,7 @@ rule), and also makes a note for indexing purposes.
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(supplied));
-		Problems::Issue::handmade_problem(_p_(PM_NonconstantEvent));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantEvent));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' isn't the name of any timed event that "
 			"I know of. (These need to be set up in a special way, like so - "
@@ -886,7 +886,7 @@ rule), and also makes a note for indexing purposes.
 @<Throw a problem message for an invalid inline annotation@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_stream(2, sche->command);
-	Problems::Issue::handmade_problem(_p_(PM_BadInlineTag));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadInlineTag));
 	Problems::issue_problem_segment(
 		"I attempted to compile %1 using its inline definition, "
 		"but this contained the invalid annotation '%2'.");
@@ -1074,7 +1074,7 @@ default values when created, so they are always typesafe anyway.
 		if (rv == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, K);
-			Problems::Issue::handmade_problem(_p_(PM_NoNaturalDefault));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoNaturalDefault));
 			Problems::issue_problem_segment(
 				"To achieve %1, we'd need to be able to store a default value of "
 				"the kind '%2', but there's no natural choice for this.");
@@ -1188,7 +1188,7 @@ story title).
 	if (Kinds::Behaviour::is_quasinumerical(K1) == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K1);
-		Problems::Issue::handmade_problem(_p_(PM_CantIncrementKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantIncrementKind));
 		Problems::issue_problem_segment(
 			"To achieve %1, we'd need to be able to add or subtract 1 from "
 			"a value of the kind '%2', but there's no good way to do this.");
@@ -1439,7 +1439,7 @@ mathematical definitions in the Standard Rules.
 
 @<Inline command "rescale"@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(_p_(PM_RescaleWithdrawn));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RescaleWithdrawn));
 	Problems::issue_problem_segment(
 		"I attempted to compile %1 using its inline definition, "
 		"but this contained the invalid annotation '{-rescale:...}', "
@@ -1558,7 +1558,7 @@ has the inline definition:
 		Equations::emit_solution(ParseTree::get_text(tokens->args[0]),
 			Rvalues::to_equation(tokens->args[1]));
 	} else {
-		Problems::Issue::sentence_problem(_p_(PM_SolvedNameless),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SolvedNameless),
 			"only specific named equations can be solved",
 			"not equations arrived at by further calculations or choices. (Sorry: "
 			"but there would be no safe way to determine when an equation could "
@@ -1689,7 +1689,7 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 	adjectival_phrase *aph = Adjectives::parse(LW);
 	if (aph) {
 		if (Adjectives::Meanings::write_adjective_test_routine(VH, aph)) return;
-		Problems::Issue::unlocated_problem(_p_(BelievedImpossible),
+		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"You tried to use '(+' and '+)' to expand to the Inform 6 routine "
 			"address of an adjective, but it was an adjective with no meaning.");
 		return;

@@ -15,6 +15,7 @@ typedef struct inform_project {
 	struct build_vertex *unblorbed_vertex;
 	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
+	struct parse_node_tree *syntax_tree;
 	int fix_rng;
 	MEMORY_MANAGEMENT
 } inform_project;
@@ -33,6 +34,7 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->unblorbed_vertex = NULL;
 	project->blorbed_vertex = NULL;
 	project->fix_rng = 0;
+	project->syntax_tree = ParseTree::new_tree();
 	return project;
 }
 
@@ -239,6 +241,7 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 	linked_list *requirements_list = NEW_LINKED_LIST(link_instruction);
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
+LOG("Okay so K is %S\n", K->as_copy->edition->work->title);
 		link_instruction *link = CodeGen::LinkInstructions::new(
 			K->as_copy->location_if_path, K->attachment_point);
 		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
@@ -330,7 +333,11 @@ void Projects::construct_graph(inform_project *project) {
 @e BadTitleSentence_SYNERROR
 
 =
+int rstf_run_before = FALSE;
 void Projects::read_source_text_for(inform_project *project) {
+LOG("Running rstf\n");
+	if (rstf_run_before) internal_error("twice!");
+	rstf_run_before = TRUE;
 	int wc = lexer_wordcount, bwc = -1;
 	TEMPORARY_TEXT(early);
 	Projects::early_source_text(early, project);
@@ -349,12 +356,11 @@ void Projects::read_source_text_for(inform_project *project) {
 				FALSE, TRUE);
 		}
 	}
-	ParseTree::plant_parse_tree();
-	int l = ParseTree::push_attachment_point(tree_root);
-	Sentences::break(Wordings::new(wc, lexer_wordcount-1), FALSE, project->as_copy, bwc);
-	ParseTree::pop_attachment_point(l);
+	int l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
+	Sentences::break(project->syntax_tree, Wordings::new(wc, lexer_wordcount-1), FALSE, project->as_copy, bwc);
+	ParseTree::pop_attachment_point(project->syntax_tree, l);
 	#ifdef CORE_MODULE
-	StructuralSentences::add_inventions_heading();
+	StructuralSentences::add_inventions_heading(project->syntax_tree);
 	#endif
 	if (project->language_of_play == NULL) Projects::set_to_English(project);
 }

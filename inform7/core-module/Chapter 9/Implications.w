@@ -45,7 +45,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 }
 
 @<Reject implications given with certainty@> =
-	Problems::Issue::sentence_problem(_p_(PM_ImplicationCertain),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ImplicationCertain),
 		"that's an implication which is too certain for me",
 		"since a sentence like this talks about a generality of things in terms of "
 		"one either/or property implying another, and I can only handle those as "
@@ -86,7 +86,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 
 @<Check that the premiss involves only either/or properties and/or a kind@> =
 	if (Calculus::Propositions::Assert::testable_at_compile_time(premiss) == FALSE) {
-		Problems::Issue::sentence_problem(_p_(PM_BadImplicationDomain),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadImplicationDomain),
 			"that's an implication where the condition to qualify is not "
 			"one that I can determine in advance of the start of play",
 			"since it involves more than simple either/or properties "
@@ -98,7 +98,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 @<Check that the conclusion involves only a single either/or property@> =
 	property *prn = Adjectives::Meanings::has_EORP_meaning(ParseTree::get_aph(py), NULL);
 	if (prn == NULL) {
-		Problems::Issue::sentence_problem(_p_(PM_ImplicationValueProperty),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ImplicationValueProperty),
 			"that's an implication where the outcome is an adjective other than "
 			"a simple either/or property",
 			"which is the only form of implication I can handle.");

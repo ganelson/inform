@@ -518,13 +518,13 @@ so the penultimate word, if it's there, is the letter.
 	int code = <<r>>;
 	if ((rule_being_compiled == NULL) ||
 		(Rules::rule_is_named(rule_being_compiled) == FALSE)) {
-		Problems::Issue::sentence_problem(_p_(PM_ResponseContextWrong),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseContextWrong),
 			"lettered responses can only be used in named rules",
 			"not in any of the other contexts in which quoted text can appear.");
 		return;
 	}
 	if (Rules::rule_defines_response(rule_being_compiled, code)) {
-		Problems::Issue::sentence_problem(_p_(PM_ResponseDuplicated),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseDuplicated),
 			"this duplicates a response letter",
 			"which is not allowed: if a bracketed letter like (A) is used to mark "
 			"some text as a response, then it can only occur once in its rule.");

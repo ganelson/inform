@@ -39,7 +39,7 @@ int Phrases::Condition::ADJ_compile(definition *def, int T,
 					if ((spec == NULL) ||
 						(Dash::validate_conditional_clause(spec) == FALSE)) {
 						LOG("Error on: %W = $T", def->condition_to_match, spec);
-						Problems::Issue::definition_problem(_p_(PM_DefinitionBadCondition),
+						Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_DefinitionBadCondition),
 							def->node,
 							"that condition makes no sense to me",
 							"although the preamble to the definition was properly "

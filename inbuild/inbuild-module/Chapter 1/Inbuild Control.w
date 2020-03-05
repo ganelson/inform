@@ -206,8 +206,11 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
-	if (project) Projects::read_source_text_for(project);
+	if (project) Projects::set_to_English(project);
 	Inbuild::pass_kit_requests();
+	#ifndef CORE_MODULE
+	if (project) Copies::read_source_text_for(project->as_copy);
+	#endif
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
 	if (project) {

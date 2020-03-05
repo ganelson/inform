@@ -80,7 +80,7 @@ The object noun phrase is an articled list, and each entry must match this.
 @<Issue PM_NoSuchPublicRelease problem@> =
 	*X = BOOKLET_PAYLOAD; /* to recover harmlessly */
 	Problems::quote_wording_as_source(1, W);
-	Problems::Issue::handmade_problem(_p_(PM_NoSuchPublicRelease));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchPublicRelease));
 	Problems::issue_problem_segment(
 		"I don't know how to release along with %1: the only features of "
 		"a release which can be marked as public or private are the 'source "
@@ -198,7 +198,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		case EXISTING_STORY_FILE_PAYLOAD:
 		case NAMED_EXISTING_STORY_FILE_PAYLOAD:
 			if (TargetVMs::is_16_bit(Task::vm()) == FALSE) {
-				Problems::Issue::sentence_problem(_p_(BelievedImpossible), /* not usefully testable */
+				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable */
 					"existing story files can only be used with the Z-machine",
 					"not with the Glulx setting.");
 				return;
@@ -289,7 +289,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 
 @<Issue a bad release instruction problem message@> =
 	Problems::quote_source(1, p);
-	Problems::Issue::handmade_problem(_p_(PM_ReleaseAlong));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ReleaseAlong));
 	Problems::issue_problem_segment(
 		"I don't know how to release along with %1: the only forms I can "
 		"accept are - 'Release along with cover art', '...a website', "
@@ -467,7 +467,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
-		Problems::Issue::unlocated_problem_on_file(
+		Problems::Issue::unlocated_problem_on_file(Task::syntax_tree(), 
 			_p_(BelievedImpossible), /* i.e., not testable by intest */
 			"The instruction 'Release along with an existing story file' "
 			"means that I need to bind up a story file called '%1', in "
@@ -484,7 +484,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	fclose(STORYF);
 
 @<Issue a problem if this isn't a Release run@> =
-	Problems::Issue::unlocated_problem(_p_(PM_UnreleasedRelease),
+	Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_UnreleasedRelease),
 		"This is supposed to be a source text which only contains "
 		"release instructions to bind up an existing story file "
 		"(for instance, one produced using Inform 6). That's because "
@@ -1043,7 +1043,7 @@ instead of what he actually did choose, and we'll write those hints now, for
 Inblorb to copy out later.
 
 @<Give hints to Inblorb for its HTML status page@> =
-	ParseTree::traverse_with_stream(OUT, PL::Bibliographic::Release::visit_to_quote);
+	ParseTree::traverse_with_stream(Task::syntax_tree(), OUT, PL::Bibliographic::Release::visit_to_quote);
 	if (release_cover == FALSE) {
 		WRITE("status alternative ||Using 'Release along with cover art', to "
 			"provide something more distinctive than the default artwork above");

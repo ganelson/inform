@@ -57,7 +57,7 @@ int Relations::Explicit::REL_assert(binary_predicate *bp,
 
 @<Reject non-assertable relations@> =
 	if (BinaryPredicates::can_be_made_true_at_runtime(bp) == FALSE) {
-		Problems::Issue::sentence_problem(_p_(PM_Unassertable2),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Unassertable2),
 			"the relationship you describe is not exact enough",
 			"so that I do not know how to make this assertion come true. "
 			"For instance, saying 'The Study is adjacent to the Hallway.' "
@@ -67,7 +67,7 @@ int Relations::Explicit::REL_assert(binary_predicate *bp,
 	}
 
 @<Reject relationship with nothing@> =
-	Problems::Issue::sentence_problem(_p_(PM_CantRelateNothing),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantRelateNothing),
 		"the relationship you describe seems to be with nothing",
 		"which does not really make sense. 'Nothing' looks like a noun, "
 		"but really Inform uses it to mean the absence of one, so it's "

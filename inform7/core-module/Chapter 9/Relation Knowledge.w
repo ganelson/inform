@@ -41,7 +41,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 
 @<Exceptional relationship nodes for placing objects "here"@> =
 	if (ParseTree::get_subject(value) == NULL) {
-		Problems::Issue::sentence_problem(_p_(PM_HereFailedOnNothing),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_HereFailedOnNothing),
 			"that is an assertion which puts nothing 'here'",
 			"which looks as if it might be trying to give me negative rather "
 			"than positive information. There's no need to tell me something "
@@ -62,12 +62,12 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 	if (iy == NULL) {
 		if (Rvalues::is_nothing_object_constant(
 			ParseTree::get_evaluation(relationship_subtree->down)))
-			Problems::Issue::sentence_problem(_p_(PM_MapFromNowhere),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MapFromNowhere),
 				"the source of a map connection can't be nowhere",
 				"so sentences like 'The pink door is south of nowhere.' are not "
 				"allowed.");
 		else
-			Problems::Issue::sentence_problem(_p_(PM_MapFromNonroom2),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MapFromNonroom2),
 				"the source of a map connection has to be a room or door",
 				"so sentences like 'The pink door is south of 0.' are not "
 				"allowed.");
@@ -81,7 +81,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		PL::Map::connect(iy, ParseTree::get_subject(value), id);
 	else {
 		LOG("Val is $P\n", value);
-		Problems::Issue::sentence_problem(_p_(PM_MapToNonobject),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MapToNonobject),
 			"the destination of a map connection has to be either a room, "
 			"a door or 'nowhere'",
 			"but here the destination doesn't even seem to be an object.");
@@ -94,13 +94,13 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		(relationship_subtree->down->next->next != NULL))
 		internal_error("malformed DIRECTION");
 	if (ParseTree::get_type(relationship_subtree->down) != PROPER_NOUN_NT) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which room (or door) leads away from",
 			"and should just name the source.");
 		break;
 	}
 	if (ParseTree::get_type(relationship_subtree->down->next) != PROPER_NOUN_NT) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which direction the room (or door) lies in",
 			"and should just name the direction.");
 		break;
@@ -152,7 +152,7 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 
 	if (((ParseTree::get_type(px) != PROPER_NOUN_NT) && (ParseTree::get_type(px) != COMMON_NOUN_NT)) ||
 		((ParseTree::get_type(py) != PROPER_NOUN_NT) && (ParseTree::get_type(py) != COMMON_NOUN_NT))) {
-		Problems::Issue::sentence_problem(_p_(PM_BadRelation),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadRelation),
 			"this description of a relationship makes no sense to me",
 			"and should be something like 'X is in Y' (or 'on' or 'part of Y'); "
 			"or else 'X is here' or 'X is east of Y'.");
@@ -165,7 +165,7 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 	if ((BinaryPredicates::relates_values_not_objects(bp)) &&
 		(((ParseTree::get_subject(px)) && (InferenceSubjects::domain(ParseTree::get_subject(px)))) ||
 		((ParseTree::get_subject(py)) && (InferenceSubjects::domain(ParseTree::get_subject(py)))))) {
-		Problems::Issue::sentence_problem(_p_(PM_KindRelatedToValue),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindRelatedToValue),
 			"relations between objects and values have to be made one "
 			"object at a time",
 			"not using kinds of object to make multiple relationships in "
@@ -176,7 +176,7 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 	}
 
 @<Issue problem for "every" used on the right@> =
-	Problems::Issue::sentence_problem(_p_(PM_EveryWrongSide),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EveryWrongSide),
 		"'every' can only be used on the other side of the verb",
 		"because of limitations in Inform (but also to avoid certain possible "
 		"ambiguities). In general, 'every' should be applied to the subject of an "

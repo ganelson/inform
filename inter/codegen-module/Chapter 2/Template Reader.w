@@ -95,7 +95,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 			LOG("Intervention at stage %d Segment %S Part %S\n",
 				i6ti->intervention_stage, i6ti->segment_name, i6ti->part_name);
 			#ifdef PROBLEMS_MODULE
-			Problems::Issue::sentence_problem(_p_(Untestable),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 				"no template file of that name was ever read in",
 				"so this attempt to intervene had no effect. "
 				"The template files have names like 'Output.i6t', 'Parser.i6t' "
@@ -113,7 +113,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 			LOG("Intervention at stage %d Segment %S Part %S\n",
 				i6ti->intervention_stage, i6ti->segment_name, i6ti->part_name);
 			#ifdef PROBLEMS_MODULE
-			Problems::Issue::sentence_problem(_p_(Untestable),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 				"that template file didn't have a part with that name",
 				"so this attempt to intervene had no effect. "
 				"Each template file is divided internally into a number of "
@@ -344,7 +344,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 					LOG("heading begins: <%S>\n", I6T_buffer);
 					#ifdef PROBLEMS_MODULE
 					Problems::quote_stream(1, I6T_buffer);
-					Problems::Issue::unlocated_problem(_p_(...),
+					Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(...),
 						"An unknown '@...' marker has been found at column 0 in "
 						"raw Inform 6 template material: specifically, '@%1'. ('@' "
 						"has a special meaning in this first column, and this "
@@ -519,7 +519,7 @@ void TemplateReader::error(char *message, text_stream *quote) {
 	TEMPORARY_TEXT(M);
 	WRITE_TO(M, message, quote);
 	Problems::quote_stream(1, M);
-	Problems::Issue::handmade_problem(_p_(...));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"I ran into a mistake in a template file: %1. The I6 "
 		"template files (or .i6t files) are a very low-level part of Inform, "

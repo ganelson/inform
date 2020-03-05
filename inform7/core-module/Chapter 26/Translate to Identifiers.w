@@ -38,7 +38,7 @@ such as "The yourself object" in
 
 @<Issue PM_TranslatedUnknownCategory problem@> =
 	*X = INVALID_I6TR;
-	Problems::Issue::sentence_problem(_p_(PM_TranslatedUnknownCategory),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedUnknownCategory),
 		"that isn't one of the things which can be translated to I6",
 		"and should be '... variable', '... property', '... object', "
 		"'... kind', '... rule', or '... action'. For instance, 'The yourself "
@@ -69,7 +69,7 @@ void IdentifierTranslations::as(parse_node *pn) {
 		ParseTree::annotate_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR);
 		@<Ensure that we are translating to a quoted I6 identifier@>;
 		ParseTree::annotate_int(pn, category_of_I6_translation_ANNOT, category);
-		if (responses_list) ParseTree::graft(responses_list, p2);
+		if (responses_list) ParseTree::graft(Task::syntax_tree(), responses_list, p2);
 	} else category = ParseTree::int_annotation(pn, category_of_I6_translation_ANNOT);
 
 	@<Take immediate action on the translation where possible@>;
@@ -102,7 +102,7 @@ traversing the parse tree to look for translation sentences of the right sort.
 	else responses_list = <<rp>>;
 	if (valid) @<Dequote it and see if it's valid@>;
 	if (valid == FALSE) {
-		Problems::Issue::sentence_problem(_p_(PM_TranslatedToNonIdentifier),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedToNonIdentifier),
 			"Inform 7 constructions can only translate into quoted I6 identifiers",
 			"which must be strings of 1 to 31 characters drawn from 1, 2, ..., 9, "
 			"a or A, b or B, ..., z or Z, or underscore '_', except that the "
@@ -136,7 +136,7 @@ void IdentifierTranslations::plus_responses(parse_node *p, rule *R) {
 				code, ParseTree::get_text(p), NULL, TRUE);
 			Rules::now_rule_defines_response(R, code, resp);
 		} else {
-			Problems::Issue::sentence_problem(_p_(PM_I6ResponsesAwry),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_I6ResponsesAwry),
 				"additional information about I6 translation of a rule can "
 				"only take the form of a list of responses",
 				"each quoted and followed by a bracketed letter.");

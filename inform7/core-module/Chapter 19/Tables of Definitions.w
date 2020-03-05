@@ -37,7 +37,7 @@ The subject must match:
 @ (We're going to need this twice.)
 
 @<Actually issue PM_TableDefiningTheImpossible problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_TableDefiningTheImpossible),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningTheImpossible),
 		"you can only use 'defined by' to set up values and things",
 		"as created with sentences like 'The tree species are defined by Table 1.' "
 		"or 'Some men are defined by the Table of Eligible Bachelors.'");
@@ -56,7 +56,7 @@ The subject must match:
 
 @<Issue PM_TableUndefined problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(_p_(PM_TableUndefined),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
 	"you can only use 'defined by' in terms of a table",
 	"which lists the value names in the first column.");
 
@@ -169,7 +169,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		return;
 	}
 	if ((t) && (t->has_been_amended) && (Kinds::Compare::le(K, K_object))) {
-		Problems::Issue::sentence_problem(_p_(PM_TableCantDefineAndAmend),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableCantDefineAndAmend),
 			"you can't use 'defined by' to define objects using a table "
 			"which is amended by another table",
 			"since that could too easily lead to ambiguities about what "
@@ -180,7 +180,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 	t->where_used_to_define = pn->next;
 
 @<Issue PM_TableDefiningObject problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_TableDefiningObject),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningObject),
 		"you can only use 'defined by' to set up values and things",
 		"as created with sentences like 'The tree species are defined by Table 1.' "
 		"or 'Some men are defined by the Table of Eligible Bachelors.' - trying to "
@@ -192,7 +192,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		LOG("K is $u\n", K);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(_p_(PM_TableOfBuiltInKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfBuiltInKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. This is a kind which can't have "
@@ -204,7 +204,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		(Kinds::Behaviour::is_uncertainly_defined(K) == FALSE)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(_p_(PM_TableOfExistingKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. That looks reasonable, since this is a "
@@ -219,7 +219,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 @<Check that this is a description which in principle can be asserted@> =
 	if (Calculus::Propositions::contains_quantifier(
 		Specifications::to_proposition(what))) {
-		Problems::Issue::sentence_problem(_p_(PM_TableOfQuantifiedKind),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableOfQuantifiedKind),
 			"you can't use 'defined by' a table while also talking about the "
 			"number of things to be defined",
 			"since that could too easily lead to contradictions. (So 'Six doors are "
@@ -322,7 +322,7 @@ of the contents.)
 	Problems::quote_kind_of(3, evaluation);
 	Problems::quote_kind(4, K);
 	Problems::quote_number(5, &row_count);
-	Problems::Issue::handmade_problem(_p_(PM_TableCreatedClash));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableCreatedClash));
 	Problems::issue_problem_segment(
 		"You wrote %1, and row %5 of the first column of that table is %2, which "
 		"I ought to create as a new value of %4. But I can't do that: it already "

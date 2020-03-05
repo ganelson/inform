@@ -164,13 +164,13 @@ void Extensions::Files::check_versions(void) {
 				TEMPORARY_TEXT(vn);
 				VersionNumbers::to_text(vn, have);
 				Problems::quote_stream(3, vn);
-				Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 				Problems::issue_problem_segment(
 					"You wrote %1: but my copy of %2 is only version %3.");
 				Problems::issue_problem_end();
 				DISCARD_TEXT(vn);
 			} else {
-				Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 				Problems::issue_problem_segment(
 					"You wrote %1: but my copy of %2 contains no version "
 					"number, and is therefore considered to be earlier than "

@@ -148,7 +148,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 		(Kinds::Behaviour::has_named_constant_values(instance_kind) == FALSE)) {
 		LOG("$T", look_for);
 		LOG("$T", what_to_make);
-		Problems::Issue::sentence_problem(_p_(PM_AssemblyOnFixedKind),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AssemblyOnFixedKind),
 			"this generalisation can't be made",
 			"because I only use generalisations to talk about values which can be "
 			"created as needed, like things or scenes - not about those always "
@@ -160,7 +160,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 	if ((what_to_make) && (ParseTree::get_type(what_to_make->down) == EVERY_NT)) {
 		LOG("$T", look_for);
 		LOG("$T", what_to_make);
-		Problems::Issue::sentence_problem(_p_(PM_AssemblyOnBothSides),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AssemblyOnBothSides),
 			"this generalisation can't be made",
 			"because it uses 'every' or some similar generalisation on both sides, "
 			"which is too rich for my taste.");
@@ -188,7 +188,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 	LOG("Generalisation:\n");
 	LOG("$T", look_for);
 	LOG("$T", what_to_make);
-	Problems::Issue::sentence_problem(_p_(PM_AssemblyRegress),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AssemblyRegress),
 		"this generalisation would be too dangerous",
 		"because it would lead to infinite regress in the assembly process. Sometimes "
 		"this happens if you have set up matters with text like 'A container is in every "
@@ -355,7 +355,7 @@ $L$ but each $L$ must contain a $K$.
 		Problems::quote_subject(2, infs_k);
 		int max = MAX_ASSEMBLY_SIZE;
 		Problems::quote_number(3, &max);
-		Problems::Issue::handmade_problem(_p_(PM_AssemblyLoop));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AssemblyLoop));
 		Problems::issue_problem_segment(
 			"Making a new %2 seems to result in an assembly which can never end, "
 			"or which at any rate led to some %3 further constructions "

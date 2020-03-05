@@ -52,7 +52,7 @@ int PL::Figures::figures_new_named_instance_notify(instance *nc) {
 	kind *K = Instances::to_kind(nc);
 	if (Kinds::Compare::eq(K, K_figure_name)) {
 		if (allow_figure_creations == FALSE)
-			Problems::Issue::sentence_problem(_p_(PM_BackdoorFigureCreation),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorFigureCreation),
 				"this is not the way to create a new figure name",
 				"which should be done with a special 'Figure ... is the file ...' "
 				"sentence.");
@@ -118,7 +118,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 	...						==> @<Issue PM_PictureNotTextual problem@>;
 
 @<Issue PM_PictureNotTextual problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_PictureNotTextual),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PictureNotTextual),
 		"a figure can only be declared as a quoted file name",
 		"which should be the name of a JPEG or PNG image inside the "
 		"project's .materials folder. For instance, 'Figure 2 is the "
@@ -145,7 +145,7 @@ void PL::Figures::register_figure(wording F, wording FN) {
 	Assertions::Creator::vet_name_for_noun(F);
 	if ((<s-value>(F)) &&
 		(Rvalues::is_CONSTANT_of_kind(<<rp>>, K_figure_name))) {
-		Problems::Issue::sentence_problem(_p_(PM_PictureDuplicate),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PictureDuplicate),
 			"this is already the name of a Figure",
 			"so there must be some duplication somewhere.");
 		return;

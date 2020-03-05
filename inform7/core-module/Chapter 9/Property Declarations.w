@@ -74,7 +74,7 @@ The subject (in this example, "a container") is required not to match:
 
 @<Issue PM_PropertyOfKind1 problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(_p_(PM_PropertyOfKind1),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyOfKind1),
 		"this seems to give a property to all kinds, rather than to objects or "
 		"values",
 		"which are the only things capable of having properties. For instance, "
@@ -83,7 +83,7 @@ The subject (in this example, "a container") is required not to match:
 
 @<Issue PM_PropertyOfPronoun problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(_p_(PM_PropertyOfPronoun),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyOfPronoun),
 		"it's often a little ambiguous to declare properties for 'it'",
 		"so it seems best to spell this out by saying exactly what the "
 		"property's owner or owners would be.");
@@ -177,7 +177,7 @@ which might take forms such as:
 
 @<An optional condition name can only be given to a condition@> =
 	if ((Wordings::nonempty(CNW)) && (count < 3)) {
-		Problems::Issue::sentence_problem(_p_(PM_ThisIsEitherOr),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThisIsEitherOr),
 			"a name can only be supplied using '... (this is...)' when a new property "
 			"is being made with three or more named alternatives",
 			"whereas here a simpler either/or property is being made with just one or "
@@ -190,7 +190,7 @@ which might take forms such as:
 
 @<Possession must be time-independent@> =
 	if (ParseTree::get_type(the_owner) == WITH_NT) {
-		Problems::Issue::sentence_problem(_p_(PM_QualifiedCanBe),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_QualifiedCanBe),
 			"only a room, a thing or a kind can have such adjectives applied to it",
 			"and qualifications cannot be used. It makes no sense to say 'An open door "
 			"can be rickety or sturdy' because the door still has to have the property "
@@ -212,7 +212,7 @@ differently as a result.
 
 @<Allow the word "either" as syntactic sugar when there are two alternatives@> =
 	if ((either_flag) && (count != 2)) {
-		Problems::Issue::sentence_problem(_p_(PM_EitherOnThree),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EitherOnThree),
 			"that looks like an attempt to use 'either' other than to lay out exactly "
 			"two possibilities",
 			"which is not allowed. (Technically it ought to be legal to have a property "
@@ -240,7 +240,7 @@ differently as a result.
 @<Disallow this kind as a new owner of an either/or or condition@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_kind(2, K);
-	Problems::Issue::handmade_problem(_p_(PM_ValueCantHaveProperties));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveProperties));
 	Problems::issue_problem_segment(
 		"The sentence %1 looked to me as if it might be trying to create an either/or "
 		"property which would be held by all of the values of a rather large kind "
@@ -256,7 +256,7 @@ differently as a result.
 @<Disallow this variable as a new owner of a property@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, ParseTree::get_text(the_owner));
-	Problems::Issue::handmade_problem(_p_(PM_VariableCantHaveProperties));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_VariableCantHaveProperties));
 	Problems::issue_problem_segment(
 		"The sentence %1 looked to me as if it might be trying to create an either/or "
 		"property which would be held by a variable ('%2'). But because '%2' can have "
@@ -271,7 +271,7 @@ differently as a result.
 	return;
 
 @<Disallow this as an owner not time-independent@> =
-	Problems::Issue::sentence_problem(_p_(PM_OwnerTimeDependent),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OwnerTimeDependent),
 		"ownership of a property is something that has to be always true or "
 		"always false",
 		"so that 'a room can be secret' is fine - a room is always a room - "
@@ -282,7 +282,7 @@ differently as a result.
 	return;
 
 @<Issue a problem message for an unworthy owner@> =
-	Problems::Issue::sentence_problem(_p_(PM_NonObjectCanBe),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonObjectCanBe),
 		"only a room, a thing or a kind can have such adjectives applied to it",
 		"so that 'a dead end can be secret' is fine but 'taking can be secret' would "
 		"not be, since 'taking' is an action and not a room, thing or kind.");
@@ -311,7 +311,7 @@ differently as a result.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, EW);
 		Problems::quote_text(3, error_text);
-		Problems::Issue::handmade_problem(_p_(PM_MiscellaneousEOProblem));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MiscellaneousEOProblem));
 		Problems::issue_problem_segment(
 			"In %1, you proposed the new either/or property '%2': but %3.");
 		Problems::issue_problem_end();
@@ -437,7 +437,7 @@ there would be horrible ambiguities in parsing.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, PW);
 			Problems::quote_spec(3, spec);
-			Problems::Issue::handmade_problem(_p_(PM_PropertyAlreadyKnown));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyAlreadyKnown));
 			Problems::issue_problem_segment(
 				"In %1, one of the values you supply as a possibility is '%2', but this "
 				"already has a meaning (as %3).");
@@ -454,7 +454,7 @@ there would be horrible ambiguities in parsing.
 	if ((already) && (Properties::is_either_or(already))) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, PW);
-		Problems::Issue::handmade_problem(_p_(PM_EOClashesWithCondition));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EOClashesWithCondition));
 		Problems::issue_problem_segment(
 			"In %1, one of the values you supply as a possibility is '%2', but this "
 			"already has a meaning as an either-or property. The same adjective "
@@ -500,7 +500,7 @@ automatically creates it.
 @<This is a leaf containing just a property name@> =
 	if ((<k-kind>(ParseTree::get_text(p))) &&
 		((<<rp>> == K_number) || (<<rp>> == K_text))) {
-		Problems::Issue::assertion_problem(_p_(PM_BareProperty),
+		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BareProperty),
 			"this would create a property called 'number' or 'text'",
 			"and although bare names of kinds are usually allowed as properties, "
 			"these aren't. Instead, try '... has a number called position.' or "
@@ -508,7 +508,7 @@ automatically creates it.
 	}
 	inference_subject *owner_infs = ParseTree::get_subject(owner_ref);
 	kind *K = InferenceSubjects::domain(owner_infs);
-	Kinds::Behaviour::convert_to_enumeration(K); /* if that's possible; does nothing if not */
+	Kinds::Behaviour::convert_to_enumeration(Task::syntax_tree(), K); /* if that's possible; does nothing if not */
 	if ((K) && (Kinds::Behaviour::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
 	property *prn = Properties::Valued::obtain(ParseTree::get_text(p));
@@ -520,12 +520,12 @@ automatically creates it.
 	if ((Kinds::Compare::eq(K, K_action_name)) ||
 		(Kinds::get_construct(K) == CON_activity) ||
 		(Kinds::get_construct(K) == CON_rulebook))
-	Problems::Issue::assertion_problem(_p_(PM_ValueCantHaveVProperties2),
+	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties2),
 		"this is a kind of value which is not allowed to have properties of its own",
 		"because this would cause confusion with variables, which are more useful in "
 		"most cases. (See the Kinds index for which kinds can have properties.)");
 	else
-	Problems::Issue::assertion_problem(_p_(PM_ValueCantHaveVProperties),
+	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties),
 		"this is a kind of value which is not allowed to have properties of its own",
 		"because this would be impossible to store in any sensible way. For instance, "
 		"'A scene has a number called difficulty.' is fine because there are not many "
@@ -580,7 +580,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 	if (Specifications::is_new_variable_like(spec)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
-		Problems::Issue::handmade_problem(_p_(PM_RedundantThatVaries));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RedundantThatVaries));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make a new named property - "
 			"a value associated with an object and which has a name. But you write this "
@@ -592,7 +592,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 	} else if (Specifications::is_description(spec)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
-		Problems::Issue::handmade_problem(_p_(PM_PropertyTooSpecific));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyTooSpecific));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make a new named property - "
 			"a value associated with an object and which has a name. The request seems to "
@@ -604,7 +604,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
-		Problems::Issue::handmade_problem(_p_(PM_PropertyKindUnknown));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindUnknown));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of value which I know (such "
 			"as 'number' or 'text').");
@@ -617,7 +617,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 		if (prn == P_variable_initial_value) return;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
-		Problems::Issue::handmade_problem(_p_(PM_PropertyKindVague));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindVague));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a property is a 'value' does not give me a clear "
 			"enough idea what it will hold. You need to say what kind of value: for instance, "
@@ -632,7 +632,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 	Problems::quote_wording(2, ParseTree::get_text(kind_ref));
 	Problems::quote_property(3, prn);
 	Problems::quote_kind(4, current_kind);
-	Problems::Issue::handmade_problem(_p_(PM_PropertyKindClashes));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindClashes));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' contradicts what I previously thought about the property "
 		"%3, which was that it was %4.");

@@ -188,7 +188,7 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 	#ifdef IF_MODULE
 	action_pattern *ap = RP[1];
 	if (PL::Actions::Patterns::makes_callings(ap)) {
-		Problems::Issue::sentence_problem(_p_(PM_PastActionCalled),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PastActionCalled),
 			"a description of an action cannot both refer to past "
 			"history and also use '(called ...)'",
 			"because that would require Inform in general to remember "
@@ -343,7 +343,7 @@ limit that we were unable to construct a test case for it.
 	spec->down->down->next = NULL; /* truncate to just one */
 	ParseTree::set_text(spec, ParseTree::get_text(current_sentence));
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In %1, the phrase being constructed is just too "
 		"long and complicated, and will need to be simplified. (This "

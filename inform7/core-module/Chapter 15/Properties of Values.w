@@ -85,7 +85,7 @@ void Properties::OfValues::check_allowable(kind *K) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_property(2, prn);
 		Problems::quote_kind(3, K);
-		Problems::Issue::handmade_problem(_p_(PM_AnomalousProperty));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AnomalousProperty));
 		Problems::issue_problem_segment(
 			"Sorry, but I'm going to have to disallow the sentence %1, even "
 			"though it asks for something reasonable. A very small number "

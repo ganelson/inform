@@ -94,7 +94,7 @@ in quick succession, the second run-through does nothing.)
 
 =
 void Sentences::VPs::traverse(void) {
-	ParseTree::traverse(Sentences::VPs::visit);
+	ParseTree::traverse(Task::syntax_tree(), Sentences::VPs::visit);
 }
 void Sentences::VPs::visit(parse_node *p) {
 	if (ParseTree::get_type(p) == TRACE_NT) {
@@ -124,7 +124,7 @@ void Sentences::VPs::visit(parse_node *p) {
 		if (soa == PL::Bibliographic::Release::release_along_with_SMF) err = FALSE;
 		#endif
 		if (err)
-			Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* not usefully testable, anyway */
+			Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable, anyway */
 				"The options file placed in this installation of Inform's folder "
 				"is incorrect, making use of a sentence form which isn't allowed "
 				"in that situation. The options file is only allowed to contain "
@@ -223,7 +223,7 @@ void Sentences::VPs::set_aspect_from_text(wording W, int new_state) {
 
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_UnknownDA));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownDA));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you asked to include '%2' in the "
 		"debugging log, but there is no such debugging log topic.");
@@ -329,7 +329,7 @@ action declarations continue with usually extensive further text:
 		@<Issue two likelihoods problem@>;
 	if (ParseTree::int_annotation(VP_PN, verb_id_ANNOT) == 0)
 		ParseTree::annotate_int(VP_PN, verb_id_ANNOT, ASSERT_VB);
-	ParseTree::graft(VP_PN, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
 
 	if (trace_sentences) {
 		LOG("$T\n", nss_tree_head); STREAM_FLUSH(DL);
@@ -337,7 +337,7 @@ action declarations continue with usually extensive further text:
 	*X = 0;
 
 @<Issue two likelihoods problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_TwoLikelihoods),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TwoLikelihoods),
 		"this sentence seems to have a likelihood qualification on both "
 		"sides of the verb",
 		"which is not allowed. 'The black door certainly is usually open' "
@@ -362,8 +362,8 @@ int Sentences::VPs::nss_tree1(int t, wording VW, parse_node *np1) {
 	parse_node *VP_PN = ParseTree::new(AVERB_NT);
 	ParseTree::set_text(VP_PN, VW);
 	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(VP_PN, nss_tree_head);
-	ParseTree::graft(np1, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
 	return 0;
 }
 
@@ -371,9 +371,9 @@ int Sentences::VPs::nss_tree2(int t, wording VW, parse_node *np1, parse_node *np
 	parse_node *VP_PN = ParseTree::new(AVERB_NT);
 	ParseTree::set_text(VP_PN, VW);
 	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(VP_PN, nss_tree_head);
-	ParseTree::graft(np1, nss_tree_head);
-	ParseTree::graft(np2, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np2, nss_tree_head);
 	return 0;
 }
 
@@ -381,10 +381,10 @@ int Sentences::VPs::nss_tree3(int t, wording VW, parse_node *np1, parse_node *np
 	parse_node *VP_PN = ParseTree::new(AVERB_NT);
 	ParseTree::set_text(VP_PN, VW);
 	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(VP_PN, nss_tree_head);
-	ParseTree::graft(np1, nss_tree_head);
-	ParseTree::graft(np2, nss_tree_head);
-	ParseTree::graft(np3, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np2, nss_tree_head);
+	ParseTree::graft(Task::syntax_tree(), np3, nss_tree_head);
 	return 0;
 }
 
@@ -519,7 +519,7 @@ Problem message than the one they will otherwise receive later on.
 @<Issue PM_NonPresentTense problem@> =
 	if (ParseTree::int_annotation(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
 		ParseTree::annotate_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
-		Problems::Issue::sentence_problem(_p_(PM_NonPresentTense),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonPresentTense),
 			"assertions about the initial state of play must be given in the "
 			"present tense",
 			"so 'The cat is in the basket' is fine but not 'The cat has been in "
@@ -532,7 +532,7 @@ Problem message than the one they will otherwise receive later on.
 @<Issue PM_NegatedVerb1 problem@> =
 	if (ParseTree::int_annotation(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
 		ParseTree::annotate_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
-		Problems::Issue::negative_sentence_problem(_p_(PM_NegatedVerb1));
+		Problems::Issue::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NegatedVerb1));
 	}
 
 @h Logging verb numbers.

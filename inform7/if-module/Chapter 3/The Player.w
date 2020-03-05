@@ -288,7 +288,7 @@ int PL::Player::player_complete_model(int stage) {
 
 @<If the start room is still null, there's no room, so issue a problem@> =
 	if ((start_room == NULL) && (Task::wraps_existing_storyfile() == FALSE)) {
-		Problems::Issue::unlocated_problem(_p_(PM_NoStartRoom),
+		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_NoStartRoom),
 			"There doesn't seem to be any location in this story, so there's "
 			"nowhere for the player to begin. This may be because I have "
 			"misunderstood what was meant to be a room and what wasn't: I "

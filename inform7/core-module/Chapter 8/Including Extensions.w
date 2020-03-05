@@ -28,7 +28,7 @@ void Extensions::Inclusion::traverse(void) {
 		includes_cleared = TRUE;
 		if (problem_count > 0) return;
 		parse_node *elder = NULL;
-		ParseTree::traverse_ppni(Extensions::Inclusion::visit, &elder, &includes_cleared);
+		ParseTree::traverse_ppni(Task::syntax_tree(), Extensions::Inclusion::visit, &elder, &includes_cleared);
 	} while (includes_cleared == FALSE);
 }
 
@@ -45,9 +45,9 @@ void Extensions::Inclusion::visit(parse_node *pn, parse_node **elder, int *inclu
 
 @<Replace INCLUDE node with sentence nodes for any extensions required@> =
 	parse_node *title = pn->down, *author = pn->down->next;
-	int l = ParseTree::begin_inclusion(pn);
+	int l = ParseTree::begin_inclusion(Task::syntax_tree(), pn);
 	Extensions::Inclusion::fulfill_request_to_include_extension(title, author);
-	ParseTree::end_inclusion(l);
+	ParseTree::end_inclusion(Task::syntax_tree(), l);
 
 @ Here we parse requests to include one or more extensions. People mostly
 don't avail themselves of the opportunity, but it is legal to include
@@ -80,7 +80,7 @@ parsed by <platform-qualifier>.
 
 @<Issue PM_IncludeExtQuoted problem@> =
 	<<t1>> = -1; <<t2>> = -1;
-	Problems::Issue::sentence_problem(_p_(PM_IncludeExtQuoted),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_IncludeExtQuoted),
 		"the name of an included extension should be given without double "
 		"quotes in an Include sentence",
 		"so for instance 'Include Oh My God by Janice Bing.' rather than "
@@ -118,7 +118,7 @@ We obtain the extension file structure corresponding to this: it may have
 no text at all (for instance if Inform could not open the file), or it may be
 one we have seen before, thanks to an earlier inclusion. Only when it
 provided genuinely new text will its |body_text_unbroken| flag be set,
-and then we call the sentence-breaker to ParseTree::graft the new material on to the
+and then we call the sentence-breaker to graft the new material on to the
 parse tree.
 
 @<Fulfill request to include a single extension@> =
@@ -203,7 +203,7 @@ can't know at load time what we will ultimately require.)
 		LOG("Author: %W\n", req->work->author_name);
 		LOG("Title: %W\n", req->work->title);
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(_p_(PM_BogusExtension));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
 		Problems::issue_problem_segment(
 			"I can't find the extension requested by: %1. %P"
 			"You can get hold of extensions which people have made public at "
@@ -221,7 +221,7 @@ can't know at load time what we will ultimately require.)
 		}
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_stream(2, versions);
-		Problems::Issue::handmade_problem(_p_(PM_ExtVersionTooLow));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
 		Problems::issue_problem_segment(
 			"I can't find the right version of the extension requested by %1 - "
 			"I can only find %2. %P"
@@ -255,7 +255,7 @@ version number text.
 	if (last_PM_ExtVersionMalformed_at != vwn) {
 		last_PM_ExtVersionMalformed_at = vwn;
 		LOG("Offending word number %d <%N>\n", vwn, vwn);
-		Problems::Issue::sentence_problem(_p_(PM_ExtVersionMalformed),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ExtVersionMalformed),
 			"a version number must have the form N/DDDDDD",
 			"as in the example '2/040426' for release 2 made on 26 April 2004. "
 			"(The DDDDDD part is optional, so '3' is a legal version number too. "
@@ -292,7 +292,7 @@ problem messages if it is malformed.
 
 @<Issue problem@> =
 	<<auth1>> = -1; <<auth2>> = -1;
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible)); // since inbuild's scan catches this first
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); // since inbuild's scan catches this first
 	Problems::issue_problem_segment(
 		"has a misworded 'begins here' sentence ('%2'), which contains "
 		"no 'by'. Recall that every extension should begin with a "
@@ -332,7 +332,7 @@ report this problem at the inclusion line.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_copy(2, E->as_copy);
 	Problems::quote_stream(3, C->parsed_from);
-	Problems::Issue::handmade_problem(_p_(PM_ExtInadequateVM));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtInadequateVM));
 	Problems::issue_problem_segment(
 		"You wrote %1: but my copy of %2 stipulates that it "
 		"is '%3'. That means it can only be used with certain of "
@@ -355,7 +355,7 @@ void Extensions::Inclusion::check_ends_here(parse_node *PN, inform_extension *E)
 		current_sentence = PN;
 		Problems::quote_extension(1, E);
 		Problems::quote_wording(2, ParseTree::get_text(PN));
-		Problems::Issue::handmade_problem(_p_(PM_ExtMisidentifiedEnds));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
 		Problems::issue_problem_segment(
 			"The extension %1, which your source text makes use of, seems to be "
 			"malformed: its 'begins here' sentence correctly identifies it, but "

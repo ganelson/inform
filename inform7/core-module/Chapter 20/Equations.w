@@ -120,7 +120,7 @@ sentence_handler EQUATION_SH_handler = { EQUATION_NT, -1, 0, NULL };
 
 =
 void Equations::traverse_to_create(void) {
-	ParseTree::traverse(Equations::visit_to_create);
+	ParseTree::traverse(Task::syntax_tree(), Equations::visit_to_create);
 }
 void Equations::visit_to_create(parse_node *p) {
 	if (ParseTree::get_type(p) == EQUATION_NT)
@@ -192,7 +192,7 @@ We know that this begins with the word "equation", or we wouldn't be here
 
 @<Issue PM_EquationMisnumbered problem@> =
 	*X = 0;
-	Problems::Issue::sentence_problem(_p_(PM_EquationMisnumbered),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EquationMisnumbered),
 		"the top line of this equation declaration seems not to be a "
 		"legal equation number or name",
 		"and should read something like 'Equation 6', or 'Equation - "
@@ -238,7 +238,7 @@ could be referred to elsewhere in the text by any of three names:
 	if (Wordings::nonempty(NA)) {
 		if (<s-type-expression-or-value>(NA)) {
 			Problems::quote_wording_as_source(1, NA);
-			Problems::Issue::handmade_problem(_p_(PM_EquationMisnamed));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationMisnamed));
 			Problems::issue_problem_segment(
 				"The equation name %1 will have to be disallowed as it is text "
 				"which already has a meaning to Inform. For instance, creating "
@@ -426,7 +426,7 @@ mass, too.
 @<Issue PM_EquationSymbolMisdeclared problem@> =
 	*X = -1;
 	if (!preform_lookahead_mode)
-	Problems::Issue::sentence_problem(_p_(PM_EquationSymbolMisdeclared),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMisdeclared),
 		"the symbols here are not declared properly",
 		"and should each be declared with a kind of value or else an "
 		"actual value.");
@@ -1476,7 +1476,7 @@ section:
 			Problems::quote_text(6, "taking the cube root of");
 			break;
 	}
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"You wrote %1, but that equation seems to involve %6 %4, which is not "
 		"good arithmetic.");
@@ -1507,7 +1507,7 @@ section:
 			Problems::quote_text(6, "combining"); Problems::quote_text(7, "with");
 			break;
 	}
-	Problems::Issue::handmade_problem(_p_(PM_EquationBadArithmetic));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadArithmetic));
 	Problems::issue_problem_segment(
 		"You wrote %1, but that equation seems to involve "
 		"%6 %4 %7 %5, which is not good arithmetic.");
@@ -1609,7 +1609,7 @@ void Equations::emit_solution_inner(wording W, equation *eqn) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
-		Problems::Issue::handmade_problem(_p_(PM_EquationBadTarget));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadTarget));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but '%2' isn't a symbol in that equation.");
@@ -1622,7 +1622,7 @@ void Equations::emit_solution_inner(wording W, equation *eqn) {
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
 		Problems::quote_spec(4, to_solve->var_const);
-		Problems::Issue::handmade_problem(_p_(PM_EquationConstantTarget));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationConstantTarget));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but '%2' isn't something which can vary freely in that equation - "
@@ -1644,7 +1644,7 @@ potentially incorrect. Re-typechecking will recalculate these.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
-		Problems::Issue::handmade_problem(_p_(PM_EquationInsoluble));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationInsoluble));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but I am unable to rearrange the equation in any simple way "
@@ -1689,7 +1689,7 @@ need to exist as local variables in the current stack frame.
 	Problems::quote_wording(2, W);
 	Problems::quote_wording(3, eqn->equation_text);
 	Problems::quote_wording(4, ev->name);
-	Problems::Issue::handmade_problem(_p_(PM_EquationSymbolMissing));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMissing));
 	Problems::issue_problem_segment(
 		"In %1, you asked to let %2 be given by the equation '%3', "
 		"but I can't see what to use for '%4'. The usual idea is "
@@ -1726,7 +1726,7 @@ casting between quasinumerical kinds, we'll have to return to this.)
 		Problems::quote_wording(4, ev->name);
 		Problems::quote_kind(5, K);
 		Problems::quote_kind(6, ev->var_kind);
-		Problems::Issue::handmade_problem(_p_(PM_EquationSymbolWrongKOV));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolWrongKOV));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but in that equation '%4' is supposedly %6 - whereas right "
@@ -1796,7 +1796,7 @@ void Equations::enode_compile_by_emission(equation *eqn, equation_node *tok) {
 void Equations::enode_compilation_error(equation *eqn, equation_node *tok) {
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
-	Problems::Issue::handmade_problem(_p_(PM_HardIntegerRoot));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HardIntegerRoot));
 	Problems::issue_problem_segment(
 		"In %1, you asked me to solve the equation '%2', but that would have "
 		"involved taking a tricky root of a whole number. Using real numbers "

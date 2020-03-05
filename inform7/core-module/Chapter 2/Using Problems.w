@@ -24,7 +24,7 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 
 	if (problem_count > 0) {
 		Problems::Buffer::redirect_problem_stream(problems_file);
-		Problems::issue_problem_begin("*");
+		Problems::issue_problem_begin(Task::syntax_tree(), "*");
 		if (disaster_struck) @<Issue problem summary for an internal error@>
 		else @<Issue problem summary for a run with problem messages@>;
 		Problems::issue_problem_end();
@@ -103,7 +103,7 @@ command line -- deserves the truth.
 	Problems::Buffer::redirect_problem_stream(problems_file);
 	text_stream *OUT = problems_file;
 	HTML_OPEN("p");
-	Problems::issue_problem_begin("**");
+	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
 		"The %5-word source text has successfully been translated "
 		"into a world with %1 %2 and %3 %4, and the index has been "
@@ -114,7 +114,7 @@ command line -- deserves the truth.
 	if (telemetry_recording) {
 		Telemetry::ensure_telemetry_file();
 		Problems::Buffer::redirect_problem_stream(telmy);
-		Problems::issue_problem_begin("**");
+		Problems::issue_problem_begin(Task::syntax_tree(), "**");
 		Problems::issue_problem_segment(
 			"The %5-word source text has successfully been translated "
 			"into a world with %1 %2 and %3 %4, and the index has been "
@@ -124,7 +124,7 @@ command line -- deserves the truth.
 	}
 	Problems::Buffer::redirect_problem_stream(STDOUT);
 	WRITE_TO(STDOUT, "\n");
-	Problems::issue_problem_begin("**");
+	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
 		"The %5-word source text has successfully been translated "
 		"into an intermediate description which can be run through "

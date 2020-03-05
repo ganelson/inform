@@ -3,8 +3,6 @@
 To parse trees which decompose the meaning of excerpts of text,
 and which allow annotations to be made at each node.
 
-@h Definitions.
-
 @h Trees store meanings.
 Most algorithms for parsing natural language involve the construction of
 trees, in which the original words appear as leaves at the top of the tree,
@@ -26,6 +24,51 @@ Some text is ambiguous. Because of that, the tree needs to be capable of
 representing multiple interpretations of the same wording. So nodes also
 have a |next_alternative| link, which -- if used -- forks the tree into
 different possible readings.
+
+@d MAX_ATTACHMENT_STACK_SIZE 100 /* must be at least the number of heading levels plus 3 */
+
+=
+typedef struct parse_node_tree {
+	struct parse_node *root_node;
+	int attachment_sp;
+	struct parse_node *attachment_stack_parent[MAX_ATTACHMENT_STACK_SIZE];
+	struct parse_node *one_off_attachment_point;
+	MEMORY_MANAGEMENT
+} parse_node_tree;
+
+parse_node_tree *ParseTree::new_tree(void) {
+	parse_node_tree *T = CREATE(parse_node_tree);
+	T->root_node = ParseTree::new(ROOT_NT);
+	T->attachment_sp = 0;
+	T->one_off_attachment_point = NULL;
+	ParseTree::push_attachment_point(T, T->root_node);
+	return T;
+}
+
+@ It turns out to be convenient to have a mechanism for inserting sentences,
+the main large-scale structural nodes, into the tree. These come in a
+stream in the source text, but can attach at different levels in the tree,
+since each sentence needs to be a child of the relevant heading node
+under which it falls. We therefore keep a stack of open headings:
+
+=
+int ParseTree::push_attachment_point(parse_node_tree *T, parse_node *to) {
+	int l = T->attachment_sp;
+	if (T->attachment_sp >= MAX_ATTACHMENT_STACK_SIZE) internal_error("attachment stack overflow");
+	T->attachment_stack_parent[T->attachment_sp++] = to;
+	return l;
+}
+
+void ParseTree::pop_attachment_point(parse_node_tree *T, int l) {
+	T->attachment_sp = l;
+}
+
+@ In addition, we can temporarily override this system:
+
+=
+void ParseTree::set_attachment_point_one_off(parse_node_tree *T, parse_node *to) {
+	T->one_off_attachment_point = to;
+}
 
 @h Structural vs specifications.
 Each node has a "node type". About half of the node types are called
@@ -121,7 +164,6 @@ at: it is always a child of the tree root, and is usually a |SENTENCE_NT|
 node, hence the name.
 
 = (early code)
-parse_node *tree_root = NULL;
 parse_node *current_sentence = NULL;
 
 @ The parse tree annotations are miscellaneous, and many are needed only
@@ -611,20 +653,10 @@ int ParseTree::right_edge_of(parse_node *PN) {
 	return r;
 }
 
-@h Planting and grafting the tree.
-Further horticultural metaphors follow: this is where we plant the tree, and
-graft new branches onto it.
-
-=
-void ParseTree::plant_parse_tree(void) {
-	tree_root = ParseTree::new(ROOT_NT);
-	ParseTree::push_attachment_point(tree_root);
-}
-
-@ Every node in the tree is indirectly a child of the root node, which is
-stored in |tree_root|. The tree tends to be very wide: since each sentence in
-the original source text is a different child of the root, the root may have
-5000 or so children, though the maximum depth of the tree might be only 10.
+@ Every node in the tree is indirectly a child of the root node. Such trees
+tends to be very wide: since each sentence in the original source text is a 
+different child of the root, the root may have 5000 or so children, though
+the maximum depth of the tree might be only 10.
 
 That means that perpetually scanning through them in order to add another one
 on the end is inefficient: so we cache the "last sentence" in the tree,
@@ -659,14 +691,14 @@ that is, it returns the previously youngest child of the |parent| (or |NULL|
 if it previously had no children).
 
 =
-parse_node *ParseTree::graft(parse_node *newborn, parse_node *parent) {
+parse_node *ParseTree::graft(parse_node_tree *T, parse_node *newborn, parse_node *parent) {
 	parse_node *elder = NULL;
 	if (newborn == NULL) internal_error("newborn is null in tree ParseTree::graft");
 	if (parent == NULL) internal_error("parent is null in tree ParseTree::graft");
 	/* is the new node to be the only child of the old? */
 	if (parent->down == NULL) { parent->down = newborn; return NULL; }
 	/* can last sentence cacheing save us a long search through many children of root? */
-	if ((parent == tree_root) && (allow_last_sentence_cacheing)) {
+	if ((parent == T->root_node) && (allow_last_sentence_cacheing)) {
 		if (youngest_child_of_root) {
 			elder = youngest_child_of_root;
 			elder->next = newborn;
@@ -702,54 +734,22 @@ parse_node *ParseTree::graft_alternative(parse_node *newborn, parse_node *parent
 @d LOOP_THROUGH_ALTERNATIVES(p, from)
 	for (p = from; p; p = p->next_alternative)
 
-@h Sentence attachment.
-It turns out to be convenient to have a mechanism for inserting sentences,
-the main large-scale structural nodes, into the tree. These come in a
-stream in the source text, but can attach at different levels in the tree,
-since each sentence needs to be a child of the relevant heading node
-under which it falls. We therefore keep a stack of open headings:
-
-@d MAX_ATTACHMENT_STACK_SIZE 100 /* must be at least the number of heading levels plus 3 */
+@ Sentences are attached as so: at the one-off point if set, or at the
+relevant stacked position.
 
 =
-int attachment_sp = 0;
-parse_node *attachment_stack_parent[MAX_ATTACHMENT_STACK_SIZE];
-
-int ParseTree::push_attachment_point(parse_node *to) {
-	int l = attachment_sp;
-	if (attachment_sp >= MAX_ATTACHMENT_STACK_SIZE) internal_error("attachment stack overflow");
-	attachment_stack_parent[attachment_sp++] = to;
-	return l;
-}
-
-void ParseTree::pop_attachment_point(int l) {
-	attachment_sp = l;
-}
-
-@ In addition, we can temporarily override this system:
-
-=
-parse_node *one_off_attachment_point = NULL;
-void ParseTree::set_attachment_point_one_off(parse_node *to) {
-	one_off_attachment_point = to;
-}
-
-@ Sentences are attached as so: at the one-off point if set (which then
-cancels itself), or at the relevant stacked position.
-
-=
-void ParseTree::insert_sentence(parse_node *new) {
-	if (one_off_attachment_point) {
-		parse_node *L = one_off_attachment_point->next;
-		one_off_attachment_point->next = new;
+void ParseTree::insert_sentence(parse_node_tree *T, parse_node *new) {
+	if (T->one_off_attachment_point) {
+		parse_node *L = T->one_off_attachment_point->next;
+		T->one_off_attachment_point->next = new;
 		new->next = L;
-		one_off_attachment_point = new;
+		T->one_off_attachment_point = new;
 	} else {
-		if (attachment_sp == 0) internal_error("no attachment point");
+		if (T->attachment_sp == 0) internal_error("no attachment point");
 		if (ParseTree::get_type(new) == HEADING_NT) @<Adjust attachment point for a heading@>;
-		parse_node *sentence_attachment_point = attachment_stack_parent[attachment_sp-1];
-		ParseTree::graft(new, sentence_attachment_point);
-		if (ParseTree::get_type(new) == HEADING_NT) ParseTree::push_attachment_point(new);
+		parse_node *sentence_attachment_point = T->attachment_stack_parent[T->attachment_sp-1];
+		ParseTree::graft(T, new, sentence_attachment_point);
+		if (ParseTree::get_type(new) == HEADING_NT) ParseTree::push_attachment_point(T, new);
 	}
 }
 
@@ -758,11 +758,11 @@ void ParseTree::insert_sentence(parse_node *new) {
 @<Adjust attachment point for a heading@> =
 	int heading_level = ParseTree::int_annotation(new, heading_level_ANNOT);
 	if (heading_level > 0)
-		for (int i = attachment_sp-1; i>=0; i--) {
-			parse_node *P = attachment_stack_parent[i];
+		for (int i = T->attachment_sp-1; i>=0; i--) {
+			parse_node *P = T->attachment_stack_parent[i];
 			if ((ParseTree::get_type(P) == HEADING_NT) &&
 				(ParseTree::int_annotation(P, heading_level_ANNOT) >= heading_level))
-				attachment_sp = i;
+				T->attachment_sp = i;
 		}
 
 @h Logging the parse tree.
@@ -878,7 +878,7 @@ void ParseTree::log_with_annotations(parse_node *pn) {
 really just for testing purposes:
 
 =
-void ParseTree::write_to_file(filename *F) {
+void ParseTree::write_to_file(parse_node_tree *T, filename *F) {
 	text_stream parse_tree_file;
 	if (STREAM_OPEN_TO_FILE(&parse_tree_file, F, ISO_ENC) == FALSE)
 		internal_error("can't open file to write parse tree");
@@ -886,22 +886,10 @@ void ParseTree::write_to_file(filename *F) {
 	text_stream *save_DL = DL;
 	DL = &parse_tree_file;
 	Streams::enable_debugging(DL);
-	ParseTree::log_tree(DL, tree_root);
+	ParseTree::log_tree(DL, T->root_node);
 	DL = save_DL;
 
 	STREAM_CLOSE(&parse_tree_file);
-}
-
-@ Lastly we can log just the main source text, thus showing the part we might
-be interested in for debugging purposes, and omitting the great bulk of tree
-arising from the Standard Rules:
-
-=
-void ParseTree::write_main_source_to_log(void) {
-	LOG("Parse tree for the main source text only\n");
-	LOG("----------------------------------------\n");
-	ParseTree::log_tree(DL, tree_root->down->next->next->down);
-	LOG("----------------------------------------\n");
 }
 
 @h General traversals.
@@ -910,8 +898,8 @@ each node in the connected component of the tree root. Unlike the logging
 routine above, these all assume that the tree is well-formed.
 
 =
-void ParseTree::traverse(void (*visitor)(parse_node *)) {
-	ParseTree::traverse_from(tree_root, visitor);
+void ParseTree::traverse(parse_node_tree *T, void (*visitor)(parse_node *)) {
+	ParseTree::traverse_from(T->root_node, visitor);
 }
 void ParseTree::traverse_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	parse_node *SCS = current_sentence;
@@ -924,8 +912,8 @@ void ParseTree::traverse_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_dfirst(void (*visitor)(parse_node *)) {
-	ParseTree::traverse_dfirst_from(tree_root, visitor);
+void ParseTree::traverse_dfirst(parse_node_tree *T, void (*visitor)(parse_node *)) {
+	ParseTree::traverse_dfirst_from(T->root_node, visitor);
 }
 void ParseTree::traverse_dfirst_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	parse_node *SCS = current_sentence;
@@ -936,8 +924,8 @@ void ParseTree::traverse_dfirst_from(parse_node *pn, void (*visitor)(parse_node 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_wfirst(void (*visitor)(parse_node *)) {
-	ParseTree::traverse_wfirst_from(tree_root, visitor);
+void ParseTree::traverse_wfirst(parse_node_tree *T, void (*visitor)(parse_node *)) {
+	ParseTree::traverse_wfirst_from(T->root_node, visitor);
 }
 void ParseTree::traverse_wfirst_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	parse_node *SCS = current_sentence;
@@ -948,8 +936,8 @@ void ParseTree::traverse_wfirst_from(parse_node *pn, void (*visitor)(parse_node 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_with_stream(text_stream *OUT, void (*visitor)(text_stream *, parse_node *)) {
-	ParseTree::traverse_from_with_stream(OUT, tree_root, visitor);
+void ParseTree::traverse_with_stream(parse_node_tree *T, text_stream *OUT, void (*visitor)(text_stream *, parse_node *)) {
+	ParseTree::traverse_from_with_stream(OUT, T->root_node, visitor);
 }
 void ParseTree::traverse_from_with_stream(text_stream *OUT, parse_node *pn, void (*visitor)(text_stream *, parse_node *)) {
 	parse_node *SCS = current_sentence;
@@ -963,8 +951,8 @@ void ParseTree::traverse_from_with_stream(text_stream *OUT, parse_node *pn, void
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_int(void (*visitor)(parse_node *, int *), int *X) {
-	ParseTree::traverse_from_int(tree_root, visitor, X);
+void ParseTree::traverse_int(parse_node_tree *T, void (*visitor)(parse_node *, int *), int *X) {
+	ParseTree::traverse_from_int(T->root_node, visitor, X);
 }
 void ParseTree::traverse_from_int(parse_node *pn, void (*visitor)(parse_node *, int *), int *X) {
 	parse_node *SCS = current_sentence;
@@ -977,8 +965,8 @@ void ParseTree::traverse_from_int(parse_node *pn, void (*visitor)(parse_node *, 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_int_int(void (*visitor)(parse_node *, int *, int *), int *X, int *Y) {
-	ParseTree::traverse_from_int_int(tree_root, visitor, X, Y);
+void ParseTree::traverse_int_int(parse_node_tree *T, void (*visitor)(parse_node *, int *, int *), int *X, int *Y) {
+	ParseTree::traverse_from_int_int(T->root_node, visitor, X, Y);
 }
 void ParseTree::traverse_from_int_int(parse_node *pn, void (*visitor)(parse_node *, int *, int *), int *X, int *Y) {
 	parse_node *SCS = current_sentence;
@@ -991,8 +979,8 @@ void ParseTree::traverse_from_int_int(parse_node *pn, void (*visitor)(parse_node
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_ppn(void (*visitor)(parse_node *, parse_node **), parse_node **X) {
-	ParseTree::traverse_from_ppn(tree_root, visitor, X);
+void ParseTree::traverse_ppn(parse_node_tree *T, void (*visitor)(parse_node *, parse_node **), parse_node **X) {
+	ParseTree::traverse_from_ppn(T->root_node, visitor, X);
 }
 void ParseTree::traverse_from_ppn(parse_node *pn, void (*visitor)(parse_node *, parse_node **), parse_node **X) {
 	parse_node *SCS = current_sentence;
@@ -1005,8 +993,8 @@ void ParseTree::traverse_from_ppn(parse_node *pn, void (*visitor)(parse_node *, 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_ppni(void (*visitor)(parse_node *, parse_node **, int *), parse_node **X, int *N) {
-	ParseTree::traverse_from_ppni(tree_root, visitor, X, N);
+void ParseTree::traverse_ppni(parse_node_tree *T, void (*visitor)(parse_node *, parse_node **, int *), parse_node **X, int *N) {
+	ParseTree::traverse_from_ppni(T->root_node, visitor, X, N);
 }
 void ParseTree::traverse_from_ppni(parse_node *pn, void (*visitor)(parse_node *, parse_node **, int *), parse_node **X, int *N) {
 	parse_node *SCS = current_sentence;
@@ -1019,8 +1007,8 @@ void ParseTree::traverse_from_ppni(parse_node *pn, void (*visitor)(parse_node *,
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_up_to_ip(parse_node *end, void (*visitor)(parse_node *, PARSE_TREE_TRAVERSE_TYPE **), PARSE_TREE_TRAVERSE_TYPE **X) {
-	ParseTree::traverse_from_up_to_ip(end, tree_root, visitor, X);
+void ParseTree::traverse_up_to_ip(parse_node_tree *T, parse_node *end, void (*visitor)(parse_node *, PARSE_TREE_TRAVERSE_TYPE **), PARSE_TREE_TRAVERSE_TYPE **X) {
+	ParseTree::traverse_from_up_to_ip(end, T->root_node, visitor, X);
 }
 int ParseTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn, void (*visitor)(parse_node *, PARSE_TREE_TRAVERSE_TYPE **), PARSE_TREE_TRAVERSE_TYPE **X) {
 	parse_node *SCS = current_sentence;
@@ -1039,8 +1027,8 @@ int ParseTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn, void (*vi
 	current_sentence = SCS;
 	return FALSE;
 }
-int ParseTree::traverse_ppn_nocs(int (*visitor)(parse_node *, parse_node *, parse_node **), parse_node **X) {
-	return ParseTree::traverse_from_ppn_nocs(tree_root, visitor, NULL, X);
+int ParseTree::traverse_ppn_nocs(parse_node_tree *T, int (*visitor)(parse_node *, parse_node *, parse_node **), parse_node **X) {
+	return ParseTree::traverse_from_ppn_nocs(T->root_node, visitor, NULL, X);
 }
 int ParseTree::traverse_from_ppn_nocs(parse_node *pn, int (*visitor)(parse_node *, parse_node *, parse_node **), parse_node *from, parse_node **X) {
 	for (; pn; pn = pn->next) {
@@ -1133,13 +1121,13 @@ structure: once we know the tree is safe to climb over, we can wander
 about counting children with impunity.
 
 =
-void ParseTree::verify(void) {
+void ParseTree::verify(parse_node_tree *T) {
 	LOGIF(VERIFICATIONS, "[Verifying initial parse tree]\n");
-	if (tree_root == NULL) {
+	if (T->root_node == NULL) {
 		Errors::set_internal_handler(NULL);
 		internal_error("Root of parse tree NULL");
 	}
-	ParseTree::verify_structure(tree_root);
+	ParseTree::verify_structure(T->root_node);
 	LOGIF(VERIFICATIONS, "[Initial parse tree correct.]\n");
 }
 
@@ -1231,7 +1219,7 @@ void ParseTree::verify_structure_recursively(parse_node *p, parse_node *parent) 
 	}
 
 @<Log this invariant failure@> =
-	if (parent == tree_root) LOG("Failing subtree:\n$T", p);
+	if (ParseTree::is(parent, ROOT_NT)) LOG("Failing subtree:\n$T", p);
 	else LOG("Failing subtree:\n$T", parent);
 	node_errors++;
 
@@ -1378,11 +1366,11 @@ void ParseTree::add_single_pr_inv(parse_node *E, parse_node *N) {
 @h Handling an inclusion.
 
 =
-int ParseTree::begin_inclusion(parse_node *pn) {
+int ParseTree::begin_inclusion(parse_node_tree *T, parse_node *pn) {
 	ParseTree::set_type(pn, INCLUSION_NT); pn->down = NULL;
-	return ParseTree::push_attachment_point(pn);
+	return ParseTree::push_attachment_point(T, pn);
 }
 
-void ParseTree::end_inclusion(int l) {
-	ParseTree::pop_attachment_point(l);
+void ParseTree::end_inclusion(parse_node_tree *T, int l) {
+	ParseTree::pop_attachment_point(T, l);
 }

@@ -191,7 +191,7 @@ and cannot contain information about releasing or about virtual machines.
 int last_indentation_above_level[NO_HEADING_LEVELS], lial_made = FALSE;
 inbuild_work *work_identified = NULL;
 
-heading *Sentences::Headings::declare(parse_node *PN) {
+heading *Sentences::Headings::declare(parse_node_tree *T, parse_node *PN) {
 	heading *h = CREATE(heading);
 
 	h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
@@ -204,7 +204,7 @@ heading *Sentences::Headings::declare(parse_node *PN) {
 
 	if ((PN == NULL) || (Wordings::empty(ParseTree::get_text(PN))))
 		internal_error("heading at textless node");
-	internal_error_if_node_type_wrong(PN, HEADING_NT);
+	internal_error_if_node_type_wrong(T, PN, HEADING_NT);
 	h->sentence_declaring = PN;
 	h->start_location = Wordings::location(ParseTree::get_text(PN));
 	h->level = ParseTree::int_annotation(PN, heading_level_ANNOT);
@@ -312,14 +312,14 @@ allowed; they should probably be withdrawn.
 	...... by ......						==> @<Set for-use-with extension identifier@>
 
 @<Issue PM_UnknownLanguageElement problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_UnknownLanguageElement),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownLanguageElement),
 		"this heading contains a stipulation about the current "
 		"Inform language definition which I can't understand",
 		"and should be something like '(for Glulx external files "
 		"language element only)'.");
 
 @<Issue PM_UnknownVirtualMachine problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_UnknownVirtualMachine),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownVirtualMachine),
 		"this heading contains a stipulation about the Setting "
 		"for story file format which I can't understand",
 		"and should be something like '(for Z-machine version 5 "
@@ -619,7 +619,7 @@ void Sentences::Headings::satisfy_individual_heading_dependency(heading *h) {
 	current_sentence = h->sentence_declaring;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_extension_id(2, h->for_use_with);
-	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnincluded));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnincluded));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
 		"of source text from the extension '%2', but no extension of that "
@@ -649,7 +649,7 @@ void Sentences::Headings::excise_material_under(heading *h, parse_node *transfer
 	}
 
 	Sentences::Headings::suppress_dependencies(hpn);
-	if (transfer_to) ParseTree::graft(hpn->down, transfer_to);
+	if (transfer_to) ParseTree::graft(Task::syntax_tree(), hpn->down, transfer_to);
 	hpn->down = NULL;
 }
 
@@ -678,7 +678,7 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 	Problems::quote_extension_id(2, h2->for_use_with);
 	Problems::quote_source(3, h->sentence_declaring);
 	Problems::quote_extension_id(4, h->for_use_with);
-	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfSubordinate));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfSubordinate));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
 		"of source text from the extension '%2', but that doesn't really make "
@@ -700,7 +700,7 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 			VersionNumbers::to_text(vt, E->as_copy->edition->version);
 			Problems::quote_stream(4, vt);
 		}
-	Problems::Issue::handmade_problem(_p_(PM_HeadingInPlaceOfUnknown));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnknown));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to replace a section "
 		"of source text from the extension '%2', but that extension does "
@@ -711,7 +711,7 @@ void Sentences::Headings::suppress_dependencies(parse_node *pn) {
 
 @<Can't replace heading unless level matches@> =
 	current_sentence = h->sentence_declaring;
-	Problems::Issue::sentence_problem(_p_(PM_UnequalHeadingInPlaceOf),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnequalHeadingInPlaceOf),
 		"these headings are not of the same level",
 		"so it is not possible to make the replacement. (Level here means "
 		"being a Volume, Book, Part, Chapter or Section: for instance, "

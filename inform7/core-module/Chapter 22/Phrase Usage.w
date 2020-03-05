@@ -102,7 +102,7 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	if ((ph_found) && (ph_found != ph)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(_p_(PM_DuplicateRuleName));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_DuplicateRuleName));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would give a name ('%2') to a "
 			"new rule which already belongs to an existing one.");
@@ -151,31 +151,31 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 	...									==> RULE_IN_RULEBOOK_EFF; <<named>> = FALSE
 
 @<Issue PM_NamelessRule problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_NamelessRule),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
 		"there are many rules in Inform",
 		"so you need to give a name: 'this is the abolish dancing rule', say, "
 		"not just 'this is the rule'.");
 
 @<Issue PM_UnarticledRule problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_UnarticledRule),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnarticledRule),
 		"a rule must be given a definite name",
 		"which begins with 'the', just to emphasise that it is the only one "
 		"with this name: 'this is the promote dancing rule', say, not just "
 		"'this is promote dancing rule'.");
 
 @<Issue PM_PluralisedRule problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_PluralisedRule),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PluralisedRule),
 		"a rule must be given a definite name ending in 'rule' not 'rules'",
 		"since the plural is only used for rulebooks, which can of course "
 		"contain many rules at once.");
 
 @<Issue PM_BareTo problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_BareTo),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BareTo),
 		"'to' what? No name is given",
 		"which means that this would not define a new phrase.");
 
 @<Issue PM_DontCallPhrasesWithCalled problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_DontCallPhrasesWithCalled),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DontCallPhrasesWithCalled),
 		"phrases aren't named using 'called'",
 		"and instead use 'this is...'. For example, 'To salute (called saluting)' "
 		"isn't allowed, but 'To salute (this is saluting)' is.");
@@ -288,7 +288,7 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
 	if (<<named>>) @<The preamble parses to a named To phrase@>;
 	if (<now-phrase-preamble>(W)) {
 		if ((coarse_mode) && (no_now_phrases++ == 1)) {
-			Problems::Issue::sentence_problem(_p_(PM_RedefinedNow),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RedefinedNow),
 				"creating new variants on 'now' is not allowed",
 				"because 'now' plays a special role in the language. "
 				"It has a wide-ranging ability to make a condition "
@@ -310,7 +310,7 @@ mode, we can get that value back again if we look it up by name.
 
 	if (coarse_mode) {
 		if (<s-type-expression>(NW)) {
-			Problems::Issue::sentence_problem(_p_(PM_PhraseNameDuplicated),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseNameDuplicated),
 				"that name for this new phrase is not allowed",
 				"because it already has a meaning.");
 		}
@@ -325,7 +325,7 @@ mode, we can get that value back again if we look it up by name.
 			if (ph) current_sentence = Phrases::declaration_node(ph);
 			Problems::quote_source(1, NounPhrases::new_raw(Nouns::nominative(cphr->name)));
 			Problems::quote_wording(2, Nouns::nominative(cphr->name));
-			Problems::Issue::handmade_problem(_p_(PM_NamedGeneric));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
 			Problems::issue_problem_segment(
 				"I can't allow %1, because the phrase it gives a name to "
 				"is generic, that is, it has a kind which is too vague. "
@@ -455,7 +455,7 @@ of the stem, so we have to be very careful:
 
 @<Issue PM_BadRulePreambleWhen problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(_p_(PM_BadRulePreambleWhen));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleWhen));
 	Problems::issue_problem_segment(
 		"The punctuation makes me think %1 should be a definition "
 		"of a phrase or a rule, but it doesn't begin as it should, "
@@ -477,7 +477,7 @@ of the stem, so we have to be very careful:
 	Problems::issue_problem_end();
 
 @<Issue PM_BadRulePreamble problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_BadRulePreamble),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadRulePreamble),
 		"the punctuation here ':' makes me think this should be a definition "
 		"of a phrase and it doesn't begin as it should",
 		"with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:', "
@@ -490,7 +490,7 @@ of the stem, so we have to be very careful:
 @<Disallow the definite article for anonymous rules@> =
 	if ((parsed_rm.article_used == DEF_ART) &&
 		(parsed_rm.placement_requested == MIDDLE_PLACEMENT))
-		Problems::Issue::sentence_problem(_p_(PM_RuleWithDefiniteArticle),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithDefiniteArticle),
 			"a rulebook can contain any number of rules",
 			"so (e.g.) 'the before rule: ...' is disallowed; you should "
 			"write 'a before rule: ...' instead.");
@@ -753,7 +753,7 @@ parser, recording how it most recently failed.
 		}
 
 @<Issue PM_APWithDisjunction problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_APWithDisjunction));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_APWithDisjunction));
 	Problems::issue_problem_segment(
 		"You wrote %1, which seems to introduce a rule, but the "
 		"circumstances ('%2') seem to be too general for me to "
@@ -768,7 +768,7 @@ parser, recording how it most recently failed.
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithNoParticiple problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_APWithNoParticiple));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_APWithNoParticiple));
 	Problems::issue_problem_segment(
 		"You wrote %1, which seems to introduce a rule taking effect "
 		"only '%2'. But this does not look like an action, since "
@@ -778,7 +778,7 @@ parser, recording how it most recently failed.
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithImmiscible problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_APWithImmiscible));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_APWithImmiscible));
 	Problems::issue_problem_segment(
 		"You wrote %1, which seems to introduce a rule taking effect "
 		"only '%2'. But this is a combination of actions which cannot "
@@ -791,7 +791,7 @@ parser, recording how it most recently failed.
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithBadWhen problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_APWithBadWhen));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_APWithBadWhen));
 	wording Q = phud->rule_parameter;
 	int diagnosis = 0;
 	if (<action-when-diagnosis>(Q)) {
@@ -831,7 +831,7 @@ parser, recording how it most recently failed.
 		Problems::quote_text(3,
 			"The part after 'when' (or 'while') was fine, but the earlier words");
 	else Problems::quote_text(3, "But that");
-	Problems::Issue::handmade_problem(_p_(PM_APUnknown));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_APUnknown));
 	Problems::issue_problem_segment(
 		"You wrote %1, which seems to introduce a rule taking effect only if the "
 		"action is '%2'. %3 did not make sense as a description of an action.");
@@ -918,14 +918,14 @@ is used to choose a problem message if the value makes no sense.
 	...									==> @<Issue PM_BadParameter problem@>
 
 @<Issue PM_WhenThePlay problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_WhenThePlay),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_WhenThePlay),
 		"there's no scene called 'the play'",
 		"so I think you need to remove 'the' - Inform has two "
 		"special rulebooks, 'When play begins' and 'When play ends', "
 		"and I think you probably mean to refer to one of those.");
 
 @<Issue PM_BadParameter problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_BadParameter));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadParameter));
 	Problems::issue_problem_segment(
 		"You wrote %1, but the description of the thing(s) to which the rule "
 		"applies ('%2') did not make sense. This is %3 based rulebook, so "
@@ -942,7 +942,7 @@ but the action isn't one we recognise.
 
 
 @<Issue PM_NonActionInPresenceOf problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_NonActionInPresenceOf));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonActionInPresenceOf));
 	Problems::issue_problem_segment(
 		"You wrote %1, but 'in the presence of...' is a clause which can "
 		"only be used to talk about an action: so, for instance, 'waiting "
@@ -956,7 +956,7 @@ but the action isn't one we recognise.
 	Problems::issue_problem_end();
 
 @<Issue PM_NonActionIn problem@> =
-	Problems::Issue::handmade_problem(_p_(PM_NonActionIn));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonActionIn));
 	Problems::issue_problem_segment(
 		"You wrote %1, but 'in...' used in this way should really belong "
 		"to an action: for instance, 'Before waiting in the Library'. "

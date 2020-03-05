@@ -308,7 +308,7 @@ void World::Inferences::verify_prop_states(inference_subject *infs) {
 			Problems::quote_property(2, prn);
 			Problems::quote_kind(3, VK);
 			Problems::quote_kind(4, PK);
-			Problems::Issue::handmade_problem(_p_(PM_LateInferenceProblem));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LateInferenceProblem));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that tries to set the value of the '%2' "
 				"property to %3 - which must be wrong because this property "
@@ -768,7 +768,7 @@ and so clashed are impossible.)
 						Problems::quote_subject(4, infs);
 						Problems::quote_spec(5, i->inferred_property_value);
 						Problems::quote_spec(6, list->inferred_property_value);
-						Problems::Issue::handmade_problem(_p_(PM_RelationContradiction2));
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction2));
 						Problems::issue_problem_segment(
 							"I'm finding a contradiction at the sentence %1, "
 							"because it means I can't set up %3. "
@@ -783,7 +783,7 @@ and so clashed are impossible.)
 						Problems::quote_subject(4, infs);
 						Problems::quote_spec(5, i->inferred_property_value);
 						Problems::quote_spec(6, list->inferred_property_value);
-						Problems::Issue::handmade_problem(_p_(PM_RelationContradiction));
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction));
 						Problems::issue_problem_segment(
 							"I'm finding a contradiction at the sentences %1 and %2, "
 							"because between them they set up rival versions of %3. "

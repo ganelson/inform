@@ -37,7 +37,7 @@ reserves no memory.
 label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module *cm) {
 	if (Str::len(name) > MAX_NAMESPACE_PREFIX_LENGTH) {
 		#ifdef CORE_MODULE
-		Problems::Issue::sentence_problem(_p_(PM_LabelNamespaceTooLong),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LabelNamespaceTooLong),
 			"a label namespace prefix is too long",
 			"and should be shortened to a few alphabetic characters.");
 		#endif

@@ -48,7 +48,7 @@ int PL::Sounds::sounds_new_named_instance_notify(instance *nc) {
 	kind *K = Instances::to_kind(nc);
 	if (Kinds::Compare::eq(K, K_sound_name)) {
 		if (allow_sound_creations == FALSE)
-			Problems::Issue::sentence_problem(_p_(PM_BackdoorSoundCreation),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorSoundCreation),
 				"this is not the way to create a new sound name",
 				"which should be done with a special 'Sound ... is the file ...' "
 				"sentence.");
@@ -111,7 +111,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 	...						==> @<Issue PM_SoundNotTextual problem@>;
 
 @<Issue PM_SoundNotTextual problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_SoundNotTextual),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SoundNotTextual),
 		"a sound effect can only be declared as a quoted file name",
 		"which should be the name of an AIFF or OGG file inside the Sounds "
 		"subfolder of the project's .materials folder. For instance, 'Sound "
@@ -131,7 +131,7 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 
 	if ((<s-value>(F)) &&
 		(Rvalues::is_CONSTANT_of_kind(<<rp>>, K_sound_name))) {
-		Problems::Issue::sentence_problem(_p_(PM_SoundDuplicate),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SoundDuplicate),
 			"this is already the name of a sound effect",
 			"so there must be some duplication somewhere.");
 		return;

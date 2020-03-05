@@ -61,6 +61,7 @@ void Unit::start_diagrams(void) {
 	ParseTree::md((parse_tree_node_type) { UNKNOWN_NT, "UNKNOWN_NT", 0, INFTY, L2_NCAT, 0 });
 }
 
+parse_node_tree *syntax_tree = NULL;
 void Unit::test_diagrams(text_stream *arg) {
 	Streams::enable_debugging(STDOUT);
 	filename *F = Filenames::from_text(arg);
@@ -68,15 +69,15 @@ void Unit::test_diagrams(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
-	ParseTree::plant_parse_tree();
+	syntax_tree = ParseTree::new_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(W, FALSE, NULL, -1);
+	Sentences::break(syntax_tree, W, FALSE, NULL, -1);
 
 	text_stream *save_DL = DL;
 	DL = STDOUT;
 	Streams::enable_debugging(DL);
-	ParseTree::traverse(Unit::diagram);
-	ParseTree::log_tree(DL, tree_root);
+	ParseTree::traverse(syntax_tree, Unit::diagram);
+	ParseTree::log_tree(DL, syntax_tree->root_node);
 	DL = save_DL;
 }
 
@@ -96,7 +97,7 @@ void Unit::diagram(parse_node *p) {
 			Verbs::add_form(vi, NULL, NULL, VerbMeanings::new(vc, NULL), SVO_FS_BIT);
 		} else {
 			if (<unexceptional-sentence>(W)) {
-				ParseTree::graft(<<rp>>, p);
+				ParseTree::graft(syntax_tree, <<rp>>, p);
 			} else {
 				PRINT("Failed: %W\n", W);
 			}

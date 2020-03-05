@@ -18,6 +18,7 @@ typedef struct inform_extension {
 	struct source_file *read_into_file; /* Which source file loaded this */
 	struct inbuild_requirement *must_satisfy;
 	int loaded_from_built_in_area; /* Located within Inform application */
+	struct parse_node_tree *syntax_tree;
 	#ifdef CORE_MODULE
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
 	#endif
@@ -39,6 +40,7 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	E->extra_credit_as_lexed = NULL;	
 	E->must_satisfy = NULL;
 	E->loaded_from_built_in_area = FALSE;
+	E->syntax_tree = ParseTree::new_tree();
 	#ifdef CORE_MODULE
 	E->inclusion_sentence = NULL;
 	#endif
@@ -309,7 +311,10 @@ void Extensions::read_source_text_for(inform_extension *E) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		wording EXW = E->read_into_file->text_read;
 		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
-		Sentences::break(E->body_text, TRUE, E->as_copy, -1);
+		#ifdef CORE_MODULE
+		E->syntax_tree = Task::syntax_tree();
+		#endif
+		Sentences::break(E->syntax_tree, E->body_text, TRUE, E->as_copy, -1);
 		E->body_text_unbroken = FALSE;
 	}
 }

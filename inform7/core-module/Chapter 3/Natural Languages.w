@@ -140,7 +140,7 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 	else
 		Problems::quote_wide_text(1, Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
 	Problems::quote_text(2, message);
-	Problems::Issue::handmade_problem(_p_(Untestable));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 	if (WordAssemblages::nonempty(base_text)) {
 		Problems::quote_wa(5, &base_text);
 		Problems::issue_problem_segment(

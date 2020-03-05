@@ -23,8 +23,8 @@ on childless nodes, it cannot ever act on the same node twice.
 =
 void Sentences::RuleSubtrees::register_recently_lexed_phrases(void) {
 	if (problem_count > 0) return; /* for then the tree is perhaps broken anyway */
-	ParseTree::traverse(Sentences::RuleSubtrees::demote_command_nodes);
-	ParseTree::traverse(Sentences::RuleSubtrees::detect_loose_command_nodes);
+	ParseTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::demote_command_nodes);
+	ParseTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::detect_loose_command_nodes);
 }
 
 @ Command nodes are demoted to be children of routine nodes:
@@ -155,7 +155,7 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 		current_sentence = routine_node;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, mispunctuates_begin_end_syntax);
-		Problems::Issue::handmade_problem(_p_(PM_BadOldSyntax));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadOldSyntax));
 		Problems::issue_problem_segment(
 			"The rule or phrase definition %1 seems to use indentation and "
 			"colons to group phrases together into 'if', 'repeat' or 'while' "
@@ -170,7 +170,7 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, uses_colon_syntax);
 		Problems::quote_source(3, uses_begin_end_syntax);
-		Problems::Issue::handmade_problem(_p_(PM_BothBlockSyntaxes));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BothBlockSyntaxes));
 		Problems::issue_problem_segment(
 			"The rule or phrase definition %1 seems to use both ways of grouping "
 			"phrases together into 'if', 'repeat' and 'while' blocks at once. "
@@ -192,7 +192,7 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 		current_sentence = routine_node;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, requires_colon_syntax);
-		Problems::Issue::handmade_problem(_p_(PM_NotInOldSyntax));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotInOldSyntax));
 		Problems::issue_problem_segment(
 			"The construction %2, in the rule or phrase definition %1, "
 			"is only allowed if the rule is written in the 'new' format, "
@@ -377,7 +377,7 @@ report more or less helpfully.
 @<Issue problem message for failing to start flush on the left margin@> =
 	current_sentence = routine_node;
 	Problems::quote_source_eliding_begin(1, current_sentence);
-	Problems::Issue::handmade_problem(_p_(PM_NonflushRule));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonflushRule));
 	Problems::issue_problem_segment(
 		"The phrase or rule definition %1 is written using tab indentations "
 		"to show how its phrases are to be grouped together. But in that "
@@ -542,7 +542,7 @@ indentation implicitly requires it.
 		current_sentence = routine_node;
 		Problems::quote_source_eliding_begin(1, current_sentence);
 		Problems::quote_source_eliding_begin(2, first_misaligned_phrase);
-		Problems::Issue::handmade_problem(_p_(PM_MisalignedIndentation));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MisalignedIndentation));
 		Problems::issue_problem_segment(
 			"The phrase or rule definition %1 is written using the 'colon "
 			"and indentation' syntax for its 'if's, 'repeat's and 'while's, "
@@ -570,7 +570,7 @@ indentation implicitly requires it.
 		current_sentence = routine_node;
 		Problems::quote_source_eliding_begin(1, current_sentence);
 		Problems::quote_source_eliding_begin(2, first_overindented_phrase);
-		Problems::Issue::handmade_problem(_p_(PM_TooMuchIndentation));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TooMuchIndentation));
 		Problems::issue_problem_segment(
 			"The phrase or rule definition %1 is written using tab indentations "
 			"to show how its phrases are to be grouped together. But the level "
@@ -584,7 +584,7 @@ indentation implicitly requires it.
 		current_sentence = routine_node;
 		Problems::quote_source_eliding_begin(1, current_sentence);
 		Problems::quote_source_eliding_begin(2, run_on_at);
-		Problems::Issue::handmade_problem(_p_(PM_RunOnsInTabbedRoutine));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RunOnsInTabbedRoutine));
 		Problems::issue_problem_segment(
 			"The phrase or rule definition %1 is written using the 'colon "
 			"and indentation' syntax for its 'if's, 'repeat's and 'while's, "
@@ -605,7 +605,7 @@ think of a sensible use.
 		Problems::quote_source_eliding_begin(1, current_sentence);
 		Problems::quote_source_eliding_begin(2, prev);
 		Problems::quote_source_eliding_begin(3, p);
-		Problems::Issue::handmade_problem(_p_(PM_EmptyIndentedBlock));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyIndentedBlock));
 		Problems::issue_problem_segment(
 			"The phrase or rule definition %1 is written using the 'colon "
 			"and indentation' syntax for its 'if's, 'repeat's and 'while's, "
@@ -623,7 +623,7 @@ think of a sensible use.
 		current_sentence = routine_node;
 		Problems::quote_source_eliding_begin(1, current_sentence);
 		Problems::quote_source_eliding_begin(2, p);
-		Problems::Issue::handmade_problem(_p_(PM_NonCaseInIf));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonCaseInIf));
 		Problems::issue_problem_segment(
 			"In the phrase or rule definition %1, the phrase %2 came as a "
 			"surprise since it was not a case in an 'if X is...' but was "
@@ -636,7 +636,7 @@ think of a sensible use.
 		current_sentence = p;
 		if (csp->subordinate_to == if_CSP) {
 			LOG("$T\n", routine_node);
-			Problems::Issue::sentence_problem(_p_(PM_MisalignedOtherwise),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MisalignedOtherwise),
 				"this doesn't match a corresponding 'if'",
 				"as it must. An 'otherwise' must be vertically underneath the "
 				"'if' to which it corresponds, at the same indentation, and "
@@ -644,7 +644,7 @@ think of a sensible use.
 				"'if' must do the same.");
 		}
 		if (csp->subordinate_to == switch_CSP)
-			Problems::Issue::sentence_problem(_p_(PM_MisalignedCase),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MisalignedCase),
 				"this seems to be misplaced since it is not a case within an "
 				"'if X is...'",
 				"as it must be. Each case must be placed one tab stop in from "
@@ -657,12 +657,12 @@ think of a sensible use.
 	if ((indent_misalign == FALSE) && (suppress_further_problems == FALSE)) {
 		current_sentence = p;
 		if ((csp == default_case_CSP) || (csp == case_CSP))
-			Problems::Issue::sentence_problem(_p_(PM_DefaultCaseNotLast),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultCaseNotLast),
 				"'otherwise' must be the last clause if an 'if ... is:'",
 				"and in particular it has to come after all the '-- V:' "
 				"case values supplied.");
 		else
-			Problems::Issue::sentence_problem(_p_(PM_MisarrangedOtherwise),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MisarrangedOtherwise),
 				"this seems to be misplaced since it is out of sequence within its 'if'",
 				"with an 'otherwise if...' coming after the more general 'otherwise' "
 				"rather than before. (Note that an 'otherwise' or 'otherwise if' must "
@@ -698,7 +698,7 @@ whichever syntax is used. We finally make a meaningful tree out of it.
 	}
 	if (overflow_point) {
 		current_sentence = overflow_point;
-		Problems::Issue::sentence_problem(_p_(PM_BlockNestingTooDeep),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BlockNestingTooDeep),
 			"compound phrases have gone too deep",
 			"perhaps because many have begun but not been properly ended?");
 	}
@@ -730,7 +730,7 @@ whichever syntax is used. We finally make a meaningful tree out of it.
 	parse_node *to = attach_points[attach_point_sp-1];
 	if ((go_up) && (go_down) && (attach_owners[attach_point_sp-1]))
 		to = attach_owners[attach_point_sp-1];
-	ParseTree::graft(pn, to);
+	ParseTree::graft(Task::syntax_tree(), pn, to);
 
 @<Move the attachment point down in the tree@> =
 	parse_node *next_attach_point = pn;
@@ -812,7 +812,7 @@ and always passing these checks. But the problem messages are kept for the sake
 of old-format source text, and for refuseniks.
 
 @<Issue problem for end without begin@> =
-	Problems::Issue::sentence_problem_with_note(_p_(PM_EndWithoutBegin),
+	Problems::Issue::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_EndWithoutBegin),
 		"this is an 'end' with no matching 'begin'",
 		"which should not happen: every phrase like 'if ... begin;' "
 		"should eventually be followed by its bookend 'end if'. "
@@ -825,14 +825,14 @@ of old-format source text, and for refuseniks.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wide_text(2, prior->keyword);
 	Problems::quote_source(3, prev_p);
-	Problems::Issue::handmade_problem(_p_(PM_WrongEnd));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WrongEnd));
 	Problems::issue_problem_segment(
 		"You wrote %1, but the end I was expecting next was 'end %2', "
 		"finishing the block you began with %3.");
 	Problems::issue_problem_end();
 
 @<Issue problem for begin without end@> =
-	Problems::Issue::sentence_problem(_p_(PM_BeginWithoutEnd),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BeginWithoutEnd),
 		"the definition of the phrase ended with no matching 'end' for "
 		"this 'begin'",
 		"bearing in mind that every begin must have a matching end, and "
@@ -841,11 +841,11 @@ of old-format source text, and for refuseniks.
 
 @<Choose a problem for a loose clause@> =
 	if (csp == otherwise_CSP)
-		Problems::Issue::sentence_problem(_p_(PM_OtherwiseWithoutIf),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OtherwiseWithoutIf),
 			"this is an 'else' or 'otherwise' with no matching 'if' (or 'unless')",
 			"which must be wrong.");
 	else if (csp == otherwise_if_CSP)
-		Problems::Issue::sentence_problem(_p_(PM_OtherwiseIfMisplaced),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OtherwiseIfMisplaced),
 			"the 'otherwise if' clause here seems not to be occurring inside "
 			"a large 'if'",
 			"and seems to be freestanding instead. (Though 'otherwise ...' can "
@@ -853,7 +853,7 @@ of old-format source text, and for refuseniks.
 			"course of action, 'otherwise if...' is a different matter, and is "
 			"used to divide up larger-scale instructions.)");
 	else
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this clause can't occur outside of a control phrase",
 			"which suggests that the structure of this routine is wrong.");
 
@@ -861,13 +861,13 @@ of old-format source text, and for refuseniks.
 	if ((csp == otherwise_CSP) || (csp == otherwise_if_CSP)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wide_text(2, context->keyword);
-		Problems::Issue::handmade_problem(_p_(PM_OtherwiseInNonIf));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_OtherwiseInNonIf));
 		Problems::issue_problem_segment(
 			"The %1 here did not make sense inside a "
 			"'%2' structure: it's provided for 'if' (or 'unless').");
 		Problems::issue_problem_end();
 	} else
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this clause is wrong for the phrase containing it",
 			"which suggests that the structure of this routine is wrong.");
 
@@ -882,19 +882,19 @@ of old-format source text, and for refuseniks.
 			oi = TRUE;
 	}
 	if (doubled)
-		Problems::Issue::sentence_problem(_p_(PM_DoubleOtherwise),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DoubleOtherwise),
 			"that makes two unconditional 'otherwise' or 'else' clauses "
 			"for this 'if'",
 			"which is forbidden since 'otherwise' is meant to be a single "
 			"(optional) catch-all clause at the end.");
 	else if (oi)
-		Problems::Issue::sentence_problem(_p_(PM_OtherwiseIfAfterOtherwise),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OtherwiseIfAfterOtherwise),
 			"this seems to be misplaced since it is out of sequence within its 'if'",
 			"with an 'otherwise if...' coming after the more general 'otherwise' "
 			"rather than before. (If there's an 'otherwise' clause, it has to be "
 			"the last clause of the 'if'.)");
 	else
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"'otherwise' must be the last clause",
 			"but it seems not to be.");
 
@@ -902,7 +902,7 @@ of old-format source text, and for refuseniks.
 and the structure of that was checked at indentation time, but just in case.
 
 @<Issue a problem for the default case not occurring last@> =
-	Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 		"'otherwise' must be the last clause",
 		"which must be wrong.");
 
@@ -1097,7 +1097,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 		} else {
 			parse_node *say_term_node = ParseTree::new(INVOCATION_LIST_SAY_NT);
 			ParseTree::set_text(say_term_node, W);
-			ParseTree::graft(say_term_node, cb_node);
+			ParseTree::graft(Task::syntax_tree(), say_term_node, cb_node);
 		}
 	}
 
@@ -1122,7 +1122,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 
 @<Issue problem message for comma in a substitution@> =
 	it_is_not_worth_adding = TRUE;
-	Problems::Issue::sentence_problem(_p_(PM_TSWithComma),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithComma),
 		"a substitution contains a comma ','",
 		"which is against the rules, because 'say' is a special phrase in "
 		"which the comma divides items in a list of things to say, and so it "
@@ -1139,7 +1139,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 	it_is_not_worth_adding = TRUE;
 	if ((p[k+1] == 'u') && (p[k+2] == 'n') && (p[k+3] == 'i') && (p[k+4] == 'c') &&
 		(p[k+5] == 'o') && (p[k+6] == 'd') && (p[k+7] == 'e') && (p[k+8] == ' ')) {
-		Problems::Issue::sentence_problem(_p_(PM_NestedUSubstitution),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NestedUSubstitution),
 			"the text here contains one substitution '[...]' inside another",
 			"which is not allowed. Actually, it looks as if you might have got "
 			"into this by typing an exotic character as part of the name of a "
@@ -1147,7 +1147,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 			"for the appropriate Unicode character code number N. Either way - "
 			"this isn't allowed.");
 	} else {
-		Problems::Issue::sentence_problem(_p_(PM_NestedSubstitution),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NestedSubstitution),
 			"the text here contains one substitution '[...]' inside another",
 			"which is not allowed. (If you just wanted a literal open and closed "
 			"square bracket, use '[bracket]' and '[close bracket]'.)");
@@ -1157,7 +1157,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 
 @<Issue problem message for unclosed substitution@> =
 	it_is_not_worth_adding = TRUE;
-	Problems::Issue::sentence_problem(_p_(PM_UnclosedSubstitution),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnclosedSubstitution),
 		"the text here uses an open square bracket '[', which opens a substitution "
 		"in the text, but doesn't close it again",
 		"so that the result is malformed. (If you just wanted a literal open "
@@ -1167,7 +1167,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 
 @<Issue problem message for unopened substitution@> =
 	it_is_not_worth_adding = TRUE;
-	Problems::Issue::sentence_problem(_p_(PM_UnopenedSubstitution),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnopenedSubstitution),
 		"the text here uses a close square bracket ']', which closes a substitution "
 		"in the text, but never actually opened it",
 		"with a matching '['. (If you just wanted a literal close square bracket, "
@@ -1202,7 +1202,7 @@ to parse the list.
 
 @<Issue PM_TSWithPunctuation problem@> =
 	it_is_not_worth_adding = TRUE;
-	Problems::Issue::sentence_problem(_p_(PM_TSWithPunctuation),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithPunctuation),
 		"a substitution contains a '.', ':' or ';'",
 		"which suggests that a close square bracket ']' may have gone astray.");
 	it_is_not_worth_adding = FALSE;
@@ -1211,7 +1211,7 @@ to parse the list.
 
 @<Issue PM_EmptySubstitution problem@> =
 	it_is_not_worth_adding = TRUE;
-	Problems::Issue::sentence_problem(_p_(PM_EmptySubstitution),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EmptySubstitution),
 		"the text here contains an empty substitution '[]'",
 		"which is not allowed. To say nothing - well, say nothing.");
 	it_is_not_worth_adding = FALSE;

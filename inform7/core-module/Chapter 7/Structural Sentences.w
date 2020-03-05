@@ -33,8 +33,8 @@ void StructuralSentences::annotate_new_sentence(parse_node *new) {
 @d NEW_HEADING_HANDLER StructuralSentences::new_heading
 
 =
-int StructuralSentences::new_heading(parse_node *new) {
-	heading *h = Sentences::Headings::declare(new);
+int StructuralSentences::new_heading(parse_node_tree *T, parse_node *new) {
+	heading *h = Sentences::Headings::declare(T, new);
 	ParseTree::set_embodying_heading(new, h);
 	return Sentences::Headings::include_material(h);
 }
@@ -58,7 +58,7 @@ void StructuralSentences::new_beginend(parse_node *new, inbuild_copy *C) {
 
 =
 void StructuralSentences::new_language(wording W) {
-	Problems::Issue::sentence_problem(_p_(PM_UseElementWithdrawn),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UseElementWithdrawn),
 		"the ability to activate or deactivate compiler elements in source text has been withdrawn",
 		"in favour of a new system with Inform kits.");
 }
@@ -67,11 +67,11 @@ void StructuralSentences::new_language(wording W) {
 variables.
 
 =
-void StructuralSentences::add_inventions_heading(void) {
+void StructuralSentences::add_inventions_heading(parse_node_tree *T) {
 	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
 	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
 	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-	ParseTree::insert_sentence(implicit_heading);
-	Sentences::Headings::declare(implicit_heading);
+	ParseTree::insert_sentence(T, implicit_heading);
+	Sentences::Headings::declare(T, implicit_heading);
 }

@@ -159,7 +159,7 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 				Phrases::Usage::log(phud);
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, PW);
-				Problems::Issue::handmade_problem(_p_(PM_MultipleCCR));
+				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MultipleCCR));
 				Problems::issue_problem_segment(
 					"You wrote %1, but the situation this refers to ('%2') is "
 					"not a single action. Rules in the form of 'check', 'carry "

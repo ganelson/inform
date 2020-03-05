@@ -76,13 +76,13 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 
 @<Issue PM_RelationWithEitherOrProperty problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(_p_(PM_RelationWithEitherOrProperty),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithEitherOrProperty),
 		"verbs can only set properties with values",
 		"not either/or properties like this one.");
 
 @<Issue PM_RelationWithBadProperty problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(_p_(PM_RelationWithBadProperty),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithBadProperty),
 		"that doesn't seem to be a property",
 		"perhaps because you haven't defined it yet?");
 

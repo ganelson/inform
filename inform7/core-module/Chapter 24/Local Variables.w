@@ -198,7 +198,7 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 @<Throw a problem for an unsuitable name@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_CalledThe));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CalledThe));
 	Problems::issue_problem_segment(
 		"In %1, you seem to be giving a temporary value a pretty "
 		"odd name - '%2', which I won't allow because it would lead to too "
@@ -764,7 +764,7 @@ name or a description.
 	*X = 0; *XP = NULL;
 	if (!(Wordings::eq(PM_CalledWithDash_wording, W))) {
 		PM_CalledWithDash_wording = W;
-		Problems::Issue::sentence_problem(_p_(PM_CalledWithDash),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CalledWithDash),
 			"a '(called ...)' name is not allowed to include a hyphen",
 			"since this would look misleadingly like a declaration of kind of value it has.");
 	}
@@ -779,7 +779,7 @@ name or a description.
 			Problems::quote_text(3, "a kind");
 		else
 			Problems::quote_kind_of(3, already);
-		Problems::Issue::handmade_problem(_p_(PM_CalledOverloaded));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CalledOverloaded));
 		Problems::issue_problem_segment(
 			"In %1, it looks as if '%2' is going to be a temporary name which something "
 			"will be called. But I can't allow that, because it already has a meaning "
@@ -901,7 +901,7 @@ int LocalVariables::protected(local_variable *lvar) {
 	if ((lvar->lv_purpose == LET_VALUE_LV) && (lvar->protected)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, lvar->varname);
-		Problems::Issue::handmade_problem(_p_(PM_ProtectedFromLet));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ProtectedFromLet));
 		Problems::issue_problem_segment(
 			"In %1, it looks as if you want to use 'let' to change the value of "
 			"the temporary variable '%2'. Ordinarily that would be fine, but it's "
@@ -997,7 +997,7 @@ local_variable *callings_in_condition[MAX_CALLINGS_IN_MATCH];
 void LocalVariables::add_calling_to_condition(local_variable *lvar) {
 	if (current_session_number < 0) internal_error("no PM session");
 	if (callings_in_condition_sp + 1 == MAX_CALLINGS_IN_MATCH)
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible), /* or very hard, anyway */
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or very hard, anyway */
 		"that makes too complicated a condition to test",
 		"with all of those clauses involving 'called' values.");
 	else {

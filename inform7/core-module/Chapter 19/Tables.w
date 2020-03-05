@@ -73,7 +73,7 @@ established names of tables and columns:
 
 =
 void Tables::traverse_to_create(void) {
-	ParseTree::traverse(Tables::visit_to_create);
+	ParseTree::traverse(Task::syntax_tree(), Tables::visit_to_create);
 }
 void Tables::visit_to_create(parse_node *p) {
 	if (ParseTree::get_type(p) == TABLE_NT)
@@ -110,7 +110,7 @@ void Tables::check_tables_for_kind_clashes(void) {
 			(Kinds::Compare::lt(<<rp>>, K_object))) {
 			Problems::quote_table(1, t);
 			Problems::quote_wording(2, t->table_name_text);
-			Problems::Issue::handmade_problem(_p_(PM_TableCoincidesWithKind));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableCoincidesWithKind));
 			Problems::issue_problem_segment(
 				"The name %1 will have to be disallowed because '%2' is also the "
 				"name of a kind, or of the plural of a kind. (For instance, writing "
@@ -261,7 +261,7 @@ two forms in any case.
 
 @<Issue PM_TableMisnamed problem@> =
 	*X = TABLE_HAS_ONLY_NAME; /* for recovery */
-	Problems::Issue::sentence_problem(_p_(PM_TableMisnamed),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableMisnamed),
 		"this isn't allowed as the name of a Table",
 		"since a table is required either to have a number, or to be a table 'of' "
 		"something (or both). For example: 'Table 5', 'Table of Blue Meanies', and "
@@ -333,7 +333,7 @@ void Tables::create_table(parse_node *PN) {
 @ Changes to the lexer mean that this shouldn't happen, but just in case:
 
 @<Reject this lexically malformed table declaration@> =
-	Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 		"this table does not strictly speaking start a paragraph",
 		"and I'm afraid we need to speak strictly here. Even a comment coming before "
 		"the start of the table is too much.");
@@ -362,7 +362,7 @@ void Tables::create_table(parse_node *PN) {
 @<Require the table name not to tread on some other value@> =
 	if (<s-type-expression-or-value>(t->table_name_text)) {
 		Problems::quote_wording_as_source(1, t->table_name_text);
-		Problems::Issue::handmade_problem(_p_(PM_TableNameAmbiguous));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameAmbiguous));
 		Problems::issue_problem_segment(
 			"The table name %1 will have to be disallowed as it is text which "
 			"already has a meaning to Inform. For instance, creating the 'Table "
@@ -414,7 +414,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 @<Require the previous table to exist@> =
 	if (existing_table_with_same_name == NULL) {
 		Problems::quote_table(1, t);
-		Problems::Issue::handmade_problem(_p_(PM_TableNotContinuation));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNotContinuation));
 		Problems::issue_problem_segment(
 			"It looks as if %1 is meant to be related to an existing table, "
 			"but I can't find one if it is. %P"
@@ -430,7 +430,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 		Problems::quote_table(1, t);
 		Problems::quote_table(2, existing_table_with_same_name);
 		Problems::quote_wording(3, HW);
-		Problems::Issue::handmade_problem(_p_(PM_TableNameDuplicate));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameDuplicate));
 		Problems::issue_problem_segment(
 			"I can't create %1 because its name overlaps with one that already "
 			"exists: %2. %P"
@@ -542,7 +542,7 @@ a node in the parse tree representing the column's use within this table.
 			"only %6.)");
 	} else {
 		ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, FALSE);
-		ParseTree::graft(cell, t->columns[col_count].entries);
+		ParseTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
 	}
 
 @ If a row finishes early, we pad it out with blanks.
@@ -551,7 +551,7 @@ a node in the parse tree representing the column's use within this table.
 	while (col_count < t->no_columns) { /* which can only happen on data rows */
 		parse_node *cell = Tables::empty_cell_node();
 		ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, TRUE);
-		ParseTree::graft(cell, t->columns[col_count].entries);
+		ParseTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
 		col_count++;
 	}
 
@@ -608,14 +608,14 @@ the new table's rows onto the ends of the old table's columns.
 		int j;
 		for (j=0; j<old_t->no_columns; j++)
 			if (old_to_new[j] >= 0) {
-				ParseTree::graft(t->columns[old_to_new[j]].entries->down,
+				ParseTree::graft(Task::syntax_tree(), t->columns[old_to_new[j]].entries->down,
 					old_t->columns[j].entries);
 			} else {
 				int i;
 				for (i=1; i<row_count; i++) { /* from 1 to omit the column headings */
 					parse_node *blank = Tables::empty_cell_node();
 					ParseTree::annotate_int(blank, table_cell_unspecified_ANNOT, TRUE);
-					ParseTree::graft(blank, old_t->columns[j].entries);
+					ParseTree::graft(Task::syntax_tree(), blank, old_t->columns[j].entries);
 				}
 			}
 	}
@@ -633,7 +633,7 @@ wants a row for each man, and the continuation wants a row for each woman.
 			Problems::quote_table(2, old_t);
 			Problems::quote_wording(3, old_t->blank_rows_for_each_text);
 			Problems::quote_wording(4, t->blank_rows_for_each_text);
-			Problems::Issue::handmade_problem(_p_(PM_TableContinuationContradicts));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationContradicts));
 			Problems::issue_problem_segment(
 				"The table %1 says that it should have a blank row for each "
 				"%4, but the original %2 already says it has a blank for each "
@@ -694,7 +694,7 @@ used in continuation rows for columns not mentioned.)
 		Problems::quote_table(2, old_t);
 		if (missing == 1) Problems::quote_text(3, "a column");
 		else Problems::quote_text(3, "columns");
-		Problems::Issue::handmade_problem(_p_(PM_TableContinuationAddsCols));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationAddsCols));
 		Problems::issue_problem_segment(
 			"The table %1 won't work as a continuation, because it contains "
 			"%3 not found in the original %2.");
@@ -719,7 +719,7 @@ be "wider" than the old one.)
 		Problems::quote_table(2, old_t);
 		if (missing == 1) Problems::quote_text(3, "a column");
 		else Problems::quote_text(3, "columns");
-		Problems::Issue::handmade_problem(_p_(PM_TableReplacementMissesCols));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableReplacementMissesCols));
 		Problems::issue_problem_segment(
 			"The table %1 won't work as a replacement, because it's missing "
 			"%3 found in the original %2.");
@@ -743,7 +743,7 @@ columns and in the same order.
 		current_sentence = t->table_created_at->source_table;
 		Problems::quote_table(1, t);
 		Problems::quote_table(2, old_t);
-		Problems::Issue::handmade_problem(_p_(PM_TableAmendmentMisfit));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMisfit));
 		Problems::issue_problem_segment(
 			"Columns in %1 do not exactly match the original %2. I can only "
 			"make changes to rows in an existing table if the amended versions "
@@ -755,7 +755,7 @@ columns and in the same order.
 	}
 
 @<Display the old and new table column names@> =
-	Problems::issue_problem_begin("****");
+	Problems::issue_problem_begin(Task::syntax_tree(), "****");
 	Problems::issue_problem_segment("The old table has columns: "); {
 		TEMPORARY_TEXT(TEMP);
 		int j;
@@ -768,7 +768,7 @@ columns and in the same order.
 		DISCARD_TEXT(TEMP);
 	}
 	Problems::issue_problem_end();
-	Problems::issue_problem_begin("****");
+	Problems::issue_problem_begin(Task::syntax_tree(), "****");
 	Problems::issue_problem_segment("The new table has columns: "); {
 		TEMPORARY_TEXT(TEMP);
 		int i;
@@ -1249,7 +1249,7 @@ time to find a clear wording for:
 	Problems::quote_number(6, &matches_in_last_round);
 	if (matches_in_last_round > 2) Problems::quote_text(7, "any");
 	else Problems::quote_text(7, "either");
-	Problems::issue_problem_begin("****");
+	Problems::issue_problem_begin(Task::syntax_tree(), "****");
 	if (col == 0)
 	Problems::issue_problem_segment(
 		"(Amendment %1). I can't match this to any row - there's nothing with "
@@ -1268,13 +1268,13 @@ time to find a clear wording for:
 		current_sentence = amendments->table_created_at->source_table;
 		Problems::quote_table(1, main_table);
 		Problems::quote_table(2, amendments);
-		Problems::Issue::handmade_problem(_p_(PM_TableAmendmentMismatch));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMismatch));
 		Problems::issue_problem_segment(
 			"I'm currently trying to amend rows in %1 according to the instructions "
 			"in %2. To do that, I have to match each amendment row in turn, which "
 			"I do by trying to match up entries in the leftmost column(s).");
 		Problems::issue_problem_end();
-		Problems::issue_problem_begin("****");
+		Problems::issue_problem_begin(Task::syntax_tree(), "****");
 		Problems::issue_problem_segment("But I ran into problems:");
 		Problems::issue_problem_end();
 	}

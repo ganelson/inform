@@ -47,7 +47,7 @@ text anyway, so the following problem messages are not too gratuitous.
 @<Forbid plural declarations containing quoted text@> =
 	LOOP_THROUGH_WORDING(i, S)
 		if (Vocabulary::test_flags(i, TEXT_MC+TEXTWITHSUBS_MC)) {
-			Problems::Issue::sentence_problem(_p_(PM_PluralOfQuoted),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PluralOfQuoted),
 				"declares a plural for a phrase containing quoted text",
 				"which is forbidden. Sentences like this are supposed to "
 				"declare plurals without quotation marks: for instance, "
@@ -56,7 +56,7 @@ text anyway, so the following problem messages are not too gratuitous.
 		}
 	LOOP_THROUGH_WORDING(i, P)
 		if (Vocabulary::test_flags(i, TEXT_MC+TEXTWITHSUBS_MC)) {
-			Problems::Issue::sentence_problem(_p_(PM_PluralIsQuoted),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PluralIsQuoted),
 				"declares a plural for a phrase using quoted text",
 				"which is forbidden. Sentences like this are supposed to "
 				"declare plurals without quotation marks: for instance, "

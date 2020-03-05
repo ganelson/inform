@@ -227,7 +227,7 @@ from the tree.
 	}
 	Assertions::Refiner::refine(p->down, FORBID_CREATION);
 	if (ParseTree::int_annotation(p->down, multiplicity_ANNOT) > 1) {
-		Problems::Issue::sentence_problem(_p_(PM_MultipleCalled),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleCalled),
 			"I can only make a single 'called' thing at a time",
 			"or rather, the 'called' is only allowed to apply to one thing "
 			"at a time. For instance, 'A thing called a vodka and tonic is "
@@ -236,7 +236,7 @@ from the tree.
 	}
 	forbid_nowhere = TRUE;
 	if (creation_rule == FORBID_CREATION)
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"'called' can't be used in this context",
 			"and is best reserved for full sentences.");
 	else Assertions::Refiner::refine(p->down->next, MANDATE_CREATION);
@@ -302,14 +302,14 @@ inference subject representing the domain to which any new kind would belong.
 @<Issue a problem message for a kind of instance@> =
 	if ((InferenceSubjects::is_an_object(kind_of_what)) ||
 		(InferenceSubjects::is_a_kind_of_object(kind_of_what))) {
-		Problems::Issue::sentence_problem(_p_(PM_KindOfInstance),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindOfInstance),
 			"kinds can only be made from other kinds",
 			"so 'a kind of container' is allowed but 'a kind of Mona Lisa' (where "
 			"Mona Lisa is a specific thing you've already made), wouldn't be "
 			"allowed. There is only one Mona Lisa.");
 		kind_of_what = Kinds::Knowledge::as_subject(K_object);
 	} else {
-		Problems::Issue::sentence_problem(_p_(PM_KindOfActualValue),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindOfActualValue),
 			"I don't recognise that as a kind",
 			"such as 'room' or 'door': it would need to be straightforwardly the name "
 			"of a kind, and not be qualified with adjectives like 'open'.");
@@ -317,7 +317,7 @@ inference subject representing the domain to which any new kind would belong.
 	}
 
 @<Issue a problem message for a disallowed subkind@> =
-	Problems::Issue::sentence_problem(_p_(PM_KindOfExotica),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindOfExotica),
 		"you are only allowed to create kinds of objects (things, rooms, and "
 		"so on) and kinds of 'value'",
 		"so for example 'colour is a kind of value' is allowed but 'prime is "
@@ -406,14 +406,14 @@ thing. (If we had more and better pronouns, they would go here.)
 		if ((<nominative-pronoun>(ParseTree::get_text(p))) &&
 			(<<r>> == 2) &&
 			(Assertions::Traverse::get_current_subject_plurality())) {
-			Problems::Issue::sentence_problem(_p_(PM_EnigmaticThey),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
 				"I'm unable to handle 'they' here",
 				"since it looks as if it needs to refer to more than one "
 				"object here, and that's something I can't manage.");
 			return;
 		}
 		if (Assertions::Traverse::get_current_object() == NULL) {
-			Problems::Issue::sentence_problem(_p_(PM_EnigmaticPronoun),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticPronoun),
 				"I'm not sure what to make of the pronoun here",
 				"since it is unclear what previously mentioned thing "
 				"is being referred to. In general, it's best only to use "
@@ -459,7 +459,7 @@ property name meaning, not as the name of a kind of value.)
 
 @<Issue PM_VagueVariable problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(_p_(PM_VagueVariable),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VagueVariable),
 		"'variable' is too vague a description",
 		"because it doesn't say what kind of value should go into the variable. "
 		"'number variable' or 'a number that varies' - whatever kind of value you "
@@ -498,7 +498,7 @@ a noun instead of a condition testing the current action.
 @<Check that this noun phrase is allowed a quantifier@> =
 	if (Quantifiers::can_be_used_in_assertions(Descriptions::get_quantifier(spec)) == FALSE) {
 		LOG("$T\nSo $D\n", current_sentence, Specifications::to_proposition(spec));
-		Problems::Issue::sentence_problem(_p_(PM_ComplexDeterminer),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ComplexDeterminer),
 			"complicated determiners are not allowed in assertions",
 			"so for instance 'More than three people are in the Dining Room' "
 			"or 'None of the containers is open' will be rejected. Only "
@@ -515,7 +515,7 @@ a noun instead of a condition testing the current action.
 			ParseTree::set_type(p, EVERY_NT);
 			return;
 		}
-		Problems::Issue::sentence_problem(_p_(PM_ComplexEvery),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ComplexEvery),
 			"in an assertion 'every' or 'all' can only be used with a kind",
 			"so for instance 'A coin is in every container' is all right, "
 			"because 'container' is a kind, but not 'A coin is in every "

@@ -442,7 +442,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 		if (avl) {
 			Activities::emit_activity_list(avl);
 		} else {
-			Problems::Issue::sentence_problem(_p_(PM_BadWhenWhile),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadWhenWhile),
 				"I don't understand the 'when/while' clause",
 				"which should name activities or conditions.");
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

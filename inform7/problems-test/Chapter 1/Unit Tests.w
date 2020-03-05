@@ -5,6 +5,8 @@ A selection of tests for, or demonstrations of, problems features.
 @h
 
 =
+parse_node_tree *syntax_tree = NULL;
+
 <dividing-sentence> ::=
 	chapter ... |			==> 1
 	section ...				==> 2
@@ -20,7 +22,7 @@ A selection of tests for, or demonstrations of, problems features.
 
 @<Issue PM_UnexpectedFruit problem@> =
 	Problems::quote_wording(1, W);
-	Problems::Issue::handmade_problem(_p_(PM_UnexpectedFruit));
+	Problems::Issue::handmade_problem(syntax_tree, _p_(PM_UnexpectedFruit));
 	Problems::issue_problem_segment(
 		"The sentence '%1' contained an unexpected fruit item, and now supper "
 		"will be ruined.");
@@ -35,11 +37,11 @@ void Unit::test_problems(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
-	ParseTree::plant_parse_tree();
+	syntax_tree = ParseTree::new_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(W, FALSE, NULL, -1);
+	Sentences::break(syntax_tree, W, FALSE, NULL, -1);
 
-	ParseTree::traverse(Unit::scan_tree);
+	ParseTree::traverse(syntax_tree, Unit::scan_tree);
 }
 
 void Unit::scan_tree(parse_node *p) {

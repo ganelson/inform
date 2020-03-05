@@ -332,14 +332,14 @@ void PL::Actions::Patterns::categorise_as(action_pattern *ap, wording W) {
 	LOGIF(ACTION_PATTERN_PARSING, "Categorising the action:\n$A...as %W\n", ap, W);
 
 	if (<article>(W)) {
-		Problems::Issue::sentence_problem(_p_(PM_NamedAPIsArticle),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPIsArticle),
 			"there's only an article here",
 			"not a name, so I'm not sure what this action is supposed to be.");
 		return;
 	}
 
 	if (ap->actor_spec) {
-		Problems::Issue::sentence_problem(_p_(PM_NamedAPWithActor),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPWithActor),
 			"behaviour characterised by named action patterns can only specify the action",
 			"not the actor: as a result, it cannot include requests to other people to "
 			"do things.");
@@ -368,7 +368,7 @@ int PL::Actions::Patterns::check_going(parse_node *spec, char *keyword,
 		Problems::quote_kind(4, ka);
 		Problems::quote_kind(5, Instances::to_kind(oref));
 		if (kb) Problems::quote_kind(6, kb);
-		Problems::Issue::handmade_problem(_p_(PM_GoingWrongKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GoingWrongKind));
 		if (kb)
 		Problems::issue_problem_segment(
 			"In the sentence %1, %2 seems to be intended as something the "
@@ -384,7 +384,7 @@ int PL::Actions::Patterns::check_going(parse_node *spec, char *keyword,
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, ParseTree::get_text(spec));
 	Problems::quote_text(3, keyword);
-	Problems::Issue::handmade_problem(_p_(PM_GoingWithoutObject));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GoingWithoutObject));
 	Problems::issue_problem_segment(
 		"In the sentence %1, '%2' seems to be intended as something the player "
 		"might be going %3, but it doesn't make sense in that context.");
@@ -417,7 +417,7 @@ parse_node *PL::Actions::Patterns::parse_verified_action_parameter(wording W) {
 	if (ParseTree::is(spec, UNKNOWN_NT)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(_p_(PM_BadOptionalAPClause));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadOptionalAPClause));
 		Problems::issue_problem_segment(
 			"In %1, I tried to read a description of an action - a complicated "
 			"one involving optional clauses; but '%2' wasn't something I "
@@ -1487,7 +1487,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 	LOGIF(ACTION_PATTERN_COMPILATION, "[MPE on $P: $P]\n", I6_var_TS, spec);
 	kind *K = Specifications::to_kind(spec);
 	if (Kinds::Behaviour::definite(K) == FALSE) {
-		Problems::Issue::sentence_problem(_p_(PM_APClauseIndefinite),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_APClauseIndefinite),
 			"that action seems to involve a value which is unclear about "
 			"its kind",
 			"and that's not allowed. For example, you're not allowed to just "
@@ -2266,7 +2266,7 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 }
 
 @<Issue too complex PT problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_PTAPTooComplex),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPTooComplex),
 		"that is too complex a past tense action",
 		"at least for this version of Inform to handle: we may improve "
 		"matters in later releases. The restriction is that the "

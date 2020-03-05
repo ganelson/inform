@@ -260,7 +260,7 @@ int Adjectives::Meanings::applicable_to(adjectival_phrase *aph,
 	if (problem_count == 0) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Clusters::get_name(aph->adjective_names, FALSE));
-		Problems::Issue::handmade_problem(_p_(PM_AdjectiveCircular));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectiveCircular));
 		Problems::issue_problem_segment(
 			"In the sentence %1, it looks as if the definition of the adjective "
 			"'%2' may be circular.");
@@ -615,7 +615,7 @@ can't be avoided.
 @<Reject domain of adjective@> =
 	if ((early) || (am->problems_thrown++ > 0)) return;
 	current_sentence = am->defined_at;
-	Problems::Issue::adjective_problem(_p_(PM_AdjDomainUnknown),
+	Problems::Issue::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainUnknown),
 		am->adjective_index_text, am->domain_text,
 		"this isn't a thing, a kind of thing or a kind of value",
 		"and indeed doesn't have any meaning I can make sense of.");
@@ -624,7 +624,7 @@ can't be avoided.
 @<Reject domain as vague@> =
 	if ((early) || (am->problems_thrown++ > 0)) return;
 	current_sentence = am->defined_at;
-	Problems::Issue::adjective_problem(_p_(PM_AdjDomainVague),
+	Problems::Issue::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainVague),
 		am->adjective_index_text, am->domain_text,
 		"this isn't allowed as the domain of a definition",
 		"since it potentially describes many different kinds, not just one.");
@@ -633,7 +633,7 @@ can't be avoided.
 @<Reject domain as topic@> =
 	if ((early) || (am->problems_thrown++ > 0)) return;
 	current_sentence = am->defined_at;
-	Problems::Issue::adjective_problem(_p_(PM_AdjDomainTopic),
+	Problems::Issue::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainTopic),
 		am->adjective_index_text, am->domain_text,
 		"this isn't allowed as the domain of a definition",
 		"because 'topic' doesn't behave the way other kinds of value do when "
@@ -648,7 +648,7 @@ can't be avoided.
 		(Rvalues::to_instance(supplied) == NULL)) {
 		if ((early) || (am->problems_thrown++ > 0)) return;
 		current_sentence = am->defined_at;
-		Problems::Issue::adjective_problem(_p_(PM_AdjDomainSurreal),
+		Problems::Issue::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainSurreal),
 			am->adjective_index_text, am->domain_text,
 			"this isn't allowed as the domain of a definition",
 			"since adjectives like this can be applied only to specific things, "
@@ -665,7 +665,7 @@ can't be avoided.
 	if (Descriptions::is_qualified(supplied)) {
 		if (am->problems_thrown++ > 0) return;
 		current_sentence = am->defined_at;
-		Problems::Issue::adjective_problem(_p_(PM_AdjDomainSlippery),
+		Problems::Issue::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainSlippery),
 			am->adjective_index_text, am->domain_text,
 			"this is slippery",
 			"because it can change during play. Definitions can only be "
@@ -752,7 +752,7 @@ author's source text.)
 			current_sentence = am1->defined_at;
 			Problems::quote_wording_as_source(1, am1->adjective_index_text);
 			Problems::quote_wording_as_source(2, am2->adjective_index_text);
-			Problems::Issue::handmade_problem(_p_(PM_AdjDomainDuplicated));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AdjDomainDuplicated));
 			Problems::issue_problem_segment(
 				"The definitions %1 and %2 both try to cover the same situation: "
 				"the same adjective applied to the exact same range. %P"

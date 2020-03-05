@@ -210,7 +210,7 @@ int PL::Spatial::spatial_explain_contradiction(inference *A, inference *B, int s
 		Problems::quote_subject(3, subj);
 		Problems::quote_object(4, World::Inferences::get_reference_as_object(A));
 		Problems::quote_object(5, World::Inferences::get_reference_as_object(B));
-		Problems::Issue::handmade_problem(_p_(PM_SpatialContradiction));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
 		Problems::issue_problem_segment(
 			"You wrote %1, but also %2: that seems to be saying that the same "
 			"object (%3) must be in two different places (%4 and %5). This "
@@ -280,7 +280,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_thing) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(_p_(PM_ThingAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThingAdrift),
 				"'thing' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform uses rooms "
@@ -289,7 +289,7 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	}
 	if ((sub == K_room) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(_p_(PM_RoomAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RoomAdrift),
 				"'room' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform uses rooms "
@@ -299,7 +299,7 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	if (((sub == K_container) && (super == K_supporter)) ||
 		((sub == K_supporter) && (super == K_container))) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(_p_(PM_ContainerAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ContainerAdrift),
 				"'container' and 'supporter' are not allowed to be kinds "
 				"of each other",
 				"because they're too fundamental to the way Inform models the "
@@ -794,7 +794,7 @@ int PL::Spatial::spatial_stage_II(void) {
 			Problems::quote_object(2, I);
 			Problems::quote_object(3, PL::Spatial::progenitor(I));
 			Problems::quote_kind(4, Instances::to_kind(I));
-			Problems::Issue::handmade_problem(_p_(PM_NonThingInModel));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonThingInModel));
 			Problems::issue_problem_segment(
 				"In the sentence %1, you create an object '%2' which you then seem "
 				"to place in or on or as part of '%3', but the kind of '%2' is %4. "
@@ -864,7 +864,7 @@ sentence, setting |whereabouts| to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.
 
 @<Set the whereabouts to the last discussed room prior to this inference being drawn@> =
-	ParseTree::traverse_up_to_ip(here_sentence, PL::Spatial::seek_room, &whereabouts);
+	ParseTree::traverse_up_to_ip(Task::syntax_tree(), here_sentence, PL::Spatial::seek_room, &whereabouts);
 
 @<Determine whether the object in question is a component part@> =
 	inference *inf;
@@ -1067,7 +1067,7 @@ changed progenitors at Stage II.)
 
 @<Diagnose the ill-foundedness with a problem message@> =
 	Problems::quote_object(1, I);
-	Problems::Issue::handmade_problem(_p_(PM_IllFounded));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IllFounded));
 	Problems::issue_problem_segment("The %1 seems to be containing itself: ");
 	instance *I3 = I;
 	while (TRUE) {
@@ -1275,7 +1275,7 @@ int PL::Spatial::spatial_stage_IV(void) {
 		instance *I;
 		LOOP_OVER_OBJECT_INSTANCES(I)
 			if (PL::Spatial::object_is_a_room(I)) {
-				Problems::Issue::unlocated_problem(_p_(PM_RoomInIgnoredSource),
+				Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_RoomInIgnoredSource),
 					"This is supposed to be a source text which only contains "
 					"release instructions to bind up an existing story file "
 					"(for instance, one produced using Inform 6). That's because "

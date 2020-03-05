@@ -157,14 +157,14 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		Problems::quote_wording_as_source(1, W);
 		Problems::quote_kind(2, K);
 		Problems::quote_text(3, storage_name);
-		Problems::Issue::handmade_problem(_p_(PM_EmptyKind2));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyKind2));
 		Problems::issue_problem_segment(
 			"I am unable to put any value into the %3 %1, which needs to be %2, "
 			"because the world does not contain %2.");
 		Problems::issue_problem_end();
 	} else {
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(_p_(PM_EmptyKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyKind));
 		Problems::issue_problem_segment(
 			"I am unable to find %2 to use here, because the world does not "
 			"contain %2.");
@@ -176,7 +176,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	if (Wordings::nonempty(W)) {
 		Problems::quote_wording_as_source(1, W);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"I am unable to create %1 with the kind of value '%2', "
 			"because this is a kind of value which is not allowed as "
@@ -187,7 +187,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		Problems::issue_problem_end();
 	} else {
 		Problems::quote_kind(1, K);
-		Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"I am unable to create a value of the kind '%1' "
 			"because this is a kind of value which is not allowed as "
@@ -201,7 +201,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 
 @<"Value" is too vague to be the kind of a variable@> =
 	Problems::quote_wording_as_source(1, W);
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"I am unable to start %1 off with any value, because the "
 		"instructions do not tell me what kind of value it should be "
@@ -728,7 +728,7 @@ void Kinds::RunTime::compile_structures(void) {
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"While working on '%1', I needed to be able to make a default value "
 			"for the kind '%2', but there's no obvious way to make one.");
@@ -1818,7 +1818,7 @@ void Kinds::RunTime::notify_of_use(kind *K) {
 	if (Kinds::RunTime::target_VM_supports(K) == FALSE) {
 		if (VM_non_support_problem_issued == FALSE) {
 			VM_non_support_problem_issued = TRUE;
-			Problems::Issue::handmade_problem(_p_(PM_KindRequiresGlulx));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindRequiresGlulx));
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, K);
 			Problems::issue_problem_segment(

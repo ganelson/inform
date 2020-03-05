@@ -804,7 +804,7 @@ in several contexts by using a tilde: |~attr|.
 			if (parity == 1) {
 				Emit::holster(VH, Properties::iname(prn_to_eval));
 			} else {
-				Problems::Issue::sentence_problem(_p_(Untestable),
+				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 					"this refers to an either-or property with a negative "
 					"that I can't unravel'",
 					"which normally never happens. (Are you using 'change' "

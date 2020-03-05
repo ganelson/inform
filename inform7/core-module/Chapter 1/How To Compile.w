@@ -123,7 +123,7 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
 	BENCH(StructuralSentences::declare_source_loaded)
-	BENCH(Kinds::Interpreter::include_templates_for_kinds)
+	BENCH(Kinds::Knowledge::include_templates_for_kinds)
 
 	Task::advance_stage_to(SEMANTIC_II_CSEQ, I"Semantic analysis II", -1);
 	BENCH(ParseTreeUsage::verify)

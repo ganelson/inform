@@ -2730,7 +2730,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 		PF_I(map, R)->zone = 0;
 	}
 	@<Declare the map connections in the precis@>;
-	ParseTree::traverse(PL::SpatialMap::visit_to_transcribe);
+	ParseTree::traverse(Task::syntax_tree(), PL::SpatialMap::visit_to_transcribe);
 	LOG("\n[Precis complete.]\n\n");
 }
 

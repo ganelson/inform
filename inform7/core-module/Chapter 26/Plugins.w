@@ -263,7 +263,7 @@ void Plugins::Manage::deactivate(int N) {
 }
 
 @<Issue problem for trying to remove the core@> =
-	Problems::Issue::sentence_problem(_p_(Untestable),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 		"the core of the Inform language cannot be removed",
 		"because then what should we do? What should we ever do?");
 	return;

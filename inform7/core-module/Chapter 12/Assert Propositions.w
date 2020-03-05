@@ -223,7 +223,7 @@ me about twenty sentences to get there ("The car is a vehicle in most rooms
 which are dark" will do it).
 
 @<Issue a problem message explaining that the proposition isn't exact enough@> =
-	Problems::Issue::sentence_problem(_p_(PM_CantAssertQuantifier),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertQuantifier),
 		"the relationship you describe is not exact enough",
 		"so that I cannot be sure of the initial situation. A specific "
 		"relationship would be something like 'the box is a container in "
@@ -312,7 +312,7 @@ interpret no indication of a kind as meaning "object".
 
 @<Create the object and add to the identification slate@> =
 	if (is_a_kind) {
-		K = Kinds::new_base(NW, K);
+		K = Kinds::new_base(Task::syntax_tree(), NW, K);
 		current_interpretation_as_infs[v] = Kinds::Knowledge::as_subject(K);
 		current_interpretation_as_spec[v] = Specifications::from_kind(K);
 	} else if ((is_a_var) || (is_a_const)) {
@@ -351,7 +351,7 @@ through here, but it isn't exactly an everyday sentence.
 
 @<Assert the truth or falsity of a KIND atom@> =
 	if (now_negated) {
-		Problems::Issue::sentence_problem(_p_(PM_CantAssertNonKind),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNonKind),
 			"that seems to say what kind something doesn't have",
 			"which is too vague. You must say what kind it does have.");
 		return;
@@ -374,7 +374,7 @@ we're dealing with a backdrop. So we play dumb.
 
 @<Assert the truth or falsity of an EVERYWHERE atom@> =
 	if (now_negated) {
-		Problems::Issue::sentence_problem(_p_(PM_CantAssertNegatedEverywhere),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNegatedEverywhere),
 			"that seems to say that something isn't everywhere",
 			"which is too vague. You must say where it is.");
 		return;
@@ -391,13 +391,13 @@ we're dealing with a backdrop. So we play dumb.
 	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that seems to say that something isn't nowhere",
 			"which is too vague. You must say where it is.");
 		return;
 	}
 	if (ox == NULL) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that seems to say that something generic is 'nowhere'",
 			"which suggests it could some day have a physical location.");
 		return;
@@ -415,13 +415,13 @@ problem aside for now.
 	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that seems to say that something isn't here",
 			"which is too vague. You must say where it is.");
 		return;
 	}
 	if (ox == NULL) {
-		Problems::Issue::sentence_problem(_p_(PM_NonInstanceHere),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonInstanceHere),
 			"that seems to say that something generic is 'here'",
 			"which would give it a physical location. (It would be like saying "
 			"'A number is here' - well, numbers are everywhere and nowhere.)");
@@ -468,7 +468,7 @@ success flag.
 			wording W = Adjectives::get_text(aph, FALSE);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
-			Problems::Issue::handmade_problem(_p_(PM_CantAssertAdjective));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantAssertAdjective));
 			if (parity == FALSE) Problems::issue_problem_segment(
 				"In the sentence %1, you ask me to arrange for something not to be "
 				"'%2' at the start of play. This is only possible when an adjective "
@@ -509,7 +509,7 @@ these kind atoms.
 
 @<Assert the truth or falsity of a binary predicate@> =
 	if (now_negated) {
-		Problems::Issue::sentence_problem(_p_(PM_CantAssertNegatedRelations),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNegatedRelations),
 			"that seems to make a negative statement about a relationship",
 			"which is too vague. You must make positive assertions.");
 		return;
@@ -544,14 +544,14 @@ these kind atoms.
 
 	if ((Rvalues::is_nothing_object_constant(spec0)) ||
 		(Rvalues::is_nothing_object_constant(spec1)))
-		Problems::Issue::sentence_problem(_p_(PM_RelationFailedOnNothing),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationFailedOnNothing),
 			"that is an assertion which involves 'nothing'",
 			"which looks as if it might be trying to give me negative rather "
 			"than positive information. There's no need to tell me something "
 			"like 'Nothing is in the box.': just don't put anything in the box, "
 			"and then nothing will be in it.");
 	else
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that is an assertion I can't puzzle out",
 			"which seems to involve placing two things in some sort of "
 			"relationship, but if so then I can't make it work. Perhaps the "
@@ -573,7 +573,7 @@ simpler and clearer.
 		if (the_fn == NULL) { the_fn = pt1.function; side = 0; }
 		if (the_fn) {
 			if ((pl->terms[side].function) || (the_fn->fn_of.function)) {
-				Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 					"that is too complicated an assertion",
 					"and cannot be declared as part of the initial situation. (It "
 					"does make sense, and could be tested with 'if' - it's just "

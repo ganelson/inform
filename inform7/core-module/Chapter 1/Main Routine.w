@@ -29,6 +29,9 @@ int CoreMain::main(int argc, char *argv[]) {
 		@<Name the telemetry@>;
 		@<Build the project identified for us by Inbuild@>;
 	}
+
+ParseTree::log_tree(DL, Task::syntax_tree()->root_node);
+
 	@<Post mortem logging@>;
 	if (proceed) @<Shutdown and rennab@>;
 	if (problem_count > 0) Problems::Fatal::exit(1);
@@ -111,7 +114,6 @@ gargantuan debugging logs if enabled.
 @<Post mortem logging@> =
 	if (problem_count == 0) {
 		TemplateReader::report_unacted_upon_interventions();
-		//	ParseTreeUsage::write_main_source_to_log();
 		//	Memory::log_statistics();
 		//	Preform::log_language();
 		//	Index::DocReferences::log_statistics();

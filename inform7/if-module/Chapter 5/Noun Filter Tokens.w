@@ -27,7 +27,7 @@ noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int g
 	pcalc_prop *prop = Specifications::to_proposition(spec);
 	if ((prop) && (Calculus::Variables::number_free(prop) != 1)) {
 		LOG("So $P and $D\n", spec, prop);
-		Problems::Issue::sentence_problem(_p_(PM_FilterQuantified),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_FilterQuantified),
 			"the [any ...] doesn't clearly give a description in the '...' part",
 			"where I was expecting something like '[any vehicle]'.");
 		spec = Specifications::from_kind(K_object);
@@ -255,14 +255,14 @@ int too_late_for_further_NFTs = FALSE;
 
 int PL::Parsing::Tokens::Filters::new_id(parse_node *spec, int global_scope, int any_things) {
 	if (too_late_for_further_NFTs)
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"complicated instructions on understanding the player's command "
 			"are not allowed in the past tense",
 			"for instance by being applied to several previous turns in a row.");
 
 	kind *K = Specifications::to_kind(spec);
 	if ((Kinds::Compare::le(K, K_object) == FALSE) && (Kinds::Behaviour::request_I6_GPR(K) == FALSE) && (global_scope))
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is a kind of value I can't understand in command grammar",
 			"so the '[any ...]' part will have to go.");
 

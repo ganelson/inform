@@ -163,7 +163,7 @@ a specific time of day, or when a named event occurs.
 	at ...								==> @<Issue PM_AtWithoutTime problem@>
 
 @<Issue PM_AtTimeThat problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_AtTimeThat),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AtTimeThat),
 		"this seems to use 'that' where it should use 'when'",
 		"assuming it's trying to apply a rule to an event. (The convention is "
 		"that any rule beginning 'At' is a timed one. The time can either be a "
@@ -171,7 +171,7 @@ a specific time of day, or when a named event occurs.
 		"event takes place, as in 'At the time when the clock chimes: ...'.)");
 
 @<Issue PM_AtWithoutTime problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_AtWithoutTime),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AtWithoutTime),
 		"'at' what time? No description of a time is given",
 		"which means that this rule can never have effect. (The convention is "
 		"that any rule beginning 'At' is a timed one. The time can either be a "

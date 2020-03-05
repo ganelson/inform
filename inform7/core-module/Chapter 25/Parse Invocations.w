@@ -82,7 +82,7 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 
 @<Issue problem for quoted text in phrase wording@> =
 	if (ph != last_phrase_where_rp_problemed) {
-		Problems::Issue::sentence_problem(_p_(PM_QuotedInPhrase),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_QuotedInPhrase),
 			"phrases can't be defined with quoted text as part of the fixed wording",
 			"so something like 'To go \"voluntarily\" to jail: ...' is not allowed.");
 		last_phrase_where_rp_problemed = ph;
@@ -91,7 +91,7 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 
 @<Issue problem for brackets jammed up against each other@> =
 	if (ph != last_phrase_where_rp_problemed) {
-		Problems::Issue::sentence_problem(_p_(PM_AdjacentTokens),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AdjacentTokens),
 			"phrases can't be defined so that they have two bracketed varying elements "
 			"immediately next to each other",
 			"but instead need at least one fixed word in between. Thus 'To combine "
@@ -104,7 +104,7 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 
 @<Issue problem for phrase consisting only of tokens@> =
 	if (ph != last_phrase_where_rp_problemed) {
-		Problems::Issue::sentence_problem(_p_(PM_MustBeOneWord),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MustBeOneWord),
 			"a 'To...' phrase must contain at least one fixed word",
 			"that is, one word other than the bracketed variables. So a declaration "
 			"like 'To (N - number): ...' is not allowed.");
@@ -184,7 +184,7 @@ word, though.)
 	if ((Str::eq_wide_string(a_form, L"say")) &&
 		(i == Wordings::first_wn(W)) && (phrase_mc != SAY_PHRASE_MC))
 		if (ph != last_phrase_where_rp_problemed) {
-			Problems::Issue::sentence_problem(_p_(PM_SaySlashed),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SaySlashed),
 				"'say' is not allowed as the first word of a phrase",
 				"even when presented as one of a number of slashed alternatives. "
 				"(This is because 'say' is reserved for creating text substitutions.)");

@@ -196,7 +196,7 @@ int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *
 		(<notable-backdrops-noun-phrases>(ParseTree::get_text(py)))) {
 		inference_subject *left_subject = ParseTree::get_subject(px);
 		if (left_subject == NULL)
-			Problems::Issue::assertion_problem(_p_(PM_ValueEverywhere),
+			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
 				"'everywhere' can only be used to place individual backdrops",
 				"so although 'The mist is a backdrop. The mist is everywhere.' "
 				"would be fine, 'Corruption is everywhere.' would not.");
@@ -220,7 +220,7 @@ been asserted true:
 =
 void PL::Backdrops::infer_presence_everywhere(instance *I) {
 	if ((I == NULL) || (Instances::of_kind(I, K_backdrop) == FALSE)) {
-		Problems::Issue::sentence_problem(_p_(PM_EverywhereNonBackdrop),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EverywhereNonBackdrop),
 			"only a backdrop can be everywhere",
 			"and no other kind of object will do. For instance, 'The sky is "
 			"a backdrop which is everywhere.' is allowed, but 'The travelator "

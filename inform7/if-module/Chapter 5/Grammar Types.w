@@ -46,7 +46,7 @@ int PL::Parsing::Tokens::Types::add_type(grammar_type *gty, parse_node *spec,
 			gty->second_multiplicity = multiple_flag;
 			return score;
 		case 2:
-			Problems::Issue::sentence_problem(_p_(PM_ThreeValuedLine),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThreeValuedLine),
 				"there can be at most two varying parts to a line of grammar",
 				"so 'put [something] in [a container]' is allowed but 'put "
 				"[something] in [something] beside [a door]' is not.");

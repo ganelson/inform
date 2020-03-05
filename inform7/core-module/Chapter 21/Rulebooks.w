@@ -158,7 +158,7 @@ phrase definitions and timed events don't open the rulebook name.
 	...											==> 0
 
 @<Issue PM_RulebookWithAt problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_RulebookWithAt),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookWithAt),
 		"this would create a rulebook whose name begins with 'at'",
 		"which is forbidden since it would lead to ambiguities in "
 		"the way people write rules. A rule beginning with 'At' "
@@ -168,7 +168,7 @@ phrase definitions and timed events don't open the rulebook name.
 		"a rule inscrutable.");
 
 @<Issue PM_RulebookWithTo problem@> =
-		Problems::Issue::sentence_problem(_p_(PM_RulebookWithTo),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookWithTo),
 			"this would create a rulebook whose name begins with 'to'",
 			"which is forbidden since it would lead to ambiguities in "
 			"the way people write rules. A rule beginning with 'To' "
@@ -178,7 +178,7 @@ phrase definitions and timed events don't open the rulebook name.
 			"a rule inscrutable.");
 
 @<Issue PM_RulebookWithDefinition problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_RulebookWithDefinition),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookWithDefinition),
 		"this would create a rulebook whose name begins with 'definition'",
 		"which is forbidden since it would lead to ambiguities in "
 		"the way people write rules. A rule beginning with 'Definition' "
@@ -399,7 +399,7 @@ Any new rulebook variable name is vetted by being run through this:
 	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_RulebookVariableAnd));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableAnd));
 	Problems::issue_problem_segment(
 		"You wrote %1, which I am reading as a request to make "
 		"a new named variable for a rulebook - a value associated "
@@ -412,7 +412,7 @@ Any new rulebook variable name is vetted by being run through this:
 void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 	if (ParseTree::get_type(cnode) != PROPERTYCALLED_NT) {
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(_p_(PM_RulebookVarUncalled));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVarUncalled));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
 			"a new named variable for an rulebook - a value associated "
@@ -435,7 +435,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		(Descriptions::is_qualified(spec))) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
-		Problems::Issue::handmade_problem(_p_(PM_RulebookVariableTooSpecific));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableTooSpecific));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
 			"a new named variable for a rulebook - a value associated "
@@ -452,7 +452,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		LOG("Offending SP: $T", spec);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
-		Problems::Issue::handmade_problem(_p_(PM_RulebookVariableBadKind));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableBadKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of "
 			"value which I know (such as 'number' or 'text').");
@@ -464,7 +464,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 	if (K == NULL) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
-		Problems::Issue::handmade_problem(_p_(PM_RulebookVariableKindless));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableKindless));
 		Problems::issue_problem_segment(
 			"You wrote %1, but I was expecting to see a kind of value there, "
 			"and '%2' isn't something I recognise as a kind.");
@@ -475,7 +475,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 	if (Kinds::Compare::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
-		Problems::Issue::handmade_problem(_p_(PM_RulebookVariableVague));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableVague));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
 			"does not give me a clear enough idea what it will hold. "
@@ -786,7 +786,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 
 	if (Rules::Bookings::get_rule(the_new_rule) == ref_rule) {
 		if (side != INSTEAD_SIDE)
-			Problems::Issue::sentence_problem(_p_(PM_BeforeOrAfterSelf),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BeforeOrAfterSelf),
 				"a rule can't be before or after itself",
 				"so this makes no sense to me.");
 		return;
@@ -800,7 +800,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 		if (ph) {
 			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
 			if ((an) && (PL::Actions::is_out_of_world(an)))
-				Problems::Issue::sentence_problem(_p_(PM_OOWinIWRulebook),
+				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),
 					"this rulebook has no effect on actions which happen out of world",
 					"so I'm not going to let you file this rule in it. ('Check', "
 					"'Carry out' and 'Report' work fine for out of world actions: "
@@ -921,7 +921,7 @@ parses the object noun phrase with the following:
 
 @<Issue PM_NonOutcomeProperty problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_NonOutcomeProperty),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonOutcomeProperty),
 		"the only properties of a rulebook are its outcomes",
 		"for the time being at least.");
 

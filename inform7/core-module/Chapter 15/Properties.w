@@ -133,7 +133,7 @@ property *Properties::create(wording W, package_request *using_package, inter_na
 	int unfortunate = FALSE;
 	if ((<k-kind>(W)) && (<<rp>> == K_value)) {
 		unfortunate = TRUE;
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"the single word 'value' cannot be used as the name of a property",
 			"because it has a much broader meaning already. Inform uses the "
 			"word 'value' to mean any number, time of day, name of something, "
@@ -143,7 +143,7 @@ property *Properties::create(wording W, package_request *using_package, inter_na
 			"room number' would be fine.");
 	}
 	if (Wordings::length(W) > MAX_WORDS_IN_ASSEMBLAGE-2) {
-		Problems::Issue::sentence_problem(_p_(PM_PropertyNameTooLong),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyNameTooLong),
 			"this is too long a name for a single property to have",
 			"and would become unwieldy.");
 		W = Wordings::truncate(W, MAX_WORDS_IN_ASSEMBLAGE-2);
@@ -152,7 +152,7 @@ property *Properties::create(wording W, package_request *using_package, inter_na
 		unfortunate = TRUE;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(_p_(PM_PropertyNameUnsuitable));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNameUnsuitable));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to create a new property called '%2', but "
 			"this is not a good name, and I think I must have misread what "
@@ -179,7 +179,7 @@ something.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
 			Problems::quote_kind_of(3, spec);
-			Problems::Issue::handmade_problem(_p_(PM_PropertyNameClash));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNameClash));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not free to be the name of a fresh "
 				"property: it already has a meaning (as %3).");
@@ -553,14 +553,14 @@ void Properties::translates(wording W, parse_node *p2) {
 
 @<Make sure this is a genuine and previously untranslated property@> =
 	if (prn == NULL)  {
-		Problems::Issue::sentence_problem(_p_(PM_NonPropertyTranslated),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonPropertyTranslated),
 			"this property does not exist",
 			"so cannot be translated.");
 		return;
 	}
 	if ((prn->translated) &&
 		(Str::eq_wide_string(Produce::get_translation(Properties::iname(prn)), text) == FALSE)) {
-		Problems::Issue::sentence_problem(_p_(PM_TranslatedTwice),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
 		return;

@@ -244,7 +244,7 @@ of it:
 	new_ph->ph_documentation_symbol = documentation_W;
 
 @<There seems to be no definition@> =
-	Problems::Issue::sentence_problem(_p_(PM_Undefined),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Undefined),
 		"there doesn't seem to be any definition here",
 		"so I can't see what this rule or phrase would do.");
 
@@ -252,7 +252,7 @@ of it:
 
 @<Forbid overly long inline definitions@> =
 	LOG("Inline definition: <%s>\n", inline_defn);
-	Problems::Issue::sentence_problem(_p_(PM_InlineTooLong),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_InlineTooLong),
 		"the inline definition of this 'to...' phrase is too long",
 		"using a quantity of Inform 6 code which exceeds the fairly small limit "
 		"allowed. You will need either to write the phrase definition in Inform 7, "
@@ -260,7 +260,7 @@ of it:
 	inline_defn[MAX_INLINE_DEFN_LENGTH-1] = 0;
 
 @<Inline is for To... phrases only@> =
-	Problems::Issue::sentence_problem(_p_(PM_InlineRule),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_InlineRule),
 		"only 'to...' phrases can be given inline Inform 6 definitions",
 		"and in particular rules and adjective definitions can't.");
 
@@ -282,7 +282,7 @@ what number is...", for instance.
 
 @<Issue PM_TailAfterInline problem@> =
 	*X = DONT_KNOW_MOR;
-	Problems::Issue::sentence_problem(_p_(PM_TailAfterInline),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TailAfterInline),
 		"some unexpected text appears after the tail of an inline definition",
 		"placed within '(-' and '-)' markers to indicate that it is written in "
 		"Inform 6. Here, there seems to be something extra after the '-)'.");
@@ -410,13 +410,13 @@ void Phrases::invoke_to_begin(void) {
 			if (ph->to_begin) {
 				n++;
 				if (n > 1) {
-					Problems::Issue::sentence_problem(_p_(...),
+					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(...),
 						"there seem to be multiple 'to begin' phrases",
 						"but in Basic mode, Inform expects to see exactly one of "
 						"these, specifying where execution should begin.");
 				} else {
 					if (Phrases::compiled_inline(ph)) {
-						Problems::Issue::sentence_problem(_p_(...),
+						Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(...),
 							"the 'to begin' phrase seems to be defined inline",
 							"which in Basic mode is not allowed.");
 					} else {
@@ -431,7 +431,7 @@ void Phrases::invoke_to_begin(void) {
 				}
 			}
 		if (n == 0) {
-			Problems::Issue::sentence_problem(_p_(...),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(...),
 				"there seems not to be a 'to begin' phrase",
 				"but in Basic mode, Inform expects to see exactly one of "
 				"these, specifying where execution should begin.");

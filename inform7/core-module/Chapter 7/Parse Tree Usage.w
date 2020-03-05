@@ -717,16 +717,10 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 
 @ =
 void ParseTreeUsage::write_to_file(void) {
-	ParseTree::write_to_file(Task::parse_tree_file());
-}
-void ParseTreeUsage::plant_parse_tree(void) {
-	ParseTree::plant_parse_tree();
+	ParseTree::write_to_file(Task::syntax_tree(), Task::parse_tree_file());
 }
 void ParseTreeUsage::verify(void) {
-	ParseTree::verify();
-}
-void ParseTreeUsage::write_main_source_to_log(void) {
-	ParseTree::write_main_source_to_log();
+	ParseTree::verify(Task::syntax_tree());
 }
 
 @

@@ -30,7 +30,7 @@ level-0 headings, which are the nodes from which these blocks of source text han
 
 =
 void Modules::traverse_to_define(void) {
-	ParseTree::traverse(Modules::look_for_cu);
+	ParseTree::traverse(Task::syntax_tree(), Modules::look_for_cu);
 }
 
 void Modules::look_for_cu(parse_node *p) {

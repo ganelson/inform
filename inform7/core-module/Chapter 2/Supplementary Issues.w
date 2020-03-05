@@ -11,14 +11,14 @@ void Problems::Issue::two_sentences_problem(SIGIL_ARGUMENTS, parse_node *other_s
 	char *message, char *explanation) {
 	ACT_ON_SIGIL
 	if (current_sentence == other_sentence) {
-		Problems::Issue::sentence_problem(PASS_SIGIL, message, explanation);
+		Problems::Issue::sentence_problem(Task::syntax_tree(), PASS_SIGIL, message, explanation);
 		return;
 	}
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_source(2, other_sentence);
 	Problems::quote_text(3, message);
 	Problems::quote_text(4, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment(
 		"You wrote %1, but in another sentence %2: %Sagain, %%%Lbut %%%3%|, %4");
 	Problems::issue_problem_end();
@@ -36,7 +36,7 @@ void Problems::Issue::contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, pars
 	Problems::quote_object(3, I);
 	Problems::quote_text(4, message);
 	Problems::quote_text(5, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	if (Wordings::eq(ParseTree::get_text(A), ParseTree::get_text(B)) == FALSE)
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else
@@ -53,7 +53,7 @@ void Problems::Issue::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A,
 	Problems::quote_subject(3, infs);
 	Problems::quote_text(4, message);
 	Problems::quote_text(5, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	if (Wordings::eq(ParseTree::get_text(A), ParseTree::get_text(B)) == FALSE)
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else Problems::issue_problem_segment("You wrote %1: ");
@@ -74,7 +74,7 @@ void Problems::Issue::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc,
 	Problems::quote_table(1, t);
 	if (tc) Problems::quote_wording(2, Nouns::nominative(tc->name));
 	if (data) Problems::quote_source(3, data);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(message);
 	Problems::issue_problem_end();
 }
@@ -88,7 +88,7 @@ void Problems::Issue::equation_problem(SIGIL_ARGUMENTS, equation *eqn, char *p, 
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
 	Problems::quote_text(3, p);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment("In %1, you define an equation '%2': but ");
 	Problems::issue_problem_segment(text);
 	Problems::issue_problem_end();
@@ -99,7 +99,7 @@ void Problems::Issue::equation_problem_S(SIGIL_ARGUMENTS, equation *eqn, text_st
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
 	Problems::quote_stream(3, p);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment("In %1, you define an equation '%2': but ");
 	Problems::issue_problem_segment(text);
 	Problems::issue_problem_end();
@@ -110,7 +110,7 @@ void Problems::Issue::equation_symbol_problem(SIGIL_ARGUMENTS, equation *eqn, wo
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_text(3, text);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(
 		"In %1, you define an equation which mentions the symbol '%2': but %3");
 	Problems::issue_problem_end();
@@ -126,7 +126,7 @@ void Problems::Issue::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *d
 	Problems::quote_stream(2, definition);
 	wording XW = Phrases::Usage::get_preamble_text(&(ph->usage_data));
 	Problems::quote_wording_as_source(3, XW);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(
 		"You wrote %1, which I read as making use of the phrase %3. This in turn "
 		"has what's called an 'inline' definition, written in a technical notation "
@@ -146,7 +146,7 @@ void Problems::Issue::tcp_problem(SIGIL_ARGUMENTS, tc_problem_kit *tck, char *pr
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, tck->ew_text);
 		Problems::quote_text(3, tck->intention);
-		Problems::issue_problem_begin("");
+		Problems::issue_problem_begin(Task::syntax_tree(), "");
 		Problems::issue_problem_segment(
 			"In the sentence %1, it looks as if you intend '%2' to %3, but ");
 		Problems::issue_problem_segment(prototype);
@@ -168,7 +168,7 @@ void Problems::Issue::object_problem(SIGIL_ARGUMENTS, instance *I,
 	Problems::quote_object(1, I);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment("The %1 %2%|, %3");
 	Problems::issue_problem_end();
 }
@@ -180,7 +180,7 @@ void Problems::Issue::object_problem_at_sentence(SIGIL_ARGUMENTS, instance *I,
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::quote_object(4, I);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment("You wrote %1, but the %4 %2%|, %3");
 	Problems::issue_problem_end();
 }
@@ -192,7 +192,7 @@ void Problems::Issue::subject_problem_at_sentence(SIGIL_ARGUMENTS, inference_sub
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::quote_subject(4, infs);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment("You wrote %1, but the %4 %2%|, %3");
 	Problems::issue_problem_end();
 }
@@ -212,12 +212,12 @@ void Problems::Issue::subject_creation_problem(SIGIL_ARGUMENTS, inference_subjec
 	wording W = InferenceSubjects::get_name_text(subj);
 	if (Wordings::nonempty(W)) {
 		Problems::quote_source(4, NounPhrases::new_raw(W));
-		Problems::issue_problem_begin(explanation);
+		Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 		Problems::issue_problem_segment(
 			"I've made something called %4 but it %2%|, %3");
 		Problems::issue_problem_end();
 	} else {
-		Problems::issue_problem_begin(explanation);
+		Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 		Problems::issue_problem_segment(
 			"I've made something called '%1' but it %2%|, %3");
 		Problems::issue_problem_end();
@@ -239,7 +239,7 @@ void Problems::Issue::inference_problem(SIGIL_ARGUMENTS, inference_subject *infs
 	Problems::quote_text(3, message);
 	Problems::quote_text(4, explanation);
 	Problems::quote_property(5, World::Inferences::get_property(inf));
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment(
 		"You wrote %2: but the property %5 for the %1 %3%|, %4");
 	Problems::issue_problem_end();
@@ -255,7 +255,7 @@ void Problems::Issue::property_problem(SIGIL_ARGUMENTS, property *prn, char *mes
 	Problems::quote_property(1, prn);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment("The %1 %2%|, %3");
 	Problems::issue_problem_end();
 }
@@ -268,7 +268,7 @@ void Problems::Issue::extension_problem(SIGIL_ARGUMENTS, inform_extension *E, ch
 	ACT_ON_SIGIL
 	Problems::quote_extension(1, E);
 	Problems::quote_text(2, message);
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment(
 		"The extension %1, which your source text makes use of, %2.");
 	Problems::issue_problem_end();
@@ -286,7 +286,7 @@ void Problems::Issue::release_problem(SIGIL_ARGUMENTS, char *message, filename *
 	TEMPORARY_TEXT(fn);
 	WRITE_TO(fn, "%f", name);
 	Problems::quote_stream(2, fn);
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions: %1 (with the file '%2')");
 	Problems::issue_problem_end();
@@ -299,7 +299,7 @@ void Problems::Issue::release_problem_path(SIGIL_ARGUMENTS, char *message, pathn
 	TEMPORARY_TEXT(pn);
 	WRITE_TO(pn, "%p", path);
 	Problems::quote_stream(2, pn);
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions: %1 (with the file '%2')");
 	Problems::issue_problem_end();
@@ -313,7 +313,7 @@ void Problems::Issue::release_problem_at_sentence(SIGIL_ARGUMENTS, char *message
 	WRITE_TO(fn, "%f", name);
 	Problems::quote_stream(2, fn);
 	Problems::quote_source(3, current_sentence);
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions (%3): %1 (with the file '%2')");
 	Problems::issue_problem_end();
@@ -329,7 +329,7 @@ void Problems::Issue::map_problem(SIGIL_ARGUMENTS, parse_node *q, char *message)
 	ACT_ON_SIGIL
 	Problems::quote_source(1, q);
 	Problems::quote_text(2, message);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment("You gave as a hint in map-making: %1. %2");
 	Problems::issue_problem_end();
 }
@@ -339,7 +339,7 @@ void Problems::Issue::map_problem_wanted_but(SIGIL_ARGUMENTS, parse_node *q, cha
 	Problems::quote_source(1, q);
 	Problems::quote_text(2, i_wanted_a);
 	Problems::quote_wording(3, Wordings::one_word(vw1));
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(
 		"You gave as a hint in map-making: %1. But the value '%3' did not "
 		"fit - it should have been %2.");

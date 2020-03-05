@@ -198,7 +198,7 @@ int PL::Map::map_new_base_kind_notify(kind *new_base, text_stream *name, wording
 int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_direction) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(_p_(PM_DirectionAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionAdrift),
 				"'direction' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform maps out the "
@@ -207,21 +207,21 @@ int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
 	}
 	if (super == K_direction) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(_p_(PM_DirectionSubkinded),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionSubkinded),
 				"'direction' is not allowed to have more specific kinds",
 				"because it's too fundamental to the way Inform maps out the "
 				"geography of the physical world.");
 		return TRUE;
 	}
 	if ((K_backdrop) && (sub == K_door) && (Kinds::Compare::le(super, K_backdrop))) {
-			Problems::Issue::sentence_problem(_p_(PM_DoorAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DoorAdrift),
 				"'door' is not allowed to be a kind of 'backdrop'",
 				"because it's too fundamental to the way Inform maps out the "
 				"geography of the physical world.");
 		return TRUE;
 	}
 	if ((K_backdrop) && (sub == K_backdrop) && (Kinds::Compare::le(super, K_door))) {
-			Problems::Issue::sentence_problem(_p_(PM_BackdropAdrift),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BackdropAdrift),
 				"'backdrop' is not allowed to be a kind of 'door'",
 				"because it's too fundamental to the way Inform maps out the "
 				"geography of the physical world.");
@@ -307,13 +307,13 @@ int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 
 @<Vet the direction name for acceptability@> =
 	if (Wordings::empty(IW)) {
-		Problems::Issue::sentence_problem(_p_(PM_NamelessDirection),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessDirection),
 			"nameless directions are not allowed",
 			"so writing something like 'There is a direction.' is forbidden.");
 		return TRUE;
 	}
 	if (Wordings::length(IW) > MAX_WORDS_IN_DIRECTION) {
-		Problems::Issue::sentence_problem(_p_(PM_DirectionTooLong),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionTooLong),
 			"although direction names can be really quite long in today's Inform",
 			"they can't be as long as that.");
 		return TRUE;
@@ -601,7 +601,7 @@ int PL::Map::map_intervene_in_assertion(parse_node *px, parse_node *py) {
 			return FALSE;
 		}
 		if (ParseTree::int_annotation(px, nowhere_ANNOT)) {
-			Problems::Issue::assertion_problem(_p_(PM_NowhereDescribed),
+			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NowhereDescribed),
 				"'nowhere' cannot be made specific",
 				"and so cannot have specific properties or be of any given kind.");
 			return TRUE;
@@ -643,7 +643,7 @@ void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_object(2, forwards_dir);
 		Problems::quote_object(3, go_to);
-		Problems::Issue::handmade_problem(_p_(PM_WayFromUnclear));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WayFromUnclear));
 		Problems::issue_problem_segment(
 			"On the basis of %1, I'm trying to make a map connection in the "
 			"%2 direction to %3, but I can't make sense of where it goes from.");
@@ -656,7 +656,7 @@ void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 		if (Instances::of_kind(reverse_dir, K_direction) == FALSE) {
 			Problems::quote_object(1, forwards_dir);
 			Problems::quote_object(2, reverse_dir);
-			Problems::Issue::handmade_problem(_p_(PM_OppositeNotDirection));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_OppositeNotDirection));
 			Problems::issue_problem_segment(
 				"I'm trying to make a map connection in the %1 direction, "
 				"which means there ought to be map connection back in the "
@@ -815,7 +815,7 @@ checks that various mapping impossibilities do not occur.
 	Problems::quote_source(2, where[0]);
 	Problems::quote_source(3, where[1]);
 	Problems::quote_source(4, where[2]);
-	Problems::Issue::handmade_problem(_p_(PM_DoorOverconnected));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_DoorOverconnected));
 	Problems::issue_problem_segment(
 		"%1 seems to be a door with three ways out (specified %2, %3 and %4), but "
 		"you can only have one or two sides to a door in Inform: a one-sided "
@@ -846,7 +846,7 @@ from which there's no way back.)
 						Problems::quote_object(1, I);
 						Problems::quote_object(2, to);
 						Problems::quote_object(3, exit1);
-						Problems::Issue::handmade_problem(_p_(PM_RoomTwistyDoor));
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RoomTwistyDoor));
 						Problems::issue_problem_segment(
 							"%1, a room, seems to have a map connection which goes "
 							"through %2, a door: but that doesn't seem physically "
@@ -858,7 +858,7 @@ from which there's no way back.)
 						Problems::quote_object(2, to);
 						Problems::quote_object(3, exit1);
 						Problems::quote_object(4, exit2);
-						Problems::Issue::handmade_problem(_p_(PM_RoomMissingDoor));
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RoomMissingDoor));
 						Problems::issue_problem_segment(
 							"%1, a room, seems to have a map connection which goes "
 							"through %2, a door: but that doesn't seem physically "

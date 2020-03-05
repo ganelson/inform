@@ -14,9 +14,9 @@ instance,
 
 >> Problem. An internal error has occurred: Unknown verb code. The current sentence is "A room is a kind"; the error was detected at line 133 of "Chapter 5/Traverse for Objects.w". This should never happen, and I am now halting in abject failure.
 
-@d internal_error_tree_unsafe(X) Problems::Issue::internal_error_tu_fn(X, __FILE__, __LINE__)
-@d internal_error_if_node_type_wrong(X, Y) Problems::Issue::nodal_check(X, Y, __FILE__, __LINE__)
-@d internal_error_on_node_type(X) Problems::Issue::internal_error_on_node_type_fn(X, __FILE__, __LINE__)
+@d internal_error_tree_unsafe(X) Problems::Issue::internal_error_tu_fn(NULL, X, __FILE__, __LINE__)
+@d internal_error_if_node_type_wrong(T, X, Y) Problems::Issue::nodal_check(T, X, Y, __FILE__, __LINE__)
+@d internal_error_on_node_type(X) Problems::Issue::internal_error_on_node_type_fn(NULL, X, __FILE__, __LINE__)
 
 @ Internal errors are generated much like any other problem message, except
 that we use a variant form of the "end" routine which salvages what it can
@@ -40,17 +40,17 @@ that the internal error occurred during parse tree construction, so we need
 to be cautious.
 
 =
-void Problems::Issue::internal_error_fn(char *p, char *filename, int linenum) {
+void Problems::Issue::internal_error_fn(void *T, char *p, char *filename, int linenum) {
 	internal_error_thrown = TRUE;
 	if (current_sentence == NULL) {
-		Problems::Issue::internal_error_tu_fn(p, filename, linenum);
+		Problems::Issue::internal_error_tu_fn(T, p, filename, linenum);
 		return;
 	}
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, p);
 	Problems::quote_text(3, filename);
 	Problems::quote_number(4, &linenum);
-	Problems::issue_problem_begin(p);
+	Problems::issue_problem_begin(T, p);
 	Problems::issue_problem_segment(
 		"An internal error has occurred: %2. The current sentence is %1; the "
 		"error was detected at line %4 of \"%3\". This should never happen, "
@@ -58,12 +58,12 @@ void Problems::Issue::internal_error_fn(char *p, char *filename, int linenum) {
 	Problems::Issue::internal_error_end();
 }
 
-void Problems::Issue::internal_error_tu_fn(char *p, char *filename, int linenum) {
+void Problems::Issue::internal_error_tu_fn(void *T, char *p, char *filename, int linenum) {
 	internal_error_thrown = TRUE;
 	Problems::quote_text(1, p);
 	Problems::quote_text(2, filename);
 	Problems::quote_number(3, &linenum);
-	Problems::issue_problem_begin(p);
+	Problems::issue_problem_begin(T, p);
 	Problems::issue_problem_segment(
 		"An internal error has occurred: %1. The error was detected at "
 		"line %3 of \"%2\". This should never happen, and I am now halting "
@@ -71,12 +71,12 @@ void Problems::Issue::internal_error_tu_fn(char *p, char *filename, int linenum)
 	Problems::Issue::internal_error_end();
 }
 
-void Problems::Issue::internal_error_tu_fn_S(text_stream *p, char *filename, int linenum) {
+void Problems::Issue::internal_error_tu_fn_S(void *T, text_stream *p, char *filename, int linenum) {
 	internal_error_thrown = TRUE;
 	Problems::quote_stream(1, p);
 	Problems::quote_text(2, filename);
 	Problems::quote_number(3, &linenum);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(T, "");
 	Problems::issue_problem_segment(
 		"An internal error has occurred: %1. The error was detected at "
 		"line %3 of \"%2\". This should never happen, and I am now halting "
@@ -92,34 +92,34 @@ failure of such an invariant produces a form of internal error called a
 "nodal error".
 
 =
-void Problems::Issue::nodal_error_fn(parse_node *pn, char *p, char *filename, int linenum) {
+void Problems::Issue::nodal_error_fn(parse_node_tree *T, parse_node *pn, char *p, char *filename, int linenum) {
 	LOG("Internal nodal error at:\n");
 	LOG("$T\n", pn);
-	Problems::Issue::internal_error_fn(p, filename, linenum);
+	Problems::Issue::internal_error_fn(T, p, filename, linenum);
 }
 
-void Problems::Issue::nodal_error_fn_S(parse_node *pn, text_stream *p, char *filename, int linenum) {
+void Problems::Issue::nodal_error_fn_S(parse_node_tree *T, parse_node *pn, text_stream *p, char *filename, int linenum) {
 	LOG("Internal nodal error at:\n");
 	LOG("$T\n", pn);
-	Problems::Issue::internal_error_tu_fn_S(p, filename, linenum);
+	Problems::Issue::internal_error_tu_fn_S(T, p, filename, linenum);
 }
 
 @ Here is a convenient function to check said invariant.
 
 =
-void Problems::Issue::nodal_check(parse_node *pn, node_type_t node_type_required, char *filename, int linenum) {
+void Problems::Issue::nodal_check(parse_node_tree *T, parse_node *pn, node_type_t node_type_required, char *filename, int linenum) {
 	if (pn == NULL) {
 		TEMPORARY_TEXT(internal_message);
 		WRITE_TO(internal_message, "NULL node found where type %s expected",
 			ParseTree::get_type_name(node_type_required));
-		Problems::Issue::internal_error_tu_fn_S(internal_message, filename, linenum);
+		Problems::Issue::internal_error_tu_fn_S(T, internal_message, filename, linenum);
 		DISCARD_TEXT(internal_message);
 	} else if (ParseTree::get_type(pn) != node_type_required) {
 		TEMPORARY_TEXT(internal_message);
 		WRITE_TO(internal_message, "Node of type %s found where type %s expected",
 			ParseTree::get_type_name(ParseTree::get_type(pn)),
 			ParseTree::get_type_name(node_type_required));
-		Problems::Issue::nodal_error_fn_S(pn, internal_message, filename, linenum);
+		Problems::Issue::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
 		DISCARD_TEXT(internal_message);
 	}
 }
@@ -129,14 +129,14 @@ act on various selections of node types, and those use the |internal_error_on_no
 macro, which invokes the following:
 
 =
-void Problems::Issue::internal_error_on_node_type_fn(parse_node *pn, char *filename,
-	int linenum) {
+void Problems::Issue::internal_error_on_node_type_fn(parse_node_tree *T,
+	parse_node *pn, char *filename, int linenum) {
 	TEMPORARY_TEXT(internal_message);
 	if (pn == NULL)
-		Problems::Issue::internal_error_tu_fn("Unexpected NULL node found", filename, linenum);
+		Problems::Issue::internal_error_tu_fn(T, "Unexpected NULL node found", filename, linenum);
 	WRITE_TO(internal_message, "Unexpectedly found node of type %s",
 		ParseTree::get_type_name(ParseTree::get_type(pn)));
-	Problems::Issue::nodal_error_fn_S(pn, internal_message, filename, linenum);
+	Problems::Issue::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
 	DISCARD_TEXT(internal_message);
 }
 
@@ -146,15 +146,15 @@ tree which represents a proposition.
 
 =
 parse_node *latest_s_subtree = NULL;
-void Problems::Issue::s_subtree_error_set_position(parse_node *p) {
+void Problems::Issue::s_subtree_error_set_position(parse_node_tree *T, parse_node *p) {
 	latest_s_subtree = p;
 }
-void Problems::Issue::s_subtree_error(char *mess) {
+void Problems::Issue::s_subtree_error(parse_node_tree *T, char *mess) {
 	TEMPORARY_TEXT(internal_message);
 	WRITE_TO(internal_message, "S-subtree error: %s", mess);
 	LOG("%S", internal_message);
 	if (latest_s_subtree) LOG("Applied to the subtree:\n$T", latest_s_subtree);
-	Problems::Issue::internal_error_tu_fn_S(internal_message, __FILE__, __LINE__);
+	Problems::Issue::internal_error_tu_fn_S(T, internal_message, __FILE__, __LINE__);
 	DISCARD_TEXT(internal_message);
 }
 
@@ -264,9 +264,9 @@ int echo_problem_message_sigils = FALSE;
 Those made without using the convenient shorthand forms below:
 
 =
-void Problems::Issue::handmade_problem(SIGIL_ARGUMENTS) {
+void Problems::Issue::handmade_problem(parse_node_tree *T, SIGIL_ARGUMENTS) {
 	ACT_ON_SIGIL
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(T, "");
 }
 
 @h Limit problems.
@@ -274,11 +274,11 @@ Running out of memory, irretrievably: the politest kind of fatal error,
 though let's face it, fatal is fatal.
 
 =
-void Problems::Issue::limit_problem(SIGIL_ARGUMENTS, char *what_has_run_out, int how_many) {
+void Problems::Issue::limit_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *what_has_run_out, int how_many) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, what_has_run_out);
 	Problems::quote_number(2, &how_many);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(T, "");
 	Problems::issue_problem_segment(
 		"I have run out of memory for %1 - there's room for %2, but no more. "
 		"This is a 'hard limit', hard in the sense of deadlines, or luck: "
@@ -289,10 +289,10 @@ void Problems::Issue::limit_problem(SIGIL_ARGUMENTS, char *what_has_run_out, int
 	Problems::Fatal::exit(1);
 }
 
-void Problems::Issue::memory_allocation_problem(SIGIL_ARGUMENTS, char *what_has_run_out) {
+void Problems::Issue::memory_allocation_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *what_has_run_out) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, what_has_run_out);
-	Problems::issue_problem_begin("");
+	Problems::issue_problem_begin(T, "");
 	Problems::issue_problem_segment(
 		"I am unable to persuade this computer to let me have memory in "
 		"which to store the %1. This rarely happens on a modern desktop or laptop, "
@@ -309,7 +309,7 @@ And now the regular problem messages, the ones which are not my fault.
 We begin with lexical problems happening when the run is hardly begun:
 
 =
-void Problems::Issue::lexical_problem(SIGIL_ARGUMENTS, char *message, wchar_t *concerning, char *exp) {
+void Problems::Issue::lexical_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *message, wchar_t *concerning, char *exp) {
 	ACT_ON_SIGIL
 	char *lexical_explanation =
 		"This is a low-level problem happening when I am still reading in the "
@@ -321,12 +321,12 @@ void Problems::Issue::lexical_problem(SIGIL_ARGUMENTS, char *message, wchar_t *c
 	else if (current_sentence) Problems::quote_source(2, current_sentence);
 	else Problems::quote_text(2, "<text generated internally>");
 	Problems::quote_text(3, lexical_explanation);
-	Problems::issue_problem_begin(lexical_explanation);
+	Problems::issue_problem_begin(T, lexical_explanation);
 	Problems::issue_problem_segment("%1: %2%L.%%%| %3");
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::lexical_problem_S(SIGIL_ARGUMENTS, char *message, text_stream *concerning, char *exp) {
+void Problems::Issue::lexical_problem_S(parse_node_tree *T, SIGIL_ARGUMENTS, char *message, text_stream *concerning, char *exp) {
 	ACT_ON_SIGIL
 	char *lexical_explanation =
 		"This is a low-level problem happening when I am still reading in the "
@@ -338,7 +338,7 @@ void Problems::Issue::lexical_problem_S(SIGIL_ARGUMENTS, char *message, text_str
 	else if (current_sentence) Problems::quote_source(2, current_sentence);
 	else Problems::quote_text(2, "<text generated internally>");
 	Problems::quote_text(3, lexical_explanation);
-	Problems::issue_problem_begin(lexical_explanation);
+	Problems::issue_problem_begin(T, lexical_explanation);
 	Problems::issue_problem_segment("%1: %2%L.%%%| %3");
 	Problems::issue_problem_end();
 }
@@ -347,22 +347,22 @@ void Problems::Issue::lexical_problem_S(SIGIL_ARGUMENTS, char *message, text_str
 other problems can't either, so:
 
 =
-void Problems::Issue::unlocated_problem(SIGIL_ARGUMENTS, char *message) {
+void Problems::Issue::unlocated_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *message) {
 	ACT_ON_SIGIL
 	do_not_locate_problems = TRUE;
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(T, message);
 	Problems::issue_problem_segment(message);
 	Problems::issue_problem_end();
 	do_not_locate_problems = FALSE;
 }
 
-void Problems::Issue::unlocated_problem_on_file(SIGIL_ARGUMENTS, char *message, filename *F) {
+void Problems::Issue::unlocated_problem_on_file(parse_node_tree *T, SIGIL_ARGUMENTS, char *message, filename *F) {
 	ACT_ON_SIGIL
 	do_not_locate_problems = TRUE;
 	TEMPORARY_TEXT(fn);
 	WRITE_TO(fn, "%f", F);
 	Problems::quote_stream(1, fn);
-	Problems::issue_problem_begin(message);
+	Problems::issue_problem_begin(T, message);
 	Problems::issue_problem_segment(message);
 	Problems::issue_problem_end();
 	DISCARD_TEXT(fn);
@@ -376,12 +376,12 @@ that isn't surprising, since it simply quotes the entire sentence at fault
 (which is always the current sentence) and issues a message.
 
 =
-void Problems::Issue::sentence_problem(SIGIL_ARGUMENTS, char *message, char *explanation) {
+void Problems::Issue::sentence_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("You wrote %1: %Sagain, %%%Lbut %%%2%|, %3");
 	Problems::issue_problem_end();
 }
@@ -389,14 +389,14 @@ void Problems::Issue::sentence_problem(SIGIL_ARGUMENTS, char *message, char *exp
 @ And a variant which adds a note in a subsequent paragraph.
 
 =
-void Problems::Issue::sentence_problem_with_note(SIGIL_ARGUMENTS,
+void Problems::Issue::sentence_problem_with_note(parse_node_tree *T, SIGIL_ARGUMENTS,
 		char *message, char *explanation, char *note) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::quote_text(4, note);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("You wrote %1: %Sagain, %%%Lbut %%%2%|, %3 %P%4");
 	Problems::issue_problem_end();
 }
@@ -405,14 +405,14 @@ void Problems::Issue::sentence_problem_with_note(SIGIL_ARGUMENTS,
 which is part of the current sentence.
 
 =
-void Problems::Issue::sentence_in_detail_problem(SIGIL_ARGUMENTS,
+void Problems::Issue::sentence_in_detail_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
 		wording W, char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::quote_wording(4, W);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment(
 		"You wrote %1, and in particular '%4': %Sagain, %%%Lbut %%%2%|, %3");
 	Problems::issue_problem_end();
@@ -422,8 +422,8 @@ void Problems::Issue::sentence_in_detail_problem(SIGIL_ARGUMENTS,
 therefore is kept here:
 
 =
-void Problems::Issue::negative_sentence_problem(SIGIL_ARGUMENTS) {
-	Problems::Issue::sentence_problem(PASS_SIGIL,
+void Problems::Issue::negative_sentence_problem(parse_node_tree *T, SIGIL_ARGUMENTS) {
+	Problems::Issue::sentence_problem(T, PASS_SIGIL,
 		"assertions about the initial state of play must be positive, not negative",
 		"so 'The cat is an animal' is fine but not 'The cat is not a container'. "
 		"I have only very feeble powers of deduction - sometimes the implications "
@@ -443,13 +443,13 @@ a message which diagnoses the problem rather better.
 
 =
 #ifdef LINGUISTICS_MODULE
-void Problems::Issue::assertion_problem(SIGIL_ARGUMENTS, char *message, char *explanation) {
+void Problems::Issue::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS, char *message, char *explanation) {
 	wording RTW = EMPTY_WORDING; /* "rather than" text */
 	ACT_ON_SIGIL
 	if ((current_sentence == NULL) || (current_sentence->down == NULL) ||
 		(ParseTree::get_type(current_sentence->down) != AVERB_NT)) {
 		LOG("(Assertion error reverting to sentence error.)\n");
-		Problems::Issue::sentence_problem(PASS_SIGIL, message, explanation);
+		Problems::Issue::sentence_problem(T, PASS_SIGIL, message, explanation);
 		return;
 	}
 
@@ -465,7 +465,7 @@ void Problems::Issue::assertion_problem(SIGIL_ARGUMENTS, char *message, char *ex
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("You wrote %1: %Sagain, %%%Lbut %%%2%|, %3");
 	if (Wordings::nonempty(RTW)) {
 		Problems::quote_wording(4, ParseTree::get_text(current_sentence->down));
@@ -509,18 +509,18 @@ those usually occur when the current sentence is rather unhelpfully just the
 word "Definition" alone. So we use this routine instead:
 
 =
-void Problems::Issue::definition_problem(SIGIL_ARGUMENTS, parse_node *q,
+void Problems::Issue::definition_problem(parse_node_tree *T, SIGIL_ARGUMENTS, parse_node *q,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, q);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("You gave as a definition %1: %Sagain, %%%Lbut %%%2%|, %3");
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::adjective_problem(SIGIL_ARGUMENTS, wording IX, wording D,
+void Problems::Issue::adjective_problem(parse_node_tree *T, SIGIL_ARGUMENTS, wording IX, wording D,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_wording(1, IX);
@@ -528,7 +528,7 @@ void Problems::Issue::adjective_problem(SIGIL_ARGUMENTS, wording IX, wording D,
 	Problems::quote_text(3, message);
 	Problems::quote_text(4, explanation);
 	Problems::quote_source(5, current_sentence);
-	Problems::issue_problem_begin(explanation);
+	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("In %5 you defined an adjective by '%1' intending that "
 		"it would apply to '%2': %Sagain, %%%Lbut %%%3%|, %4");
 	Problems::issue_problem_end();

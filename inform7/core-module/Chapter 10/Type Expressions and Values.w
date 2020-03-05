@@ -116,7 +116,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 @<Issue PM_TypeCantVary problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_TypeCantVary));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TypeCantVary));
 	Problems::issue_problem_segment(
 		"In %1, '%2' is not a kind of value which a variable can safely have, "
 		"as it cannot ever vary.");
@@ -126,7 +126,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 @<Issue PM_TypeUnmaintainable problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_TypeUnmaintainable));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TypeUnmaintainable));
 	Problems::issue_problem_segment(
 		"In %1, '%2' is not a kind of value which a variable can safely have, "
 		"as it cannot be guaranteed that the contents will always meet "
@@ -465,7 +465,7 @@ Again, this is part of a condition, and can't evaluate.
 	spec->down = RP[1];
 	if ((LocalVariables::are_we_using_table_lookup() == FALSE) &&
 		(problem_count == 0)) {
-		Problems::Issue::sentence_problem(_p_(PM_NoRowSelected),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NoRowSelected),
 			"no row seems to have been chosen at this point",
 			"so it doesn't make sense to talk about the entries "
 			"within it. (By 'at this point', I mean the point "

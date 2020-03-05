@@ -154,6 +154,10 @@ void Kinds::Knowledge::move_within(kind *sub, kind *super) {
 	InferenceSubjects::falls_within(Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }
 
+void Kinds::Knowledge::include_templates_for_kinds(void) {
+	Kinds::Interpreter::include_templates_for_kinds(Task::syntax_tree());
+}
+
 @h Problems with kinds.
 
 @d KINDS_PROBLEM_HANDLER Kinds::Knowledge::kinds_problem_handler
@@ -162,17 +166,17 @@ void Kinds::Knowledge::move_within(kind *sub, kind *super) {
 void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
 	switch (err_no) {
 		case DimensionRedundant_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_DimensionRedundant),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DimensionRedundant),
 				"multiplication rules can only be given once",
 				"and this combination is already established.");
 			break;
 		case DimensionNotBaseKOV_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_DimensionNotBaseKOV),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DimensionNotBaseKOV),
 				"multiplication rules can only involve simple kinds of value",
 				"rather than complicated ones such as lists of other values.");
 			break;
 		case NonDimensional_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_NonDimensional),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonDimensional),
 				"multiplication rules can only be given between kinds of "
 				"value which are known to be numerical",
 				"and not all of these are. Saying something like 'Pressure is a "
@@ -182,7 +186,7 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 				"Inform will realise.");
 			break;
 		case UnitSequenceOverflow_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_UnitSequenceOverflow),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnitSequenceOverflow),
 				"reading that sentence led me into calculating such a complicated "
 				"kind of value that I ran out of memory",
 				"which my programmer really didn't expect to happen. I think you "
@@ -191,7 +195,7 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 				"weirdly tricky. Can you simplify?");
 			break;
 		case DimensionsInconsistent_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_DimensionsInconsistent),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DimensionsInconsistent),
 				"this is inconsistent with what is already known about those kinds of value",
 				"all three of which already have well-established relationships - see the "
 				"Kinds index for more.");
@@ -201,7 +205,7 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 			Problems::quote_source(2, pn);
 			Problems::quote_kind(3, K1);
 			Problems::quote_kind(4, K2);
-			Problems::Issue::handmade_problem(_p_(PM_KindUnalterable));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindUnalterable));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that seems to contradict %2, as %3 and %4 "
 				"are incompatible. (If %3 were a kind of %4 or vice versa "
@@ -213,7 +217,7 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 			Problems::quote_source(2, pn);
 			Problems::quote_kind(3, K1);
 			Problems::quote_kind(4, K2);
-			Problems::Issue::handmade_problem(_p_(PM_KindsCircular));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindsCircular));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that seems to contradict %2, as it would "
 				"make a circularity with %3 and %4 each being kinds of the "
@@ -221,13 +225,13 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 			Problems::issue_problem_end();
 			break;
 		case LPCantScaleYet_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_LPCantScaleYet),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPCantScaleYet),
 				"this tries to scale up or down a value which so far has no point of "
 				"reference to scale from",
 				"which is impossible.");
 			break;
 		case LPCantScaleTwice_KINDERROR:
-			Problems::Issue::sentence_problem(_p_(PM_LPCantScaleTwice),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPCantScaleTwice),
 				"this tries to specify the scaling for a kind of value whose "
 				"scaling is already established",
 				"which is impossible.");

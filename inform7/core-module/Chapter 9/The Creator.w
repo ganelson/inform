@@ -295,7 +295,7 @@ void Assertions::Creator::noun_creator(parse_node *p, kind *create_as, parse_nod
 
 @<Check we are sure about this@> =
 	if ((prevailing_mood == IMPOSSIBLE_CE) || (prevailing_mood == UNLIKELY_CE)) {
-		Problems::Issue::sentence_problem(_p_(PM_NegativeCreation),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NegativeCreation),
 			"sentences are only allowed to say that things do exist",
 			"not that they don't.");
 	}
@@ -377,7 +377,7 @@ disappears from the tree entirely when the creator has finished work.
 
 @<Complain that nothing else can be called@> =
 	LOG("$T\n", what_to_make_node);
-	Problems::Issue::sentence_problem(_p_(PM_CalledWithoutKind),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CalledWithoutKind),
 		"I can only make 'a something called whatever' when the something is a kind I know",
 		"possibly qualified with adjectives. For instance, 'an open door called the Marble "
 		"Door' is fine because 'door' is the name of a kind and 'open' is an adjective "
@@ -463,7 +463,7 @@ it handles crashes correctly.
 	list-entries							==> @<Issue PM_NameReserved problem@>
 
 @<Issue PM_NameIsArticle problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_NameIsArticle),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NameIsArticle),
 		"this seems to give something a name which consists only of an article",
 		"that is, 'a', 'an', 'the' or 'some'. This is not allowed since the "
 		"potential for confusion is too high. (If you need, say, a room which "
@@ -471,7 +471,7 @@ it handles crashes correctly.
 		"a room with printed name \"A\".')");
 
 @<Issue PM_NameWithBrackets problem@> =
-		Problems::Issue::sentence_problem(_p_(PM_NameWithBrackets),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NameWithBrackets),
 			"this seems to give something a name which contains brackets '(' or ')'",
 			"which is not allowed since the potential for confusion with other uses "
 			"for brackets in Inform source text is too high. (If you need, say, a "
@@ -482,7 +482,7 @@ it handles crashes correctly.
 @<Issue PM_Crash1 problem@> =
 	WRITE_TO(STDERR, "*** Exit(1) requested for testing purposes ***\n");
 	STREAM_FLUSH(STDERR);
-	Problems::Issue::sentence_problem(_p_(PM_Crash1),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Crash1),
 		"this uses the first secret hieroglyph of dreadful power",
 		"which forces me to crash. (It's for testing the way I crash, in fact. "
 		"If this is a genuine inconvenience to you, get in touch with my authors.)");
@@ -491,7 +491,7 @@ it handles crashes correctly.
 @<Issue PM_Crash10 problem@> =
 	WRITE_TO(STDERR, "*** Exit(10) requested for testing purposes ***\n");
 	STREAM_FLUSH(STDERR);
-	Problems::Issue::sentence_problem(_p_(PM_Crash10),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Crash10),
 		"this uses the second secret hieroglyph of dreadful power",
 		"which forces me to crash. (It's for testing the way I crash, in fact. "
 		"If this is a genuine inconvenience to you, get in touch with my authors.)");
@@ -500,7 +500,7 @@ it handles crashes correctly.
 @<Issue PM_Crash11 problem@> =
 	WRITE_TO(STDERR, "*** Exit(11) requested for testing purposes ***\n");
 	STREAM_FLUSH(STDERR);
-	Problems::Issue::sentence_problem(_p_(PM_Crash11),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Crash11),
 		"this uses the third secret hieroglyph of dreadful power",
 		"which forces me to crash. (It's for testing the way I crash, in fact. "
 		"If this is a genuine inconvenience to you, get in touch with my authors.)");
@@ -508,14 +508,14 @@ it handles crashes correctly.
 
 @<Issue PM_StartsWithComma problem@> =
 	LOG("$T\n", current_sentence);
-	Problems::Issue::sentence_problem(_p_(PM_StartsWithComma),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_StartsWithComma),
 		"this seems to refer to something whose name begins with a comma",
 		"which is forbidden. Perhaps you used a comma in punctuating a sentence? "
 		"Inform generally doesn't like this because it reserves commas for "
 		"specific purposes such as dividing rules or 'if' phrases.");
 
 @<Issue PM_EndsWithComma problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_EndsWithComma),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EndsWithComma),
 		"this seems to refer to something whose name ends with a comma",
 		"which is forbidden. Perhaps you used a comma in punctuating a sentence? "
 		"Inform generally doesn't like this because it reserves commas for "
@@ -524,7 +524,7 @@ it handles crashes correctly.
 @<Issue PM_ObjectIncWhen problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_ObjectIncWhen));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ObjectIncWhen));
 	Problems::issue_problem_segment(
 		"The sentence %1 seems to be talking about a previously unknown room or "
 		"thing called %2. Ordinarily, I would create this, but because the name "
@@ -542,7 +542,7 @@ it handles crashes correctly.
 	Problems::issue_problem_end();
 
 @<Issue PM_NameWithText problem@> =
-	Problems::Issue::assertion_problem(_p_(PM_NameWithText),
+	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NameWithText),
 		"this seems to give something a name which contains "
 		"double-quoted text",
 		"which is not allowed. If you do need quotes in a name, one option "
@@ -554,7 +554,7 @@ it handles crashes correctly.
 		"fact it didn't, so that I read the next words as following on.");
 
 @<Issue PM_NameReserved problem@> =
-	Problems::Issue::assertion_problem(_p_(PM_NameReserved),
+	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NameReserved),
 		"this seems to give something a name which is reserved for Inform's "
 		"own internal use",
 		"so is not allowed. There are only a few of these - 'storage', "
@@ -712,7 +712,7 @@ them by asserting propositions to be true; we act directly.
 @ And to wind up, sundry problem messages.
 
 @<Issue a problem for topics that vary@> =
-	Problems::Issue::assertion_problem(_p_(PM_NoTopicsThatVary),
+	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NoTopicsThatVary),
 		"'topics that vary' are not allowed",
 		"that is, a variable is not allowed to have 'topic' as its kind of value. "
 		"(This would cause too much ambiguity with text variables, whose values "
@@ -723,7 +723,7 @@ them by asserting propositions to be true; we act directly.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_kind(3, create_as);
-		Problems::Issue::handmade_problem(_p_(PM_MixedConstantsEquation));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MixedConstantsEquation));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "
 			"I should create as brand new - %3. But that can't be right, "
@@ -734,7 +734,7 @@ them by asserting propositions to be true; we act directly.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_kind(3, create_as);
-		Problems::Issue::handmade_problem(_p_(PM_MixedConstants));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MixedConstants));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "
 			"I should create as brand new - %3. But that can't be right, "
@@ -749,7 +749,7 @@ them by asserting propositions to be true; we act directly.
 	Problems::quote_wording(2, W);
 	Problems::quote_kind(3, create_as);
 	Problems::quote_table(4, Tables::Defining::defined_by_table(create_as));
-	Problems::Issue::handmade_problem(_p_(PM_TableOfExistingKind2));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind2));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "
 			"I should create as brand new - %3. That looks reasonable, since "
@@ -767,7 +767,7 @@ if nothing has already been said:
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_kind(3, create_as);
-		Problems::Issue::handmade_problem(_p_(PM_NoNewInstances));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoNewInstances));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "
 			"I should create as brand new - %3. But that can't be right, "
@@ -850,7 +850,7 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 @<Point out that it's impossible to create values implicitly for this kind@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_kind(2, instance_kind);
-	Problems::Issue::handmade_problem(_p_(PM_CantCreateImplicitly));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantCreateImplicitly));
 	Problems::issue_problem_segment(
 		"The sentence %1 seems to be asking me to create a new value (%2) "
 		"in order to be part of a relationship, but this isn't a kind of "
@@ -862,7 +862,7 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 @<Issue a problem for calling something an article@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, CW);
-	Problems::Issue::handmade_problem(_p_(PM_CalledArticle));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CalledArticle));
 	Problems::issue_problem_segment(
 		"The sentence %1 seems to be asking me to create something whose "
 		"name, '%2', is just an article - this isn't allowed.");
@@ -880,7 +880,7 @@ message says about performance, too.)
 	instance_count = ParseTree::int_annotation(p, multiplicity_ANNOT);
 	if (instance_count < 1) instance_count = 1;
 	if (instance_count > MAX_DUPLICATES_AT_ONCE) {
-		Problems::Issue::assertion_problem(_p_(PM_TooManyDuplicates),
+		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_TooManyDuplicates),
 			"at most 100 duplicates can be made at any one time",
 			"so '157 chairs are in the UN General Assembly' will not be allowed. The "
 			"system for handling duplicates during play becomes too slow and awkward "
@@ -1049,7 +1049,7 @@ For example, property names can't be unsuitable, but they can be unfortunate.
 =
 int Assertions::Creator::vet_name_for_noun(wording W) {
 	if (<unfortunate-name>(W)) {
-		Problems::Issue::sentence_problem(_p_(PM_NameBestAvoided),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NameBestAvoided),
 			"this is a name which is best avoided",
 			"because it would lead to confusion inside Inform. In general, try "
 			"to avoid punctuation, quotation marks, or the words 'with' or "

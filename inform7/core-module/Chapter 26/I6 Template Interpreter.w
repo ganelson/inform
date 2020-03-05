@@ -36,16 +36,16 @@ and |+)| Inform 7 escapes (see below).
 
 =
 void I6T::interpret_kindt(filename *segment_file) {
-	I6T::interpreter_shared(KINDT_MODE, NULL, NULL, NULL, -1, segment_file);
+	I6T::interpreter_shared(Task::syntax_tree(), KINDT_MODE, NULL, NULL, NULL, -1, segment_file);
 }
 
 void I6T::interpret_indext(filename *indext_file) {
 	if (do_not_generate_index == FALSE)
-		I6T::interpreter_shared(INDEXT_MODE, NULL, NULL, NULL, -1, indext_file);
+		I6T::interpreter_shared(Task::syntax_tree(), INDEXT_MODE, NULL, NULL, NULL, -1, indext_file);
 }
 
 void I6T::interpret_i6t(OUTPUT_STREAM, wchar_t *sf, int N_escape) {
-	I6T::interpreter_shared(I6TCODE_MODE, OUT, sf, NULL, N_escape, NULL);
+	I6T::interpreter_shared(Task::syntax_tree(), I6TCODE_MODE, OUT, sf, NULL, N_escape, NULL);
 }
 
 @h Implementation.
@@ -56,7 +56,7 @@ In kind or indexing mode, there is in fact no output, and the interpreter
 is run only to call other functions.
 
 =
-void I6T::interpreter_shared(int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name,
+void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name,
 	int N_escape, filename *index_template) {
 	FILE *Input_File = NULL;
 	int col = 1, cr, sfp = 0;
@@ -80,7 +80,7 @@ void I6T::interpreter_shared(int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stre
 				@<Read rest of line as argument@>;
 				if ((Str::get_first_char(argument) == '!') ||
 					(Str::get_first_char(argument) == 0)) continue; /* skip blanks and comments */
-				Kinds::Interpreter::despatch_kind_command(argument);
+				Kinds::Interpreter::despatch_kind_command(T, argument);
 				continue;
 			}
 			if (cr == '{') {
@@ -130,14 +130,14 @@ file.
 	if (Str::len(segment_name) > 0) {
 		Input_File = NULL;
 		WRITE_TO(STDERR, "inform: Unable to open segment <%S>\n", segment_name);
-		Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
+		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 			"I couldn't open a requested I6T segment: see the console "
 			"output for details.");
 	} else if (index_template) {
 		Input_File = Filenames::fopen(index_template, "r");
 		if (Input_File == NULL) {
 			LOG("Filename was %f\n", index_template);
-			Problems::Issue::unlocated_problem(_p_(BelievedImpossible), /* or anyway not usefully testable */
+			Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 				"I couldn't open the template file for the index.");
 		}
 	}
@@ -223,7 +223,7 @@ At one time there were very many commands avalable here, but no longer.
 
 	LOG("command: <%S> argument: <%S>\n", command, argument);
 	Problems::quote_stream(1, command);
-	Problems::Issue::unlocated_problem(_p_(PM_TemplateError),
+	Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_TemplateError),
 		"In an explicit Inform 6 code insertion, I recognise a few special "
 		"notations in the form '{-command}'. This time, though, the unknown notation "
 		"{-%1} has been used, and this is an error. (It seems very unlikely indeed "
@@ -292,7 +292,7 @@ using template-hacking there are a handful of cases that can't be avoided, so...
 =
 void I6T::error(char *message) {
 	Problems::quote_text(1, message);
-	Problems::Issue::handmade_problem(_p_(...));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"I ran into a mistake in a template file command: %1. The I6 "
 		"template files (or .i6t files) are a very low-level part of Inform, "

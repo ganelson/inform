@@ -60,7 +60,7 @@ void UseNouns::name_all(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		Kinds::RunTime::assure_iname_exists(K);
-	ParseTree::traverse(UseNouns::visit_to_name);
+	ParseTree::traverse(Task::syntax_tree(), UseNouns::visit_to_name);
 }
 
 void UseNouns::visit_to_name(parse_node *p) {
@@ -81,7 +81,7 @@ void UseNouns::visit_to_name(parse_node *p) {
 			DISCARD_TEXT(i6r);
 		}
 	} else {
-		Problems::Issue::sentence_problem(_p_(PM_BadObjectTranslation),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadObjectTranslation),
 			"there is no such object or kind of object",
 			"so its name will never be translated into an I6 Object or Class identifier "
 			"in any event.");
@@ -109,14 +109,14 @@ void UseNouns::nl_translates(parse_node *pn) {
 	int g = ParseTree::int_annotation(pn->next->next, gender_reference_ANNOT);
 	if (nl == NULL) internal_error("No such NL");
 	if (nl == English_language) {
-		Problems::Issue::sentence_problem(_p_(PM_CantTranslateIntoEnglish),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateIntoEnglish),
 			"you can't translate into English",
 			"only out of it.");
 		return;
 	}
 
 	if ((<translates-into-nl-sentence-subject>(ParseTree::get_text(pn->next))) == FALSE) {
-		Problems::Issue::sentence_problem(_p_(PM_CantTranslateValue),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateValue),
 			"this isn't something which can be translated",
 			"that is, it isn't a kind.");
 		return;

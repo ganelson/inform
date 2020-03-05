@@ -214,7 +214,7 @@ void PL::Parsing::Verbs::add_command(grammar_verb *gv, wording W) {
 	if (gv->gv_is != GV_IS_COMMAND)
 		internal_error("tried to add alias command to non-command GV");
 	if (gv->no_aliased_commands == MAX_ALIASED_COMMANDS) {
-		Problems::Issue::sentence_problem(_p_(PM_TooManyAliases),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyAliases),
 			"this 'understand the command ... as ...' makes too many aliases "
 			"for the same command",
 			"exceeding the limit of 32.");
@@ -286,7 +286,7 @@ packaging_state PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_ver
 			current_sentence = gv->where_gv_created;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, gv->command);
-			Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 			Problems::issue_problem_segment(
 				"You wrote %1, but %2 is a built-in Inform testing verb, which "
 				"means it is reserved for Inform's own use and can't be used "
@@ -440,7 +440,7 @@ void PL::Parsing::Verbs::translates(wording W, parse_node *p2) {
 	grammar_verb *gv;
 	LOOP_OVER(gv, grammar_verb)
 		if ((gv->gv_is == GV_IS_TOKEN) && (Wordings::match(W, gv->name))) {
-			Problems::Issue::sentence_problem(_p_(PM_GrammarTranslatedAlready),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarTranslatedAlready),
 				"this grammar token has already been translated",
 				"so there must be some duplication somewhere.");
 			return;
@@ -545,7 +545,7 @@ void PL::Parsing::Verbs::add_line(grammar_verb *gv, grammar_line *gl) {
 	LOGIF(GRAMMAR, "Adding grammar line $g to verb $G\n", gl, gv);
 	if ((gv->gv_is == GV_IS_COMMAND) &&
 		(PL::Parsing::Lines::list_length(gv->first_line) >= MAX_LINES_PER_COMMAND)) {
-		Problems::Issue::sentence_problem(_p_(PM_TooManyGrammarLines),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyGrammarLines),
 			"this command verb now has too many Understand possibilities",
 			"that is, there are too many 'Understand \"whatever ...\" as ...' "
 			"which share the same initial word 'whatever'. The best way to "
@@ -630,7 +630,7 @@ parse_node *PL::Parsing::Verbs::determine(grammar_verb *gv, int depth) {
 		return PL::Parsing::Tokens::Types::get_single_type(&(gv->gv_type));
 
 	if (depth > NUMBER_CREATED(grammar_verb)) {
-		Problems::Issue::sentence_problem(_p_(PM_GrammarIllFounded),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarIllFounded),
 			"grammar tokens are not allowed to be defined in terms of "
 			"themselves",
 			"either directly or indirectly.");

@@ -116,23 +116,23 @@ if the kind was already a unit or was successfully converted into one,
 |FALSE| if it's now too late.
 
 =
-int Kinds::Behaviour::convert_to_unit(kind *K) {
+int Kinds::Behaviour::convert_to_unit(parse_node_tree *T, kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::convert_to_unit(K->construct);
+	return Kinds::Constructors::convert_to_unit(T, K->construct);
 }
 
 @ And similarly:
 
 =
-void Kinds::Behaviour::convert_to_enumeration(kind *K) {
-	if (K) Kinds::Constructors::convert_to_enumeration(K->construct);
+void Kinds::Behaviour::convert_to_enumeration(parse_node_tree *T, kind *K) {
+	if (K) Kinds::Constructors::convert_to_enumeration(T, K->construct);
 }
 
 @ And similarly to switch from integer to real arithmetic.
 
 =
-void Kinds::Behaviour::convert_to_real(kind *K) {
-	if (K) Kinds::Constructors::convert_to_real(K->construct);
+void Kinds::Behaviour::convert_to_real(parse_node_tree *T, kind *K) {
+	if (K) Kinds::Constructors::convert_to_real(T, K->construct);
 }
 
 @ The instances of an enumeration have the values $1, 2, 3, ..., N$ at
@@ -140,9 +140,9 @@ run-time; the following returns $N+1$, that is, a value which can be held
 by the next instance to be created.
 
 =
-int Kinds::Behaviour::new_enumerated_value(kind *K) {
+int Kinds::Behaviour::new_enumerated_value(parse_node_tree *T, kind *K) {
 	if (K == NULL) return 0;
-	Kinds::Behaviour::convert_to_enumeration(K);
+	Kinds::Behaviour::convert_to_enumeration(T, K);
 	return K->construct->next_free_value++;
 }
 

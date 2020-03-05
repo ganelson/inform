@@ -292,7 +292,7 @@ This happens in two passes: pass 1 before HTML mapping, pass 2 before EPS mappin
 =
 void PL::EPSMap::traverse_for_map_parameters(int pass) {
 	if (pass == 1) PL::SpatialMap::initialise_page_directions();
-	ParseTree::traverse_int(PL::EPSMap::look_for_map_parameters, &pass);
+	ParseTree::traverse_int(Task::syntax_tree(), PL::EPSMap::look_for_map_parameters, &pass);
 }
 
 void PL::EPSMap::look_for_map_parameters(parse_node *p, int *pass) {

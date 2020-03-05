@@ -643,13 +643,13 @@ is the super-kind ("value", "thing").
 
 =
 int no_kinds_of_object = 1;
-kind *Kinds::new_base(wording W, kind *super) {
+kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 	#ifdef PROTECTED_MODEL_PROCEDURE
 	PROTECTED_MODEL_PROCEDURE;
 	#endif
 
 	kind *K = Kinds::base_construction(
-		Kinds::Constructors::new(Kinds::get_construct(super), NULL, I"#NEW"));
+		Kinds::Constructors::new(T, Kinds::get_construct(super), NULL, I"#NEW"));
 	@<Renew the subject if necessary to cope with an early subject creation@>;
 
 	#ifdef CORE_MODULE

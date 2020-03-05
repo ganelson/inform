@@ -146,7 +146,7 @@ wrong in the calling routine, where they are needed.
 @<Issue a problem message if the table-lookup locals were needed@> =
 	if ((LocalVariables::are_we_using_table_lookup()) && (!ct_locals_problem_thrown)) {
 		ct_locals_problem_thrown = TRUE;
-		Problems::Issue::sentence_problem(_p_(PM_CantLookUpTableInDeferred),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantLookUpTableInDeferred),
 			"I am not able to look up table entries in this complicated "
 			"condition",
 			"which seems to involve making a potentially large number "
@@ -162,7 +162,7 @@ possible.)
 
 @<Issue a problem message if a negated quantifier was needed@> =
 	if (negated_quantifier_found) {
-		Problems::Issue::sentence_problem(_p_(BelievedImpossible),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this involves a very complicated negative thought",
 			"which I'm not able to untangle. Perhaps you could rephrase "
 			"this more simply, or split it into more than one sentence?");

@@ -171,7 +171,7 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 	binary_predicate *bp = Sentences::Rearrangement::relation_noticed(mmp_call_counter++);
 	if (bp == NULL) {
 		LOG("Improper text: %W\n", W);
-		Problems::Issue::sentence_problem(_p_(PM_ImproperlyMadeDirection),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ImproperlyMadeDirection),
 			"directions must be created by only the simplest possible sentences",
 			"in the form 'North-north-west is a direction' only. Using adjectives, "
 			"'called', 'which', and so on is not allowed. (In practice this is not "

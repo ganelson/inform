@@ -154,7 +154,7 @@ which must match:
 
 @<Issue PM_BadEpisode problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(_p_(PM_BadEpisode),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadEpisode),
 		"this is not the right way to specify how the story "
 		"fits into a larger narrative",
 		"and should take the form 'The story is episode 2 of "

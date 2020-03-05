@@ -9,10 +9,12 @@ Setting up the use of this module.
 @ To begin with, this module needs to allocate memory:
 
 @e parse_node_MT
+@e parse_node_tree_MT
 @e parse_node_annotation_array_MT
 
 =
 ALLOCATE_INDIVIDUALLY(parse_node)
+ALLOCATE_INDIVIDUALLY(parse_node_tree)
 ALLOCATE_IN_ARRAYS(parse_node_annotation, 500)
 
 @h The beginning.

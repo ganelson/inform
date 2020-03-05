@@ -173,7 +173,7 @@ int Rules::vet_name(wording W) {
 	if (<unsuitable-name>(W)) {
 		if (PM_RuleWithComma_issued_at != Wordings::first_wn(W)) {
 			PM_RuleWithComma_issued_at = Wordings::first_wn(W);
-			Problems::Issue::sentence_problem(_p_(PM_RuleWithComma),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithComma),
 				"a rule name is not allowed to contain punctuation, or "
 				"to consist only of an article like 'a' or 'an', or to "
 				"contain double-quoted text",
@@ -304,7 +304,7 @@ int Rules::compile_constraint(applicability_condition *acl) {
 		} else {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, acl->text_of_condition);
-			Problems::Issue::handmade_problem(_p_(PM_BadRuleConstraint));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadRuleConstraint));
 			Problems::issue_problem_segment(
 				"In %1, you placed a constraint '%2' on a rule, but this isn't "
 				"a condition I can understand.");
@@ -412,7 +412,7 @@ void Rules::set_kind_from(rule *R, rulebook *RB) {
 			Problems::quote_kind(6, P2);
 			Problems::quote_wording_as_source(7, R->kind_of_rule_set_from->primary_name);
 			Problems::quote_wording_as_source(8, RB->primary_name);
-			Problems::Issue::handmade_problem(_p_(PM_RuleInIncompatibleRulebooks));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RuleInIncompatibleRulebooks));
 			Problems::issue_problem_segment(
 				"You've asked to put the rule '%2' into the rulebook %8, "
 				"which is based on %5 and produces %6; but it was originally "
@@ -496,7 +496,7 @@ void Rules::check_placement_safety(void) {
 					Problems::quote_wording(3, R->name);
 					Problems::quote_kind(4, KR);
 					Problems::quote_kind(5, KS);
-					Problems::Issue::handmade_problem(_p_(PM_RulesCantInterchange));
+					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulesCantInterchange));
 					Problems::issue_problem_segment(
 						"In the sentence %1 you've asked to use the rule '%2' in "
 						"place of '%3', but one is based on %4 whereas the other "
@@ -922,7 +922,7 @@ void Rules::check_response_usages(void) {
 				Problems::quote_stream(3, letter);
 				if (c == 0) Problems::quote_text(4, "no lettered responses at all");
 				else Problems::quote_stream(4, offers);
-				Problems::Issue::handmade_problem(_p_(PM_NoSuchResponse));
+				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchResponse));
 				Problems::issue_problem_segment(
 					"You wrote %1, but the '%2' doesn't have a response "
 					"lettered '%3'. (It has %4.)");

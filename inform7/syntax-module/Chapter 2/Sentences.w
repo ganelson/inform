@@ -65,7 +65,7 @@ which was used to end it. Each call to this routine represents one cycle of our
 finite state machine.
 
 =
-void Sentences::break(wording W, int is_extension,
+void Sentences::break(parse_node_tree *T, wording W, int is_extension,
 	EXTENSION_FILE_TYPE *from_extension, int bwc) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
@@ -84,7 +84,7 @@ void Sentences::break(wording W, int is_extension,
 
 			@<Look for a sentence break, finding the number of stop words and the stop character@>;
 			if (no_stop_words > 0) {
-				Sentences::make_node(Wordings::new(sentence_start, position-1), stop_character);
+				Sentences::make_node(T, Wordings::new(sentence_start, position-1), stop_character);
 				position = position + no_stop_words - 1;
 				if (back_up_one_word) sentence_start = position;
 				else sentence_start = position + 1;
@@ -95,7 +95,7 @@ void Sentences::break(wording W, int is_extension,
 
 	if ((sentence_start < Wordings::last_wn(W)) ||
 		((sentence_start == Wordings::last_wn(W)) && (!(Lexer::word(Wordings::last_wn(W)) == PARBREAK_V)))) {
-		Sentences::make_node(Wordings::from(W, sentence_start), '.');
+		Sentences::make_node(T, Wordings::from(W, sentence_start), '.');
 	}
 
 	ParseTree::disable_last_sentence_cacheing();
@@ -289,7 +289,7 @@ reaching the "... ends here." sentence (if we are reading an extension),
 or until reaching the end of the text: whichever comes first.
 
 =
-void Sentences::make_node(wording W, int stop_character) {
+void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 	int heading_level = 0, begins_or_ends = 0;
 	parse_node *new;
 
@@ -327,9 +327,9 @@ is declared as if it were a super-heading in the text.
 		ParseTree::set_text(implicit_heading, W);
 		ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 		ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-		ParseTree::insert_sentence(implicit_heading);
+		ParseTree::insert_sentence(T, implicit_heading);
 		#ifdef NEW_HEADING_HANDLER
-		NEW_HEADING_HANDLER(implicit_heading);
+		NEW_HEADING_HANDLER(T, implicit_heading);
 		#endif
 		sfsm_skipping_material_at_level = -1;
 	}
@@ -400,9 +400,9 @@ in Headings to determine whether we should include the material.
 	ParseTree::set_text(new, W);
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(new, heading_level_ANNOT, heading_level);
-	ParseTree::insert_sentence(new);
+	ParseTree::insert_sentence(T, new);
 	#ifdef NEW_HEADING_HANDLER
-	if (NEW_HEADING_HANDLER(new) == FALSE)
+	if (NEW_HEADING_HANDLER(T, new) == FALSE)
 		sfsm_skipping_material_at_level = heading_level;
 	#endif
 
@@ -552,8 +552,8 @@ will make a |INVOCATION_LIST_NT| node.)
 		BW = GET_RW(<list-comma-division>, 2);
 	}
 	if (Wordings::nonempty(AW)) {
-		Sentences::make_node(Wordings::up_to(W, Wordings::last_wn(AW)), ':'); /* rule preamble stopped with a colon */
-		Sentences::make_node(BW, '.'); /* rule body with one sentence, stopped with a stop */
+		Sentences::make_node(T, Wordings::up_to(W, Wordings::last_wn(AW)), ':'); /* rule preamble stopped with a colon */
+		Sentences::make_node(T, BW, '.'); /* rule body with one sentence, stopped with a stop */
 		return;
 	}
 
@@ -572,7 +572,7 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.
 	new = ParseTree::new(SENTENCE_NT);
 	ParseTree::set_text(new, W);
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::insert_sentence(new);
+	ParseTree::insert_sentence(T, new);
 
 @ Rules are sequences of phrases with a preamble in front, which we detect by
 its terminating colon. For instance:

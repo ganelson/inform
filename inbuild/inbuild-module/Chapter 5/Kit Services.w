@@ -177,7 +177,7 @@ void Kits::activate_plugins(inform_kit *K) {
 	LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
 		int S = Plugins::Manage::parse(EA->element_name);
 		if (S == -1)
-			Problems::Issue::sentence_problem(_p_(Untestable),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 				"one of the Inform kits made reference to a language segment which does not exist",
 				"which strongly suggests that Inform is not properly installed.");
 		if (S >= 0) {

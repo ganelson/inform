@@ -39,11 +39,13 @@ thing which is being compiled when it is.
 
 =
 compile_task_data *inform7_task = NULL;
+parse_node_tree *latest_syntax_tree = NULL;
 
 int Task::carry_out(build_step *S) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
+	latest_syntax_tree = project->syntax_tree;
 
 	if (inform7_task) internal_error("cannot re-enter with new task");
 	inform7_task = CREATE(compile_task_data);
@@ -116,6 +118,10 @@ target_vm *Task::vm(void) {
 inbuild_edition *Task::edition(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return inform7_task->project->as_copy->edition;
+}
+
+parse_node_tree *Task::syntax_tree(void) {
+	return latest_syntax_tree;
 }
 
 @ Resources in a Blorb file have unique ID numbers which are positive integers,

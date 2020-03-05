@@ -231,7 +231,7 @@ colons.)
 =
 kind_constructor *constructor_described = NULL;
 
-void Kinds::Interpreter::despatch_kind_command(text_stream *command) {
+void Kinds::Interpreter::despatch_kind_command(parse_node_tree *T, text_stream *command) {
 	if (Kinds::Interpreter::recording_a_kind_template()) {
 		if (Str::eq_wide_string(command, L"*END")) Kinds::Interpreter::end_kind_template();
 		else Kinds::Interpreter::record_into_kind_template(command);
@@ -248,7 +248,7 @@ void Kinds::Interpreter::despatch_kind_command(text_stream *command) {
 	single_kind_command stc = Kinds::Interpreter::parse_kind_command(command);
 
 	if (Kinds::Interpreter::recording_a_kind_macro()) Kinds::Interpreter::record_into_kind_macro(stc);
-	else if (constructor_described) Kinds::Interpreter::apply_kind_command(stc, constructor_described);
+	else if (constructor_described) Kinds::Interpreter::apply_kind_command(T, stc, constructor_described);
 	else internal_error("kind command describes unspecified kind");
 }
 
@@ -266,7 +266,7 @@ void Kinds::Interpreter::despatch_kind_command(text_stream *command) {
 		if ((do_know == TRUE) && (should_know == FALSE))
 			internal_error("kind command describes already-known kind");
 		constructor_described =
-			Kinds::Constructors::new(Kinds::get_construct(K_value), name, NULL);
+			Kinds::Constructors::new(T, Kinds::get_construct(K_value), name, NULL);
 		#ifdef NEW_BASE_KIND_NOTIFY
 		if ((constructor_described != CON_KIND_VARIABLE) &&
 			(constructor_described != CON_INTERMEDIATE)) {
@@ -481,9 +481,9 @@ even have started yet. So we simply remember our intention to insert the text:
 
 =
 int era_of_kind_template_transcription = FALSE;
-void Kinds::Interpreter::remember_to_transcribe_spec_template(kind_template_definition *ttd, kind_constructor *C) {
+void Kinds::Interpreter::remember_to_transcribe_spec_template(parse_node_tree *T, kind_template_definition *ttd, kind_constructor *C) {
 	if (era_of_kind_template_transcription) {
-		Kinds::Interpreter::transcribe_kind_template(ttd, C);
+		Kinds::Interpreter::transcribe_kind_template(T, ttd, C);
 	} else {
 		kind_template_obligation *tto = CREATE(kind_template_obligation);
 		tto->remembered_template = ttd;
@@ -494,15 +494,16 @@ void Kinds::Interpreter::remember_to_transcribe_spec_template(kind_template_defi
 @ ...until now, when it's later on and the source text does indeed exist.
 
 =
-void Kinds::Interpreter::include_templates_for_kinds(void) {
+void Kinds::Interpreter::include_templates_for_kinds(parse_node_tree *T) {
 	era_of_kind_template_transcription = TRUE;
 	kind_template_obligation *tto;
 	LOOP_OVER(tto, kind_template_obligation)
-		Kinds::Interpreter::transcribe_kind_template(
+		Kinds::Interpreter::transcribe_kind_template(T,
 			tto->remembered_template, tto->remembered_constructor);
 }
 
-void Kinds::Interpreter::transcribe_kind_template(kind_template_definition *ttd, kind_constructor *con) {
+void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
+	kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
 	#ifdef CORE_MODULE
 	if ((Plugins::Manage::plugged_in(parsing_plugin) == FALSE) && (Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
@@ -517,7 +518,7 @@ void Kinds::Interpreter::transcribe_kind_template(kind_template_definition *ttd,
 		@<Transcribe one line of the template into the line buffer@>;
 		if (Str::len(template_line_buffer) > 0) {
 			wording XW = Feeds::feed_stream(template_line_buffer);
-			if (terminator != 0) Sentences::make_node(XW, terminator);
+			if (terminator != 0) Sentences::make_node(T, XW, terminator);
 		}
 		DISCARD_TEXT(template_line_buffer);
 	}
@@ -660,13 +661,13 @@ void Kinds::Interpreter::end_kind_macro(void) {
 commands in sequence to the relevant kind.
 
 =
-void Kinds::Interpreter::play_back_kind_macro(kind_macro_definition *macro, kind_constructor *con) {
+void Kinds::Interpreter::play_back_kind_macro(parse_node_tree *T, kind_macro_definition *macro, kind_constructor *con) {
 	if (macro == NULL) internal_error("no such kind macro to play back");
 	LOGIF(KIND_CREATIONS, "Macro %S on %S (%d lines)\n",
 		macro->kind_macro_name, con->name_in_template_code, macro->kind_macro_line_count);
 	LOG_INDENT;
 	for (int i=0; i<macro->kind_macro_line_count; i++)
-		Kinds::Interpreter::apply_kind_command(macro->kind_macro_line[i], con);
+		Kinds::Interpreter::apply_kind_command(T, macro->kind_macro_line[i], con);
 	LOG_OUTDENT;
 	LOGIF(KIND_CREATIONS, "Macro %S ended\n", macro->kind_macro_name);
 }
@@ -747,7 +748,7 @@ We take a single kind command and apply it to a given kind.
 @d template_variable_number_KCC 40
 
 =
-void Kinds::Interpreter::apply_kind_command(single_kind_command stc, kind_constructor *con) {
+void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_command stc, kind_constructor *con) {
 	if (stc.which_kind_command == NULL) internal_error("null STC command");
 	LOGIF(KIND_CREATIONS, "apply: %s (%d/%d/%S/%S) to %d/%S\n",
 		stc.which_kind_command->text_of_command,
@@ -769,10 +770,10 @@ void Kinds::Interpreter::apply_kind_command(single_kind_command stc, kind_constr
 @<Apply kind macros or transcribe kind templates on request@> =
 	switch (tcc) {
 		case apply_template_KCC:
-			Kinds::Interpreter::remember_to_transcribe_spec_template(stc.template_argument, con);
+			Kinds::Interpreter::remember_to_transcribe_spec_template(T, stc.template_argument, con);
 			return;
 		case apply_macro_KCC:
-			Kinds::Interpreter::play_back_kind_macro(stc.macro_argument, con);
+			Kinds::Interpreter::play_back_kind_macro(T, stc.macro_argument, con);
 			return;
 	}
 

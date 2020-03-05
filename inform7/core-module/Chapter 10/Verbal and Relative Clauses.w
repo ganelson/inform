@@ -340,13 +340,13 @@ has the standard form, but we check it anyway.
 	subject_noun_phrase = A;
 	verb_phrase = B;
 
-	if (verb_phrase->down == NULL) Problems::Issue::s_subtree_error("VP childless");
+	if (verb_phrase->down == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP childless");
 
 	if (ParseTree::get_type(verb_phrase) != UNKNOWN_NT)
-		Problems::Issue::s_subtree_error("VP not a VP");
+		Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP not a VP");
 
 	vu = ParseTree::get_vu(verb_phrase);
-	if (vu == NULL) Problems::Issue::s_subtree_error("verb null");
+	if (vu == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "verb null");
 	verb_phrase_negated = (VerbUsages::is_used_negatively(vu))?TRUE:FALSE;
 	prep = ParseTree::get_prep(verb_phrase);
 
@@ -389,7 +389,7 @@ using a tense other than the present, and all is well.
 
 @<Issue a problem for referring to temporary values at a time when they did not exist@> =
 	if (PM_DescLocalPast_location != current_sentence)
-		Problems::Issue::sentence_problem(_p_(PM_DescLocalPast),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DescLocalPast),
 			"conditions written in the past tense cannot refer to "
 			"temporary values",
 			"because they have no past. For instance, the name given in a "
@@ -423,7 +423,7 @@ pattern) plus "in the Home" (a description).
 void ExParser::Subtrees::throw_past_problem(int desc) {
 	if (PM_PastSubordinate_issued_at != current_sentence) {
 		PM_PastSubordinate_issued_at = current_sentence;
-			Problems::Issue::sentence_problem(_p_(PM_PastSubordinate),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PastSubordinate),
 				"subordinate clauses have to be in the present tense",
 				"so 'the Black Door was open' is fine, but not 'something which "
 				"was open'. Only the main verb can be in the past tense.");

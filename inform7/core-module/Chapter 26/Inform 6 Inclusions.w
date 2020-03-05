@@ -66,12 +66,12 @@ and the following grammar defines the "when defining a thing" end.
 	inclusion_side = R[1]; section_inclusion_wn = R[2]; segment_inclusion_wn = R[3];
 
 @<Issue PM_WhenDefiningUnknown problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_WhenDefiningUnknown),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_WhenDefiningUnknown),
 		"I do not understand what definition you're referring to",
 		"so I can't make an Inform 6 inclusion there.");
 
 @<Issue PM_BeforeTheLibrary problem@> =
-	Problems::Issue::sentence_problem(_p_(PM_BeforeTheLibrary),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BeforeTheLibrary),
 		"this syntax was withdrawn in January 2008",
 		"in favour of a more finely controlled I6 inclusion command. The effect "
 		"you want can probably be achieved by writing 'after \"Definitions.i6t\".' "
@@ -157,7 +157,7 @@ code instructions; we remember what's needed ourselves:
 	} else problem = TRUE;
 
 @<Issue problem message for bad inclusion instructions@> =
-	Problems::Issue::sentence_problem(_p_(PM_BadI6Inclusion),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadI6Inclusion),
 		"this is not a form of I6 code inclusion I recognise",
 		"because the clause at the end telling me where to put the code "
 		"excerpt is not one of the possibilities I know. The clause can "

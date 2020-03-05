@@ -169,7 +169,7 @@ but will be the constructor for "door" for kinds like this one:
 >> Portal is a kind of door.
 
 =
-kind_constructor *Kinds::Constructors::new(kind_constructor *super, text_stream *source_name,
+kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super, text_stream *source_name,
 	text_stream *initialisation_macro) {
 	kind_constructor *con = CREATE(kind_constructor);
 	kind_constructor **pC = Kinds::known_constructor_name(source_name);
@@ -303,10 +303,10 @@ I6 template files.
 	con->indexed_grey_if_empty = FALSE;
 	con->documentation_reference = NULL;
 
-	Kinds::Interpreter::play_back_kind_macro(
+	Kinds::Interpreter::play_back_kind_macro(T,
 		Kinds::Interpreter::parse_kind_macro_name(I"#DEFAULTS"), con);
 	if (Str::len(initialisation_macro) > 0)
-		Kinds::Interpreter::play_back_kind_macro(
+		Kinds::Interpreter::play_back_kind_macro(T,
 			Kinds::Interpreter::parse_kind_macro_name(initialisation_macro), con);
 
 @ However, if we create our constructor as a subkind, like so:
@@ -454,9 +454,9 @@ Conversions of an existing constructor to make it a unit or enumeration also
 require running macros in the kind interpreter:
 
 =
-int Kinds::Constructors::convert_to_unit(kind_constructor *con) {
+int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		Kinds::Interpreter::play_back_kind_macro(
+		Kinds::Interpreter::play_back_kind_macro(T,
 			Kinds::Interpreter::parse_kind_macro_name(I"#UNIT"), con);
 		return TRUE;
 	}
@@ -464,12 +464,12 @@ int Kinds::Constructors::convert_to_unit(kind_constructor *con) {
 	return FALSE;
 }
 
-int Kinds::Constructors::convert_to_enumeration(kind_constructor *con) {
+int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		Kinds::Interpreter::play_back_kind_macro(
+		Kinds::Interpreter::play_back_kind_macro(T,
 			Kinds::Interpreter::parse_kind_macro_name(I"#ENUMERATION"), con);
 		if (con->linguistic)
-			Kinds::Interpreter::play_back_kind_macro(
+			Kinds::Interpreter::play_back_kind_macro(T,
 				Kinds::Interpreter::parse_kind_macro_name(I"#LINGUISTIC"), con);
 		return TRUE;
 	}
@@ -480,8 +480,8 @@ int Kinds::Constructors::convert_to_enumeration(kind_constructor *con) {
 @ And similarly:
 
 =
-void Kinds::Constructors::convert_to_real(kind_constructor *con) {
-	Kinds::Interpreter::play_back_kind_macro(
+void Kinds::Constructors::convert_to_real(parse_node_tree *T, kind_constructor *con) {
+	Kinds::Interpreter::play_back_kind_macro(T,
 		Kinds::Interpreter::parse_kind_macro_name(I"#REAL"), con);
 }
 

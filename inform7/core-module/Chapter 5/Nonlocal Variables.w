@@ -110,7 +110,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, stacked_variable *
 @<Issue problem message for an indefinite variable@> =
 	Problems::quote_wording(1, W);
 	Problems::quote_kind(2, K);
-	Problems::Issue::handmade_problem(_p_(PM_IndefiniteVariable));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IndefiniteVariable));
 	Problems::issue_problem_segment(
 		"I am unable to create the variable '%1', because its kind (%2) is too "
 		"vague. I need to know exactly what kind of value goes into each "
@@ -196,13 +196,13 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	nonlocal_variable *nlv = NonlocalVariables::parse(W);
 	if ((nlv == NULL) || (nlv->scope)) {
 		LOG("Tried %W\n", W);
-		Problems::Issue::sentence_problem(_p_(PM_NonQuantityTranslated),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonQuantityTranslated),
 			"this is not the name of a variable",
 			"or at any rate not one global in scope.");
 		return;
 	}
 	if (nlv->nlv_name_translated) {
-		Problems::Issue::sentence_problem(_p_(PM_QuantityTranslatedAlready),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_QuantityTranslatedAlready),
 			"this variable has already been translated",
 			"so there must be some duplication somewhere.");
 		return;
@@ -318,7 +318,7 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 @<Issue a missing meaning problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, nlv->name);
-	Problems::Issue::handmade_problem(_p_(BelievedImpossible));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"The sentence %1 seems to need the value '%2', but that currently "
 		"has no definition.");
@@ -362,7 +362,7 @@ void NonlocalVariables::warn_about_change(nonlocal_variable *nlv) {
 	#ifdef IF_MODULE
 	if ((score_VAR) && (nlv == score_VAR)) {
 		if ((scoring_option_set == FALSE) || (scoring_option_set == NOT_APPLICABLE)) {
-			Problems::Issue::sentence_problem(_p_(PM_CantChangeScore),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeScore),
 				"this is a story with no scoring",
 				"so it makes no sense to change the 'score' value. You can add "
 				"scoring to the story by including the sentence 'Use scoring.', "
@@ -482,7 +482,7 @@ that faraway I6 code said it was.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, nlv->name);
 	Problems::quote_stream(3, nlv->lvalue_nve.textual_form);
-	Problems::Issue::handmade_problem(_p_(PM_InaccessibleVariable));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_InaccessibleVariable));
 	Problems::issue_problem_segment(
 		"The sentence %1 tells me that '%2' has a specific initial value, "
 		"but this is a variable which has been translated into an I6 'Global' "
@@ -630,7 +630,7 @@ int NonlocalVariables::is_constant(nonlocal_variable *nlv) {
 
 int NonlocalVariables::must_be_constant(nonlocal_variable *nlv) {
 	if (nlv->constant_at_run_time) {
-		Problems::Issue::sentence_problem(_p_(PM_CantChangeConstants),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeConstants),
 			"this is a name for a value which never changes during the story",
 			"so it can't be altered with 'now'.");
 		return TRUE;
@@ -654,7 +654,7 @@ parse_node *NonlocalVariables::substitute_constants(parse_node *spec) {
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, nlv->name);
 				Problems::quote_kind(3, nlv->nlv_kind);
-				Problems::Issue::handmade_problem(_p_(PM_MeaningRecursive));
+				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MeaningRecursive));
 				Problems::issue_problem_segment(
 					"The sentence %1 tells me that '%2', which should be %3 "
 					"that varies, is to have an initial value which can't "
@@ -747,7 +747,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 			wording W = Kinds::Behaviour::get_name(nlv->nlv_kind, FALSE);
 			Problems::quote_wording(1, nlv->name);
 			Problems::quote_wording(2, W);
-			Problems::Issue::handmade_problem(_p_(PM_EmptyDataType));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EmptyDataType));
 			Problems::issue_problem_segment(
 				"I am unable to put any value into the variable '%1', because "
 				"%2 is a kind of value with no actual values.");
@@ -763,7 +763,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, nlv->name);
 		Problems::quote_kind(3, nlv->nlv_kind);
-		Problems::Issue::handmade_problem(_p_(PM_InitialiseQ2));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_InitialiseQ2));
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2', which should be %3 "
 			"that varies, is to have an initial value equal to itself - "
@@ -776,7 +776,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 		Problems::quote_kind(3, nlv->nlv_kind);
 		Problems::quote_wording(4, the_other->name);
 		Problems::quote_kind(5, the_other->nlv_kind);
-		Problems::Issue::handmade_problem(_p_(PM_InitialiseQ1));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_InitialiseQ1));
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2', which should be %3 "
 			"that varies, is to have an initial value equal to '%4', "

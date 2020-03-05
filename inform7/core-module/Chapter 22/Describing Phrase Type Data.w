@@ -404,7 +404,7 @@ To be honest my preferred fix would be to delete phrase options from the
 language altogether, but there we are; spilt milk.
 
 @<Issue a problem: say phrases aren't allowed options@> =
-	Problems::Issue::sentence_problem(_p_(PM_SayWithPhraseOptions),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SayWithPhraseOptions),
 		"phrase options are not allowed for 'say' phrases",
 		"because the commas would lead to ambiguous sentences, and because the "
 		"content of a substitution is intended to be something conceptually simple "
@@ -484,7 +484,7 @@ messages.
 		Problems::quote_source(4, Prepositions::get_where_pu_created(prep));
 	Problems::quote_wording(2, W);
 	Problems::quote_wording(3, Wordings::new(<<rel1>>, <<rel2>>));
-	Problems::Issue::handmade_problem(_p_(PM_MasksRelation));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MasksRelation));
 	Problems::issue_problem_segment(
 		"I don't want you to define a phrase with the wording you've used in "
 		"in %1 because it could be misunderstood. There is already a definition "
@@ -539,7 +539,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 	*XP = K_number;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(_p_(PM_UnknownValueToDecide));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownValueToDecide));
 	Problems::issue_problem_segment(
 		"The phrase you describe in %1 seems to be trying to decide a value, "
 		"but '%2' is not a kind that I recognise. (I had expected something "
@@ -566,7 +566,7 @@ wording Phrases::TypeData::Textual::phtd_parse_return_data(ph_type_data *phtd, w
 	} else internal_error("to phrase without to");
 	if (Kinds::Compare::eq(phtd->return_kind, K_truth_state)) {
 		if (no_truth_state_returns++ > 0)
-		Problems::Issue::sentence_problem(_p_(PM_TruthStateToDecide),
+		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TruthStateToDecide),
 			"phrases are not allowed to decide a truth state",
 			"and should be defined with the form 'To decide if ...' rather than "
 			"'To decide what truth state is ...'.");
@@ -688,7 +688,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 @<Issue PM_TokenWithEmptyBrackets problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_TokenWithEmptyBrackets),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithEmptyBrackets),
 		"nothing is between the opening bracket '(' and its matching close bracket ')'",
 		"so I can't see what is meant to be the fixed text and what is meant to be "
 		"changeable. The idea is to put brackets around whatever varies from one "
@@ -696,7 +696,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 @<Issue PM_TokenWithoutCloseBracket problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_TokenWithoutCloseBracket),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithoutCloseBracket),
 		"the opening bracket '(' has no matching close bracket ')'",
 		"so I can't see what is meant to be the fixed text and what is meant to be "
 		"changeable. The idea is to put brackets around whatever varies from one "
@@ -704,7 +704,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 @<Issue PM_TokenWithoutOpenBracket problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_TokenWithoutOpenBracket),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithoutOpenBracket),
 		"a close bracket ')' appears here with no matching open '('",
 		"so I can't see what is meant to be the fixed text and what is meant to "
 		"be changeable. The idea is to put brackets around whatever varies from "
@@ -713,7 +713,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 @<Issue PM_TokenWithNestedBrackets problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_TokenWithNestedBrackets),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithNestedBrackets),
 		"the name of the token inside the brackets '(' and ')' and before the "
 		"hyphen '-' itself contains another open bracket '('",
 		"which is not allowed.");
@@ -722,7 +722,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, GET_RW(<phrase-token-declaration>, 2));
-	Problems::Issue::handmade_problem(_p_(PM_BadTypeIndication));
+	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadTypeIndication));
 	Problems::issue_problem_segment(
 		"In %1, the text '%2' after the hyphen should tell me what kind of value "
 		"goes here (like 'a number', or 'a vehicle'), but it's not something I "
@@ -732,7 +732,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 @<Issue PM_TokenMisunderstood problem@> =
 	LOG("On %W\n", W);
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(_p_(PM_TokenMisunderstood),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TokenMisunderstood),
 		"the brackets '(' and ')' here neither say that something varies but has "
 		"a given type, nor specify a called name",
 		"so I can't make sense of them. For a 'To...' phrase, brackets like this "
@@ -780,7 +780,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 			case FALSE: 			@<Add a word next@>; break;
 		}
 		if (phtd->no_words >= MAX_WORDS_PER_PHRASE) {
-			Problems::Issue::sentence_problem(_p_(PM_PhraseTooLong),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseTooLong),
 				"this phrase has too many words",
 				"and needs to be simplified.");
 			return;
@@ -823,7 +823,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 			Problems::quote_wording(2, ParseTree::get_text(spec));
 			int n = MAX_TOKENS_PER_PHRASE;
 			Problems::quote_number(3, &n);
-			Problems::Issue::handmade_problem(_p_(PM_TooManyTokens));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TooManyTokens));
 			Problems::issue_problem_segment(
 				"In %1, I ran out of tokens when I got up to '%2'. "
 				"Phrases are only allowed %3 tokens, that is, they "
@@ -841,7 +841,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 		(phtd->as_inline.invoked_inline_not_as_call == FALSE)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, ParseTree::get_text(spec));
-		Problems::Issue::handmade_problem(_p_(PM_NoninlineUsesNonvalues));
+		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoninlineUsesNonvalues));
 		Problems::issue_problem_segment(
 			"In %1, the text '%2' after the hyphen should tell me what kind of "
 			"value goes here (like 'a number', or 'a vehicle'), but this is not "
@@ -859,7 +859,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 		if (Calculus::Variables::number_free(prop) != 1) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, ParseTree::get_text(spec));
-			Problems::Issue::handmade_problem(_p_(PM_PhraseTokenQuantified));
+			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseTokenQuantified));
 			Problems::issue_problem_segment(
 				"In %1, the text '%2' after the hyphen should tell me what kind of "
 				"value goes here (like 'a number', or 'a vehicle'), but it has to "
@@ -891,7 +891,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 	}
 
 @<Issue a problem for an undeclared kind variable@> =
-	Problems::Issue::sentence_problem(_p_(PM_UndeclaredKindVariable),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UndeclaredKindVariable),
 		"this phrase uses a kind variable which is not declared",
 		"which is not allowed.");
 	phtd->token_sequence[i].token_kind =
@@ -965,7 +965,7 @@ produces the following problem, because the domain of K has been given twice.
 	kind *dec = Kinds::get_variable_stipulation(K);
 	if (dec) {
 		if (declarations[N]) {
-			Problems::Issue::sentence_problem(_p_(PM_DoublyDeclaredKindVariable),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DoublyDeclaredKindVariable),
 				"this phrase declares the same kind variable more than once",
 				"and ought to declare each variable once each.");
 		}

@@ -174,7 +174,7 @@ int PL::SpatialRelations::REL_assert(binary_predicate *bp,
 		*I1 = InferenceSubjects::as_object_instance(infs1);
 	if ((I0) && (I1)) {
 		if (I1 == I0) {
-			Problems::Issue::sentence_problem(_p_(PM_MiseEnAbyme),
+			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MiseEnAbyme),
 				"this asks to put something inside itself",
 				"like saying 'the bottle is in the bottle'.");
 			return TRUE;
@@ -207,7 +207,7 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 @ This is the point at which non-assertable relations are thrown out.
 
 @<Issue a problem message for an unassertable indirect spatial relation@> =
-	Problems::Issue::sentence_problem(_p_(PM_Unassertable),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_Unassertable),
 		"the relationship you describe is not exact enough",
 		"so that I do not know how to make this assertion come true. "
 		"For instance, saying 'The Study is adjacent to the Hallway.' "
@@ -218,7 +218,7 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 @ People sometimes try, a little hopefully, to subdivide rooms. Alas for them.
 
 @<Issue a problem message for trying to subdivide a room@> =
-	Problems::Issue::sentence_problem(_p_(PM_PartOfRoom),
+	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PartOfRoom),
 		"this asks to make something a part of a room",
 		"when only things are allowed to have parts.");
 	return TRUE;
