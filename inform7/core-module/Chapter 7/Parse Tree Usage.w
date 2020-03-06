@@ -711,7 +711,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		WRITE(" eval:$P", ParseTree::get_evaluation(pn));
 	}
 	if (ParseTree::get_defn_language(pn))
-		WRITE(" language:$J", ParseTree::get_defn_language(pn));
+		WRITE(" language:%J", ParseTree::get_defn_language(pn));
 	if (ParseTree::get_creation_proposition(pn))
 		WRITE(" (creation $D)", ParseTree::get_creation_proposition(pn));
 

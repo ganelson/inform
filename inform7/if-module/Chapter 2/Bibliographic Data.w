@@ -87,8 +87,8 @@ void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 	inbuild_edition *edn = Task::edition();
 	TEMPORARY_TEXT(T);
 	TEMPORARY_TEXT(A);
-	WRITE_TO(T, "\"x%S\" ", edn->work->title);
-	WRITE_TO(A, "\"x%S\" ", edn->work->author_name);
+	WRITE_TO(T, "\"%S\" ", edn->work->title);
+	WRITE_TO(A, "\"%S\" ", edn->work->author_name);
 	wording TW = Feeds::feed_stream(T);
 	wording AW = Feeds::feed_stream(A);
 	DISCARD_TEXT(T);
@@ -101,10 +101,12 @@ void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 		Assertions::PropertyKnowledge::initialise_global_variable(story_title_VAR, the_title);
 		Strings::TextLiterals::suppress_quote_expansion(ParseTree::get_text(the_title));
 
-		parse_node *the_author;
-		if (<s-value>(AW)) the_author = <<rp>>;
-		else the_author = Specifications::new_UNKNOWN(AW);
-		Assertions::PropertyKnowledge::initialise_global_variable(story_author_VAR, the_author);
+		if (Str::len(edn->work->author_name) > 0) {
+			parse_node *the_author;
+			if (<s-value>(AW)) the_author = <<rp>>;
+			else the_author = Specifications::new_UNKNOWN(AW);
+			Assertions::PropertyKnowledge::initialise_global_variable(story_author_VAR, the_author);
+		}
 	}
 }
 
