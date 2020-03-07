@@ -345,7 +345,7 @@ LOG("Running rstf\n");
 	#ifdef CORE_MODULE
 	ParseTree::annotate_int(inclusions_heading, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(inclusions_heading, heading_level_ANNOT, 0);
-	Sentences::Headings::declare(project->syntax_tree, inclusions_heading);
+	Headings::declare(project->syntax_tree, inclusions_heading);
 	#endif
 
 	int wc = lexer_wordcount, bwc = -1;
@@ -384,7 +384,7 @@ LOG("Running rstf\n");
 	#ifdef CORE_MODULE
 	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-	Sentences::Headings::declare(project->syntax_tree, implicit_heading);
+	Headings::declare(project->syntax_tree, implicit_heading);
 	#endif
 	ParseTree::pop_attachment_point(project->syntax_tree, l);
 	

@@ -109,7 +109,7 @@ void Basics::linguistics_problem_handler(int err_no, wording W, void *ref, int k
 
 @d PREFORM_LANGUAGE_TYPE void
 @d PREFORM_ADAPTIVE_PERSON Basics::person
-@d EXTENSION_FILE_TYPE void
+@d COPY_FILE_TYPE void
 
 =
 int Basics::person(void *X) {

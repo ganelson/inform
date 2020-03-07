@@ -1423,8 +1423,8 @@ given extension:
 =
 int Tables::table_within(table *t, inform_extension *E) {
 	if (t->amendment_of) return FALSE;
-	heading *at_heading = Sentences::Headings::of_wording(ParseTree::get_text(t->table_created_at->source_table));
-	inform_extension *at_E = Sentences::Headings::get_extension_containing(at_heading);
+	heading *at_heading = Headings::of_wording(ParseTree::get_text(t->table_created_at->source_table));
+	inform_extension *at_E = Headings::get_extension_containing(at_heading);
 	if (E == at_E) return TRUE;
 	return FALSE;
 }

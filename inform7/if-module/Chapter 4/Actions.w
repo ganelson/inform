@@ -1365,11 +1365,11 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 	inform_extension **ext, heading **current_area, int f, int *new_par, int bold,
 	int on_details_page) {
 	if (an->use_verb_routine_in_I6_library) return f;
-	heading *definition_area = Sentences::Headings::of_wording(an->present_name);
+	heading *definition_area = Headings::of_wording(an->present_name);
 	*new_par = FALSE;
 	if (pass == 1) {
 		inform_extension *this_extension =
-			Sentences::Headings::get_extension_containing(definition_area);
+			Headings::get_extension_containing(definition_area);
 		if (*ext != this_extension) {
 			*ext = this_extension;
 			if (*ext == NULL) {
@@ -1395,7 +1395,7 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 		if ((definition_area != *current_area) && (Extensions::is_standard(*ext))) {
 			if (f) HTML_CLOSE("p");
 			HTML_OPEN("p");
-			wording W = Sentences::Headings::get_text(definition_area);
+			wording W = Headings::get_text(definition_area);
 			if (Wordings::nonempty(W)) {
 				Phrases::Index::index_definition_area(OUT, W, TRUE);
 			} else if (*ext == NULL) {

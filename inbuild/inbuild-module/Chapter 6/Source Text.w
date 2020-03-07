@@ -98,7 +98,7 @@ void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word
 
 @
 
-@d EXTENSION_FILE_TYPE inbuild_copy
+@d COPY_FILE_TYPE inbuild_copy
 
 @
 
@@ -157,15 +157,15 @@ source text.
 @<Check we can begin an extension here@> =
 	switch (sfsm_extension_position) {
 		case 1: sfsm_extension_position++; break;
-		case 2: SYNTAX_PROBLEM_HANDLER(ExtMultipleBeginsHere_SYNERROR, W, sfsm_extension, 0); break;
-		case 3: SYNTAX_PROBLEM_HANDLER(ExtBeginsAfterEndsHere_SYNERROR, W, sfsm_extension, 0); break;
+		case 2: SYNTAX_PROBLEM_HANDLER(ExtMultipleBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
+		case 3: SYNTAX_PROBLEM_HANDLER(ExtBeginsAfterEndsHere_SYNERROR, W, sfsm_copy, 0); break;
 	}
 
 @<Check we can end an extension here@> =
 	switch (sfsm_extension_position) {
-		case 1: SYNTAX_PROBLEM_HANDLER(ExtEndsWithoutBegins_SYNERROR, W, sfsm_extension, 0); break;
+		case 1: SYNTAX_PROBLEM_HANDLER(ExtEndsWithoutBegins_SYNERROR, W, sfsm_copy, 0); break;
 		case 2: sfsm_extension_position++; break;
-		case 3: SYNTAX_PROBLEM_HANDLER(ExtMultipleEndsHere_SYNERROR, W, sfsm_extension, 0); break;
+		case 3: SYNTAX_PROBLEM_HANDLER(ExtMultipleEndsHere_SYNERROR, W, sfsm_copy, 0); break;
 	}
 
 @<Detect a dividing sentence@> =

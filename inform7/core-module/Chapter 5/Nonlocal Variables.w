@@ -824,10 +824,10 @@ void NonlocalVariables::index_all(OUTPUT_STREAM) {
 	}
 
 @<Index a regular variable@> =
-	definition_area = Sentences::Headings::of_wording(nlv->name);
-	if (Sentences::Headings::indexed(definition_area) == FALSE) continue;
+	definition_area = Headings::of_wording(nlv->name);
+	if (Headings::indexed(definition_area) == FALSE) continue;
 	if (definition_area != current_area) {
-		wording W = Sentences::Headings::get_text(definition_area);
+		wording W = Headings::get_text(definition_area);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		if (Wordings::nonempty(W)) Phrases::Index::index_definition_area(OUT, W, FALSE);

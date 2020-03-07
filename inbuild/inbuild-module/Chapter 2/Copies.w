@@ -249,6 +249,10 @@ void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
 					WRITE("extension has multiple 'ends here' sentences"); break;
 				case BadTitleSentence_SYNERROR:
 					WRITE("bibliographic sentence at the start is malformed"); break;
+				case UnknownLanguageElement_SYNERROR:
+					WRITE("unrecognised stipulation about Inform language elements"); break;
+				case UnknownVirtualMachine_SYNERROR:
+					WRITE("unrecognised stipulation about virtual machine"); break;
 				default:
 					WRITE("syntax error"); break;
 			}

@@ -108,7 +108,7 @@ void Basics::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
 @
 
 @d PREFORM_LANGUAGE_TYPE void
-@d EXTENSION_FILE_TYPE void
+@d COPY_FILE_TYPE void
 
 @ =
 

@@ -14,7 +14,6 @@ The following symbol is defined in every tool incorporating this module:
 We need to itemise the structures we'll want to allocate:
 
 @e bibliographic_datum_MT
-@e heading_MT
 @e phrase_MT
 @e inference_MT
 @e property_MT
@@ -115,7 +114,6 @@ ALLOCATE_INDIVIDUALLY(equation_node)
 ALLOCATE_INDIVIDUALLY(equation_symbol)
 ALLOCATE_INDIVIDUALLY(equation)
 ALLOCATE_INDIVIDUALLY(generalisation)
-ALLOCATE_INDIVIDUALLY(heading)
 ALLOCATE_INDIVIDUALLY(i6_inclusion_matter)
 ALLOCATE_INDIVIDUALLY(i6_memory_setting)
 ALLOCATE_INDIVIDUALLY(implication)
@@ -289,7 +287,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e DESCRIPTION_COMPILATION_DA
 @e EXPRESSIONS_DA
 @e FIGURE_CREATIONS_DA
-@e HEADINGS_DA
 @e IMPLICATIONS_DA
 @e INFERENCES_DA
 @e LOCAL_VARIABLES_DA
@@ -334,7 +331,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(DESCRIPTION_COMPILATION_DA, L"description compilation", FALSE, FALSE);
 	Log::declare_aspect(EXPRESSIONS_DA, L"expressions", FALSE, FALSE);
 	Log::declare_aspect(FIGURE_CREATIONS_DA, L"figure creations", FALSE, FALSE);
-	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
 	Log::declare_aspect(IMPLICATIONS_DA, L"implications", FALSE, TRUE);
 	Log::declare_aspect(INFERENCES_DA, L"inferences", FALSE, TRUE);
 	Log::declare_aspect(LOCAL_VARIABLES_DA, L"local variables", FALSE, FALSE);

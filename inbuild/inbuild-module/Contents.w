@@ -48,5 +48,6 @@ Chapter 5: Services for the Inform Compiler
 
 Chapter 6: Handling Inform Source Text
 	Source Text
+	Headings
 	Control Structures
 	Virtual Machine Grammar

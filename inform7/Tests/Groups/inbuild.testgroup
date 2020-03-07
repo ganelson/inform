@@ -20,3 +20,5 @@ PM_ExtSpuriouslyContinues
 PM_ExtMultipleEndsHere
 PM_ExtMultipleBeginsHere
 PM_ExtBeginsAfterEndsHere
+PM_UnknownLanguageElement
+PM_UnknownVirtualMachine

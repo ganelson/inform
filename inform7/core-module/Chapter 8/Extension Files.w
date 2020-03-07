@@ -443,7 +443,7 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 		if ((Wordings::first_wn(q->name) >= 0) &&
 			(NonlocalVariables::is_global(q)) &&
 			(Lexer::file_of_origin(Wordings::first_wn(q->name)) == E->read_into_file) &&
-			(Sentences::Headings::indexed(Sentences::Headings::of_wording(q->name)))) {
+			(Headings::indexed(Headings::of_wording(q->name)))) {
 			if (<value-understood-variable-name>(q->name) == FALSE)
 				kc = Extensions::Files::document_headword(OUT,
 					kc, E, "Values that vary", I"value", q->name);

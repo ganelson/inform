@@ -30,17 +30,6 @@ void StructuralSentences::annotate_new_sentence(parse_node *new) {
 
 @
 
-@d NEW_HEADING_HANDLER StructuralSentences::new_heading
-
-=
-int StructuralSentences::new_heading(parse_node_tree *T, parse_node *new) {
-	heading *h = Sentences::Headings::declare(T, new);
-	ParseTree::set_embodying_heading(new, h);
-	return Sentences::Headings::include_material(h);
-}
-
-@
-
 @d NEW_BEGINEND_HANDLER StructuralSentences::new_beginend
 
 =
@@ -58,7 +47,17 @@ void StructuralSentences::new_beginend(parse_node *new, inbuild_copy *C) {
 
 =
 void StructuralSentences::new_language(wording W) {
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UseElementWithdrawn),
+	parse_node_tree *T = NULL;
+
+	inform_project *project = ProjectBundleManager::from_copy(sfsm_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(sfsm_copy);
+	if (project) T = project->syntax_tree;
+	inform_extension *ext = ExtensionManager::from_copy(sfsm_copy);
+	if (ext) T = ext->syntax_tree;
+	
+	if (T == NULL) internal_error("unable to locate syntax tree");
+
+	Problems::Issue::sentence_problem(T, _p_(PM_UseElementWithdrawn),
 		"the ability to activate or deactivate compiler elements in source text has been withdrawn",
 		"in favour of a new system with Inform kits.");
 }

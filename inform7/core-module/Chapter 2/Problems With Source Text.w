@@ -266,6 +266,24 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"the initial bibliographic sentence can only be a title in double-quotes",
 							"possibly followed with 'by' and the name of the author.");
 						break;
+					case UnknownLanguageElement_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_UnknownLanguageElement),
+							"this heading contains a stipulation about the current "
+							"Inform language definition which I can't understand",
+							"and should be something like '(for Glulx external files "
+							"language element only)'.");
+						break;
+					case UnknownVirtualMachine_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_UnknownVirtualMachine),
+							"this heading contains a stipulation about the Setting "
+							"for story file format which I can't understand",
+							"and should be something like '(for Z-machine version 5 "
+							"or 8 only)' or '(for Glulx only)'.");
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

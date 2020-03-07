@@ -101,12 +101,12 @@ which they differ.
 	source_file *pos = NULL;
 	Problems::Buffer::clear();
 	if (problem_count > 0) WRITE_TO(PBUFF, ">---> ");
-	WRITE_TO(PBUFF, "In<b>");
+	WRITE_TO(PBUFF, "In");
 	for (f=FALSE; i<NO_HEADING_LEVELS; i++)
 		if (problem_headings[i] != NULL) {
 			wording W = ParseTree::get_text(problem_headings[i]);
 			#ifdef IF_MODULE
-			W = Sentences::Headings::get_text(ParseTree::get_embodying_heading(problem_headings[i]));
+			W = Headings::get_text(ParseTree::get_embodying_heading(problem_headings[i]));
 			#endif
 			pos = Lexer::file_of_origin(Wordings::first_wn(W));
 			if (f) WRITE_TO(PBUFF, ", ");
@@ -118,10 +118,10 @@ which they differ.
 	if (pos) {
 		#ifdef INBUILD_MODULE
 		inform_extension *E = Extensions::corresponding_to(pos);
-		if (E) WRITE_TO(PBUFF, "</b> in the extension <b>%X", E->as_copy->edition->work);
+		if (E) WRITE_TO(PBUFF, " in the extension %X", E->as_copy->edition->work);
 		#endif
 	}
-	WRITE_TO(PBUFF, "</b>:");
+	WRITE_TO(PBUFF, ":");
 	Problems::Buffer::output_problem_buffer(0);
 	Problems::Buffer::clear();
 

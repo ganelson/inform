@@ -8,6 +8,7 @@ Setting up the use of this module.
 
 @ To begin with, this module needs to allocate memory:
 
+@e heading_MT
 @e inform_kit_MT
 @e inform_extension_MT
 @e inform_kit_ittt_MT
@@ -37,6 +38,7 @@ Setting up the use of this module.
 @e control_structure_phrase_MT
 
 =
+ALLOCATE_INDIVIDUALLY(heading)
 ALLOCATE_INDIVIDUALLY(inform_kit)
 ALLOCATE_INDIVIDUALLY(inform_extension)
 ALLOCATE_INDIVIDUALLY(inform_kit_ittt)
@@ -102,9 +104,11 @@ void InbuildModule::start(void) {
 @
 
 @e EXTENSIONS_CENSUS_DA
+@e HEADINGS_DA
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
+	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	;

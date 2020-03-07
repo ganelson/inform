@@ -32,11 +32,11 @@ void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 					continue;
 				/* and only if it is under an indexed heading */
 				heading *this_heading =
-					Sentences::Headings::of_wording(ParseTree::get_text(Phrases::declaration_node(ph)));
-				if (Sentences::Headings::indexed(this_heading) == FALSE) continue;
+					Headings::of_wording(ParseTree::get_text(Phrases::declaration_node(ph)));
+				if (Headings::indexed(this_heading) == FALSE) continue;
 				/* and only if that heading lies in the piece of source for this division */
 				inform_extension *this_extension =
-					Sentences::Headings::get_extension_containing(this_heading);
+					Headings::get_extension_containing(this_heading);
 				if (division == N) { /* skip phrase unless it's in the source text */
 					if (this_extension != NULL) continue;
 				} else { /* skip phrase unless it's defined in the extension for this division */
@@ -80,7 +80,7 @@ the extension's name as a major subheading in our index.
 each has a paragraph of its own.
 
 @<Mark a subdivision in the Phrasebook@> =
-	wording HW = Sentences::Headings::get_text(this_heading);
+	wording HW = Headings::get_text(this_heading);
 	if (Wordings::nonempty(HW)) {
 		if (pass == 1) @<Strip away bracketed matter in the heading name@>;
 		if (Extensions::is_standard(this_extension))

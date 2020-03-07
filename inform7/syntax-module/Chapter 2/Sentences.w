@@ -54,7 +54,7 @@ int sfsm_inside_rule_mode = FALSE;
 int sfsm_skipping_material_at_level = -1;
 int sfsm_in_tabbed_mode = FALSE;
 int sfsm_main_source_start_wn = -1;
-EXTENSION_FILE_TYPE *sfsm_extension = NULL;
+COPY_FILE_TYPE *sfsm_copy = NULL;
 
 @ Now for the routine itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| routine with a note of the punctuation
@@ -63,7 +63,7 @@ finite state machine.
 
 =
 void Sentences::break(parse_node_tree *T, wording W, int is_extension,
-	EXTENSION_FILE_TYPE *from_extension, int bwc) {
+	COPY_FILE_TYPE *from_copy, int bwc) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
 	if (Wordings::empty(W)) return;
@@ -111,7 +111,7 @@ that is why these are global variables rather than locals in |Sentences::break|.
 	sfsm_source_file = NULL;
 	sfsm_inside_rule_mode = FALSE;
 	sfsm_skipping_material_at_level = -1;
-	sfsm_extension = from_extension;
+	sfsm_copy = from_copy;
 	if (is_extension) sfsm_extension_position = 1;
 	else sfsm_extension_position = 0;
 	sfsm_main_source_start_wn = bwc;
@@ -202,19 +202,19 @@ sentence divisions. The other cases are more complicated: see below.
 			stop_character, no_stop_words, sentence_start, position);
 
 @<Issue problem for colon at end of paragraph@> =
-	SYNTAX_PROBLEM_HANDLER(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_extension, 0);
+	SYNTAX_PROBLEM_HANDLER(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_copy, 0);
 
 @<Issue problem for colon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
+	SYNTAX_PROBLEM_HANDLER(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
+	SYNTAX_PROBLEM_HANDLER(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon after colon@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
+	SYNTAX_PROBLEM_HANDLER(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon after full stop@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_extension, 0);
+	SYNTAX_PROBLEM_HANDLER(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @ Colons are normally dividers, too, but an exception is made if they come
 between two apparently numerical constructions, because this suggests that
@@ -334,7 +334,7 @@ is declared as if it were a super-heading in the text.
 
 @<Reject if we have run on past the end of an extension@> =
 	if ((sfsm_extension_position == 3) && (begins_or_ends == 0)) {
-		SYNTAX_PROBLEM_HANDLER(ExtSpuriouslyContinues_SYNERROR, W, sfsm_extension, 0);
+		SYNTAX_PROBLEM_HANDLER(ExtSpuriouslyContinues_SYNERROR, W, sfsm_copy, 0);
 		sfsm_extension_position = 4; /* to avoid multiply issuing this */
 	}
 
@@ -369,7 +369,7 @@ continuing regardless.
 	LOOP_THROUGH_WORDING(k, W)
 		if (k > Wordings::first_wn(W))
 			if ((Lexer::break_before(k) == '\n') || (Lexer::indentation_level(k) > 0)) {
-				SYNTAX_PROBLEM_HANDLER(HeadingOverLine_SYNERROR, W, sfsm_extension, k);
+				SYNTAX_PROBLEM_HANDLER(HeadingOverLine_SYNERROR, W, sfsm_copy, k);
 				break;
 			}
 
@@ -386,7 +386,7 @@ newlines automatically added at the end of the feed of any source file.
 		for (k = Wordings::last_wn(W)+1;
 			(k<=Wordings::last_wn(W)+8) && (k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
 			k++) ;
-		SYNTAX_PROBLEM_HANDLER(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_extension, k);
+		SYNTAX_PROBLEM_HANDLER(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_copy, k);
 	}
 
 @ We now have a genuine heading, and can declare it, calling a routine
@@ -408,8 +408,8 @@ from an extension, we need to make sure we saw both beginning and end:
 
 @<Issue a problem message if we are missing the begin and end here sentences@> =
 	switch (sfsm_extension_position) {
-		case 1: SYNTAX_PROBLEM_HANDLER(ExtNoBeginsHere_SYNERROR, W, sfsm_extension, 0); break;
-		case 2: SYNTAX_PROBLEM_HANDLER(ExtNoEndsHere_SYNERROR, W, sfsm_extension, 0); break;
+		case 1: SYNTAX_PROBLEM_HANDLER(ExtNoBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
+		case 2: SYNTAX_PROBLEM_HANDLER(ExtNoEndsHere_SYNERROR, W, sfsm_copy, 0); break;
 		case 3: break;
 	}
 
@@ -465,7 +465,7 @@ sentences and options-file sentences may have been read already.)
 	if (sfsm_inside_rule_mode)
 		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@>
 	else if (stop_character == ';') {
-		SYNTAX_PROBLEM_HANDLER(UnexpectedSemicolon_SYNERROR, W, sfsm_extension, 0);
+		SYNTAX_PROBLEM_HANDLER(UnexpectedSemicolon_SYNERROR, W, sfsm_copy, 0);
 		stop_character = '.';
 	}
 
@@ -636,7 +636,7 @@ semicolon to appear indicates an end of the rule.
 		ParseTree::set_type(new, BEGINHERE_NT);
 		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
 		#ifdef NEW_BEGINEND_HANDLER
-		NEW_BEGINEND_HANDLER(new, sfsm_extension);
+		NEW_BEGINEND_HANDLER(new, sfsm_copy);
 		#endif
 		return;
 	}
@@ -644,7 +644,7 @@ semicolon to appear indicates an end of the rule.
 		ParseTree::set_type(new, ENDHERE_NT);
 		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
 		#ifdef NEW_BEGINEND_HANDLER
-		NEW_BEGINEND_HANDLER(new, sfsm_extension);
+		NEW_BEGINEND_HANDLER(new, sfsm_copy);
 		#endif
 		return;
 	}
