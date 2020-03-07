@@ -208,10 +208,10 @@ whole thing into a |specification| for the rest of Inform to use.
 @d PREFORM_ERROR_HANDLER NaturalLanguages::preform_error
 
 =
-void Semantics::read_preform(void) {
+void Semantics::read_preform(inform_language *L) {
 	@<Mark certain nonterminals to have their vocabularies numbered and flagged@>;
 	NaturalLanguages::scan();
-	wording W = NaturalLanguages::load_preform(Projects::get_language_of_syntax(Task::project()));
+	wording W = NaturalLanguages::load_preform(L);
 	int nonterminals_declared = Preform::parse_preform(W, FALSE);
 
 	LOG("%d declarations read (%d words)\n", nonterminals_declared, Wordings::length(W));

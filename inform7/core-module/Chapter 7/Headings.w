@@ -341,7 +341,7 @@ allowed; they should probably be withdrawn.
 @ =
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
-		*X = Compatibility::with((compatibility_specification *) <<rp>>, Task::vm());
+		*X = Compatibility::with((compatibility_specification *) <<rp>>, Inbuild::current_vm());
 		return TRUE;
 	} else {
 		*X = FALSE;

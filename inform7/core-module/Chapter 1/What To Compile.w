@@ -47,6 +47,9 @@ int Task::carry_out(build_step *S) {
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
 
+	SourceProblems::issue_problems_arising(project->as_copy);
+	if (problem_count > 0) return FALSE;
+
 	if (inform7_task) internal_error("cannot re-enter with new task");
 	inform7_task = CREATE(compile_task_data);
 	inform7_task->task = S;
@@ -150,16 +153,10 @@ int Task::rng_seed(void) {
 	return inform7_task->project->fix_rng;
 }
 
-@ These four functions are for steps on the production line which involve
+@ These functions are for steps on the production line which involve
 referring something back up to Inbuild.
 
 =
-void Task::read_source_text(void) {
-	if (inform7_task == NULL) internal_error("there is no current task");
-	Copies::read_source_text_for(inform7_task->project->as_copy);
-	SourceProblems::issue_problems_arising(inform7_task->project->as_copy);
-}
-
 void Task::activate_language_elements(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	Projects::activate_plugins(inform7_task->project);

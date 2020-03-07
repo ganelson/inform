@@ -80,7 +80,9 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *meth)
 
 int BuildSteps::shell(text_stream *command, build_methodology *meth) {
 	int rv = TRUE;
+	#ifndef CORE_MODULE
 	WRITE_TO(STDOUT, "%S\n", command);
+	#endif
 	if (meth->methodology == SHELL_METHODOLOGY) rv = (Shell::run(command) == 0)?TRUE:FALSE;
 	return rv;
 }

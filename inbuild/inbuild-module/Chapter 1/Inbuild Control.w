@@ -182,6 +182,11 @@ the main Inform project exists. As we shall see, Inbuild deals with only
 one Inform project at a time, though it may be handling many kits and
 extensions, and so on, which are needed by that project.
 
+A delicacy of timing is that we can only read the Preform grammar in once
+the nest list has been read in, since it may need language definitions held
+in the internal nest (which the command line has given the location of); but
+that we have to do it before reading the source text of the project.
+
 =
 target_vm *current_target_VM = NULL;
 inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) {
@@ -207,15 +212,18 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
 	if (project) Projects::set_to_English(project);
-	Inbuild::pass_kit_requests();
-	#ifndef CORE_MODULE
-	if (project) Copies::read_source_text_for(project->as_copy);
+	#ifdef CORE_MODULE
+	Semantics::read_preform(Projects::get_language_of_syntax(project));
 	#endif
+	Inbuild::pass_kit_requests();
+//	#ifndef CORE_MODULE
+	current_target_VM = VM;
+	if (project) Copies::read_source_text_for(project->as_copy);
+//	#endif
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
 	if (project) {
 		Projects::construct_build_target(project, VM, this_is_a_release_compile, compile_only);
-		current_target_VM = VM;
 		return project->as_copy;
 	} else {
 		return NULL;

@@ -146,7 +146,6 @@ int Projects::uses_kit(inform_project *project, text_stream *name) {
 }
 
 void Projects::finalise_kit_dependencies(inform_project *project) {
-	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	Projects::add_kit_dependency(project, I"BasicInformKit");
 	inform_language *L = project->language_of_play;
 	if (L) {
@@ -301,7 +300,6 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 void Projects::construct_graph(inform_project *project) {
 	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	if (project == NULL) return;
-	Projects::finalise_kit_dependencies(project);
 	build_vertex *V = project->as_copy->vertex;
 	inform_kit *K;
 	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
@@ -338,6 +336,18 @@ void Projects::read_source_text_for(inform_project *project) {
 LOG("Running rstf\n");
 	if (rstf_run_before) internal_error("twice!");
 	rstf_run_before = TRUE;
+
+	Projects::finalise_kit_dependencies(project);
+
+	parse_node *inclusions_heading = ParseTree::new(HEADING_NT);
+	ParseTree::set_text(inclusions_heading, Feeds::feed_text_expanding_strings(L"Implied inclusions"));
+	ParseTree::insert_sentence(project->syntax_tree, inclusions_heading);
+	#ifdef CORE_MODULE
+	ParseTree::annotate_int(inclusions_heading, sentence_unparsed_ANNOT, FALSE);
+	ParseTree::annotate_int(inclusions_heading, heading_level_ANNOT, 0);
+	Sentences::Headings::declare(project->syntax_tree, inclusions_heading);
+	#endif
+
 	int wc = lexer_wordcount, bwc = -1;
 	TEMPORARY_TEXT(early);
 	Projects::early_source_text(early, project);
@@ -346,23 +356,39 @@ LOG("Running rstf\n");
 	inbuild_nest *E = Inbuild::external();
 	if (E) Projects::read_further_mandatory_text(
 		Filenames::in_folder(E->location, I"Options.txt"));
+	wording early_W = Wordings::new(wc, lexer_wordcount-1);
+	
+	int l = ParseTree::push_attachment_point(project->syntax_tree, inclusions_heading);
+	Sentences::break(project->syntax_tree, early_W, FALSE, project->as_copy, bwc);
+	ParseTree::pop_attachment_point(project->syntax_tree, l);
+	
+	wc = lexer_wordcount;
 	linked_list *L = Projects::source(project);
 	if (L) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
 			filename *F = N->buildable_if_internal_file;
-			bwc = lexer_wordcount;
+			if (bwc == -1) bwc = lexer_wordcount;
 			N->read_as = SourceText::read_file(project->as_copy, F, N->annotation,
 				FALSE, TRUE);
 		}
 	}
-	int l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
+	l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
 	Sentences::break(project->syntax_tree, Wordings::new(wc, lexer_wordcount-1), FALSE, project->as_copy, bwc);
 	ParseTree::pop_attachment_point(project->syntax_tree, l);
+
+	l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
+	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
+	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
+	ParseTree::insert_sentence(project->syntax_tree, implicit_heading);
 	#ifdef CORE_MODULE
-	StructuralSentences::add_inventions_heading(project->syntax_tree);
+	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
+	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
+	Sentences::Headings::declare(project->syntax_tree, implicit_heading);
 	#endif
-	if (project->language_of_play == NULL) Projects::set_to_English(project);
+	ParseTree::pop_attachment_point(project->syntax_tree, l);
+	
+	ParseTree::push_attachment_point(project->syntax_tree, implicit_heading);
 }
 
 @ It might seem sensible to parse the opening sentence of the source text,

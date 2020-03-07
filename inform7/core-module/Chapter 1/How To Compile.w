@@ -100,14 +100,12 @@ most of these worker functions are in the |core| module, some are not.
 
 @<Boot up the compiler@> =
 	BENCH(Emit::begin);
-	BENCH(Semantics::read_preform);
 	BENCH(Plugins::Manage::start);
 	BENCH(InferenceSubjects::begin);
 	BENCH(Index::DocReferences::read_xrefs);
 
 @<Perform textual analysis@> =
 	Task::advance_stage_to(LEXICAL_CSEQ, I"Textual analysis", 0);
-	BENCH(Task::read_source_text)
 	BENCH(Task::activate_language_elements)
 	BENCH(Extensions::Inclusion::traverse)
 	BENCH(Sentences::Headings::satisfy_dependencies)

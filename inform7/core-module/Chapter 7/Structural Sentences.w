@@ -62,16 +62,3 @@ void StructuralSentences::new_language(wording W) {
 		"the ability to activate or deactivate compiler elements in source text has been withdrawn",
 		"in favour of a new system with Inform kits.");
 }
-
-@ This is for invented sentences, such as those creating the understood
-variables.
-
-=
-void StructuralSentences::add_inventions_heading(parse_node_tree *T) {
-	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
-	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
-	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-	ParseTree::insert_sentence(T, implicit_heading);
-	Sentences::Headings::declare(T, implicit_heading);
-}

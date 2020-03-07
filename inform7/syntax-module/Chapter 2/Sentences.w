@@ -12,9 +12,6 @@ position.
 int sfsm_extension_position = 0; /* 0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after */
 node_type_t ssnt = 0;
 
-parse_node *standard_rules_inclusion_point = NULL;
-parse_node *language_extension_inclusion_point = NULL; /* after the Standard Rules */
-
 @
 
 @e UnexpectedSemicolon_SYNERROR from 1
@@ -480,11 +477,7 @@ sentences and options-file sentences may have been read already.)
 			@<Detect a Preform grammar inclusion and sneakily act upon it@>
 			ParseTree::set_type(new, ssnt); return;
 		} else {
-			if (ssnt == INCLUDE_NT) {
-				new->down = <<rp>>;
-				if (standard_rules_inclusion_point == NULL) standard_rules_inclusion_point = new;
-				else if (language_extension_inclusion_point == NULL) language_extension_inclusion_point = new;
-			}
+			if (ssnt == INCLUDE_NT) new->down = <<rp>>;
 			ParseTree::set_type(new, ssnt);
 			#ifdef INBUILD_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)
