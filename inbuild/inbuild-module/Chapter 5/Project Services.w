@@ -390,7 +390,11 @@ LOG("Running rstf\n");
 	
 	ParseTree::push_attachment_point(project->syntax_tree, implicit_heading);
 	
-//	Inclusions::traverse(project->syntax_tree);
+	#ifdef CORE_MODULE
+	Projects::activate_plugins(project);
+	#endif
+	Inclusions::traverse(project->as_copy, project->syntax_tree);
+	Headings::satisfy_dependencies(project->syntax_tree, project->as_copy);
 }
 
 @ It might seem sensible to parse the opening sentence of the source text,

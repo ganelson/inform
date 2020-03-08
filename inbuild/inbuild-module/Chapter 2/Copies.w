@@ -158,6 +158,9 @@ typedef struct copy_error {
 	int details_N;
 	struct wording details_W;
 	struct parse_node *details_node;
+	struct parse_node *details_node2;
+	struct inbuild_work *details_work;
+	struct inbuild_work *details_work2;
 	wchar_t *word;
 	MEMORY_MANAGEMENT
 } copy_error;
@@ -172,6 +175,9 @@ copy_error *Copies::new_error(int cat, text_stream *NB) {
 	CE->details_N = -1;
 	CE->details_W = EMPTY_WORDING;
 	CE->details_node = NULL;
+	CE->details_node2 = NULL;
+	CE->details_work = NULL;
+	CE->details_work2 = NULL;
 	CE->pos = TextFiles::nowhere();
 	CE->copy = NULL;
 	CE->word = NULL;
@@ -267,6 +273,14 @@ void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
 					WRITE("extension is not compatible with the target virtual machine"); break;
 				case ExtMisidentifiedEnds_SYNERROR:
 					WRITE("extension has an 'ends here' but it does not match the 'begins here'"); break;
+				case HeadingInPlaceOfUnincluded_SYNERROR:
+					WRITE("heading is in place of an extension not included"); break;
+				case UnequalHeadingInPlaceOf_SYNERROR:
+					WRITE("heading is in place of another heading but of a diffeent level"); break;
+				case HeadingInPlaceOfSubordinate_SYNERROR:
+					WRITE("heading is in place of another heading subordinate to itself"); break;
+				case HeadingInPlaceOfUnknown_SYNERROR:
+					WRITE("heading is in place of another heading which doesn't seem to exist'"); break;
 				default:
 					WRITE("syntax error"); break;
 			}

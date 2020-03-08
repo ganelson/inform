@@ -57,7 +57,6 @@ which these sentences are collected under a hierarchy of headings, with
 material intended only for certain target virtual machines included or
 excluded as need be."
 	Parse Tree Usage
-	Structural Sentences
 	Headings
 	Nonstructural Sentences
 	Of and From

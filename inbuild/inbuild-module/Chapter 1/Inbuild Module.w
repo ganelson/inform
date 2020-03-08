@@ -118,3 +118,11 @@ void InbuildModule::start(void) {
 =
 void InbuildModule::end(void) {
 }
+
+@ =
+DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+
+heading *InbuildModule::heading(parse_node *PN) {
+	return ParseTree::get_embodying_heading(PN);
+}

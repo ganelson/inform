@@ -563,3 +563,154 @@ heading *Headings::heading_of(source_location sl) {
 heading *Headings::of_wording(wording W) {
 	return Headings::heading_of(Wordings::location(W));
 }
+
+@h Headings with extension dependencies.
+If the content under a heading depended on the VM not in use, or was marked
+not for release in a release run, we were able to exclude it just by
+skipping. The same cannot be done when a heading says that it should be
+used only if a given extension is, or is not, being used, because when
+the heading is created we don't yet know which extensions are included.
+But when the following is called, we do know that.
+
+@e HeadingInPlaceOfUnincluded_SYNERROR
+@e UnequalHeadingInPlaceOf_SYNERROR
+@e HeadingInPlaceOfSubordinate_SYNERROR
+@e HeadingInPlaceOfUnknown_SYNERROR
+
+=
+void Headings::satisfy_dependencies(parse_node_tree *T, inbuild_copy *C) {
+	heading *h;
+	LOOP_OVER(h, heading)
+		if (h->use_with_or_without != NOT_APPLICABLE)
+			Headings::satisfy_individual_heading_dependency(T, C, h);
+}
+
+@ And now the code to check an individual heading's usage. This whole
+thing is carefully timed so that we can still afford to cut up and rearrange
+the parse tree on quite a large scale, and that's just what we do.
+
+=
+void Headings::satisfy_individual_heading_dependency(parse_node_tree *T, inbuild_copy *C, heading *h) {
+	if (h->level < 1) return;
+	inbuild_work *work = h->for_use_with;
+	int loaded = FALSE;
+	if (Works::no_times_used_in_context(work, LOADED_WDBC) != 0) loaded = TRUE;
+	LOGIF(HEADINGS, "SIHD on $H: loaded %d: annotation %d: %W: %d\n", h, loaded,
+		ParseTree::int_annotation(h->sentence_declaring,
+			suppress_heading_dependencies_ANNOT),
+		h->in_place_of_text, h->use_with_or_without);
+	if (Wordings::nonempty(h->in_place_of_text)) {
+		wording S = h->in_place_of_text;
+		if (ParseTree::int_annotation(h->sentence_declaring,
+			suppress_heading_dependencies_ANNOT) == FALSE) {
+			if (<quoted-text>(h->in_place_of_text)) {
+				Word::dequote(Wordings::first_wn(S));
+				wchar_t *text = Lexer::word_text(Wordings::first_wn(S));
+				S = Feeds::feed_text(text);
+			}
+			heading *h2; int found = FALSE;
+			if (loaded == FALSE) @<Can't replace heading in an unincluded extension@>
+			else {
+				LOOP_OVER(h2, heading)
+					if ((Wordings::nonempty(h2->heading_text)) &&
+						(Wordings::match_perhaps_quoted(S, h2->heading_text)) &&
+						(Works::match(
+							Headings::get_extension_containing(h2)->as_copy->edition->work, work))) {
+						found = TRUE;
+						if (h->level != h2->level)
+							@<Can't replace heading unless level matches@>;
+						Headings::excise_material_under(T, C, h2, NULL);
+						Headings::excise_material_under(T, C, h, h2->sentence_declaring);
+						break;
+					}
+				if (found == FALSE) @<Can't find heading in the given extension@>;
+			}
+		}
+	} else
+		if (h->use_with_or_without != loaded) Headings::excise_material_under(T, C, h, NULL);
+}
+
+@<Can't replace heading in an unincluded extension@> =
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = HeadingInPlaceOfUnincluded_SYNERROR;
+	CE->details_node = h->sentence_declaring;
+	CE->details_work = h->for_use_with;
+	Copies::attach(C, CE);
+
+@ To excise, we simply prune the heading's contents from the parse tree,
+though optionally grafting them to another node rather than discarding them
+altogether.
+
+Any heading which is excised is marked so that it won't have its own
+dependencies checked. This clarifies several cases, and in particular ensures
+that if Chapter X is excised then a subordinate Section Y cannot live on by
+replacing something elsewhere (which would effectively delete the content
+elsewhere).
+
+=
+void Headings::excise_material_under(parse_node_tree *T, inbuild_copy *C, heading *h, parse_node *transfer_to) {
+	LOGIF(HEADINGS, "Excision under $H\n", h);
+	parse_node *hpn = h->sentence_declaring;
+	if (h->sentence_declaring == NULL) internal_error("stipulations on a non-sentence heading");
+
+	if (Wordings::nonempty(h->in_place_of_text)) {
+		heading *h2 = Headings::find_dependent_heading(hpn->down);
+		if (h2) @<Can't replace heading subordinate to another replaced heading@>;
+	}
+
+	Headings::suppress_dependencies(hpn);
+	if (transfer_to) ParseTree::graft(T, hpn->down, transfer_to);
+	hpn->down = NULL;
+}
+
+heading *Headings::find_dependent_heading(parse_node *pn) {
+	if (ParseTree::get_type(pn) == HEADING_NT) {
+		heading *h = InbuildModule::heading(pn);
+		if ((h) && (Wordings::nonempty(h->in_place_of_text))) return h;
+	}
+	for (parse_node *p = pn->down; p; p = p->next) {
+		heading *h = InbuildModule::heading(p);
+		if (h) return h;
+	}
+	return NULL;
+}
+
+void Headings::suppress_dependencies(parse_node *pn) {
+	if (ParseTree::get_type(pn) == HEADING_NT)
+		ParseTree::annotate_int(pn, suppress_heading_dependencies_ANNOT, TRUE);
+	for (parse_node *p = pn->down; p; p = p->next)
+		Headings::suppress_dependencies(p);
+}
+
+@<Can't replace heading subordinate to another replaced heading@> =
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = HeadingInPlaceOfSubordinate_SYNERROR;
+	CE->details_node = h2->sentence_declaring;
+	CE->details_work = h2->for_use_with;
+	CE->details_work2 = h->for_use_with;
+	CE->details_node2 = h->sentence_declaring;
+	Copies::attach(C, CE);
+
+@<Can't find heading in the given extension@> =
+	TEMPORARY_TEXT(vt);
+	WRITE_TO(vt, "unspecified, that is, the extension didn't have a version number");
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		if (Works::match(h->for_use_with, E->as_copy->edition->work)) {
+			Str::clear(vt);
+			VersionNumbers::to_text(vt, E->as_copy->edition->version);
+		}
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = HeadingInPlaceOfUnknown_SYNERROR;
+	CE->details_node = h->sentence_declaring;
+	CE->details_work = h->for_use_with;
+	CE->details_W = h->in_place_of_text;
+	CE->details = Str::duplicate(vt);
+	Copies::attach(C, CE);
+	DISCARD_TEXT(vt);
+
+@<Can't replace heading unless level matches@> =
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = UnequalHeadingInPlaceOf_SYNERROR;
+	CE->details_node = h->sentence_declaring;
+	Copies::attach(C, CE);

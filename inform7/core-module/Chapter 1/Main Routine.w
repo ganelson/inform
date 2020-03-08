@@ -46,6 +46,7 @@ plain text error written to |stderr|. See the |problems| module for more.
 @<Banner and startup@> =
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	PRINT("%B build %B has started.\n", FALSE, TRUE);
+	Plugins::Manage::start();
 
 @ |inbuild| supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success

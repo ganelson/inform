@@ -183,6 +183,8 @@ typedef struct parse_node_annotation {
 @e heading_level_ANNOT from 1 /* int: for HEADING nodes, a hierarchical level, 0 (highest) to 9 (lowest) */
 @e language_element_ANNOT /* |int|: this node is not really a sentence, but a language definition Use */
 @e sentence_unparsed_ANNOT /* int: set if verbs haven't been sought yet here */
+@e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
+@e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
 
 @d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
 

@@ -361,7 +361,56 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"would match with 'Hocus Pocus ends here.')");
 						Problems::issue_problem_end();
 						break;
-					
+					case HeadingInPlaceOfUnincluded_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_extension_id(2, CE->details_work);
+						Problems::Issue::handmade_problem(
+							Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnincluded));
+						Problems::issue_problem_segment(
+							"In the sentence %1, it looks as if you intend to replace a section "
+							"of source text from the extension '%2', but no extension of that "
+							"name has been included - so it is not possible to replace any of its "
+							"headings.");
+						Problems::issue_problem_end();
+						break;
+					case UnequalHeadingInPlaceOf_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_UnequalHeadingInPlaceOf),
+							"these headings are not of the same level",
+							"so it is not possible to make the replacement. (Level here means "
+							"being a Volume, Book, Part, Chapter or Section: for instance, "
+							"only a Chapter heading can be used 'in place of' a Chapter.)");
+						break;
+					case HeadingInPlaceOfSubordinate_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_extension_id(2, CE->details_work);
+						Problems::quote_source(3, CE->details_node2);
+						Problems::quote_extension_id(4, CE->details_work2);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfSubordinate));
+						Problems::issue_problem_segment(
+							"In the sentence %1, it looks as if you intend to replace a section "
+							"of source text from the extension '%2', but that doesn't really make "
+							"sense because this new piece of source text is part of a superior "
+							"heading ('%3') which is already being replaced spliced into '%4'.");
+						Problems::issue_problem_end();
+						break;
+					case HeadingInPlaceOfUnknown_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_extension_id(2, CE->details_work);
+						Problems::quote_wording(3, CE->details_W);
+						Problems::quote_stream(4, CE->details);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnknown));
+						Problems::issue_problem_segment(
+							"In the sentence %1, it looks as if you intend to replace a section "
+							"of source text from the extension '%2', but that extension does "
+							"not seem to have any heading called '%3'. (The version I loaded "
+							"was %4.)");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

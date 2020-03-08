@@ -29,3 +29,7 @@ PM_ExtVersionTooLow
 PM_ExtVersionMalformed
 PM_ExtInadequateVM
 PM_ExtMisidentifiedEnds
+PM_HeadingInPlaceOfUnincluded
+PM_UnequalHeadingInPlaceOf
+PM_HeadingInPlaceOfSubordinate
+PM_HeadingInPlaceOfUnknown

@@ -29,7 +29,6 @@ DECLARE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
 DECLARE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
-DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 DECLARE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
 DECLARE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(explicit_vh, value_holster)
@@ -86,7 +85,6 @@ MAKE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
 MAKE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
 MAKE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
-MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 MAKE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
 MAKE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(explicit_vh, value_holster)
@@ -240,7 +238,6 @@ goes. The annotations used are identified by nonzero ID numbers, as follows:
 @e creation_proposition_ANNOT /* |pcalc_prop|: proposition which newly created value satisfies */
 @e creation_site_ANNOT /* |int|: whether an instance was created from this node */
 @e defn_language_ANNOT /* |inform_language|: what language this definition is in */
-@e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
 @e end_control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
 @e epistemological_status_ANNOT /* |int|: a bitmap of results from checking an ambiguous reading */
 @e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
@@ -299,7 +296,6 @@ goes. The annotations used are identified by nonzero ID numbers, as follows:
 @e ssp_segment_count_ANNOT /* |int|: number of subsequent complex-say phrases in stream */
 @e subject_ANNOT /* |inference_subject|: what this node describes */
 @e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
-@e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
 @e suppress_newlines_ANNOT /* |int|: whether the next say term runs on */
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
 @e text_unescaped_ANNOT /* |int|: flag used only for literal texts */

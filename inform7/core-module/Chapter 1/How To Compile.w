@@ -12,7 +12,6 @@ on to the next.
 in order of when they work:
 
 @e STARTED_CSEQ from 0
-@e LEXICAL_CSEQ
 @e SEMANTIC_LANGUAGE_CSEQ
 @e SEMANTIC_I_CSEQ
 @e SEMANTIC_II_CSEQ
@@ -100,20 +99,11 @@ most of these worker functions are in the |core| module, some are not.
 
 @<Boot up the compiler@> =
 	BENCH(Emit::begin);
-	BENCH(Plugins::Manage::start);
 	BENCH(InferenceSubjects::begin);
 	BENCH(Index::DocReferences::read_xrefs);
 
 @<Perform textual analysis@> =
-	Task::advance_stage_to(LEXICAL_CSEQ, I"Textual analysis", 0);
-	BENCH(Task::activate_language_elements)
-	Inclusions::traverse(Task::project()->as_copy, Task::syntax_tree());
-		SourceProblems::issue_problems_arising(Task::project()->as_copy);
-
-//	BENCH(Inclusions::traverse)
-	BENCH(Sentences::Headings::satisfy_dependencies)
-
-	Task::advance_stage_to(SEMANTIC_LANGUAGE_CSEQ, I"Initialise language semantics", -1);
+	Task::advance_stage_to(SEMANTIC_LANGUAGE_CSEQ, I"Semantic analysis Ia", -1);
 	BENCH(Plugins::Manage::start_plugins);
 	BENCH(Task::load_types);
 	BENCH(BinaryPredicates::make_built_in)
