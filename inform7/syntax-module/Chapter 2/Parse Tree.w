@@ -993,16 +993,16 @@ void ParseTree::traverse_from_ppn(parse_node *pn, void (*visitor)(parse_node *, 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_ppni(parse_node_tree *T, void (*visitor)(parse_node *, parse_node **, int *), parse_node **X, int *N) {
-	ParseTree::traverse_from_ppni(T->root_node, visitor, X, N);
+void ParseTree::traverse_ppni(parse_node_tree *T, void (*visitor)(parse_node_tree *, parse_node *, parse_node **, int *), parse_node **X, int *N) {
+	ParseTree::traverse_from_ppni(T, T->root_node, visitor, X, N);
 }
-void ParseTree::traverse_from_ppni(parse_node *pn, void (*visitor)(parse_node *, parse_node **, int *), parse_node **X, int *N) {
+void ParseTree::traverse_from_ppni(parse_node_tree *T, parse_node *pn, void (*visitor)(parse_node_tree *, parse_node *, parse_node **, int *), parse_node **X, int *N) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_ppni(pn->down, visitor, X, N);
+		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_ppni(T, pn->down, visitor, X, N);
 		if (ParseTree::visitable(pn->node_type)) {
 			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
-			(*visitor)(pn, X, N);
+			(*visitor)(T, pn, X, N);
 		}
 	}
 	current_sentence = SCS;

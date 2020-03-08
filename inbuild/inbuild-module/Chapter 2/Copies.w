@@ -253,6 +253,20 @@ void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
 					WRITE("unrecognised stipulation about Inform language elements"); break;
 				case UnknownVirtualMachine_SYNERROR:
 					WRITE("unrecognised stipulation about virtual machine"); break;
+				case UseElementWithdrawn_SYNERROR:
+					WRITE("use language element is no longer supported"); break;
+				case IncludeExtQuoted_SYNERROR:
+					WRITE("extension name should not be double-quoted"); break;
+				case BogusExtension_SYNERROR:
+					WRITE("can't find this extension"); break;
+				case ExtVersionTooLow_SYNERROR:
+					WRITE("extension version too low"); break;
+				case ExtVersionMalformed_SYNERROR:
+					WRITE("extension version is malformed"); break;
+				case ExtInadequateVM_SYNERROR:
+					WRITE("extension is not compatible with the target virtual machine"); break;
+				case ExtMisidentifiedEnds_SYNERROR:
+					WRITE("extension has an 'ends here' but it does not match the 'begins here'"); break;
 				default:
 					WRITE("syntax error"); break;
 			}

@@ -296,7 +296,7 @@ void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
 	} else if (strcmp(message, "**") == 0) {
 		shorten_problem_message = FALSE;
 	} else {
-		Problems::show_problem_location(T);
+		if (T) Problems::show_problem_location(T);
 		problem_count++;
 		WRITE_TO(PBUFF, ">--> ");
 		shorten_problem_message = Problems::explained_before(message);

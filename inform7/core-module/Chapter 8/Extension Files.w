@@ -533,5 +533,28 @@ int Extensions::Files::document_headword(OUTPUT_STREAM, int kc, inform_extension
 	return kc;
 }
 
-@ And that at last brings us to a milestone: the end of the Land of Extensions.
-We can return to Inform's more usual concerns.
+@h Sentence handlers for begins here and ends here.
+The main traverses of the assertions are handled by code which calls
+"sentence handler" routines on each node in turn, depending on type.
+Here are the handlers for BEGINHERE and ENDHERE. As can be seen, all
+we really do is start again from a clean piece of paper.
+
+Note that, because one extension can include another, these nodes may
+well be interleaved: we might find the sequence A begins, B begins,
+B ends, A ends. The careful checking done so far ensures that these
+will always properly nest. We don't at present make use of this, but
+we might in future.
+
+=
+sentence_handler BEGINHERE_SH_handler =
+	{ BEGINHERE_NT, -1, 0, Extensions::Files::handle_extension_begins };
+sentence_handler ENDHERE_SH_handler =
+	{ ENDHERE_NT, -1, 0, Extensions::Files::handle_extension_ends };
+
+void Extensions::Files::handle_extension_begins(parse_node *PN) {
+	Assertions::Traverse::new_discussion(); near_start_of_extension = 1;
+}
+
+void Extensions::Files::handle_extension_ends(parse_node *PN) {
+	near_start_of_extension = 0;
+}

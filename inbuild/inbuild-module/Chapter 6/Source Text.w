@@ -232,3 +232,53 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 <language-modifying-sentence> ::=
 	include (- ### in the preform grammar |			==> -2; ssnt = INFORM6CODE_NT;
 	use ... language element/elements				==> -1
+
+@h Sentence division.
+Sentence division can happen either early in Inform's run, when the vast bulk
+of the source text is read, or at intermittent periods later when fresh text
+is generated internally. New sentences need to be parsed as they arise, not
+saved up to be parsed later, so we will use the following:
+
+@d SENTENCE_ANNOTATION_FUNCTION SourceText::annotate_new_sentence
+
+=
+int text_loaded_from_source = FALSE;
+void SourceText::declare_source_loaded(void) {
+	text_loaded_from_source = TRUE;
+}
+
+void SourceText::annotate_new_sentence(parse_node *new) {
+	if (text_loaded_from_source) {
+		ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+		#ifdef CORE_MODULE
+		Sentences::VPs::seek(new);
+		#endif
+	}
+}
+
+@
+
+@d NEW_BEGINEND_HANDLER SourceText::new_beginend
+
+=
+void SourceText::new_beginend(parse_node *new, inbuild_copy *C) {
+	inform_extension *E = ExtensionManager::from_copy(C);
+	if (ParseTree::get_type(new) == BEGINHERE_NT)
+		Inclusions::check_begins_here(new, E);
+	if (ParseTree::get_type(new) == ENDHERE_NT)
+		Inclusions::check_ends_here(new, E);
+}
+
+@
+
+@d NEW_LANGUAGE_HANDLER SourceText::new_language
+
+@e UseElementWithdrawn_SYNERROR
+
+=
+void SourceText::new_language(wording W) {
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = UseElementWithdrawn_SYNERROR;
+	CE->details_node = current_sentence;
+	Copies::attach(sfsm_copy, CE);
+}

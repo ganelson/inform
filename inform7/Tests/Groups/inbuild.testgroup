@@ -22,3 +22,10 @@ PM_ExtMultipleBeginsHere
 PM_ExtBeginsAfterEndsHere
 PM_UnknownLanguageElement
 PM_UnknownVirtualMachine
+PM_UseElementWithdrawn
+PM_IncludeExtQuoted
+PM_BogusExtension
+PM_ExtVersionTooLow
+PM_ExtVersionMalformed
+PM_ExtInadequateVM
+PM_ExtMisidentifiedEnds

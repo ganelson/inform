@@ -68,7 +68,6 @@ Chapter 8: Extensions
 which, we also handle extension installation, uninstallation and
 documentation here."
 	Extension Files
-	Including Extensions
 
 Chapter 9: The A-Parser
 "We work through the assertion sentences in the parse tree one by one, and

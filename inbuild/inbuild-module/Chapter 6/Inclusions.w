@@ -1,4 +1,4 @@
-[Extensions::Inclusion::] Including Extensions.
+[Inclusions::] Inclusions.
 
 To fulfill requests to include extensions, adding their material
 to the parse tree as needed, and removing INCLUDE nodes.
@@ -22,17 +22,20 @@ At the end of this routine, provided no Problems have been issued, there are
 guaranteed to be no INCLUDE nodes remaining in the parse tree.
 
 =
-void Extensions::Inclusion::traverse(void) {
+inbuild_copy *inclusions_errors_to = NULL;
+void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
+	inclusions_errors_to = C;
 	int includes_cleared;
 	do {
 		includes_cleared = TRUE;
-		if (problem_count > 0) return;
+		if (problem_count > 0) break;
 		parse_node *elder = NULL;
-		ParseTree::traverse_ppni(Task::syntax_tree(), Extensions::Inclusion::visit, &elder, &includes_cleared);
+		ParseTree::traverse_ppni(T, Inclusions::visit, &elder, &includes_cleared);
 	} while (includes_cleared == FALSE);
+	inclusions_errors_to = NULL;
 }
 
-void Extensions::Inclusion::visit(parse_node *pn, parse_node **elder, int *includes_cleared) {
+void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, int *includes_cleared) {
 	if (ParseTree::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
@@ -45,21 +48,20 @@ void Extensions::Inclusion::visit(parse_node *pn, parse_node **elder, int *inclu
 
 @<Replace INCLUDE node with sentence nodes for any extensions required@> =
 	parse_node *title = pn->down, *author = pn->down->next;
-	int l = ParseTree::begin_inclusion(Task::syntax_tree(), pn);
-	Extensions::Inclusion::fulfill_request_to_include_extension(title, author);
-	ParseTree::end_inclusion(Task::syntax_tree(), l);
+	int l = ParseTree::begin_inclusion(T, pn);
+	Inclusions::fulfill_request_to_include_extension(title, author);
+	ParseTree::end_inclusion(T, l);
 
-@ Here we parse requests to include one or more extensions. People mostly
-don't avail themselves of the opportunity, but it is legal to include
-several at once, with a line like:
+@
 
->> Include Carrots by Peter Rabbit and Green Lettuce by Flopsy Bunny.
+@e IncludeExtQuoted_SYNERROR
+@e BogusExtension_SYNERROR
+@e ExtVersionTooLow_SYNERROR
+@e ExtVersionMalformed_SYNERROR
+@e ExtInadequateVM_SYNERROR
+@e ExtMisidentifiedEnds_SYNERROR
 
-A consequence of this convention is that "and" is not permitted in the
-name of an extension. We might change this some day.
-
-Here's how an individual title is described. The bracketed text is later
-parsed by <platform-qualifier>.
+@ Here we parse requests to include extensions.
 
 =
 <extension-title-and-version> ::=
@@ -69,8 +71,8 @@ parsed by <platform-qualifier>.
 	<extension-unversioned>														==> -1
 
 <extension-unversioned> ::=
-	<extension-unversioned-inner> ( ... )	|	==> 0; <<rest1>> = Wordings::first_wn(WR[1]); <<rest2>> = Wordings::last_wn(WR[1])
-	<extension-unversioned-inner> 				==> 0; <<rest1>> = -1; <<rest2>> = -1
+	<extension-unversioned-inner> ( ... )	|	==> 0
+	<extension-unversioned-inner> 				==> 0
 
 <extension-unversioned-inner> ::=
 	<quoted-text> *** |							==> @<Issue PM_IncludeExtQuoted problem@>
@@ -80,11 +82,11 @@ parsed by <platform-qualifier>.
 
 @<Issue PM_IncludeExtQuoted problem@> =
 	<<t1>> = -1; <<t2>> = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_IncludeExtQuoted),
-		"the name of an included extension should be given without double "
-		"quotes in an Include sentence",
-		"so for instance 'Include Oh My God by Janice Bing.' rather than "
-		"'Include \"Oh My God\" by Janice Bing.')");
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = IncludeExtQuoted_SYNERROR;
+	CE->details_node = current_sentence;
+	Copies::attach(inclusions_errors_to, CE);
+	WRITE_TO(STDERR, "Listen %X!\n", inclusions_errors_to->edition->work);
 
 @ This internal parses version text such as "12/110410".
 
@@ -95,19 +97,11 @@ parsed by <platform-qualifier>.
 }
 
 @ =
-void Extensions::Inclusion::fulfill_request_to_include_extension(parse_node *p, parse_node *auth_p) {
-	if (ParseTree::get_type(p) == AND_NT) {
-		Extensions::Inclusion::fulfill_request_to_include_extension(p->down, auth_p);
-		Extensions::Inclusion::fulfill_request_to_include_extension(p->down->next, auth_p);
-		return;
-	}
-
-	<<rest1>> = -1; <<rest2>> = -1;
+void Inclusions::fulfill_request_to_include_extension(parse_node *p, parse_node *auth_p) {
 	<<t1>> = -1; <<t2>> = -1;
 	<extension-title-and-version>(ParseTree::get_text(p));
 	wording W = Wordings::new(<<t1>>, <<t2>>);
 	wording AW = ParseTree::get_text(auth_p);
-	wording RW = Wordings::new(<<rest1>>, <<rest2>>);
 	int version_word = <<r>>;
 
 	if (Wordings::nonempty(W)) @<Fulfill request to include a single extension@>;
@@ -123,7 +117,7 @@ parse tree.
 
 @<Fulfill request to include a single extension@> =
 	if (version_word >= 0)
-		Extensions::Inclusion::parse_version(version_word); /* this checks the formatting of the version number */
+		Inclusions::parse_version(version_word); /* this checks the formatting of the version number */
 
 	TEMPORARY_TEXT(exft);
 	TEMPORARY_TEXT(exfa);
@@ -132,7 +126,7 @@ parse tree.
 	inbuild_work *work = Works::new(extension_genre, exft, exfa);
 	Works::add_to_database(work, LOADED_WDBC);
 	semantic_version_number V = VersionNumbers::null();
-	if (version_word >= 0) V = Extensions::Inclusion::parse_version(version_word);
+	if (version_word >= 0) V = Inclusions::parse_version(version_word);
 	semver_range *R = NULL;
 	if (VersionNumbers::is_null(V)) R = VersionNumbers::any_range();
 	else R = VersionNumbers::compatibility_range(V);
@@ -140,19 +134,13 @@ parse tree.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
-	parse_node *at = current_sentence;
-	inform_extension *E = Extensions::Inclusion::load(req);
-	if (E) {
-		Extensions::set_inclusion_sentence(E, at);
-		Extensions::set_VM_text(E, RW);
-	}
+	Inclusions::load(current_sentence, req);
 
 @h Extension loading.
 Extensions are loaded here.
 
 =
-inform_extension *Extensions::Inclusion::load(inbuild_requirement *req) {
-	NaturalLanguages::scan(); /* to avoid wording from those interleaving with extension wording */
+inform_extension *Inclusions::load(parse_node *at, inbuild_requirement *req) {
 	@<Do not load the same extension work twice@>;
 
 	inform_extension *E = NULL;
@@ -185,31 +173,47 @@ can't know at load time what we will ultimately require.)
 	inbuild_search_result *search_result = Nests::first_found(req, Inbuild::nest_list());
 	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
+		Extensions::set_inclusion_sentence(E, at);
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)
 			E->loaded_from_built_in_area = TRUE;
+		compatibility_specification *C = E->as_copy->edition->compatibility;
+		if (Compatibility::with(C, Inbuild::current_vm()) == FALSE)
+			@<Issue a problem message saying that the VM does not meet requirements@>;
+
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
 			E = NULL;
 		} else {
 			Copies::read_source_text_for(search_result->copy);
 		}
+		#ifdef CORE_MODULE
 		SourceProblems::issue_problems_arising(search_result->copy);
+		#endif
+		#ifndef CORE_MODULE
+		Copies::list_problems_arising(STDERR, search_result->copy);
+		#endif
 	} else @<Issue a cannot-find problem@>;
+
+@ Here the problem is not that the extension is broken in some way: it's
+just not what we can currently use. Therefore the correction should be a
+matter of removing the inclusion, not of altering the extension, so we
+report this problem at the inclusion line.
+
+@<Issue a problem message saying that the VM does not meet requirements@> =
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = ExtInadequateVM_SYNERROR;
+	CE->details_node = Extensions::get_inclusion_sentence(E);
+	CE->details = C->parsed_from;
+	Copies::attach(inclusions_errors_to, CE);
 
 @<Issue a cannot-find problem@> =
 	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(req2, Inbuild::nest_list(), L);
 	if (LinkedLists::len(L) == 0) {
-		LOG("Author: %W\n", req->work->author_name);
-		LOG("Title: %W\n", req->work->title);
-		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
-		Problems::issue_problem_segment(
-			"I can't find the extension requested by: %1. %P"
-			"You can get hold of extensions which people have made public at "
-			"the Inform website, www.inform7.com, or by using the Public "
-			"Library in the Extensions panel.");
-		Problems::issue_problem_end();
+		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+		CE->error_subcategory = BogusExtension_SYNERROR;
+		CE->details_node = current_sentence;
+		Copies::attach(inclusions_errors_to, CE);
 	} else {
 		TEMPORARY_TEXT(versions);
 		inbuild_search_result *search_result;
@@ -219,22 +223,17 @@ can't know at load time what we will ultimately require.)
 			if (VersionNumbers::is_null(V)) WRITE_TO(versions, "an unnumbered version");
 			else WRITE_TO(versions, "version %v", &V);
 		}
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_stream(2, versions);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
-		Problems::issue_problem_segment(
-			"I can't find the right version of the extension requested by %1 - "
-			"I can only find %2. %P"
-			"You can get hold of extensions which people have made public at "
-			"the Inform website, www.inform7.com, or by using the Public "
-			"Library in the Extensions panel.");
-		Problems::issue_problem_end();
+		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+		CE->error_subcategory = ExtVersionTooLow_SYNERROR;
+		CE->details_node = at;
+		CE->details = Str::duplicate(versions);
+		Copies::attach(inclusions_errors_to, CE);
 		DISCARD_TEXT(versions);
 	}
 
 @ =
 int last_PM_ExtVersionMalformed_at = -1;
-semantic_version_number Extensions::Inclusion::parse_version(int vwn) {
+semantic_version_number Inclusions::parse_version(int vwn) {
 	semantic_version_number V = VersionNumbers::null();
 	wording W = Wordings::one_word(vwn);
 	if (<version-number>(W)) {
@@ -246,7 +245,7 @@ semantic_version_number Extensions::Inclusion::parse_version(int vwn) {
 	return V;
 }
 
-@ Because we tend to call |Extensions::Inclusion::parse_version| repeatedly on
+@ Because we tend to call |Inclusions::parse_version| repeatedly on
 the same word, we want to recover tidily from this problem, and not report it
 over and over. We do this by altering the text to |1|, the lowest well-formed
 version number text.
@@ -255,11 +254,10 @@ version number text.
 	if (last_PM_ExtVersionMalformed_at != vwn) {
 		last_PM_ExtVersionMalformed_at = vwn;
 		LOG("Offending word number %d <%N>\n", vwn, vwn);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ExtVersionMalformed),
-			"a version number must have the form N/DDDDDD",
-			"as in the example '2/040426' for release 2 made on 26 April 2004. "
-			"(The DDDDDD part is optional, so '3' is a legal version number too. "
-			"N must be between 1 and 999: in particular, there is no version 0.)");
+		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+		CE->error_subcategory = ExtVersionMalformed_SYNERROR;
+		CE->details_node = current_sentence;
+		Copies::attach(inclusions_errors_to, CE);
 	}
 
 @h Checking the begins here and ends here sentences.
@@ -287,59 +285,22 @@ problem messages if it is malformed.
 
 =
 <begins-here-sentence-subject> ::=
-	<extension-title-and-version> by ... |	==> R[1]; <<auth1>> = Wordings::first_wn(WR[1]); <<auth2>> = Wordings::last_wn(WR[1]);
+	<extension-title-and-version> by ... |
 	...										==> @<Issue problem@>
 
 @<Issue problem@> =
-	<<auth1>> = -1; <<auth2>> = -1;
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); // since inbuild's scan catches this first
-	Problems::issue_problem_segment(
-		"has a misworded 'begins here' sentence ('%2'), which contains "
-		"no 'by'. Recall that every extension should begin with a "
-		"sentence such as 'Quantum Mechanics by Max Planck begins "
-		"here.', and end with a matching 'Quantum Mechanics ends "
-		"here.', perhaps with documentation to follow.");
-	Problems::issue_problem_end();
+	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+	CE->error_subcategory = ExtNoBeginsHere_SYNERROR;
+	CE->details_node = current_sentence;
+	Copies::attach(inclusions_errors_to, CE);
 
 @ =
-void Extensions::Inclusion::check_begins_here(parse_node *PN, inform_extension *E) {
-	current_sentence = PN; /* in case problem messages need to be issued */
-	Problems::quote_extension(1, E);
-	Problems::quote_wording(2, ParseTree::get_text(PN));
-
+void Inclusions::check_begins_here(parse_node *PN, inform_extension *E) {
+	inbuild_copy *S = inclusions_errors_to;
+	inclusions_errors_to = E->as_copy;
 	<begins-here-sentence-subject>(ParseTree::get_text(PN));
-	Extensions::set_VM_text(E, Wordings::new(<<rest1>>, <<rest2>>));
-
-	@<Check that the extension's stipulation about the virtual machine can be met@>;
+	inclusions_errors_to = S;
 }
-
-@ On the other hand, we do already know what virtual machine we are compiling
-for, so we can immediately object if the loaded extension cannot be used
-with our VM de jour.
-
-@<Check that the extension's stipulation about the virtual machine can be met@> =
-	compatibility_specification *C = E->as_copy->edition->compatibility;
-	if (Compatibility::with(C, Task::vm()) == FALSE)
-		@<Issue a problem message saying that the VM does not meet requirements@>;
-
-@ Here the problem is not that the extension is broken in some way: it's
-just not what we can currently use. Therefore the correction should be a
-matter of removing the inclusion, not of altering the extension, so we
-report this problem at the inclusion line.
-
-@<Issue a problem message saying that the VM does not meet requirements@> =
-	current_sentence = Extensions::get_inclusion_sentence(E);
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_copy(2, E->as_copy);
-	Problems::quote_stream(3, C->parsed_from);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtInadequateVM));
-	Problems::issue_problem_segment(
-		"You wrote %1: but my copy of %2 stipulates that it "
-		"is '%3'. That means it can only be used with certain of "
-		"the possible compiled story file formats, and at the "
-		"moment, we don't fit the requirements. (You can change "
-		"the format used for this project on the Settings panel.)");
-	Problems::issue_problem_end();
 
 @ Similarly, we check the "ends here" sentence. Here there are no
 side-effects: we merely verify that the name matches the one quoted in
@@ -348,48 +309,21 @@ since we don't want to keep on nagging somebody who has already been told
 that the extension isn't the one he thinks it is.
 
 =
-void Extensions::Inclusion::check_ends_here(parse_node *PN, inform_extension *E) {
-	wording W = Articles::remove_the(ParseTree::get_text(PN));
+<the-prefix-for-extensions> ::=
+	the ...
+
+void Inclusions::check_ends_here(parse_node *PN, inform_extension *E) {
+	inbuild_copy *S = inclusions_errors_to;
+	inclusions_errors_to = E->as_copy;
+	wording W = ParseTree::get_text(PN);
+	if (<the-prefix-for-extensions>(W)) W = GET_RW(<the-prefix-for-extensions>, 1);
 	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
 	if ((problem_count == 0) && (Wordings::match(T, W) == FALSE)) {
-		current_sentence = PN;
-		Problems::quote_extension(1, E);
-		Problems::quote_wording(2, ParseTree::get_text(PN));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
-		Problems::issue_problem_segment(
-			"The extension %1, which your source text makes use of, seems to be "
-			"malformed: its 'begins here' sentence correctly identifies it, but "
-			"then the 'ends here' sentence calls it '%2' instead. (They need "
-			"to be a matching pair except that the end does not name the "
-			"author: for instance, 'Hocus Pocus by Jan Ackerman begins here.' "
-			"would match with 'Hocus Pocus ends here.')");
-		Problems::issue_problem_end();
-		return;
+		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
+		CE->error_subcategory = ExtMisidentifiedEnds_SYNERROR;
+		CE->details_node = PN;
+		CE->details_W = ParseTree::get_text(PN);
+		Copies::attach(inclusions_errors_to, CE);
 	}
-}
-
-@h Sentence handlers for begins here and ends here.
-The main traverses of the assertions are handled by code which calls
-"sentence handler" routines on each node in turn, depending on type.
-Here are the handlers for BEGINHERE and ENDHERE. As can be seen, all
-we really do is start again from a clean piece of paper.
-
-Note that, because one extension can include another, these nodes may
-well be interleaved: we might find the sequence A begins, B begins,
-B ends, A ends. The careful checking done so far ensures that these
-will always properly nest. We don't at present make use of this, but
-we might in future.
-
-=
-sentence_handler BEGINHERE_SH_handler =
-	{ BEGINHERE_NT, -1, 0, Extensions::Inclusion::handle_extension_begins };
-sentence_handler ENDHERE_SH_handler =
-	{ ENDHERE_NT, -1, 0, Extensions::Inclusion::handle_extension_ends };
-
-void Extensions::Inclusion::handle_extension_begins(parse_node *PN) {
-	Assertions::Traverse::new_discussion(); near_start_of_extension = 1;
-}
-
-void Extensions::Inclusion::handle_extension_ends(parse_node *PN) {
-	near_start_of_extension = 0;
+	inclusions_errors_to = S;
 }

@@ -10,7 +10,6 @@ typedef struct inform_extension {
 	struct wording body_text; /* Body of source text supplied in extension, if any */
 	int body_text_unbroken; /* Does this contain text waiting to be sentence-broken? */
 	struct wording documentation_text; /* Documentation supplied in extension, if any */
-	struct wording VM_restriction_text; /* Restricting use to certain VMs */
 	int standard; /* the (or perhaps just a) Standard Rules extension */
 	int authorial_modesty; /* Do not credit in the compiled game */
 	struct text_stream *rubric_as_lexed; /* brief description found in opening lines */
@@ -19,9 +18,7 @@ typedef struct inform_extension {
 	struct inbuild_requirement *must_satisfy;
 	int loaded_from_built_in_area; /* Located within Inform application */
 	struct parse_node_tree *syntax_tree;
-	#ifdef CORE_MODULE
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
-	#endif
 	MEMORY_MANAGEMENT
 } inform_extension;
 
@@ -32,7 +29,6 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	E->body_text = EMPTY_WORDING;
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
-	E->VM_restriction_text = EMPTY_WORDING;
 	E->standard = FALSE;
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
@@ -41,9 +37,7 @@ void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
 	E->must_satisfy = NULL;
 	E->loaded_from_built_in_area = FALSE;
 	E->syntax_tree = ParseTree::new_tree();
-	#ifdef CORE_MODULE
 	E->inclusion_sentence = NULL;
-	#endif
 
 	TEMPORARY_TEXT(claimed_author_name);
 	TEMPORARY_TEXT(claimed_title);
@@ -256,21 +250,12 @@ void Extensions::set_authorial_modesty(inform_extension *E) {
 }
 void Extensions::set_general_authorial_modesty(void) { general_authorial_modesty = TRUE; }
 
-#ifdef CORE_MODULE
 void Extensions::set_inclusion_sentence(inform_extension *E, parse_node *N) {
 	E->inclusion_sentence = N;
 }
 parse_node *Extensions::get_inclusion_sentence(inform_extension *E) {
 	if (E == NULL) return NULL;
 	return E->inclusion_sentence;
-}
-#endif
-
-void Extensions::set_VM_text(inform_extension *E, wording W) {
-	E->VM_restriction_text = W;
-}
-wording Extensions::get_VM_text(inform_extension *E) {
-	return E->VM_restriction_text;
 }
 
 int Extensions::is_standard(inform_extension *E) {
@@ -312,7 +297,8 @@ void Extensions::read_source_text_for(inform_extension *E) {
 		wording EXW = E->read_into_file->text_read;
 		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
 		#ifdef CORE_MODULE
-		E->syntax_tree = Task::syntax_tree();
+		inform_project *project = Inbuild::project();
+		if (project) E->syntax_tree = project->syntax_tree;
 		#endif
 		Sentences::break(E->syntax_tree, E->body_text, TRUE, E->as_copy, -1);
 		E->body_text_unbroken = FALSE;

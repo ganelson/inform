@@ -284,6 +284,84 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"and should be something like '(for Z-machine version 5 "
 							"or 8 only)' or '(for Glulx only)'.");
 						break;
+					case UseElementWithdrawn_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_UseElementWithdrawn),
+							"the ability to activate or deactivate compiler elements "
+							"in source text has been withdrawn",
+							"in favour of a new system with Inform kits.");
+						break;
+					case IncludeExtQuoted_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_IncludeExtQuoted),
+							"the name of an included extension should be given without double "
+							"quotes in an Include sentence",
+							"so for instance 'Include Oh My God by Janice Bing.' rather than "
+							"'Include \"Oh My God\" by Janice Bing.')");
+						break;
+					case BogusExtension_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
+						Problems::issue_problem_segment(
+							"I can't find the extension requested by: %1. %P"
+							"You can get hold of extensions which people have made public at "
+							"the Inform website, www.inform7.com, or by using the Public "
+							"Library in the Extensions panel.");
+						Problems::issue_problem_end();
+						break;
+					case ExtVersionTooLow_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
+						Problems::issue_problem_segment(
+							"I can't find the right version of the extension requested by %1 - "
+							"I can only find %2. %P"
+							"You can get hold of extensions which people have made public at "
+							"the Inform website, www.inform7.com, or by using the Public "
+							"Library in the Extensions panel.");
+						Problems::issue_problem_end();
+						break;
+					case ExtVersionMalformed_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::Issue::sentence_problem(
+							Task::syntax_tree(), _p_(PM_ExtVersionMalformed),
+							"a version number must have the form N/DDDDDD",
+							"as in the example '2/040426' for release 2 made on 26 April 2004. "
+							"(The DDDDDD part is optional, so '3' is a legal version number too. "
+							"N must be between 1 and 999: in particular, there is no version 0.)");
+						break;
+					case ExtInadequateVM_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtInadequateVM));
+						Problems::issue_problem_segment(
+							"You wrote %1: but my copy of that extension stipulates that it "
+							"is '%2'. That means it can only be used with certain of "
+							"the possible compiled story file formats, and at the "
+							"moment, we don't fit the requirements. (You can change "
+							"the format used for this project on the Settings panel.)");
+						Problems::issue_problem_end();
+						break;
+					case ExtMisidentifiedEnds_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_extension(1, ExtensionManager::from_copy(C));
+						Problems::quote_wording(2, CE->details_W);
+						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
+						Problems::issue_problem_segment(
+							"The extension %1, which your source text makes use of, seems to be "
+							"malformed: its 'begins here' sentence correctly identifies it, but "
+							"then the 'ends here' sentence calls it '%2' instead. (They need "
+							"to be a matching pair except that the end does not name the "
+							"author: for instance, 'Hocus Pocus by Jan Ackerman begins here.' "
+							"would match with 'Hocus Pocus ends here.')");
+						Problems::issue_problem_end();
+						break;
+					
 					default:
 						internal_error("unknown syntax error");
 				}
