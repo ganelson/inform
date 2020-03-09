@@ -153,7 +153,7 @@ int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {
 		if ((ITTT->if_included == parity) &&
 			(Projects::uses_kit(project, ITTT->then_name) == FALSE) &&
 			(Projects::uses_kit(project, ITTT->if_name) == ITTT->if_included)) {
-			Projects::add_kit_dependency(project, ITTT->then_name);
+			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K);
 			changes_made = TRUE;
 		}
 	return changes_made;
@@ -248,7 +248,17 @@ void Kits::construct_graph(inform_kit *K) {
 
 	inbuild_requirement *req;
 	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions) {
-		build_vertex *EV = Graphs::req_vertex(req);
-		Graphs::need_this_to_use(KV, EV);
+		int found = FALSE;
+		inform_extension *E;
+		LOOP_OVER(E, inform_extension)
+			if (Requirements::meets(E->as_copy->edition, req)) {
+				Graphs::need_this_to_use(KV, E->as_copy->vertex);
+				found = TRUE;
+				break;
+			}
+		if (found == FALSE) {
+			build_vertex *RV = Graphs::req_vertex(req);
+			Graphs::need_this_to_use(KV, RV);
+		}
 	}
 }

@@ -29,18 +29,24 @@ void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	do {
 		includes_cleared = TRUE;
 		if (problem_count > 0) break;
-		parse_node *elder = NULL;
-		ParseTree::traverse_ppni(T, Inclusions::visit, &elder, &includes_cleared);
+		ParseTree::traverse_ppni(T, Inclusions::visit, &includes_cleared);
 	} while (includes_cleared == FALSE);
 	inclusions_errors_to = NULL;
 }
 
-void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, int *includes_cleared) {
+build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
+	if (H0) {
+		inform_extension *ext = ParseTree::get_inclusion_of_extension(H0);
+		if (ext) return ext->as_copy->vertex;
+	}
+	if (inclusions_errors_to == NULL) internal_error("no H0 ext or inclusion");
+	return inclusions_errors_to->vertex;
+}
+
+void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, int *includes_cleared) {
 	if (ParseTree::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
-	} else if (ParseTree::get_type(pn) != ROOT_NT) {
-		*elder = pn;
 	}
 }
 
@@ -51,13 +57,19 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, i
 		internal_error("malformed INCLUDE");
 	wording title = GET_RW(<structural-sentence>, 1);
 	wording author = GET_RW(<structural-sentence>, 2);
-	int l = ParseTree::begin_inclusion(T, pn);
-	inform_extension *E = Inclusions::fulfill_request_to_include_extension(title, author);
-	ParseTree::end_inclusion(T, l);
+	ParseTree::set_type(pn, INCLUSION_NT); pn->down = NULL;
+	int l = ParseTree::push_attachment_point(T, pn);
+	inform_extension *E = Inclusions::fulfill_request_to_include_extension(last_H0, title, author);
+	ParseTree::pop_attachment_point(T, l);
 	if (E) {
-		build_vertex *V = inclusions_errors_to->vertex;
-		build_vertex *EV = E->as_copy->vertex;
-		Graphs::need_this_to_build(V, EV);
+		for (parse_node *c = pn->down; c; c = c->next)
+			if (ParseTree::get_type(c) == HEADING_NT)
+				ParseTree::set_inclusion_of_extension(c, E);
+		if ((last_H0) && (ParseTree::int_annotation(last_H0, implied_heading_ANNOT) != TRUE)) {
+			build_vertex *V = Inclusions::spawned_from_vertex(last_H0);
+			build_vertex *EV = E->as_copy->vertex;
+			Graphs::need_this_to_build(V, EV);
+		}
 	}
 
 @
@@ -94,7 +106,6 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, i
 	CE->error_subcategory = IncludeExtQuoted_SYNERROR;
 	CE->details_node = current_sentence;
 	Copies::attach(inclusions_errors_to, CE);
-	WRITE_TO(STDERR, "Listen %X!\n", inclusions_errors_to->edition->work);
 
 @ This internal parses version text such as "12/110410".
 
@@ -105,7 +116,7 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, i
 }
 
 @ =
-inform_extension *Inclusions::fulfill_request_to_include_extension(wording TW, wording AW) {
+inform_extension *Inclusions::fulfill_request_to_include_extension(parse_node *last_H0, wording TW, wording AW) {
 	inform_extension *E = NULL;
 	<<t1>> = -1; <<t2>> = -1;
 	<extension-title-and-version>(TW);
@@ -143,13 +154,13 @@ parse tree.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
-	E = Inclusions::load(current_sentence, req);
+	E = Inclusions::load(last_H0, current_sentence, req);
 
 @h Extension loading.
 Extensions are loaded here.
 
 =
-inform_extension *Inclusions::load(parse_node *at, inbuild_requirement *req) {
+inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req) {
 	@<Do not load the same extension work twice@>;
 
 	inform_extension *E = NULL;
@@ -178,7 +189,6 @@ can't know at load time what we will ultimately require.)
 		}
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	req->allow_malformed = TRUE;
 	inbuild_search_result *search_result = Nests::first_found(req, Inbuild::nest_list());
 	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
@@ -194,13 +204,17 @@ can't know at load time what we will ultimately require.)
 		} else {
 			Copies::read_source_text_for(search_result->copy);
 		}
-		#ifdef CORE_MODULE
-		SourceProblems::issue_problems_arising(search_result->copy);
-		#endif
 		#ifndef CORE_MODULE
 		Copies::list_problems_arising(STDERR, search_result->copy);
 		#endif
-	} else @<Issue a cannot-find problem@>;
+	} else {
+		#ifdef CORE_MODULE
+		@<Issue a cannot-find problem@>;
+		#endif
+		build_vertex *RV = Graphs::req_vertex(req);
+		build_vertex *V = Inclusions::spawned_from_vertex(last_H0);
+		Graphs::need_this_to_build(V, RV);
+	}
 
 @ Here the problem is not that the extension is broken in some way: it's
 just not what we can currently use. Therefore the correction should be a

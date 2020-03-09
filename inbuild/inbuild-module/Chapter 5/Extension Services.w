@@ -296,10 +296,8 @@ void Extensions::read_source_text_for(inform_extension *E) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		wording EXW = E->read_into_file->text_read;
 		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
-		#ifdef CORE_MODULE
 		inform_project *project = Inbuild::project();
 		if (project) E->syntax_tree = project->syntax_tree;
-		#endif
 		Sentences::break(E->syntax_tree, E->body_text, TRUE, E->as_copy, -1);
 		E->body_text_unbroken = FALSE;
 	}

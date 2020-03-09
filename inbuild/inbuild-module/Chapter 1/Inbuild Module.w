@@ -36,6 +36,7 @@ Setting up the use of this module.
 @e known_extension_clash_MT
 @e build_skill_MT
 @e control_structure_phrase_MT
+@e kit_dependency_MT
 
 =
 ALLOCATE_INDIVIDUALLY(heading)
@@ -65,6 +66,7 @@ ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(known_extension_clash)
 ALLOCATE_INDIVIDUALLY(build_skill)
 ALLOCATE_INDIVIDUALLY(control_structure_phrase)
+ALLOCATE_INDIVIDUALLY(kit_dependency)
 
 ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
 
@@ -122,6 +124,8 @@ void InbuildModule::end(void) {
 @ =
 DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+DECLARE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
+MAKE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
 
 heading *InbuildModule::heading(parse_node *PN) {
 	return ParseTree::get_embodying_heading(PN);

@@ -3,12 +3,19 @@
 An Inform 7 project.
 
 @ =
+typedef struct kit_dependency {
+	struct inform_kit *kit;
+	struct inform_language *because_of_language;
+	struct inform_kit *because_of_kit;
+	MEMORY_MANAGEMENT
+} kit_dependency;
+
 typedef struct inform_project {
 	struct inbuild_copy *as_copy;
 	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
 	int assumed_to_be_parser_IF;
-	struct linked_list *kits_to_include; /* of |inform_kit| */
+	struct linked_list *kits_to_include; /* of |kit_dependency| */
 	struct inform_language *language_of_play;
 	struct inform_language *language_of_syntax;
 	struct inform_language *language_of_index;
@@ -25,7 +32,7 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 	project->as_copy = NULL;
 	project->version = VersionNumbers::null();
 	project->source_vertices = NEW_LINKED_LIST(build_vertex);
-	project->kits_to_include = NEW_LINKED_LIST(inform_kit);
+	project->kits_to_include = NEW_LINKED_LIST(kit_dependency);
 	project->assumed_to_be_parser_IF = TRUE;
 	project->language_of_play = NULL;
 	project->language_of_syntax = NULL;
@@ -129,67 +136,70 @@ linked_list *Projects::source(inform_project *project) {
 	return project->source_vertices;
 }
 
-void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name) {
+void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
+	inform_language *because_of_language, inform_kit *because_of_kit) {
 	RUN_ONLY_BEFORE_PHASE(OPERATIONAL_INBUILD_PHASE)
 	if (Projects::uses_kit(project, kit_name)) return;
-	linked_list *nest_list = Inbuild::nest_list();
-	inform_kit *kit = Kits::load(kit_name, nest_list);
-	ADD_TO_LINKED_LIST(kit, inform_kit, project->kits_to_include);
+	kit_dependency *kd = CREATE(kit_dependency);
+	kd->kit = Kits::load(kit_name, Inbuild::nest_list());
+	kd->because_of_language = because_of_language;
+	kd->because_of_kit = because_of_kit;
+	ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
 }
 
 int Projects::uses_kit(inform_project *project, text_stream *name) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		if (Str::eq(K->as_copy->edition->work->title, name))
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		if (Str::eq(kd->kit->as_copy->edition->work->title, name))
 			return TRUE;
 	return FALSE;
 }
 
 void Projects::finalise_kit_dependencies(inform_project *project) {
-	Projects::add_kit_dependency(project, I"BasicInformKit");
+	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL);
 	inform_language *L = project->language_of_play;
 	if (L) {
 		text_stream *kit_name = Languages::kit_name(L);
-		Projects::add_kit_dependency(project, kit_name);
+		Projects::add_kit_dependency(project, kit_name, L, NULL);
 	}
 	if (project->assumed_to_be_parser_IF)
-		Projects::add_kit_dependency(project, I"CommandParserKit");
+		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL);
 
 	int parity = TRUE;
 	@<Perform if-this-then-that@>;
 	parity = FALSE;
 	@<Perform if-this-then-that@>;
 
-	linked_list *sorted = NEW_LINKED_LIST(inform_kit);
+	linked_list *sorted = NEW_LINKED_LIST(kit_dependency);
 	for (int p=0; p<100; p++) {
-		inform_kit *K;
-		LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-			if (K->priority == p)
-				ADD_TO_LINKED_LIST(K, inform_kit, sorted);
+		kit_dependency *kd;
+		LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+			if (kd->kit->priority == p)
+				ADD_TO_LINKED_LIST(kd, kit_dependency, sorted);
 	}
-
 	project->kits_to_include = sorted;
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		LOG("Using Inform kit '%S' (priority %d).\n", K->as_copy->edition->work->title, K->priority);
+
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		LOG("Using Inform kit '%S' (priority %d).\n", kd->kit->as_copy->edition->work->title, kd->kit->priority);
 }
 
 @<Perform if-this-then-that@> =
 	int changes_made = TRUE;
 	while (changes_made) {
 		changes_made = FALSE;
-		inform_kit *K;
-		LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-			if (Kits::perform_ittt(K, project, parity))
+		kit_dependency *kd;
+		LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+			if (Kits::perform_ittt(kd->kit, project, parity))
 				changes_made = TRUE;
 	}
 
 @ =
 #ifdef CORE_MODULE
 void Projects::load_types(inform_project *project) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		Kits::load_types(K);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		Kits::load_types(kd->kit);
 }
 #endif
 
@@ -197,28 +207,28 @@ void Projects::load_types(inform_project *project) {
 void Projects::activate_plugins(inform_project *project) {
 	LOG("Activate plugins...\n");
 	Plugins::Manage::activate(CORE_PLUGIN_NAME);
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		Kits::activate_plugins(K);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		Kits::activate_plugins(kd->kit);
 	Plugins::Manage::show(DL, "Included", TRUE);
 	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
 #endif
 
 int Projects::Main_defined(inform_project *project) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		if (K->defines_Main)
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		if (kd->kit->defines_Main)
 			return TRUE;
 	return FALSE;
 }
 
 text_stream *Projects::index_template(inform_project *project) {
 	text_stream *I = NULL;
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		if (K->index_template)
-			I = K->index_template;
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		if (kd->kit->index_template)
+			I = kd->kit->index_template;
 	return I;
 }
 
@@ -230,17 +240,17 @@ may be multiple sentences, which we need to count up.
 
 =
 void Projects::early_source_text(OUTPUT_STREAM, inform_project *project) {
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include)
-		Kits::early_source_text(OUT, K);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		Kits::early_source_text(OUT, kd->kit);
 }
 
 #ifdef CODEGEN_MODULE
 linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 	linked_list *requirements_list = NEW_LINKED_LIST(link_instruction);
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
-LOG("Okay so K is %S\n", K->as_copy->edition->work->title);
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
+		inform_kit *K = kd->kit;
 		link_instruction *link = CodeGen::LinkInstructions::new(
 			K->as_copy->location_if_path, K->attachment_point);
 		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
@@ -289,41 +299,53 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	BuildSteps::attach(project->blorbed_vertex, package_using_inblorb_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
+//	inter_V->force_this = TRUE;
+
 	if (compile_only) {
 		project->chosen_build_target = inf_V;
 		inf_V->force_this = TRUE;
-		inter_V->force_this = TRUE;
 	} else if (releasing) project->chosen_build_target = project->blorbed_vertex;
 	else project->chosen_build_target = project->unblorbed_vertex;
+}
+
+void Projects::graph_dependent_kit(inform_project *project, build_vertex *V, kit_dependency *kd, int use) {
+	build_vertex *KV = kd->kit->as_copy->vertex;
+	if (use) Graphs::need_this_to_use(V, KV);
+	else Graphs::need_this_to_build(V, KV);
+	kit_dependency *kd2;
+	LOOP_OVER_LINKED_LIST(kd2, kit_dependency, project->kits_to_include)
+		if ((kd2->because_of_kit == kd->kit) && (kd2->because_of_language == NULL))
+			Projects::graph_dependent_kit(project, KV, kd2, TRUE);
+}
+
+void Projects::graph_dependent_language(inform_project *project, build_vertex *V, inform_language *L, int use) {
+	build_vertex *LV = L->as_copy->vertex;
+	if (use) Graphs::need_this_to_use(V, LV);
+	else Graphs::need_this_to_build(V, LV);
+	kit_dependency *kd2;
+	LOOP_OVER_LINKED_LIST(kd2, kit_dependency, project->kits_to_include)
+		if ((kd2->because_of_kit == NULL) && (kd2->because_of_language == L))
+			Projects::graph_dependent_kit(project, LV, kd2, TRUE);
 }
 
 void Projects::construct_graph(inform_project *project) {
 	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
 	if (project == NULL) return;
 	build_vertex *V = project->as_copy->vertex;
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
-		 Graphs::need_this_to_build(V, K->as_copy->vertex);
-	}
 	build_vertex *S;
 	LOOP_OVER_LINKED_LIST(S, build_vertex, project->source_vertices) {
 		 Graphs::need_this_to_build(V, S);
 	}
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		if ((kd->because_of_kit == NULL) && (kd->because_of_language == NULL))
+			Projects::graph_dependent_kit(project, V, kd, FALSE);
 	inform_language *L = project->language_of_play;
-	if (L) {
-		build_vertex *LV = L->as_copy->vertex;
-		Graphs::need_this_to_build(V, LV);
-	}
+	if (L) Projects::graph_dependent_language(project, V, L, FALSE);
 	L = project->language_of_syntax;
-	if (L) {
-		build_vertex *LV = L->as_copy->vertex;
-		Graphs::need_this_to_build(V, LV);
-	}
+	if (L) Projects::graph_dependent_language(project, V, L, FALSE);
 	L = project->language_of_index;
-	if (L) {
-		build_vertex *LV = L->as_copy->vertex;
-		Graphs::need_this_to_build(V, LV);
-	}
+	if (L) Projects::graph_dependent_language(project, V, L, FALSE);
 }
 
 @
@@ -335,13 +357,13 @@ void Projects::read_source_text_for(inform_project *project) {
 	Projects::finalise_kit_dependencies(project);
 
 	parse_node *inclusions_heading = ParseTree::new(HEADING_NT);
-	ParseTree::set_text(inclusions_heading, Feeds::feed_text_expanding_strings(L"Implied inclusions"));
+	ParseTree::set_text(inclusions_heading,
+		Feeds::feed_text_expanding_strings(L"Implied inclusions"));
 	ParseTree::insert_sentence(project->syntax_tree, inclusions_heading);
-	#ifdef CORE_MODULE
 	ParseTree::annotate_int(inclusions_heading, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(inclusions_heading, heading_level_ANNOT, 0);
+	ParseTree::annotate_int(inclusions_heading, implied_heading_ANNOT, TRUE);
 	Headings::declare(project->syntax_tree, inclusions_heading);
-	#endif
 
 	int wc = lexer_wordcount, bwc = -1;
 	TEMPORARY_TEXT(early);
@@ -376,11 +398,9 @@ void Projects::read_source_text_for(inform_project *project) {
 	parse_node *implicit_heading = ParseTree::new(HEADING_NT);
 	ParseTree::set_text(implicit_heading, Feeds::feed_text_expanding_strings(L"Invented sentences"));
 	ParseTree::insert_sentence(project->syntax_tree, implicit_heading);
-	#ifdef CORE_MODULE
 	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
 	Headings::declare(project->syntax_tree, implicit_heading);
-	#endif
 	ParseTree::pop_attachment_point(project->syntax_tree, l);
 	
 	ParseTree::push_attachment_point(project->syntax_tree, implicit_heading);
@@ -390,6 +410,10 @@ void Projects::read_source_text_for(inform_project *project) {
 	#endif
 	Inclusions::traverse(project->as_copy, project->syntax_tree);
 	Headings::satisfy_dependencies(project->syntax_tree, project->as_copy);
+
+	#ifndef CORE_MODULE
+	Copies::list_problems_arising(STDERR, project->as_copy);
+	#endif
 }
 
 @ It might seem sensible to parse the opening sentence of the source text,

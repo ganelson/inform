@@ -542,7 +542,7 @@ void Inbuild::pass_kit_requests(void) {
 	if ((shared_project) && (kits_requested_at_command_line)) {
 		text_stream *kit_name;
 		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line) {
-			Projects::add_kit_dependency(shared_project, kit_name);
+			Projects::add_kit_dependency(shared_project, kit_name, NULL, NULL);
 			Projects::not_necessarily_parser_IF(shared_project);
 		}
 	}

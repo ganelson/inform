@@ -248,7 +248,6 @@ easily be scrolled down off screen when the user first visits the page.
 =
 inform_extension *Extensions::Documentation::load(inbuild_work *work) {
 	inbuild_requirement *req = Requirements::any_version_of(work);
-	req->allow_malformed = TRUE;
 
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension)

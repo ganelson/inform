@@ -9,7 +9,6 @@ with a given title, and/or version number.
 typedef struct inbuild_requirement {
 	struct inbuild_work *work;
 	struct semver_range *version_range;
-	int allow_malformed;
 	MEMORY_MANAGEMENT
 } inbuild_requirement;
 
@@ -17,7 +16,6 @@ inbuild_requirement *Requirements::new(inbuild_work *work, semver_range *R) {
 	inbuild_requirement *req = CREATE(inbuild_requirement);
 	req->work = work;
 	req->version_range = R;
-	req->allow_malformed = FALSE;
 	return req;
 }
 
@@ -57,11 +55,6 @@ inbuild_requirement *Requirements::from_text(text_stream *T, text_stream *errors
 
 void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_stream *errors) {
 	Str::trim_white_space(T);
-	if (Str::get_last_char(T) == '*') {
-		req->allow_malformed = TRUE;
-		Str::delete_last_character(T);
-		Str::trim_white_space(T);
-	}
 	if (Str::eq(T, I"all")) return;
 
 	TEMPORARY_TEXT(clause);
@@ -145,7 +138,6 @@ void Requirements::write(OUTPUT_STREAM, inbuild_requirement *req) {
 		WRITE("range="); VersionNumbers::write_range(OUT, req->version_range);
 	}
 	if (claused == FALSE) WRITE("all");
-	if (req->allow_malformed) WRITE("*");
 }
 
 int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
@@ -155,7 +147,6 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 			if (req->work->genre != edition->work->genre)
 				return FALSE;
 		}
-		if ((req->allow_malformed) && (Str::len(edition->work->title) == 0)) return TRUE;
 		if (Str::len(req->work->title) > 0) {
 			if (Str::ne_insensitive(req->work->title, edition->work->title))
 				return FALSE;

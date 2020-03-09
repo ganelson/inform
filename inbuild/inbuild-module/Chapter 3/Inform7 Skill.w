@@ -18,10 +18,10 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S, text_stre
 
 	Shell::quote_file(command, meth->to_inform7);
 
-	inform_kit *K;
-	LOOP_OVER_LINKED_LIST(K, inform_kit, project->kits_to_include) {
-		WRITE_TO(command, "-kit %S ", K->as_copy->edition->work->title);
-	}
+	kit_dependency *kd;
+	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+		WRITE_TO(command, "-kit %S ", kd->kit->as_copy->edition->work->title);
+
 	WRITE_TO(command, "-format=%S ", TargetVMs::get_unblorbed_extension(S->for_vm));
 
 	inbuild_nest *N;

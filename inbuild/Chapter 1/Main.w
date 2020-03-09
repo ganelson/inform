@@ -20,7 +20,7 @@ pathname *path_to_inbuild = NULL;
 pathname *path_to_tools = NULL;
 
 int inbuild_task = INSPECT_TTASK;
-int dry_run_mode = FALSE;
+int dry_run_mode = FALSE, build_trace_mode = FALSE;
 linked_list *targets = NULL; /* of |inbuild_copy| */
 inbuild_nest *destination_nest = NULL;
 text_stream *filter_text = NULL;
@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
 	build_methodology *BM;
 	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
 	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
+	if (build_trace_mode) trace_ibg = TRUE;
 	if (Str::len(unit_test) > 0) {
 		if (Str::eq(unit_test, I"compatibility")) Compatibility::test(STDOUT);
 		else if (Str::eq(unit_test, I"semver")) VersionNumbers::test(STDOUT);
@@ -93,6 +94,7 @@ int main(int argc, char **argv) {
 @e NEEDS_CLSW
 @e INSPECT_CLSW
 @e DRY_CLSW
+@e BUILD_TRACE_CLSW
 @e TOOLS_CLSW
 @e CONTENTS_OF_CLSW
 @e MATCHING_CLSW
@@ -122,6 +124,8 @@ int main(int argc, char **argv) {
 		L"make X the directory of intools executables, and exit developer mode");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
 		L"make this a dry run (print but do not execute shell commands)", FALSE);
+	CommandLine::declare_boolean_switch(BUILD_TRACE_CLSW, L"build-trace", 1,
+		L"show verbose reasoning during -build", FALSE);
 	CommandLine::declare_switch(MATCHING_CLSW, L"matching", 2,
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
@@ -175,6 +179,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
 		case CONTENTS_OF_CLSW: Main::load_many(Pathnames::from_text(arg)); break;
 		case DRY_CLSW: dry_run_mode = val; break;
+		case BUILD_TRACE_CLSW: build_trace_mode = val; break;
 		case COPY_TO_CLSW: inbuild_task = COPY_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;

@@ -405,8 +405,10 @@ void ParseTreeUsage::write_permissions(void) {
 
 	ParseTree::allow_annotation_to_category(L1_NCAT, clears_pronouns_ANNOT);
 	ParseTree::allow_annotation(HEADING_NT, embodying_heading_ANNOT);
+	ParseTree::allow_annotation(HEADING_NT, inclusion_of_extension_ANNOT);
 	ParseTree::allow_annotation(HEADING_NT, interpretation_of_subject_ANNOT);
 	ParseTree::allow_annotation(HEADING_NT, suppress_heading_dependencies_ANNOT);
+	ParseTree::allow_annotation(HEADING_NT, implied_heading_ANNOT);
 	ParseTree::allow_annotation_to_category(L1_NCAT, module_ANNOT);
 
 	ParseTree::allow_annotation_to_category(L2_NCAT, clears_pronouns_ANNOT);

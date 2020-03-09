@@ -185,6 +185,8 @@ typedef struct parse_node_annotation {
 @e sentence_unparsed_ANNOT /* int: set if verbs haven't been sought yet here */
 @e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
 @e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
+@e inclusion_of_extension_ANNOT /* |inform_extension|: for parse nodes of headings */
+@e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
 
 @d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
 
@@ -995,16 +997,21 @@ void ParseTree::traverse_from_ppn(parse_node *pn, void (*visitor)(parse_node *, 
 	}
 	current_sentence = SCS;
 }
-void ParseTree::traverse_ppni(parse_node_tree *T, void (*visitor)(parse_node_tree *, parse_node *, parse_node **, int *), parse_node **X, int *N) {
-	ParseTree::traverse_from_ppni(T, T->root_node, visitor, X, N);
+void ParseTree::traverse_ppni(parse_node_tree *T, void (*visitor)(parse_node_tree *, parse_node *, parse_node *, int *), int *N) {
+	ParseTree::traverse_from_ppni(T, T->root_node, visitor, NULL, N);
 }
-void ParseTree::traverse_from_ppni(parse_node_tree *T, parse_node *pn, void (*visitor)(parse_node_tree *, parse_node *, parse_node **, int *), parse_node **X, int *N) {
+void ParseTree::traverse_from_ppni(parse_node_tree *T, parse_node *pn, void (*visitor)(parse_node_tree *, parse_node *, parse_node *, int *), parse_node *last_h0, int *N) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_ppni(T, pn->down, visitor, X, N);
+		if (ParseTree::top_level(pn->node_type)) {
+			parse_node *H0 = last_h0;
+			if ((ParseTree::is(pn, HEADING_NT)) && (ParseTree::int_annotation(pn, heading_level_ANNOT) == 0))
+				H0 = pn;
+			ParseTree::traverse_from_ppni(T, pn->down, visitor, H0, N);
+		}
 		if (ParseTree::visitable(pn->node_type)) {
 			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
-			(*visitor)(T, pn, X, N);
+			(*visitor)(T, pn, last_h0, N);
 		}
 	}
 	current_sentence = SCS;
@@ -1364,15 +1371,3 @@ void ParseTree::add_single_pr_inv(parse_node *E, parse_node *N) {
 	E->next_alternative = N; N->next_alternative = NULL;
 }
 #endif
-
-@h Handling an inclusion.
-
-=
-int ParseTree::begin_inclusion(parse_node_tree *T, parse_node *pn) {
-	ParseTree::set_type(pn, INCLUSION_NT); pn->down = NULL;
-	return ParseTree::push_attachment_point(T, pn);
-}
-
-void ParseTree::end_inclusion(parse_node_tree *T, int l) {
-	ParseTree::pop_attachment_point(T, l);
-}

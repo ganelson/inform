@@ -153,12 +153,21 @@ void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V) {
 void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_depth) {
 	if (V->type == COPY_VERTEX) {
 		for (int i=0; i<depth; i++) WRITE("  ");
-		Copies::write_copy(OUT, V->buildable_if_copy); WRITE("\n");
+		inbuild_copy *C = V->buildable_if_copy;
+		WRITE("%S: ", C->edition->work->genre->genre_name);
+		Copies::write_copy(OUT, C); WRITE("\n");
 		depth++;
 	}
 	if (V->type == REQUIREMENT_VERTEX) {
 		for (int i=0; i<depth; i++) WRITE("  ");
-		Requirements::write(OUT, V->findable); WRITE("\n");
+		WRITE("missing %S: ", V->findable->work->genre->genre_name);
+		Works::write(OUT, V->findable->work);
+		if (VersionNumbers::is_any_range(V->findable->version_range) == FALSE) {
+			WRITE(", need version in range "); VersionNumbers::write_range(OUT, V->findable->version_range);
+		} else {
+			WRITE(", any version will do");
+		}
+		WRITE("\n");
 		depth++;
 	}
 	build_vertex *W;
@@ -223,36 +232,43 @@ time_t Graphs::time_of_most_recent_used_resource(build_vertex *V) {
 
 =
 int Graphs::build(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
-	return Graphs::build_r(OUT, BUILD_GB, V, meth);
+	int changes = 0;
+	return Graphs::build_r(OUT, BUILD_GB, V, meth, &changes);
 }
 int Graphs::rebuild(OUTPUT_STREAM, build_vertex *V, build_methodology *meth) {
-	return Graphs::build_r(OUT, BUILD_GB + FORCE_GB, V, meth);
+	int changes = 0;
+	return Graphs::build_r(OUT, BUILD_GB + FORCE_GB, V, meth, &changes);
 }
 int trace_ibg = FALSE;
-int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *meth) {
-	if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
+int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *meth, int *changes) {
+	if (trace_ibg) { WRITE_TO(STDOUT, "Visit: "); Graphs::describe(STDOUT, V, FALSE); }
 
 	if (V->built) return TRUE;
 
+	int changes_so_far = *changes;
 	STREAM_INDENT(STDOUT);
 	int rv = TRUE;
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 		if (rv)
-			rv = Graphs::build_r(OUT, gb | USE_GB, W, meth);
+			rv = Graphs::build_r(OUT, gb | USE_GB, W, meth, changes);
 	if (gb & USE_GB)
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
 			if (rv)
-				rv = Graphs::build_r(OUT, gb & (BUILD_GB + FORCE_GB), W, meth);
+				rv = Graphs::build_r(OUT, gb & (BUILD_GB + FORCE_GB), W, meth, changes);
 	STREAM_OUTDENT(STDOUT);
 	if (rv) {
 		int needs_building = FALSE;
 		if ((gb & FORCE_GB) || (V->force_this)) needs_building = TRUE;
+		else if ((V->type == GHOST_VERTEX) && (*changes > changes_so_far)) needs_building = TRUE;
 		else @<Decide based on timestamps@>;
 
 		if (needs_building) {
-			if (trace_ibg) { WRITE_TO(STDOUT, "Exec\n"); }
+			if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
+			(*changes)++;
 			rv = BuildScripts::execute(V, V->script, meth);
+		} else {
+			if (trace_ibg) { WRITE_TO(STDOUT, "No Build\n"); }
 		}
 	}
 	V->built = rv;

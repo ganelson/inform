@@ -61,12 +61,11 @@ void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == TRUE) return;
 	if (Str::eq_insensitive(ext, I"interpipeline")) {
 		filename *F = Filenames::from_text(arg);
-		*C = PipelineManager::claim_file_as_copy(F, NULL, FALSE);
+		*C = PipelineManager::claim_file_as_copy(F, NULL);
 	}
 }
 
-inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text,
-	int allow_malformed) {
+inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	semantic_version_number V = VersionNumbers::null();
 	TEMPORARY_TEXT(unext);
@@ -94,8 +93,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) != FOLDER_SEPARATOR) {
 				filename *F = Filenames::in_folder(P, LEAFNAME);
-				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL,
-					req->allow_malformed);
+				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
 				if ((C) && (Requirements::meets(C->edition, req))) {
 					Nests::add_search_result(search_results, N, C, req);
 				}

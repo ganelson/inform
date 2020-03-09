@@ -48,6 +48,10 @@ int Task::carry_out(build_step *S) {
 	latest_syntax_tree = project->syntax_tree;
 
 	SourceProblems::issue_problems_arising(project->as_copy);
+	inform_extension *E;
+	LOOP_OVER(E, inform_extension)
+		SourceProblems::issue_problems_arising(E->as_copy);
+
 	if (problem_count > 0) return FALSE;
 
 	if (inform7_task) internal_error("cannot re-enter with new task");
@@ -62,10 +66,10 @@ int Task::carry_out(build_step *S) {
 	inform7_task->stage_of_compilation = -1;
 	inform7_task->next_resource_number = 3;
 
-	inform_language *E = NaturalLanguages::English();
-	Projects::set_language_of_syntax(project, E);
-	Projects::set_language_of_index(project, E);
-	Projects::set_language_of_play(project, E);
+	inform_language *En = NaturalLanguages::English();
+	Projects::set_language_of_syntax(project, En);
+	Projects::set_language_of_index(project, En);
+	Projects::set_language_of_play(project, En);
 	
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	inform7_task = NULL;
