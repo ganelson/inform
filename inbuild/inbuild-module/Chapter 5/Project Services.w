@@ -331,12 +331,7 @@ void Projects::construct_graph(inform_project *project) {
 @e BadTitleSentence_SYNERROR
 
 =
-int rstf_run_before = FALSE;
 void Projects::read_source_text_for(inform_project *project) {
-LOG("Running rstf\n");
-	if (rstf_run_before) internal_error("twice!");
-	rstf_run_before = TRUE;
-
 	Projects::finalise_kit_dependencies(project);
 
 	parse_node *inclusions_heading = ParseTree::new(HEADING_NT);

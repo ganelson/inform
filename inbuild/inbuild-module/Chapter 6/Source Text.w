@@ -220,7 +220,8 @@ void SourceText::node_metadata(void) {
 	* <quoted-text-without-subs> |							==> 0; ssnt = TRACE_NT;
 	<if-start-of-paragraph> table ... |						==> 0; ssnt = TABLE_NT;
 	<if-start-of-paragraph> equation ... |					==> 0; ssnt = EQUATION_NT;
-	include <nounphrase-articled> by <nounphrase> |			==> 0; ssnt = INCLUDE_NT; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	include the ... by ... |								==> 0; ssnt = INCLUDE_NT;
+	include ... by ... |									==> 0; ssnt = INCLUDE_NT;
 	include (- ...											==> 0; ssnt = INFORM6CODE_NT;
 
 @ Properly speaking, despite the definition above, language modifying sentences

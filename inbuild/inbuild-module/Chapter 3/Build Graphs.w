@@ -146,6 +146,30 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 	}
 }
 
+void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V) {
+	Graphs::show_needs_r(OUT, V, 0, 0);
+}
+
+void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_depth) {
+	if (V->type == COPY_VERTEX) {
+		for (int i=0; i<depth; i++) WRITE("  ");
+		Copies::write_copy(OUT, V->buildable_if_copy); WRITE("\n");
+		depth++;
+	}
+	if (V->type == REQUIREMENT_VERTEX) {
+		for (int i=0; i<depth; i++) WRITE("  ");
+		Requirements::write(OUT, V->findable); WRITE("\n");
+		depth++;
+	}
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+		Graphs::show_needs_r(OUT, W, depth, true_depth+1);
+	if ((V->type == COPY_VERTEX) && (true_depth > 0)) {
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+			Graphs::show_needs_r(OUT, W, depth, true_depth+1);
+	}
+}
+
 time_t Graphs::timestamp_for(build_vertex *V) {
 	time_t latest = (time_t) 0;
 

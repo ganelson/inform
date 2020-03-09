@@ -477,7 +477,6 @@ sentences and options-file sentences may have been read already.)
 			@<Detect a Preform grammar inclusion and sneakily act upon it@>
 			ParseTree::set_type(new, ssnt); return;
 		} else {
-			if (ssnt == INCLUDE_NT) new->down = <<rp>>;
 			ParseTree::set_type(new, ssnt);
 			#ifdef INBUILD_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)

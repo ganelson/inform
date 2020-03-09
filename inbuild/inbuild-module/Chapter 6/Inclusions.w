@@ -47,10 +47,18 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, i
 @ The INCLUDE node becomes an INCLUSION, which in turn contains the extension's code.
 
 @<Replace INCLUDE node with sentence nodes for any extensions required@> =
-	parse_node *title = pn->down, *author = pn->down->next;
+	if (!(<structural-sentence>(ParseTree::get_text(pn))))
+		internal_error("malformed INCLUDE");
+	wording title = GET_RW(<structural-sentence>, 1);
+	wording author = GET_RW(<structural-sentence>, 2);
 	int l = ParseTree::begin_inclusion(T, pn);
-	Inclusions::fulfill_request_to_include_extension(title, author);
+	inform_extension *E = Inclusions::fulfill_request_to_include_extension(title, author);
 	ParseTree::end_inclusion(T, l);
+	if (E) {
+		build_vertex *V = inclusions_errors_to->vertex;
+		build_vertex *EV = E->as_copy->vertex;
+		Graphs::need_this_to_build(V, EV);
+	}
 
 @
 
@@ -97,14 +105,15 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node **elder, i
 }
 
 @ =
-void Inclusions::fulfill_request_to_include_extension(parse_node *p, parse_node *auth_p) {
+inform_extension *Inclusions::fulfill_request_to_include_extension(wording TW, wording AW) {
+	inform_extension *E = NULL;
 	<<t1>> = -1; <<t2>> = -1;
-	<extension-title-and-version>(ParseTree::get_text(p));
+	<extension-title-and-version>(TW);
 	wording W = Wordings::new(<<t1>>, <<t2>>);
-	wording AW = ParseTree::get_text(auth_p);
 	int version_word = <<r>>;
 
 	if (Wordings::nonempty(W)) @<Fulfill request to include a single extension@>;
+	return E;
 }
 
 @ A request consists of author, name and version, the latter being optional.
@@ -134,7 +143,7 @@ parse tree.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
-	Inclusions::load(current_sentence, req);
+	E = Inclusions::load(current_sentence, req);
 
 @h Extension loading.
 Extensions are loaded here.

@@ -9,6 +9,7 @@ this plan out.
 
 @e INSPECT_TTASK from 1
 @e GRAPH_TTASK
+@e NEEDS_TTASK
 @e BUILD_TTASK
 @e REBUILD_TTASK
 @e COPY_TO_TTASK
@@ -67,6 +68,7 @@ int main(int argc, char **argv) {
 			switch (inbuild_task) {
 				case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
 				case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
+				case NEEDS_TTASK: Copies::show_needs(STDOUT, C); break;
 				case BUILD_TTASK: Copies::build(STDOUT, C, BM); break;
 				case REBUILD_TTASK: Copies::rebuild(STDOUT, C, BM); break;
 				case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
@@ -88,6 +90,7 @@ int main(int argc, char **argv) {
 @e BUILD_CLSW
 @e REBUILD_CLSW
 @e GRAPH_CLSW
+@e NEEDS_CLSW
 @e INSPECT_CLSW
 @e DRY_CLSW
 @e TOOLS_CLSW
@@ -113,6 +116,8 @@ int main(int argc, char **argv) {
 		L"show target(s) but take no action");
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
+	CommandLine::declare_switch(NEEDS_CLSW, L"needs", 1,
+		L"show the extensions, kits and so on needed to build");
 	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
 		L"make X the directory of intools executables, and exit developer mode");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
@@ -165,6 +170,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case REBUILD_CLSW: inbuild_task = REBUILD_TTASK; break;
 		case INSPECT_CLSW: inbuild_task = INSPECT_TTASK; break;
 		case GRAPH_CLSW: inbuild_task = GRAPH_TTASK; break;
+		case NEEDS_CLSW: inbuild_task = NEEDS_TTASK; break;
 		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
 		case CONTENTS_OF_CLSW: Main::load_many(Pathnames::from_text(arg)); break;

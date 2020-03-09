@@ -324,10 +324,12 @@ allowed; they should probably be withdrawn.
 	...... by ......						==> @<Set for-use-with extension identifier@>
 
 @<Issue PM_UnknownLanguageElement problem@> =
+	#ifdef CORE_MODULE
 	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
 	CE->error_subcategory = UnknownLanguageElement_SYNERROR;
 	CE->details_node = current_sentence;
 	Copies::attach(sfsm_copy, CE);
+	#endif
 
 @<Issue PM_UnknownVirtualMachine problem@> =
 	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);

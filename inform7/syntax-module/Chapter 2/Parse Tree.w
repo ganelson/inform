@@ -852,7 +852,7 @@ void ParseTree::log_node(OUTPUT_STREAM, void *vpn) {
 	#ifdef PARSE_TREE_LOGGER
 	PARSE_TREE_LOGGER(OUT, pn);
 	#else
-	WRITE("$N", pn->node_type);
+	ParseTree::log_type(OUT, (int) pn->node_type);
 	if (Wordings::nonempty(ParseTree::get_text(pn))) WRITE("'%W'", ParseTree::get_text(pn));
 	#ifdef LINGUISTICS_MODULE
 	Diagrams::log_node(OUT, pn);

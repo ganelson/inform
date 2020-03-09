@@ -76,6 +76,9 @@ void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, TRUE);
 }
+void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C) {
+	Graphs::show_needs(OUT, C->vertex);
+}
 
 wording Copies::read_source_text_for(inbuild_copy *C) {
 	if (C->source_text_read == FALSE) {

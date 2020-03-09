@@ -157,11 +157,6 @@ int Task::rng_seed(void) {
 referring something back up to Inbuild.
 
 =
-void Task::activate_language_elements(void) {
-	if (inform7_task == NULL) internal_error("there is no current task");
-	Projects::activate_plugins(inform7_task->project);
-}
-
 void Task::load_types(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	Projects::load_types(inform7_task->project);
