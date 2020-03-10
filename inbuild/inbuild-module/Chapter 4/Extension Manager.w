@@ -104,9 +104,7 @@ requirements.
 
 For efficiency's sake, since the nest could contain many hundreds of
 extensions, we narrow down to the author's subfolder if a specific
-author is required, and to the specific extension file if title is
-also known. (In particular, this happens when the Inform compiler is
-using us to search for, say, Locksmith by Emily Short.)
+author is required.
 
 Nobody should any longer be storing extension files without the file
 extension |.i7x|, but this was allowed in the early days of Inform 7,
@@ -119,18 +117,7 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
 		pathname *Q = Pathnames::subfolder(P, req->work->author_name);
-		if (Str::len(req->work->title) > 0) {
-			for (int i7x_flag = 1; i7x_flag >= 0; i7x_flag--) {
-				TEMPORARY_TEXT(leaf);
-				if (i7x_flag) WRITE_TO(leaf, "%S.i7x", req->work->title);
-				else WRITE_TO(leaf, "%S", req->work->title);
-				filename *F = Filenames::in_folder(Q, leaf);
-				ExtensionManager::search_nest_for_single_file(F, N, req, search_results);
-				DISCARD_TEXT(leaf);
-			}
-		} else {
-			ExtensionManager::search_nest_for_r(Q, N, req, search_results);
-		}
+		ExtensionManager::search_nest_for_r(Q, N, req, search_results);
 	} else {
 		ExtensionManager::search_nest_for_r(P, N, req, search_results);
 	}
@@ -171,21 +158,12 @@ Now the task is to copy an extension into place in a nest. This is easy,
 since an extension is a single file; to sync, we just overwrite.
 
 =
-filename *ExtensionManager::filename_in_nest(inbuild_nest *N,
-	text_stream *title, text_stream *author) {
-	pathname *E = ExtensionManager::path_within_nest(N);
-	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.i7x", title);
-	filename *F = Filenames::in_folder(Pathnames::subfolder(E, author), leaf);
-	DISCARD_TEXT(leaf);
-	return F;
-}
-
 void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *E = ExtensionManager::path_within_nest(N);
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.i7x", C->edition->work->title);
+	Editions::write_canonical_leaf(leaf, C->edition);
+	WRITE_TO(leaf, ".i7x");
 	filename *F = Filenames::in_folder(
 		Pathnames::subfolder(E, C->edition->work->author_name), leaf);
 	DISCARD_TEXT(leaf);

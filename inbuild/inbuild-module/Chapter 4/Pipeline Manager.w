@@ -109,18 +109,18 @@ Now the task is to copy a pipeline into place in a nest. This is easy,
 since a pipeline is a single file; to sync, we just overwrite.
 
 =
-filename *PipelineManager::filename_in_nest(inbuild_nest *N, text_stream *title) {
-	pathname *E = PipelineManager::path_within_nest(N);
+filename *PipelineManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E) {
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.interpipeline", title);
-	filename *F = Filenames::in_folder(E, leaf);
+	Editions::write_canonical_leaf(leaf, E);
+	WRITE_TO(leaf, ".interpipeline");
+	filename *F = Filenames::in_folder(PipelineManager::path_within_nest(N), leaf);
 	DISCARD_TEXT(leaf);
 	return F;
 }
 
 void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
-	filename *F = PipelineManager::filename_in_nest(N, C->edition->work->title);
+	filename *F = PipelineManager::filename_in_nest(N, C->edition);
 
 	if (TextFiles::exists(F)) {
 		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }

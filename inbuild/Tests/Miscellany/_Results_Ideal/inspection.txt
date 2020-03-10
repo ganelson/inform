@@ -5,3 +5,4 @@ extension: Damaged by Anonymous in directory inbuild/Tests/Zoo/Extensions/Robert
     2. extension misworded: the titling line does not give both author and title
     3. extension misworded: the version number '3a' is malformed
     4. extension misworded: cannot read compatibility '(For Geeks Only)'
+extension: New Standard Tuning by Robert Fripp v3.1-Alpha+6b34 (for Glulx version 3.1.2 or Glulx version 3.1.2 with debugging) in directory inbuild/Tests/Zoo/Extensions/Robert Fripp

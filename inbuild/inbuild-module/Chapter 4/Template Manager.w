@@ -107,13 +107,17 @@ Now the task is to copy a template into place in a nest. Since a template is
 a folder, we need to |rsync| it.
 
 =
-pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_work *W) {
-	return Pathnames::subfolder(TemplateManager::path_within_nest(N), W->title);
+pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	TEMPORARY_TEXT(leaf);
+	Editions::write_canonical_leaf(leaf, E);
+	pathname *P = Pathnames::subfolder(TemplateManager::path_within_nest(N), leaf);
+	DISCARD_TEXT(leaf);
+	return P;
 }
 
 void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
-	pathname *P = TemplateManager::pathname_in_nest(N, C->edition->work);
+	pathname *P = TemplateManager::pathname_in_nest(N, C->edition);
 	filename *canary1 = Filenames::in_folder(P, I"(manifest).txt");
 	filename *canary2 = Filenames::in_folder(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {

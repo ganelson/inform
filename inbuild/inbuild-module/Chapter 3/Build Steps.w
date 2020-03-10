@@ -62,6 +62,7 @@ build_step *BuildSteps::attach(build_vertex *vertex, build_skill *to_do, linked_
 }
 
 int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *meth) {
+	// PRINT("Exec %S %d\n", S->what_to_do->name, meth->methodology);
 	int rv = TRUE;
 	TEMPORARY_TEXT(command);
 	VMETHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, meth);

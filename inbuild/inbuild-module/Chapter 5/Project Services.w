@@ -268,13 +268,14 @@ pathname *Projects::build_pathname(inform_project *project) {
 void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	int releasing, int compile_only) {
 	pathname *build_folder = Projects::build_pathname(project);
+	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
 
-	build_vertex *inter_V = Graphs::ghost_vertex(I"binary inter in memory");
+//	build_vertex *inter_V = Graphs::ghost_vertex(I"binary inter in memory");
+	build_vertex *inter_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inter_V, project->as_copy->vertex);
 	BuildSteps::attach(inter_V, compile_using_inform7_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
-	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
 	build_vertex *inf_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inf_V, inter_V);
 	BuildSteps::attach(inf_V, code_generate_using_inter_skill,

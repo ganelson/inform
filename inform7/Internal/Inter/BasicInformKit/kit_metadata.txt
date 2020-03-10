@@ -1,4 +1,3 @@
-version: 1.0.2
 priority: 0
 extension: Basic Inform by Graham Nelson
 extension: English Language by Graham Nelson

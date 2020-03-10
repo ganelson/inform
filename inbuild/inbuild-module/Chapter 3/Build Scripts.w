@@ -17,6 +17,11 @@ build_script *BuildScripts::new(void) {
 	return BS;
 }
 
+int BuildScripts::script_length(build_script *BS) {
+	if (BS == NULL) return 0;
+	return LinkedLists::len(BS->steps);
+}
+
 void BuildScripts::add_step(build_script *BS, build_step *S) {
 	ADD_TO_LINKED_LIST(S, build_step, BS->steps);
 }

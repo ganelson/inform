@@ -263,7 +263,7 @@ int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *m
 		else if ((V->type == GHOST_VERTEX) && (*changes > changes_so_far)) needs_building = TRUE;
 		else @<Decide based on timestamps@>;
 
-		if (needs_building) {
+		if ((needs_building) && (BuildScripts::script_length(V->script) > 0)) {
 			if (trace_ibg) { WRITE_TO(STDOUT, "Build: "); Graphs::describe(STDOUT, V, FALSE); }
 			(*changes)++;
 			rv = BuildScripts::execute(V, V->script, meth);

@@ -130,13 +130,17 @@ Now the task is to copy a language into place in a nest. Since a language is a f
 we need to |rsync| it.
 
 =
-pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_work *W) {
-	return Pathnames::subfolder(LanguageManager::path_within_nest(N), W->title);
+pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	TEMPORARY_TEXT(leaf);
+	Editions::write_canonical_leaf(leaf, E);
+	pathname *P = Pathnames::subfolder(LanguageManager::path_within_nest(N), leaf);
+	DISCARD_TEXT(leaf);
+	return P;
 }
 
 void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
-	pathname *dest_language = LanguageManager::pathname_in_nest(N, C->edition->work);
+	pathname *dest_language = LanguageManager::pathname_in_nest(N, C->edition);
 	filename *dest_language_metadata = Filenames::in_folder(dest_language, I"about.txt");
 	if (TextFiles::exists(dest_language_metadata)) {
 		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }

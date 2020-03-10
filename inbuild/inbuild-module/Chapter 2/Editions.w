@@ -30,6 +30,20 @@ void Editions::write(OUTPUT_STREAM, inbuild_edition *E) {
 	}
 }
 
+void Editions::write_canonical_leaf(OUTPUT_STREAM, inbuild_edition *E) {
+	WRITE("%S", E->work->title);
+	if (VersionNumbers::is_null(E->version) == FALSE) {
+		TEMPORARY_TEXT(vn);
+		WRITE_TO(vn, "-v%v", &(E->version));
+		LOOP_THROUGH_TEXT(pos, vn)
+			if (Str::get(pos) == '.')
+				PUT('_');
+			else
+				PUT(Str::get(pos));
+		DISCARD_TEXT(vn);
+	}
+}
+
 void Editions::inspect(OUTPUT_STREAM, inbuild_edition *E) {
 	Editions::write(OUT, E);
 	if (Compatibility::universal(E->compatibility) == FALSE) {

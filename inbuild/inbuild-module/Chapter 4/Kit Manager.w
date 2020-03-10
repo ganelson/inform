@@ -126,13 +126,17 @@ Now the task is to copy a kit into place in a nest. Since a kit is a folder,
 we need to |rsync| it.
 
 =
-pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_work *W) {
-	return Pathnames::subfolder(KitManager::path_within_nest(N), W->title);
+pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
+	TEMPORARY_TEXT(leaf);
+	Editions::write_canonical_leaf(leaf, E);
+	pathname *P = Pathnames::subfolder(KitManager::path_within_nest(N), leaf);
+	DISCARD_TEXT(leaf);
+	return P;
 }
 
 void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
-	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition->work);
+	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition);
 	filename *dest_kit_metadata = Filenames::in_folder(dest_kit, I"kit_metadata.txt");
 	if (TextFiles::exists(dest_kit_metadata)) {
 		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
