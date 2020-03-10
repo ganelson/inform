@@ -286,6 +286,10 @@ comstamts, except that no nest is ever tagged |NOT_A_NEST_TAG|.
 (There used to be quite a good joke here, but refactoring of the
 code removed its premiss. Literate programming is like that sometimes.)
 
+The sequence of the following enumerated values is significant: lower
+origins are better than later ones, when choosing the best result of
+a search for resources.
+
 @e NOT_A_NEST_TAG from 0
 @e MATERIALS_NEST_TAG
 @e EXTERNAL_NEST_TAG

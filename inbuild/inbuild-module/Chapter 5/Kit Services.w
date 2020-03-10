@@ -33,17 +33,6 @@ typedef struct element_activation {
 	MEMORY_MANAGEMENT
 } element_activation;
 
-pathname *Kits::find(text_stream *name, linked_list *nest_list) {
-	inbuild_nest *N;
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, nest_list) {
-		pathname *P = KitManager::path_within_nest(N);
-		P = Pathnames::subfolder(P, name);
-		filename *F = Filenames::in_folder(P, I"kit_metadata.txt");
-		if (TextFiles::exists(F)) return P;
-	}
-	return NULL;
-}
-
 void Kits::scan(inbuild_genre *G, inbuild_copy *C) {
 	if (C == NULL) internal_error("no copy to scan");
 
@@ -124,9 +113,11 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 }
 
 inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
-	pathname *P = Kits::find(name, nest_list);
-	if (P == NULL) Errors::fatal_with_text("cannot find kit", name);
-	inbuild_copy *C = KitManager::new_copy(name, P);
+	inbuild_requirement *req =
+		Requirements::any_version_of(Works::new(kit_genre, name, I""));
+	inbuild_search_result *R = Nests::first_found(req, nest_list);
+	if (R == NULL) Errors::fatal_with_text("cannot find kit", name);
+	inbuild_copy *C = R->copy;
 	if (C->vertex == NULL) KitManager::build_vertex(C);
 	return KitManager::from_copy(C);
 }

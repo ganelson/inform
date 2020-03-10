@@ -47,10 +47,11 @@ int Task::carry_out(build_step *S) {
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
 
-	SourceProblems::issue_problems_arising(project->as_copy);
-	inform_extension *E;
-	LOOP_OVER(E, inform_extension)
-		SourceProblems::issue_problems_arising(E->as_copy);
+	Task::issue_problems_arising(project->as_copy->vertex);
+//	SourceProblems::issue_problems_arising(project->as_copy);
+//	inform_extension *E;
+//	LOOP_OVER(E, inform_extension)
+//		SourceProblems::issue_problems_arising(E->as_copy);
 
 	if (problem_count > 0) return FALSE;
 
@@ -74,6 +75,18 @@ int Task::carry_out(build_step *S) {
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	inform7_task = NULL;
 	return rv;
+}
+
+void Task::issue_problems_arising(build_vertex *V) {
+	if (V->type == COPY_VERTEX) {
+		LOG("Issue from copy of %X at %08x\n", V->buildable_if_copy->edition->work, V->buildable_if_copy);
+		SourceProblems::issue_problems_arising(V->buildable_if_copy);
+	}
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+		Task::issue_problems_arising(W);
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+		Task::issue_problems_arising(W);
 }
 
 @ We will keep track of how far along the process has advanced, in very

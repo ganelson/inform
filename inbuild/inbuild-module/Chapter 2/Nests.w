@@ -47,6 +47,7 @@ void Nests::add_search_result(linked_list *results, inbuild_nest *N, inbuild_cop
 	R->nest = N;
 	R->copy = C;
 	C->found_by = req;
+	if (req == NULL) internal_error("bad search result");
 	ADD_TO_LINKED_LIST(R, inbuild_search_result, results);
 }
 
@@ -78,10 +79,22 @@ void Nests::search_for(inbuild_requirement *req, linked_list *search_list, linke
 inbuild_search_result *Nests::first_found(inbuild_requirement *req, linked_list *search_list) {
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(req, search_list, L);
-	inbuild_search_result *search_result;
+	inbuild_search_result *best = NULL, *search_result;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L)
-		return search_result;
-	return NULL;
+		if (Nests::better_result(search_result, best))
+			best = search_result;
+	return best;
+}
+
+int Nests::better_result(inbuild_search_result *R1, inbuild_search_result *R2) {
+	if (R1 == NULL) return FALSE;
+	if (R2 == NULL) return TRUE;
+	int o1 = Nests::get_tag(R1->nest);
+	int o2 = Nests::get_tag(R2->nest);
+	if (o1 < o2) return TRUE;
+	if (o1 > o2) return FALSE;
+	if (VersionNumbers::gt(R1->copy->edition->version, R2->copy->edition->version)) return TRUE;
+	return FALSE;
 }
 
 void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,

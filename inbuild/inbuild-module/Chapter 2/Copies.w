@@ -80,6 +80,11 @@ void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C) {
 	Graphs::show_needs(OUT, C->vertex);
 }
 
+int Copies::source_text_has_been_read(inbuild_copy *C) {
+	if (C == NULL) internal_error("no copy");
+	return C->source_text_read;
+}
+
 wording Copies::read_source_text_for(inbuild_copy *C) {
 	if (C->source_text_read == FALSE) {
 		C->source_text_read = TRUE;

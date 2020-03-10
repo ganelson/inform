@@ -35,18 +35,12 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S, build_m
 
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
-	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Inbuild::nest_list(), L);
-	filename *pipeline_as_file = NULL;
-	inbuild_search_result *R;
-	LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
-		pipeline_as_file = R->copy->location_if_file;
-		break;
-	}
-	if (pipeline_as_file == NULL) {
+	inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
+	if (R == NULL) {
 		Errors::nowhere("assimilate pipeline could not be found");
 		return FALSE;
 	}
+	filename *pipeline_as_file = R->copy->location_if_file;
 
 	filename *assim = Architectures::canonical_binary(kit_path, A);
 	filename *assim_t = Architectures::canonical_textual(kit_path, A);
@@ -94,24 +88,18 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S, buil
 	} else {
 		inbuild_requirement *req =
 			Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
-		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, Inbuild::nest_list(), L);
-		if (LinkedLists::len(L) == 0) {
+		inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
+		if (R == NULL) {
 			WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
 			Errors::nowhere("inter pipeline file could not be found");
 			return FALSE;
-		} else {
-			inbuild_search_result *R;
-			LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L) {
-				inbuild_copy *C = R->copy;
-				filename *F = C->location_if_file;
-				SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
-				if (SS == NULL) {
-					Errors::nowhere("inter pipeline file could not be parsed");
-					return FALSE;
-				}
-				break;
-			}
+		}
+		inbuild_copy *C = R->copy;
+		filename *F = C->location_if_file;
+		SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
+		if (SS == NULL) {
+			Errors::nowhere("inter pipeline file could not be parsed");
+			return FALSE;
 		}
 	}
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());

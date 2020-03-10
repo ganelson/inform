@@ -157,18 +157,7 @@ parse tree.
 	E = Inclusions::load(last_H0, current_sentence, req);
 
 @h Extension loading.
-Extensions are loaded here.
-
-=
-inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req) {
-	@<Do not load the same extension work twice@>;
-
-	inform_extension *E = NULL;
-	@<Read the extension file into the lexer, and break it into body and documentation@>;
-	return E;
-}
-
-@ Note that we ignore a request for an extension which has already been
+Note that we ignore a request for an extension which has already been
 loaded, except if the new request ups the ante in terms of the minimum
 version permitted: in which case we need to record that the requirement has
 been tightened. That is, if we previously wanted version 2 of Pantomime
@@ -177,16 +166,19 @@ Sausages by Mr Punch, and loaded it, but then read the sentence
 >> Include version 3 of Pantomime Sausages by Mr Punch.
 
 then we need to note that the version requirement on PS has been raised to 3.
-(This is why version numbers are not checked at load time: in general, we
-can't know at load time what we will ultimately require.)
 
-@<Do not load the same extension work twice@> =
-	inform_extension *E;
+=
+inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req) {
+	inform_extension *E = NULL;
 	LOOP_OVER(E, inform_extension)
-		if (Requirements::meets(E->as_copy->edition, req)) {
+		if ((Requirements::meets(E->as_copy->edition, req)) &&
+			(Copies::source_text_has_been_read(E->as_copy))) {
 			Extensions::must_satisfy(E, req);
 			return E;
 		}
+	@<Read the extension file into the lexer, and break it into body and documentation@>;
+	return E;
+}
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
 	inbuild_search_result *search_result = Nests::first_found(req, Inbuild::nest_list());
@@ -199,9 +191,7 @@ can't know at load time what we will ultimately require.)
 		if (Compatibility::with(C, Inbuild::current_vm()) == FALSE)
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 
-		if (LinkedLists::len(search_result->copy->errors_reading_source_text) > 0) {
-			E = NULL;
-		} else {
+		if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
 			Copies::read_source_text_for(search_result->copy);
 		}
 		#ifndef CORE_MODULE
