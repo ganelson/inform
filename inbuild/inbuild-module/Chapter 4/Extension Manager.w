@@ -15,7 +15,7 @@ length to one character less than the following constants:
 
 @ =
 void ExtensionManager::start(void) {
-	extension_genre = Genres::new(I"extension");
+	extension_genre = Genres::new(I"extension", TRUE);
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
 	METHOD_ADD(extension_genre, GENRE_SCAN_COPY_MTID, Extensions::scan);

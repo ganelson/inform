@@ -7,7 +7,7 @@ A project file is a plain text file of Inform 7 source text.
 =
 inbuild_genre *project_file_genre = NULL;
 void ProjectFileManager::start(void) {
-	project_file_genre = Genres::new(I"projectfile");
+	project_file_genre = Genres::new(I"projectfile", FALSE);
 	METHOD_ADD(project_file_genre, GENRE_WRITE_WORK_MTID, ProjectFileManager::write_work);
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);

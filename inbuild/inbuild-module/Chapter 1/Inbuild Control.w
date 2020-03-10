@@ -196,7 +196,6 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	if (pipeline_vars == NULL)
 		pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.z8");
 	#endif
-
 	target_vm *VM = NULL;
 	text_stream *ext = story_filename_extension;
 	if (Str::len(ext) == 0) ext = I"ulx";
@@ -211,15 +210,16 @@ inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) 
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Inbuild::sort_nest_list();
 	inbuild_phase = NESTED_INBUILD_PHASE;
+	#ifdef CORE_MODULE
+	NaturalLanguages::scan();
+	#endif
 	if (project) Projects::set_to_English(project);
 	#ifdef CORE_MODULE
 	Semantics::read_preform(Projects::get_language_of_syntax(project));
 	#endif
 	Inbuild::pass_kit_requests();
-//	#ifndef CORE_MODULE
 	current_target_VM = VM;
 	if (project) Copies::read_source_text_for(project->as_copy);
-//	#endif
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 
 	if (project) {
@@ -371,6 +371,11 @@ pathname *Inbuild::materials(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_materials_nest == NULL) return NULL;
 	return shared_materials_nest->location;
+}
+
+inbuild_nest *Inbuild::materials_nest(void) {
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
+	return shared_materials_nest;
 }
 
 @ As noted above, the transient area is used for ephemera such as dynamically

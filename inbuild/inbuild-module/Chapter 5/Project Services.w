@@ -48,7 +48,9 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 void Projects::set_to_English(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
 	inbuild_requirement *req = Requirements::any_version_of(Works::new(language_genre, I"English", I""));
-	inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
+	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
+	ADD_TO_LINKED_LIST(Inbuild::internal(), inbuild_nest, L);
+	inbuild_search_result *R = Nests::first_found(req, L);
 	if (R) {
 		inform_language *E = LanguageManager::from_copy(R->copy);
 		proj->language_of_play = E;
@@ -78,9 +80,6 @@ inform_language *Projects::get_language_of_index(inform_project *proj) {
 void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) {
 	if (proj == NULL) internal_error("no project");
 	proj->language_of_syntax = L;
-	#ifdef CORE_MODULE
-	English_language = L;
-	#endif
 }
 inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 	if (proj == NULL) return NULL;

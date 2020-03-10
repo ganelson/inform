@@ -65,7 +65,6 @@ a bitmap made up of the following modes:
 @d BEGIN_DASH_MODE			int s_dm = dash_mode; kind **s_kvc = kind_of_var_to_create; parse_node *s_invl = Dash_ambiguity_list;
 @d DASH_MODE_ENTER(mode)	dash_mode |= mode;
 @d DASH_MODE_CREATE(K)		kind_of_var_to_create = K;
-@d DASH_MODE_INVL(invl)		Dash_ambiguity_list = invl;
 @d DASH_MODE_EXIT(mode)		dash_mode &= (~mode);
 @d END_DASH_MODE			dash_mode = s_dm; kind_of_var_to_create = s_kvc; Dash_ambiguity_list = s_invl;
 @d TEST_DASH_MODE(mode)		(dash_mode & mode)
@@ -774,7 +773,7 @@ in (4I) either directly or via (4A). For everything else, it's (4S) for us.
 		case INVOCATION_LIST_NT: case INVOCATION_LIST_SAY_NT: case AMBIGUITY_NT:
 			if (p->down == NULL) @<Unknown found text occurs as a command@>;
 			BEGIN_DASH_MODE;
-			DASH_MODE_INVL(p);
+			Dash_ambiguity_list = p;
 			outcome = Dash::typecheck_recursive(p->down, context, TRUE);
 			END_DASH_MODE;
 			break;

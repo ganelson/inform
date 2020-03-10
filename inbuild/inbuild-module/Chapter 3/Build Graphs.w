@@ -179,6 +179,71 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_de
 	}
 }
 
+int Graphs::show_missing(OUTPUT_STREAM, build_vertex *V) {
+	return Graphs::show_missing_r(OUT, V, 0);
+}
+
+int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V, int true_depth) {
+	int N = 0;
+	if (V->type == REQUIREMENT_VERTEX) {
+		WRITE("missing %S: ", V->findable->work->genre->genre_name);
+		Works::write(OUT, V->findable->work);
+		if (VersionNumbers::is_any_range(V->findable->version_range) == FALSE) {
+			WRITE(", need version in range "); VersionNumbers::write_range(OUT, V->findable->version_range);
+		} else {
+			WRITE(", any version will do");
+		}
+		WRITE("\n");
+		N = 1;
+	}
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+		N += Graphs::show_missing_r(OUT, W, true_depth+1);
+	if ((V->type == COPY_VERTEX) && (true_depth > 0)) {
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+			N += Graphs::show_missing_r(OUT, W, true_depth+1);
+	}
+	return N;
+}
+
+void Graphs::archive(OUTPUT_STREAM, build_vertex *V, inbuild_nest *N, build_methodology *BM) {
+	Graphs::archive_r(OUT, V, 0, N, BM);
+}
+
+void Graphs::archive_r(OUTPUT_STREAM, build_vertex *V, int true_depth, inbuild_nest *N, build_methodology *BM) {
+	if (V->type == COPY_VERTEX) {
+		inbuild_copy *C = V->buildable_if_copy;
+		if ((Genres::stored_in_nests(C->edition->work->genre)) &&
+			((Str::ne(C->edition->work->title, I"English")) ||
+				(Str::len(C->edition->work->author_name) > 0))) {
+			WRITE("%S: ", C->edition->work->genre->genre_name);
+			Copies::write_copy(OUT, C);
+
+			pathname *P = C->location_if_path;
+			if (C->location_if_file) P = Filenames::get_path_to(C->location_if_file);
+			TEMPORARY_TEXT(nl);
+			TEMPORARY_TEXT(cl);
+			WRITE_TO(nl, "%p/", N->location);
+			WRITE_TO(cl, "%p/", P);
+			if (Str::prefix_eq(cl, nl, Str::len(nl))) {
+				WRITE(" -- already there\n");
+			} else {
+				WRITE(" -- archiving\n");
+				Nests::copy_to(C, N, TRUE, BM);
+			}
+			DISCARD_TEXT(nl);
+			DISCARD_TEXT(cl);
+		}
+	}
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+		Graphs::archive_r(OUT, W, true_depth+1, N, BM);
+	if ((V->type == COPY_VERTEX) && (true_depth > 0)) {
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+			Graphs::archive_r(OUT, W, true_depth+1, N, BM);
+	}
+}
+
 time_t Graphs::timestamp_for(build_vertex *V) {
 	time_t latest = (time_t) 0;
 

@@ -210,7 +210,6 @@ whole thing into a |specification| for the rest of Inform to use.
 =
 void Semantics::read_preform(inform_language *L) {
 	@<Mark certain nonterminals to have their vocabularies numbered and flagged@>;
-	NaturalLanguages::scan();
 	wording W = NaturalLanguages::load_preform(L);
 	int nonterminals_declared = Preform::parse_preform(W, FALSE);
 

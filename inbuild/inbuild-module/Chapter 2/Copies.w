@@ -79,6 +79,17 @@ void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
 void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C) {
 	Graphs::show_needs(OUT, C->vertex);
 }
+void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C) {
+	int N = Graphs::show_missing(OUT, C->vertex);
+	if (N == 0) WRITE("Nothing is missing\n");
+}
+void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
+	int NM = Graphs::show_missing(OUT, C->vertex);
+	if (NM > 0) WRITE("Because there are missing resources, -archive is cancelled\n");
+	else {
+		Graphs::archive(OUT, C->vertex, N, BM);
+	}
+}
 
 int Copies::source_text_has_been_read(inbuild_copy *C) {
 	if (C == NULL) internal_error("no copy");

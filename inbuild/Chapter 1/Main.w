@@ -10,6 +10,9 @@ this plan out.
 @e INSPECT_TTASK from 1
 @e GRAPH_TTASK
 @e NEEDS_TTASK
+@e ARCHIVE_TTASK
+@e ARCHIVE_TO_TTASK
+@e MISSING_TTASK
 @e BUILD_TTASK
 @e REBUILD_TTASK
 @e COPY_TO_TTASK
@@ -70,6 +73,15 @@ int main(int argc, char **argv) {
 				case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
 				case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
 				case NEEDS_TTASK: Copies::show_needs(STDOUT, C); break;
+				case ARCHIVE_TTASK:
+					destination_nest = Inbuild::materials_nest();
+					if (destination_nest == NULL)
+						Errors::with_text("no -project in use, so ignoring -archive", NULL);
+					else 
+						Copies::archive(STDOUT, C, destination_nest, BM);
+					break;
+				case ARCHIVE_TO_TTASK: if (destination_nest) Copies::archive(STDOUT, C, destination_nest, BM); break;
+				case MISSING_TTASK: Copies::show_missing(STDOUT, C); break;
 				case BUILD_TTASK: Copies::build(STDOUT, C, BM); break;
 				case REBUILD_TTASK: Copies::rebuild(STDOUT, C, BM); break;
 				case COPY_TO_TTASK: if (destination_nest) Nests::copy_to(C, destination_nest, FALSE, BM); break;
@@ -92,6 +104,9 @@ int main(int argc, char **argv) {
 @e REBUILD_CLSW
 @e GRAPH_CLSW
 @e NEEDS_CLSW
+@e MISSING_CLSW
+@e ARCHIVE_CLSW
+@e ARCHIVE_TO_CLSW
 @e INSPECT_CLSW
 @e DRY_CLSW
 @e BUILD_TRACE_CLSW
@@ -119,7 +134,13 @@ int main(int argc, char **argv) {
 	CommandLine::declare_switch(GRAPH_CLSW, L"graph", 1,
 		L"show dependency graph of target(s) but take no action");
 	CommandLine::declare_switch(NEEDS_CLSW, L"needs", 1,
-		L"show the extensions, kits and so on needed to build");
+		L"show all the extensions, kits and so on needed to build");
+	CommandLine::declare_switch(MISSING_CLSW, L"missing", 1,
+		L"show the extensions, kits and so on which are needed but missing");
+	CommandLine::declare_switch(ARCHIVE_CLSW, L"archive", 1,
+		L"sync copies of all extensions, kits and so on needed for -project into Materials");
+	CommandLine::declare_switch(ARCHIVE_TO_CLSW, L"archive-to", 2,
+		L"sync copies of all extensions, kits and so on needed into nest X");
 	CommandLine::declare_switch(TOOLS_CLSW, L"tools", 2,
 		L"make X the directory of intools executables, and exit developer mode");
 	CommandLine::declare_boolean_switch(DRY_CLSW, L"dry", 1,
@@ -175,6 +196,14 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case INSPECT_CLSW: inbuild_task = INSPECT_TTASK; break;
 		case GRAPH_CLSW: inbuild_task = GRAPH_TTASK; break;
 		case NEEDS_CLSW: inbuild_task = NEEDS_TTASK; break;
+		case ARCHIVE_TO_CLSW:
+			destination_nest = Nests::new(Pathnames::from_text(arg));
+			inbuild_task = ARCHIVE_TO_TTASK;
+			break;
+		case ARCHIVE_CLSW:
+			inbuild_task = ARCHIVE_TTASK;
+			break;
+		case MISSING_CLSW: inbuild_task = MISSING_TTASK; break;
 		case TOOLS_CLSW: path_to_tools = Pathnames::from_text(arg); break;
 		case MATCHING_CLSW: filter_text = Str::duplicate(arg); break;
 		case CONTENTS_OF_CLSW: Main::load_many(Pathnames::from_text(arg)); break;

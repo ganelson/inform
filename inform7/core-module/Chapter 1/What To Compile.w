@@ -48,10 +48,6 @@ int Task::carry_out(build_step *S) {
 	latest_syntax_tree = project->syntax_tree;
 
 	Task::issue_problems_arising(project->as_copy->vertex);
-//	SourceProblems::issue_problems_arising(project->as_copy);
-//	inform_extension *E;
-//	LOOP_OVER(E, inform_extension)
-//		SourceProblems::issue_problems_arising(E->as_copy);
 
 	if (problem_count > 0) return FALSE;
 
@@ -66,20 +62,26 @@ int Task::carry_out(build_step *S) {
 	inform7_task->existing_storyfile = NULL;
 	inform7_task->stage_of_compilation = -1;
 	inform7_task->next_resource_number = 3;
-
-	inform_language *En = NaturalLanguages::English();
-	Projects::set_language_of_syntax(project, En);
-	Projects::set_language_of_index(project, En);
-	Projects::set_language_of_play(project, En);
 	
+	English_language = Projects::get_language_of_syntax(project);
+
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	inform7_task = NULL;
 	return rv;
 }
 
+@ All manner of low-level problems emerge when reading in the text of the
+project, or any extensions it uses: these have already been found by inbuild
+and are attached to the relevant nodes in the build graph. We issue them
+here as Inform problem messages. (Inbuild wasn't able to do that for us
+because the Inform problems file wasn't open back then; and besides, it can
+only issue stubby Unix-like command line errors.)
+
+=
 void Task::issue_problems_arising(build_vertex *V) {
 	if (V->type == COPY_VERTEX) {
-		LOG("Issue from copy of %X at %08x\n", V->buildable_if_copy->edition->work, V->buildable_if_copy);
+		LOG("Issue from copy of %X at %08x\n",
+			V->buildable_if_copy->edition->work, V->buildable_if_copy);
 		SourceProblems::issue_problems_arising(V->buildable_if_copy);
 	}
 	build_vertex *W;

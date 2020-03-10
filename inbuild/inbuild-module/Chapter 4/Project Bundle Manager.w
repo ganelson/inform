@@ -7,7 +7,7 @@ A project bundle is a folder holding an Inform 7 work. The app creates these.
 =
 inbuild_genre *project_bundle_genre = NULL;
 void ProjectBundleManager::start(void) {
-	project_bundle_genre = Genres::new(I"projectbundle");
+	project_bundle_genre = Genres::new(I"projectbundle", FALSE);
 	METHOD_ADD(project_bundle_genre, GENRE_WRITE_WORK_MTID, ProjectBundleManager::write_work);
 	METHOD_ADD(project_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectBundleManager::claim_as_copy);
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);

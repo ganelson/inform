@@ -24,16 +24,6 @@ void NaturalLanguages::scan(void) {
 	}
 }
 
-@h Language of play.
-
-=
-inform_language *NaturalLanguages::English(void) {
-	NaturalLanguages::scan();
-	inform_language *L = Languages::from_name(I"english");
-	if (L == NULL) internal_error("unable to find English language bundle");
-	return L;
-}
-
 @h Indexing.
 
 =
@@ -122,7 +112,7 @@ wording NaturalLanguages::load_preform(inform_language *L) {
 	if (L == NULL) internal_error("can't load preform from null language");
 	language_being_read_by_Preform = L;
 	filename *preform_file = Filenames::in_folder(Languages::path_to_bundle(L), I"Syntax.preform");
-	LOG("Reading language definition from <%f>\n", preform_file);
+	PRINT("Reading language definition from <%f>\n", preform_file);
 	return Preform::load_from_file(preform_file);
 }
 

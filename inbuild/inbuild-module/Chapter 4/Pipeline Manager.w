@@ -9,7 +9,7 @@ inbuild_genre *pipeline_genre = NULL;
 
 @ =
 void PipelineManager::start(void) {
-	pipeline_genre = Genres::new(I"pipeline");
+	pipeline_genre = Genres::new(I"pipeline", TRUE);
 	METHOD_ADD(pipeline_genre, GENRE_WRITE_WORK_MTID, PipelineManager::write_work);
 	METHOD_ADD(pipeline_genre, GENRE_CLAIM_AS_COPY_MTID, PipelineManager::claim_as_copy);
 	METHOD_ADD(pipeline_genre, GENRE_SEARCH_NEST_FOR_MTID, PipelineManager::search_nest_for);

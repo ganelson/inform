@@ -7,7 +7,7 @@ A kit is a combination of Inter code with an Inform 7 extension.
 =
 inbuild_genre *kit_genre = NULL;
 void KitManager::start(void) {
-	kit_genre = Genres::new(I"kit");
+	kit_genre = Genres::new(I"kit", TRUE);
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, KitManager::write_work);
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
 	METHOD_ADD(kit_genre, GENRE_SCAN_COPY_MTID, Kits::scan);

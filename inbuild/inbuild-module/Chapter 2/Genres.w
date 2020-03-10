@@ -9,17 +9,19 @@ few of these.
 =
 typedef struct inbuild_genre {
 	text_stream *genre_name;
+	int stored_in_nests;
 	METHOD_CALLS
 	MEMORY_MANAGEMENT
 } inbuild_genre;
 
-inbuild_genre *Genres::new(text_stream *name) {
+inbuild_genre *Genres::new(text_stream *name, int nested) {
 	inbuild_genre *gen;
 	LOOP_OVER(gen, inbuild_genre)
 		if (Str::eq(gen->genre_name, name))
 			return gen;
 	gen = CREATE(inbuild_genre);
 	gen->genre_name = Str::duplicate(name);
+	gen->stored_in_nests = nested;
 	ENABLE_METHOD_CALLS(gen);
 	return gen;
 }
@@ -27,6 +29,11 @@ inbuild_genre *Genres::new(text_stream *name) {
 text_stream *Genres::name(inbuild_genre *G) {
 	if (G == NULL) return I"(none)";
 	return G->genre_name;
+}
+
+int Genres::stored_in_nests(inbuild_genre *G) {
+	if (G == NULL) return FALSE;
+	return G->stored_in_nests;
 }
 
 @

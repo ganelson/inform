@@ -7,7 +7,7 @@ A template is the outline for a website presenting an Inform work.
 =
 inbuild_genre *template_genre = NULL;
 void TemplateManager::start(void) {
-	template_genre = Genres::new(I"template");
+	template_genre = Genres::new(I"template", TRUE);
 	METHOD_ADD(template_genre, GENRE_WRITE_WORK_MTID, TemplateManager::write_work);
 	METHOD_ADD(template_genre, GENRE_CLAIM_AS_COPY_MTID, TemplateManager::claim_as_copy);
 	METHOD_ADD(template_genre, GENRE_SEARCH_NEST_FOR_MTID, TemplateManager::search_nest_for);
