@@ -25,10 +25,8 @@ in order of when they work:
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">STARTED_CSEQ</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">LEXICAL_CSEQ</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_IA_CSEQ</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_LANGUAGE_CSEQ</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_IB_CSEQ</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_I_CSEQ</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_II_CSEQ</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SEMANTIC_III_CSEQ</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ASSERTIONS_PASS_1_CSEQ</span>
@@ -68,14 +66,13 @@ is active.
             &lt;<span class="cwebmacro">Boot up the compiler</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">compiler_booted_up</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        &lt;<span class="cwebmacro">Perform lexical analysis</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Perform semantic analysis</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Read the assertions in two passes</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Make the model world</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Tables and grammar</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Phrases and rules</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Generate inter</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Generate index and bibliographic file</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Perform textual analysis</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Read the assertions in two passes</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Make the model world</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Tables and grammar</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Phrases and rules</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Generate inter</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Generate index and bibliographic file</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">;</span>
 
         <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">FINISHED_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Ccmplete"</span><span class="plain">, -1);</span>
         <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
@@ -138,8 +135,6 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <pre class="displaydefn">
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Emit::begin</span><span class="plain">);</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Semantics::read_preform</span><span class="plain">);</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Plugins::Manage::start</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">InferenceSubjects::begin</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">Index::DocReferences::read_xrefs</span><span class="plain">);</span>
 </pre>
@@ -149,50 +144,28 @@ most of these worker functions are in the <code class="display"><span class="ext
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Perform lexical analysis</span> <span class="cwebmacronumber">2.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Perform textual analysis</span> <span class="cwebmacronumber">2.3</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">LEXICAL_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Lexical analysis"</span><span class="plain">, 0);</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Task::read_source_text</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::RuleSubtrees::create_standard_csps</span><span class="plain">)</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Perform semantic analysis</span> <span class="cwebmacronumber">2.4</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_IA_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Semantic analysis Ia"</span><span class="plain">, 1);</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Task::activate_language_elements</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">ParseTreeUsage::plant_parse_tree</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">StructuralSentences::break_source</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Extensions::Inclusion::traverse</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::Headings::satisfy_dependencies</span><span class="plain">)</span>
-
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_LANGUAGE_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Initialise language semantics"</span><span class="plain">, -1);</span>
+        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_LANGUAGE_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Semantic analysis Ia"</span><span class="plain">, -1);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Plugins::Manage::start_plugins</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Task::load_types</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">BinaryPredicates::make_built_in</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">NewVerbs::add_inequalities</span><span class="plain">)</span>
 
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_IB_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Semantic analysis Ib"</span><span class="plain">, -1);</span>
+        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_I_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Semantic analysis Ib"</span><span class="plain">, -1);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::VPs::traverse</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::Rearrangement::tidy_up_ofs_and_froms</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::RuleSubtrees::register_recently_lexed_phrases</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">StructuralSentences::declare_source_loaded</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">Kinds::Interpreter::include_templates_for_kinds</span><span class="plain">)</span>
+        <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">SourceText::declare_source_loaded</span><span class="plain">)</span>
+        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Kinds::Knowledge::include_templates_for_kinds</span><span class="plain">)</span>
 
         <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">SEMANTIC_II_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Semantic analysis II"</span><span class="plain">, -1);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">ParseTreeUsage::verify</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Extensions::Files::check_versions</span><span class="plain">)</span>
-        <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::Headings::make_tree</span><span class="plain">)</span>
+        <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">Headings::make_tree</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::Headings::write_as_xml</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Sentences::Headings::write_as_xml</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Modules::traverse_to_define</span><span class="plain">)</span>
@@ -208,8 +181,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Read the assertions in two passes</span> <span class="cwebmacronumber">2.5</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Read the assertions in two passes</span> <span class="cwebmacronumber">2.4</span>&gt; =
 </code></p>
 
 
@@ -226,8 +199,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Make the model world</span> <span class="cwebmacronumber">2.6</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Make the model world</span> <span class="cwebmacronumber">2.5</span>&gt; =
 </code></p>
 
 
@@ -247,8 +220,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Tables and grammar</span> <span class="cwebmacronumber">2.7</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Tables and grammar</span> <span class="cwebmacronumber">2.6</span>&gt; =
 </code></p>
 
 
@@ -270,8 +243,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Phrases and rules</span> <span class="cwebmacronumber">2.8</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Phrases and rules</span> <span class="cwebmacronumber">2.7</span>&gt; =
 </code></p>
 
 
@@ -294,8 +267,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate inter</span> <span class="cwebmacronumber">2.9</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate inter</span> <span class="cwebmacronumber">2.8</span>&gt; =
 </code></p>
 
 
@@ -399,8 +372,8 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Generate index and bibliographic file</span> <span class="cwebmacronumber">2.10</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Generate index and bibliographic file</span> <span class="cwebmacronumber">2.9</span>&gt; =
 </code></p>
 
 

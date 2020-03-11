@@ -52,16 +52,16 @@ and <code class="display"><span class="extract">+)</span></code> Inform 7 escape
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_kindt</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">segment_file</span><span class="plain">) {</span>
-        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="constant">KINDT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">segment_file</span><span class="plain">);</span>
+        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="constant">KINDT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">segment_file</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_indext</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">indext_file</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">do_not_generate_index</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="constant">INDEXT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">indext_file</span><span class="plain">);</span>
+            <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="constant">INDEXT_MODE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">indext_file</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpret_i6t</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N_escape</span><span class="plain">) {</span>
-        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="constant">I6TCODE_MODE</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">N_escape</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="constant">I6TCODE_MODE</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">N_escape</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -69,7 +69,7 @@ and <code class="display"><span class="extract">+)</span></code> Inform 7 escape
 
 <p class="endnote">The function I6T::interpret_kindt appears nowhere else.</p>
 
-<p class="endnote">The function I6T::interpret_indext is used in 3/nl (<a href="3-nl.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function I6T::interpret_indext is used in 3/nl (<a href="3-nl.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function I6T::interpret_i6t is used in 26/i6i (<a href="26-i6i.html#SP7">&#167;7</a>, <a href="26-i6i.html#SP8">&#167;8</a>), 26/uo (<a href="26-uo.html#SP17">&#167;17</a>).</p>
 
@@ -82,7 +82,7 @@ is run only to call other functions.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_mode</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment_name</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_mode</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment_name</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N_escape</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">index_template</span><span class="plain">) {</span>
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> = 1, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">sfp</span><span class="plain"> = 0;</span>
@@ -106,7 +106,7 @@ is run only to call other functions.
                     &lt;<span class="cwebmacro">Read rest of line as argument</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">) ||</span>
                         <span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">) == 0)) </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">skip blanks and comments</span>
-                    <span class="identifier">Kinds::Interpreter::despatch_kind_command</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
+                    <span class="identifier">Kinds::Interpreter::despatch_kind_command</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
                     <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'{'</span><span class="plain">) {</span>
@@ -168,14 +168,14 @@ file.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; 0) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"inform: Unable to open segment &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
+            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
                 <span class="string">"I couldn't open a requested I6T segment: see the console "</span>
                 <span class="string">"output for details."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">index_template</span><span class="plain">) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">index_template</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename was %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">index_template</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
+                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
                     <span class="string">"I couldn't open the template file for the index."</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -331,7 +331,7 @@ I6 code like so:
 
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"command: &lt;%S&gt; argument: &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TemplateError</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TemplateError</span><span class="plain">),</span>
             <span class="string">"In an explicit Inform 6 code insertion, I recognise a few special "</span>
             <span class="string">"notations in the form '{-command}'. This time, though, the unknown notation "</span>
             <span class="string">"{-%1} has been used, and this is an error. (It seems very unlikely indeed "</span>
@@ -417,7 +417,7 @@ using template-hacking there are a handful of cases that can't be avoided, so...
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::error</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(1, </span><span class="identifier">message</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I ran into a mistake in a template file command: %1. The I6 "</span>
             <span class="string">"template files (or .i6t files) are a very low-level part of Inform, "</span>

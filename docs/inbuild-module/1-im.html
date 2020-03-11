@@ -24,6 +24,7 @@
 
 
 <pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">heading_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">inform_kit_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">inform_extension_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">inform_kit_ittt_MT</span>
@@ -50,9 +51,12 @@
     <span class="definitionkeyword">enum</span> <span class="constant">extension_dictionary_entry_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">known_extension_clash_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">build_skill_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">control_structure_phrase_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">kit_dependency_MT</span>
 </pre>
 
 <pre class="display">
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inform_kit</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inform_kit_ittt</span><span class="plain">)</span>
@@ -78,6 +82,8 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">known_extension_clash</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">build_skill</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">kit_dependency</span><span class="plain">)</span>
 
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inbuild_work_database_entry</span><span class="plain">, 100)</span>
 </pre>
@@ -104,6 +110,7 @@
         <span class="functiontext">Inform7Skill::create</span><span class="plain">();</span>
         <span class="functiontext">Inform6Skill::create</span><span class="plain">();</span>
         <span class="functiontext">InblorbSkill::create</span><span class="plain">();</span>
+        <span class="functiontext">ControlStructures::create_standard</span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 
@@ -136,8 +143,8 @@
 
 
 <pre class="displaydefn">
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="identifier">VersionNumbers::writer</span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'X'</span><span class="plain">, &amp;</span><span class="functiontext">Works::writer</span><span class="plain">);</span>
+        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'J'</span><span class="plain">, &amp;</span><span class="functiontext">Languages::log</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -149,6 +156,7 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">EXTENSIONS_CENSUS_DA</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">HEADINGS_DA</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register this module's debugging log aspects</span> <span class="cwebmacronumber">3.5</span>&gt; =
@@ -157,6 +165,7 @@
 
 <pre class="displaydefn">
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">EXTENSIONS_CENSUS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"extensions census"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">HEADINGS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"headings"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -169,7 +178,7 @@
 
 
 <pre class="displaydefn">
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'J'</span><span class="plain">, &amp;</span><span class="functiontext">Languages::log</span><span class="plain">);</span>
+        <span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -187,6 +196,24 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function InbuildModule::end appears nowhere else.</p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
+
+
+<pre class="display">
+    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
+    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">inclusion_of_extension</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">inclusion_of_extension</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
+
+    <span class="reserved">heading</span><span class="plain"> *</span><span class="functiontext">InbuildModule::heading</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ParseTree::get_embodying_heading</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function InbuildModule::heading is used in 6/hdn (<a href="6-hdn.html#SP23">&#167;23</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 1: Setting Up.)</i></li><li><a href="1-ic.html">Continue with 'Inbuild Control'</a></li></ul><hr class="tocbar">

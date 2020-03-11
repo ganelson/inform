@@ -92,7 +92,7 @@ variety of values:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> == </span><span class="constant">CONFLICTED_PH</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph1</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph2</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ConflictedReturnKinds</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ConflictedReturnKinds</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The two phrase definitions %1 and %2 make the same wording "</span>
                 <span class="string">"produce two different kinds of value, which is not allowed."</span><span class="plain">);</span>
@@ -256,7 +256,7 @@ list is a list of. The result would be:
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UndeterminedKind</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UndeterminedKind</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The phrase %1 needs to be used in such a way that I know "</span>
@@ -299,7 +299,7 @@ I6 routine.
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_phrase</span><span class="plain">(2, </span><span class="identifier">ph</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseNamedI6Failed</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseNamedI6Failed</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, defining the phrase '%2' with a piece of Inform 6 "</span>
                     <span class="string">"code, but also giving it a name as a function to be used in an "</span>

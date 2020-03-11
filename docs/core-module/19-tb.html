@@ -71,7 +71,7 @@ column ID numbers used at run-time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure table_contribution is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>These are convenient during parsing.
 </p>
@@ -98,7 +98,7 @@ is why the following sentence handler is null:
 
 
 <pre class="display">
-    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">TABLE_SH_handler</span><span class="plain"> = { </span><span class="constant">TABLE_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
+    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">TABLE_SH_handler</span><span class="plain"> = { </span><span class="identifier">TABLE_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -111,17 +111,17 @@ established names of tables and columns:
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::traverse_to_create</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Tables::visit_to_create</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Tables::visit_to_create</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::visit_to_create</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">TABLE_NT</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">TABLE_NT</span><span class="plain">)</span>
             <span class="functiontext">Tables::create_table</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function Tables::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Tables::visit_to_create appears nowhere else.</p>
 
@@ -148,7 +148,7 @@ see below.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>, <a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Tables::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>, <a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Last and least: a traverse existing just to issue a problem message in a
 case which Inform can often cope with, but which the experience of users
@@ -164,7 +164,7 @@ suggests is never a good idea.
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
                 <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_name_text</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCoincidesWithKind</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCoincidesWithKind</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The name %1 will have to be disallowed because '%2' is also the "</span>
                     <span class="string">"name of a kind, or of the plural of a kind. (For instance, writing "</span>
@@ -177,7 +177,7 @@ suggests is never a good idea.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::check_tables_for_kind_clashes is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Tables::check_tables_for_kind_clashes is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Table basics. </b>The following makes a blank structure for a table, but it isn't valid until
 some of these fields have been properly filled in.
@@ -389,7 +389,7 @@ two forms in any case.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">TABLE_HAS_ONLY_NAME</span><span class="plain">; </span>    <span class="comment">for recovery</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableMisnamed</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableMisnamed</span><span class="plain">),</span>
             <span class="string">"this isn't allowed as the name of a Table"</span><span class="plain">,</span>
             <span class="string">"since a table is required either to have a number, or to be a table 'of' "</span>
             <span class="string">"something (or both). For example: 'Table 5', 'Table of Blue Meanies', and "</span>
@@ -490,7 +490,7 @@ table and then destroy the temporary one made here.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
             <span class="string">"this table does not strictly speaking start a paragraph"</span><span class="plain">,</span>
             <span class="string">"and I'm afraid we need to speak strictly here. Even a comment coming before "</span>
             <span class="string">"the start of the table is too much."</span><span class="plain">);</span>
@@ -541,7 +541,7 @@ table and then destroy the temporary one made here.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_name_text</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_name_text</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNameAmbiguous</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNameAmbiguous</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The table name %1 will have to be disallowed as it is text which "</span>
                 <span class="string">"already has a meaning to Inform. For instance, creating the 'Table "</span>
@@ -619,7 +619,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing_table_with_same_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNotContinuation</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNotContinuation</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"It looks as if %1 is meant to be related to an existing table, "</span>
                 <span class="string">"but I can't find one if it is. %P"</span>
@@ -645,7 +645,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
             <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">existing_table_with_same_name</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">HW</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNameDuplicate</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableNameDuplicate</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I can't create %1 because its name overlaps with one that already "</span>
                 <span class="string">"exists: %2. %P"</span>
@@ -813,7 +813,7 @@ a node in the parse tree representing the column's use within this table.
                 <span class="string">"only %6.)"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">cell</span><span class="plain">, </span><span class="constant">table_cell_unspecified_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">cell</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">col_count</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
+            <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">cell</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">col_count</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -834,7 +834,7 @@ a node in the parse tree representing the column's use within this table.
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">col_count</span><span class="plain"> &lt; </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">) { </span>    <span class="comment">which can only happen on data rows</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cell</span><span class="plain"> = </span><span class="functiontext">Tables::empty_cell_node</span><span class="plain">();</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">cell</span><span class="plain">, </span><span class="constant">table_cell_unspecified_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">cell</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">col_count</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
+            <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">cell</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">col_count</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
             <span class="identifier">col_count</span><span class="plain">++;</span>
         <span class="plain">}</span>
 </pre>
@@ -925,14 +925,14 @@ the new table's rows onto the ends of the old table's columns.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">old_t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">old_to_new</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] &gt;= 0) {</span>
-                    <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">old_to_new</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">,</span>
+                    <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">old_to_new</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">,</span>
                         <span class="identifier">old_t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">row_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) { </span>    <span class="comment">from 1 to omit the column headings</span>
                         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">blank</span><span class="plain"> = </span><span class="functiontext">Tables::empty_cell_node</span><span class="plain">();</span>
                         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">blank</span><span class="plain">, </span><span class="constant">table_cell_unspecified_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">blank</span><span class="plain">, </span><span class="identifier">old_t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
+                        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">blank</span><span class="plain">, </span><span class="identifier">old_t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
         <span class="plain">}</span>
@@ -962,7 +962,7 @@ wants a row for each man, and the continuation wants a row for each woman.
                 <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">old_t</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">old_t</span><span class="plain">-</span><span class="element">&gt;blank_rows_for_each_text</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;blank_rows_for_each_text</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableContinuationContradicts</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableContinuationContradicts</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The table %1 says that it should have a blank row for each "</span>
                     <span class="string">"%4, but the original %2 already says it has a blank for each "</span>
@@ -1071,7 +1071,7 @@ used in continuation rows for columns not mentioned.)
             <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">old_t</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">missing</span><span class="plain"> == 1) </span><span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="string">"a column"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="string">"columns"</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableContinuationAddsCols</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableContinuationAddsCols</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The table %1 won't work as a continuation, because it contains "</span>
                 <span class="string">"%3 not found in the original %2."</span><span class="plain">);</span>
@@ -1108,7 +1108,7 @@ be "wider" than the old one.)
             <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">old_t</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">missing</span><span class="plain"> == 1) </span><span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="string">"a column"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="string">"columns"</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableReplacementMissesCols</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableReplacementMissesCols</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The table %1 won't work as a replacement, because it's missing "</span>
                 <span class="string">"%3 found in the original %2."</span><span class="plain">);</span>
@@ -1144,7 +1144,7 @@ columns and in the same order.
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_created_at</span><span class="plain">-</span><span class="element">&gt;source_table</span><span class="plain">;</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">old_t</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableAmendmentMisfit</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableAmendmentMisfit</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Columns in %1 do not exactly match the original %2. I can only "</span>
                 <span class="string">"make changes to rows in an existing table if the amended versions "</span>
@@ -1166,7 +1166,7 @@ columns and in the same order.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"****"</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"****"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The old table has columns: "</span><span class="plain">); {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
@@ -1179,7 +1179,7 @@ columns and in the same order.
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"****"</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"****"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The new table has columns: "</span><span class="plain">); {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
@@ -1590,7 +1590,7 @@ people &mdash; it needs to be "yourself" instead, since "player" is a variable.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tables::complete is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Tables::complete is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP26_1"></a><b>&#167;26.1.  </b>For the actual code, see below.
 </p>
@@ -1921,7 +1921,7 @@ time to find a clear wording for:
         <span class="identifier">Problems::quote_number</span><span class="plain">(6, &amp;</span><span class="identifier">matches_in_last_round</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">matches_in_last_round</span><span class="plain"> &gt; 2) </span><span class="identifier">Problems::quote_text</span><span class="plain">(7, </span><span class="string">"any"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(7, </span><span class="string">"either"</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"****"</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"****"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> == 0)</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"(Amendment %1). I can't match this to any row - there's nothing with "</span>
@@ -1950,13 +1950,13 @@ time to find a clear wording for:
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">amendments</span><span class="plain">-</span><span class="element">&gt;table_created_at</span><span class="plain">-</span><span class="element">&gt;source_table</span><span class="plain">;</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">main_table</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_table</span><span class="plain">(2, </span><span class="identifier">amendments</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableAmendmentMismatch</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableAmendmentMismatch</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I'm currently trying to amend rows in %1 according to the instructions "</span>
                 <span class="string">"in %2. To do that, I have to match each amendment row in turn, which "</span>
                 <span class="string">"I do by trying to match up entries in the leftmost column(s)."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"****"</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"****"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"But I ran into problems:"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">}</span>
@@ -2144,8 +2144,8 @@ given extension:
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::table_within</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;amendment_of</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">at_heading</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::of_wording</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_created_at</span><span class="plain">-</span><span class="element">&gt;source_table</span><span class="plain">));</span>
-        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">at_E</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">at_heading</span><span class="plain">);</span>
+        <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">at_heading</span><span class="plain"> = </span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_created_at</span><span class="plain">-</span><span class="element">&gt;source_table</span><span class="plain">));</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">at_E</span><span class="plain"> = </span><span class="identifier">Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">at_heading</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">at_E</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>

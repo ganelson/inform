@@ -72,7 +72,7 @@ objects or values, but there are two exceptional cases to take care of.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HereFailedOnNothing</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HereFailedOnNothing</span><span class="plain">),</span>
                 <span class="string">"that is an assertion which puts nothing 'here'"</span><span class="plain">,</span>
                 <span class="string">"which looks as if it might be trying to give me negative rather "</span>
                 <span class="string">"than positive information. There's no need to tell me something "</span>
@@ -103,12 +103,12 @@ objects or values, but there are two exceptional cases to take care of.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">iy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_nothing_object_constant</span><span class="plain">(</span>
                 <span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">relationship_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">)))</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapFromNowhere</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapFromNowhere</span><span class="plain">),</span>
                     <span class="string">"the source of a map connection can't be nowhere"</span><span class="plain">,</span>
                     <span class="string">"so sentences like 'The pink door is south of nowhere.' are not "</span>
                     <span class="string">"allowed."</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapFromNonroom2</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapFromNonroom2</span><span class="plain">),</span>
                     <span class="string">"the source of a map connection has to be a room or door"</span><span class="plain">,</span>
                     <span class="string">"so sentences like 'The pink door is south of 0.' are not "</span>
                     <span class="string">"allowed."</span><span class="plain">);</span>
@@ -122,7 +122,7 @@ objects or values, but there are two exceptional cases to take care of.
             <span class="identifier">PL::Map::connect</span><span class="plain">(</span><span class="identifier">iy</span><span class="plain">, </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">), </span><span class="identifier">id</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Val is $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapToNonobject</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapToNonobject</span><span class="plain">),</span>
                 <span class="string">"the destination of a map connection has to be either a room, "</span>
                 <span class="string">"a door or 'nowhere'"</span><span class="plain">,</span>
                 <span class="string">"but here the destination doesn't even seem to be an object."</span><span class="plain">);</span>
@@ -145,13 +145,13 @@ objects or values, but there are two exceptional cases to take care of.
             <span class="plain">(</span><span class="identifier">relationship_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed DIRECTION"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">relationship_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this is not straightforward in saying which room (or door) leads away from"</span><span class="plain">,</span>
                 <span class="string">"and should just name the source."</span><span class="plain">);</span>
             <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">relationship_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this is not straightforward in saying which direction the room (or door) lies in"</span><span class="plain">,</span>
                 <span class="string">"and should just name the direction."</span><span class="plain">);</span>
             <span class="reserved">break</span><span class="plain">;</span>
@@ -230,7 +230,7 @@ T_Y is a list of values or objects (joined into an <code class="display"><span c
 
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) != </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) != </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRelation</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRelation</span><span class="plain">),</span>
                 <span class="string">"this description of a relationship makes no sense to me"</span><span class="plain">,</span>
                 <span class="string">"and should be something like 'X is in Y' (or 'on' or 'part of Y'); "</span>
                 <span class="string">"or else 'X is here' or 'X is east of Y'."</span><span class="plain">);</span>
@@ -255,7 +255,7 @@ T_Y is a list of values or objects (joined into an <code class="display"><span c
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">BinaryPredicates::relates_values_not_objects</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(((</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)))) ||</span>
             <span class="plain">((</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)))))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRelatedToValue</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRelatedToValue</span><span class="plain">),</span>
                 <span class="string">"relations between objects and values have to be made one "</span>
                 <span class="string">"object at a time"</span><span class="plain">,</span>
                 <span class="string">"not using kinds of object to make multiple relationships in "</span>
@@ -276,7 +276,7 @@ T_Y is a list of values or objects (joined into an <code class="display"><span c
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EveryWrongSide</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EveryWrongSide</span><span class="plain">),</span>
             <span class="string">"'every' can only be used on the other side of the verb"</span><span class="plain">,</span>
             <span class="string">"because of limitations in Inform (but also to avoid certain possible "</span>
             <span class="string">"ambiguities). In general, 'every' should be applied to the subject of an "</span>

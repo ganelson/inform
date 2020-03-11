@@ -145,7 +145,7 @@ there is no need to translate this to other languages.)
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_region</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionAdrift</span><span class="plain">),</span>
                     <span class="string">"'region' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
@@ -273,7 +273,7 @@ messages which would have been less helpful if core Inform had produced them.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) == </span><span class="identifier">RELATIONSHIP_NT</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_region</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelated</span><span class="plain">),</span>
                 <span class="string">"a region cannot be given a specific location"</span><span class="plain">,</span>
                 <span class="string">"since it contains what may be many rooms, which may not be "</span>
                 <span class="string">"contiguous and could be scattered about all over. (Sometimes "</span>
@@ -351,7 +351,7 @@ to participate in nonspatial relations.)
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I1_is_region</span><span class="plain">) </span>&lt;<span class="cwebmacro">A region is being put inside a region</span> <span class="cwebmacronumber">17.2</span>&gt;
                 <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">A room is being put inside a region</span> <span class="cwebmacronumber">17.3</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelation</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelation</span><span class="plain">),</span>
                     <span class="string">"regions can only contain rooms"</span><span class="plain">,</span>
                     <span class="string">"and have no other relationships."</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -360,7 +360,7 @@ to participate in nonspatial relations.)
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">relation</span><span class="plain"> == </span><span class="identifier">R_incorporation</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">relation</span><span class="plain"> == </span><span class="identifier">R_containment</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">relation</span><span class="plain"> == </span><span class="identifier">R_regional_containment</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelation2</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionRelation2</span><span class="plain">),</span>
                     <span class="string">"regions can only be contained in other regions"</span><span class="plain">,</span>
                     <span class="string">"and not for example in rooms."</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -382,7 +382,7 @@ to participate in nonspatial relations.)
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain"> != </span><span class="identifier">I0</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionInTwoRegions</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionInTwoRegions</span><span class="plain">),</span>
                 <span class="string">"each region can only be declared to be inside a single "</span>
                 <span class="string">"other region"</span><span class="plain">,</span>
                 <span class="string">"since although regions can be placed inside each other, "</span>

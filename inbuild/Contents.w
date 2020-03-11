@@ -7,8 +7,8 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
-Import: inform7/words
-Import: inform7/syntax
+Import: words
+Import: syntax
 Import: html
 Import: arch
 Import: inbuild

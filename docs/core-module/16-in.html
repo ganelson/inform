@@ -101,7 +101,7 @@ organised as linked lists; hence the <code class="display"><span class="extract"
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inference is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure inference is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Creation. </b>The following routine coins a newly minted inference which is not yet attached
 to any subject: but it will not stay unattached for long. Note that if nothing
@@ -410,7 +410,7 @@ knowledge means that the inferences must have a certainty of likely or better.
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(2, </span><span class="identifier">prn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">VK</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">PK</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LateInferenceProblem</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LateInferenceProblem</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but that tries to set the value of the '%2' "</span>
                     <span class="string">"property to %3 - which must be wrong because this property "</span>
@@ -473,7 +473,7 @@ knowledge means that the inferences must have a certainty of likely or better.
 
 <p class="endnote">The function World::Inferences::verify_prop_states is used in 16/is (<a href="16-is.html#SP30">&#167;30</a>).</p>
 
-<p class="endnote">The function World::Inferences::get_prop_state is used in 3/nl (<a href="3-nl.html#SP7">&#167;7</a>).</p>
+<p class="endnote">The function World::Inferences::get_prop_state is used in 3/nl (<a href="3-nl.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function World::Inferences::get_prop_state_at appears nowhere else.</p>
 
@@ -1021,7 +1021,7 @@ and so clashed are impossible.)
                             <span class="functiontext">Problems::quote_subject</span><span class="plain">(4, </span><span class="identifier">infs</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_spec</span><span class="plain">(5, </span><span class="identifier">i</span><span class="plain">-</span><span class="element">&gt;inferred_property_value</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_spec</span><span class="plain">(6, </span><span class="identifier">list</span><span class="plain">-</span><span class="element">&gt;inferred_property_value</span><span class="plain">);</span>
-                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationContradiction2</span><span class="plain">));</span>
+                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationContradiction2</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                 <span class="string">"I'm finding a contradiction at the sentence %1, "</span>
                                 <span class="string">"because it means I can't set up %3. "</span>
@@ -1036,7 +1036,7 @@ and so clashed are impossible.)
                             <span class="functiontext">Problems::quote_subject</span><span class="plain">(4, </span><span class="identifier">infs</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_spec</span><span class="plain">(5, </span><span class="identifier">i</span><span class="plain">-</span><span class="element">&gt;inferred_property_value</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_spec</span><span class="plain">(6, </span><span class="identifier">list</span><span class="plain">-</span><span class="element">&gt;inferred_property_value</span><span class="plain">);</span>
-                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationContradiction</span><span class="plain">));</span>
+                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationContradiction</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                 <span class="string">"I'm finding a contradiction at the sentences %1 and %2, "</span>
                                 <span class="string">"because between them they set up rival versions of %3. "</span>

@@ -404,14 +404,14 @@ an action.
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ACTION_PATTERN_PARSING</span><span class="plain">, </span><span class="string">"Categorising the action:\</span><span class="plain">n</span><span class="string">$A...as %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">article</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamedAPIsArticle</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamedAPIsArticle</span><span class="plain">),</span>
                 <span class="string">"there's only an article here"</span><span class="plain">,</span>
                 <span class="string">"not a name, so I'm not sure what this action is supposed to be."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;actor_spec</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamedAPWithActor</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamedAPWithActor</span><span class="plain">),</span>
                 <span class="string">"behaviour characterised by named action patterns can only specify the action"</span><span class="plain">,</span>
                 <span class="string">"not the actor: as a result, it cannot include requests to other people to "</span>
                 <span class="string">"do things."</span><span class="plain">);</span>
@@ -440,7 +440,7 @@ an action.
             <span class="identifier">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">ka</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">oref</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kb</span><span class="plain">) </span><span class="identifier">Problems::quote_kind</span><span class="plain">(6, </span><span class="identifier">kb</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GoingWrongKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GoingWrongKind</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kb</span><span class="plain">)</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the sentence %1, %2 seems to be intended as something the "</span>
@@ -456,7 +456,7 @@ an action.
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">keyword</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GoingWithoutObject</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GoingWithoutObject</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, '%2' seems to be intended as something the player "</span>
             <span class="string">"might be going %3, but it doesn't make sense in that context."</span><span class="plain">);</span>
@@ -507,7 +507,7 @@ form the usage conditions for rules in object-based rulebooks.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">UNKNOWN_NT</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadOptionalAPClause</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadOptionalAPClause</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, I tried to read a description of an action - a complicated "</span>
                 <span class="string">"one involving optional clauses; but '%2' wasn't something I "</span>
@@ -1924,7 +1924,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ACTION_PATTERN_COMPILATION</span><span class="plain">, </span><span class="string">"[MPE on $P: $P]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I6_var_TS</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_APClauseIndefinite</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_APClauseIndefinite</span><span class="plain">),</span>
                 <span class="string">"that action seems to involve a value which is unclear about "</span>
                 <span class="string">"its kind"</span><span class="plain">,</span>
                 <span class="string">"and that's not allowed. For example, you're not allowed to just "</span>
@@ -2779,7 +2779,7 @@ and in this case we therefore ignore <code class="display"><span class="extract"
 
 
     <pre class="displaydefn">
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PTAPTooComplex</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PTAPTooComplex</span><span class="plain">),</span>
                 <span class="string">"that is too complex a past tense action"</span><span class="plain">,</span>
                 <span class="string">"at least for this version of Inform to handle: we may improve "</span>
                 <span class="string">"matters in later releases. The restriction is that the "</span>

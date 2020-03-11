@@ -432,7 +432,7 @@ we assume he is freestanding in the earliest defined room.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">start_room</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Task::wraps_existing_storyfile</span><span class="plain">() == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoStartRoom</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoStartRoom</span><span class="plain">),</span>
                 <span class="string">"There doesn't seem to be any location in this story, so there's "</span>
                 <span class="string">"nowhere for the player to begin. This may be because I have "</span>
                 <span class="string">"misunderstood what was meant to be a room and what wasn't: I "</span>

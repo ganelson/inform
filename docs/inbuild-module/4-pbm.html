@@ -19,7 +19,7 @@
 <pre class="display">
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectbundle"</span><span class="plain">);</span>
+        <span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectbundle"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_bundle_genre</span><span class="plain">, </span><span class="constant">GENRE_WRITE_WORK_MTID</span><span class="plain">, </span><span class="functiontext">ProjectBundleManager::write_work</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_bundle_genre</span><span class="plain">, </span><span class="constant">GENRE_CLAIM_AS_COPY_MTID</span><span class="plain">, </span><span class="functiontext">ProjectBundleManager::claim_as_copy</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_bundle_genre</span><span class="plain">, </span><span class="constant">GENRE_SEARCH_NEST_FOR_MTID</span><span class="plain">, </span><span class="functiontext">ProjectBundleManager::search_nest_for</span><span class="plain">);</span>
@@ -64,7 +64,7 @@ which stores data about extensions used by the Inform compiler.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ProjectBundleManager::from_copy is used in <a href="#SP6">&#167;6</a>, <a href="#SP8">&#167;8</a>, <a href="#SP9">&#167;9</a>, 1/ic (<a href="1-ic.html#SP11">&#167;11</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>), 4/pfm (<a href="4-pfm.html#SP6">&#167;6</a>, <a href="4-pfm.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function ProjectBundleManager::from_copy is used in <a href="#SP6">&#167;6</a>, <a href="#SP8">&#167;8</a>, <a href="#SP9">&#167;9</a>, 1/ic (<a href="1-ic.html#SP11">&#167;11</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>), 3/is4 (<a href="3-is4.html#SP1">&#167;1</a>), 4/pfm (<a href="4-pfm.html#SP6">&#167;6</a>, <a href="4-pfm.html#SP9">&#167;9</a>).</p>
 
 <p class="endnote">The function ProjectBundleManager::new_copy is used in <a href="#SP3">&#167;3</a>.</p>
 

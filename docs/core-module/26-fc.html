@@ -148,7 +148,7 @@ Inform's own version number), but it belongs nowhere else either, so:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function FundamentalConstants::emit_build_number is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function FundamentalConstants::emit_build_number is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>This also doesn't really belong here, but...
 </p>
@@ -158,7 +158,7 @@ Inform's own version number), but it belongs nowhere else either, so:
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">FundamentalConstants::veto_number</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">X</span><span class="plain"> &gt; 32767) || (</span><span class="identifier">X</span><span class="plain"> &lt; -32768)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LiteralOverflow</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LiteralOverflow</span><span class="plain">),</span>
                 <span class="string">"you use a number which is too large"</span><span class="plain">,</span>
                 <span class="string">"at least with the Settings for this project as they currently "</span>
                 <span class="string">"are. (Change to Glulx to be allowed to use much larger numbers.)"</span><span class="plain">);</span>

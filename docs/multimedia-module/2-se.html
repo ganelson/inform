@@ -80,7 +80,7 @@ within the application.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">nc</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_sound_name</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allow_sound_creations</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorSoundCreation</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorSoundCreation</span><span class="plain">),</span>
                     <span class="string">"this is not the way to create a new sound name"</span><span class="plain">,</span>
                     <span class="string">"which should be done with a special 'Sound ... is the file ...' "</span>
                     <span class="string">"sentence."</span><span class="plain">);</span>
@@ -175,7 +175,7 @@ within the application.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SoundNotTextual</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SoundNotTextual</span><span class="plain">),</span>
             <span class="string">"a sound effect can only be declared as a quoted file name"</span><span class="plain">,</span>
             <span class="string">"which should be the name of an AIFF or OGG file inside the Sounds "</span>
             <span class="string">"subfolder of the project's .materials folder. For instance, 'Sound "</span>
@@ -203,7 +203,7 @@ within the application.
 
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">F</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">K_sound_name</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SoundDuplicate</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SoundDuplicate</span><span class="plain">),</span>
                 <span class="string">"this is already the name of a sound effect"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>

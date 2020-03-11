@@ -245,12 +245,10 @@ whole thing into a <code class="display"><span class="extract">specification</sp
 </pre>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Semantics::read_preform</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Semantics::read_preform</span><span class="plain">(</span><span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Mark certain nonterminals to have their vocabularies numbered and flagged</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">NaturalLanguages::scan</span><span class="plain">();</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NaturalLanguages::load_preform</span><span class="plain">(</span><span class="identifier">Projects::get_language_of_syntax</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NaturalLanguages::load_preform</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nonterminals_declared</span><span class="plain"> = </span><span class="identifier">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">language_definition_top</span><span class="plain"> = </span><span class="identifier">lexer_wordcount</span><span class="plain"> - 1;</span>
 
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d declarations read (%d words)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nonterminals_declared</span><span class="plain">, </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
     <span class="plain">}</span>
@@ -258,7 +256,7 @@ whole thing into a <code class="display"><span class="extract">specification</sp
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Semantics::read_preform is used in 1/htc (<a href="1-htc.html#SP2_2">&#167;2.2</a>).</p>
+<p class="endnote">The function Semantics::read_preform appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Mark certain nonterminals to have their vocabularies numbered and flagged</span> <span class="cwebmacronumber">7.1</span>&gt; =

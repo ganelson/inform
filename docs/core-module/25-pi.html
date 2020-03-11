@@ -136,7 +136,7 @@ the phrase under, and must make the actual registration.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> != </span><span class="identifier">last_phrase_where_rp_problemed</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuotedInPhrase</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuotedInPhrase</span><span class="plain">),</span>
                 <span class="string">"phrases can't be defined with quoted text as part of the fixed wording"</span><span class="plain">,</span>
                 <span class="string">"so something like 'To go \</span><span class="plain">"</span><span class="string">voluntarily\</span><span class="plain">"</span><span class="string"> to jail: ...' is not allowed."</span><span class="plain">);</span>
             <span class="identifier">last_phrase_where_rp_problemed</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
@@ -155,7 +155,7 @@ the phrase under, and must make the actual registration.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> != </span><span class="identifier">last_phrase_where_rp_problemed</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjacentTokens</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjacentTokens</span><span class="plain">),</span>
                 <span class="string">"phrases can't be defined so that they have two bracketed varying elements "</span>
                 <span class="string">"immediately next to each other"</span><span class="plain">,</span>
                 <span class="string">"but instead need at least one fixed word in between. Thus 'To combine "</span>
@@ -178,7 +178,7 @@ the phrase under, and must make the actual registration.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> != </span><span class="identifier">last_phrase_where_rp_problemed</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MustBeOneWord</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MustBeOneWord</span><span class="plain">),</span>
                 <span class="string">"a 'To...' phrase must contain at least one fixed word"</span><span class="plain">,</span>
                 <span class="string">"that is, one word other than the bracketed variables. So a declaration "</span>
                 <span class="string">"like 'To (N - number): ...' is not allowed."</span><span class="plain">);</span>
@@ -327,7 +327,7 @@ word, though.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">a_form</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"say"</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">phrase_mc</span><span class="plain"> != </span><span class="constant">SAY_PHRASE_MC</span><span class="plain">))</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> != </span><span class="identifier">last_phrase_where_rp_problemed</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SaySlashed</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SaySlashed</span><span class="plain">),</span>
                     <span class="string">"'say' is not allowed as the first word of a phrase"</span><span class="plain">,</span>
                     <span class="string">"even when presented as one of a number of slashed alternatives. "</span>
                     <span class="string">"(This is because 'say' is reserved for creating text substitutions.)"</span><span class="plain">);</span>

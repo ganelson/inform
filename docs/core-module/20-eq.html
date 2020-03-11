@@ -70,7 +70,7 @@ instance has its own <code class="display"><span class="extract">equation_symbol
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ef, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 8/ef, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In addition, there are some standing symbols used by all equations: the
 constant "pi", for example. They're stored in this linked list:
@@ -171,19 +171,19 @@ value <code class="display"><span class="extract">pi</span></code>.
 
 
 <pre class="display">
-    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">EQUATION_SH_handler</span><span class="plain"> = { </span><span class="constant">EQUATION_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
+    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">EQUATION_SH_handler</span><span class="plain"> = { </span><span class="identifier">EQUATION_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Equations::traverse_to_create</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Equations::visit_to_create</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Equations::visit_to_create</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Equations::visit_to_create</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">EQUATION_NT</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">EQUATION_NT</span><span class="plain">)</span>
             <span class="functiontext">Equations::new</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function Equations::traverse_to_create is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Equations::visit_to_create appears nowhere else.</p>
 
@@ -281,7 +281,7 @@ We know that this begins with the word "equation", or we wouldn't be here
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationMisnumbered</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationMisnumbered</span><span class="plain">),</span>
             <span class="string">"the top line of this equation declaration seems not to be a "</span>
             <span class="string">"legal equation number or name"</span><span class="plain">,</span>
             <span class="string">"and should read something like 'Equation 6', or 'Equation - "</span>
@@ -359,7 +359,7 @@ We know that this begins with the word "equation", or we wouldn't be here
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">NA</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">NA</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">NA</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationMisnamed</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationMisnamed</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The equation name %1 will have to be disallowed as it is text "</span>
                     <span class="string">"which already has a meaning to Inform. For instance, creating "</span>
@@ -419,7 +419,7 @@ source text:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Equations::traverse_to_stock is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And, as with creation, <code class="display"><span class="extract">Equations::examine</span></code> is called explicitly in the meaning
 list converter when an equation is found inline. So in all cases, we call the
@@ -641,7 +641,7 @@ mass, too.
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = -1;</span>
         <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">preform_lookahead_mode</span><span class="plain">)</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolMisdeclared</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolMisdeclared</span><span class="plain">),</span>
             <span class="string">"the symbols here are not declared properly"</span><span class="plain">,</span>
             <span class="string">"and should each be declared with a kind of value or else an "</span>
             <span class="string">"actual value."</span><span class="plain">);</span>
@@ -2098,7 +2098,7 @@ section:
                 <span class="identifier">Problems::quote_text</span><span class="plain">(6, </span><span class="string">"taking the cube root of"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but that equation seems to involve %6 %4, which is not "</span>
             <span class="string">"good arithmetic."</span><span class="plain">);</span>
@@ -2139,7 +2139,7 @@ section:
                 <span class="identifier">Problems::quote_text</span><span class="plain">(6, </span><span class="string">"combining"</span><span class="plain">); </span><span class="identifier">Problems::quote_text</span><span class="plain">(7, </span><span class="string">"with"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationBadArithmetic</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationBadArithmetic</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but that equation seems to involve "</span>
             <span class="string">"%6 %4 %7 %5, which is not good arithmetic."</span><span class="plain">);</span>
@@ -2197,7 +2197,7 @@ for equations a value; they are never called.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Equations::compile is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Equations::compile is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP44"></a><b>&#167;44.  </b>These identifiers are used to compile equation names as values, so:
 </p>
@@ -2295,7 +2295,7 @@ specified by (w_1, w_2), according to the equation <code class="display"><span c
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationBadTarget</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationBadTarget</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you asked to let %2 be given by the equation '%3', "</span>
                 <span class="string">"but '%2' isn't a symbol in that equation."</span><span class="plain">);</span>
@@ -2308,7 +2308,7 @@ specified by (w_1, w_2), according to the equation <code class="display"><span c
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_spec</span><span class="plain">(4, </span><span class="identifier">to_solve</span><span class="plain">-</span><span class="element">&gt;var_const</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationConstantTarget</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationConstantTarget</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you asked to let %2 be given by the equation '%3', "</span>
                 <span class="string">"but '%2' isn't something which can vary freely in that equation - "</span>
@@ -2342,7 +2342,7 @@ potentially incorrect. Re-typechecking will recalculate these.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationInsoluble</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationInsoluble</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you asked to let %2 be given by the equation '%3', "</span>
                 <span class="string">"but I am unable to rearrange the equation in any simple way "</span>
@@ -2415,7 +2415,7 @@ need to exist as local variables in the current stack frame.
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">ev</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolMissing</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolMissing</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, you asked to let %2 be given by the equation '%3', "</span>
             <span class="string">"but I can't see what to use for '%4'. The usual idea is "</span>
@@ -2465,7 +2465,7 @@ casting between quasinumerical kinds, we'll have to return to this.)
             <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">ev</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(6, </span><span class="identifier">ev</span><span class="plain">-</span><span class="element">&gt;var_kind</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolWrongKOV</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquationSymbolWrongKOV</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you asked to let %2 be given by the equation '%3', "</span>
                 <span class="string">"but in that equation '%4' is supposedly %6 - whereas right "</span>
@@ -2562,7 +2562,7 @@ casting between quasinumerical kinds, we'll have to return to this.)
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Equations::enode_compilation_error</span><span class="plain">(</span><span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">, </span><span class="reserved">equation_node</span><span class="plain"> *</span><span class="identifier">tok</span><span class="plain">) {</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HardIntegerRoot</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HardIntegerRoot</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, you asked me to solve the equation '%2', but that would have "</span>
             <span class="string">"involved taking a tricky root of a whole number. Using real numbers "</span>

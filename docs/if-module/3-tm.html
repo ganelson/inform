@@ -282,7 +282,7 @@ Rules. (So there is no need to translate this to other languages.)
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_direction</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionAdrift</span><span class="plain">),</span>
                     <span class="string">"'direction' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
@@ -291,21 +291,21 @@ Rules. (So there is no need to translate this to other languages.)
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_direction</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionSubkinded</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionSubkinded</span><span class="plain">),</span>
                     <span class="string">"'direction' is not allowed to have more specific kinds"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
                     <span class="string">"geography of the physical world."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_backdrop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_door</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">K_backdrop</span><span class="plain">))) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoorAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoorAdrift</span><span class="plain">),</span>
                     <span class="string">"'door' is not allowed to be a kind of 'backdrop'"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
                     <span class="string">"geography of the physical world."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_backdrop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_backdrop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">K_door</span><span class="plain">))) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdropAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdropAdrift</span><span class="plain">),</span>
                     <span class="string">"'backdrop' is not allowed to be a kind of 'door'"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
                     <span class="string">"geography of the physical world."</span><span class="plain">);</span>
@@ -451,13 +451,13 @@ no need to translate this to other languages.)
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">IW</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamelessDirection</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamelessDirection</span><span class="plain">),</span>
                 <span class="string">"nameless directions are not allowed"</span><span class="plain">,</span>
                 <span class="string">"so writing something like 'There is a direction.' is forbidden."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">IW</span><span class="plain">) &gt; </span><span class="constant">MAX_WORDS_IN_DIRECTION</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionTooLong</span><span class="plain">),</span>
                 <span class="string">"although direction names can be really quite long in today's Inform"</span><span class="plain">,</span>
                 <span class="string">"they can't be as long as that."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -879,7 +879,7 @@ because, of course, that does set its kind.
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">nowhere_ANNOT</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NowhereDescribed</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NowhereDescribed</span><span class="plain">),</span>
                     <span class="string">"'nowhere' cannot be made specific"</span><span class="plain">,</span>
                     <span class="string">"and so cannot have specific properties or be of any given kind."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -937,7 +937,7 @@ pairs.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">forwards_dir</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_object</span><span class="plain">(3, </span><span class="identifier">go_to</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WayFromUnclear</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WayFromUnclear</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"On the basis of %1, I'm trying to make a map connection in the "</span>
                 <span class="string">"%2 direction to %3, but I can't make sense of where it goes from."</span><span class="plain">);</span>
@@ -950,7 +950,7 @@ pairs.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">reverse_dir</span><span class="plain">, </span><span class="identifier">K_direction</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_object</span><span class="plain">(1, </span><span class="identifier">forwards_dir</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">reverse_dir</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OppositeNotDirection</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OppositeNotDirection</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"I'm trying to make a map connection in the %1 direction, "</span>
                     <span class="string">"which means there ought to be map connection back in the "</span>
@@ -1171,7 +1171,7 @@ checks that various mapping impossibilities do not occur.
         <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">where</span><span class="plain">[0]);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">where</span><span class="plain">[1]);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(4, </span><span class="identifier">where</span><span class="plain">[2]);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoorOverconnected</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoorOverconnected</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"%1 seems to be a door with three ways out (specified %2, %3 and %4), but "</span>
             <span class="string">"you can only have one or two sides to a door in Inform: a one-sided "</span>
@@ -1214,7 +1214,7 @@ from which there's no way back.)
                             <span class="identifier">Problems::quote_object</span><span class="plain">(1, </span><span class="identifier">I</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">to</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(3, </span><span class="identifier">exit1</span><span class="plain">);</span>
-                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomTwistyDoor</span><span class="plain">));</span>
+                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomTwistyDoor</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                 <span class="string">"%1, a room, seems to have a map connection which goes "</span>
                                 <span class="string">"through %2, a door: but that doesn't seem physically "</span>
@@ -1226,7 +1226,7 @@ from which there's no way back.)
                             <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">to</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(3, </span><span class="identifier">exit1</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(4, </span><span class="identifier">exit2</span><span class="plain">);</span>
-                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomMissingDoor</span><span class="plain">));</span>
+                            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomMissingDoor</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                 <span class="string">"%1, a room, seems to have a map connection which goes "</span>
                                 <span class="string">"through %2, a door: but that doesn't seem physically "</span>

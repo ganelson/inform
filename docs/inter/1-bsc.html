@@ -49,34 +49,34 @@ structure and initialiser:
 </pre>
 
 <pre class="display">
-    <span class="reserved">vocabulary_meaning</span><span class="plain"> </span><span class="functiontext">Basics::ignore</span><span class="plain">(</span><span class="reserved">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
+    <span class="reserved">vocabulary_meaning</span><span class="plain"> </span><span class="functiontext">Basics::ignore</span><span class="plain">(</span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
         <span class="reserved">vocabulary_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">;</span>
         <span class="identifier">vm</span><span class="element">.enigmatic_number</span><span class="plain"> = 16339;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Basics::lexer_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">problem_source_description</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">word</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain"> == </span><span class="constant">MEMORY_OUT_LEXERERROR</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain"> == </span><span class="identifier">MEMORY_OUT_LEXERERROR</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Out of memory: unable to create lexer workspace"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">word_t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">word</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">word_t</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"Too much text in quotation marks: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"Word too long: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"I6 inclusion too long: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"Quoted text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMENT_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"Square-bracketed text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">I6_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
                 <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"I6 inclusion text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">:</span>

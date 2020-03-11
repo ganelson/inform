@@ -58,7 +58,7 @@ reserves no memory.
     <span class="reserved">label_namespace</span><span class="plain"> *</span><span class="functiontext">JumpLabels::new_namespace</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) &gt; </span><span class="constant">MAX_NAMESPACE_PREFIX_LENGTH</span><span class="plain">) {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="constant">CORE_MODULE</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LabelNamespaceTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LabelNamespaceTooLong</span><span class="plain">),</span>
                 <span class="string">"a label namespace prefix is too long"</span><span class="plain">,</span>
                 <span class="string">"and should be shortened to a few alphabetic characters."</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
@@ -181,7 +181,7 @@ specification <code class="display"><span class="extract">--&gt; 0</span></code>
 
 <p class="endnote">The function JumpLabels::allocate_counter is used in 25/cii (<a href="25-cii.html#SP3_4_6">&#167;3.4.6</a>).</p>
 
-<p class="endnote">The function JumpLabels::compile_necessary_storage is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function JumpLabels::compile_necessary_storage is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="26-lt.html">Back to 'List Together'</a></li><li><a href="26-ct.html">Continue with 'Compiled Text'</a></li></ul><hr class="tocbar">

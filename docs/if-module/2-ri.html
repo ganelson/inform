@@ -117,7 +117,7 @@ following structure contains no file handles.)
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">BOOKLET_PAYLOAD</span><span class="plain">; </span>    <span class="comment">to recover harmlessly</span>
         <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchPublicRelease</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchPublicRelease</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I don't know how to release along with %1: the only features of "</span>
             <span class="string">"a release which can be marked as public or private are the 'source "</span>
@@ -273,7 +273,7 @@ optionally be marked "public" (they appear on any website about it) or
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXISTING_STORY_FILE_PAYLOAD</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">NAMED_EXISTING_STORY_FILE_PAYLOAD</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">()) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">not usefully testable</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">not usefully testable</span>
                         <span class="string">"existing story files can only be used with the Z-machine"</span><span class="plain">,</span>
                         <span class="string">"not with the Glulx setting."</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
@@ -374,7 +374,7 @@ optionally be marked "public" (they appear on any website about it) or
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ReleaseAlong</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ReleaseAlong</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I don't know how to release along with %1: the only forms I can "</span>
             <span class="string">"accept are - 'Release along with cover art', '...a website', "</span>
@@ -672,7 +672,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
             &lt;<span class="cwebmacro">Issue a problem if this isn't a Release run</span> <span class="cwebmacronumber">10.3.1</span>&gt;<span class="character">;</span>
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">STORYF</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">Task::existing_storyfile_file</span><span class="plain">(), </span><span class="string">"rb"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STORYF</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::unlocated_problem_on_file</span><span class="plain">(</span>
+            <span class="identifier">Problems::Issue::unlocated_problem_on_file</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(),</span>
                 <span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">i.e., not testable by intest</span>
                 <span class="string">"The instruction 'Release along with an existing story file' "</span>
                 <span class="string">"means that I need to bind up a story file called '%1', in "</span>
@@ -699,7 +699,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnreleasedRelease</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnreleasedRelease</span><span class="plain">),</span>
             <span class="string">"This is supposed to be a source text which only contains "</span>
             <span class="string">"release instructions to bind up an existing story file "</span>
             <span class="string">"(for instance, one produced using Inform 6). That's because "</span>
@@ -1586,7 +1586,7 @@ Inblorb to copy out later.
 
 
 <pre class="displaydefn">
-        <span class="identifier">ParseTree::traverse_with_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="functiontext">PL::Bibliographic::Release::visit_to_quote</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse_with_stream</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">OUT</span><span class="plain">, </span><span class="functiontext">PL::Bibliographic::Release::visit_to_quote</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">release_cover</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"status alternative ||Using 'Release along with cover art', to "</span>
                 <span class="string">"provide something more distinctive than the default artwork above"</span><span class="plain">);</span>

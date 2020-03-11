@@ -109,14 +109,14 @@ equal. So the proposition has to pass typechecking.
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">constant_kind</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">kind_as_declared</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Rvalues::is_nothing_object_constant</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuantityKindNothing</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuantityKindNothing</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 tells me that '%2', which should be %4 that varies, is to "</span>
                 <span class="string">"have the initial value 'nothing'. This is allowed as an 'object which varies', "</span>
                 <span class="string">"but the rules are stricter for %4."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GlobalKindWrong</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GlobalKindWrong</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 tells me that '%2', which is %4 that varies, "</span>
                 <span class="string">"should start out with the value '%3', but this is %5 and not %4."</span><span class="plain">);</span>
@@ -225,7 +225,7 @@ are typechecked at run-time rather than compile-time in that domain.)
                 <span class="plain">(</span><span class="functiontext">Calculus::Propositions::contains_adjective</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">)))) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">owner_spec</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationAPL</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationAPL</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The sentence %1 looked to me as if it might be trying to assign certain "</span>
                     <span class="string">"properties to something described in a way (%2) which involved a clause "</span>
@@ -248,7 +248,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropForBadKOV</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropForBadKOV</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 looked to me as if it might be trying to assign certain properties "</span>
             <span class="string">"to something which is not allowed to have them."</span><span class="plain">);</span>
@@ -303,7 +303,7 @@ the proposition machinery.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HasBareAdjective</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HasBareAdjective</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1 you write about the %3 property as if it were some kind of value "</span>
             <span class="string">"or possession, but %3 is an either/or property - something is either "</span>
@@ -326,7 +326,7 @@ the proposition machinery.
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1 you give a value of the %3 property as '%2', but %3 is an either/or "</span>
             <span class="string">"property - something is either %3 or not, so there is no value involved."</span><span class="plain">);</span>
@@ -352,7 +352,7 @@ the proposition machinery.
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
                     <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyValueUnknown</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyValueUnknown</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"You wrote %1, but that seems to set a property %3 to the "</span>
                         <span class="string">"value '%2', which I don't recognise as meaning anything."</span><span class="plain">);</span>
@@ -361,7 +361,7 @@ the proposition machinery.
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">; </span>    <span class="comment">(this is fine &mdash; there's a well-expressed value)</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyInstance</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyInstance</span><span class="plain">),</span>
                     <span class="string">"this property value makes no sense to me"</span><span class="plain">,</span>
                     <span class="string">"since it looks as if it contains a relative clause. Sometimes this "</span>
                     <span class="string">"happens if a clause follows directly on, and I have misunderstood to "</span>
@@ -371,13 +371,13 @@ the proposition machinery.
                     <span class="string">"applying to the door."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">X_OF_Y_NT</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                     <span class="string">"something grammatically odd has happened here"</span><span class="plain">,</span>
                     <span class="string">"possibly to do with the unexpected 'of' in what seems to be a list of "</span>
                     <span class="string">"property values?"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WITH_NT</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedFrom</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedFrom</span><span class="plain">),</span>
                     <span class="string">"something grammatically odd has happened here"</span><span class="plain">,</span>
                     <span class="string">"possibly to do with the unexpected 'with' in what seems "</span>
                     <span class="string">"to be a list of property values? Maybe there is some punctuation missing."</span><span class="plain">);</span>
@@ -386,7 +386,7 @@ the proposition machinery.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PeculiarPropertyValue</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PeculiarPropertyValue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but that seems to set a property %3 to the "</span>
                     <span class="string">"value '%2', which really doesn't make sense."</span><span class="plain">);</span>
@@ -409,7 +409,7 @@ the proposition machinery.
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">property_kind</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_property</span><span class="plain">(4, </span><span class="identifier">prn</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNonConstant</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNonConstant</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1 you give a value of the %4 property as '%2', "</span>
             <span class="string">"and while this does make sense as %3, it is a value which "</span>

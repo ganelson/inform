@@ -29,6 +29,11 @@
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BS</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BuildScripts::script_length</span><span class="plain">(</span><span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BS</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildScripts::add_step</span><span class="plain">(</span><span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain">, </span><span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -52,6 +57,8 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function BuildScripts::new is used in 3/bg (<a href="3-bg.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The function BuildScripts::script_length is used in 3/bg (<a href="3-bg.html#SP2">&#167;2</a>).</p>
 
 <p class="endnote">The function BuildScripts::add_step is used in 3/bs2 (<a href="3-bs2.html#SP4">&#167;4</a>).</p>
 

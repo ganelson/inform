@@ -183,7 +183,7 @@ definition structure stands incomplete for a while. Filling it in is called
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Properties::Measurement::validate_definitions is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
+<p class="endnote">The function Properties::Measurement::validate_definitions is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Where:
 </p>
@@ -217,7 +217,7 @@ definition structure stands incomplete for a while. Filling it in is called
             <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Validating mdef with headword %W... &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                 <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnknownProperty</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnknownProperty</span><span class="plain">),</span>
                 <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
                 <span class="string">"that definition involves an unknown property"</span><span class="plain">,</span>
                 <span class="string">"assuming it was meant to be a definition in the form 'Definition: "</span>
@@ -248,7 +248,7 @@ and issue a problem.
             <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_encoded_notation</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonarithmeticKOV</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonarithmeticKOV</span><span class="plain">),</span>
                     <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
                     <span class="string">"the property value given here has a kind which can't be "</span>
                     <span class="string">"subject to numerical comparisons"</span><span class="plain">,</span>
@@ -259,7 +259,7 @@ and issue a problem.
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain">,</span>
                 <span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">)) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingWrongKOV</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingWrongKOV</span><span class="plain">),</span>
                     <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
                     <span class="string">"the property value given here is the wrong kind"</span><span class="plain">,</span>
                     <span class="string">"and does not match the property being looked at."</span><span class="plain">);</span>
@@ -268,7 +268,7 @@ and issue a problem.
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Can't get literal from &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonLiteral</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonLiteral</span><span class="plain">),</span>
                 <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
                 <span class="string">"that definition is wrongly phrased"</span><span class="plain">,</span>
                 <span class="string">"assuming it was meant to be a grading adjective like 'Definition: a "</span>
@@ -341,7 +341,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingMisphrased</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingMisphrased</span><span class="plain">),</span>
             <span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">),</span>
             <span class="string">"that definition is wrongly phrased"</span><span class="plain">,</span>
             <span class="string">"assuming it was meant to be a grading adjective like 'Definition: a "</span>
@@ -390,7 +390,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">) &gt; 1) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiwordGrading</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiwordGrading</span><span class="plain">),</span>
                     <span class="identifier">q</span><span class="plain">, </span><span class="string">"a grading adjective must be a single word"</span><span class="plain">,</span>
                     <span class="string">"as in 'Definition: a container is large if its carrying capacity is "</span>
                     <span class="string">"10 or more.': 'fairly large' would not be allowed because it would "</span>
@@ -400,7 +400,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">CALLW</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingCalled</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingCalled</span><span class="plain">),</span>
                     <span class="identifier">q</span><span class="plain">, </span><span class="string">"callings are not allowed when defining grading adjectives"</span><span class="plain">,</span>
                     <span class="string">"so 'Definition: a container is large if its carrying capacity is 10 "</span>
                     <span class="string">"or more.' is fine, but so 'Definition: a container (called the bag) "</span>
@@ -411,7 +411,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> != 1) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnless</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnless</span><span class="plain">),</span>
                     <span class="identifier">q</span><span class="plain">, </span><span class="string">"'unless' is not allowed when defining grading adjectives"</span><span class="plain">,</span>
                     <span class="string">"so 'Definition: a container is large if its carrying capacity is 10 "</span>
                     <span class="string">"or more.' is fine, but so 'Definition: a container is modest unless "</span>
@@ -523,7 +523,7 @@ can't normally be unravelled at compile time.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" To decide which object is %N ( S - description of objects ) "</span><span class="plain">,</span>
             <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;superlative</span><span class="plain">));</span>
-        <span class="identifier">Sentences::make_node</span><span class="plain">(</span>
+        <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(),</span>
             <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">),</span>
             <span class="character">':'</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
@@ -543,7 +543,7 @@ can't normally be unravelled at compile time.
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" (- {-primitive-definition:extremal%s%W}  -) "</span><span class="plain">,</span>
             <span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">),</span>
             <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">);</span>
-        <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">), </span><span class="character">'.'</span><span class="plain">);</span>
+        <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">), </span><span class="character">'.'</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
 </pre>
 
@@ -661,7 +661,7 @@ can't normally be unravelled at compile time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Properties::Measurement::compile_MADJ_routines is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Properties::Measurement::compile_MADJ_routines is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Comparative forms. </b>For timing reasons, these are made all at once, and later than when the headword
 adjectives and superlatives are made.

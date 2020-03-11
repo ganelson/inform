@@ -70,7 +70,7 @@ and <code class="display"><span class="extract">stored_in_negation</span></code>
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::obtain</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAdjectiveClash</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAdjectiveClash</span><span class="plain">),</span>
                 <span class="string">"this tries to create a new either/or adjective with the same name "</span>
                 <span class="string">"as an existing kind"</span><span class="plain">,</span>
                 <span class="string">"which isn't allowed. For example, 'A hopper can be a container.' is "</span>
@@ -167,7 +167,7 @@ around), but not to break one.
                     <span class="functiontext">Problems::quote_property</span><span class="plain">(4, </span><span class="identifier">neg</span><span class="plain">);</span>
                     <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">);</span>
                 <span class="plain">}</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BrokenNegationPair</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BrokenNegationPair</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, you proposed to set up the properties '%2' and '%3' as "</span>
                     <span class="string">"opposites of each other. But I can't allow that, because '%4' "</span>

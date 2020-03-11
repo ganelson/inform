@@ -86,7 +86,7 @@ with an external file, read or written by the story file during play.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">nc</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_external_file</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allow_exf_creations</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorFileCreation</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorFileCreation</span><span class="plain">),</span>
                     <span class="string">"this is not the way to create a new external file"</span><span class="plain">,</span>
                     <span class="string">"which should be done with a special 'The File ... is called ...' "</span>
                     <span class="string">"sentence."</span><span class="plain">);</span>
@@ -156,7 +156,7 @@ with an external file, read or written by the story file during play.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadFileOwner</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadFileOwner</span><span class="plain">),</span>
             <span class="string">"the owner of this file is wrongly specified"</span><span class="plain">,</span>
             <span class="string">"since it is not one of the three possibilities - "</span>
             <span class="string">"(1) Specify nothing: making the file belong to this "</span>
@@ -194,7 +194,7 @@ letters or digits, with the first being a letter.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = -1;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameNotTextual</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameNotTextual</span><span class="plain">),</span>
             <span class="string">"a file can only be called with a single quoted piece of text"</span><span class="plain">,</span>
             <span class="string">"as in: 'The File of Wisdom is called \</span><span class="plain">"</span><span class="string">wisdom\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
 </pre>
@@ -265,7 +265,7 @@ letters or digits, with the first being a letter.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bad_filename</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameUnsafe</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameUnsafe</span><span class="plain">),</span>
                 <span class="string">"filenames must be very conservatively chosen"</span><span class="plain">,</span>
                 <span class="string">"in order to be viable on a wide range of computers. They must "</span>
                 <span class="string">"consist of 3 to 23 English letters or digits, with the first being "</span>
@@ -294,7 +294,7 @@ letters or digits, with the first being a letter.
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Objected to character %c\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">invalid</span><span class="plain">) || (</span><span class="identifier">j</span><span class="plain">==47)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadFileIFID</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadFileIFID</span><span class="plain">),</span>
                     <span class="string">"the owner of the file should be specified "</span>
                     <span class="string">"using a valid double-quoted IFID"</span><span class="plain">,</span>
                     <span class="string">"as in: 'The File of Wisdom (owned by project "</span>
@@ -311,7 +311,7 @@ letters or digits, with the first being a letter.
 
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">F</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">K_external_file</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameDuplicate</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameDuplicate</span><span class="plain">),</span>
                 <span class="string">"this is already the name of a file"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>

@@ -90,7 +90,7 @@ cleared.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function NewVerbs::add_inequalities is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function NewVerbs::add_inequalities is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function NewVerbs::add_inequalities_inner appears nowhere else.</p>
 
@@ -216,7 +216,7 @@ now absolutely any non-empty word range is accepted as the property name.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">NONE_VERBM</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbRelationUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbRelationUnknown</span><span class="plain">),</span>
             <span class="string">"new verbs can only be defined in terms of existing relations"</span><span class="plain">,</span>
             <span class="string">"all of which have names ending 'relation': thus '...implies the "</span>
             <span class="string">"possession relation' is an example of a valid definition, this "</span>
@@ -234,7 +234,7 @@ now absolutely any non-empty word range is accepted as the property name.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">NONE_VERBM</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbRelationVague</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbRelationVague</span><span class="plain">),</span>
             <span class="string">"that's too vague"</span><span class="plain">,</span>
             <span class="string">"calling a relation simply 'relation'."</span><span class="plain">);</span>
 
@@ -251,7 +251,7 @@ now absolutely any non-empty word range is accepted as the property name.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">NONE_VERBM</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbUnknownMeaning</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbUnknownMeaning</span><span class="plain">),</span>
             <span class="string">"I don't see what the meaning of this verb ought to be"</span><span class="plain">,</span>
             <span class="string">"because it doesn't take any of the three forms I know: a relation "</span>
             <span class="string">"name ('...means the wearing relation'), a property name ('...means "</span>
@@ -275,7 +275,7 @@ now absolutely any non-empty word range is accepted as the property name.
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vm</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">NONE_VERBM</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"that's another verb which has no meaning at present"</span><span class="plain">,</span>
                 <span class="string">"so this doesn't help me."</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -418,7 +418,7 @@ now absolutely any non-empty word range is accepted as the property name.
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) &gt; </span><span class="identifier">MAX_WORDS_IN_PREPOSITION</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SP</span><span class="plain">) &gt; </span><span class="identifier">MAX_WORDS_IN_PREPOSITION</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PrepositionLong</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PrepositionLong</span><span class="plain">),</span>
                     <span class="string">"prepositions can be very long indeed in today's Inform"</span><span class="plain">,</span>
                     <span class="string">"but not as long as this."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
@@ -485,10 +485,10 @@ now absolutely any non-empty word range is accepted as the property name.
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">MW</span><span class="plain">) != 1) || (</span><span class="identifier">VerbMeanings::is_meaningless</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">))) {</span>
                     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                     <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">MW</span><span class="plain">));</span>
-                    <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+                    <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchBuiltInMeaning</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchBuiltInMeaning</span><span class="plain">),</span>
                         <span class="string">"that's not one of the built-in meanings I know"</span><span class="plain">,</span>
                         <span class="string">"and should be one of the ones used in the Preamble to the "</span>
                         <span class="string">"Standard Rules."</span><span class="plain">);</span>
@@ -701,7 +701,7 @@ infinitive for that &mdash; the two are the same in most regular English verbs
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">number</span><span class="plain"> == 2) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::nonempty</span><span class="plain">(</span><span class="identifier">present_plural</span><span class="plain">)) {</span>
-                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PresentPluralTwice</span><span class="plain">),</span>
+                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PresentPluralTwice</span><span class="plain">),</span>
                             <span class="string">"the present plural has been given twice"</span><span class="plain">,</span>
                             <span class="string">"since two of the principal parts of this verb begin "</span>
                             <span class="string">"with 'they'."</span><span class="plain">);</span>
@@ -731,7 +731,7 @@ infinitive for that &mdash; the two are the same in most regular English verbs
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbMalformed</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VerbMalformed</span><span class="plain">),</span>
             <span class="string">"this verb's definition is malformed"</span><span class="plain">,</span>
             <span class="string">"and should have its principal parts supplied like so: 'The verb "</span>
             <span class="string">"to sport (he sports, they sport, he sported, it is sported, "</span>
@@ -758,7 +758,7 @@ perfectly valid if a verb were being defined.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">PW</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PrepositionConjugated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PrepositionConjugated</span><span class="plain">),</span>
                 <span class="string">"the principal parts of 'to be' are known already"</span><span class="plain">,</span>
                 <span class="string">"so should not be spelled out again as part of the instructions "</span>
                 <span class="string">"for this new preposition."</span><span class="plain">);</span>
@@ -782,7 +782,7 @@ perfectly valid if a verb were being defined.
                 <span class="string">"this gives us two definitions of what appears to be the same verb"</span><span class="plain">,</span>
                 <span class="string">"or at least has the same infinitive form."</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this verb definition appears to clash with a built-in verb"</span><span class="plain">,</span>
                 <span class="string">"a table of which can be seen on the Phrasebook index."</span><span class="plain">);</span>
 </pre>
@@ -1034,7 +1034,7 @@ foreign verbs (4).
 
 <p class="endnote">The function NewVerbs::ConjugateVerbDefinitions is used in 27/ei (<a href="27-ei.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function NewVerbs::ConjugateVerb is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function NewVerbs::ConjugateVerb is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18_1"></a><b>&#167;18.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Compile ConjugateVerb routine</span> <span class="cwebmacronumber">18.1</span>&gt; =

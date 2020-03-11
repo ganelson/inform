@@ -31,7 +31,6 @@ features we will use from <code class="display"><span class="extract">foundation
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">bibliographic_datum_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">heading_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">phrase_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">inference_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">property_MT</span>
@@ -70,7 +69,6 @@ features we will use from <code class="display"><span class="extract">foundation
     <span class="definitionkeyword">enum</span> <span class="constant">ph_stack_frame_box_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">i6_inclusion_matter_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">literal_list_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">control_structure_phrase_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">adjective_meaning_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">adjective_meaning_block_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">measurement_definition_MT</span>
@@ -127,8 +125,7 @@ features we will use from <code class="display"><span class="extract">foundation
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">contents_entry</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">control_structure_phrase</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">contents_entry</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">counting_data</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">definition</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">dval_written</span><span class="plain">)</span>
@@ -136,7 +133,6 @@ features we will use from <code class="display"><span class="extract">foundation
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">equation_symbol</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">equation</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">generalisation</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">i6_inclusion_matter</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">i6_memory_setting</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">implication</span><span class="plain">)</span>
@@ -243,7 +239,7 @@ foundation module does that automatically.)
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">extension_dictionary_entry</span><span class="plain"> *, </span><span class="identifier">Extensions::Dictionary::log_entry</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *, </span><span class="functiontext">Invocations::log_list</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *, </span><span class="functiontext">Invocations::log</span><span class="plain">)</span>
-    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *, </span><span class="functiontext">Sentences::Headings::log</span><span class="plain">)</span>
+    <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="identifier">heading</span><span class="plain"> *, </span><span class="functiontext">Sentences::Headings::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *, </span><span class="functiontext">Phrases::TypeData::Textual::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">inference</span><span class="plain"> *, </span><span class="functiontext">World::Inferences::log</span><span class="plain">)</span>
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain"> *, </span><span class="functiontext">Calculus::Schemas::log</span><span class="plain">)</span>
@@ -354,7 +350,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
     <span class="definitionkeyword">enum</span> <span class="constant">DESCRIPTION_COMPILATION_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXPRESSIONS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FIGURE_CREATIONS_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">HEADINGS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">IMPLICATIONS_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INFERENCES_DA</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LOCAL_VARIABLES_DA</span>
@@ -404,7 +399,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">DESCRIPTION_COMPILATION_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"description compilation"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">EXPRESSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"expressions"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">FIGURE_CREATIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"figure creations"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">HEADINGS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"headings"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">IMPLICATIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"implications"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">INFERENCES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"inferences"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="constant">LOCAL_VARIABLES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"local variables"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>

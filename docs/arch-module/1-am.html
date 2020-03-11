@@ -28,6 +28,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">target_vm_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">compatibility_specification_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">semantic_version_number_holder_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">semver_range_MT</span>
 </pre>
 
 <pre class="display">
@@ -35,6 +36,7 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">target_vm</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">compatibility_specification</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semantic_version_number_holder</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semver_range</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -77,7 +79,7 @@
 
 
 <pre class="displaydefn">
-        <span class="plain">;</span>
+        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="functiontext">VersionNumbers::writer</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

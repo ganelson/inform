@@ -528,13 +528,13 @@ has the standard form, but we check it anyway.
         <span class="identifier">subject_noun_phrase</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">;</span>
         <span class="identifier">verb_phrase</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="string">"VP childless"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"VP childless"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">) != </span><span class="constant">UNKNOWN_NT</span><span class="plain">)</span>
-            <span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="string">"VP not a VP"</span><span class="plain">);</span>
+            <span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"VP not a VP"</span><span class="plain">);</span>
 
         <span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">ParseTree::get_vu</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="string">"verb null"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"verb null"</span><span class="plain">);</span>
         <span class="identifier">verb_phrase_negated</span><span class="plain"> = (</span><span class="identifier">VerbUsages::is_used_negatively</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">))?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">ParseTree::get_prep</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">);</span>
 </pre>
@@ -599,7 +599,7 @@ using a tense other than the present, and all is well.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PM_DescLocalPast_location</span><span class="plain"> != </span><span class="identifier">current_sentence</span><span class="plain">)</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescLocalPast</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescLocalPast</span><span class="plain">),</span>
                 <span class="string">"conditions written in the past tense cannot refer to "</span>
                 <span class="string">"temporary values"</span><span class="plain">,</span>
                 <span class="string">"because they have no past. For instance, the name given in a "</span>
@@ -665,7 +665,7 @@ pattern) plus "in the Home" (a description).
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExParser::Subtrees::throw_past_problem</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">desc</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PM_PastSubordinate_issued_at</span><span class="plain"> != </span><span class="identifier">current_sentence</span><span class="plain">) {</span>
             <span class="identifier">PM_PastSubordinate_issued_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastSubordinate</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastSubordinate</span><span class="plain">),</span>
                     <span class="string">"subordinate clauses have to be in the present tense"</span><span class="plain">,</span>
                     <span class="string">"so 'the Black Door was open' is fine, but not 'something which "</span>
                     <span class="string">"was open'. Only the main verb can be in the past tense."</span><span class="plain">);</span>

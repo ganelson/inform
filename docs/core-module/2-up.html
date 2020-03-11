@@ -39,7 +39,7 @@ non-problem messages when everything was fine. That all happens here:
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) {</span>
             <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">);</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"*"</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"*"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disaster_struck</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue problem summary for an internal error</span> <span class="cwebmacronumber">2.1</span>&gt;
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue problem summary for a run with problem messages</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -157,7 +157,7 @@ command line &mdash; deserves the truth.
         <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">);</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="identifier">problems_file</span><span class="plain">;</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"**"</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"**"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The %5-word source text has successfully been translated "</span>
             <span class="string">"into a world with %1 %2 and %3 %4, and the index has been "</span>
@@ -168,7 +168,7 @@ command line &mdash; deserves the truth.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">telemetry_recording</span><span class="plain">) {</span>
             <span class="identifier">Telemetry::ensure_telemetry_file</span><span class="plain">();</span>
             <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">);</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"**"</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"**"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The %5-word source text has successfully been translated "</span>
                 <span class="string">"into a world with %1 %2 and %3 %4, and the index has been "</span>
@@ -178,7 +178,7 @@ command line &mdash; deserves the truth.
         <span class="plain">}</span>
         <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">"**"</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"**"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The %5-word source text has successfully been translated "</span>
             <span class="string">"into an intermediate description which can be run through "</span>

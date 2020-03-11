@@ -48,9 +48,9 @@ INBUILDX = inbuild/Tangled/inbuild
 # In the eventual makefile, the symbol NAMEWEB is defined as its location.
 
 {module} FOUNDATION foundation ../inweb/foundation-module
-{module} WORDS words inform7/words-module
+{module} WORDS words inbuild/words-module
 {module} INFLECTIONS inflections inform7/inflections-module
-{module} SYNTAX syntax inform7/syntax-module
+{module} SYNTAX syntax inbuild/syntax-module
 {module} LINGUISTICS linguistics inform7/linguistics-module
 {module} KINDS kinds inform7/kinds-module
 {module} PROBLEMS problems inform7/problems-module
@@ -149,12 +149,12 @@ INFORM6X = inform6/Tangled/inform6
 {dep} PROBLEMSTEST on SYNTAX
 {dep} PROBLEMSTEST on PROBLEMS
 
-{tool} SYNTAXTEST syntax-test inform7/syntax-test
+{tool} SYNTAXTEST syntax-test inbuild/syntax-test
 {dep} SYNTAXTEST on FOUNDATION
 {dep} SYNTAXTEST on WORDS
 {dep} SYNTAXTEST on SYNTAX
 
-{tool} WORDSTEST words-test inform7/words-test
+{tool} WORDSTEST words-test inbuild/words-test
 {dep} WORDSTEST on FOUNDATION
 {dep} WORDSTEST on WORDS
 
@@ -378,6 +378,10 @@ pages:
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb
 	$(INWEBX) inbuild -weave-docs -weave-into docs/inbuild
 	$(INWEBX) inbuild/arch-module -weave-docs -weave-into docs/arch-module
+	$(INWEBX) inbuild/syntax-module -weave-docs -weave-into docs/syntax-module
+	$(INWEBX) inbuild/syntax-test -weave-docs -weave-into docs/syntax-test
+	$(INWEBX) inbuild/words-module -weave-docs -weave-into docs/words-module
+	$(INWEBX) inbuild/words-test -weave-docs -weave-into docs/words-test
 	$(INWEBX) inbuild/inbuild-module -weave-docs -weave-into docs/inbuild-module
 	$(INWEBX) inbuild/html-module -weave-docs -weave-into docs/html-module
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc
@@ -394,10 +398,6 @@ pages:
 	$(INWEBX) inform7/multimedia-module -weave-docs -weave-into docs/multimedia-module
 	$(INWEBX) inform7/problems-module -weave-docs -weave-into docs/problems-module
 	$(INWEBX) inform7/problems-test -weave-docs -weave-into docs/problems-test
-	$(INWEBX) inform7/syntax-module -weave-docs -weave-into docs/syntax-module
-	$(INWEBX) inform7/syntax-test -weave-docs -weave-into docs/syntax-test
-	$(INWEBX) inform7/words-module -weave-docs -weave-into docs/words-module
-	$(INWEBX) inform7/words-test -weave-docs -weave-into docs/words-test
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy
 	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps
 	$(INWEBX) inter -weave-docs -weave-into docs/inter

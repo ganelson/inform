@@ -361,7 +361,7 @@ from the tree.
         <span class="plain">}</span>
         <span class="functiontext">Assertions::Refiner::refine</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">FORBID_CREATION</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">multiplicity_ANNOT</span><span class="plain">) &gt; 1) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultipleCalled</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultipleCalled</span><span class="plain">),</span>
                 <span class="string">"I can only make a single 'called' thing at a time"</span><span class="plain">,</span>
                 <span class="string">"or rather, the 'called' is only allowed to apply to one thing "</span>
                 <span class="string">"at a time. For instance, 'A thing called a vodka and tonic is "</span>
@@ -370,7 +370,7 @@ from the tree.
         <span class="plain">}</span>
         <span class="identifier">forbid_nowhere</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">creation_rule</span><span class="plain"> == </span><span class="constant">FORBID_CREATION</span><span class="plain">)</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"'called' can't be used in this context"</span><span class="plain">,</span>
                 <span class="string">"and is best reserved for full sentences."</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Assertions::Refiner::refine</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="constant">MANDATE_CREATION</span><span class="plain">);</span>
@@ -482,14 +482,14 @@ inference subject representing the domain to which any new kind would belong.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">InferenceSubjects::is_an_object</span><span class="plain">(</span><span class="identifier">kind_of_what</span><span class="plain">)) ||</span>
             <span class="plain">(</span><span class="functiontext">InferenceSubjects::is_a_kind_of_object</span><span class="plain">(</span><span class="identifier">kind_of_what</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfInstance</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfInstance</span><span class="plain">),</span>
                 <span class="string">"kinds can only be made from other kinds"</span><span class="plain">,</span>
                 <span class="string">"so 'a kind of container' is allowed but 'a kind of Mona Lisa' (where "</span>
                 <span class="string">"Mona Lisa is a specific thing you've already made), wouldn't be "</span>
                 <span class="string">"allowed. There is only one Mona Lisa."</span><span class="plain">);</span>
             <span class="identifier">kind_of_what</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfActualValue</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfActualValue</span><span class="plain">),</span>
                 <span class="string">"I don't recognise that as a kind"</span><span class="plain">,</span>
                 <span class="string">"such as 'room' or 'door': it would need to be straightforwardly the name "</span>
                 <span class="string">"of a kind, and not be qualified with adjectives like 'open'."</span><span class="plain">);</span>
@@ -507,7 +507,7 @@ inference subject representing the domain to which any new kind would belong.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfExotica</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfExotica</span><span class="plain">),</span>
             <span class="string">"you are only allowed to create kinds of objects (things, rooms, and "</span>
             <span class="string">"so on) and kinds of 'value'"</span><span class="plain">,</span>
             <span class="string">"so for example 'colour is a kind of value' is allowed but 'prime is "</span>
@@ -654,14 +654,14 @@ thing. (If we had more and better pronouns, they would go here.)
             <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">nominative</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) &amp;&amp;</span>
                 <span class="plain">(&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == 2) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Assertions::Traverse::get_current_subject_plurality</span><span class="plain">())) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EnigmaticThey</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EnigmaticThey</span><span class="plain">),</span>
                     <span class="string">"I'm unable to handle 'they' here"</span><span class="plain">,</span>
                     <span class="string">"since it looks as if it needs to refer to more than one "</span>
                     <span class="string">"object here, and that's something I can't manage."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Assertions::Traverse::get_current_object</span><span class="plain">() == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EnigmaticPronoun</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EnigmaticPronoun</span><span class="plain">),</span>
                     <span class="string">"I'm not sure what to make of the pronoun here"</span><span class="plain">,</span>
                     <span class="string">"since it is unclear what previously mentioned thing "</span>
                     <span class="string">"is being referred to. In general, it's best only to use "</span>
@@ -752,7 +752,7 @@ property name meaning, not as the name of a kind of value.)
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VagueVariable</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VagueVariable</span><span class="plain">),</span>
             <span class="string">"'variable' is too vague a description"</span><span class="plain">,</span>
             <span class="string">"because it doesn't say what kind of value should go into the variable. "</span>
             <span class="string">"'number variable' or 'a number that varies' - whatever kind of value you "</span>
@@ -827,7 +827,7 @@ a noun instead of a condition testing the current action.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Quantifiers::can_be_used_in_assertions</span><span class="plain">(</span><span class="functiontext">Descriptions::get_quantifier</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">So $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplexDeterminer</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplexDeterminer</span><span class="plain">),</span>
                 <span class="string">"complicated determiners are not allowed in assertions"</span><span class="plain">,</span>
                 <span class="string">"so for instance 'More than three people are in the Dining Room' "</span>
                 <span class="string">"or 'None of the containers is open' will be rejected. Only "</span>
@@ -844,7 +844,7 @@ a noun instead of a condition testing the current action.
                 <span class="identifier">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="constant">EVERY_NT</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplexEvery</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplexEvery</span><span class="plain">),</span>
                 <span class="string">"in an assertion 'every' or 'all' can only be used with a kind"</span><span class="plain">,</span>
                 <span class="string">"so for instance 'A coin is in every container' is all right, "</span>
                 <span class="string">"because 'container' is a kind, but not 'A coin is in every "</span>

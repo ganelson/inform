@@ -21,17 +21,19 @@ few of these.
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_genre</span><span class="plain"> {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">genre_name</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stored_in_nests</span><span class="plain">;</span>
         <span class="identifier">METHOD_CALLS</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inbuild_genre</span><span class="plain">;</span>
 
-    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">nested</span><span class="plain">) {</span>
         <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_genre</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gen</span><span class="plain">;</span>
         <span class="identifier">gen</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain">);</span>
         <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;stored_in_nests</span><span class="plain"> = </span><span class="identifier">nested</span><span class="plain">;</span>
         <span class="identifier">ENABLE_METHOD_CALLS</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gen</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -39,6 +41,11 @@ few of these.
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Genres::name</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"(none)"</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Genres::stored_in_nests</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;stored_in_nests</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -48,7 +55,9 @@ few of these.
 
 <p class="endnote">The function Genres::name is used in 2/cps (<a href="2-cps.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The structure inbuild_genre is accessed in 2/rqr and here.</p>
+<p class="endnote">The function Genres::stored_in_nests is used in 3/bg (<a href="3-bg.html#SP1">&#167;1</a>).</p>
+
+<p class="endnote">The structure inbuild_genre is accessed in 2/rqr, 3/bg and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 

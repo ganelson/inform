@@ -926,13 +926,13 @@ is the super-kind ("value", "thing").
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_kinds_of_object</span><span class="plain"> = 1;</span>
-    <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::new_base</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
+    <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::new_base</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PROTECTED_MODEL_PROCEDURE</span>
         <span class="identifier">PROTECTED_MODEL_PROCEDURE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::base_construction</span><span class="plain">(</span>
-            <span class="functiontext">Kinds::Constructors::new</span><span class="plain">(</span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#NEW"</span><span class="plain">));</span>
+            <span class="functiontext">Kinds::Constructors::new</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"#NEW"</span><span class="plain">));</span>
         &lt;<span class="cwebmacro">Renew the subject if necessary to cope with an early subject creation</span> <span class="cwebmacronumber">33.1</span>&gt;<span class="plain">;</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>

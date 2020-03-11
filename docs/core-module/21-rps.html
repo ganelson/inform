@@ -220,7 +220,7 @@ subject and object NPs.
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchRuleExists</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchRuleExists</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, you gave '%2' where a rule was required."</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -476,7 +476,7 @@ a given rule appears in, and (within limits) where. A simple example:
     <pre class="displaydefn">
             <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">BAD_RULE_PLACEMENT</span><span class="plain">;</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnspecifiedRulebookPlacement</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnspecifiedRulebookPlacement</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you didn't specify in which rulebook the rule was to "</span>
                 <span class="string">"be listed, only which existing rule it should go before or "</span>
@@ -509,7 +509,7 @@ a given rule appears in, and (within limits) where. A simple example:
 
     <pre class="displaydefn">
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImproperRulePlacement</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImproperRulePlacement</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you used the special verb 'to be listed' - which specifies "</span>
                 <span class="string">"how rules are listed in rulebooks - in a way I didn't recognise. "</span>
@@ -530,7 +530,7 @@ a given rule appears in, and (within limits) where. A simple example:
     <pre class="displaydefn">
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchRulebookPlacement</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchRulebookPlacement</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, you gave '%2' where a rulebook was required."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -574,7 +574,7 @@ a given rule appears in, and (within limits) where. A simple example:
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sense</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">((</span><span class="identifier">new_rule_placement</span><span class="plain"> != </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">) || (</span><span class="identifier">side</span><span class="plain"> != </span><span class="constant">IN_SIDE</span><span class="plain">))) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRulePlacementNegation</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRulePlacementNegation</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, you used the special verb 'to be listed' - which specifies "</span>
                     <span class="string">"how rules are listed in rulebooks - in a way too complicated to "</span>
@@ -610,7 +610,7 @@ a given rule appears in, and (within limits) where. A simple example:
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">the_rulebook</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">relative_to_which</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PlaceWithMissingRule</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PlaceWithMissingRule</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"In %1, you talk about the position of the rule '%3' "</span>
                         <span class="string">"in the rulebook '%2', but in fact that rule isn't in this "</span>

@@ -10,9 +10,9 @@ Preform Language: English
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: words
+Import: inbuild/words
+Import: inbuild/syntax
 Import: inflections
-Import: syntax
 Import: problems
 Import: linguistics
 Import: kinds

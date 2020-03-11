@@ -162,7 +162,7 @@ to do but panic.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Strings::TextSubstitutions::allow_no_further_text_subs is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Strings::TextSubstitutions::allow_no_further_text_subs is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>For some years these were compiled to routines verbosely called
 <code class="display"><span class="extract">text_routine_1</span></code> and so on, but no longer:
@@ -429,11 +429,11 @@ a request for a new text substitution to be compiled later...
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ts_code_block</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ROUTINE_NT</span><span class="plain">);</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ts_code_block</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">ROUTINE_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain">);</span>
         <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
         <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain">);</span>
-        <span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">INVOCATION_LIST_NT</span><span class="plain">);</span>
+        <span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">from_text_substitution_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="functiontext">Sentences::RuleSubtrees::parse_routine_structure</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">);</span>

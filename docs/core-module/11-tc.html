@@ -57,7 +57,7 @@ their existence.
 
 <p class="endnote">The function Calculus::Propositions::Abstract::to_make_a_const is used in 9/tc (<a href="9-tc.html#SP5_4_2_2">&#167;5.4.2.2</a>).</p>
 
-<p class="endnote">The function Calculus::Propositions::Abstract::to_create_something is used in 3/nl (<a href="3-nl.html#SP6">&#167;6</a>), 9/tc (<a href="9-tc.html#SP5_4_1_1">&#167;5.4.1.1</a>, <a href="9-tc.html#SP5_4_2_1">&#167;5.4.2.1</a>, <a href="9-tc.html#SP5_4_2_2">&#167;5.4.2.2</a>, <a href="9-tc.html#SP5_4_2_3">&#167;5.4.2.3</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a>), 9/pd (<a href="9-pd.html#SP5_11">&#167;5.11</a>), 15/cp (<a href="15-cp.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Calculus::Propositions::Abstract::to_create_something is used in 3/nl (<a href="3-nl.html#SP5">&#167;5</a>), 9/tc (<a href="9-tc.html#SP5_4_1_1">&#167;5.4.1.1</a>, <a href="9-tc.html#SP5_4_2_1">&#167;5.4.2.1</a>, <a href="9-tc.html#SP5_4_2_2">&#167;5.4.2.2</a>, <a href="9-tc.html#SP5_4_2_3">&#167;5.4.2.3</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a>), 9/pd (<a href="9-pd.html#SP5_11">&#167;5.11</a>), 15/cp (<a href="15-cp.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>A proposition to assert that an object has a given kind:
 </p>
@@ -250,7 +250,7 @@ parse the text to find what which property is referred to.
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">VW</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithEitherOrValue</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithEitherOrValue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The sentence '%1' seems to be trying to create something which "</span>
                     <span class="string">"has '%2', where the %3 property is being set equal to %4. But "</span>
@@ -270,7 +270,7 @@ parse the text to find what which property is referred to.
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithValuelessValue</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithValuelessValue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The sentence '%1' seems to be trying to create something which "</span>
                     <span class="string">"has '%2', where the %3 property is being set in some way. But "</span>
@@ -309,7 +309,7 @@ that the rest is property name; and otherwise
 <pre class="displaydefn">
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this looked to me as if it might be trying to create something "</span>
                 <span class="string">"which has certain properties"</span><span class="plain">,</span>
                 <span class="string">"and that made no sense on investigation. This sometimes happens "</span>
@@ -336,7 +336,7 @@ that the rest is property name; and otherwise
 
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed property list: pname = &lt;%W&gt;; pval = &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadPropertyList</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadPropertyList</span><span class="plain">),</span>
             <span class="string">"this looked to me as if it might be trying to create something "</span>
             <span class="string">"which has certain properties"</span><span class="plain">,</span>
             <span class="string">"and that made no sense on investigation. This sometimes happens "</span>

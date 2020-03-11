@@ -89,7 +89,7 @@ within the application.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">nc</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_figure_name</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allow_figure_creations</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorFigureCreation</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackdoorFigureCreation</span><span class="plain">),</span>
                     <span class="string">"this is not the way to create a new figure name"</span><span class="plain">,</span>
                     <span class="string">"which should be done with a special 'Figure ... is the file ...' "</span>
                     <span class="string">"sentence."</span><span class="plain">);</span>
@@ -188,7 +188,7 @@ within the application.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PictureNotTextual</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PictureNotTextual</span><span class="plain">),</span>
             <span class="string">"a figure can only be declared as a quoted file name"</span><span class="plain">,</span>
             <span class="string">"which should be the name of a JPEG or PNG image inside the "</span>
             <span class="string">"project's .materials folder. For instance, 'Figure 2 is the "</span>
@@ -228,7 +228,7 @@ is no need to translate this to other languages.)
         <span class="identifier">Assertions::Creator::vet_name_for_noun</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">F</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">K_figure_name</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PictureDuplicate</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PictureDuplicate</span><span class="plain">),</span>
                 <span class="string">"this is already the name of a Figure"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>

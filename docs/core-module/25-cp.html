@@ -51,7 +51,7 @@ should always be supplied for "To..." phrases, but left null for rules.
         <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">acl</span><span class="plain">) {</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) != </span><span class="constant">ROUTINE_NT</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">))))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to compile phrase with bad ROUTINE node"</span><span class="plain">);</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_COMPILATION</span><span class="plain">, </span><span class="string">"Compiling phrase:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
@@ -164,7 +164,7 @@ to us, so we end our routine with code which certainly performs a return.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
                 <span class="string">"value decided by this phrase"</span><span class="plain">) != </span><span class="identifier">TRUE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultDecideFails</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultDecideFails</span><span class="plain">),</span>
                     <span class="string">"it's not possible to decide such a value"</span><span class="plain">,</span>
                     <span class="string">"so this can't be allowed."</span><span class="plain">);</span>
                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
@@ -226,9 +226,9 @@ phrase to be different from the number version, and so on.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::Compile::code_line</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">csp</span><span class="plain"> = </span><span class="identifier">ParseTree::get_control_structure_used</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+        <span class="identifier">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">csp</span><span class="plain"> = </span><span class="identifier">ParseTree::get_control_structure_used</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">to_compile</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Sentences::RuleSubtrees::opens_block</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::opens_block</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">)) {</span>
             <span class="functiontext">Frames::Blocks::beginning_block_phrase</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">);</span>
             <span class="identifier">to_compile</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -409,7 +409,7 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow1</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow1</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but although '%2' is a condition which it is legal "</span>
                 <span class="string">"to test with 'if', 'when', and so forth, it is not something I "</span>
@@ -418,14 +418,14 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="string">"need to adjust those circumstances."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">, </span><span class="constant">LOGICAL_AND_NT</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but 'now' does not work with the condition '%2' "</span>
                 <span class="string">"because it can only make one wish come true at a time: so it "</span>
                 <span class="string">"doesn't like the 'and'. Try rewriting as two 'now's in a row?"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow3</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadNow3</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but '%2'	isn't the sort of condition which can be "</span>
                 <span class="string">"made to be true, in the way that 'the ball is on the table' can be "</span>
@@ -447,7 +447,7 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but '%2'	isn't a condition, so I can't see how to "</span>
             <span class="string">"make it true from here on."</span><span class="plain">);</span>
@@ -466,7 +466,7 @@ henceforth to be true, so we simply compile empty code in that case.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but '%2'	isn't an action, so I can't see how to try it."</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -490,7 +490,7 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="plain">(</span><span class="identifier">ram</span><span class="plain"> != </span><span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedRulebookOutcome2</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedRulebookOutcome2</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but this is a rulebook outcome which can only be used "</span>
                     <span class="string">"within rulebooks which recognise it. You've used it in a definition "</span>
@@ -503,7 +503,7 @@ henceforth to be true, so we simply compile empty code in that case.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedRulebookOutcome</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedRulebookOutcome</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but this is a rulebook outcome which can only be used "</span>
                 <span class="string">"within rulebooks which recognise it. You've used it in a rule which "</span>
@@ -610,7 +610,7 @@ henceforth to be true, so we simply compile empty code in that case.
                                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">case_spec</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">switch_kind</span><span class="plain">);</span>
-                                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueNonConstant</span><span class="plain">));</span>
+                                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueNonConstant</span><span class="plain">));</span>
                                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                         <span class="string">"The case %1 is required to be a constant value, rather than "</span>
                                         <span class="string">"something which has different values at different times: "</span>
@@ -621,7 +621,7 @@ henceforth to be true, so we simply compile empty code in that case.
                                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">case_kind</span><span class="plain">);</span>
                                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">switch_kind</span><span class="plain">);</span>
-                                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueMismatch</span><span class="plain">));</span>
+                                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueMismatch</span><span class="plain">));</span>
                                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                                         <span class="string">"The case %1 has the wrong kind of value for the possibilities "</span>
                                         <span class="string">"being chosen from: %2 instead of %3."</span><span class="plain">);</span>
@@ -656,7 +656,7 @@ henceforth to be true, so we simply compile empty code in that case.
                     <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">;</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">A</span><span class="plain">);</span>
                     <span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">));</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueDuplicated</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueDuplicated</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"The case %1 occurs more than once in this 'if' switch."</span><span class="plain">);</span>
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -777,7 +777,7 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">csp</span><span class="plain"> == </span><span class="identifier">switch_CSP</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile a switch tail</span> <span class="cwebmacronumber">5.4.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">csp</span><span class="plain"> == </span><span class="identifier">say_CSP</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile a say tail</span> <span class="cwebmacronumber">5.4.3</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">csp</span><span class="plain"> == </span><span class="identifier">instead_CSP</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile an instead tail</span> <span class="cwebmacronumber">5.4.4</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Sentences::RuleSubtrees::opens_block</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Compile a loop tail</span> <span class="cwebmacronumber">5.4.5</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::opens_block</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Compile a loop tail</span> <span class="cwebmacronumber">5.4.5</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -822,7 +822,7 @@ the ceaseless repetition of the keyword "case". Thus, <code class="display"><spa
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CaseValueUnknown</span><span class="plain">),</span>
             <span class="string">"I don't recognise this case value"</span><span class="plain">,</span>
             <span class="string">"that is, the value written after the '--'."</span><span class="plain">);</span>
 </pre>
@@ -1226,7 +1226,7 @@ the "[if...]".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the text at %1, the text substitution '[%2]' ought to occur as the "</span>
                 <span class="string">"middle part of its construction, but it appears to be on its own."</span><span class="plain">);</span>
@@ -1249,7 +1249,7 @@ the "[if...]".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the text at %1, the text substitution '[%2]' ought to occur as the "</span>
                 <span class="string">"ending part of its construction, but it appears to be on its own."</span><span class="plain">);</span>
@@ -1270,7 +1270,7 @@ the "[if...]".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayIfNested</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayIfNested</span><span class="plain">),</span>
                 <span class="string">"a second '[if ...]' text substitution occurs inside an existing one"</span><span class="plain">,</span>
                 <span class="string">"which makes this text too complicated. While a single text can contain "</span>
                 <span class="string">"more than one '[if ...]', this can only happen if the old if is finished "</span>
@@ -1293,7 +1293,7 @@ the "[if...]".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayOverComplex</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayOverComplex</span><span class="plain">),</span>
                 <span class="string">"this is too complex a text substitution"</span><span class="plain">,</span>
                 <span class="string">"and needs to be simplified. You might find it helful to define "</span>
                 <span class="string">"a new text substitution of your own ('To say fiddly details: "</span>
@@ -1313,7 +1313,7 @@ the "[if...]".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayOtherwiseWithoutIf</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayOtherwiseWithoutIf</span><span class="plain">),</span>
                 <span class="string">"an '[otherwise]' text substitution occurs where there appears to be no "</span>
                 <span class="string">"[if ...]"</span><span class="plain">,</span>
                 <span class="string">"which doesn't make sense - there is nothing for it to be otherwise to."</span><span class="plain">);</span>
@@ -1334,7 +1334,7 @@ the "[if...]".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure5</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure5</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the text at %1, the '[%2]' ought to occur inside an [if ...], but "</span>
                 <span class="string">"is cut off because it has been interleaved with a complicated say "</span>
@@ -1356,7 +1356,7 @@ the "[if...]".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TwoSayOtherwises</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TwoSayOtherwises</span><span class="plain">),</span>
                 <span class="string">"there's already an (unconditional) \</span><span class="plain">"</span><span class="string">[otherwise]\</span><span class="plain">"</span><span class="string"> or \</span><span class="plain">"</span><span class="string">[else]\</span><span class="plain">"</span><span class="string"> "</span>
                 <span class="string">"in this text substitution"</span><span class="plain">,</span>
                 <span class="string">"so it doesn't make sense to follow that with a further one."</span><span class="plain">);</span>
@@ -1375,7 +1375,7 @@ the "[if...]".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayEndIfWithoutSayIf</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayEndIfWithoutSayIf</span><span class="plain">),</span>
                 <span class="string">"an '[end if]' text substitution occurs where there appears to be no "</span>
                 <span class="string">"[if ...]"</span><span class="plain">,</span>
                 <span class="string">"which doesn't make sense - there is nothing for it to end."</span><span class="plain">);</span>
@@ -1396,7 +1396,7 @@ the "[if...]".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure4</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure4</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the text at %1, the '[%2]' is cut off from its [if ...], because "</span>
                 <span class="string">"it has been interleaved with a complicated say construction."</span><span class="plain">);</span>
@@ -1427,7 +1427,7 @@ the "[if...]".
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stinv</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">stinv</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure3</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ComplicatedSayStructure3</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the text at %1, the text substitution '[%2]' seems to start a "</span>
                     <span class="string">"complicated say construction, but it doesn't have a matching end."</span><span class="plain">);</span>

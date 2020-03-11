@@ -223,6 +223,10 @@ kinds:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::move_within</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="functiontext">InferenceSubjects::falls_within</span><span class="plain">(</span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">sub</span><span class="plain">), </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">));</span>
     <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::include_templates_for_kinds</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">Kinds::Interpreter::include_templates_for_kinds</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">());</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -235,6 +239,8 @@ kinds:
 
 <p class="endnote">The function Kinds::Knowledge::move_within appears nowhere else.</p>
 
+<p class="endnote">The function Kinds::Knowledge::include_templates_for_kinds is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
+
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Problems with kinds. </b></p>
 
 
@@ -246,17 +252,17 @@ kinds:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::kinds_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionRedundant_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionRedundant</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionRedundant</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only be given once"</span><span class="plain">,</span>
                     <span class="string">"and this combination is already established."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionNotBaseKOV_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionNotBaseKOV</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionNotBaseKOV</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only involve simple kinds of value"</span><span class="plain">,</span>
                     <span class="string">"rather than complicated ones such as lists of other values."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NonDimensional_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonDimensional</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonDimensional</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only be given between kinds of "</span>
                     <span class="string">"value which are known to be numerical"</span><span class="plain">,</span>
                     <span class="string">"and not all of these are. Saying something like 'Pressure is a "</span>
@@ -266,7 +272,7 @@ kinds:
                     <span class="string">"Inform will realise."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnitSequenceOverflow_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnitSequenceOverflow</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnitSequenceOverflow</span><span class="plain">),</span>
                     <span class="string">"reading that sentence led me into calculating such a complicated "</span>
                     <span class="string">"kind of value that I ran out of memory"</span><span class="plain">,</span>
                     <span class="string">"which my programmer really didn't expect to happen. I think you "</span>
@@ -275,7 +281,7 @@ kinds:
                     <span class="string">"weirdly tricky. Can you simplify?"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionsInconsistent_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionsInconsistent</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionsInconsistent</span><span class="plain">),</span>
                     <span class="string">"this is inconsistent with what is already known about those kinds of value"</span><span class="plain">,</span>
                     <span class="string">"all three of which already have well-established relationships - see the "</span>
                     <span class="string">"Kinds index for more."</span><span class="plain">);</span>
@@ -285,7 +291,7 @@ kinds:
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">pn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">K1</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K2</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindUnalterable</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindUnalterable</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but that seems to contradict %2, as %3 and %4 "</span>
                     <span class="string">"are incompatible. (If %3 were a kind of %4 or vice versa "</span>
@@ -297,7 +303,7 @@ kinds:
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">pn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">K1</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K2</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindsCircular</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindsCircular</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but that seems to contradict %2, as it would "</span>
                     <span class="string">"make a circularity with %3 and %4 each being kinds of the "</span>
@@ -305,13 +311,13 @@ kinds:
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleYet_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleYet</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleYet</span><span class="plain">),</span>
                     <span class="string">"this tries to scale up or down a value which so far has no point of "</span>
                     <span class="string">"reference to scale from"</span><span class="plain">,</span>
                     <span class="string">"which is impossible."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleTwice_KINDERROR</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleTwice</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleTwice</span><span class="plain">),</span>
                     <span class="string">"this tries to specify the scaling for a kind of value whose "</span>
                     <span class="string">"scaling is already established"</span><span class="plain">,</span>
                     <span class="string">"which is impossible."</span><span class="plain">);</span>

@@ -30,5 +30,6 @@ retrospective/*/ni
 retrospective/*/*.o
 retrospective/makefile
 
+inbuild/*-test/Tests/Test Cases/_Results_Actual/
 inform7/*-test/Tests/Test Cases/_Results_Actual/
 rsync.log

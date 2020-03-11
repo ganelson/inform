@@ -246,7 +246,7 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestBadRequirements</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestBadRequirements</span><span class="plain">),</span>
             <span class="string">"I didn't recognise the requirements for this test scenario"</span><span class="plain">,</span>
             <span class="string">"which should be 'test ... with ... in ...' or '... "</span>
             <span class="string">"holding ...'"</span><span class="plain">);</span>
@@ -263,7 +263,7 @@ without notice.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestQuoted</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestQuoted</span><span class="plain">),</span>
             <span class="string">"test scenarios must have unquoted names"</span><span class="plain">,</span>
             <span class="string">"so 'test garden with ...' is allowed but not 'test \</span><span class="plain">"</span><span class="string">garden\</span><span class="plain">"</span><span class="string"> with...'"</span><span class="plain">);</span>
 </pre>
@@ -279,7 +279,7 @@ without notice.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestMultiWord</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestMultiWord</span><span class="plain">),</span>
             <span class="string">"test scenarios must have single-word names"</span><span class="plain">,</span>
             <span class="string">"so 'test garden with ...' is allowed but not 'test garden gate with...'"</span><span class="plain">);</span>
 </pre>
@@ -295,7 +295,7 @@ without notice.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">NO_INTT</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownInternalTest</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownInternalTest</span><span class="plain">),</span>
             <span class="string">"that's an internal test case which I don't know"</span><span class="plain">,</span>
             <span class="string">"so I am taking no action."</span><span class="plain">);</span>
 </pre>
@@ -310,7 +310,7 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDoubleWith</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDoubleWith</span><span class="plain">),</span>
             <span class="string">"the second 'with' should be 'holding'"</span><span class="plain">,</span>
             <span class="string">"as in 'test frogs with \</span><span class="plain">"</span><span class="string">get frogs\</span><span class="plain">"</span><span class="string"> holding net' rather than "</span>
             <span class="string">"'test frogs with \</span><span class="plain">"</span><span class="string">get frogs\</span><span class="plain">"</span><span class="string"> with net'."</span><span class="plain">);</span>
@@ -373,7 +373,7 @@ without notice.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;sentence_test_declared_at</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDuplicate</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDuplicate</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"Two test scripts have been set up with the same name: "</span>
                     <span class="string">"%1 and %2."</span><span class="plain">);</span>
@@ -406,7 +406,7 @@ without notice.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::check_test_command</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"undo"</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestContainsUndo</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestContainsUndo</span><span class="plain">),</span>
                 <span class="string">"this test script contains an UNDO command"</span><span class="plain">,</span>
                 <span class="string">"which the story file has no way to automate the running of. "</span>
                 <span class="string">"(An UNDO is such a complete reversion to the previous state "</span>
@@ -415,7 +415,7 @@ without notice.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; </span><span class="constant">MAX_LENGTH_OF_COMMAND</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestCommandTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestCommandTooLong</span><span class="plain">),</span>
                 <span class="string">"this test script contains a command which is too long"</span><span class="plain">,</span>
                 <span class="string">"and cannot be fed into Inform for automatic testing. "</span>
                 <span class="string">"(The format for a test script is a sequence of commands, "</span>
@@ -531,11 +531,11 @@ without notice.
 
 <p class="endnote">The function PL::Parsing::TestScripts::check_test_command is used in <a href="#SP8_1">&#167;8.1</a>.</p>
 
-<p class="endnote">The function PL::Parsing::TestScripts::write_text is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function PL::Parsing::TestScripts::write_text is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_stub_routine is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_stub_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_routine is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function PL::Parsing::TestScripts::TestScriptSub_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
@@ -685,7 +685,7 @@ without notice.
 
 <p class="endnote">The function PL::Parsing::TestScripts::new_internal is used in <a href="#SP9">&#167;9</a>.</p>
 
-<p class="endnote">The function PL::Parsing::TestScripts::InternalTestCases_routine is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function PL::Parsing::TestScripts::InternalTestCases_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function PL::Parsing::TestScripts::begin_internal_reporting is used in 20/eq (<a href="20-eq.html#SP52">&#167;52</a>).</p>
 

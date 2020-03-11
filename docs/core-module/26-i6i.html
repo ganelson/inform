@@ -126,7 +126,7 @@ though seasoned I6 hackers tend to reach for them a little sooner than that.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WhenDefiningUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WhenDefiningUnknown</span><span class="plain">),</span>
             <span class="string">"I do not understand what definition you're referring to"</span><span class="plain">,</span>
             <span class="string">"so I can't make an Inform 6 inclusion there."</span><span class="plain">);</span>
 </pre>
@@ -141,7 +141,7 @@ though seasoned I6 hackers tend to reach for them a little sooner than that.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BeforeTheLibrary</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BeforeTheLibrary</span><span class="plain">),</span>
             <span class="string">"this syntax was withdrawn in January 2008"</span><span class="plain">,</span>
             <span class="string">"in favour of a more finely controlled I6 inclusion command. The effect "</span>
             <span class="string">"you want can probably be achieved by writing 'after \</span><span class="plain">"</span><span class="string">Definitions.i6t\</span><span class="plain">"</span><span class="string">.' "</span>
@@ -160,7 +160,7 @@ handled here: if we see one, we ignore it.
 
 <pre class="display">
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">INFORM6CODE_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="constant">INFORM6CODE_NT</span><span class="plain">, -1, 2, </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">INFORM6CODE_NT</span><span class="plain">, -1, 2, </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
@@ -293,7 +293,7 @@ code instructions; we remember what's needed ourselves:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadI6Inclusion</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadI6Inclusion</span><span class="plain">),</span>
             <span class="string">"this is not a form of I6 code inclusion I recognise"</span><span class="plain">,</span>
             <span class="string">"because the clause at the end telling me where to put the code "</span>
             <span class="string">"excerpt is not one of the possibilities I know. The clause can "</span>

@@ -132,7 +132,7 @@ and it seems best to reject the extra complexity needed.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_property</span><span class="plain">(2, </span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AnomalousProperty</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AnomalousProperty</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Sorry, but I'm going to have to disallow the sentence %1, even "</span>
                 <span class="string">"though it asks for something reasonable. A very small number "</span>

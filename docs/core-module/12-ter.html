@@ -211,7 +211,7 @@ setting a global variable.
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">NonlocalVariables::is_constant</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prevailing_mood</span><span class="plain"> == </span><span class="identifier">CERTAIN_CE</span><span class="plain">))</span>
                 <span class="identifier">allowed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allowed</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantQualifyVariableValues</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantQualifyVariableValues</span><span class="plain">),</span>
                     <span class="string">"a variable can only be given its value straightforwardly or "</span>
                     <span class="string">"qualified by 'usually'"</span><span class="plain">,</span>
                     <span class="string">"not with 'always', 'seldom' or 'never'."</span><span class="plain">);</span>
@@ -291,7 +291,7 @@ of both A and B.
                         <span class="functiontext">Kinds::RunTime::interpret_test_equality</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1]));</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
                     <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$0 and $0; $u and $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt1</span><span class="plain">), </span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1]);</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCompareValues</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCompareValues</span><span class="plain">),</span>
                         <span class="string">"that would involve comparing things which don't mean "</span>
                         <span class="string">"anything to me"</span><span class="plain">,</span>
                         <span class="string">"so I'm lost."</span><span class="plain">);</span>
@@ -376,7 +376,7 @@ lantern is bright".
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseComparisonUnsafe</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseComparisonUnsafe</span><span class="plain">),</span>
                     <span class="string">"for complicated internal reasons this comparison isn't safe to perform"</span><span class="plain">,</span>
                     <span class="string">"and might give you a falsely negative result. To avoid what might "</span>
                     <span class="string">"be misleading, you aren't allowed to compare a response to text."</span><span class="plain">);</span>
@@ -435,7 +435,7 @@ lantern is bright".
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">st</span><span class="plain">[1]);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">st</span><span class="plain">[0]);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the line %1, you seem to be asking me to put %2 into %3, "</span>
                     <span class="string">"which can't safely be done."</span><span class="plain">);</span>
@@ -463,12 +463,12 @@ one that's more helpfully specific and return <code class="display"><span class=
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">))</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantEquateValues</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantEquateValues</span><span class="plain">),</span>
                     <span class="string">"equality is not something I can change"</span><span class="plain">,</span>
                     <span class="string">"so either those are already the same or are different, and I "</span>
                     <span class="string">"can't alter matters."</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeNamedConstant</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeNamedConstant</span><span class="plain">),</span>
                     <span class="string">"I can't change that"</span><span class="plain">,</span>
                     <span class="string">"because it is a name for a constant value. Some named values, "</span>
                     <span class="string">"like 'the score', can be changed, because they were defined "</span>

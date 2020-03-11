@@ -178,9 +178,9 @@ if the kind was already a unit or was successfully converted into one,
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_unit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_unit</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -193,8 +193,8 @@ if the kind was already a unit or was successfully converted into one,
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -207,8 +207,8 @@ if the kind was already a unit or was successfully converted into one,
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_real</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_real</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -223,9 +223,9 @@ by the next instance to be created.
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;next_free_value</span><span class="plain">++;</span>
     <span class="plain">}</span>
 </pre>

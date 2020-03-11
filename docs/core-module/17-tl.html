@@ -375,7 +375,7 @@ different for compilation purposes.
         <span class="reserved">literal_text</span><span class="plain"> *</span><span class="identifier">lt</span><span class="plain"> = </span><span class="functiontext">Strings::TextLiterals::compile_literal</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lt</span><span class="plain">) </span><span class="identifier">lt</span><span class="plain">-</span><span class="element">&gt;as_boxed_quotation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">else</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyQuotationBox</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyQuotationBox</span><span class="plain">),</span>
                 <span class="string">"a boxed quotation can't be empty"</span><span class="plain">,</span>
                 <span class="string">"though I suppose you could make it consist of just a few spaces "</span>
                 <span class="string">"to get a similar effect if you really needed to."</span><span class="plain">);</span>
@@ -437,7 +437,7 @@ number <code class="display"><span class="extract">-1</span></code>).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Strings::TextLiterals::compile is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Strings::TextLiterals::compile is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Strings::TextLiterals::traverse_lts appears nowhere else.</p>
 

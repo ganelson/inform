@@ -365,7 +365,7 @@ charlatans" and what they "deserve". I'm a better person now.
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">PROBLEM_INSUB</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInlineExpansion</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInlineExpansion</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but when I looked that phrase up I found that its inline "</span>
             <span class="string">"definition included the bracing {%2}. Text written in braces like this, "</span>
@@ -483,7 +483,7 @@ the presence of annotations can change what we do.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">supplied</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAnLvalue</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAnLvalue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but that seems to mean changing '%2', which "</span>
                     <span class="string">"is a constant and can't be altered."</span><span class="plain">);</span>
@@ -629,7 +629,7 @@ its own when kind variables are in play.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNaturalDefault2</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNaturalDefault2</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"To achieve %1, we'd need to be able to store a default value of "</span>
             <span class="string">"the kind '%2', but there's no natural choice for this."</span><span class="plain">);</span>
@@ -819,7 +819,7 @@ character:
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackspaceWithdrawn</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BackspaceWithdrawn</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I attempted to compile %1 using its inline definition, "</span>
             <span class="string">"but this contained the invalid annotation '{backspace}', "</span>
@@ -1263,7 +1263,7 @@ having this annotation seems the smaller of the two warts.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">supplied</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Misboxed</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Misboxed</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I attempted to compile %1, but the text '%2' supplied to be a "</span>
                 <span class="string">"boxed quotation wasn't a constant piece of text in double-quotes. "</span>
@@ -1407,14 +1407,14 @@ the problem messages are phrased differently if something goes wrong.
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(2, </span><span class="identifier">supplied</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returning_from_rule</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleNotAllowedOutcome</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleNotAllowedOutcome</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1 as something to be a successful outcome of a rule, which "</span>
                 <span class="string">"has the kind %2; but this is not a rule which is allowed to have a value "</span>
                 <span class="string">"as its outcome."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RedundantReturnKOV</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RedundantReturnKOV</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1 as the outcome of a phrase, %2, but in the definition of "</span>
                 <span class="string">"something which was not a phrase to decide a value."</span><span class="plain">);</span>
@@ -1436,13 +1436,13 @@ the problem messages are phrased differently if something goes wrong.
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">kind_supplied</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">kind_needed</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returning_from_rule</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleOutcomeWrongKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleOutcomeWrongKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1 as the outcome of a rule which produces a value, but this "</span>
                 <span class="string">"was the wrong kind of value: %2 rather than %3."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ReturnWrongKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ReturnWrongKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1 as the outcome of a phrase to decide a value, but this was "</span>
                 <span class="string">"the wrong kind of value: %2 rather than %3."</span><span class="plain">);</span>
@@ -1603,7 +1603,7 @@ rule), and also makes a note for indexing purposes.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonconstantEvent</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonconstantEvent</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but '%2' isn't the name of any timed event that "</span>
                 <span class="string">"I know of. (These need to be set up in a special way, like so - "</span>
@@ -1626,7 +1626,7 @@ rule), and also makes a note for indexing purposes.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInlineTag</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInlineTag</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I attempted to compile %1 using its inline definition, "</span>
             <span class="string">"but this contained the invalid annotation '%2'."</span><span class="plain">);</span>
@@ -1948,7 +1948,7 @@ default values when created, so they are always typesafe anyway.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNaturalDefault</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNaturalDefault</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"To achieve %1, we'd need to be able to store a default value of "</span>
                     <span class="string">"the kind '%2', but there's no natural choice for this."</span><span class="plain">);</span>
@@ -2144,7 +2144,7 @@ story title).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K1</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantIncrementKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantIncrementKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"To achieve %1, we'd need to be able to add or subtract 1 from "</span>
                 <span class="string">"a value of the kind '%2', but there's no good way to do this."</span><span class="plain">);</span>
@@ -2565,7 +2565,7 @@ mathematical definitions in the Standard Rules.
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RescaleWithdrawn</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RescaleWithdrawn</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I attempted to compile %1 using its inline definition, "</span>
             <span class="string">"but this contained the invalid annotation '{-rescale:...}', "</span>
@@ -2727,7 +2727,7 @@ especially those involving complicated linguistic propositions. For example:
             <span class="functiontext">Equations::emit_solution</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]),</span>
                 <span class="functiontext">Rvalues::to_equation</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1]));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SolvedNameless</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SolvedNameless</span><span class="plain">),</span>
                 <span class="string">"only specific named equations can be solved"</span><span class="plain">,</span>
                 <span class="string">"not equations arrived at by further calculations or choices. (Sorry: "</span>
                 <span class="string">"but there would be no safe way to determine when an equation could "</span>
@@ -2899,7 +2899,7 @@ of defined adjectives. So:
         <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">Adjectives::parse</span><span class="plain">(</span><span class="identifier">LW</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">aph</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Adjectives::Meanings::write_adjective_test_routine</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">aph</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"You tried to use '(+' and '+)' to expand to the Inform 6 routine "</span>
                 <span class="string">"address of an adjective, but it was an adjective with no meaning."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>

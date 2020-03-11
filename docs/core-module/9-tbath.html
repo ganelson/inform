@@ -66,7 +66,7 @@ relationship as well as the noun).
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) &gt; 1)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span>
                 <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)), </span><span class="identifier">TEXT_MC</span><span class="plain">+</span><span class="identifier">TEXTWITHSUBS_MC</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextNotClosing</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextNotClosing</span><span class="plain">),</span>
                 <span class="string">"it looks as if perhaps you did not intend that to read as a "</span>
                 <span class="string">"single sentence"</span><span class="plain">,</span>
                 <span class="string">"and possibly the text in quotes was supposed to stand as "</span>
@@ -133,7 +133,7 @@ called in traverse 2, when there are no uses of "to have" left in the tree.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="constant">X_OF_Y_NT</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousOf</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousOf</span><span class="plain">),</span>
                 <span class="string">"the 'of' here appears superfluous"</span><span class="plain">,</span>
                 <span class="string">"assuming the sentence aims to give a property value of something. "</span>
                 <span class="string">"(For instance, if we want to declare the carrying capacity of "</span>
@@ -143,7 +143,7 @@ called in traverse 2, when there are no uses of "to have" left in the tree.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousWith</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousWith</span><span class="plain">),</span>
                 <span class="string">"the 'has ... with' here appears to be a mixture of two ways to "</span>
                 <span class="string">"give something properties"</span><span class="plain">,</span>
                 <span class="string">"that is, 'The box is a container with capacity 10.' and 'The box "</span>
@@ -168,7 +168,7 @@ as a <code class="display"><span class="extract">PROPERTYCALLED_NT</span></code>
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousCalled</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousCalled</span><span class="plain">),</span>
                 <span class="string">"'called' should be used only when the name is different from the kind"</span><span class="plain">,</span>
                 <span class="string">"so this sentence should be simplified. For example, 'A door has a "</span>
                 <span class="string">"colour called colour' should be written more simply as 'A door has "</span>
@@ -376,7 +376,7 @@ conclusion we would have reached.
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)))))</span>
                 <span class="functiontext">Assertions::Creator::convert_instance_to_nounphrase</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ThereIsVague</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ThereIsVague</span><span class="plain">),</span>
                     <span class="string">"'there is...' can only be used to create objects"</span><span class="plain">,</span>
                     <span class="string">"and not instances of other kinds.'"</span><span class="plain">);</span>
         <span class="plain">}</span>

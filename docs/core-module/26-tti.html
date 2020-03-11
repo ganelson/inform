@@ -65,7 +65,7 @@ such as "The yourself object" in
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">INVALID_I6TR</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedUnknownCategory</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedUnknownCategory</span><span class="plain">),</span>
             <span class="string">"that isn't one of the things which can be translated to I6"</span><span class="plain">,</span>
             <span class="string">"and should be '... variable', '... property', '... object', "</span>
             <span class="string">"'... kind', '... rule', or '... action'. For instance, 'The yourself "</span>
@@ -109,7 +109,7 @@ will be required to pass <code class="display"><span class="extract">&lt;extra-r
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">, </span><span class="constant">INVALID_I6TR</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Ensure that we are translating to a quoted I6 identifier</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">responses_list</span><span class="plain">) </span><span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">responses_list</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">responses_list</span><span class="plain">) </span><span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">responses_list</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">category</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Take immediate action on the translation where possible</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
@@ -164,7 +164,7 @@ traversing the parse tree to look for translation sentences of the right sort.
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">responses_list</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">valid</span><span class="plain">) </span>&lt;<span class="cwebmacro">Dequote it and see if it's valid</span> <span class="cwebmacronumber">5.2.1</span>&gt;<span class="character">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">valid</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedToNonIdentifier</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedToNonIdentifier</span><span class="plain">),</span>
                 <span class="string">"Inform 7 constructions can only translate into quoted I6 identifiers"</span><span class="plain">,</span>
                 <span class="string">"which must be strings of 1 to 31 characters drawn from 1, 2, ..., 9, "</span>
                 <span class="string">"a or A, b or B, ..., z or Z, or underscore '_', except that the "</span>
@@ -223,7 +223,7 @@ traversing the parse tree to look for translation sentences of the right sort.
                     <span class="identifier">code</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="functiontext">Rules::now_rule_defines_response</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">code</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_I6ResponsesAwry</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_I6ResponsesAwry</span><span class="plain">),</span>
                     <span class="string">"additional information about I6 translation of a rule can "</span>
                     <span class="string">"only take the form of a list of responses"</span><span class="plain">,</span>
                     <span class="string">"each quoted and followed by a bracketed letter."</span><span class="plain">);</span>

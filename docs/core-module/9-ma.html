@@ -173,7 +173,7 @@ of <code class="display"><span class="extract">px</span></code> and <code class=
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prevailing_mood</span><span class="plain"> == </span><span class="identifier">INITIALLY_CE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedInitially</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedInitially</span><span class="plain">),</span>
                 <span class="string">"you can only say 'initially' when creating variables using 'is'"</span><span class="plain">,</span>
                 <span class="string">"so 'The squirrel population is initially 0' is fine, but not "</span>
                 <span class="string">"'The acorn is initially carried by Mr Hedges.' - probably you "</span>
@@ -184,7 +184,7 @@ of <code class="display"><span class="extract">px</span></code> and <code class=
             <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">), </span><span class="identifier">CON_property</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Lvalues::is_actual_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VagueAboutSpecific</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VagueAboutSpecific</span><span class="plain">),</span>
                 <span class="string">"you can only equivocate with 'usually', 'rarely', "</span>
                 <span class="string">"'always' and the like when talking about kinds of thing"</span><span class="plain">,</span>
                 <span class="string">"because when a specific thing is involved you should say "</span>
@@ -198,7 +198,7 @@ of <code class="display"><span class="extract">px</span></code> and <code class=
             <span class="plain">((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">, </span><span class="constant">multiplicity_ANNOT</span><span class="plain">) &gt; 1)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) != </span><span class="identifier">RELATIONSHIP_NT</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiplyVague</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiplyVague</span><span class="plain">),</span>
                 <span class="string">"multiple objects can only be put into relationships"</span><span class="plain">,</span>
                 <span class="string">"by saying something like 'In the Drawing Room are two women.', "</span>
                 <span class="string">"and all other assertions with multiple objects are disallowed: "</span>
@@ -422,7 +422,7 @@ at which point it becomes a <code class="display"><span class="extract">PROPER_N
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithIsWith</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WithIsWith</span><span class="plain">),</span>
             <span class="string">"you can't say that one general description is another "</span><span class="plain">,</span>
             <span class="string">"for instance by writing 'A container with carrying capacity 10 is a "</span>
             <span class="string">"container with description \</span><span class="plain">"</span><span class="string">Handy.\</span><span class="plain">"</span><span class="string">'."</span><span class="plain">);</span>
@@ -465,7 +465,7 @@ like properties.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_XofYisZofW</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_XofYisZofW</span><span class="plain">),</span>
             <span class="string">"this seems to say two different properties are not simply equal "</span>
             <span class="string">"but somehow the same thing"</span><span class="plain">,</span>
             <span class="string">"like saying that 'the printed name of the millpond is the "</span>
@@ -487,7 +487,7 @@ like properties.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadXofY</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadXofY</span><span class="plain">),</span>
             <span class="string">"this is the wrong way around if you want to specify a property"</span><span class="plain">,</span>
             <span class="string">"like saying that '10 is the score of the platinum pyramid', "</span>
             <span class="string">"which is poor style. (Though sweet are the uses of adversity.)"</span><span class="plain">);</span>
@@ -565,7 +565,7 @@ specifying its edibility.
         <span class="functiontext">Problems::quote_subject</span><span class="plain">(1, </span><span class="identifier">inst</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="functiontext">InferenceSubjects::where_created</span><span class="plain">(</span><span class="identifier">inst</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InstanceNowKind</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InstanceNowKind</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote '%2', but that seems to say that some "</span>
             <span class="string">"room or thing already created ('%1', created by '%3') is now to "</span>
@@ -598,7 +598,7 @@ specifying its edibility.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(2, </span><span class="identifier">prn</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAsProperty</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAsProperty</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote '%1', but that seems to say that a property "</span>
                     <span class="string">"(%3) has to be a kind as well. It is sometimes okay for a "</span>
@@ -628,7 +628,7 @@ specifying its edibility.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(2, </span><span class="identifier">val</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAsActualValue</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindAsActualValue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote '%1', but that seems to say that a value already "</span>
                     <span class="string">"in existence (%3) has to be a kind as well. (It's %2.)"</span><span class="plain">);</span>
@@ -648,7 +648,7 @@ specifying its edibility.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfKindDisallowed</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfKindDisallowed</span><span class="plain">),</span>
             <span class="string">"you aren't allowed to make new kinds of kinds"</span><span class="plain">,</span>
             <span class="string">"only kinds of things which already exist. So 'A fox is a kind of animal' "</span>
             <span class="string">"is fine, but 'A tricky kind is a kind of kind' isn't allowed."</span><span class="plain">);</span>
@@ -665,7 +665,7 @@ specifying its edibility.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfEveryDisallowed</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfEveryDisallowed</span><span class="plain">),</span>
             <span class="string">"you aren't allowed to make a kind of everything"</span><span class="plain">,</span>
             <span class="string">"or of everything matching a description. 'A badger is a kind of animal' "</span>
             <span class="string">"is fine, but 'A gene is a kind of every animal' isn't allowed. (Probably "</span>
@@ -683,7 +683,7 @@ specifying its edibility.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindUncertainDisallowed</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindUncertainDisallowed</span><span class="plain">),</span>
             <span class="string">"you aren't allowed to make a kind in a way expressing certainty or doubt"</span><span class="plain">,</span>
             <span class="string">"so 'A badger is a kind of animal' is fine, but 'A fungus is usually a "</span>
             <span class="string">"kind of every animal' isn't allowed, and nor is 'A fern is never a kind "</span>
@@ -760,7 +760,7 @@ further sub-cases later.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
             <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyObj2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyObj2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1 you give a value of a property as '%2', but it "</span>
                 <span class="string">"seems to be a general description of a value (%3) rather than "</span>
@@ -780,7 +780,7 @@ further sub-cases later.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PeculiarProperty</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PeculiarProperty</span><span class="plain">),</span>
             <span class="string">"that is a very peculiar property value"</span><span class="plain">,</span>
             <span class="string">"and ought to be something more definite and explicit."</span><span class="plain">);</span>
 </pre>
@@ -798,7 +798,7 @@ further sub-cases later.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfIs</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindOfIs</span><span class="plain">),</span>
             <span class="string">"that seems to say that a new kind is the same as something else"</span><span class="plain">,</span>
             <span class="string">"like saying 'A kind of container is a canister': which ought to be put the "</span>
             <span class="string">"other way round, 'A canister is a kind of container'."</span><span class="plain">);</span>
@@ -822,7 +822,7 @@ further sub-cases later.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Adjectives::Meanings::has_ENUMERATIVE_meaning</span><span class="plain">(</span><span class="identifier">ParseTree::get_aph</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))) {</span>
             <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EOOwnerMutable</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EOOwnerMutable</span><span class="plain">),</span>
                     <span class="string">"either/or properties have to be given to clearly identifiable "</span>
                     <span class="string">"owners"</span><span class="plain">,</span>
                     <span class="string">"rather than to a collection of owners which might vary during "</span>
@@ -834,7 +834,7 @@ further sub-cases later.
                     <span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">), </span><span class="identifier">py</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonAdjectivalProperty</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonAdjectivalProperty</span><span class="plain">),</span>
                 <span class="string">"that property can't be used adjectivally as a value"</span><span class="plain">,</span>
                 <span class="string">"since it is an adjective applying to a thing but is "</span>
                 <span class="string">"not a name from a range of possibilities."</span><span class="plain">);</span>
@@ -897,7 +897,7 @@ further sub-cases later.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadEvery</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadEvery</span><span class="plain">),</span>
             <span class="string">"'every' (or 'always') can't be used in that way"</span><span class="plain">,</span>
             <span class="string">"and should be reserved for sentences like 'A coin is in every room'."</span><span class="plain">);</span>
 </pre>
@@ -919,7 +919,7 @@ not "every room".
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadEvery2</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadEvery2</span><span class="plain">),</span>
             <span class="string">"'every' can't be used in that way"</span><span class="plain">,</span>
             <span class="string">"and should be reserved for sentences like 'A coin is in every room'."</span><span class="plain">);</span>
 </pre>
@@ -987,7 +987,7 @@ pretty improbable:
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionEquated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionEquated</span><span class="plain">),</span>
                 <span class="string">"an action can't be the same as a thing"</span><span class="plain">,</span>
                 <span class="string">"so my guess is that this is an attempt to categorise an action which went "</span>
                 <span class="string">"wrong because there was already something of that name in existence. For "</span>
@@ -996,7 +996,7 @@ pretty improbable:
                 <span class="string">"actions at once to a named kind of action, like 'Taking and dropping are "</span>
                 <span class="string">"manipulation.' - only one can be named at a time.)"</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionEquated2</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionEquated2</span><span class="plain">),</span>
                 <span class="string">"that means something else already"</span><span class="plain">,</span>
                 <span class="string">"so it will only confuse things if we use it for a kind of action."</span><span class="plain">);</span>
 </pre>
@@ -1023,7 +1023,7 @@ a spatial location.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Assertions::Refiner::turn_player_to_yourself</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) { </span><span class="functiontext">Assertions::Maker::make_assertion_recursive</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Assertions::Refiner::turn_player_to_yourself</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)) { </span><span class="functiontext">Assertions::Maker::make_assertion_recursive</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IntangibleRelated</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IntangibleRelated</span><span class="plain">),</span>
             <span class="string">"this seems to give a worldly relationship to something intangible"</span><span class="plain">,</span>
             <span class="string">"like saying that 'in the box is a text'. Perhaps it came "</span>
             <span class="string">"to this because you gave something physical a name which was "</span>
@@ -1051,7 +1051,7 @@ a spatial location.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_XofYRelated</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_XofYRelated</span><span class="plain">),</span>
             <span class="string">"this seems to say that a property of something is not simply equal "</span>
             <span class="string">"to what happens at the moment to satisfy some relationship, but "</span>
             <span class="string">"conceptually the same as that relationship"</span><span class="plain">,</span>
@@ -1115,7 +1115,7 @@ possible to coerce the left side to a noun, we will.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescriptionIsOther</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescriptionIsOther</span><span class="plain">),</span>
             <span class="string">"this seems to say that a general description is something else"</span><span class="plain">,</span>
             <span class="string">"like saying that 'a door is 20'."</span><span class="plain">);</span>
 </pre>
@@ -1139,7 +1139,7 @@ possible to coerce the left side to a noun, we will.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionAdjective</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionAdjective</span><span class="plain">),</span>
             <span class="string">"that is already the name of a property"</span><span class="plain">,</span>
             <span class="string">"so it will only confuse things if we use it for a kind of action."</span><span class="plain">);</span>
 </pre>
@@ -1212,7 +1212,7 @@ but not in this context.
             <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">&lt;activity</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)))</span>
                 <span class="functiontext">Activities::add_variable</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActivityRef</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActivityRef</span><span class="plain">),</span>
                     <span class="string">"an activity has to be formally referred to in a way making clear that "</span>
                     <span class="string">"it is indeed a rulebook when we give it named values"</span><span class="plain">,</span>
                     <span class="string">"to reduce the risk of ambiguity. So 'The printing the banner text "</span>
@@ -1245,7 +1245,7 @@ but not in this context.
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)))</span>
                 <span class="functiontext">Rulebooks::add_variable</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRulebookRef</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRulebookRef</span><span class="plain">),</span>
                     <span class="string">"a rulebook has to be formally referred to in a way making clear that "</span>
                     <span class="string">"it is indeed a rulebook when we give it named values"</span><span class="plain">,</span>
                     <span class="string">"to reduce the risk of ambiguity. So 'The every turn rulebook has a "</span>
@@ -1267,7 +1267,7 @@ but not in this context.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooVagueForVariables</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooVagueForVariables</span><span class="plain">),</span>
             <span class="string">"this is too vague a description of the owner of the property"</span><span class="plain">,</span>
             <span class="string">"so that I don't know where to put this. Something like 'A person "</span>
             <span class="string">"has a number called age' is fine, but 'A kind has a number called "</span>
@@ -1284,7 +1284,7 @@ but not in this context.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HasNoVariables</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_HasNoVariables</span><span class="plain">),</span>
             <span class="string">"only an object, kind, rulebook, action or activity can be allowed to have "</span>
             <span class="string">"properties or variables"</span><span class="plain">,</span>
             <span class="string">"so for instance 'A door has a colour' is fine but not 'A number has a length'."</span><span class="plain">);</span>
@@ -1321,7 +1321,7 @@ but in fact isn't one;
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Assertions::Refiner::turn_player_to_yourself</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonValue</span><span class="plain">)); </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonValue</span><span class="plain">)); </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
@@ -1388,7 +1388,7 @@ properties) and for kinds (which do, but differently).
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) != </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Unspecifiable</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Unspecifiable</span><span class="plain">),</span>
                 <span class="string">"this tries to set specification text for a particular value"</span><span class="plain">,</span>
                 <span class="string">"rather than a kind of value. 'Specification' is a special property used "</span>
                 <span class="string">"only to annotate the Index, and it makes no sense to set this property for "</span>
@@ -1410,7 +1410,7 @@ properties) and for kinds (which do, but differently).
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">K_text</span><span class="plain">))) {</span>
             <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SpecNotText</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SpecNotText</span><span class="plain">),</span>
                 <span class="string">"this tries to set a specification to something other than literal quoted text"</span><span class="plain">,</span>
                 <span class="string">"which will not work. 'Specification' is a special property used only to "</span>
                 <span class="string">"annotate the Index, and specifically the Kinds index, so it makes no sense to "</span>
@@ -1429,7 +1429,7 @@ properties) and for kinds (which do, but differently).
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OverspecifiedSpec</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OverspecifiedSpec</span><span class="plain">),</span>
             <span class="string">"this tries to set a property for something more complicated than a single thing "</span>
             <span class="string">"named without qualifications"</span><span class="plain">,</span>
             <span class="string">"and that isn't allowed. For instance, 'The description of the Great Portal is "</span>
@@ -1450,7 +1450,7 @@ properties) and for kinds (which do, but differently).
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInferenceSubject</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadInferenceSubject</span><span class="plain">),</span>
             <span class="string">"this tries to set a property for a value which can't have properties"</span><span class="plain">,</span>
             <span class="string">"and that isn't allowed. For instance, 'The description of the Great Portal is "</span>
             <span class="string">"\</span><span class="plain">"</span><span class="string">It's open.\</span><span class="plain">"</span><span class="string">' would be fine, if Great Portal were a room, but 'The description "</span>
@@ -1468,7 +1468,7 @@ properties) and for kinds (which do, but differently).
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GeneralitySpec</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GeneralitySpec</span><span class="plain">),</span>
             <span class="string">"this tries to set a property for a complicated generality of items all at once"</span><span class="plain">,</span>
             <span class="string">"which can lead to ambiguities. For instance, 'The description of an open door "</span>
             <span class="string">"is \</span><span class="plain">"</span><span class="string">It's open.\</span><span class="plain">"</span><span class="string">' is not allowed: if we followed Inform's normal conventions "</span>
@@ -1504,7 +1504,7 @@ properties) and for kinds (which do, but differently).
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PL::Actions::Patterns::is_valid</span><span class="plain">(</span><span class="identifier">apy</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">PL::Actions::Patterns::is_named</span><span class="plain">(</span><span class="identifier">apy</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Actions: $A and $A\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">apx</span><span class="plain">, </span><span class="identifier">apy</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionsEquated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionsEquated</span><span class="plain">),</span>
                 <span class="string">"two actions are rather oddly equated here"</span><span class="plain">,</span>
                 <span class="string">"which would only make sense if the second were a named pattern of actions "</span>
                 <span class="string">"like (say) 'unseemly behaviour'."</span><span class="plain">);</span>
@@ -1548,7 +1548,7 @@ in this case.
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationsEquated</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationsEquated</span><span class="plain">),</span>
             <span class="string">"this says that two different relations are the same"</span><span class="plain">,</span>
             <span class="string">"like saying that 'in the box is on the table'. (Sometimes this "</span>
             <span class="string">"happens if I misinterpret names of places like 'In Prison' or "</span>
@@ -1596,13 +1596,13 @@ opera about a dog, "Collared Is Bowser".)
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveIsObject</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveIsObject</span><span class="plain">),</span>
                 <span class="string">"that seems to say that an adjective is a noun"</span><span class="plain">,</span>
                 <span class="string">"like saying 'Open are the doubled doors': which I'm picky about, preferring "</span>
                 <span class="string">"it written the other way about ('The doubled doors are open'). Less poetic, "</span>
                 <span class="string">"but clearer style."</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveIsValue</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveIsValue</span><span class="plain">),</span>
                 <span class="string">"that suggests that an adjective has some sort of value"</span><span class="plain">,</span>
                 <span class="string">"like saying 'Open is a number' or 'Scenery is 5': but of course an adjective "</span>
                 <span class="string">"represents something which is either true or false."</span><span class="plain">);</span>
@@ -1642,13 +1642,13 @@ opera about a dog, "Collared Is Bowser".)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)))) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">py</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindIsAction</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindIsAction</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1: unfortunately %2 is already the name of an action, "</span>
                 <span class="string">"and it would only confuse things if we used it for a value as well."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsAction</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsAction</span><span class="plain">),</span>
                 <span class="string">"that is putting the definition back to front"</span><span class="plain">,</span>
                 <span class="string">"since I need these categorisations of actions to take the form 'Kissing a "</span>
                 <span class="string">"woman is love', not 'Love is kissing a woman'. (This is really because it "</span>
@@ -1671,7 +1671,7 @@ opera about a dog, "Collared Is Bowser".)
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EveryEquated</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EveryEquated</span><span class="plain">),</span>
             <span class="string">"I can't do that"</span><span class="plain">, </span><span class="string">"Dave."</span><span class="plain">);</span>
 </pre>
 
@@ -1712,7 +1712,7 @@ this ought to be allowed...
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)), </span><span class="identifier">K_object</span><span class="plain">))</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRelated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRelated</span><span class="plain">),</span>
                 <span class="string">"something described only by its kind should not be given a "</span>
                 <span class="string">"specific place or role in the world"</span><span class="plain">,</span>
                 <span class="string">"to avoid ambiguity. For instance, suppose 'car' is a kind. Then "</span>
@@ -1723,7 +1723,7 @@ this ought to be allowed...
                 <span class="string">"though more specific ones like 'a car called Genevieve is in the "</span>
                 <span class="string">"garage' are fine, as is the reverse, 'In the garage is a car.'"</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KOVRelated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KOVRelated</span><span class="plain">),</span>
                 <span class="string">"this seems to give a worldly relationship to something intangible"</span><span class="plain">,</span>
                 <span class="string">"possibly due to an accidental clash of names between a kind of "</span>
                 <span class="string">"value and something in the real world. "</span>
@@ -1948,7 +1948,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
         <span class="functiontext">Problems::quote_subject</span><span class="plain">(2, </span><span class="identifier">left_object</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_subject</span><span class="plain">(3, </span><span class="identifier">right_kind</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">left_object</span><span class="plain"> == </span><span class="identifier">right_kind</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SameKindEquated</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SameKindEquated</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to be telling me that two descriptions, "</span>
                 <span class="string">"both forms of %2, are the same. That's a little puzzling - "</span>
@@ -1956,7 +1956,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
                 <span class="constant">NAME_DESCRIPTION_CLASH_NOTE</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescriptionsEquated</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescriptionsEquated</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to be telling me that two descriptions, "</span>
                 <span class="string">"one a form of %2 and the other of %3, are the same. That's a "</span>
@@ -1990,7 +1990,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VariablesEquated</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VariablesEquated</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to tell me that '%2', which describes "</span>
                 <span class="string">"a kind of variable, is the same as '%3', another description "</span>
@@ -2014,7 +2014,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_new_variable_like</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VarKOVClash</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_VarKOVClash</span><span class="plain">),</span>
                 <span class="string">"the name supplied for this new variable is a piece of text "</span>
                 <span class="string">"which is not available because it has a rival meaning already"</span><span class="plain">,</span>
                 <span class="string">"as a result of definitions made elsewhere. (Sometimes these "</span>
@@ -2103,7 +2103,7 @@ allow one case, where the declaration is redundant and harmless.)
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(3, </span><span class="identifier">a_spec</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ChangedKind</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ChangedKind</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"Before reading %1, I already knew that '%2' is %3, "</span>
             <span class="string">"and it is too late to change now."</span><span class="plain">);</span>
@@ -2152,7 +2152,7 @@ contradicted.
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">kind_as_declared</span><span class="plain">);</span>
             <span class="reserved">else</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GlobalRedeclared</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GlobalRedeclared</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to tell me that '%2', which has already been "</span>
                 <span class="string">"declared as %4, is instead %3 - but that would be a contradiction."</span><span class="plain">);</span>
@@ -2183,7 +2183,7 @@ file: this may possibly be useful to I6 hackers.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">var_set</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">a_kind</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">))) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm1</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm1</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"%1: Grateful as I generally am for your guidance, "</span>
                 <span class="string">"I think perhaps I could manage without this sentence."</span><span class="plain">);</span>
@@ -2212,7 +2212,7 @@ file: this may possibly be useful to I6 hackers.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">a_kind</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%1: That, sir, is a damnable lie. '%2' is a number."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -2220,7 +2220,7 @@ file: this may possibly be useful to I6 hackers.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">a_kind</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm3</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Sarcasm3</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%1: And I am the King of Siam. '%2' is some text."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -2238,7 +2238,7 @@ file: this may possibly be useful to I6 hackers.
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescAsLiteral</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DescAsLiteral</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%1: this seems to be using a description "</span>
             <span class="string">"as if it were a constant value, which isn't allowed. (Descriptions "</span>
             <span class="string">"can only be used as values to a limited extent.)"</span><span class="plain">);</span>
@@ -2304,7 +2304,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
         &lt;<span class="cwebmacro">Silently pass sentences like "The colours are red and blue."</span> <span class="cwebmacronumber">3.3.40.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)), </span><span class="identifier">K_object</span><span class="plain">))</span>
             <span class="functiontext">Assertions::Maker::issue_value_equation_problem</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">, </span><span class="identifier">px</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CommonIsProper</span><span class="plain">),</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CommonIsProper</span><span class="plain">),</span>
             <span class="string">"this seems to say that a general description is something else"</span><span class="plain">,</span>
             <span class="string">"like saying that 'a door is 20'."</span><span class="plain">);</span>
 </pre>
@@ -2390,7 +2390,7 @@ these sentences falls into case 41.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_object</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)))</span>
             &lt;<span class="cwebmacro">Otherwise it's just wrong to equate objects</span> <span class="cwebmacronumber">3.3.41.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">), </span><span class="identifier">CON_property</span><span class="plain">))</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsProperty</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsProperty</span><span class="plain">),</span>
                 <span class="string">"that seems to say that some object is a property"</span><span class="plain">,</span>
                 <span class="string">"like saying 'The brick building is the description': if you want to specify "</span>
                 <span class="string">"the description of the current object, try putting the sentence the other way "</span>
@@ -2398,7 +2398,7 @@ these sentences falls into case 41.
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsValue</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIsValue</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am reading the sentence %1 as saying that a thing called "</span>
                 <span class="string">"'%2' is a value, but this makes no sense to me - it would be "</span>
@@ -2419,7 +2419,7 @@ these sentences falls into case 41.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Assertions::Traverse::get_current_subject</span><span class="plain">() == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoMapOrigin</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoMapOrigin</span><span class="plain">),</span>
                 <span class="string">"no location is under discussion to be the origin of this map connection"</span><span class="plain">,</span>
                 <span class="string">"so this is like starting with 'North is the Aviary': I can't tell where from."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -2430,7 +2430,7 @@ these sentences falls into case 41.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">target</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapNonObject</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MapNonObject</span><span class="plain">),</span>
                     <span class="string">"this seems to make a map connection to something which is "</span>
                     <span class="string">"not an object"</span><span class="plain">,</span>
                     <span class="string">"like saying '20 is north'. This is an odd thing "</span>
@@ -2456,12 +2456,12 @@ these sentences falls into case 41.
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) == </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">))</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ProperIsItself</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ProperIsItself</span><span class="plain">),</span>
                 <span class="string">"this seems to say that something is itself"</span><span class="plain">,</span>
                 <span class="string">"like saying 'the coin is the coin'. This is an odd thing "</span>
                 <span class="string">"to say, and makes me think that I've misunderstood you."</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">control</span><span class="plain">-</span><span class="identifier">structure</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IfInAssertion</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IfInAssertion</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am reading the sentence %1 as a declaration of the initial "</span>
                 <span class="string">"state of the world, so I'm expecting that it will be definite. "</span>
@@ -2490,7 +2490,7 @@ these sentences falls into case 41.
 <pre class="displaydefn">
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(4, </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(5, </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectAndValueEquated</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectAndValueEquated</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 seems to say that '%2', which I think is %4, and "</span>
             <span class="string">"'%3', which I think is %5, are the same. %P"</span>
@@ -2515,7 +2515,7 @@ these sentences falls into case 41.
 
 <pre class="displaydefn">
         &lt;<span class="cwebmacro">Choose random antagonists for variety</span> <span class="cwebmacronumber">3.3.41.2.2.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ChalkCheese</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ChalkCheese</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 appears to say two things are the same - I am reading '%2' "</span>
             <span class="string">"and '%3' as two different things, and therefore it makes no sense to say "</span>
@@ -2637,13 +2637,13 @@ yet during traverse 1.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">), </span><span class="identifier">CON_property</span><span class="plain">)) {</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">talking_about</span><span class="plain"> = </span><span class="functiontext">Assertions::Traverse::get_current_subject</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">talking_about</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NothingDiscussed</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NothingDiscussed</span><span class="plain">),</span>
                     <span class="string">"nothing is under discussion which might have this property"</span><span class="plain">,</span>
                     <span class="string">"so this is like starting with 'The description is \</span><span class="plain">"</span><span class="string">Orange.\</span><span class="plain">"</span><span class="string">': "</span>
                     <span class="string">"I can't tell what of."</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) {</span>
                     <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)))</span>
-                        <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonValue2</span><span class="plain">));</span>
+                        <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonValue2</span><span class="plain">));</span>
                     <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs</span><span class="plain">(</span>
                     <span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)), </span><span class="identifier">talking_about</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -2771,14 +2771,14 @@ need to switch interpretations to avoid the problem message.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)),</span>
                 <span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)))) {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SimilarValuesEquated</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SimilarValuesEquated</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Before reading %1, I already knew that '%2' is %4 and "</span>
                 <span class="string">"'%3' likewise: so they are specific values, and saying "</span>
                 <span class="string">"that they are equal will not make it so."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DissimilarValuesEquated</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DissimilarValuesEquated</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Before reading %1, I already knew that '%2' is %4 and "</span>
                 <span class="string">"'%3' is %5: so they are specific values, and saying "</span>
@@ -2819,7 +2819,7 @@ referring to a thing which then can't be equated with a colour.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquatesSomethingToValue</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EquatesSomethingToValue</span><span class="plain">),</span>
             <span class="string">"that seems to say that an object is the same as a value"</span><span class="plain">,</span>
             <span class="string">"which must be wrong. This can happen if the word 'something' is "</span>
             <span class="string">"used loosely - I read it as 'some thing', so I think it has to "</span>
@@ -2857,7 +2857,7 @@ can also be used adjectivally.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
             <span class="string">"that seems to relate an adjective to something"</span><span class="plain">,</span>
             <span class="string">"which must be wrong. (This can sometimes happen if the same word can "</span>
             <span class="string">"be used both as an adjective and a noun, and I misunderstand.)"</span><span class="plain">);</span>
@@ -2908,7 +2908,7 @@ can also be used adjectivally.
             <span class="identifier">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="functiontext">InferenceSubjects::where_created</span><span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantUncreate</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantUncreate</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In order to act on %2, I seem to need to give "</span>
                 <span class="string">"a new meaning to '%1', something which was created by the earlier "</span>
@@ -2927,7 +2927,7 @@ can also be used adjectivally.
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">))) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="string">"(something not given an explicit name)"</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IdentityUnclear</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IdentityUnclear</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to tell me that '%2' and '%3' have to be "</span>
                 <span class="string">"the same, but it looks odd to me. '%2' is something generic - "</span>
@@ -2938,7 +2938,7 @@ can also be used adjectivally.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
             <span class="string">"that seems to say that an object is the same as a value"</span><span class="plain">,</span>
             <span class="string">"which must be wrong."</span><span class="plain">);</span>
     <span class="plain">}</span>

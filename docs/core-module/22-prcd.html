@@ -688,7 +688,7 @@ with the default outcome return (see above).
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">avl</span><span class="plain">) {</span>
                 <span class="functiontext">Activities::emit_activity_list</span><span class="plain">(</span><span class="identifier">avl</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadWhenWhile</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadWhenWhile</span><span class="plain">),</span>
                     <span class="string">"I don't understand the 'when/while' clause"</span><span class="plain">,</span>
                     <span class="string">"which should name activities or conditions."</span><span class="plain">);</span>
                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>

@@ -30,9 +30,9 @@ instance,
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_tree_unsafe</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) </span><span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_if_node_type_wrong</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) </span><span class="functiontext">Problems::Issue::nodal_check</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_on_node_type</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) </span><span class="functiontext">Problems::Issue::internal_error_on_node_type_fn</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_tree_unsafe</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) </span><span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_if_node_type_wrong</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) </span><span class="functiontext">Problems::Issue::nodal_check</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">internal_error_on_node_type</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) </span><span class="functiontext">Problems::Issue::internal_error_on_node_type_fn</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Internal errors are generated much like any other problem message, except
 that we use a variant form of the "end" routine which salvages what it can
@@ -65,17 +65,17 @@ to be cautious.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_fn</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_fn</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">internal_error_thrown</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+            <span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">filename</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">linenum</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"An internal error has occurred: %2. The current sentence is %1; the "</span>
             <span class="string">"error was detected at line %4 of \</span><span class="plain">"</span><span class="string">%3\</span><span class="plain">"</span><span class="string">. This should never happen, "</span>
@@ -83,12 +83,12 @@ to be cautious.
         <span class="functiontext">Problems::Issue::internal_error_end</span><span class="plain">();</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">internal_error_thrown</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(1, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">filename</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_number</span><span class="plain">(3, &amp;</span><span class="identifier">linenum</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"An internal error has occurred: %1. The error was detected at "</span>
             <span class="string">"line %3 of \</span><span class="plain">"</span><span class="string">%2\</span><span class="plain">"</span><span class="string">. This should never happen, and I am now halting "</span>
@@ -96,12 +96,12 @@ to be cautious.
         <span class="functiontext">Problems::Issue::internal_error_end</span><span class="plain">();</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">internal_error_thrown</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">filename</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_number</span><span class="plain">(3, &amp;</span><span class="identifier">linenum</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"An internal error has occurred: %1. The error was detected at "</span>
             <span class="string">"line %3 of \</span><span class="plain">"</span><span class="string">%2\</span><span class="plain">"</span><span class="string">. This should never happen, and I am now halting "</span>
@@ -127,16 +127,16 @@ failure of such an invariant produces a form of internal error called a
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_error_fn</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_error_fn</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Internal nodal error at:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
-        <span class="functiontext">Problems::Issue::internal_error_fn</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+        <span class="functiontext">Problems::Issue::internal_error_fn</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Internal nodal error at:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
-        <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+        <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -151,19 +151,19 @@ failure of such an invariant produces a form of internal error called a
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_check</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">node_type_required</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::nodal_check</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">node_type_required</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="string">"NULL node found where type %s expected"</span><span class="plain">,</span>
                 <span class="identifier">ParseTree::get_type_name</span><span class="plain">(</span><span class="identifier">node_type_required</span><span class="plain">));</span>
-            <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+            <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) != </span><span class="identifier">node_type_required</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="string">"Node of type %s found where type %s expected"</span><span class="plain">,</span>
                 <span class="identifier">ParseTree::get_type_name</span><span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">)),</span>
                 <span class="identifier">ParseTree::get_type_name</span><span class="plain">(</span><span class="identifier">node_type_required</span><span class="plain">));</span>
-            <span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+            <span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -180,14 +180,14 @@ macro, which invokes the following:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_on_node_type_fn</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::internal_error_on_node_type_fn</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">,</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">filename</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linenum</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="string">"Unexpected NULL node found"</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+            <span class="functiontext">Problems::Issue::internal_error_tu_fn</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"Unexpected NULL node found"</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="string">"Unexpectedly found node of type %s"</span><span class="plain">,</span>
             <span class="identifier">ParseTree::get_type_name</span><span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">)));</span>
-        <span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
+        <span class="functiontext">Problems::Issue::nodal_error_fn_S</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain">, </span><span class="identifier">linenum</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -204,15 +204,15 @@ tree which represents a proposition.
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">latest_s_subtree</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::s_subtree_error_set_position</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::s_subtree_error_set_position</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">latest_s_subtree</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mess</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mess</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="string">"S-subtree error: %s"</span><span class="plain">, </span><span class="identifier">mess</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_s_subtree</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Applied to the subtree:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">, </span><span class="identifier">latest_s_subtree</span><span class="plain">);</span>
-        <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">);</span>
+        <span class="functiontext">Problems::Issue::internal_error_tu_fn_S</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">internal_message</span><span class="plain">, </span><span class="identifier">__FILE__</span><span class="plain">, </span><span class="identifier">__LINE__</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">internal_message</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -347,9 +347,9 @@ problem <code class="display"><span class="extract">PM_NoSuchHieroglyph</span></
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -363,11 +363,11 @@ though let's face it, fatal is fatal.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">what_has_run_out</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">what_has_run_out</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(1, </span><span class="identifier">what_has_run_out</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_number</span><span class="plain">(2, &amp;</span><span class="identifier">how_many</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I have run out of memory for %1 - there's room for %2, but no more. "</span>
             <span class="string">"This is a 'hard limit', hard in the sense of deadlines, or luck: "</span>
@@ -378,10 +378,10 @@ though let's face it, fatal is fatal.
         <span class="functiontext">Problems::Fatal::exit</span><span class="plain">(1);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::memory_allocation_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">what_has_run_out</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::memory_allocation_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">what_has_run_out</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(1, </span><span class="identifier">what_has_run_out</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I am unable to persuade this computer to let me have memory in "</span>
             <span class="string">"which to store the %1. This rarely happens on a modern desktop or laptop, "</span>
@@ -406,7 +406,7 @@ We begin with lexical problems happening when the run is hardly begun:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">concerning</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">concerning</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">lexical_explanation</span><span class="plain"> =</span>
             <span class="string">"This is a low-level problem happening when I am still reading in the "</span>
@@ -418,12 +418,12 @@ We begin with lexical problems happening when the run is hardly begun:
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain">) </span><span class="functiontext">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"&lt;text generated internally&gt;"</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%1: %2%L.%%%| %3"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::lexical_problem_S</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">concerning</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::lexical_problem_S</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">concerning</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">lexical_explanation</span><span class="plain"> =</span>
             <span class="string">"This is a low-level problem happening when I am still reading in the "</span>
@@ -435,7 +435,7 @@ We begin with lexical problems happening when the run is hardly begun:
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain">) </span><span class="functiontext">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"&lt;text generated internally&gt;"</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">lexical_explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%1: %2%L.%%%| %3"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -453,22 +453,22 @@ other problems can't either, so:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="identifier">do_not_locate_problems</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="identifier">do_not_locate_problems</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::unlocated_problem_on_file</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::unlocated_problem_on_file</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="identifier">do_not_locate_problems</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">fn</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">);</span>
@@ -490,12 +490,12 @@ that isn't surprising, since it simply quotes the entire sentence at fault
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1: %Sagain, %%%Lbut %%%2%|, %3"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -510,14 +510,14 @@ that isn't surprising, since it simply quotes the entire sentence at fault
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">,</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">note</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">note</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1: %Sagain, %%%Lbut %%%2%|, %3 %P%4"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -533,14 +533,14 @@ which is part of the current sentence.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_in_detail_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::sentence_in_detail_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">,</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, and in particular '%4': %Sagain, %%%Lbut %%%2%|, %3"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -557,8 +557,8 @@ therefore is kept here:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">) {</span>
-        <span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="constant">PASS_SIGIL</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">) {</span>
+        <span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">PASS_SIGIL</span><span class="plain">,</span>
             <span class="string">"assertions about the initial state of play must be positive, not negative"</span><span class="plain">,</span>
             <span class="string">"so 'The cat is an animal' is fine but not 'The cat is not a container'. "</span>
             <span class="string">"I have only very feeble powers of deduction - sometimes the implications "</span>
@@ -585,13 +585,13 @@ a message which diagnoses the problem rather better.
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">LINGUISTICS_MODULE</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RTW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">"rather than" text</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_sentence</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">current_sentence</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">) != </span><span class="identifier">AVERB_NT</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(Assertion error reverting to sentence error.)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="constant">PASS_SIGIL</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
+            <span class="functiontext">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">PASS_SIGIL</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -607,7 +607,7 @@ a message which diagnoses the problem rather better.
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1: %Sagain, %%%Lbut %%%2%|, %3"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">RTW</span><span class="plain">)) {</span>
             <span class="functiontext">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">));</span>
@@ -632,7 +632,7 @@ a message which diagnoses the problem rather better.
                 <span class="string">"be in double quotes, \</span><span class="plain">"</span><span class="string">like this\</span><span class="plain">"</span><span class="string"> and not 'like this'.)"</span><span class="plain">);</span>
 
         <span class="identifier">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">csp</span><span class="plain"> =</span>
-            <span class="identifier">Sentences::RuleSubtrees::detect_control_structure</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">));</span>
+            <span class="identifier">ControlStructures::detect</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">csp</span><span class="plain">)</span>
             <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">" %P(The way this sentence starts makes me think it might have been "</span>
@@ -659,18 +659,18 @@ word "Definition" alone. So we use this routine instead:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">,</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">q</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You gave as a definition %1: %Sagain, %%%Lbut %%%2%|, %3"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">IX</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">IX</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">,</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="constant">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">IX</span><span class="plain">);</span>
@@ -678,7 +678,7 @@ word "Definition" alone. So we use this routine instead:
         <span class="functiontext">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_source</span><span class="plain">(5, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="functiontext">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"In %5 you defined an adjective by '%1' intending that "</span>
             <span class="string">"it would apply to '%2': %Sagain, %%%Lbut %%%3%|, %4"</span><span class="plain">);</span>
         <span class="functiontext">Problems::issue_problem_end</span><span class="plain">();</span>

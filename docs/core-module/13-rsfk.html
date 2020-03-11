@@ -199,14 +199,14 @@ chosen), but no problem message has been issued about this, or
             <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">storage_name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyKind2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyKind2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am unable to put any value into the %3 %1, which needs to be %2, "</span>
                 <span class="string">"because the world does not contain %2."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am unable to find %2 to use here, because the world does not "</span>
                 <span class="string">"contain %2."</span><span class="plain">);</span>
@@ -228,7 +228,7 @@ chosen), but no problem message has been issued about this, or
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am unable to create %1 with the kind of value '%2', "</span>
                 <span class="string">"because this is a kind of value which is not allowed as "</span>
@@ -239,7 +239,7 @@ chosen), but no problem message has been issued about this, or
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(1, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am unable to create a value of the kind '%1' "</span>
                 <span class="string">"because this is a kind of value which is not allowed as "</span>
@@ -263,7 +263,7 @@ chosen), but no problem message has been issued about this, or
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I am unable to start %1 off with any value, because the "</span>
             <span class="string">"instructions do not tell me what kind of value it should be "</span>
@@ -855,7 +855,7 @@ K, we have also seen its bases.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::compile_structures is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_structures is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP16_1"></a><b>&#167;16.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Compile the runtime ID structure for this kind</span> <span class="cwebmacronumber">16.1</span>&gt; =
@@ -967,7 +967,7 @@ K, we have also seen its bases.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"While working on '%1', I needed to be able to make a default value "</span>
                 <span class="string">"for the kind '%2', but there's no obvious way to make one."</span><span class="plain">);</span>
@@ -1057,7 +1057,7 @@ property values, table entries, list items) of pointer-value kinds:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::compile_heap_allocator is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_heap_allocator is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18_1"></a><b>&#167;18.1.  </b>By now, we know that we need at least <code class="display"><span class="extract">total_heap_allocation</span></code> bytes on the
 heap, but the initial heap size has to be a power of 2, so we compute the
@@ -1528,13 +1528,13 @@ each such kind, and needed at run-time.
 
 <p class="endnote">The function Kinds::RunTime::emit appears nowhere else.</p>
 
-<p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
+<p class="endnote">The function Kinds::RunTime::kind_declarations is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
 <p class="endnote">The function Kinds::RunTime::compile_nnci is used in <a href="#SP18_1">&#167;18.1</a>.</p>
 
-<p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_instance_counts is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
-<p class="endnote">The function Kinds::RunTime::compile_data_type_support_routines is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Kinds::RunTime::compile_data_type_support_routines is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP24_1"></a><b>&#167;24.1.  </b>A slightly bogus case first. If the source text declares a kind but never
 gives any enumerated values or literal patterns, then such values will never
@@ -2409,7 +2409,7 @@ Z-machine array space.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kinds::RunTime::I7_Kind_Name_routine is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Kinds::RunTime::I7_Kind_Name_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
@@ -2420,7 +2420,7 @@ Z-machine array space.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::target_VM_supports</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VM_non_support_problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">VM_non_support_problem_issued</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRequiresGlulx</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindRequiresGlulx</span><span class="plain">));</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>

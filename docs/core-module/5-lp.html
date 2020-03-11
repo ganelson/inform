@@ -233,7 +233,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure literal_pattern_name is accessed in 3/pd, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure literal_pattern_name is accessed in 3/pd, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Creating patterns, tokens and elements. </b></p>
 
@@ -378,7 +378,7 @@ equivalent to an exact value.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) &amp;&amp; (</span><span class="identifier">PM_ZMachineOverflow2_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lp</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">lp</span><span class="plain">; </span><span class="identifier">lp</span><span class="plain"> = </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;next_for_this_kind</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Scalings::quantum</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;scaling</span><span class="plain">) &gt; 32767) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow2</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow2</span><span class="plain">),</span>
                         <span class="string">"you've set up literal specifications needing a range of "</span>
                         <span class="string">"values too broad to be stored at run-time"</span><span class="plain">,</span>
                         <span class="string">"at least with the Settings for this project as they currently are. "</span>
@@ -841,7 +841,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;kind_specified</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sign_used_at</span><span class="plain">-</span><span class="element">&gt;element_index</span><span class="plain"> != 0) {</span>
                 <span class="constant">ISSUING_LP_PROBLEM</span><span class="plain">;</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegationInternal</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegationInternal</span><span class="plain">),</span>
                     <span class="string">"a negative number can't be used in the middle of a constant"</span><span class="plain">,</span>
                     <span class="string">"and the minus sign makes it look as if that's what you are "</span>
                     <span class="string">"trying here."</span><span class="plain">);</span>
@@ -849,7 +849,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;number_signed</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="constant">ISSUING_LP_PROBLEM</span><span class="plain">;</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegationForbidden</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegationForbidden</span><span class="plain">),</span>
                     <span class="string">"the minus sign is not allowed here"</span><span class="plain">,</span>
                     <span class="string">"since this is a kind of value which only allows positive "</span>
                     <span class="string">"values to be written."</span><span class="plain">);</span>
@@ -874,7 +874,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">overflow_32_bit_flag</span><span class="plain">) {</span>
             <span class="constant">ISSUING_LP_PROBLEM</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EvenOverflow</span><span class="plain">-</span><span class="identifier">G</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EvenOverflow</span><span class="plain">-</span><span class="identifier">G</span><span class="plain">),</span>
                 <span class="string">"you use a literal specification to make a value which is too large"</span><span class="plain">,</span>
                 <span class="string">"even for a story file compiled with the Glulx setting. (You can "</span>
                 <span class="string">"see the size limits for each way of writing a value on the Kinds "</span>
@@ -883,7 +883,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">overflow_16_bit_flag</span><span class="plain">) &amp;&amp; (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))) {</span>
             <span class="constant">ISSUING_LP_PROBLEM</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ZMachineOverflow</span><span class="plain">),</span>
                 <span class="string">"you use a literal specification to make a value which is too large"</span><span class="plain">,</span>
                 <span class="string">"at least with the Settings for this project as they currently are. "</span>
                 <span class="string">"(Change to Glulx to be allowed to use much larger numbers; "</span>
@@ -925,7 +925,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
             <span class="reserved">case</span><span class="plain"> 9: </span><span class="identifier">Problems::quote_text</span><span class="plain">(5, </span><span class="string">"tenth"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">Problems::quote_text</span><span class="plain">(5, </span><span class="string">"eventual"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ElementOverflow</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ElementOverflow</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, you use the notation '%2' to write a constant value. "</span>
             <span class="string">"But the notation was specified as '%3', which means that the %5 numerical "</span>
@@ -947,7 +947,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;prototype_text</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooLittleAccuracy</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooLittleAccuracy</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, you use the notation '%2' to write a constant value. "</span>
             <span class="string">"But to store that, I would need greater accuracy than this kind of "</span>
@@ -3231,7 +3231,7 @@ set.
     <pre class="displaydefn">
             <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">ABANDON_LPN</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_lookahead_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiplyingNonKOVs</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiplyingNonKOVs</span><span class="plain">),</span>
                     <span class="string">"only kinds of value can be multiplied here"</span><span class="plain">,</span>
                     <span class="string">"and only in a sentence like 'A length times a length specifies an area.'"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -3251,7 +3251,7 @@ set.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_lookahead_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPNameOption</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPNameOption</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the specification %1, I was expecting that '%2' would be an optional "</span>
                     <span class="string">"note about one of the notations: it should have been one of 'singular', "</span>
@@ -3324,7 +3324,7 @@ set.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_lookahead_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNotKOV</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNotKOV</span><span class="plain">),</span>
                     <span class="string">"you can only specify ways to write kinds of value"</span><span class="plain">,</span>
                     <span class="string">"as created with sentences like 'A weight is a kind of value.'"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -3386,7 +3386,7 @@ set.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_lookahead_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPPartOption</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPPartOption</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the specification %1, I was expecting that '%2' would be an optional "</span>
                     <span class="string">"note about one of the parts: it should have been one of 'optional', "</span>
@@ -3413,7 +3413,7 @@ set.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">LP_equivalent_value</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) {</span>
                     <span class="identifier">scaled_dir</span><span class="plain"> = </span><span class="identifier">LP_SCALED_UP</span><span class="plain">; </span><span class="identifier">scaled</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_encoded_notation</span><span class="plain">(</span><span class="identifier">LP_equivalent_value</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPEquivalent</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPEquivalent</span><span class="plain">),</span>
                         <span class="string">"the equivalent value needs to be a constant of the same kind "</span>
                         <span class="string">"of value as you are specifying"</span><span class="plain">,</span>
                         <span class="string">"and this seems not to be."</span><span class="plain">,</span>
@@ -3426,7 +3426,7 @@ set.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">LP_offset_value</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) {</span>
                     <span class="identifier">offset</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_encoded_notation</span><span class="plain">(</span><span class="identifier">LP_offset_value</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPOffset</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem_with_note</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadLPOffset</span><span class="plain">),</span>
                         <span class="string">"the offset value needs to be a constant of the same kind "</span>
                         <span class="string">"of value as you are specifying"</span><span class="plain">,</span>
                         <span class="string">"and this seems not to be."</span><span class="plain">,</span>
@@ -3471,7 +3471,7 @@ set.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">SPW</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DuplicateUnitSpec</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DuplicateUnitSpec</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the sentence %1, it looks as if you intend to give a new meaning "</span>
                     <span class="string">"to expressions like '%3', but this is already something I "</span>
@@ -3494,7 +3494,7 @@ set.
     <pre class="displaydefn">
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNeedsReal</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNeedsReal</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the sentence %1, it looks as if you intend to give a real "</span>
                 <span class="string">"number as a scale factor for values of %2. However, as you've "</span>
@@ -3543,21 +3543,21 @@ set.
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_built_in</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::get_index_priority</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == 0)</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPBuiltInKOVHidden</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPBuiltInKOVHidden</span><span class="plain">),</span>
                         <span class="string">"you can only specify ways to write new kinds of value"</span><span class="plain">,</span>
                         <span class="string">"as created with sentences like 'A weight is a kind of value.', "</span>
                         <span class="string">"and not the built-in ones like 'number' or 'time'. (This one is "</span>
                         <span class="string">"a kind used behind the scenes by Inform, so it's reserved "</span>
                         <span class="string">"for Inform's own use, and you can't do much else with it.)"</span><span class="plain">);</span>
                 <span class="reserved">else</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPBuiltInKOV</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPBuiltInKOV</span><span class="plain">),</span>
                         <span class="string">"you can only specify ways to write new kinds of value"</span><span class="plain">,</span>
                         <span class="string">"as created with sentences like 'A weight is a kind of value.', "</span>
                         <span class="string">"and not the built-in ones like 'number' or 'time'."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::convert_to_unit</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPEnumeration</span><span class="plain">),</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::convert_to_unit</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPEnumeration</span><span class="plain">),</span>
                     <span class="string">"this is a kind of value which already has named values"</span><span class="plain">,</span>
                     <span class="string">"so it can't have a basically numerical form as well."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
@@ -3581,7 +3581,7 @@ set.
             <span class="identifier">lp</span><span class="plain"> = </span><span class="functiontext">LiteralPatterns::lp_new</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">SPW</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LP_equivalent_value</span><span class="plain">) </span><span class="identifier">LP_real_scaling_amount</span><span class="plain"> = </span><span class="identifier">LP_real_equivalent</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scaled</span><span class="plain"> &lt;= 0) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNonpositiveScaling</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNonpositiveScaling</span><span class="plain">),</span>
                     <span class="string">"you can only scale by a positive multiple"</span><span class="plain">,</span>
                     <span class="string">"so something like 'scaled up by -1' is not allowed."</span><span class="plain">);</span>
                 <span class="identifier">scaled</span><span class="plain"> = 1;</span>
@@ -3632,7 +3632,7 @@ set.
             <span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_tokens</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
             <span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_elements</span><span class="plain"> = </span><span class="identifier">ec</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_elements</span><span class="plain"> == 0) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPWithoutElement</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPWithoutElement</span><span class="plain">),</span>
                     <span class="string">"a way to specify a kind of value must involve numbers"</span><span class="plain">,</span>
                     <span class="string">"so '10kg specifies a weight' is allowed, but not 'tonne "</span>
                     <span class="string">"specifies a weight'."</span><span class="plain">);</span>
@@ -3665,7 +3665,7 @@ set.
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">text_of_word</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">++])) {</span>
                     <span class="identifier">digit_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tot</span><span class="plain"> &gt; 999999999) {</span>
-                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPElementTooLarge</span><span class="plain">),</span>
+                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPElementTooLarge</span><span class="plain">),</span>
                             <span class="string">"that specification contains numbers that are too large"</span><span class="plain">,</span>
                             <span class="string">"and would construct values which could not sensibly "</span>
                             <span class="string">"be stored at run-time."</span><span class="plain">);</span>
@@ -3680,7 +3680,7 @@ set.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digit_found</span><span class="plain">) {</span>
                     <span class="reserved">literal_pattern_element</span><span class="plain"> </span><span class="identifier">new_element</span><span class="plain"> = </span><span class="functiontext">LiteralPatterns::lpe_new</span><span class="plain">(</span><span class="identifier">ec</span><span class="plain">, </span><span class="identifier">tot</span><span class="plain">+1, </span><span class="identifier">sgn</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ec</span><span class="plain"> &gt;= </span><span class="constant">MAX_ELEMENTS_PER_LITERAL</span><span class="plain">) {</span>
-                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooManyElements</span><span class="plain">),</span>
+                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooManyElements</span><span class="plain">),</span>
                             <span class="string">"that specification contains too many numerical elements"</span><span class="plain">,</span>
                             <span class="string">"and is too complicated for Inform to handle."</span><span class="plain">);</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
@@ -3720,7 +3720,7 @@ set.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> &gt;= </span><span class="constant">MAX_TOKENS_PER_LITERAL</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooComplicated</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooComplicated</span><span class="plain">),</span>
                     <span class="string">"that specification is too complicated"</span><span class="plain">,</span>
                     <span class="string">"and will have to be shortened."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
@@ -3739,7 +3739,7 @@ set.
 
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">integer_scaling</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Kinds::Behaviour::convert_to_real</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+                <span class="identifier">Kinds::Behaviour::convert_to_real</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">Kinds::Scalings::convert_to_real</span><span class="plain">(&amp;(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;scaling</span><span class="plain">));</span>
             <span class="plain">}</span>
     </pre>
@@ -3794,20 +3794,20 @@ set.
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> &amp; </span><span class="constant">WITHOUT_LEADING_ZEROS_LSO</span><span class="plain">) </span><span class="identifier">lpe</span><span class="plain">-</span><span class="element">&gt;without_leading_zeros</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_elements</span><span class="plain"> - 1) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooManyPartNames</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPTooManyPartNames</span><span class="plain">),</span>
                         <span class="string">"this gives names for too many parts"</span><span class="plain">,</span>
                         <span class="string">"that is, for more parts than there are in the pattern."</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = 0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;lp_elements</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.element_name</span><span class="plain">, </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;lp_elements</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.element_name</span><span class="plain">))</span>
-                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPRepeatedPartNames</span><span class="plain">),</span>
+                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPRepeatedPartNames</span><span class="plain">),</span>
                             <span class="string">"this repeats a part name"</span><span class="plain">,</span>
                             <span class="string">"that is, it uses the same name for two different parts "</span>
                             <span class="string">"of the pattern."</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_elements</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNotAllNamed</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPNotAllNamed</span><span class="plain">),</span>
                     <span class="string">"you must supply names for all the parts"</span><span class="plain">,</span>
                     <span class="string">"if for any"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
@@ -3833,14 +3833,14 @@ set.
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;no_lp_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lp</span><span class="plain">-</span><span class="element">&gt;lp_elements</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.element_optional</span><span class="plain">) {</span>
                 <span class="identifier">opt_count</span><span class="plain">++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == 0) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPFirstOptional</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPFirstOptional</span><span class="plain">),</span>
                         <span class="string">"the first part is not allowed to be optional"</span><span class="plain">,</span>
                         <span class="string">"since it is needed to identify the value."</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">opt_count</span><span class="plain"> &gt;= 2) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPMultipleOptional</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPMultipleOptional</span><span class="plain">),</span>
                     <span class="string">"only one part can be called optional"</span><span class="plain">,</span>
                     <span class="string">"since if any part is omitted then so are all subsequent parts."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">;</span>
@@ -3924,7 +3924,7 @@ set.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function LiteralPatterns::define_named_phrases is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+    <p class="endnote">The function LiteralPatterns::define_named_phrases is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
     <p class="inwebparagraph"><a id="SP40_1"></a><b>&#167;40.1.  </b>These text substitutions correspond exactly neither to the LPs nor to the
     names. For instance, "in tonnes" produces a text substitution which takes
@@ -3964,7 +3964,7 @@ set.
             <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">" ) "</span><span class="plain">);</span>
             <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">lpn</span><span class="plain">-</span><span class="element">&gt;notation_name</span><span class="plain">);</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-            <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
+            <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
 
             <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
@@ -3973,7 +3973,7 @@ set.
             <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
             <span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-            <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
+            <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
 
             <span class="reserved">literal_pattern_name</span><span class="plain"> *</span><span class="identifier">lpn3</span><span class="plain">;</span>
@@ -4051,7 +4051,7 @@ set.
                 <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
                 <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">" ) "</span><span class="plain">);</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-                <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
+                <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
 
                 <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
@@ -4067,7 +4067,7 @@ set.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::phrasual_length</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">) &gt;= </span><span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain"> + 5)</span>
                     &lt;<span class="cwebmacro">Issue a problem for overly long part names</span> <span class="cwebmacronumber">41.1.1</span>&gt;
                 <span class="reserved">else</span>
-                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
+                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
@@ -4115,7 +4115,7 @@ set.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::phrasual_length</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">) &gt;= </span><span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain"> + 5)</span>
                     &lt;<span class="cwebmacro">Issue a problem for overly long part names</span> <span class="cwebmacronumber">41.1.1</span>&gt;
                 <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
+                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">':'</span><span class="plain">);</span>
                     <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
                     <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">, </span><span class="string">" (- ("</span><span class="plain">);</span>
@@ -4129,7 +4129,7 @@ set.
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">, </span><span class="string">") -) "</span><span class="plain">);</span>
                     <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
                     <span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
+                    <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">XW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">print_rule_buff</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -4145,7 +4145,7 @@ set.
 
 
     <pre class="displaydefn">
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPPartNamesTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPPartNamesTooLong</span><span class="plain">),</span>
                 <span class="string">"the names for these parts are too long"</span><span class="plain">,</span>
                 <span class="string">"and will have to be cut down."</span><span class="plain">);</span>
     </pre>

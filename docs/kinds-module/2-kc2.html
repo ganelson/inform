@@ -213,7 +213,7 @@ then <code class="display"><span class="extract">CON_VALUE</span></code> for kin
 
 
 <pre class="display">
-    <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::new</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">source_name</span><span class="plain">,</span>
+    <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="functiontext">Kinds::Constructors::new</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">source_name</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">initialisation_macro</span><span class="plain">) {</span>
         <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain">);</span>
         <span class="reserved">kind_constructor</span><span class="plain"> **</span><span class="identifier">pC</span><span class="plain"> = </span><span class="functiontext">Kinds::known_constructor_name</span><span class="plain">(</span><span class="identifier">source_name</span><span class="plain">);</span>
@@ -359,10 +359,10 @@ I6 template files.
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;indexed_grey_if_empty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;documentation_reference</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+        <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
             <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#DEFAULTS"</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">initialisation_macro</span><span class="plain">) &gt; 0)</span>
-            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">initialisation_macro</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
 </pre>
 
@@ -574,9 +574,9 @@ require running macros in the kind interpreter:
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;is_incompletely_defined</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
-            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#UNIT"</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -584,12 +584,12 @@ require running macros in the kind interpreter:
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;is_incompletely_defined</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
-            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+            <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#ENUMERATION"</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;linguistic</span><span class="plain">)</span>
-                <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+                <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
                     <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#LINGUISTIC"</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -609,8 +609,8 @@ require running macros in the kind interpreter:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
-        <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
+        <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
             <span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"#REAL"</span><span class="plain">), </span><span class="identifier">con</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

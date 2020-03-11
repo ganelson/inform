@@ -222,7 +222,7 @@ For example, in:
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_CREATIONS</span><span class="plain">, </span><span class="string">"Adding phrase option &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain"> &gt;= </span><span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">too_many_POs_error</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyPhraseOptions</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyPhraseOptions</span><span class="plain">),</span>
                     <span class="string">"a phrase is only allowed to have 16 different options"</span><span class="plain">,</span>
                     <span class="string">"so either some of these will need to go, or you may want to "</span>
                     <span class="string">"consider breaking up the phrase into simpler ones whose usage "</span>
@@ -337,7 +337,7 @@ this residue is zero.
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_phrase</span><span class="plain">(3, </span><span class="identifier">ph</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;options_declaration</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseOptionsExclusive</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseOptionsExclusive</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, supplying the options '%2' to the phrase '%3', but "</span>
                     <span class="string">"the options listed for this phrase ('%4') are mutually exclusive."</span><span class="plain">);</span>
@@ -385,13 +385,13 @@ by "and":
             <span class="functiontext">Problems::quote_phrase</span><span class="plain">(3, </span><span class="identifier">ph_being_parsed</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;options_declaration</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain"> &gt; 1) {</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAPhraseOption</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAPhraseOption</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but '%2' is not one of the options allowed on "</span>
                     <span class="string">"the end of the phrase '%3'. (The options allowed are: '%4'.)"</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotTheOnlyPhraseOption</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotTheOnlyPhraseOption</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but the only option allowed on the end of the "</span>
                     <span class="string">"phrase '%3' is '%4', so '%2' is not something I know how to "</span>

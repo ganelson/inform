@@ -224,7 +224,7 @@ generated from the PHUD elsewhere.
                     <span class="functiontext">Phrases::Usage::log</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">PW</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultipleCCR</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultipleCCR</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"You wrote %1, but the situation this refers to ('%2') is "</span>
                         <span class="string">"not a single action. Rules in the form of 'check', 'carry "</span>

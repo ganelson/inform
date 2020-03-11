@@ -3811,7 +3811,7 @@ can make use of the following:
             <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">)-&gt;</span><span class="identifier">zone</span><span class="plain"> = 0;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Declare the map connections in the precis</span> <span class="cwebmacronumber">43.3</span>&gt;<span class="plain">;</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">PL::SpatialMap::visit_to_transcribe</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">PL::SpatialMap::visit_to_transcribe</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">[Precis complete.]\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

@@ -508,7 +508,7 @@ both of which are excised and replaced with <code class="display"><span class="e
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prevailing_mood</span><span class="plain"> == </span><span class="identifier">IMPOSSIBLE_CE</span><span class="plain">) || (</span><span class="identifier">prevailing_mood</span><span class="plain"> == </span><span class="identifier">UNLIKELY_CE</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegativeCreation</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegativeCreation</span><span class="plain">),</span>
                 <span class="string">"sentences are only allowed to say that things do exist"</span><span class="plain">,</span>
                 <span class="string">"not that they don't."</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -650,7 +650,7 @@ disappears from the tree entirely when the creator has finished work.
 
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">what_to_make_node</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CalledWithoutKind</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CalledWithoutKind</span><span class="plain">),</span>
             <span class="string">"I can only make 'a something called whatever' when the something is a kind I know"</span><span class="plain">,</span>
             <span class="string">"possibly qualified with adjectives. For instance, 'an open door called the Marble "</span>
             <span class="string">"Door' is fine because 'door' is the name of a kind and 'open' is an adjective "</span>
@@ -768,7 +768,7 @@ it handles crashes correctly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameIsArticle</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameIsArticle</span><span class="plain">),</span>
             <span class="string">"this seems to give something a name which consists only of an article"</span><span class="plain">,</span>
             <span class="string">"that is, 'a', 'an', 'the' or 'some'. This is not allowed since the "</span>
             <span class="string">"potential for confusion is too high. (If you need, say, a room which "</span>
@@ -786,7 +786,7 @@ it handles crashes correctly.
 
 
 <pre class="displaydefn">
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameWithBrackets</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameWithBrackets</span><span class="plain">),</span>
                 <span class="string">"this seems to give something a name which contains brackets '(' or ')'"</span><span class="plain">,</span>
                 <span class="string">"which is not allowed since the potential for confusion with other uses "</span>
                 <span class="string">"for brackets in Inform source text is too high. (If you need, say, a "</span>
@@ -807,7 +807,7 @@ it handles crashes correctly.
 <pre class="displaydefn">
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"*** Exit(1) requested for testing purposes ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash1</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash1</span><span class="plain">),</span>
             <span class="string">"this uses the first secret hieroglyph of dreadful power"</span><span class="plain">,</span>
             <span class="string">"which forces me to crash. (It's for testing the way I crash, in fact. "</span>
             <span class="string">"If this is a genuine inconvenience to you, get in touch with my authors.)"</span><span class="plain">);</span>
@@ -826,7 +826,7 @@ it handles crashes correctly.
 <pre class="displaydefn">
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"*** Exit(10) requested for testing purposes ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash10</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash10</span><span class="plain">),</span>
             <span class="string">"this uses the second secret hieroglyph of dreadful power"</span><span class="plain">,</span>
             <span class="string">"which forces me to crash. (It's for testing the way I crash, in fact. "</span>
             <span class="string">"If this is a genuine inconvenience to you, get in touch with my authors.)"</span><span class="plain">);</span>
@@ -845,7 +845,7 @@ it handles crashes correctly.
 <pre class="displaydefn">
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"*** Exit(11) requested for testing purposes ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash11</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Crash11</span><span class="plain">),</span>
             <span class="string">"this uses the third secret hieroglyph of dreadful power"</span><span class="plain">,</span>
             <span class="string">"which forces me to crash. (It's for testing the way I crash, in fact. "</span>
             <span class="string">"If this is a genuine inconvenience to you, get in touch with my authors.)"</span><span class="plain">);</span>
@@ -863,7 +863,7 @@ it handles crashes correctly.
 
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_StartsWithComma</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_StartsWithComma</span><span class="plain">),</span>
             <span class="string">"this seems to refer to something whose name begins with a comma"</span><span class="plain">,</span>
             <span class="string">"which is forbidden. Perhaps you used a comma in punctuating a sentence? "</span>
             <span class="string">"Inform generally doesn't like this because it reserves commas for "</span>
@@ -880,7 +880,7 @@ it handles crashes correctly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EndsWithComma</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EndsWithComma</span><span class="plain">),</span>
             <span class="string">"this seems to refer to something whose name ends with a comma"</span><span class="plain">,</span>
             <span class="string">"which is forbidden. Perhaps you used a comma in punctuating a sentence? "</span>
             <span class="string">"Inform generally doesn't like this because it reserves commas for "</span>
@@ -899,7 +899,7 @@ it handles crashes correctly.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIncWhen</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ObjectIncWhen</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 seems to be talking about a previously unknown room or "</span>
             <span class="string">"thing called %2. Ordinarily, I would create this, but because the name "</span>
@@ -927,7 +927,7 @@ it handles crashes correctly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameWithText</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameWithText</span><span class="plain">),</span>
             <span class="string">"this seems to give something a name which contains "</span>
             <span class="string">"double-quoted text"</span><span class="plain">,</span>
             <span class="string">"which is not allowed. If you do need quotes in a name, one option "</span>
@@ -949,7 +949,7 @@ it handles crashes correctly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameReserved</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameReserved</span><span class="plain">),</span>
             <span class="string">"this seems to give something a name which is reserved for Inform's "</span>
             <span class="string">"own internal use"</span><span class="plain">,</span>
             <span class="string">"so is not allowed. There are only a few of these - 'storage', "</span>
@@ -1215,7 +1215,7 @@ them by asserting propositions to be true; we act directly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoTopicsThatVary</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoTopicsThatVary</span><span class="plain">),</span>
             <span class="string">"'topics that vary' are not allowed"</span><span class="plain">,</span>
             <span class="string">"that is, a variable is not allowed to have 'topic' as its kind of value. "</span>
             <span class="string">"(This would cause too much ambiguity with text variables, whose values "</span>
@@ -1236,7 +1236,7 @@ them by asserting propositions to be true; we act directly.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">create_as</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MixedConstantsEquation</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MixedConstantsEquation</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 reads to me as if '%2' refers to something "</span>
                 <span class="string">"I should create as brand new - %3. But that can't be right, "</span>
@@ -1247,7 +1247,7 @@ them by asserting propositions to be true; we act directly.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">create_as</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MixedConstants</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MixedConstants</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 reads to me as if '%2' refers to something "</span>
                 <span class="string">"I should create as brand new - %3. But that can't be right, "</span>
@@ -1272,7 +1272,7 @@ them by asserting propositions to be true; we act directly.
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">create_as</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_table</span><span class="plain">(4, </span><span class="functiontext">Tables::Defining::defined_by_table</span><span class="plain">(</span><span class="identifier">create_as</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfExistingKind2</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfExistingKind2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 reads to me as if '%2' refers to something "</span>
                 <span class="string">"I should create as brand new - %3. That looks reasonable, since "</span>
@@ -1302,7 +1302,7 @@ if nothing has already been said:
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">create_as</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNewInstances</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoNewInstances</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 reads to me as if '%2' refers to something "</span>
                 <span class="string">"I should create as brand new - %3. But that can't be right, "</span>
@@ -1414,7 +1414,7 @@ object.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">instance_kind</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCreateImplicitly</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCreateImplicitly</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 seems to be asking me to create a new value (%2) "</span>
             <span class="string">"in order to be part of a relationship, but this isn't a kind of "</span>
@@ -1436,7 +1436,7 @@ object.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">CW</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CalledArticle</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CalledArticle</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 seems to be asking me to create something whose "</span>
             <span class="string">"name, '%2', is just an article - this isn't allowed."</span><span class="plain">);</span>
@@ -1468,7 +1468,7 @@ message says about performance, too.)
         <span class="identifier">instance_count</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="constant">multiplicity_ANNOT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &lt; 1) </span><span class="identifier">instance_count</span><span class="plain"> = 1;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &gt; </span><span class="constant">MAX_DUPLICATES_AT_ONCE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyDuplicates</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyDuplicates</span><span class="plain">),</span>
                 <span class="string">"at most 100 duplicates can be made at any one time"</span><span class="plain">,</span>
                 <span class="string">"so '157 chairs are in the UN General Assembly' will not be allowed. The "</span>
                 <span class="string">"system for handling duplicates during play becomes too slow and awkward "</span>
@@ -1719,7 +1719,7 @@ For example, property names can't be unsuitable, but they can be unfortunate.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Assertions::Creator::vet_name_for_noun</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">unfortunate</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameBestAvoided</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NameBestAvoided</span><span class="plain">),</span>
                 <span class="string">"this is a name which is best avoided"</span><span class="plain">,</span>
                 <span class="string">"because it would lead to confusion inside Inform. In general, try "</span>
                 <span class="string">"to avoid punctuation, quotation marks, or the words 'with' or "</span>

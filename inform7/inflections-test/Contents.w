@@ -5,7 +5,7 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: words
+Import: ../inbuild/words
 Import: inflections
 
 Chapter 1: Everything

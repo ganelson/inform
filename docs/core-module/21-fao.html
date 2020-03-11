@@ -119,7 +119,7 @@ its outcomes.
 
 <p class="endnote">The structure named_rulebook_outcome is accessed in 2/sq, 2/si, 5/ins, 5/nv, 8/ef, 9/ma, 9/pk, 11/sm, 14/rv, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl, 21/rl2, 21/rps, 21/sv, 21/ac, 22/pu, 22/dptd, 22/po, 22/pav, 25/cii, 26/uo, 26/ts and here.</p>
 
-<p class="endnote">The structure rulebook_outcome is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure rulebook_outcome is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
@@ -175,7 +175,7 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeTwice</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeTwice</span><span class="plain">),</span>
                 <span class="string">"the default outcome for this rulebook has already been declared"</span><span class="plain">,</span>
                 <span class="string">"and this is something which can only be done once."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -194,7 +194,7 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadDefaultOutcome</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadDefaultOutcome</span><span class="plain">),</span>
             <span class="string">"the default outcome given for the rulebook isn't what I expected"</span><span class="plain">,</span>
             <span class="string">"which would be one of 'default success', 'default failure' or "</span>
             <span class="string">"'default no outcome'."</span><span class="plain">);</span>
@@ -264,7 +264,7 @@ each of these still has one of the three results noted above; which will be
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">UNRECOGNISED_OUTCOME</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadOutcomeClarification</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadOutcomeClarification</span><span class="plain">),</span>
             <span class="string">"the bracketed clarification isn't what I expected"</span><span class="plain">,</span>
             <span class="string">"which would be one of '(success)', '(failure)' or '(no outcome)'."</span><span class="plain">);</span>
 </pre>
@@ -283,7 +283,7 @@ each of these still has one of the three results noted above; which will be
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">def</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">default_rbno_flag</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultNamedOutcomeTwice</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultNamedOutcomeTwice</span><span class="plain">),</span>
                     <span class="string">"at most one of the named outcomes from a rulebook "</span>
                     <span class="string">"can be the default"</span><span class="plain">,</span>
                     <span class="string">"and here we seem to have two."</span><span class="plain">);</span>
@@ -291,7 +291,7 @@ each of these still has one of the three results noted above; which will be
             <span class="plain">}</span>
             <span class="identifier">def</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeAlready</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeAlready</span><span class="plain">),</span>
                     <span class="string">"the default outcome for this rulebook has already "</span>
                     <span class="string">"been declared"</span><span class="plain">,</span>
                     <span class="string">"and this is something which can only be done once."</span><span class="plain">);</span>
@@ -309,7 +309,7 @@ each of these still has one of the three results noted above; which will be
                 <span class="identifier">last</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dup</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DuplicateOutcome</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DuplicateOutcome</span><span class="plain">),</span>
                     <span class="string">"this duplicates a previous assignment of the same outcome"</span><span class="plain">,</span>
                     <span class="string">"and to the same rulebook."</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -608,7 +608,7 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 <p class="endnote">The function Rulebooks::Outcomes::index_outcomes is used in 21/rl2 (<a href="21-rl2.html#SP15">&#167;15</a>).</p>
 
-<p class="endnote">The function Rulebooks::Outcomes::RulebookOutcomePrintingRule is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Rulebooks::Outcomes::RulebookOutcomePrintingRule is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="endnote">The function Rulebooks::Outcomes::get_default_value is used in 13/rsfk (<a href="13-rsfk.html#SP5">&#167;5</a>).</p>
 
@@ -622,7 +622,7 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parametrisation</span><span class="plain"> = </span><span class="constant">PARAMETER_FOCUS</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">parameter_kind</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">)) </span><span class="identifier">parametrisation</span><span class="plain"> = </span><span class="constant">ACTION_FOCUS</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">parameter_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RulebookIndefinite</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RulebookIndefinite</span><span class="plain">),</span>
                 <span class="string">"this is a rulebook for values of a kind which isn't definite"</span><span class="plain">,</span>
                 <span class="string">"and doesn't tell me enough about what sort of value the rulebook "</span>
                 <span class="string">"should work on. For example, 'The mystery rules are a number based "</span>

@@ -5,9 +5,9 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: words
+Import: ../inbuild/words
 Import: inflections
-Import: syntax
+Import: ../inbuild/syntax
 Import: linguistics
 Import: kinds
 

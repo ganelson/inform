@@ -80,9 +80,9 @@ not be treated as a possessive, and expunge them.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Rearrangement::tidy_up_ofs_and_froms</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::verify_integrity</span><span class="plain">(</span><span class="identifier">tree_root</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::traverse_wfirst</span><span class="plain">(</span><span class="functiontext">Sentences::Rearrangement::traverse_for_property_names</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Sentences::Rearrangement::traverse_for_nonbreaking_ofs</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::verify_integrity</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">()-&gt;</span><span class="identifier">root_node</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse_wfirst</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Sentences::Rearrangement::traverse_for_property_names</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Sentences::Rearrangement::traverse_for_nonbreaking_ofs</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -90,7 +90,7 @@ not be treated as a possessive, and expunge them.
 
 <p class="endnote">The function Sentences::Rearrangement::further_material appears nowhere else.</p>
 
-<p class="endnote">The function Sentences::Rearrangement::tidy_up_ofs_and_froms is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function Sentences::Rearrangement::tidy_up_ofs_and_froms is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following array is used only by Traversals 1 to 3, and is how we
 remember direction names.
@@ -147,7 +147,7 @@ roof, since it might need to recurse thousands of function calls deep.
         <span class="reserved">if</span><span class="plain"> (!((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)))</span>
                 <span class="plain">&amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == 0))) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_directions_noticed</span><span class="plain"> &gt;= </span><span class="constant">MAX_DIRECTIONS</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyDirections</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyDirections</span><span class="plain">),</span>
                 <span class="string">"different directions"</span><span class="plain">, </span><span class="constant">MAX_DIRECTIONS</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -328,7 +328,7 @@ property names before they can do any damage.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyCalledArticle</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyCalledArticle</span><span class="plain">),</span>
             <span class="string">"a property name cannot consist only of an article"</span><span class="plain">,</span>
             <span class="string">"which this one seems to. It would lead to awful ambiguities. "</span>
             <span class="string">"More likely, the end of the sentence has been lost somehow?"</span><span class="plain">);</span>
@@ -344,7 +344,7 @@ property names before they can do any damage.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyCalledPresence</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyCalledPresence</span><span class="plain">),</span>
             <span class="string">"a property name cannot consist only of the word 'presence'"</span><span class="plain">,</span>
             <span class="string">"because this would lead to ambiguities with the rule clause "</span>
             <span class="string">"'...in the presence of...' (For instance, when writing something "</span>
@@ -363,7 +363,7 @@ property names before they can do any damage.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameForbidden</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameForbidden</span><span class="plain">),</span>
             <span class="string">"a property name cannot contain quoted text or a comma"</span><span class="plain">,</span>
             <span class="string">"which this one seems to. I think I must be misunderstanding: "</span>
             <span class="string">"possibly you've added a subordinate clause which I can't "</span>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>5/vmg</title>
+		<title>4/pm</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -44,17 +44,6 @@
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">activate</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">element_activation</span><span class="plain">;</span>
-
-    <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Kits::find</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">nest_list</span><span class="plain">) {</span>
-        <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain">, </span><span class="identifier">nest_list</span><span class="plain">) {</span>
-            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">KitManager::path_within_nest</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-            <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kit_metadata.txt"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::scan</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no copy to scan"</span><span class="plain">);</span>
@@ -136,9 +125,11 @@
     <span class="plain">}</span>
 
     <span class="reserved">inform_kit</span><span class="plain"> *</span><span class="functiontext">Kits::load</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">nest_list</span><span class="plain">) {</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Kits::find</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">nest_list</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"cannot find kit"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">KitManager::new_copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> =</span>
+            <span class="functiontext">Requirements::any_version_of</span><span class="plain">(</span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">kit_genre</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">));</span>
+        <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Nests::first_found</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">nest_list</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"cannot find kit"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">KitManager::build_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">KitManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -165,7 +156,7 @@
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;if_included</span><span class="plain"> == </span><span class="identifier">parity</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Projects::uses_kit</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;then_name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Projects::uses_kit</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;if_name</span><span class="plain">) == </span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;if_included</span><span class="plain">)) {</span>
-                <span class="functiontext">Projects::add_kit_dependency</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;then_name</span><span class="plain">);</span>
+                <span class="functiontext">Projects::add_kit_dependency</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">ITTT</span><span class="plain">-</span><span class="element">&gt;then_name</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">changes_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">changes_made</span><span class="plain">;</span>
@@ -189,7 +180,7 @@
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">EA</span><span class="plain">, </span><span class="reserved">element_activation</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;activations</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Plugins::Manage::parse</span><span class="plain">(</span><span class="identifier">EA</span><span class="plain">-</span><span class="element">&gt;element_name</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == -1)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">),</span>
                     <span class="string">"one of the Inform kits made reference to a language segment which does not exist"</span><span class="plain">,</span>
                     <span class="string">"which strongly suggests that Inform is not properly installed."</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> &gt;= 0) {</span>
@@ -207,12 +198,6 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kits::number_of_early_fed_sentences</span><span class="plain">(</span><span class="reserved">inform_kit</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;extensions</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;early_source</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">++;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="functiontext">Kits::inter_paths</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">inter_paths</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain">);</span>
         <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">;</span>
@@ -224,8 +209,6 @@
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Kits::find appears nowhere else.</p>
 
 <p class="endnote">The function Kits::scan is used in 4/km (<a href="4-km.html#SP1">&#167;1</a>).</p>
 
@@ -245,11 +228,9 @@
 
 <p class="endnote">The function Kits::early_source_text is used in 5/ps (<a href="5-ps.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Kits::number_of_early_fed_sentences is used in 5/ps (<a href="5-ps.html#SP3">&#167;3</a>).</p>
-
 <p class="endnote">The function Kits::inter_paths is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The structure inform_kit is accessed in 1/ic, 3/is2, 3/is3, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/es, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2 and here.</p>
+<p class="endnote">The structure inform_kit is accessed in 1/ic, 3/is2, 3/is3, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/es, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2, 6/hdn, 6/inc and here.</p>
 
 <p class="endnote">The structure inform_kit_ittt is private to this section.</p>
 
@@ -301,8 +282,18 @@ If there are S sections then the graph has S+5 vertices and 4(S+1) edges.
 
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">inbuild_requirement</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;extensions</span><span class="plain">) {</span>
-            <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">EV</span><span class="plain"> = </span><span class="functiontext">Graphs::req_vertex</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">);</span>
-            <span class="functiontext">Graphs::need_this_to_use</span><span class="plain">(</span><span class="identifier">KV</span><span class="plain">, </span><span class="identifier">EV</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requirements::meets</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">)) {</span>
+                    <span class="functiontext">Graphs::need_this_to_use</span><span class="plain">(</span><span class="identifier">KV</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">);</span>
+                    <span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+                <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">RV</span><span class="plain"> = </span><span class="functiontext">Graphs::req_vertex</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">);</span>
+                <span class="functiontext">Graphs::need_this_to_use</span><span class="plain">(</span><span class="identifier">KV</span><span class="plain">, </span><span class="identifier">RV</span><span class="plain">);</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -312,7 +303,7 @@ If there are S sections then the graph has S+5 vertices and 4(S+1) edges.
 <p class="endnote">The function Kits::construct_graph is used in 4/km (<a href="4-km.html#SP7">&#167;7</a>).</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="5-vmg.html">Back to 'Virtual Machine Grammar'</a></li><li><a href="5-es.html">Continue with 'Extension Services'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 5: Services for the Inform Compiler.)</i></li><li><a href="5-es.html">Continue with 'Extension Services'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

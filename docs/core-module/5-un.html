@@ -88,7 +88,7 @@ instance, the Standard Rules want the player-character object to be called
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="functiontext">Kinds::RunTime::assure_iname_exists</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">UseNouns::visit_to_name</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">UseNouns::visit_to_name</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseNouns::visit_to_name</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -100,7 +100,7 @@ instance, the Standard Rules want the player-character object to be called
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function UseNouns::name_all is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
+<p class="endnote">The function UseNouns::name_all is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="endnote">The function UseNouns::visit_to_name appears nowhere else.</p>
 
@@ -121,7 +121,7 @@ instance, the Standard Rules want the player-character object to be called
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">i6r</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadObjectTranslation</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadObjectTranslation</span><span class="plain">),</span>
                 <span class="string">"there is no such object or kind of object"</span><span class="plain">,</span>
                 <span class="string">"so its name will never be translated into an I6 Object or Class identifier "</span>
                 <span class="string">"in any event."</span><span class="plain">);</span>
@@ -167,14 +167,14 @@ and is a somewhat provisional feature for now.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">gender_reference_ANNOT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"No such NL"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">English_language</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateIntoEnglish</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateIntoEnglish</span><span class="plain">),</span>
                 <span class="string">"you can't translate into English"</span><span class="plain">,</span>
                 <span class="string">"only out of it."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">nl</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateValue</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateValue</span><span class="plain">),</span>
                 <span class="string">"this isn't something which can be translated"</span><span class="plain">,</span>
                 <span class="string">"that is, it isn't a kind."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>

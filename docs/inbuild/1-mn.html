@@ -20,6 +20,10 @@
     <span class="definitionkeyword">define</span> <span class="constant">INTOOL_NAME</span><span class="plain"> </span><span class="string">"inbuild"</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INSPECT_TTASK</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
     <span class="definitionkeyword">enum</span> <span class="constant">GRAPH_TTASK</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NEEDS_TTASK</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ARCHIVE_TTASK</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ARCHIVE_TO_TTASK</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MISSING_TTASK</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BUILD_TTASK</span>
     <span class="definitionkeyword">enum</span> <span class="constant">REBUILD_TTASK</span>
     <span class="definitionkeyword">enum</span> <span class="constant">COPY_TO_TTASK</span>
@@ -31,7 +35,7 @@
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_tools</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">INSPECT_TTASK</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dry_run_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dry_run_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">build_trace_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">targets</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">inbuild_copy</span></code></span>
     <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">destination_nest</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">filter_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -40,21 +44,24 @@
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         <span class="functiontext">Foundation::start</span><span class="plain">();</span>
+        <span class="functiontext">WordsModule::start</span><span class="plain">();</span>
+        <span class="functiontext">SyntaxModule::start</span><span class="plain">();</span>
         <span class="functiontext">HTMLModule::start</span><span class="plain">();</span>
         <span class="functiontext">ArchModule::start</span><span class="plain">();</span>
         <span class="functiontext">InbuildModule::start</span><span class="plain">();</span>
         <span class="identifier">targets</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Read the command line</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">path_to_inbuild</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INBUILD_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inbuild"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">) &gt; 0) </span><span class="identifier">dry_run_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">SHELL_METHODOLOGY</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dry_run_mode</span><span class="plain">) </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">;</span>
         <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">path_to_tools</span><span class="plain">) </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="identifier">path_to_tools</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">), </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">build_trace_mode</span><span class="plain">) </span><span class="identifier">trace_ibg</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">) &gt; 0) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"compatibility"</span><span class="plain">)) </span><span class="functiontext">Compatibility::test</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"semver"</span><span class="plain">)) </span><span class="functiontext">VersionNumbers::test</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"no such unit test: %S"</span><span class="plain">, </span><span class="identifier">unit_test</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">filter_text</span><span class="plain">) &gt; 0) {</span>
@@ -77,6 +84,16 @@
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">inbuild_task</span><span class="plain">) {</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">INSPECT_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::inspect</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">GRAPH_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::show_graph</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEEDS_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::show_needs</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHIVE_TTASK</span><span class="plain">:</span>
+                        <span class="identifier">destination_nest</span><span class="plain"> = </span><span class="functiontext">Inbuild::materials_nest</span><span class="plain">();</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">destination_nest</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                            <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"no -project in use, so ignoring -archive"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                        <span class="reserved">else</span>
+                            <span class="functiontext">Copies::archive</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+                        <span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHIVE_TO_TTASK</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">destination_nest</span><span class="plain">) </span><span class="functiontext">Copies::archive</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">MISSING_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::show_missing</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">BUILD_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::build</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">REBUILD_TTASK</span><span class="plain">: </span><span class="functiontext">Copies::rebuild</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">case</span><span class="plain"> </span><span class="constant">COPY_TO_TTASK</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">destination_nest</span><span class="plain">) </span><span class="functiontext">Nests::copy_to</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
@@ -84,10 +101,11 @@
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">WordsModule::end</span><span class="plain">();</span>
         <span class="functiontext">ArchModule::end</span><span class="plain">();</span>
         <span class="functiontext">InbuildModule::end</span><span class="plain">();</span>
         <span class="functiontext">HTMLModule::end</span><span class="plain">();</span>
+        <span class="functiontext">SyntaxModule::end</span><span class="plain">();</span>
+        <span class="functiontext">WordsModule::end</span><span class="plain">();</span>
         <span class="functiontext">Foundation::end</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
@@ -95,7 +113,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main is used in 1/ic (<a href="1-ic.html#SP15">&#167;15</a>), 5/st (<a href="5-st.html#SP1">&#167;1</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function main is used in 1/ic (<a href="1-ic.html#SP15">&#167;15</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 6/st (<a href="6-st.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>We use Foundation to read the command line:
 </p>
@@ -105,8 +123,13 @@
     <span class="definitionkeyword">enum</span> <span class="constant">BUILD_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">REBUILD_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">GRAPH_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NEEDS_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">MISSING_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ARCHIVE_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ARCHIVE_TO_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">INSPECT_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DRY_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BUILD_TRACE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TOOLS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CONTENTS_OF_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">MATCHING_CLSW</span>
@@ -135,10 +158,20 @@
             <span class="identifier">L</span><span class="string">"show target(s) but take no action"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">GRAPH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"graph"</span><span class="plain">, 1,</span>
             <span class="identifier">L</span><span class="string">"show dependency graph of target(s) but take no action"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">NEEDS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"needs"</span><span class="plain">, 1,</span>
+            <span class="identifier">L</span><span class="string">"show all the extensions, kits and so on needed to build"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">MISSING_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"missing"</span><span class="plain">, 1,</span>
+            <span class="identifier">L</span><span class="string">"show the extensions, kits and so on which are needed but missing"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHIVE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"archive"</span><span class="plain">, 1,</span>
+            <span class="identifier">L</span><span class="string">"sync copies of all extensions, kits and so on needed for -project into Materials"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHIVE_TO_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"archive-to"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"sync copies of all extensions, kits and so on needed into nest X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TOOLS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"tools"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"make X the directory of intools executables, and exit developer mode"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">DRY_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"dry"</span><span class="plain">, 1,</span>
             <span class="identifier">L</span><span class="string">"make this a dry run (print but do not execute shell commands)"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">BUILD_TRACE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"build-trace"</span><span class="plain">, 1,</span>
+            <span class="identifier">L</span><span class="string">"show verbose reasoning during -build"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">MATCHING_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"matching"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"apply to all works in nest(s) matching requirement X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">CONTENTS_OF_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"contents-of"</span><span class="plain">, 2,</span>
@@ -152,6 +185,12 @@
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LinkedLists::len</span><span class="plain">(</span><span class="identifier">unsorted_nest_list</span><span class="plain">) == 0)</span>
             <span class="functiontext">Inbuild::add_nest</span><span class="plain">(</span>
                 <span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"inform7/Internal"</span><span class="plain">), </span><span class="constant">INTERNAL_NEST_TAG</span><span class="plain">);</span>
+
+        <span class="identifier">path_to_inbuild</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INBUILD_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inbuild"</span><span class="plain">);</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Syntax.preform"</span><span class="plain">);</span>
+        <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Preform::load_from_file</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="functiontext">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::play_back_log</span><span class="plain">();</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">proj</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">C</span><span class="plain">;</span>
@@ -189,10 +228,20 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">REBUILD_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">REBUILD_TTASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">INSPECT_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">INSPECT_TTASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">GRAPH_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">GRAPH_TTASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEEDS_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">NEEDS_TTASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHIVE_TO_CLSW</span><span class="plain">:</span>
+                <span class="identifier">destination_nest</span><span class="plain"> = </span><span class="functiontext">Nests::new</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">));</span>
+                <span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">ARCHIVE_TO_TTASK</span><span class="plain">;</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHIVE_CLSW</span><span class="plain">:</span>
+                <span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">ARCHIVE_TTASK</span><span class="plain">;</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MISSING_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">MISSING_TTASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOOLS_CLSW</span><span class="plain">: </span><span class="identifier">path_to_tools</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">MATCHING_CLSW</span><span class="plain">: </span><span class="identifier">filter_text</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONTENTS_OF_CLSW</span><span class="plain">: </span><span class="functiontext">Main::load_many</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DRY_CLSW</span><span class="plain">: </span><span class="identifier">dry_run_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BUILD_TRACE_CLSW</span><span class="plain">: </span><span class="identifier">build_trace_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">COPY_TO_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">COPY_TO_TTASK</span><span class="plain">;</span>
                 <span class="identifier">destination_nest</span><span class="plain"> = </span><span class="functiontext">Nests::new</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -280,7 +329,21 @@ structure and initialiser:
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> </span><span class="reserved">void</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARSE_TREE_TRAVERSE_TYPE</span><span class="plain"> </span><span class="reserved">void</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SENTENCE_NODE</span><span class="plain"> </span><span class="functiontext">Main::sentence_level</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARSE_TREE_METADATA_SETUP</span><span class="plain"> </span><span class="functiontext">SourceText::node_metadata</span>
 </pre>
+
+<pre class="display">
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Main::sentence_level</span><span class="plain">(</span><span class="constant">node_type_t</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Main::sentence_level appears nowhere else.</p>
+
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 1: The Whole Shooting Match.)</i></li><li><i>(This section ends Chapter 1: The Whole Shooting Match.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->

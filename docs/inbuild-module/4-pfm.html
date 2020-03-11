@@ -19,7 +19,7 @@
 <pre class="display">
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">project_file_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectFileManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">project_file_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectfile"</span><span class="plain">);</span>
+        <span class="identifier">project_file_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectfile"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_WRITE_WORK_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::write_work</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_CLAIM_AS_COPY_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::claim_as_copy</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_SEARCH_NEST_FOR_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::search_nest_for</span><span class="plain">);</span>
@@ -64,7 +64,7 @@ which stores data about extensions used by the Inform compiler.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ProjectFileManager::from_copy is used in <a href="#SP8">&#167;8</a>, 1/ic (<a href="1-ic.html#SP11">&#167;11</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function ProjectFileManager::from_copy is used in <a href="#SP8">&#167;8</a>, 1/ic (<a href="1-ic.html#SP11">&#167;11</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>), 3/is4 (<a href="3-is4.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function ProjectFileManager::new_copy is used in <a href="#SP3">&#167;3</a>.</p>
 

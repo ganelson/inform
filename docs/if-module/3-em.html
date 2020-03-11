@@ -399,7 +399,7 @@ If all are null, then the global scope is used.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::EPSMap::traverse_for_map_parameters</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pass</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 1) </span><span class="functiontext">PL::SpatialMap::initialise_page_directions</span><span class="plain">();</span>
-        <span class="identifier">ParseTree::traverse_int</span><span class="plain">(</span><span class="functiontext">PL::EPSMap::look_for_map_parameters</span><span class="plain">, &amp;</span><span class="identifier">pass</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse_int</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">PL::EPSMap::look_for_map_parameters</span><span class="plain">, &amp;</span><span class="identifier">pass</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::EPSMap::look_for_map_parameters</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">pass</span><span class="plain">) {</span>

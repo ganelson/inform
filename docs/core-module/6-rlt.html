@@ -189,7 +189,7 @@ text of the subject mustn't be an existing relation name.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationExists</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationExists</span><span class="plain">),</span>
             <span class="string">"that relation already exists"</span><span class="plain">,</span>
             <span class="string">"and cannot have its definition amended now."</span><span class="plain">);</span>
 </pre>
@@ -261,7 +261,7 @@ splitting into cases.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"BP in relation not initially parsed"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">RW</span><span class="plain">) &gt; </span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain">-4) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationNameTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationNameTooLong</span><span class="plain">),</span>
                 <span class="string">"this is too long a name for a single relation to have"</span><span class="plain">,</span>
                 <span class="string">"and would become unwieldy."</span><span class="plain">);</span>
             <span class="identifier">RW</span><span class="plain"> = </span><span class="identifier">Wordings::truncate</span><span class="plain">(</span><span class="identifier">RW</span><span class="plain">, </span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain">-4);</span>
@@ -526,7 +526,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">right_bitmap</span><span class="plain"> &amp; </span><span class="constant">FRF_RBIT</span><span class="plain">) </span><span class="identifier">frf</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">frf</span><span class="plain"> &amp;&amp; (</span><span class="identifier">left_unique</span><span class="plain"> != </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right_unique</span><span class="plain"> != </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FRFUnavailable</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FRFUnavailable</span><span class="plain">),</span>
                     <span class="string">"fast route-finding is only possible with various-to-various "</span>
                     <span class="string">"relations"</span><span class="plain">,</span>
                     <span class="string">"though this doesn't matter because with other relations the "</span>
@@ -555,7 +555,7 @@ logical properties of the two terms of the BP being defined.
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">right_bitmap</span><span class="plain"> &amp; </span><span class="constant">WHEN_RBIT</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_unique</span><span class="plain"> != </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">) || (</span><span class="identifier">right_unique</span><span class="plain"> != </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">)) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OneOrVariousWithWhen</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OneOrVariousWithWhen</span><span class="plain">),</span>
                         <span class="string">"this relation is a mixture of different syntaxes"</span><span class="plain">,</span>
                         <span class="string">"and must be simplified. If it is going to specify 'one' or "</span>
                         <span class="string">"'various' then it cannot also say 'when' the relation holds."</span><span class="plain">);</span>
@@ -616,7 +616,7 @@ logical properties of the two terms of the BP being defined.
                 <span class="identifier">symmetric</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">left_unique</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">right_unique</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">equivalence</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">specified_one</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">left_unique</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BothOneAndMany</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BothOneAndMany</span><span class="plain">),</span>
                     <span class="string">"the left-hand term in this relation seems to be both 'one' thing "</span>
                     <span class="string">"and also many things"</span><span class="plain">,</span>
                     <span class="string">"given the mention of 'each other'. Try removing the 'one'."</span><span class="plain">);</span>
@@ -662,19 +662,19 @@ logical properties of the two terms of the BP being defined.
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">CONW</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_unique</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">LCALLW</span><span class="plain">))) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallLeft</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallLeft</span><span class="plain">),</span>
                         <span class="string">"the left-hand term of this relation is not unique"</span><span class="plain">,</span>
                         <span class="string">"so you cannot assign a name to it using 'called'."</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">right_unique</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">RCALLW</span><span class="plain">))) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallRight</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallRight</span><span class="plain">),</span>
                         <span class="string">"the right-hand term of this relation is not unique"</span><span class="plain">,</span>
                         <span class="string">"so you cannot assign a name to it using 'called'."</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">LCALLW</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">RCALLW</span><span class="plain">))) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallBoth</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCallBoth</span><span class="plain">),</span>
                         <span class="string">"the terms of the relation can't be named on both sides at once"</span><span class="plain">,</span>
                         <span class="string">"and because of that it's best to use a single even-handed name: "</span>
                         <span class="string">"for instance, 'Marriage relates one person to another (called "</span>
@@ -683,7 +683,7 @@ logical properties of the two terms of the BP being defined.
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">symmetric</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">left_unique</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right_unique</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">RCALLW</span><span class="plain">))) {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OneToOneMiscalled</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_OneToOneMiscalled</span><span class="plain">),</span>
                         <span class="string">"with a one-to-one relation which is not symmetrical "</span>
                         <span class="string">"only the left-hand item can be given a name using 'called'"</span><span class="plain">,</span>
                         <span class="string">"so this needs rephrasing to name the left in terms of the right "</span>
@@ -797,7 +797,7 @@ logical properties of the two terms of the BP being defined.
 
 
     <pre class="displaydefn">
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelNotStoredInProperty</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelNotStoredInProperty</span><span class="plain">),</span>
                 <span class="string">"a '(called ...)' name can't be used for this relation"</span><span class="plain">,</span>
                 <span class="string">"because of the kinds involved in it. (Names for terms in a relation "</span>
                 <span class="string">"only work if it's possible to store the relation using properties, "</span>
@@ -1129,7 +1129,7 @@ logical properties of the two terms of the BP being defined.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">side</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelatedKindsUnknown</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelatedKindsUnknown</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the relation definition %1, I am unable to understand the %3-hand "</span>
                 <span class="string">"side -- I was expecting that %2 would be either the name of a kind, "</span>
@@ -1153,7 +1153,7 @@ logical properties of the two terms of the BP being defined.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">to recover from earlier problems</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) || (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RangeOverlyBroad</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RangeOverlyBroad</span><span class="plain">),</span>
                     <span class="string">"relations aren't allowed to range over all 'objects' or all 'values'"</span><span class="plain">,</span>
                     <span class="string">"as these are too broad. A relation has to be between two kinds of "</span>
                     <span class="string">"object, or kinds of value. So 'Taming relates various people to "</span>
@@ -1233,7 +1233,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="endnote">The function Relations::compile_defined_relation_constant appears nowhere else.</p>
 
-    <p class="endnote">The function Relations::compile_defined_relation_constants is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+    <p class="endnote">The function Relations::compile_defined_relation_constants is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
 
@@ -2385,7 +2385,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function Relations::IterateRelations is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+    <p class="endnote">The function Relations::IterateRelations is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. The bitmap for various-to-various relations. </b>It is unavoidable that a general V-to-V relation will take at least LR bits
     of storage, where L is the size of the left domain and R the size of the
@@ -3141,7 +3141,7 @@ logical properties of the two terms of the BP being defined.
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">The function Relations::compile_defined_relations is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+    <p class="endnote">The function Relations::compile_defined_relations is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="inwebparagraph"><a id="SP29_1"></a><b>&#167;29.1.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Compile RProperty routine</span> <span class="cwebmacronumber">29.1</span>&gt; =
@@ -3483,7 +3483,7 @@ logical properties of the two terms of the BP being defined.
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="functiontext">Dash::validate_conditional_clause</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRelationCondition</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRelationCondition</span><span class="plain">),</span>
                     <span class="string">"the condition defining this relation makes no sense to me"</span><span class="plain">,</span>
                     <span class="string">"although the definition was properly formed - it is only "</span>
                     <span class="string">"the part after 'when' which I can't follow."</span><span class="plain">);</span>

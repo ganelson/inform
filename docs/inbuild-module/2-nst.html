@@ -55,6 +55,7 @@
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;found_by</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad search result"</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">inbuild_search_result</span><span class="plain">, </span><span class="identifier">results</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -83,6 +84,27 @@
         <span class="plain">}</span>
     <span class="plain">}</span>
 
+    <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="functiontext">Nests::first_found</span><span class="plain">(</span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">search_list</span><span class="plain">) {</span>
+        <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">inbuild_search_result</span><span class="plain">);</span>
+        <span class="functiontext">Nests::search_for</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">search_list</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+        <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">best</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">search_result</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">, </span><span class="reserved">inbuild_search_result</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Nests::better_result</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">, </span><span class="identifier">best</span><span class="plain">))</span>
+                <span class="identifier">best</span><span class="plain"> = </span><span class="identifier">search_result</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">best</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nests::better_result</span><span class="plain">(</span><span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain">, </span><span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o1</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o2</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> &lt; </span><span class="identifier">o2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> &gt; </span><span class="identifier">o2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::gt</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::copy_to</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">syncing</span><span class="plain">,</span>
         <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">meth</span><span class="plain">) {</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_COPY_TO_NEST_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="identifier">syncing</span><span class="plain">, </span><span class="identifier">meth</span><span class="plain">);</span>
@@ -99,7 +121,7 @@
 
 <p class="endnote">The function Nests::new is used in 1/ic (<a href="1-ic.html#SP6">&#167;6</a>).</p>
 
-<p class="endnote">The function Nests::get_tag is used in 1/ic (<a href="1-ic.html#SP7">&#167;7</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP1">&#167;1</a>, <a href="5-ec.html#SP3_1">&#167;3.1</a>, <a href="5-ec.html#SP3_2">&#167;3.2</a>).</p>
+<p class="endnote">The function Nests::get_tag is used in 1/ic (<a href="1-ic.html#SP7">&#167;7</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP1">&#167;1</a>, <a href="5-ec.html#SP3_1">&#167;3.1</a>, <a href="5-ec.html#SP3_2">&#167;3.2</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
 <p class="endnote">The function Nests::set_tag is used in 1/ic (<a href="1-ic.html#SP6">&#167;6</a>).</p>
 
@@ -109,15 +131,19 @@
 
 <p class="endnote">The function Nests::add_to_search_sequence appears nowhere else.</p>
 
-<p class="endnote">The function Nests::search_for is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP3">&#167;3</a>), 5/ps (<a href="5-ps.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Nests::search_for is used in 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP3">&#167;3</a>), 6/inc (<a href="6-inc.html#SP6_1_2">&#167;6.1.2</a>).</p>
 
-<p class="endnote">The function Nests::copy_to appears nowhere else.</p>
+<p class="endnote">The function Nests::first_found is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 5/ps (<a href="5-ps.html#SP1">&#167;1</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
+
+<p class="endnote">The function Nests::better_result appears nowhere else.</p>
+
+<p class="endnote">The function Nests::copy_to is used in 3/bg (<a href="3-bg.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Nests::overwrite_error is used in 4/km (<a href="4-km.html#SP6">&#167;6</a>), 4/em (<a href="4-em.html#SP8">&#167;8</a>), 4/lm (<a href="4-lm.html#SP7">&#167;7</a>), 4/tm (<a href="4-tm.html#SP6">&#167;6</a>), 4/pm (<a href="4-pm.html#SP7">&#167;7</a>).</p>
 
-<p class="endnote">The structure inbuild_nest is accessed in 1/ic, 3/is2, 4/km, 4/em, 4/lm, 4/tm, 4/pm, 5/ps and here.</p>
+<p class="endnote">The structure inbuild_nest is accessed in 1/ic, 3/bg, 3/is2, 4/km, 4/em, 4/lm, 4/tm, 4/pm, 5/ps and here.</p>
 
-<p class="endnote">The structure inbuild_search_result is accessed in 2/cps, 3/is, 5/ed2, 5/ec, 5/ps and here.</p>
+<p class="endnote">The structure inbuild_search_result is accessed in 2/cps, 3/is, 5/kts, 5/ed2, 5/ec, 5/ps, 6/inc and here.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-rqr.html">Back to 'Requirements'</a></li><li><i>(This section ends Chapter 2: Conceptual Framework.)</i></li></ul><hr class="tocbar">

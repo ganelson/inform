@@ -109,6 +109,7 @@
         <span class="functiontext">ParseTree::md</span><span class="plain">((</span><span class="reserved">parse_tree_node_type</span><span class="plain">) { </span><span class="constant">UNKNOWN_NT</span><span class="plain">, </span><span class="string">"UNKNOWN_NT"</span><span class="plain">, 0, </span><span class="constant">INFTY</span><span class="plain">, </span><span class="constant">L2_NCAT</span><span class="plain">, 0 });</span>
     <span class="plain">}</span>
 
+    <span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">syntax_tree</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Unit::test_diagrams</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
         <span class="functiontext">Streams::enable_debugging</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">);</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
@@ -116,15 +117,15 @@
         <span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="functiontext">TextFromFiles::feed_into_lexer</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">NULL_GENERAL_POINTER</span><span class="plain">);</span>
         <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Feeds::end</span><span class="plain">(</span><span class="identifier">FD</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"File has failed to open\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="functiontext">ParseTree::plant_parse_tree</span><span class="plain">();</span>
+        <span class="identifier">syntax_tree</span><span class="plain"> = </span><span class="functiontext">ParseTree::new_tree</span><span class="plain">();</span>
         <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Read %d words\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
-        <span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="identifier">syntax_tree</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1);</span>
 
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">save_DL</span><span class="plain"> = </span><span class="identifier">DL</span><span class="plain">;</span>
         <span class="identifier">DL</span><span class="plain"> = </span><span class="constant">STDOUT</span><span class="plain">;</span>
         <span class="functiontext">Streams::enable_debugging</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-        <span class="functiontext">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Unit::diagram</span><span class="plain">);</span>
-        <span class="functiontext">ParseTree::log_tree</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">tree_root</span><span class="plain">);</span>
+        <span class="functiontext">ParseTree::traverse</span><span class="plain">(</span><span class="identifier">syntax_tree</span><span class="plain">, </span><span class="functiontext">Unit::diagram</span><span class="plain">);</span>
+        <span class="functiontext">ParseTree::log_tree</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">syntax_tree</span><span class="plain">-</span><span class="element">&gt;root_node</span><span class="plain">);</span>
         <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">save_DL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -144,7 +145,7 @@
                 <span class="functiontext">Verbs::add_form</span><span class="plain">(</span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">VerbMeanings::new</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">), </span><span class="constant">SVO_FS_BIT</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">unexceptional</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-                    <span class="functiontext">ParseTree::graft</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">p</span><span class="plain">);</span>
+                    <span class="functiontext">ParseTree::graft</span><span class="plain">(</span><span class="identifier">syntax_tree</span><span class="plain">, &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">p</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Failed: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="plain">}</span>

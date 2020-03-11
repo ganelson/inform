@@ -151,11 +151,11 @@ the doubled use of colons is unfortunate.)
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Adjectives::traverse</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Phrases::Adjectives::look_for_headers</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Phrases::Adjectives::look_for_headers</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Adjectives::look_for_headers</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">ROUTINE_NT</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">ROUTINE_NT</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">definition</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) {</span>
                 <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
                 <span class="functiontext">Modules::set_current</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -182,7 +182,7 @@ the doubled use of colons is unfortunate.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::Adjectives::traverse is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function Phrases::Adjectives::traverse is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Phrases::Adjectives::look_for_headers appears nowhere else.</p>
 
@@ -198,8 +198,8 @@ is defined by routine or not.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="constant">ROUTINE_NT</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">)) {</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"don't leave me in suspense"</span><span class="plain">,</span>
                 <span class="string">"write a definition after 'Definition:'!"</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -241,7 +241,7 @@ is defined by routine or not.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">the_format</span><span class="plain"> == </span><span class="constant">DEFINED_IN_SOME_WAY_NOT_YET_KNOWN</span><span class="plain">) ||</span>
             <span class="plain">((</span><span class="identifier">the_format</span><span class="plain"> == </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree (%d):\</span><span class="plain">n</span><span class="string">$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">the_format</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefinitionWithoutCondition</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefinitionWithoutCondition</span><span class="plain">),</span>
                 <span class="identifier">q</span><span class="plain">, </span><span class="string">"a definition must take the form 'Definition: a ... is ... if/unless "</span>
                 <span class="string">"...' or else 'Definition: a ... is ...: ...'"</span><span class="plain">,</span>
                 <span class="string">"but I can't make this fit either shape."</span><span class="plain">);</span>
@@ -250,7 +250,7 @@ is defined by routine or not.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::mismatched_brackets</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Wordings::mismatched_brackets</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)))) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree:\</span><span class="plain">n</span><span class="string">$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BracketedAdjective</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BracketedAdjective</span><span class="plain">),</span>
                 <span class="identifier">q</span><span class="plain">, </span><span class="string">"this definition seems to involve unexpected brackets in the name of "</span>
                 <span class="string">"the adjective being defined"</span><span class="plain">,</span>
                 <span class="string">"so I think I must be misreading it."</span><span class="plain">);</span>
@@ -296,7 +296,7 @@ offer the new adjective around and see if anybody claims it.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::Adjectives::vet_name</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">article</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ArticleAsAdjective</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ArticleAsAdjective</span><span class="plain">),</span>
                 <span class="string">"a defined adjective cannot consist only of an article such as "</span>
                 <span class="string">"'a' or 'the'"</span><span class="plain">,</span>
                 <span class="string">"since this will lead to parsing ambiguities."</span><span class="plain">);</span>
@@ -306,7 +306,7 @@ offer the new adjective around and see if anybody claims it.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectivePunctuated</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectivePunctuated</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The sentence %1 seems to create an adjective with the name "</span>
                     <span class="string">"'%2', but adjectives have to be contain only unpunctuated "</span>

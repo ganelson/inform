@@ -50,9 +50,9 @@
 
 <p class="endnote">The structure activity is accessed in 2/sq, 2/si, 5/ins, 5/nv, 8/ef, 9/ma, 9/pk, 11/sm, 14/lv, 14/ds2, 15/pr, 15/ep, 15/vp, 15/spr, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 22/pu, 22/dptd, 22/po, 22/pav, 25/cii, 26/uo, 26/ts and here.</p>
 
-<p class="endnote">The structure activity_list is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure activity_list is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
-<p class="endnote">The structure activity_crossref is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure activity_crossref is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -190,7 +190,7 @@ noun for it; for example, the "announcing activity".
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityNoteUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityNoteUnknown</span><span class="plain">),</span>
             <span class="string">"one of the notes about this activity makes no sense"</span><span class="plain">,</span>
             <span class="string">"and should be either 'documented at SYMBOL' or 'future action'."</span><span class="plain">);</span>
 </pre>
@@ -212,7 +212,7 @@ noun for it; for example, the "announcing activity".
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">creation_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">creation_kind</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"I'm reading the kind as: $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">creation_kind</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityIndefinite</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityIndefinite</span><span class="plain">),</span>
                 <span class="string">"this is an activity on a kind which isn't definite"</span><span class="plain">,</span>
                 <span class="string">"and doesn't tell me enough about what sort of value the activity "</span>
                 <span class="string">"should work on. For example, 'Divining is an activity on numbers' "</span>
@@ -230,7 +230,7 @@ noun for it; for example, the "announcing activity".
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">creation_kind</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">)) </span><span class="identifier">creation_kind</span><span class="plain"> = </span><span class="identifier">K_object</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">creation_kind</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityMisnamed</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityMisnamed</span><span class="plain">),</span>
                     <span class="string">"the name of this activity implies that it acts on nothing"</span><span class="plain">,</span>
                     <span class="string">"which doesn't fit with what you say about it. For example, "</span>
                     <span class="string">"'Painting is an activity on brushes' isn't allowed because "</span>
@@ -253,7 +253,7 @@ noun for it; for example, the "announcing activity".
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">UNKNOWN_NT</span><span class="plain">)) &amp;&amp; (!(</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">)))) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%W means $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">av</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActivityName</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActivityName</span><span class="plain">),</span>
                 <span class="string">"this already has a meaning"</span><span class="plain">,</span>
                 <span class="string">"and so cannot be the name of a newly created activity."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -337,7 +337,7 @@ noun for it; for example, the "announcing activity".
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarAnd</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarAnd</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, which I am reading as a request to make "</span>
             <span class="string">"a new named variable for an activity - a value associated "</span>
@@ -365,7 +365,7 @@ noun for it; for example, the "announcing activity".
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVariableNameless</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVariableNameless</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                 <span class="string">"a new named variable for an activity - a value associated "</span>
@@ -391,7 +391,7 @@ noun for it; for example, the "announcing activity".
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarOverspecific</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarOverspecific</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                     <span class="string">"a new named variable for an activity - a value associated "</span>
@@ -409,7 +409,7 @@ noun for it; for example, the "announcing activity".
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Offending SP: $T"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarUnknownKOV</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarUnknownKOV</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but '%2' is not the name of a kind of "</span>
                 <span class="string">"value which I know (such as 'number' or 'text')."</span><span class="plain">);</span>
@@ -419,7 +419,7 @@ noun for it; for example, the "announcing activity".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarValue</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActivityVarValue</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but saying that a variable is a 'value' "</span>
                 <span class="string">"does not give me a clear enough idea what it will hold. "</span>
@@ -461,7 +461,7 @@ noun for it; for example, the "announcing activity".
 
 <p class="endnote">The function Activities::add_variable is used in 9/ma (<a href="9-ma.html#SP3_3_25_1">&#167;3.3.25.1</a>).</p>
 
-<p class="endnote">The function Activities::activity_var_creators is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::activity_var_creators is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Activity indexing. </b></p>
 
@@ -907,15 +907,15 @@ values, of the kind to which the activity applies.
 
 <p class="endnote">The function Activities::emit_activity_list is used in 22/prcd (<a href="22-prcd.html#SP10_5">&#167;10.5</a>).</p>
 
-<p class="endnote">The function Activities::compile_activity_constants is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::compile_activity_constants is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function Activities::Activity_before_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::Activity_before_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function Activities::Activity_for_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::Activity_for_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function Activities::Activity_after_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::Activity_after_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
-<p class="endnote">The function Activities::Activity_atb_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Activities::Activity_atb_rulebooks_array is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Activities::annotate_list_for_cross_references is used in 22/prcd (<a href="22-prcd.html#SP10_5">&#167;10.5</a>).</p>
 

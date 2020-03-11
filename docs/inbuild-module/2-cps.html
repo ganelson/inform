@@ -88,6 +88,25 @@ directories holding a set of files.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_graph</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILD_COPY_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
     <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_needs</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="functiontext">Graphs::show_needs</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_missing</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Nothing is missing\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::archive</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NM</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NM</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Because there are missing resources, -archive is cancelled\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> {</span>
+            <span class="functiontext">Graphs::archive</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Copies::source_text_has_been_read</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no copy"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain">;</span>
+    <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -170,13 +189,21 @@ directories holding a set of files.
 
 <p class="endnote">The function Copies::show_graph appears nowhere else.</p>
 
-<p class="endnote">The function Copies::read_source_text_for is used in 5/ed2 (<a href="5-ed2.html#SP3_1">&#167;3.1</a>).</p>
+<p class="endnote">The function Copies::show_needs appears nowhere else.</p>
+
+<p class="endnote">The function Copies::show_missing appears nowhere else.</p>
+
+<p class="endnote">The function Copies::archive appears nowhere else.</p>
+
+<p class="endnote">The function Copies::source_text_has_been_read is used in 6/inc (<a href="6-inc.html#SP6">&#167;6</a>).</p>
+
+<p class="endnote">The function Copies::read_source_text_for is used in 1/ic (<a href="1-ic.html#SP3">&#167;3</a>), 5/ed2 (<a href="5-ed2.html#SP3_1">&#167;3.1</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
 <p class="endnote">The function Copies::claim appears nowhere else.</p>
 
 <p class="endnote">The function Copies::inspect appears nowhere else.</p>
 
-<p class="endnote">The structure inbuild_copy is accessed in 1/ic, 2/nst, 3/bg, 3/bs2, 3/is, 3/is2, 3/is3, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ps, 5/ls and here.</p>
+<p class="endnote">The structure inbuild_copy is accessed in 1/ic, 2/nst, 3/bg, 3/bs2, 3/is, 3/is2, 3/is3, 3/is4, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ps, 5/ls, 6/hdn, 6/inc and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Errors. </b>Copies can sometimes exist in a damaged form: for example, they are purportedly
 extension files but have a mangled identification line. Each copy structure
@@ -191,6 +218,7 @@ therefore has a list attached of errors which occurred in reading it.
     <span class="definitionkeyword">enum</span> <span class="constant">EXT_TITLE_TOO_LONG_CE</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXT_AUTHOR_TOO_LONG_CE</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LEXER_CE</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SYNTAX_CE</span>
 </pre>
 
 <pre class="display">
@@ -203,6 +231,11 @@ therefore has a list attached of errors which occurred in reading it.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">notes</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">details</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">details_N</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">details_W</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">details_node</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">details_node2</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">details_work</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">details_work2</span><span class="plain">;</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">word</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">copy_error</span><span class="plain">;</span>
@@ -215,6 +248,11 @@ therefore has a list attached of errors which occurred in reading it.
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;notes</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">NB</span><span class="plain">);</span>
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_N</span><span class="plain"> = -1;</span>
+        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;pos</span><span class="plain"> = </span><span class="identifier">TextFiles::nowhere</span><span class="plain">();</span>
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;word</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -258,6 +296,70 @@ therefore has a list attached of errors which occurred in reading it.
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXT_AUTHOR_TOO_LONG_CE</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"author name too long: %d characters (max is %d)"</span><span class="plain">,</span>
                 <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_N</span><span class="plain">, </span><span class="constant">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">LEXER_CE</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;notes</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SYNTAX_CE</span><span class="plain">:</span>
+                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnexpectedSemicolon_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"unexpected semicolon in sentence"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ParaEndsInColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"paragraph ends with a colon"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and full stop"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"paragraph ends with a semicolon and full stop"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and semicolon"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterStop_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"paragraph ends with a full stop and semicolon"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingOverLine_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading contains a line break"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading stops before end of line"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoBeginsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has no beginning"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has no end"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension continues after end"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtMultipleBeginsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has multiple 'begins here' sentences"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtBeginsAfterEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has a 'begins here' after its 'ends here'"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtEndsWithoutBegins_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has an 'ends here' but no 'begins here'"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtMultipleEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has multiple 'ends here' sentences"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">BadTitleSentence_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"bibliographic sentence at the start is malformed"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnknownLanguageElement_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"unrecognised stipulation about Inform language elements"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnknownVirtualMachine_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"unrecognised stipulation about virtual machine"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">UseElementWithdrawn_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"use language element is no longer supported"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IncludeExtQuoted_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension name should not be double-quoted"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">BogusExtension_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"can't find this extension"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtVersionTooLow_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension version too low"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtVersionMalformed_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension version is malformed"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtInadequateVM_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension is not compatible with the target virtual machine"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtMisidentifiedEnds_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"extension has an 'ends here' but it does not match the 'begins here'"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingInPlaceOfUnincluded_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading is in place of an extension not included"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnequalHeadingInPlaceOf_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading is in place of another heading but of a diffeent level"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingInPlaceOfSubordinate_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading is in place of another heading subordinate to itself"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingInPlaceOfUnknown_SYNERROR</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"heading is in place of another heading which doesn't seem to exist'"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">default</span><span class="plain">:</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"syntax error"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">}</span>
+                <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"an unknown error occurred"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -265,19 +367,19 @@ therefore has a list attached of errors which occurred in reading it.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Copies::new_error is used in 5/st (<a href="5-st.html#SP2">&#167;2</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP1">&#167;1</a>, <a href="5-es.html#SP1_1">&#167;1.1</a>, <a href="5-es.html#SP1_1_3">&#167;1.1.3</a>, <a href="5-es.html#SP1_1_3_2">&#167;1.1.3.2</a>).</p>
+<p class="endnote">The function Copies::new_error is used in 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP1">&#167;1</a>, <a href="5-es.html#SP1_1">&#167;1.1</a>, <a href="5-es.html#SP1_1_3">&#167;1.1.3</a>, <a href="5-es.html#SP1_1_3_2">&#167;1.1.3.2</a>), 5/ps (<a href="5-ps.html#SP6">&#167;6</a>), 6/st (<a href="6-st.html#SP2">&#167;2</a>, <a href="6-st.html#SP4">&#167;4</a>, <a href="6-st.html#SP12">&#167;12</a>), 6/hdn (<a href="6-hdn.html#SP12_1">&#167;12.1</a>, <a href="6-hdn.html#SP12_2">&#167;12.2</a>, <a href="6-hdn.html#SP22_1">&#167;22.1</a>, <a href="6-hdn.html#SP23_1">&#167;23.1</a>, <a href="6-hdn.html#SP22_2">&#167;22.2</a>, <a href="6-hdn.html#SP22_3">&#167;22.3</a>), 6/inc (<a href="6-inc.html#SP3_1">&#167;3.1</a>, <a href="6-inc.html#SP6_1_1">&#167;6.1.1</a>, <a href="6-inc.html#SP6_1_2">&#167;6.1.2</a>, <a href="6-inc.html#SP7_1">&#167;7.1</a>, <a href="6-inc.html#SP9_1">&#167;9.1</a>, <a href="6-inc.html#SP11">&#167;11</a>).</p>
 
 <p class="endnote">The function Copies::new_error_N is used in 5/es (<a href="5-es.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Copies::new_error_on_file is used in 5/st (<a href="5-st.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP1_1">&#167;1.1</a>).</p>
+<p class="endnote">The function Copies::new_error_on_file is used in 5/es (<a href="5-es.html#SP1_1">&#167;1.1</a>), 6/st (<a href="6-st.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The function Copies::attach is used in 5/st (<a href="5-st.html#SP1">&#167;1</a>, <a href="5-st.html#SP2">&#167;2</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP1">&#167;1</a>, <a href="5-es.html#SP1_1">&#167;1.1</a>, <a href="5-es.html#SP1_1_3">&#167;1.1.3</a>, <a href="5-es.html#SP1_1_3_2">&#167;1.1.3.2</a>).</p>
+<p class="endnote">The function Copies::attach is used in 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP1">&#167;1</a>, <a href="5-es.html#SP1_1">&#167;1.1</a>, <a href="5-es.html#SP1_1_3">&#167;1.1.3</a>, <a href="5-es.html#SP1_1_3_2">&#167;1.1.3.2</a>), 5/ps (<a href="5-ps.html#SP6">&#167;6</a>), 6/st (<a href="6-st.html#SP1">&#167;1</a>, <a href="6-st.html#SP2">&#167;2</a>, <a href="6-st.html#SP4">&#167;4</a>, <a href="6-st.html#SP12">&#167;12</a>), 6/hdn (<a href="6-hdn.html#SP12_1">&#167;12.1</a>, <a href="6-hdn.html#SP12_2">&#167;12.2</a>, <a href="6-hdn.html#SP22_1">&#167;22.1</a>, <a href="6-hdn.html#SP23_1">&#167;23.1</a>, <a href="6-hdn.html#SP22_2">&#167;22.2</a>, <a href="6-hdn.html#SP22_3">&#167;22.3</a>), 6/inc (<a href="6-inc.html#SP3_1">&#167;3.1</a>, <a href="6-inc.html#SP6_1_1">&#167;6.1.1</a>, <a href="6-inc.html#SP6_1_2">&#167;6.1.2</a>, <a href="6-inc.html#SP7_1">&#167;7.1</a>, <a href="6-inc.html#SP9_1">&#167;9.1</a>, <a href="6-inc.html#SP11">&#167;11</a>).</p>
 
-<p class="endnote">The function Copies::list_problems_arising is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">The function Copies::list_problems_arising is used in <a href="#SP1">&#167;1</a>, 5/ps (<a href="5-ps.html#SP4">&#167;4</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
 <p class="endnote">The function Copies::write_problem is used in 5/ec (<a href="5-ec.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The structure copy_error is accessed in 2/nst, 3/is, 5/st, 5/ed2, 5/ec, 5/ps and here.</p>
+<p class="endnote">The structure copy_error is accessed in 2/nst, 3/is, 5/kts, 5/ed2, 5/ec, 5/ps, 6/st, 6/hdn, 6/inc and here.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-edt.html">Back to 'Editions'</a></li><li><a href="2-rqr.html">Continue with 'Requirements'</a></li></ul><hr class="tocbar">

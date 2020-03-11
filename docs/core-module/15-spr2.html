@@ -127,7 +127,7 @@ that the two can never fall out of step.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationWithEitherOrProperty</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationWithEitherOrProperty</span><span class="plain">),</span>
             <span class="string">"verbs can only set properties with values"</span><span class="plain">,</span>
             <span class="string">"not either/or properties like this one."</span><span class="plain">);</span>
 </pre>
@@ -143,7 +143,7 @@ that the two can never fall out of step.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationWithBadProperty</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RelationWithBadProperty</span><span class="plain">),</span>
             <span class="string">"that doesn't seem to be a property"</span><span class="plain">,</span>
             <span class="string">"perhaps because you haven't defined it yet?"</span><span class="plain">);</span>
 </pre>

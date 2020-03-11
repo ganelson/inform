@@ -242,7 +242,7 @@ a specific time of day, or when a named event occurs.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AtTimeThat</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AtTimeThat</span><span class="plain">),</span>
             <span class="string">"this seems to use 'that' where it should use 'when'"</span><span class="plain">,</span>
             <span class="string">"assuming it's trying to apply a rule to an event. (The convention is "</span>
             <span class="string">"that any rule beginning 'At' is a timed one. The time can either be a "</span>
@@ -260,7 +260,7 @@ a specific time of day, or when a named event occurs.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AtWithoutTime</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AtWithoutTime</span><span class="plain">),</span>
             <span class="string">"'at' what time? No description of a time is given"</span><span class="plain">,</span>
             <span class="string">"which means that this rule can never have effect. (The convention is "</span>
             <span class="string">"that any rule beginning 'At' is a timed one. The time can either be a "</span>

@@ -14,17 +14,12 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b></p>
 
 
-<pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_FILE_TYPE</span><span class="plain"> </span><span class="reserved">inform_extension</span>
-</pre>
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inform_extension</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">as_copy</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">body_text</span><span class="plain">; </span>    <span class="comment">Body of source text supplied in extension, if any</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">body_text_unbroken</span><span class="plain">; </span>    <span class="comment">Does this contain text waiting to be sentence-broken?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">documentation_text</span><span class="plain">; </span>    <span class="comment">Documentation supplied in extension, if any</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">VM_restriction_text</span><span class="plain">; </span>    <span class="comment">Restricting use to certain VMs</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">standard</span><span class="plain">; </span>    <span class="comment">the (or perhaps just a) Standard Rules extension</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">authorial_modesty</span><span class="plain">; </span>    <span class="comment">Do not credit in the compiled game</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">rubric_as_lexed</span><span class="plain">; </span>    <span class="comment">brief description found in opening lines</span>
@@ -32,9 +27,8 @@
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">read_into_file</span><span class="plain">; </span>    <span class="comment">Which source file loaded this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">must_satisfy</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">loaded_from_built_in_area</span><span class="plain">; </span>    <span class="comment">Located within Inform application</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">syntax_tree</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inclusion_sentence</span><span class="plain">; </span>    <span class="comment">Where the source called for this</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inform_extension</span><span class="plain">;</span>
 
@@ -45,7 +39,6 @@
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;documentation_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;VM_restriction_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;standard</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;authorial_modesty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -53,9 +46,8 @@
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;extra_credit_as_lexed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;loaded_from_built_in_area</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain"> = </span><span class="identifier">ParseTree::new_tree</span><span class="plain">();</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">);</span>
@@ -93,7 +85,7 @@
 
 <p class="endnote">The function Extensions::scan is used in 4/em (<a href="4-em.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The structure inform_extension is accessed in 1/ic, 3/is2, 3/is3, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2 and here.</p>
+<p class="endnote">The structure inform_extension is accessed in 1/ic, 3/is2, 3/is3, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2, 6/hdn, 6/inc and here.</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream <code class="display"><span class="extract">error_text</span></code>. If not, this is left
@@ -388,21 +380,12 @@ the main source text:
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_general_authorial_modesty</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) { </span><span class="identifier">general_authorial_modesty</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; }</span>
 
-    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_inclusion_sentence</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Extensions::get_inclusion_sentence</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain">;</span>
-    <span class="plain">}</span>
-    <span class="plain">#</span><span class="identifier">endif</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_VM_text</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;VM_restriction_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-    <span class="plain">}</span>
-    <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Extensions::get_VM_text</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;VM_restriction_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::is_standard</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
@@ -416,14 +399,10 @@ the main source text:
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::must_satisfy</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;min_version</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requirements::ratchet_minimum</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain">)) {</span>
-                    <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-                    <span class="functiontext">Extensions::set_inclusion_sentence</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                    <span class="plain">#</span><span class="identifier">endif</span>
-                <span class="plain">}</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::intersect_range</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain">-</span><span class="element">&gt;version_range</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;version_range</span><span class="plain">)) {</span>
+            <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+            <span class="functiontext">Extensions::set_inclusion_sentence</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+            <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -439,19 +418,15 @@ the main source text:
 
 <p class="endnote">The function Extensions::set_general_authorial_modesty appears nowhere else.</p>
 
-<p class="endnote">The function Extensions::set_inclusion_sentence appears nowhere else.</p>
+<p class="endnote">The function Extensions::set_inclusion_sentence is used in 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
-<p class="endnote">The function Extensions::get_inclusion_sentence appears nowhere else.</p>
-
-<p class="endnote">The function Extensions::set_VM_text appears nowhere else.</p>
-
-<p class="endnote">The function Extensions::get_VM_text appears nowhere else.</p>
+<p class="endnote">The function Extensions::get_inclusion_sentence is used in 6/inc (<a href="6-inc.html#SP6_1_1">&#167;6.1.1</a>).</p>
 
 <p class="endnote">The function Extensions::is_standard appears nowhere else.</p>
 
 <p class="endnote">The function Extensions::make_standard is used in 4/em (<a href="4-em.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Extensions::must_satisfy is used in 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Extensions::must_satisfy is used in 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 6/inc (<a href="6-inc.html#SP6">&#167;6</a>).</p>
 
 <p class="endnote">The function Extensions::satisfies appears nowhere else.</p>
 
@@ -471,13 +446,27 @@ the main source text:
             <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">-&gt;</span><span class="identifier">your_ref</span><span class="plain"> = </span><span class="identifier">STORE_POINTER_inbuild_copy</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EXW</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">-&gt;</span><span class="identifier">text_read</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">EXW</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Break the extension's text into body and documentation</span> <span class="cwebmacronumber">5.3</span>&gt;<span class="character">;</span>
+            <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">Inbuild::project</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain">;</span>
+            <span class="identifier">Sentences::break</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, -1);</span>
+            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_inbuild_copy</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="identifier">your_ref</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> != </span><span class="identifier">extension_genre</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Extensions::read_source_text_for is used in 4/em (<a href="4-em.html#SP10">&#167;10</a>).</p>
+
+<p class="endnote">The function Extensions::corresponding_to is used in 6/hdn (<a href="6-hdn.html#SP18">&#167;18</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>We concoct a textual synopsis in the form
 </p>

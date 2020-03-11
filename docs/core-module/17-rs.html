@@ -398,7 +398,7 @@ track of the content of each response.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Strings::compile_responses is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Strings::compile_responses is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>Note that each rule is allowed to tell us that it already has a better
 text for the response than the one we first created.
@@ -532,7 +532,7 @@ divided up by the extensions containing the rules which produce them.
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = 0; </span><span class="identifier">marker</span><span class="plain"> &lt; 26; </span><span class="identifier">marker</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">)) {</span>
                     <span class="identifier">tally</span><span class="plain">++;</span>
-                    <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
+                    <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span>
                         <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">group_E</span><span class="plain">) </span>&lt;<span class="cwebmacro">Start a possible run of matches</span> <span class="cwebmacronumber">7.3.1.1</span>&gt;
                     <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">End a possible run of matches</span> <span class="cwebmacronumber">7.3.1.2</span>&gt;<span class="plain">;</span>
@@ -745,13 +745,13 @@ text needs to be printed in a particular way.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rule_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="functiontext">Rules::rule_is_named</span><span class="plain">(</span><span class="identifier">rule_being_compiled</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseContextWrong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseContextWrong</span><span class="plain">),</span>
                 <span class="string">"lettered responses can only be used in named rules"</span><span class="plain">,</span>
                 <span class="string">"not in any of the other contexts in which quoted text can appear."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="identifier">rule_being_compiled</span><span class="plain">, </span><span class="identifier">code</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseDuplicated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseDuplicated</span><span class="plain">),</span>
                 <span class="string">"this duplicates a response letter"</span><span class="plain">,</span>
                 <span class="string">"which is not allowed: if a bracketed letter like (A) is used to mark "</span>
                 <span class="string">"some text as a response, then it can only occur once in its rule."</span><span class="plain">);</span>

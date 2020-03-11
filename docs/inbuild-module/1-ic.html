@@ -215,6 +215,12 @@ one Inform project at a time, though it may be handling many kits and
 extensions, and so on, which are needed by that project.
 </p>
 
+<p class="inwebparagraph">A delicacy of timing is that we can only read the Preform grammar in once
+the nest list has been read in, since it may need language definitions held
+in the internal nest (which the command line has given the location of); but
+that we have to do it before reading the source text of the project.
+</p>
+
 
 <pre class="display">
     <span class="identifier">target_vm</span><span class="plain"> *</span><span class="identifier">current_target_VM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -225,7 +231,6 @@ extensions, and so on, which are needed by that project.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pipeline_vars</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">CodeGen::Pipeline::basic_dictionary</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"output.z8"</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-
         <span class="identifier">target_vm</span><span class="plain"> *</span><span class="identifier">VM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">story_filename_extension</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">) == 0) </span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"ulx"</span><span class="plain">;</span>
@@ -240,13 +245,20 @@ extensions, and so on, which are needed by that project.
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">TINKERING_INBUILD_PHASE</span><span class="plain">;</span>
         <span class="functiontext">Inbuild::sort_nest_list</span><span class="plain">();</span>
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">NESTED_INBUILD_PHASE</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+        <span class="identifier">NaturalLanguages::scan</span><span class="plain">();</span>
+        <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="functiontext">Projects::set_to_English</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
+        <span class="identifier">Semantics::read_preform</span><span class="plain">(</span><span class="functiontext">Projects::get_language_of_syntax</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">));</span>
+        <span class="plain">#</span><span class="identifier">endif</span>
         <span class="functiontext">Inbuild::pass_kit_requests</span><span class="plain">();</span>
+        <span class="identifier">current_target_VM</span><span class="plain"> = </span><span class="identifier">VM</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">PROJECTED_INBUILD_PHASE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) {</span>
             <span class="functiontext">Projects::construct_build_target</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">VM</span><span class="plain">, </span><span class="identifier">this_is_a_release_compile</span><span class="plain">, </span><span class="identifier">compile_only</span><span class="plain">);</span>
-            <span class="identifier">current_target_VM</span><span class="plain"> = </span><span class="identifier">VM</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -265,9 +277,9 @@ extensions, and so on, which are needed by that project.
 
 <p class="endnote">The function Inbuild::optioneering_complete appears nowhere else.</p>
 
-<p class="endnote">The function Inbuild::current_vm appears nowhere else.</p>
+<p class="endnote">The function Inbuild::current_vm is used in 6/hdn (<a href="6-hdn.html#SP13">&#167;13</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
-<p class="endnote">The function Inbuild::currently_releasing appears nowhere else.</p>
+<p class="endnote">The function Inbuild::currently_releasing is used in 6/hdn (<a href="6-hdn.html#SP17">&#167;17</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Inbuild is now in the "projected" phase, then. The idea is that this
 is a short interval during which the tool can if it wishes add further
@@ -328,6 +340,11 @@ alongside it is <code class="display"><span class="extract">Jane Eyre.materials<
 comstamts, except that no nest is ever tagged <code class="display"><span class="extract">NOT_A_NEST_TAG</span></code>.
 (There used to be quite a good joke here, but refactoring of the
 code removed its premiss. Literate programming is like that sometimes.)
+</p>
+
+<p class="inwebparagraph">The sequence of the following enumerated values is significant: lower
+origins are better than later ones, when choosing the best result of
+a search for resources.
 </p>
 
 
@@ -431,17 +448,24 @@ are given precedence over those in the external folder, and so on.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shared_materials_nest</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_materials_nest</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">;</span>
     <span class="plain">}</span>
+
+    <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="functiontext">Inbuild::materials_nest</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">NESTED_INBUILD_PHASE</span><span class="plain">)</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_materials_nest</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inbuild::nest_list is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>, <a href="5-kts.html#SP2">&#167;2</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP1">&#167;1</a>), 5/ps (<a href="5-ps.html#SP1">&#167;1</a>, <a href="5-ps.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Inbuild::nest_list is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>, <a href="5-kts.html#SP2">&#167;2</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP1">&#167;1</a>), 5/ps (<a href="5-ps.html#SP1">&#167;1</a>, <a href="5-ps.html#SP3">&#167;3</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>, <a href="6-inc.html#SP6_1_2">&#167;6.1.2</a>).</p>
 
-<p class="endnote">The function Inbuild::internal is used in <a href="#SP15">&#167;15</a>.</p>
+<p class="endnote">The function Inbuild::internal is used in <a href="#SP15">&#167;15</a>, 5/ps (<a href="5-ps.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Inbuild::external is used in 5/ps (<a href="5-ps.html#SP4">&#167;4</a>).</p>
 
 <p class="endnote">The function Inbuild::materials appears nowhere else.</p>
+
+<p class="endnote">The function Inbuild::materials_nest appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>As noted above, the transient area is used for ephemera such as dynamically
 written documentation and telemetry files. <code class="display"><span class="extract">-transient</span></code> sets it, but otherwise
@@ -616,14 +640,14 @@ specify the bundle twice, or specify the file twice.
 
 <pre class="display">
     <span class="reserved">inform_project</span><span class="plain"> *</span><span class="functiontext">Inbuild::project</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">PROJECTED_INBUILD_PHASE</span><span class="plain">)</span>
+        <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">TINKERING_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_project</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inbuild::project is used in <a href="#SP4">&#167;4</a>, 3/is (<a href="3-is.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Inbuild::project is used in <a href="#SP4">&#167;4</a>, 3/is (<a href="3-is.html#SP1">&#167;1</a>), 5/es (<a href="5-es.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>The materials folder sits alongside the project folder and has the same name,
 but ending <code class="display"><span class="extract">.materials</span></code> instead of <code class="display"><span class="extract">.inform</span></code>.
@@ -674,7 +698,7 @@ add them as dependencies only when a project exists.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">shared_project</span><span class="plain">) &amp;&amp; (</span><span class="identifier">kits_requested_at_command_line</span><span class="plain">)) {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">kit_name</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">kit_name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">kits_requested_at_command_line</span><span class="plain">) {</span>
-                <span class="functiontext">Projects::add_kit_dependency</span><span class="plain">(</span><span class="identifier">shared_project</span><span class="plain">, </span><span class="identifier">kit_name</span><span class="plain">);</span>
+                <span class="functiontext">Projects::add_kit_dependency</span><span class="plain">(</span><span class="identifier">shared_project</span><span class="plain">, </span><span class="identifier">kit_name</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="functiontext">Projects::not_necessarily_parser_IF</span><span class="plain">(</span><span class="identifier">shared_project</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>

@@ -381,7 +381,7 @@ early in the run when sorting cannot yet be done.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="identifier">adjective_names</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveCircular</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectiveCircular</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the sentence %1, it looks as if the definition of the adjective "</span>
                 <span class="string">"'%2' may be circular."</span><span class="plain">);</span>
@@ -861,7 +861,7 @@ can't be avoided.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">early</span><span class="plain">) || (</span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;problems_thrown</span><span class="plain">++ &gt; 0)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainUnknown</span><span class="plain">),</span>
             <span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">, </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;domain_text</span><span class="plain">,</span>
             <span class="string">"this isn't a thing, a kind of thing or a kind of value"</span><span class="plain">,</span>
             <span class="string">"and indeed doesn't have any meaning I can make sense of."</span><span class="plain">);</span>
@@ -880,7 +880,7 @@ can't be avoided.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">early</span><span class="plain">) || (</span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;problems_thrown</span><span class="plain">++ &gt; 0)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainVague</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainVague</span><span class="plain">),</span>
             <span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">, </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;domain_text</span><span class="plain">,</span>
             <span class="string">"this isn't allowed as the domain of a definition"</span><span class="plain">,</span>
             <span class="string">"since it potentially describes many different kinds, not just one."</span><span class="plain">);</span>
@@ -899,7 +899,7 @@ can't be avoided.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">early</span><span class="plain">) || (</span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;problems_thrown</span><span class="plain">++ &gt; 0)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainTopic</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainTopic</span><span class="plain">),</span>
             <span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">, </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;domain_text</span><span class="plain">,</span>
             <span class="string">"this isn't allowed as the domain of a definition"</span><span class="plain">,</span>
             <span class="string">"because 'topic' doesn't behave the way other kinds of value do when "</span>
@@ -926,7 +926,7 @@ can't be avoided.
             <span class="plain">(</span><span class="functiontext">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">early</span><span class="plain">) || (</span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;problems_thrown</span><span class="plain">++ &gt; 0)) </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainSurreal</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainSurreal</span><span class="plain">),</span>
                 <span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">, </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;domain_text</span><span class="plain">,</span>
                 <span class="string">"this isn't allowed as the domain of a definition"</span><span class="plain">,</span>
                 <span class="string">"since adjectives like this can be applied only to specific things, "</span>
@@ -955,7 +955,7 @@ can't be avoided.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Descriptions::is_qualified</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;problems_thrown</span><span class="plain">++ &gt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainSlippery</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::adjective_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainSlippery</span><span class="plain">),</span>
                 <span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">, </span><span class="identifier">am</span><span class="plain">-</span><span class="element">&gt;domain_text</span><span class="plain">,</span>
                 <span class="string">"this is slippery"</span><span class="plain">,</span>
                 <span class="string">"because it can change during play. Definitions can only be "</span>
@@ -1066,16 +1066,16 @@ author's source text.)
             <span class="plain">(</span><span class="identifier">am1</span><span class="plain">-</span><span class="element">&gt;adjective_form</span><span class="plain"> != </span><span class="constant">ENUMERATIVE_KADJ</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">am2</span><span class="plain">-</span><span class="element">&gt;adjective_form</span><span class="plain"> != </span><span class="constant">ENUMERATIVE_KADJ</span><span class="plain">)) {</span>
             <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">ef1</span><span class="plain"> =</span>
-                <span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
+                <span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span>
                     <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">am1</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">))));</span>
             <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">ef2</span><span class="plain"> =</span>
-                <span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span>
+                <span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span>
                     <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">am2</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">))));</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ef1</span><span class="plain"> == </span><span class="identifier">ef2</span><span class="plain">) || ((</span><span class="identifier">ef1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ef2</span><span class="plain">))) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">am1</span><span class="plain">-</span><span class="element">&gt;defined_at</span><span class="plain">;</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(1, </span><span class="identifier">am1</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(2, </span><span class="identifier">am2</span><span class="plain">-</span><span class="element">&gt;adjective_index_text</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainDuplicated</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjDomainDuplicated</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"The definitions %1 and %2 both try to cover the same situation: "</span>
                     <span class="string">"the same adjective applied to the exact same range. %P"</span>
@@ -1976,7 +1976,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Adjectives::Meanings::agreements is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Adjectives::Meanings::agreements is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Adjectives::Meanings::emit is used in 25/ci (<a href="25-ci.html#SP3_1">&#167;3.1</a>, <a href="25-ci.html#SP3_2_3_3_1">&#167;3.2.3.3.1</a>, <a href="25-ci.html#SP3_2_3_4_1">&#167;3.2.3.4.1</a>).</p>
 

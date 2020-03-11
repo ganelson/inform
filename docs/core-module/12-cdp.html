@@ -79,7 +79,7 @@ which create routines which... and so on.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Calculus::Propositions::Deferred::compile_remaining_deferred is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Calculus::Propositions::Deferred::compile_remaining_deferred is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="endnote">The function Calculus::Propositions::Deferred::compilation_coroutine is used in 22/cs (<a href="22-cs.html#SP14">&#167;14</a>).</p>
 
@@ -216,7 +216,7 @@ wrong in the calling routine, where they are needed.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">LocalVariables::are_we_using_table_lookup</span><span class="plain">()) &amp;&amp; (!</span><span class="identifier">ct_locals_problem_thrown</span><span class="plain">)) {</span>
             <span class="identifier">ct_locals_problem_thrown</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantLookUpTableInDeferred</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantLookUpTableInDeferred</span><span class="plain">),</span>
                 <span class="string">"I am not able to look up table entries in this complicated "</span>
                 <span class="string">"condition"</span><span class="plain">,</span>
                 <span class="string">"which seems to involve making a potentially large number "</span>
@@ -244,7 +244,7 @@ possible.)
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">negated_quantifier_found</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this involves a very complicated negative thought"</span><span class="plain">,</span>
                 <span class="string">"which I'm not able to untangle. Perhaps you could rephrase "</span>
                 <span class="string">"this more simply, or split it into more than one sentence?"</span><span class="plain">);</span>

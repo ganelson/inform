@@ -96,7 +96,7 @@ x!= y.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">BinaryPredicates::can_be_made_true_at_runtime</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Unassertable2</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Unassertable2</span><span class="plain">),</span>
                 <span class="string">"the relationship you describe is not exact enough"</span><span class="plain">,</span>
                 <span class="string">"so that I do not know how to make this assertion come true. "</span>
                 <span class="string">"For instance, saying 'The Study is adjacent to the Hallway.' "</span>
@@ -116,7 +116,7 @@ x!= y.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantRelateNothing</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantRelateNothing</span><span class="plain">),</span>
             <span class="string">"the relationship you describe seems to be with nothing"</span><span class="plain">,</span>
             <span class="string">"which does not really make sense. 'Nothing' looks like a noun, "</span>
             <span class="string">"but really Inform uses it to mean the absence of one, so it's "</span>

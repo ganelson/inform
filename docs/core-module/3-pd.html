@@ -77,7 +77,7 @@ text anyway, so the following problem messages are not too gratuitous.
 <pre class="displaydefn">
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">TEXT_MC</span><span class="plain">+</span><span class="identifier">TEXTWITHSUBS_MC</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PluralOfQuoted</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PluralOfQuoted</span><span class="plain">),</span>
                     <span class="string">"declares a plural for a phrase containing quoted text"</span><span class="plain">,</span>
                     <span class="string">"which is forbidden. Sentences like this are supposed to "</span>
                     <span class="string">"declare plurals without quotation marks: for instance, "</span>
@@ -86,7 +86,7 @@ text anyway, so the following problem messages are not too gratuitous.
             <span class="plain">}</span>
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">TEXT_MC</span><span class="plain">+</span><span class="identifier">TEXTWITHSUBS_MC</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PluralIsQuoted</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PluralIsQuoted</span><span class="plain">),</span>
                     <span class="string">"declares a plural for a phrase using quoted text"</span><span class="plain">,</span>
                     <span class="string">"which is forbidden. Sentences like this are supposed to "</span>
                     <span class="string">"declare plurals without quotation marks: for instance, "</span>

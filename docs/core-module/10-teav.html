@@ -213,7 +213,7 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TypeCantVary</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TypeCantVary</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, '%2' is not a kind of value which a variable can safely have, "</span>
             <span class="string">"as it cannot ever vary."</span><span class="plain">);</span>
@@ -233,7 +233,7 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TypeUnmaintainable</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TypeUnmaintainable</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, '%2' is not a kind of value which a variable can safely have, "</span>
             <span class="string">"as it cannot be guaranteed that the contents will always meet "</span>
@@ -747,7 +747,7 @@ Again, this is part of a condition, and can't evaluate.
         <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">LocalVariables::are_we_using_table_lookup</span><span class="plain">() == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">problem_count</span><span class="plain"> == 0)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoRowSelected</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoRowSelected</span><span class="plain">),</span>
                 <span class="string">"no row seems to have been chosen at this point"</span><span class="plain">,</span>
                 <span class="string">"so it doesn't make sense to talk about the entries "</span>
                 <span class="string">"within it. (By 'at this point', I mean the point "</span>

@@ -25,7 +25,7 @@ a new name and its meaning to be.
 
         <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> ((&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; != -1) &amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; != </span><span class="identifier">cc</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeAlready</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeAlready</span><span class="plain">),</span>
                 <span class="string">"this Unicode character name has already been translated"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -86,7 +86,7 @@ the built-in extensions anyway; Inform authors never type them.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeNonLiteral</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeNonLiteral</span><span class="plain">),</span>
             <span class="string">"a Unicode character name must be translated into a literal decimal "</span>
             <span class="string">"number written out in digits"</span><span class="plain">,</span>
             <span class="string">"which this seems not to be."</span><span class="plain">);</span>
@@ -140,7 +140,7 @@ the player types either of these:
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UnicodeTranslations::char_in_range</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cc</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cc</span><span class="plain"> &lt; 0) || (</span><span class="identifier">cc</span><span class="plain"> &gt;= 0</span><span class="identifier">x10000</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeOutOfRange</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeOutOfRange</span><span class="plain">),</span>
                 <span class="string">"Inform can only handle Unicode characters in the 16-bit range"</span><span class="plain">,</span>
                 <span class="string">"from 0 to 65535."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>

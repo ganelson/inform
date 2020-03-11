@@ -277,7 +277,7 @@ multiple <code class="display"><span class="extract">PARENTAGE_INF</span></code>
             <span class="identifier">Problems::quote_subject</span><span class="plain">(3, </span><span class="identifier">subj</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_object</span><span class="plain">(4, </span><span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_object</span><span class="plain">(5, </span><span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SpatialContradiction</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SpatialContradiction</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but also %2: that seems to be saying that the same "</span>
                 <span class="string">"object (%3) must be in two different places (%4 and %5). This "</span>
@@ -379,7 +379,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_thing</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ThingAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ThingAdrift</span><span class="plain">),</span>
                     <span class="string">"'thing' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform uses rooms "</span>
@@ -388,7 +388,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomAdrift</span><span class="plain">),</span>
                     <span class="string">"'room' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform uses rooms "</span>
@@ -398,7 +398,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_container</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_supporter</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_supporter</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_container</span><span class="plain">))) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ContainerAdrift</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ContainerAdrift</span><span class="plain">),</span>
                     <span class="string">"'container' and 'supporter' are not allowed to be kinds "</span>
                     <span class="string">"of each other"</span><span class="plain">,</span>
                     <span class="string">"because they're too fundamental to the way Inform models the "</span>
@@ -1157,7 +1157,7 @@ the kind of here-objects.
                 <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">I</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_object</span><span class="plain">(3, </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
                 <span class="identifier">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonThingInModel</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonThingInModel</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the sentence %1, you create an object '%2' which you then seem "</span>
                     <span class="string">"to place in or on or as part of '%3', but the kind of '%2' is %4. "</span>
@@ -1281,7 +1281,7 @@ when it finishes this will be set to the most recently mentioned.
 
 
 <pre class="displaydefn">
-        <span class="identifier">ParseTree::traverse_up_to_ip</span><span class="plain">(</span><span class="identifier">here_sentence</span><span class="plain">, </span><span class="functiontext">PL::Spatial::seek_room</span><span class="plain">, &amp;</span><span class="identifier">whereabouts</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse_up_to_ip</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">here_sentence</span><span class="plain">, </span><span class="functiontext">PL::Spatial::seek_room</span><span class="plain">, &amp;</span><span class="identifier">whereabouts</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1607,7 +1607,7 @@ changed progenitors at Stage II.)
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_object</span><span class="plain">(1, </span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IllFounded</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IllFounded</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The %1 seems to be containing itself: "</span><span class="plain">);</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I3</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
@@ -1930,7 +1930,7 @@ empty.
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
-                    <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomInIgnoredSource</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomInIgnoredSource</span><span class="plain">),</span>
                         <span class="string">"This is supposed to be a source text which only contains "</span>
                         <span class="string">"release instructions to bind up an existing story file "</span>
                         <span class="string">"(for instance, one produced using Inform 6). That's because "</span>

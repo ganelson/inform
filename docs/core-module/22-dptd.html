@@ -605,7 +605,7 @@ correctly set.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">control</span><span class="plain">-</span><span class="identifier">structure</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt;(</span><span class="identifier">XW</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Sentences::RuleSubtrees::comma_possible</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;)))</span>
+            <span class="plain">(</span><span class="identifier">ControlStructures::comma_possible</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;)))</span>
             <span class="identifier">comma_presages_options</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
 
@@ -625,7 +625,7 @@ language altogether, but there we are; spilt milk.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayWithPhraseOptions</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SayWithPhraseOptions</span><span class="plain">),</span>
             <span class="string">"phrase options are not allowed for 'say' phrases"</span><span class="plain">,</span>
             <span class="string">"because the commas would lead to ambiguous sentences, and because the "</span>
             <span class="string">"content of a substitution is intended to be something conceptually simple "</span>
@@ -735,7 +735,7 @@ messages.
             <span class="identifier">Problems::quote_source</span><span class="plain">(4, </span><span class="identifier">Prepositions::get_where_pu_created</span><span class="plain">(</span><span class="identifier">prep</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">Wordings::new</span><span class="plain">(&lt;&lt;</span><span class="identifier">rel1</span><span class="plain">&gt;&gt;, &lt;&lt;</span><span class="identifier">rel2</span><span class="plain">&gt;&gt;));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MasksRelation</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MasksRelation</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I don't want you to define a phrase with the wording you've used in "</span>
             <span class="string">"in %1 because it could be misunderstood. There is already a definition "</span>
@@ -815,7 +815,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">K_number</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownValueToDecide</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownValueToDecide</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The phrase you describe in %1 seems to be trying to decide a value, "</span>
             <span class="string">"but '%2' is not a kind that I recognise. (I had expected something "</span>
@@ -849,7 +849,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"to phrase without to"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">, </span><span class="identifier">K_truth_state</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_truth_state_returns</span><span class="plain">++ &gt; 0)</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TruthStateToDecide</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TruthStateToDecide</span><span class="plain">),</span>
                 <span class="string">"phrases are not allowed to decide a truth state"</span><span class="plain">,</span>
                 <span class="string">"and should be defined with the form 'To decide if ...' rather than "</span>
                 <span class="string">"'To decide what truth state is ...'."</span><span class="plain">);</span>
@@ -1028,7 +1028,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithEmptyBrackets</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithEmptyBrackets</span><span class="plain">),</span>
             <span class="string">"nothing is between the opening bracket '(' and its matching close bracket ')'"</span><span class="plain">,</span>
             <span class="string">"so I can't see what is meant to be the fixed text and what is meant to be "</span>
             <span class="string">"changeable. The idea is to put brackets around whatever varies from one "</span>
@@ -1046,7 +1046,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithoutCloseBracket</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithoutCloseBracket</span><span class="plain">),</span>
             <span class="string">"the opening bracket '(' has no matching close bracket ')'"</span><span class="plain">,</span>
             <span class="string">"so I can't see what is meant to be the fixed text and what is meant to be "</span>
             <span class="string">"changeable. The idea is to put brackets around whatever varies from one "</span>
@@ -1064,7 +1064,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithoutOpenBracket</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithoutOpenBracket</span><span class="plain">),</span>
             <span class="string">"a close bracket ')' appears here with no matching open '('"</span><span class="plain">,</span>
             <span class="string">"so I can't see what is meant to be the fixed text and what is meant to "</span>
             <span class="string">"be changeable. The idea is to put brackets around whatever varies from "</span>
@@ -1083,7 +1083,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithNestedBrackets</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenWithNestedBrackets</span><span class="plain">),</span>
             <span class="string">"the name of the token inside the brackets '(' and ')' and before the "</span>
             <span class="string">"hyphen '-' itself contains another open bracket '('"</span><span class="plain">,</span>
             <span class="string">"which is not allowed."</span><span class="plain">);</span>
@@ -1102,7 +1102,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">token</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">&gt;, 2));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadTypeIndication</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadTypeIndication</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, the text '%2' after the hyphen should tell me what kind of value "</span>
             <span class="string">"goes here (like 'a number', or 'a vehicle'), but it's not something I "</span>
@@ -1122,7 +1122,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"On %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenMisunderstood</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TokenMisunderstood</span><span class="plain">),</span>
             <span class="string">"the brackets '(' and ')' here neither say that something varies but has "</span>
             <span class="string">"a given type, nor specify a called name"</span><span class="plain">,</span>
             <span class="string">"so I can't make sense of them. For a 'To...' phrase, brackets like this "</span>
@@ -1182,7 +1182,7 @@ form the word and token sequences:
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">: 			</span>&lt;<span class="cwebmacro">Add a word next</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain"> &gt;= </span><span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain">) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseTooLong</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseTooLong</span><span class="plain">),</span>
                     <span class="string">"this phrase has too many words"</span><span class="plain">,</span>
                     <span class="string">"and needs to be simplified."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
@@ -1255,7 +1255,7 @@ form the word and token sequences:
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">;</span>
                 <span class="identifier">Problems::quote_number</span><span class="plain">(3, &amp;</span><span class="identifier">n</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyTokens</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyTokens</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, I ran out of tokens when I got up to '%2'. "</span>
                     <span class="string">"Phrases are only allowed %3 tokens, that is, they "</span>
@@ -1283,7 +1283,7 @@ form the word and token sequences:
             <span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_inline.invoked_inline_not_as_call</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoninlineUsesNonvalues</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoninlineUsesNonvalues</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In %1, the text '%2' after the hyphen should tell me what kind of "</span>
                 <span class="string">"value goes here (like 'a number', or 'a vehicle'), but this is not "</span>
@@ -1311,7 +1311,7 @@ form the word and token sequences:
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Variables::number_free</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">) != 1) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseTokenQuantified</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseTokenQuantified</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, the text '%2' after the hyphen should tell me what kind of "</span>
                     <span class="string">"value goes here (like 'a number', or 'a vehicle'), but it has to "</span>
@@ -1363,7 +1363,7 @@ form the word and token sequences:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UndeclaredKindVariable</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UndeclaredKindVariable</span><span class="plain">),</span>
             <span class="string">"this phrase uses a kind variable which is not declared"</span><span class="plain">,</span>
             <span class="string">"which is not allowed."</span><span class="plain">);</span>
         <span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.token_kind</span><span class="plain"> =</span>
@@ -1480,7 +1480,7 @@ in exactly one place: for example,
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">dec</span><span class="plain"> = </span><span class="identifier">Kinds::get_variable_stipulation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dec</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">declarations</span><span class="plain">[</span><span class="identifier">N</span><span class="plain">]) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoublyDeclaredKindVariable</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoublyDeclaredKindVariable</span><span class="plain">),</span>
                     <span class="string">"this phrase declares the same kind variable more than once"</span><span class="plain">,</span>
                     <span class="string">"and ought to declare each variable once each."</span><span class="plain">);</span>
             <span class="plain">}</span>

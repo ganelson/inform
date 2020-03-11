@@ -21,12 +21,8 @@ position.
 
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_sentences_read</span><span class="plain"> = 0;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 0; </span>    <span class="comment">0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after</span>
     <span class="constant">node_type_t</span><span class="plain"> </span><span class="identifier">ssnt</span><span class="plain"> = 0;</span>
-
-    <span class="reserved">parse_node</span><span class="plain"> *</span><span class="identifier">standard_rules_inclusion_point</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">parse_node</span><span class="plain"> *</span><span class="identifier">language_extension_inclusion_point</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">after the Standard Rules</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -83,7 +79,8 @@ is probably a phrase, and so on &mdash; and the following is its state.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_in_tabbed_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="identifier">EXTENSION_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">sfsm_extension</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = -1;</span>
+    <span class="identifier">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -96,7 +93,12 @@ finite state machine.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">EXTENSION_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_extension</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_extension</span><span class="plain">,</span>
+        <span class="identifier">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_copy</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bwc</span><span class="plain">) {</span>
+        <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">PARBREAK_V</span><span class="plain">)))</span>
+            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::enable_last_sentence_cacheing</span><span class="plain">();</span>
 
@@ -110,7 +112,7 @@ finite state machine.
 
                 &lt;<span class="cwebmacro">Look for a sentence break, finding the number of stop words and the stop character</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_stop_words</span><span class="plain"> &gt; 0) {</span>
-                    <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">position</span><span class="plain">-1), </span><span class="identifier">stop_character</span><span class="plain">);</span>
+                    <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">position</span><span class="plain">-1), </span><span class="identifier">stop_character</span><span class="plain">);</span>
                     <span class="identifier">position</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + </span><span class="identifier">no_stop_words</span><span class="plain"> - 1;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">back_up_one_word</span><span class="plain">) </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain">;</span>
                     <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + 1;</span>
@@ -121,12 +123,12 @@ finite state machine.
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sentence_start</span><span class="plain"> &lt; </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">sentence_start</span><span class="plain"> == </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (!(</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) == </span><span class="identifier">PARBREAK_V</span><span class="plain">)))) {</span>
-            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sentence_start</span><span class="plain">), </span><span class="character">'.'</span><span class="plain">);</span>
+            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sentence_start</span><span class="plain">), </span><span class="character">'.'</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="functiontext">ParseTree::disable_last_sentence_cacheing</span><span class="plain">();</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_extension</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">is_extension</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Issue a problem message if we are missing the begin and end here sentences</span> <span class="cwebmacronumber">5.5</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Reset the sentence finite state machine</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -152,9 +154,10 @@ that is why these are global variables rather than locals in <code class="displa
         <span class="identifier">sfsm_source_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
-        <span class="identifier">sfsm_extension</span><span class="plain"> = </span><span class="identifier">from_extension</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_extension</span><span class="plain">) </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 1;</span>
+        <span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">from_copy</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">is_extension</span><span class="plain">) </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 1;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 0;</span>
+        <span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = </span><span class="identifier">bwc</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -297,7 +300,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -310,7 +313,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -323,7 +326,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -336,7 +339,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -349,7 +352,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -462,17 +465,11 @@ or until reaching the end of the text: whichever comes first.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stop_character</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stop_character</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_level</span><span class="plain"> = 0, </span><span class="identifier">begins_or_ends</span><span class="plain"> = 0;</span>
         <span class="reserved">parse_node</span><span class="plain"> *</span><span class="identifier">new</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"empty sentence generated"</span><span class="plain">);</span>
-
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">SENTENCE_COUNT_MONITOR</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SENTENCE_COUNT_MONITOR</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">no_sentences_read</span><span class="plain">++;</span>
-        <span class="plain">#</span><span class="reserved">else</span>
-        <span class="identifier">no_sentences_read</span><span class="plain">++;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="identifier">Vocabulary::identify_word_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">); </span>    <span class="comment">a precaution to catch any late unidentified text</span>
 
@@ -493,13 +490,13 @@ or until reaching the end of the text: whichever comes first.
         <span class="plain">}</span>
 
         &lt;<span class="cwebmacro">Reject if we have run on past the end of an extension</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Accept the new sentence as one or more nodes in the parse tree</span> <span class="cwebmacronumber">6.10</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Accept the new sentence as one or more nodes in the parse tree</span> <span class="cwebmacronumber">6.9</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Sentences::make_node is used in <a href="#SP5">&#167;5</a>, <a href="#SP6_10_3_1">&#167;6.10.3.1</a>.</p>
+<p class="endnote">The function Sentences::make_node is used in <a href="#SP5">&#167;5</a>, <a href="#SP6_9_3_1">&#167;6.9.3.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b>For reasons gone into in the section on Headings below, a change of
 source file (e.g., when one extension has been read in and another begins)
@@ -518,9 +515,9 @@ is declared as if it were a super-heading in the text.
             <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="constant">heading_level_ANNOT</span><span class="plain">, 0);</span>
-            <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">);</span>
+            <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">implicit_heading</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_HEADING_HANDLER</span>
-            <span class="identifier">NEW_HEADING_HANDLER</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">);</span>
+            <span class="identifier">NEW_HEADING_HANDLER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">implicit_heading</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
         <span class="plain">}</span>
@@ -538,7 +535,7 @@ is declared as if it were a super-heading in the text.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_extension_position</span><span class="plain"> == 3) &amp;&amp; (</span><span class="identifier">begins_or_ends</span><span class="plain"> == 0)) {</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_extension</span><span class="plain">, 0);</span>
+            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
             <span class="identifier">sfsm_extension_position</span><span class="plain"> = 4; </span>    <span class="comment">to avoid multiply issuing this</span>
         <span class="plain">}</span>
 </pre>
@@ -597,7 +594,7 @@ continuing regardless.
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) &gt; 0)) {</span>
-                    <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+                    <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
 </pre>
@@ -626,7 +623,7 @@ newlines automatically added at the end of the feed of any source file.
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1;</span>
                 <span class="plain">(</span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+8) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">lexer_wordcount</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
                 <span class="identifier">k</span><span class="plain">++) ;</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -649,9 +646,9 @@ in Headings to determine whether we should include the material.
         <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">heading_level_ANNOT</span><span class="plain">, </span><span class="identifier">heading_level</span><span class="plain">);</span>
-        <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">);</span>
+        <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_HEADING_HANDLER</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NEW_HEADING_HANDLER</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NEW_HEADING_HANDLER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = </span><span class="identifier">heading_level</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
@@ -672,8 +669,8 @@ from an extension, we need to make sure we saw both beginning and end:
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_extension</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_extension</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -721,84 +718,60 @@ substitutions. For instance,
 </blockquote>
 
 <p class="inwebparagraph">This sentence is at the position matched by &lt;if-start-of-source-text&gt;.
-(Strictly speaking it's the second sentence read, not the first, because all
-source texts implicitly begin with an inclusion of the Standard Rules.)
+(It may not be the first sentence read, because implied extension inclusion
+sentences and options-file sentences may have been read already.)
 </p>
 
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">start</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">source</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">w1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 1 + </span><span class="identifier">Projects::number_of_early_fed_sentences</span><span class="plain">(</span><span class="identifier">Inbuild::project</span><span class="plain">());</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 3;</span>
-        <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_sentences_read</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">((</span><span class="identifier">w1</span><span class="plain"> == 0) || (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">w1</span><span class="plain">-1, </span><span class="identifier">PARBREAK_V</span><span class="plain">)))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">w1</span><span class="plain"> &gt;= 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w1</span><span class="plain"> == </span><span class="identifier">sfsm_main_source_start_wn</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">w1</span><span class="plain">-1, </span><span class="identifier">PARBREAK_V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">w1</span><span class="plain">--;</span>
+        <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP6_9"></a><b>&#167;6.9.  </b>When Inform reads the (optional!) Options file, very early in its run, it
-tries to obey any use options in the file right away &mdash; earlier even than
-&lt;structural-sentence&gt;. It spots these, very crudely, as sentences which
-match the following (that is, which start with "use"). Note the final full
-stop &mdash; it's needed before sentence-breaking has even taken place.
-</p>
-
-
-<pre class="display">
-    <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">shape</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">use</span><span class="plain"> ... .</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP6_10"></a><b>&#167;6.10.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Accept the new sentence as one or more nodes in the parse tree</span> <span class="cwebmacronumber">6.10</span>&gt; =
+<p class="inwebparagraph"><a id="SP6_9"></a><b>&#167;6.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Accept the new sentence as one or more nodes in the parse tree</span> <span class="cwebmacronumber">6.9</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        &lt;<span class="cwebmacro">Convert comma-divided rule into two sentences, if this is allowed</span> <span class="cwebmacronumber">6.10.3</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Otherwise, make a SENTENCE node</span> <span class="cwebmacronumber">6.10.4</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Convert comma-divided rule into two sentences, if this is allowed</span> <span class="cwebmacronumber">6.9.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Otherwise, make a SENTENCE node</span> <span class="cwebmacronumber">6.9.4</span>&gt;<span class="plain">;</span>
 
-        &lt;<span class="cwebmacro">Convert a rule preamble to a ROUTINE node and enter rule mode</span> <span class="cwebmacronumber">6.10.5</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Convert a rule preamble to a ROUTINE node and enter rule mode</span> <span class="cwebmacronumber">6.9.5</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain">)</span>
-            &lt;<span class="cwebmacro">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.10.6</span>&gt;
+            &lt;<span class="cwebmacro">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.9.6</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">';'</span><span class="plain">) {</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'.'</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="comment">at this point we are certainly in assertion mode, not rule mode</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">structural</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == -1)</span>
-                &lt;<span class="cwebmacro">Detect a language definition sentence and sneakily act upon it</span> <span class="cwebmacronumber">6.10.8</span>&gt;
+                &lt;<span class="cwebmacro">Detect a language definition sentence and sneakily act upon it</span> <span class="cwebmacronumber">6.9.8</span>&gt;
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == -2) {</span>
-                &lt;<span class="cwebmacro">Detect a Preform grammar inclusion and sneakily act upon it</span> <span class="cwebmacronumber">6.10.9</span>&gt;
+                &lt;<span class="cwebmacro">Detect a Preform grammar inclusion and sneakily act upon it</span> <span class="cwebmacronumber">6.9.9</span>&gt;
                 <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">ssnt</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ssnt</span><span class="plain"> == </span><span class="constant">INCLUDE_NT</span><span class="plain">) {</span>
-                    <span class="identifier">new</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">standard_rules_inclusion_point</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">standard_rules_inclusion_point</span><span class="plain"> = </span><span class="identifier">new</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">language_extension_inclusion_point</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">language_extension_inclusion_point</span><span class="plain"> = </span><span class="identifier">new</span><span class="plain">;</span>
-                <span class="plain">}</span>
                 <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">ssnt</span><span class="plain">);</span>
-                <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
+                <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">INBUILD_MODULE</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ssnt</span><span class="plain"> == </span><span class="identifier">BIBLIOGRAPHIC_NT</span><span class="plain">)</span>
-                    <span class="identifier">Projects::set_language_of_play</span><span class="plain">(</span><span class="identifier">Inbuild::project</span><span class="plain">(),</span>
-                        <span class="identifier">PL::Bibliographic::scan_language</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">));</span>
+                    <span class="identifier">Projects::notify_of_bibliographic_sentence</span><span class="plain">(</span><span class="identifier">Inbuild::project</span><span class="plain">(), </span><span class="identifier">new</span><span class="plain">);</span>
                 <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        &lt;<span class="cwebmacro">Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return</span> <span class="cwebmacronumber">6.10.7</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return</span> <span class="cwebmacronumber">6.9.7</span>&gt;<span class="plain">;</span>
 
         <span class="comment">none of that happened, so we have a SENTENCE node for certain</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -811,7 +784,7 @@ stop &mdash; it's needed before sentence-breaking has even taken place.
 
 <p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_1"></a><b>&#167;6.10.1.  </b>Rules are ordinarily detected by their colon, which divides the header from the
+<p class="inwebparagraph"><a id="SP6_9_1"></a><b>&#167;6.9.1.  </b>Rules are ordinarily detected by their colon, which divides the header from the
 rest: colons are not otherwise legal in Inform. But there's an exception. If the
 sentence consists of text matching the following grammar, followed by comma,
 followed by more text, then the comma is read as if it's a colon and the
@@ -835,7 +808,7 @@ sentence becomes a rule. For example:
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP6_10_2"></a><b>&#167;6.10.2.  </b>We make an exception to the exception for the serial comma used in a list of
+<p class="inwebparagraph"><a id="SP6_9_2"></a><b>&#167;6.9.2.  </b>We make an exception to the exception for the serial comma used in a list of
 alternatives: thus the comma in "Aeschylus, Sophocles, or Euripides" does
 not trigger this rule. We need this exception because such lists of
 alternatives often occur in rule preambles, where it's the third comma
@@ -859,8 +832,8 @@ which divides rule from preamble:
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP6_10_3"></a><b>&#167;6.10.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Convert comma-divided rule into two sentences, if this is allowed</span> <span class="cwebmacronumber">6.10.3</span>&gt; =
+<p class="inwebparagraph"><a id="SP6_9_3"></a><b>&#167;6.9.3.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Convert comma-divided rule into two sentences, if this is allowed</span> <span class="cwebmacronumber">6.9.3</span>&gt; =
 </code></p>
 
 
@@ -868,45 +841,45 @@ which divides rule from preamble:
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; ((</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain">) || (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">'|'</span><span class="plain">))</span>
             <span class="plain">&amp;&amp; (&lt;</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">divisible</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)))</span>
-            &lt;<span class="cwebmacro">Look for a comma and split the sentence at it, unless in serial list</span> <span class="cwebmacronumber">6.10.3.1</span>&gt;<span class="plain">;</span>
+            &lt;<span class="cwebmacro">Look for a comma and split the sentence at it, unless in serial list</span> <span class="cwebmacronumber">6.9.3.1</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_3_1"></a><b>&#167;6.10.3.1.  </b>In such sentences a comma is read as if it were a colon. (The text up to the
+<p class="inwebparagraph"><a id="SP6_9_3_1"></a><b>&#167;6.9.3.1.  </b>In such sentences a comma is read as if it were a colon. (The text up to the
 comma will then be given a <code class="display"><span class="extract">ROUTINE_NT</span></code> node and the text beyond the comma
 will make a <code class="display"><span class="extract">INVOCATION_LIST_NT</span></code> node.)
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Look for a comma and split the sentence at it, unless in serial list</span> <span class="cwebmacronumber">6.10.3.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Look for a comma and split the sentence at it, unless in serial list</span> <span class="cwebmacronumber">6.9.3.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">earliest_comma_position</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        &lt;<span class="cwebmacro">Set earliest comma to position after the or, if there is one</span> <span class="cwebmacronumber">6.10.3.1.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Set earliest comma to position after the or, if there is one</span> <span class="cwebmacronumber">6.9.3.1.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">earliest_comma_position</span><span class="plain">))) {</span>
             <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, 1);</span>
             <span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, 2);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)) {</span>
-            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)), </span><span class="character">':'</span><span class="plain">); </span>    <span class="comment">rule preamble stopped with a colon</span>
-            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">BW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">); </span>    <span class="comment">rule body with one sentence, stopped with a stop</span>
+            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)), </span><span class="character">':'</span><span class="plain">); </span>    <span class="comment">rule preamble stopped with a colon</span>
+            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">BW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">); </span>    <span class="comment">rule body with one sentence, stopped with a stop</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10_3">&#167;6.10.3</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9_3">&#167;6.9.3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_3_1_1"></a><b>&#167;6.10.3.1.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Set earliest comma to position after the or, if there is one</span> <span class="cwebmacronumber">6.10.3.1.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP6_9_3_1_1"></a><b>&#167;6.9.3.1.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Set earliest comma to position after the or, if there is one</span> <span class="cwebmacronumber">6.9.3.1.1</span>&gt; =
 </code></p>
 
 
@@ -919,9 +892,9 @@ will make a <code class="display"><span class="extract">INVOCATION_LIST_NT</span
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10_3_1">&#167;6.10.3.1</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9_3_1">&#167;6.9.3.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_4"></a><b>&#167;6.10.4.  </b>At this point we know that the text <code class="display"><span class="extract">W</span></code> will make one and only
+<p class="inwebparagraph"><a id="SP6_9_4"></a><b>&#167;6.9.4.  </b>At this point we know that the text <code class="display"><span class="extract">W</span></code> will make one and only
 one sentence node in the parse tree, so we may as well create and ParseTree::graft it
 now. There are a number of special cases with variant node types, but the
 commonest outcome is a SENTENCE node, so that's what we shall assume for now.
@@ -929,7 +902,7 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Otherwise, make a SENTENCE node</span> <span class="cwebmacronumber">6.10.4</span>&gt; =
+&lt;<span class="cwebmacrodefn">Otherwise, make a SENTENCE node</span> <span class="cwebmacronumber">6.9.4</span>&gt; =
 </code></p>
 
 
@@ -937,14 +910,14 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.
         <span class="identifier">new</span><span class="plain"> = </span><span class="functiontext">ParseTree::new</span><span class="plain">(</span><span class="constant">SENTENCE_NT</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">);</span>
+        <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_5"></a><b>&#167;6.10.5.  </b>Rules are sequences of phrases with a preamble in front, which we detect by
+<p class="inwebparagraph"><a id="SP6_9_5"></a><b>&#167;6.9.5.  </b>Rules are sequences of phrases with a preamble in front, which we detect by
 its terminating colon. For instance:
 </p>
 
@@ -996,16 +969,18 @@ instead of a semicolon. We may lament this, but it is so.)
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Convert a rule preamble to a ROUTINE node and enter rule mode</span> <span class="cwebmacronumber">6.10.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">Convert a rule preamble to a ROUTINE node and enter rule mode</span> <span class="cwebmacronumber">6.9.5</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">list_node_type</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">':'</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Sentences::RuleSubtrees::detect_control_structure</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ControlStructures::detect</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
                 <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">list_entry_node_type</span><span class="plain">);</span>
+                <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
                 <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">colon_block_command_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -1019,15 +994,15 @@ instead of a semicolon. We may lament this, but it is so.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_6"></a><b>&#167;6.10.6.  </b>Subsequent commands are divided by semicolons, and any failure of a
+<p class="inwebparagraph"><a id="SP6_9_6"></a><b>&#167;6.9.6.  </b>Subsequent commands are divided by semicolons, and any failure of a
 semicolon to appear indicates an end of the rule.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.10.6</span>&gt; =
+&lt;<span class="cwebmacrodefn">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.9.6</span>&gt; =
 </code></p>
 
 
@@ -1041,15 +1016,15 @@ semicolon to appear indicates an end of the rule.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_7"></a><b>&#167;6.10.7.  </b>Finally, we must tidy away the previously detected "begins here" and
+<p class="inwebparagraph"><a id="SP6_9_7"></a><b>&#167;6.9.7.  </b>Finally, we must tidy away the previously detected "begins here" and
 "ends here" sentences into nodes on the tree.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return</span> <span class="cwebmacronumber">6.10.7</span>&gt; =
+&lt;<span class="cwebmacrodefn">Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return</span> <span class="cwebmacronumber">6.9.7</span>&gt; =
 </code></p>
 
 
@@ -1058,7 +1033,7 @@ semicolon to appear indicates an end of the rule.
             <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">BEGINHERE_NT</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_BEGINEND_HANDLER</span>
-            <span class="identifier">NEW_BEGINEND_HANDLER</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">sfsm_extension</span><span class="plain">);</span>
+            <span class="identifier">NEW_BEGINEND_HANDLER</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1066,7 +1041,7 @@ semicolon to appear indicates an end of the rule.
             <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">ENDHERE_NT</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_BEGINEND_HANDLER</span>
-            <span class="identifier">NEW_BEGINEND_HANDLER</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">sfsm_extension</span><span class="plain">);</span>
+            <span class="identifier">NEW_BEGINEND_HANDLER</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1074,16 +1049,16 @@ semicolon to appear indicates an end of the rule.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_8"></a><b>&#167;6.10.8.  </b>Why are we taking a sneak look at this sentence now? Because it affects
+<p class="inwebparagraph"><a id="SP6_9_8"></a><b>&#167;6.9.8.  </b>Why are we taking a sneak look at this sentence now? Because it affects
 which headings we read the contents of. If we waited until sentence traverses,
 it would be too late.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Detect a language definition sentence and sneakily act upon it</span> <span class="cwebmacronumber">6.10.8</span>&gt; =
+&lt;<span class="cwebmacrodefn">Detect a language definition sentence and sneakily act upon it</span> <span class="cwebmacronumber">6.9.8</span>&gt; =
 </code></p>
 
 
@@ -1098,14 +1073,14 @@ it would be too late.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_10_9"></a><b>&#167;6.10.9.  </b>And for similar reasons:
+<p class="inwebparagraph"><a id="SP6_9_9"></a><b>&#167;6.9.9.  </b>And for similar reasons:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Detect a Preform grammar inclusion and sneakily act upon it</span> <span class="cwebmacronumber">6.10.9</span>&gt; =
+&lt;<span class="cwebmacrodefn">Detect a Preform grammar inclusion and sneakily act upon it</span> <span class="cwebmacronumber">6.9.9</span>&gt; =
 </code></p>
 
 
@@ -1117,7 +1092,7 @@ it would be too late.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_10">&#167;6.10</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-pt.html">Back to 'Parse Tree'</a></li><li><i>(This section ends Chapter 2: The Parse Tree.)</i></li></ul><hr class="tocbar">

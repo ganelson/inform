@@ -50,7 +50,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNARY_MINUS_OPERATION</span><span class="plain">: </span>&lt;<span class="cwebmacro">Emit unary minus</span> <span class="cwebmacronumber">1.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">IMPLICIT_APPLICATION_OPERATION</span><span class="plain">: </span>&lt;<span class="cwebmacro">Emit function application</span> <span class="cwebmacronumber">1.13</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">default</span><span class="plain">:</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                     <span class="string">"this doesn't seem to be an arithmetic operation"</span><span class="plain">,</span>
                     <span class="string">"suggesting a problem with some inline definition."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>

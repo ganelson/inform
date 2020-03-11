@@ -30,10 +30,10 @@
 
         <span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">meth</span><span class="plain">-</span><span class="element">&gt;to_inform7</span><span class="plain">);</span>
 
-        <span class="reserved">inform_kit</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">inform_kit</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;kits_to_include</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"-kit %S "</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
-        <span class="plain">}</span>
+        <span class="reserved">kit_dependency</span><span class="plain"> *</span><span class="identifier">kd</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">kd</span><span class="plain">, </span><span class="reserved">kit_dependency</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;kits_to_include</span><span class="plain">)</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"-kit %S "</span><span class="plain">, </span><span class="identifier">kd</span><span class="plain">-</span><span class="element">&gt;kit</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"-format=%S "</span><span class="plain">, </span><span class="identifier">TargetVMs::get_unblorbed_extension</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;for_vm</span><span class="plain">));</span>
 
         <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">;</span>
@@ -55,10 +55,11 @@
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inform7Skill::inform7_internally</span><span class="plain">(</span><span class="reserved">build_skill</span><span class="plain"> *</span><span class="identifier">skill</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">meth</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">Task::carry_out</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Task::carry_out</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 </pre>
 

@@ -167,7 +167,7 @@ reference to how it's stored at run-time.
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IndefiniteVariable</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IndefiniteVariable</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"I am unable to create the variable '%1', because its kind (%2) is too "</span>
             <span class="string">"vague. I need to know exactly what kind of value goes into each "</span>
@@ -296,13 +296,13 @@ variable should hold it:
         <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::parse</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nlv</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;scope</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonQuantityTranslated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonQuantityTranslated</span><span class="plain">),</span>
                 <span class="string">"this is not the name of a variable"</span><span class="plain">,</span>
                 <span class="string">"or at any rate not one global in scope."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_name_translated</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuantityTranslatedAlready</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_QuantityTranslatedAlready</span><span class="plain">),</span>
                 <span class="string">"this variable has already been translated"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -454,7 +454,7 @@ run-time locations to any variable without them:
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 seems to need the value '%2', but that currently "</span>
             <span class="string">"has no definition."</span><span class="plain">);</span>
@@ -512,7 +512,7 @@ I6 schema for how to change a variable:
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">score_VAR</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nlv</span><span class="plain"> == </span><span class="identifier">score_VAR</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeScore</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeScore</span><span class="plain">),</span>
                     <span class="string">"this is a story with no scoring"</span><span class="plain">,</span>
                     <span class="string">"so it makes no sense to change the 'score' value. You can add "</span>
                     <span class="string">"scoring to the story by including the sentence 'Use scoring.', "</span>
@@ -688,7 +688,7 @@ that faraway I6 code said it was.
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(3, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;lvalue_nve.textual_form</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InaccessibleVariable</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InaccessibleVariable</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The sentence %1 tells me that '%2' has a specific initial value, "</span>
             <span class="string">"but this is a variable which has been translated into an I6 'Global' "</span>
@@ -892,7 +892,7 @@ means that a value can be set by an assertion in the source text.
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::must_be_constant</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;constant_at_run_time</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeConstants</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeConstants</span><span class="plain">),</span>
                 <span class="string">"this is a name for a value which never changes during the story"</span><span class="plain">,</span>
                 <span class="string">"so it can't be altered with 'now'."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -929,7 +929,7 @@ and leaving everything else alone.
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_kind</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MeaningRecursive</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MeaningRecursive</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"The sentence %1 tells me that '%2', which should be %3 "</span>
                         <span class="string">"that varies, is to have an initial value which can't "</span>
@@ -1058,7 +1058,7 @@ which makes its kind safe. Hence the error messages.
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_name</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_kind</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyDataType</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EmptyDataType</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"I am unable to put any value into the variable '%1', because "</span>
                     <span class="string">"%2 is a kind of value with no actual values."</span><span class="plain">);</span>
@@ -1084,7 +1084,7 @@ which makes its kind safe. Hence the error messages.
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_kind</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InitialiseQ2</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InitialiseQ2</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 tells me that '%2', which should be %3 "</span>
                 <span class="string">"that varies, is to have an initial value equal to itself - "</span>
@@ -1097,7 +1097,7 @@ which makes its kind safe. Hence the error messages.
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;nlv_kind</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">the_other</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">the_other</span><span class="plain">-</span><span class="element">&gt;nlv_kind</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InitialiseQ1</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InitialiseQ1</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 tells me that '%2', which should be %3 "</span>
                 <span class="string">"that varies, is to have an initial value equal to '%4', "</span>
@@ -1135,7 +1135,7 @@ the following:
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::index_all</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">;</span>
-        <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">definition_area</span><span class="plain">, *</span><span class="identifier">current_area</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">definition_area</span><span class="plain">, *</span><span class="identifier">current_area</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">Index::anchor</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"NAMES"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">understood_note_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1177,10 +1177,10 @@ the following:
 
 
 <pre class="displaydefn">
-        <span class="identifier">definition_area</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::of_wording</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Sentences::Headings::indexed</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+        <span class="identifier">definition_area</span><span class="plain"> = </span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Headings::indexed</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">definition_area</span><span class="plain"> != </span><span class="identifier">current_area</span><span class="plain">) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::get_text</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Headings::get_text</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="functiontext">Phrases::Index::index_definition_area</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>

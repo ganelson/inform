@@ -1200,7 +1200,7 @@ in several contexts by using a tilde: <code class="display"><span class="extract
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parity</span><span class="plain"> == 1) {</span>
                     <span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn_to_eval</span><span class="plain">));</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">),</span>
                         <span class="string">"this refers to an either-or property with a negative "</span>
                         <span class="string">"that I can't unravel'"</span><span class="plain">,</span>
                         <span class="string">"which normally never happens. (Are you using 'change' "</span>

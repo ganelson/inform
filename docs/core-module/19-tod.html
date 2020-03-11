@@ -86,7 +86,7 @@ name, meaning as yet unknown).
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableDefiningTheImpossible</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableDefiningTheImpossible</span><span class="plain">),</span>
             <span class="string">"you can only use 'defined by' to set up values and things"</span><span class="plain">,</span>
             <span class="string">"as created with sentences like 'The tree species are defined by Table 1.' "</span>
             <span class="string">"or 'Some men are defined by the Table of Eligible Bachelors.'"</span><span class="plain">);</span>
@@ -130,7 +130,7 @@ name, meaning as yet unknown).
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableUndefined</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableUndefined</span><span class="plain">),</span>
         <span class="string">"you can only use 'defined by' in terms of a table"</span><span class="plain">,</span>
         <span class="string">"which lists the value names in the first column."</span><span class="plain">);</span>
 </pre>
@@ -275,7 +275,7 @@ connection with ordinary tables.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;has_been_amended</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCantDefineAndAmend</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCantDefineAndAmend</span><span class="plain">),</span>
                 <span class="string">"you can't use 'defined by' to define objects using a table "</span>
                 <span class="string">"which is amended by another table"</span><span class="plain">,</span>
                 <span class="string">"since that could too easily lead to ambiguities about what "</span>
@@ -296,7 +296,7 @@ connection with ordinary tables.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableDefiningObject</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableDefiningObject</span><span class="plain">),</span>
             <span class="string">"you can only use 'defined by' to set up values and things"</span><span class="plain">,</span>
             <span class="string">"as created with sentences like 'The tree species are defined by Table 1.' "</span>
             <span class="string">"or 'Some men are defined by the Table of Eligible Bachelors.' - trying to "</span>
@@ -318,7 +318,7 @@ connection with ordinary tables.
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"K is $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfBuiltInKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfBuiltInKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but this would mean making each of the names in "</span>
                 <span class="string">"the first column %2 that's new. This is a kind which can't have "</span>
@@ -330,7 +330,7 @@ connection with ordinary tables.
             <span class="plain">(</span><span class="identifier">Kinds::Behaviour::is_uncertainly_defined</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfExistingKind</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfExistingKind</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but this would mean making each of the names in "</span>
                 <span class="string">"the first column %2 that's new. That looks reasonable, since this is a "</span>
@@ -355,7 +355,7 @@ connection with ordinary tables.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::contains_quantifier</span><span class="plain">(</span>
             <span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">what</span><span class="plain">))) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfQuantifiedKind</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfQuantifiedKind</span><span class="plain">),</span>
                 <span class="string">"you can't use 'defined by' a table while also talking about the "</span>
                 <span class="string">"number of things to be defined"</span><span class="plain">,</span>
                 <span class="string">"since that could too easily lead to contradictions. (So 'Six doors are "</span>
@@ -508,7 +508,7 @@ of the contents.)
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(3, </span><span class="identifier">evaluation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">row_count</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCreatedClash</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCreatedClash</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, and row %5 of the first column of that table is %2, which "</span>
             <span class="string">"I ought to create as a new value of %4. But I can't do that: it already "</span>

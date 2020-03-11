@@ -23,14 +23,14 @@ contradiction of some kind:
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain"> == </span><span class="identifier">other_sentence</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">PASS_SIGIL</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">PASS_SIGIL</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">other_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, but in another sentence %2: %Sagain, %%%Lbut %%%3%|, %4"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -55,7 +55,7 @@ parse tree, and concerning an instance:
         <span class="functiontext">Problems::quote_object</span><span class="plain">(3, </span><span class="identifier">I</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(5, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::eq</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1, but in another sentence %2: "</span><span class="plain">);</span>
         <span class="reserved">else</span>
@@ -72,7 +72,7 @@ parse tree, and concerning an instance:
         <span class="functiontext">Problems::quote_subject</span><span class="plain">(3, </span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(5, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::eq</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1, but in another sentence %2: "</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1: "</span><span class="plain">);</span>
@@ -101,7 +101,7 @@ table we are in, yet still only cite a small part of it &mdash;
         <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">data</span><span class="plain">) </span><span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">data</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -121,7 +121,7 @@ table we are in, yet still only cite a small part of it &mdash;
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"In %1, you define an equation '%2': but "</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -132,7 +132,7 @@ table we are in, yet still only cite a small part of it &mdash;
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(3, </span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"In %1, you define an equation '%2': but "</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -143,7 +143,7 @@ table we are in, yet still only cite a small part of it &mdash;
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">text</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In %1, you define an equation which mentions the symbol '%2': but %3"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -169,7 +169,7 @@ table we are in, yet still only cite a small part of it &mdash;
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="reserved">definition</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_preamble_text</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(3, </span><span class="identifier">XW</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, which I read as making use of the phrase %3. This in turn "</span>
             <span class="string">"has what's called an 'inline' definition, written in a technical notation "</span>
@@ -195,7 +195,7 @@ table we are in, yet still only cite a small part of it &mdash;
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;ew_text</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;intention</span><span class="plain">);</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the sentence %1, it looks as if you intend '%2' to %3, but "</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">);</span>
@@ -223,7 +223,7 @@ these problems at any particular sentence.
         <span class="functiontext">Problems::quote_object</span><span class="plain">(1, </span><span class="identifier">I</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The %1 %2%|, %3"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -235,7 +235,7 @@ these problems at any particular sentence.
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_object</span><span class="plain">(4, </span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1, but the %4 %2%|, %3"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -247,7 +247,7 @@ these problems at any particular sentence.
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_subject</span><span class="plain">(4, </span><span class="identifier">infs</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You wrote %1, but the %4 %2%|, %3"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -278,12 +278,12 @@ we are dealing with is genuinely an object).
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_name_text</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(4, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I've made something called %4 but it %2%|, %3"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+            <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I've made something called '%1' but it %2%|, %3"</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -312,7 +312,7 @@ making no sense.
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="functiontext">World::Inferences::get_property</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">));</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %2: but the property %5 for the %1 %3%|, %4"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -334,7 +334,7 @@ abstract, rather than with the actual property of some specific object.
         <span class="functiontext">Problems::quote_property</span><span class="plain">(1, </span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">explanation</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">explanation</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The %1 %2%|, %3"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -353,7 +353,7 @@ abstract, rather than with the actual property of some specific object.
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="functiontext">Problems::quote_extension</span><span class="plain">(1, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The extension %1, which your source text makes use of, %2."</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -362,7 +362,7 @@ abstract, rather than with the actual property of some specific object.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Problems::Issue::extension_problem is used in 7/ss (<a href="7-ss.html#SP7_1">&#167;7.1</a>, <a href="7-ss.html#SP7_2">&#167;7.2</a>, <a href="7-ss.html#SP10">&#167;10</a>).</p>
+<p class="endnote">The function Problems::Issue::extension_problem is used in 2/pwst (<a href="2-pwst.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Releasing problems. </b>These occur when the release instructions do not make sense. Sometimes it's
 possible to pin down an exact place where the difficulty occurs, but
@@ -377,7 +377,7 @@ sometimes not.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">fn</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"A problem occurred with the 'Release along with...': "</span>
             <span class="string">"instructions: %1 (with the file '%2')"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -390,7 +390,7 @@ sometimes not.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">path</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">pn</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"A problem occurred with the 'Release along with...': "</span>
             <span class="string">"instructions: %1 (with the file '%2')"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -404,7 +404,7 @@ sometimes not.
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"A problem occurred with the 'Release along with...': "</span>
             <span class="string">"instructions (%3): %1 (with the file '%2')"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -430,7 +430,7 @@ own quaint syntax, and where there is syntax, there are error messages:
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">q</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">message</span><span class="plain">);</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"You gave as a hint in map-making: %1. %2"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -440,7 +440,7 @@ own quaint syntax, and where there is syntax, there are error messages:
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">q</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="identifier">i_wanted_a</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">vw1</span><span class="plain">));</span>
-        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="string">""</span><span class="plain">);</span>
+        <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You gave as a hint in map-making: %1. But the value '%3' did not "</span>
             <span class="string">"fit - it should have been %2."</span><span class="plain">);</span>
@@ -455,7 +455,7 @@ own quaint syntax, and where there is syntax, there are error messages:
 <p class="endnote">The function Problems::Issue::map_problem_wanted_but appears nowhere else.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="2-sq.html">Back to 'Supplementary Quotes'</a></li><li><i>(This section ends Chapter 2: Bridge to Problems Module.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-sq.html">Back to 'Supplementary Quotes'</a></li><li><a href="2-pwst.html">Continue with 'Problems With Source Text'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 	</body>
 </html>

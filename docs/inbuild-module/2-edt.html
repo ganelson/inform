@@ -42,6 +42,20 @@ example, release 7 of Bronze by Emily Short would be an edition of Bronze.
         <span class="plain">}</span>
     <span class="plain">}</span>
 
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Editions::write_canonical_leaf</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">, </span><span class="string">"-v%v"</span><span class="plain">, &amp;(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">));</span>
+            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">vn</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'.'</span><span class="plain">)</span>
+                    <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'_'</span><span class="plain">);</span>
+                <span class="reserved">else</span>
+                    <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">);</span>
+        <span class="plain">}</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Editions::inspect</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="functiontext">Editions::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Compatibility::universal</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;compatibility</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
@@ -58,9 +72,11 @@ example, release 7 of Bronze by Emily Short would be an edition of Bronze.
 
 <p class="endnote">The function Editions::write is used in 2/cps (<a href="2-cps.html#SP1">&#167;1</a>).</p>
 
+<p class="endnote">The function Editions::write_canonical_leaf is used in 4/km (<a href="4-km.html#SP6">&#167;6</a>), 4/em (<a href="4-em.html#SP8">&#167;8</a>), 4/lm (<a href="4-lm.html#SP7">&#167;7</a>), 4/tm (<a href="4-tm.html#SP6">&#167;6</a>), 4/pm (<a href="4-pm.html#SP7">&#167;7</a>).</p>
+
 <p class="endnote">The function Editions::inspect is used in 2/cps (<a href="2-cps.html#SP1">&#167;1</a>).</p>
 
-<p class="endnote">The structure inbuild_edition is accessed in 2/wrk, 2/cps, 2/rqr, 2/nst, 3/is2, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/vmg, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ts, 5/ps, 5/ls, 5/ps2 and here.</p>
+<p class="endnote">The structure inbuild_edition is accessed in 2/wrk, 2/cps, 2/rqr, 2/nst, 3/bg, 3/is2, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ts, 5/ps, 5/ls, 5/ps2, 6/hdn, 6/inc, 6/vmg and here.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-wrk.html">Back to 'Works'</a></li><li><a href="2-cps.html">Continue with 'Copies'</a></li></ul><hr class="tocbar">

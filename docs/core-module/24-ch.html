@@ -70,7 +70,7 @@ storage: the following simple structures are used for this.
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">,</span>
             <span class="string">"Chronology::compile_past_action_pattern on: $A\</span><span class="plain">n</span><span class="string">at: $t\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;</span><span class="identifier">ap</span><span class="plain">, &amp;</span><span class="identifier">duration</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::Patterns::makes_callings</span><span class="plain">(&amp;</span><span class="identifier">ap</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PTAPMakesCallings</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PTAPMakesCallings</span><span class="plain">),</span>
                 <span class="string">"a description of an action cannot both refer to past history "</span>
                 <span class="string">"and also use '(called ...)'"</span><span class="plain">,</span>
                 <span class="string">"because that would require Inform in general to remember "</span>
@@ -227,7 +227,7 @@ storage: the following simple structures are used for this.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) </span><span class="identifier">ap</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_action_pattern</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ap</span><span class="plain">) &amp;&amp; (</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">tense</span><span class="plain"> != </span><span class="identifier">IS_TENSE</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">units</span><span class="plain"> == </span><span class="identifier">TIMES_UNIT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">duration</span><span class="plain">.</span><span class="identifier">length</span><span class="plain"> &gt;= 2)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoMoreRonNewcombMoment</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoMoreRonNewcombMoment</span><span class="plain">),</span>
                     <span class="string">"a condition like 'we have X', where X is an action, has either "</span>
                     <span class="string">"happened for one spell or never happened at all"</span><span class="plain">,</span>
                     <span class="string">"so it can't make sense to ask if it has happened two or more "</span>
@@ -284,7 +284,7 @@ storage: the following simple structures are used for this.
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_past_tenses</span><span class="plain"> &gt;= 1024) { </span>    <span class="comment">limit imposed by the Z-machine implementation</span>
-            <span class="identifier">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">), </span>    <span class="comment">well, not conveniently</span>
+            <span class="identifier">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">), </span>    <span class="comment">well, not conveniently</span>
                 <span class="string">"conditions written in the past tense"</span><span class="plain">, 1024);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -325,7 +325,7 @@ late to create any further past tense references, so:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Chronology::allow_no_further_past_tenses is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Chronology::allow_no_further_past_tenses is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The <code class="display"><span class="extract">{-A}</span></code> ("past actions") escape.
 A series of <code class="display"><span class="extract">if</span></code> statements checking whether each past-tense action is now
@@ -378,7 +378,7 @@ ever tampered with.
 
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">LocalVariables::are_we_using_table_lookup</span><span class="plain">()) &amp;&amp; (</span><span class="identifier">once_only</span><span class="plain">)) {</span>
                 <span class="identifier">once_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastTableLookup</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastTableLookup</span><span class="plain">),</span>
                     <span class="string">"it's not safe to look up table entries in a way referring "</span>
                     <span class="string">"to past history"</span><span class="plain">,</span>
                     <span class="string">"because it leads to dangerous ambiguities. For instance, "</span>
@@ -404,7 +404,7 @@ ever tampered with.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Chronology::past_actions_i6_routines is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Chronology::past_actions_i6_routines is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
@@ -454,7 +454,7 @@ ever tampered with.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Chronology::past_tenses_i6_escape is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Chronology::past_tenses_i6_escape is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Unpack the past</span> <span class="cwebmacronumber">7.1</span>&gt; =
@@ -635,7 +635,7 @@ ever tampered with.
                             <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
                             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">LocalVariables::are_we_using_table_lookup</span><span class="plain">()) &amp;&amp; (</span><span class="identifier">once_only</span><span class="plain">)) {</span>
                                 <span class="identifier">once_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastTableEntries</span><span class="plain">),</span>
+                                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastTableEntries</span><span class="plain">),</span>
                                     <span class="string">"it's not safe to look up table entries in a way referring "</span>
                                     <span class="string">"to past history"</span><span class="plain">,</span>
                                     <span class="string">"because it leads to dangerous ambiguities. For instance, "</span>
@@ -763,7 +763,7 @@ a file stream, thus allowing rewinding:
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TIME_PERIODS</span><span class="plain">, </span><span class="string">"Number %d: proposition $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
                 <span class="identifier">ptc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::contains_callings</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastCallings</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PastCallings</span><span class="plain">),</span>
                     <span class="string">"it's not safe to use '(called ...)' in a way referring "</span>
                     <span class="string">"to past history"</span><span class="plain">,</span>
                     <span class="string">"because this would make a temporary value to hold the "</span>
@@ -931,7 +931,7 @@ times".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Chronology::chronology_extents_i6_escape is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Chronology::chronology_extents_i6_escape is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="24-sf.html">Back to 'Stack Frames'</a></li><li><i>(This section ends Chapter 24: Compilation Context.)</i></li></ul><hr class="tocbar">

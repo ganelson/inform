@@ -133,10 +133,10 @@ in quick succession, the second run-through does nothing.)
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::traverse</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Sentences::VPs::visit</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Sentences::VPs::visit</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::visit</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">TRACE_NT</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">TRACE_NT</span><span class="plain">) {</span>
             <span class="identifier">trace_sentences</span><span class="plain"> = 1 - </span><span class="identifier">trace_sentences</span><span class="plain">;</span>
             <span class="identifier">Log::tracing_on</span><span class="plain">(</span><span class="identifier">trace_sentences</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Diagramming"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -152,7 +152,7 @@ in quick succession, the second run-through does nothing.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Sentences::VPs::traverse is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
+<p class="endnote">The function Sentences::VPs::traverse is used in 1/htc (<a href="1-htc.html#SP2_3">&#167;2.3</a>).</p>
 
 <p class="endnote">The function Sentences::VPs::visit appears nowhere else.</p>
 
@@ -175,7 +175,7 @@ in quick succession, the second run-through does nothing.)
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">soa</span><span class="plain"> == </span><span class="identifier">PL::Bibliographic::Release::release_along_with_SMF</span><span class="plain">) </span><span class="identifier">err</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">not usefully testable, anyway</span>
+                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">not usefully testable, anyway</span>
                     <span class="string">"The options file placed in this installation of Inform's folder "</span>
                     <span class="string">"is incorrect, making use of a sentence form which isn't allowed "</span>
                     <span class="string">"in that situation. The options file is only allowed to contain "</span>
@@ -213,7 +213,7 @@ to look for a good contextual problem message.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Sentences::VPs::seek is used in <a href="#SP8">&#167;8</a>, 7/ss (<a href="7-ss.html#SP2">&#167;2</a>), 7/oaf (<a href="7-oaf.html#SP10">&#167;10</a>).</p>
+<p class="endnote">The function Sentences::VPs::seek is used in <a href="#SP8">&#167;8</a>, 7/oaf (<a href="7-oaf.html#SP10">&#167;10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
@@ -311,7 +311,7 @@ to look for a good contextual problem message.
 
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownDA</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownDA</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, you asked to include '%2' in the "</span>
             <span class="string">"debugging log, but there is no such debugging log topic."</span><span class="plain">);</span>
@@ -472,7 +472,7 @@ action declarations continue with usually extensive further text:
             &lt;<span class="cwebmacro">Issue two likelihoods problem</span> <span class="cwebmacronumber">14.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == 0)</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_sentences</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">); </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
@@ -490,7 +490,7 @@ action declarations continue with usually extensive further text:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TwoLikelihoods</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TwoLikelihoods</span><span class="plain">),</span>
             <span class="string">"this sentence seems to have a likelihood qualification on both "</span>
             <span class="string">"sides of the verb"</span><span class="plain">,</span>
             <span class="string">"which is not allowed. 'The black door certainly is usually open' "</span>
@@ -528,8 +528,8 @@ object noun phrase.
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_PN</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 
@@ -537,9 +537,9 @@ object noun phrase.
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_PN</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 
@@ -547,10 +547,10 @@ object noun phrase.
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_PN</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="identifier">np3</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np3</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 </pre>
@@ -731,7 +731,7 @@ Problem message than the one they will otherwise receive later on.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">verb_problem_issued_ANNOT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">verb_problem_issued_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonPresentTense</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonPresentTense</span><span class="plain">),</span>
                 <span class="string">"assertions about the initial state of play must be given in the "</span>
                 <span class="string">"present tense"</span><span class="plain">,</span>
                 <span class="string">"so 'The cat is in the basket' is fine but not 'The cat has been in "</span>
@@ -756,7 +756,7 @@ Problem message than the one they will otherwise receive later on.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">verb_problem_issued_ANNOT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">verb_problem_issued_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegatedVerb1</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::negative_sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NegatedVerb1</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>
 

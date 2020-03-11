@@ -174,7 +174,7 @@ either/or property where a valued property is wanted, or vice versa.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unfortunate</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt; == </span><span class="identifier">K_value</span><span class="plain">)) {</span>
             <span class="identifier">unfortunate</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"the single word 'value' cannot be used as the name of a property"</span><span class="plain">,</span>
                 <span class="string">"because it has a much broader meaning already. Inform uses the "</span>
                 <span class="string">"word 'value' to mean any number, time of day, name of something, "</span>
@@ -184,7 +184,7 @@ either/or property where a valued property is wanted, or vice versa.
                 <span class="string">"room number' would be fine."</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain">-2) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameTooLong</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameTooLong</span><span class="plain">),</span>
                 <span class="string">"this is too long a name for a single property to have"</span><span class="plain">,</span>
                 <span class="string">"and would become unwieldy."</span><span class="plain">);</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::truncate</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain">-2);</span>
@@ -193,7 +193,7 @@ either/or property where a valued property is wanted, or vice versa.
             <span class="identifier">unfortunate</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameUnsuitable</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameUnsuitable</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"The sentence %1 seems to create a new property called '%2', but "</span>
                 <span class="string">"this is not a good name, and I think I must have misread what "</span>
@@ -232,7 +232,7 @@ something.
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(3, </span><span class="identifier">spec</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameClash</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyNameClash</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but '%2' is not free to be the name of a fresh "</span>
                     <span class="string">"property: it already has a meaning (as %3)."</span><span class="plain">);</span>
@@ -793,14 +793,14 @@ to sentences like:
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)  {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonPropertyTranslated</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonPropertyTranslated</span><span class="plain">),</span>
                 <span class="string">"this property does not exist"</span><span class="plain">,</span>
                 <span class="string">"so cannot be translated."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">Produce::get_translation</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)), </span><span class="identifier">text</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedTwice</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedTwice</span><span class="plain">),</span>
                 <span class="string">"this property has already been translated"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -1084,11 +1084,11 @@ we find it, we compile it and return <code class="display"><span class="extract"
 
 <p class="endnote">The function Properties::emit_single is used in 27/ei (<a href="27-ei.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Properties::emit is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
+<p class="endnote">The function Properties::emit is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="endnote">The function Properties::emit_default_values appears nowhere else.</p>
 
-<p class="endnote">The function Properties::annotate_attributes is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
+<p class="endnote">The function Properties::annotate_attributes is used in 1/htc (<a href="1-htc.html#SP2_7">&#167;2.7</a>).</p>
 
 <p class="endnote">The function Properties::emit_instance_permissions is used in 5/ins (<a href="5-ins.html#SP34">&#167;34</a>).</p>
 

@@ -157,7 +157,7 @@ we don't bother to print details of the closing <code class="display"><span clas
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sentence_handlers_initialised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Initialise sentence handlers</span> <span class="cwebmacronumber">7.3</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ParseTree::traverse_ppn</span><span class="plain">(</span><span class="functiontext">Assertions::Traverse::visit</span><span class="plain">, &amp;</span><span class="identifier">last</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::traverse_ppn</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Assertions::Traverse::visit</span><span class="plain">, &amp;</span><span class="identifier">last</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Extend the traverse to cover sentences needed when implicit kinds are set</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -165,9 +165,9 @@ we don't bother to print details of the closing <code class="display"><span clas
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Assertions::Traverse::traverse1 is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
+<p class="endnote">The function Assertions::Traverse::traverse1 is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
-<p class="endnote">The function Assertions::Traverse::traverse2 is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
+<p class="endnote">The function Assertions::Traverse::traverse2 is used in 1/htc (<a href="1-htc.html#SP2_4">&#167;2.4</a>).</p>
 
 <p class="endnote">The function Assertions::Traverse::traverse appears nowhere else.</p>
 
@@ -318,7 +318,7 @@ handlers until right at the end of the program. The routine which does so,
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">trace_sentences</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) != </span><span class="constant">TRACE_NT</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">trace_sentences</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) != </span><span class="identifier">TRACE_NT</span><span class="plain">))</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">[%W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
 
         &lt;<span class="cwebmacro">If this sentence can be handled, then do so and continue</span> <span class="cwebmacronumber">7.2.2.1</span>&gt;<span class="plain">;</span>
@@ -344,7 +344,7 @@ on either or both traverses, so the inner <code class="display"><span class="ext
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">ROOT_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">BIBLIOGRAPHIC_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">BIBLIOGRAPHIC_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) - </span><span class="identifier">BASE_OF_ENUMERATED_NTS</span><span class="plain">);</span>
@@ -371,7 +371,7 @@ for the telemetry file.
 
 <pre class="display">
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">TRACE_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="constant">TRACE_NT</span><span class="plain">, -1, 0, </span><span class="functiontext">Assertions::Traverse::switch_sentence_trace</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">TRACE_NT</span><span class="plain">, -1, 0, </span><span class="functiontext">Assertions::Traverse::switch_sentence_trace</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Traverse::switch_sentence_trace</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) &gt; 1) {</span>
@@ -379,7 +379,7 @@ for the telemetry file.
             <span class="identifier">telemetry_recording</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">Telemetry::write_to_telemetry_file</span><span class="plain">(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">))));</span>
             <span class="identifier">telemetry_recording</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TelemetryAccepted</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TelemetryAccepted</span><span class="plain">),</span>
                 <span class="string">"that's a message for the Author, not me"</span><span class="plain">,</span>
                 <span class="string">"so I'll note it down in the Telemetry file (if you're keeping one.)"</span><span class="plain">);</span>
             <span class="identifier">telemetry_recording</span><span class="plain"> = </span><span class="identifier">tr</span><span class="plain">;</span>
@@ -411,7 +411,7 @@ refers on to other sentence handlers accordingly:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="constant">you_can_ignore_ANNOT</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Handle a sentence with no primary verb</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">internal_error_if_node_type_wrong</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
+        <span class="identifier">internal_error_if_node_type_wrong</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
         <span class="identifier">prevailing_mood</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">verbal_certainty_ANNOT</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Issue problem message if either subject or object contains mismatched brackets</span> <span class="cwebmacronumber">9.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Act on the primary verb in the sentence</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
@@ -501,7 +501,7 @@ to bite.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleWithoutColon</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleWithoutColon</span><span class="plain">),</span>
             <span class="string">"I can't find a verb that I know how to deal with, so can't do anything "</span>
             <span class="string">"with this sentence. It looks as if it might be a rule definition"</span><span class="plain">,</span>
             <span class="string">"but if so then it is lacking the necessary colon (or comma). "</span>
@@ -520,7 +520,7 @@ to bite.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IfOutsidePhrase</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IfOutsidePhrase</span><span class="plain">),</span>
             <span class="string">"I can't find a verb that I know how to deal with. This looks like an 'if' "</span>
             <span class="string">"phrase which has slipped its moorings"</span><span class="plain">,</span>
             <span class="string">"so I am ignoring it. ('If' phrases, like all other such "</span>
@@ -541,7 +541,7 @@ to bite.
 
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchVerbComma</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchVerbComma</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, I can't find a verb that I know how to deal with. "</span>
             <span class="string">"(I notice there's a comma here, which is sometimes used to abbreviate "</span>
@@ -566,7 +566,7 @@ to bite.
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchVerb</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchVerb</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"In the sentence %1, I can't find a verb that I know how to deal with."</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -595,7 +595,7 @@ but the ability does exist, and we defend it a little here:
                     <span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)) + 1));</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)))</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"I must be misreading the sentence %1. The verb "</span>
@@ -661,7 +661,7 @@ is the rubric, the second the credit line.
 
 <pre class="displaydefn">
         <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
-        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">SourceFiles::get_extension_corresponding</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+        <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) {</span>
             <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
@@ -686,7 +686,7 @@ is the rubric, the second the credit line.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextWithoutSubject</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextWithoutSubject</span><span class="plain">),</span>
             <span class="string">"I'm not sure what you're referring to"</span><span class="plain">,</span>
             <span class="string">"that is, I can't decide to what room or thing you intend that text to belong. "</span>
             <span class="string">"Perhaps you could rephrase this more explicitly? ('The description of the Inner "</span>
@@ -818,7 +818,7 @@ subject carried over from previous sentences.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Assertions::Traverse::new_discussion is used in <a href="#SP7">&#167;7</a>, 7/hdn (<a href="7-hdn.html#SP31">&#167;31</a>), 8/ie (<a href="8-ie.html#SP11">&#167;11</a>), 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
+<p class="endnote">The function Assertions::Traverse::new_discussion is used in <a href="#SP7">&#167;7</a>, 7/hdn (<a href="7-hdn.html#SP9">&#167;9</a>), 8/ef (<a href="8-ef.html#SP14">&#167;14</a>), 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
 
 <p class="endnote">The function Assertions::Traverse::change_discussion_topic is used in 9/tbath (<a href="9-tbath.html#SP5_1">&#167;5.1</a>).</p>
 

@@ -81,7 +81,7 @@ is to store them and sit on them.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImplicationCertain</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImplicationCertain</span><span class="plain">),</span>
             <span class="string">"that's an implication which is too certain for me"</span><span class="plain">,</span>
             <span class="string">"since a sentence like this talks about a generality of things in terms of "</span>
             <span class="string">"one either/or property implying another, and I can only handle those as "</span>
@@ -152,7 +152,7 @@ is to store them and sit on them.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::Assert::testable_at_compile_time</span><span class="plain">(</span><span class="identifier">premiss</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadImplicationDomain</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadImplicationDomain</span><span class="plain">),</span>
                 <span class="string">"that's an implication where the condition to qualify is not "</span>
                 <span class="string">"one that I can determine in advance of the start of play"</span><span class="plain">,</span>
                 <span class="string">"since it involves more than simple either/or properties "</span>
@@ -174,7 +174,7 @@ is to store them and sit on them.
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::has_EORP_meaning</span><span class="plain">(</span><span class="identifier">ParseTree::get_aph</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImplicationValueProperty</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ImplicationValueProperty</span><span class="plain">),</span>
                 <span class="string">"that's an implication where the outcome is an adjective other than "</span>
                 <span class="string">"a simple either/or property"</span><span class="plain">,</span>
                 <span class="string">"which is the only form of implication I can handle."</span><span class="plain">);</span>

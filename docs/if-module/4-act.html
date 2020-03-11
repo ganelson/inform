@@ -360,7 +360,7 @@ make that explicit: for instance, "taking" becomes "the taking action".
 
         <span class="identifier">Vocabulary::set_flags</span><span class="plain">(</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)), </span><span class="identifier">ACTION_PARTICIPLE_MC</span><span class="plain">);</span>
 
-        <span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="identifier">K_action_name</span><span class="plain">);</span>
+        <span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K_action_name</span><span class="plain">);</span>
 
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ACTION_CREATIONS</span><span class="plain">, </span><span class="string">"Created action: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
@@ -663,14 +663,14 @@ names of significance in the I6 library.
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">an</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried action name %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatesNonAction</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatesNonAction</span><span class="plain">),</span>
                 <span class="string">"this does not appear to be the name of an action"</span><span class="plain">,</span>
                 <span class="string">"so cannot be translated into I6 at all."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried action name %W = %n\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="functiontext">PL::Actions::base_iname</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatesActionAlready</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatesActionAlready</span><span class="plain">),</span>
                 <span class="string">"this action has already been translated"</span><span class="plain">,</span>
                 <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -744,7 +744,7 @@ action patterns. For example, the Standard Rules define:
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadMatchingSyntax</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadMatchingSyntax</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, which I am reading as a request to make "</span>
             <span class="string">"a new named variable for an action - a value associated "</span>
@@ -766,7 +766,7 @@ action patterns. For example, the Standard Rules define:
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarAnd</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarAnd</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"You wrote %1, which I am reading as a request to make "</span>
             <span class="string">"a new named variable for an action - a value associated "</span>
@@ -790,7 +790,7 @@ action patterns. For example, the Standard Rules define:
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">) != </span><span class="identifier">PROPERTYCALLED_NT</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarUncalled</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarUncalled</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                 <span class="string">"a new named variable for an action - a value associated "</span>
@@ -805,7 +805,7 @@ action patterns. For example, the Standard Rules define:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;owned_by_an</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">)); </span>    <span class="comment">since we no longer define such actions</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">)); </span>    <span class="comment">since we no longer define such actions</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                 <span class="string">"a new named variable for an action - a value associated "</span>
@@ -829,7 +829,7 @@ action patterns. For example, the Standard Rules define:
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">MW</span><span class="plain">) &gt; 1) {</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">MW</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MatchedAsTooLong</span><span class="plain">));</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MatchedAsTooLong</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                         <span class="string">"a new named variable for an action - a value associated "</span>
@@ -851,7 +851,7 @@ action patterns. For example, the Standard Rules define:
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarOverspecific</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarOverspecific</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, which I am reading as a request to make "</span>
                     <span class="string">"a new named variable for an action - a value associated "</span>
@@ -866,7 +866,7 @@ action patterns. For example, the Standard Rules define:
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Offending SP: $T"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">));</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarUnknownKOV</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarUnknownKOV</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but '%2' is not the name of a kind of "</span>
                     <span class="string">"value which I know (such as 'number' or 'text')."</span><span class="plain">);</span>
@@ -878,7 +878,7 @@ action patterns. For example, the Standard Rules define:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cnode</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">));</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarValue</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarValue</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but saying that a variable is a 'value' "</span>
                 <span class="string">"does not give me a clear enough idea what it will hold. "</span>
@@ -952,7 +952,7 @@ action patterns. For example, the Standard Rules define:
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActionDeclaration</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadActionDeclaration</span><span class="plain">),</span>
             <span class="string">"it is not sufficient to say that something is an 'action'"</span><span class="plain">,</span>
             <span class="string">"without giving the necessary details: for example, 'Unclamping "</span>
             <span class="string">"is an action applying to one thing.'"</span><span class="plain">);</span>
@@ -1044,7 +1044,7 @@ action to be created.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionAlreadyExists</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionAlreadyExists</span><span class="plain">),</span>
             <span class="string">"that seems to be an action already existing"</span><span class="plain">,</span>
             <span class="string">"so it cannot be redefined now. If you would like to reconfigure "</span>
             <span class="string">"an action in the standard set - for instance if you prefer "</span>
@@ -1135,7 +1135,7 @@ It's convenient to define a single action clause first:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionClauseUnknown</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionClauseUnknown</span><span class="plain">),</span>
             <span class="string">"the action definition contained text I couldn't follow"</span><span class="plain">,</span>
             <span class="string">"and may be too complicated."</span><span class="plain">);</span>
 </pre>
@@ -1156,7 +1156,7 @@ It's convenient to define a single action clause first:
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">PP_ACT_CLAUSE</span><span class="plain">: {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;, 1);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">) != 1)</span>
-                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiwordPastParticiple</span><span class="plain">),</span>
+                    <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiwordPastParticiple</span><span class="plain">),</span>
                         <span class="string">"a past participle must be given as a single word"</span><span class="plain">,</span>
                         <span class="string">"even if the action name itself is longer than that. "</span>
                         <span class="string">"(For instance, the action name 'hanging around until' "</span>
@@ -1217,7 +1217,7 @@ It's convenient to define a single action clause first:
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">REQUIRES_ACCESS</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">K_thing</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionMisapplied</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionMisapplied</span><span class="plain">),</span>
             <span class="string">"an action can only apply to things or to kinds of value"</span><span class="plain">,</span>
             <span class="string">"for instance: 'photographing is an action applying to "</span>
             <span class="string">"one visible thing'."</span><span class="plain">);</span>
@@ -1269,7 +1269,7 @@ It's convenient to define a single action clause first:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-&gt;</span><span class="identifier">max_parameters</span><span class="plain"> &gt;= 2) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;noun_kind</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;second_kind</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionBothValues</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionBothValues</span><span class="plain">),</span>
                     <span class="string">"this action definition asks to have a single action apply "</span>
                     <span class="string">"to two different things which are not objects"</span><span class="plain">,</span>
                     <span class="string">"and unfortunately a fundamental restriction is that an "</span>
@@ -1509,7 +1509,7 @@ in question. This is where we compile the bitmaps in their fresh, empty form.
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;designers_specification</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="identifier">failed_on</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarMismatchesAction</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarMismatchesAction</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"The grammar you give in %1 is not compatible "</span>
                 <span class="string">"with the %3 action (defined as '%2') - %4."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
@@ -1784,11 +1784,11 @@ infrastructure, and we access it with a single call.
         <span class="identifier">inform_extension</span><span class="plain"> **</span><span class="identifier">ext</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain"> **</span><span class="identifier">current_area</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">new_par</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bold</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">on_details_page</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;use_verb_routine_in_I6_library</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
-        <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">definition_area</span><span class="plain"> = </span><span class="identifier">Sentences::Headings::of_wording</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">);</span>
+        <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">definition_area</span><span class="plain"> = </span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">-</span><span class="element">&gt;present_name</span><span class="plain">);</span>
         <span class="plain">*</span><span class="identifier">new_par</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 1) {</span>
             <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">this_extension</span><span class="plain"> =</span>
-                <span class="identifier">Sentences::Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
+                <span class="identifier">Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">ext</span><span class="plain"> != </span><span class="identifier">this_extension</span><span class="plain">) {</span>
                 <span class="plain">*</span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">this_extension</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">ext</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
@@ -1814,7 +1814,7 @@ infrastructure, and we access it with a single call.
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">definition_area</span><span class="plain"> != *</span><span class="identifier">current_area</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(*</span><span class="identifier">ext</span><span class="plain">))) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Sentences::Headings::get_text</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Headings::get_text</span><span class="plain">(</span><span class="identifier">definition_area</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
                     <span class="identifier">Phrases::Index::index_definition_area</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">ext</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>

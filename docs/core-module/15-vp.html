@@ -69,7 +69,7 @@ possibility by widening the kind, when this can be done.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadKOVForRelationProperty</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadKOVForRelationProperty</span><span class="plain">),</span>
             <span class="string">"that property already exists and contains a kind of value incompatible with "</span>
             <span class="string">"what we need here"</span><span class="plain">,</span>
             <span class="string">"so you will need to give it a different name."</span><span class="plain">);</span>
@@ -173,7 +173,7 @@ to the end user.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyIndefinite</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyIndefinite</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -340,7 +340,7 @@ storage methods at run-time if we wanted.)
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::compile_default_value_vh</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, </span><span class="string">"property"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(1, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyUninitialisable</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyUninitialisable</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"I am unable to put any value into the property '%1', because "</span>
                 <span class="string">"it seems to have a kind of value which has no actual values."</span><span class="plain">);</span>

@@ -268,7 +268,7 @@ now supplies new ones).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_is</span><span class="plain"> != </span><span class="constant">GV_IS_COMMAND</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to add alias command to non-command GV"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;no_aliased_commands</span><span class="plain"> == </span><span class="constant">MAX_ALIASED_COMMANDS</span><span class="plain">) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyAliases</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyAliases</span><span class="plain">),</span>
                 <span class="string">"this 'understand the command ... as ...' makes too many aliases "</span>
                 <span class="string">"for the same command"</span><span class="plain">,</span>
                 <span class="string">"exceeding the limit of 32."</span><span class="plain">);</span>
@@ -353,7 +353,7 @@ now supplies new ones).
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;where_gv_created</span><span class="plain">;</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;command</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but %2 is a built-in Inform testing verb, which "</span>
                     <span class="string">"means it is reserved for Inform's own use and can't be used "</span>
@@ -555,7 +555,7 @@ names (e.g., "suitable colour").
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">, </span><span class="reserved">grammar_verb</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_is</span><span class="plain"> == </span><span class="constant">GV_IS_TOKEN</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarTranslatedAlready</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarTranslatedAlready</span><span class="plain">),</span>
                     <span class="string">"this grammar token has already been translated"</span><span class="plain">,</span>
                     <span class="string">"so there must be some duplication somewhere."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
@@ -696,7 +696,7 @@ possible.
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">GRAMMAR</span><span class="plain">, </span><span class="string">"Adding grammar line $g to verb $G\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">gl</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_is</span><span class="plain"> == </span><span class="constant">GV_IS_COMMAND</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">PL::Parsing::Lines::list_length</span><span class="plain">(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;first_line</span><span class="plain">) &gt;= </span><span class="constant">MAX_LINES_PER_COMMAND</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyGrammarLines</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyGrammarLines</span><span class="plain">),</span>
                 <span class="string">"this command verb now has too many Understand possibilities"</span><span class="plain">,</span>
                 <span class="string">"that is, there are too many 'Understand \</span><span class="plain">"</span><span class="string">whatever ...\</span><span class="plain">"</span><span class="string"> as ...' "</span>
                 <span class="string">"which share the same initial word 'whatever'. The best way to "</span>
@@ -815,7 +815,7 @@ pass the buck down to the list of grammar lines.
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Types::get_single_type</span><span class="plain">(&amp;(</span><span class="identifier">gv</span><span class="plain">-</span><span class="element">&gt;gv_type</span><span class="plain">));</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">grammar_verb</span><span class="plain">)) {</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarIllFounded</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GrammarIllFounded</span><span class="plain">),</span>
                 <span class="string">"grammar tokens are not allowed to be defined in terms of "</span>
                 <span class="string">"themselves"</span><span class="plain">,</span>
                 <span class="string">"either directly or indirectly."</span><span class="plain">);</span>

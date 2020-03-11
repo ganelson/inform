@@ -60,7 +60,7 @@ generalisations which apply to it.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure generalisation is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure generalisation is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For reasons to do with timing, each object needs to keep track of which
 generalisations have and have not yet applied to it. In practice, this is
@@ -79,7 +79,7 @@ applied from K's list.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure application is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure application is accessed in 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>These structures are combined in the following packet of data attached to
 each inference subject:
@@ -227,7 +227,7 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
             <span class="plain">(</span><span class="identifier">Kinds::Behaviour::has_named_constant_values</span><span class="plain">(</span><span class="identifier">instance_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">look_for</span><span class="plain">);</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">what_to_make</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyOnFixedKind</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyOnFixedKind</span><span class="plain">),</span>
                 <span class="string">"this generalisation can't be made"</span><span class="plain">,</span>
                 <span class="string">"because I only use generalisations to talk about values which can be "</span>
                 <span class="string">"created as needed, like things or scenes - not about those always "</span>
@@ -249,7 +249,7 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">what_to_make</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">what_to_make</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">look_for</span><span class="plain">);</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">what_to_make</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyOnBothSides</span><span class="plain">),</span>
+            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyOnBothSides</span><span class="plain">),</span>
                 <span class="string">"this generalisation can't be made"</span><span class="plain">,</span>
                 <span class="string">"because it uses 'every' or some similar generalisation on both sides, "</span>
                 <span class="string">"which is too rich for my taste."</span><span class="plain">);</span>
@@ -307,7 +307,7 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Generalisation:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">look_for</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">what_to_make</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyRegress</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyRegress</span><span class="plain">),</span>
             <span class="string">"this generalisation would be too dangerous"</span><span class="plain">,</span>
             <span class="string">"because it would lead to infinite regress in the assembly process. Sometimes "</span>
             <span class="string">"this happens if you have set up matters with text like 'A container is in every "</span>
@@ -541,7 +541,7 @@ L but each L must contain a K.
             <span class="functiontext">Problems::quote_subject</span><span class="plain">(2, </span><span class="identifier">infs_k</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = </span><span class="constant">MAX_ASSEMBLY_SIZE</span><span class="plain">;</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(3, &amp;</span><span class="identifier">max</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyLoop</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyLoop</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Making a new %2 seems to result in an assembly which can never end, "</span>
                 <span class="string">"or which at any rate led to some %3 further constructions "</span>

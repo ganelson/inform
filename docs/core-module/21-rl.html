@@ -250,7 +250,7 @@ slightly differently. (Not all rule names do: those for timed events do not.)
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">unsuitable</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PM_RuleWithComma_issued_at</span><span class="plain"> != </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
                 <span class="identifier">PM_RuleWithComma_issued_at</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleWithComma</span><span class="plain">),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleWithComma</span><span class="plain">),</span>
                     <span class="string">"a rule name is not allowed to contain punctuation, or "</span>
                     <span class="string">"to consist only of an article like 'a' or 'an', or to "</span>
                     <span class="string">"contain double-quoted text"</span><span class="plain">,</span>
@@ -442,7 +442,7 @@ conditions have not been met.
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRuleConstraint</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRuleConstraint</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, you placed a constraint '%2' on a rule, but this isn't "</span>
                     <span class="string">"a condition I can understand."</span><span class="plain">);</span>
@@ -591,7 +591,7 @@ about the kind of the rule; and this enables us to check for incompatibilities.
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(6, </span><span class="identifier">P2</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(7, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule_set_from</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(8, </span><span class="identifier">RB</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleInIncompatibleRulebooks</span><span class="plain">));</span>
+                <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleInIncompatibleRulebooks</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You've asked to put the rule '%2' into the rulebook %8, "</span>
                     <span class="string">"which is based on %5 and produces %6; but it was originally "</span>
@@ -704,7 +704,7 @@ it's perfectly typesafe to ignore the basis value entirely.
                         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
                         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">KR</span><span class="plain">);</span>
                         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">KS</span><span class="plain">);</span>
-                        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RulesCantInterchange</span><span class="plain">));</span>
+                        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RulesCantInterchange</span><span class="plain">));</span>
                         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                             <span class="string">"In the sentence %1 you've asked to use the rule '%2' in "</span>
                             <span class="string">"place of '%3', but one is based on %4 whereas the other "</span>
@@ -1304,7 +1304,7 @@ I wonder how useful this really is, but it was much requested at one time.
                         <span class="identifier">Problems::quote_stream</span><span class="plain">(3, </span><span class="identifier">letter</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0) </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"no lettered responses at all"</span><span class="plain">);</span>
                         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_stream</span><span class="plain">(4, </span><span class="identifier">offers</span><span class="plain">);</span>
-                        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchResponse</span><span class="plain">));</span>
+                        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchResponse</span><span class="plain">));</span>
                         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                             <span class="string">"You wrote %1, but the '%2' doesn't have a response "</span>
                             <span class="string">"lettered '%3'. (It has %4.)"</span><span class="plain">);</span>
@@ -1373,7 +1373,7 @@ I wonder how useful this really is, but it was much requested at one time.
 
     <p class="endnote">The function Rules::rule_defines_response is used in 17/ts (<a href="17-ts.html#SP11">&#167;11</a>), 17/rs (<a href="17-rs.html#SP4">&#167;4</a>, <a href="17-rs.html#SP7_1">&#167;7.1</a>, <a href="17-rs.html#SP7_3_1">&#167;7.3.1</a>, <a href="17-rs.html#SP12_1_1">&#167;12.1.1</a>).</p>
 
-    <p class="endnote">The function Rules::check_response_usages is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+    <p class="endnote">The function Rules::check_response_usages is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
     <p class="endnote">The function Rules::now_rule_defines_response is used in 17/rs (<a href="17-rs.html#SP12_1_1">&#167;12.1.1</a>), 26/tti (<a href="26-tti.html#SP7">&#167;7</a>).</p>
 

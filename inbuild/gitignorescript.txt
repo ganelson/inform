@@ -1,6 +1,8 @@
 {basics}
 
 inbuild.mk
+syntax-test/syntax-test.mk
+words-test/words-test.mk
 
 Tests/Units/_Results_Actual/
 Tests/Miscellany/_Results_Actual/

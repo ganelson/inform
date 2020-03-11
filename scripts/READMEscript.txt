@@ -113,11 +113,12 @@ This repository is where development is done on the following executables:
 	* @path - __@version(@path)__
 @end
 @primaryd(inform7, 'Web of InC', 'P-cu')
-	* its modules [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
-	* their unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
+	* its modules [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
+	* their unit test executables [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
 @primaryd(inblorb, 'Web of InC', 'P-ui')
 @primaryd(inbuild, 'Web of InC', 'P-ui')
-	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html)
+	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html), [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html)
+	* two unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html)
 @primaryd(indoc, 'Web of InC', 'P-iti')
 @primaryd(inpolicy, 'Web of InC', 'P-ui')
 @primaryd(inrtps, 'Web of InC', 'P-ui')
@@ -250,7 +251,7 @@ be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 @define subweb(owner, program)
 	<li>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
-		<span class="purpose"><i>@purpose(@owner/@program) (Not compiled in Inform itself.)</i></span></p>
+		<span class="purpose"><i>@purpose(@owner/@program) (A stand-alone program.)</i></span></p>
 	</li>
 @end
 @define mod(owner, module)
@@ -299,15 +300,11 @@ is designed to be read by humans in its "woven" form, and to be compiled or
 run by computers in its "tangled" form.
 These pages showcase the woven form, and are for human eyes only.</p>
 		<hr>
-		<p class="chapter">The main Inform 7 compiler, front end and back end:</p>
+		<p class="chapter">The main Inform 7 compiler; its front end, inbuild; and its back end, inter:</p>
 		<ul class="sectionlist">
 			@web('inform7', 'P-cu')
-			@mod('inform7', 'words')
-			@subweb('inform7', 'words-test')
 			@mod('inform7', 'inflections')
 			@subweb('inform7', 'inflections-test')
-			@mod('inform7', 'syntax')
-			@subweb('inform7', 'syntax-test')
 			@mod('inform7', 'problems')
 			@subweb('inform7', 'problems-test')
 			@mod('inform7', 'linguistics')
@@ -322,6 +319,10 @@ These pages showcase the woven form, and are for human eyes only.</p>
 			@modib('inbuild', 'arch')
 			@modib('inbuild', 'inbuild')
 			@modib('inbuild', 'html')
+			@modib('inbuild', 'words')
+			@subweb('inbuild', 'words-test')
+			@modib('inbuild', 'syntax')
+			@subweb('inbuild', 'syntax-test')
 			@web('inter', 'P-ui')
 			@modi('inter', 'inter')
 			@modi('inter', 'building')

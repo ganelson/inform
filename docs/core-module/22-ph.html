@@ -117,7 +117,7 @@ invocation which is given as verbatim I6.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::create_from_preamble</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) != </span><span class="constant">ROUTINE_NT</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"a phrase preamble should be at a ROUTINE_NT node"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_wn</span><span class="plain"> = -1; 		</span>    <span class="comment">the word number of an inline I6 definition if any</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain"> = </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">;	</span>    <span class="comment">and its manner of return</span>
@@ -394,7 +394,7 @@ of it:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Undefined</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_Undefined</span><span class="plain">),</span>
             <span class="string">"there doesn't seem to be any definition here"</span><span class="plain">,</span>
             <span class="string">"so I can't see what this rule or phrase would do."</span><span class="plain">);</span>
 </pre>
@@ -414,7 +414,7 @@ of it:
 
 <pre class="displaydefn">
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Inline definition: &lt;%s&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">inline_defn</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineTooLong</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineTooLong</span><span class="plain">),</span>
             <span class="string">"the inline definition of this 'to...' phrase is too long"</span><span class="plain">,</span>
             <span class="string">"using a quantity of Inform 6 code which exceeds the fairly small limit "</span>
             <span class="string">"allowed. You will need either to write the phrase definition in Inform 7, "</span>
@@ -432,7 +432,7 @@ of it:
 
 
 <pre class="displaydefn">
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineRule</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineRule</span><span class="plain">),</span>
             <span class="string">"only 'to...' phrases can be given inline Inform 6 definitions"</span><span class="plain">,</span>
             <span class="string">"and in particular rules and adjective definitions can't."</span><span class="plain">);</span>
 </pre>
@@ -470,7 +470,7 @@ what number is...", for instance.
 
 <pre class="displaydefn">
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">;</span>
-        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TailAfterInline</span><span class="plain">),</span>
+        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TailAfterInline</span><span class="plain">),</span>
             <span class="string">"some unexpected text appears after the tail of an inline definition"</span><span class="plain">,</span>
             <span class="string">"placed within '(-' and '-)' markers to indicate that it is written in "</span>
             <span class="string">"Inform 6. Here, there seems to be something extra after the '-)'."</span><span class="plain">);</span>
@@ -661,13 +661,13 @@ response to "requests". All other phrases are compiled just once.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain">) {</span>
                     <span class="identifier">n</span><span class="plain">++;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; 1) {</span>
-                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
+                        <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...),</span>
                             <span class="string">"there seem to be multiple 'to begin' phrases"</span><span class="plain">,</span>
                             <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
                             <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) {</span>
-                            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
+                            <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...),</span>
                                 <span class="string">"the 'to begin' phrase seems to be defined inline"</span><span class="plain">,</span>
                                 <span class="string">"which in Basic mode is not allowed."</span><span class="plain">);</span>
                         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -682,7 +682,7 @@ response to "requests". All other phrases are compiled just once.
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 0) {</span>
-                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(...),</span>
+                <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...),</span>
                     <span class="string">"there seems not to be a 'to begin' phrase"</span><span class="plain">,</span>
                     <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
                     <span class="string">"these, specifying where execution should begin."</span><span class="plain">);</span>
@@ -695,7 +695,7 @@ response to "requests". All other phrases are compiled just once.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Phrases::invoke_to_begin is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Phrases::invoke_to_begin is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="22-cs.html">Back to 'Construction Sequence'</a></li><li><a href="22-pu.html">Continue with 'Phrase Usage'</a></li></ul><hr class="tocbar">

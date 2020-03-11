@@ -185,7 +185,6 @@ calls.
         <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"This sentence provides a firebreak, no more. "</span><span class="plain">);</span>
         <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Extensions::Documentation::load</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0; </span>    <span class="comment">shouldn't happen: it was there only moments ago</span>
-    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"Wel well %X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">);</span>
         <span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
         <span class="functiontext">Extensions::Documentation::write_extension_documentation</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
 </pre>
@@ -393,7 +392,6 @@ easily be scrolled down off screen when the user first visits the page.
 <pre class="display">
     <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Extensions::Documentation::load</span><span class="plain">(</span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">Requirements::any_version_of</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">);</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;allow_malformed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>

@@ -278,7 +278,7 @@ incomparable, and "thing" being the max of "person" and "door").
 <pre class="displaydefn">
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadConstantListEntry</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadConstantListEntry</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The constant list %1 contains an entry '%2' which isn't any "</span>
             <span class="string">"form of constant I'm able to read."</span><span class="plain">);</span>
@@ -301,7 +301,7 @@ incomparable, and "thing" being the max of "person" and "door").
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_spec</span><span class="plain">(3, </span><span class="identifier">spec</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonconstantConstantListEntry</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonconstantConstantListEntry</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The constant list %1 contains an entry '%2' which does make sense, "</span>
             <span class="string">"but isn't a constant (it's %3). Only constants can appear as entries in "</span>
@@ -323,7 +323,7 @@ incomparable, and "thing" being the max of "person" and "door").
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">previous_K</span><span class="plain">);</span>
-        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IncompatibleConstantListEntry</span><span class="plain">));</span>
+        <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IncompatibleConstantListEntry</span><span class="plain">));</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The constant list %1 contains an entry '%2' whose kind is '%3', but "</span>
             <span class="string">"that's not compatible with the kind I had established from looking at "</span>
@@ -378,7 +378,7 @@ problem messages out into the open &mdash;
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Lists::check is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Lists::check is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>That leaves just the compilation of lists at run-time. This used to be a
 complex dance with initialisation code interleaved with heap construction,
@@ -439,7 +439,7 @@ so there was once a two-page explanation here, but it is now blessedly simple.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Lists::compile is used in 1/htc (<a href="1-htc.html#SP2_9">&#167;2.9</a>).</p>
+<p class="endnote">The function Lists::compile is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12_1"></a><b>&#167;12.1.  </b>These are I6 word arrays, with the contents:
 </p>

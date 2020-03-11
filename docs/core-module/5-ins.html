@@ -82,7 +82,7 @@ evidence turns up to suggest otherwise).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure instance_usage is accessed in 3/pd, 5/lp, 5/ut, 5/un, 6/rlt, 6/nv, 7/ss, 7/hdn, 7/ns, 7/oaf, 7/rs, 8/ie, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
+<p class="endnote">The structure instance_usage is accessed in 3/pd, 5/lp, 5/ut, 5/un, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 19/tod, 20/eq, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>We record the one most recently made:
 </p>
@@ -271,7 +271,7 @@ be done later on: see the "Instance Counts" plugin.
         <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::has_named_constant_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to make an instance value for impossible kind"</span><span class="plain">);</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain">) </span><span class="functiontext">Instances::register_as_adjectival_constant</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">cp</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -420,9 +420,9 @@ turns up subsequently, e.g., in response to
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Instances::get_numerical_value is used in 3/nl (<a href="3-nl.html#SP7">&#167;7</a>), 14/rv (<a href="14-rv.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Instances::get_numerical_value is used in 3/nl (<a href="3-nl.html#SP6">&#167;6</a>), 14/rv (<a href="14-rv.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Instances::as_subject is used in <a href="#SP33">&#167;33</a>, 3/nl (<a href="3-nl.html#SP7">&#167;7</a>), 4/am (<a href="4-am.html#SP22">&#167;22</a>), 5/ipw (<a href="5-ipw.html#SP3_7">&#167;3.7</a>, <a href="5-ipw.html#SP3_9">&#167;3.9</a>), 6/rlt (<a href="6-rlt.html#SP26">&#167;26</a>), 9/rpt (<a href="9-rpt.html#SP9_5_1">&#167;9.5.1</a>, <a href="9-rpt.html#SP10_1">&#167;10.1</a>), 9/tc (<a href="9-tc.html#SP5_4">&#167;5.4</a>, <a href="9-tc.html#SP5_4_1_1">&#167;5.4.1.1</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a>), 9/ma (<a href="9-ma.html#SP3_3_41_5">&#167;3.3.41.5</a>), 11/tc (<a href="11-tc.html#SP2">&#167;2</a>), 12/ap (<a href="12-ap.html#SP9_5_2">&#167;9.5.2</a>, <a href="12-ap.html#SP12">&#167;12</a>), 14/ds2 (<a href="14-ds2.html#SP11_9_1_1_5_1_3">&#167;11.9.1.1.5.1.3</a>), 15/pr (<a href="15-pr.html#SP27">&#167;27</a>), 15/pov (<a href="15-pov.html#SP4">&#167;4</a>), 16/is (<a href="16-is.html#SP6">&#167;6</a>, <a href="16-is.html#SP12">&#167;12</a>, <a href="16-is.html#SP17">&#167;17</a>), 16/in (<a href="16-in.html#SP19">&#167;19</a>), 16/ic (<a href="16-ic.html#SP8">&#167;8</a>, <a href="16-ic.html#SP12_1">&#167;12.1</a>, <a href="16-ic.html#SP12_3_1">&#167;12.3.1</a>, <a href="16-ic.html#SP12_3_2">&#167;12.3.2</a>, <a href="16-ic.html#SP12_3_3">&#167;12.3.3</a>).</p>
+<p class="endnote">The function Instances::as_subject is used in <a href="#SP33">&#167;33</a>, 3/nl (<a href="3-nl.html#SP6">&#167;6</a>), 4/am (<a href="4-am.html#SP22">&#167;22</a>), 5/ipw (<a href="5-ipw.html#SP3_7">&#167;3.7</a>, <a href="5-ipw.html#SP3_9">&#167;3.9</a>), 6/rlt (<a href="6-rlt.html#SP26">&#167;26</a>), 9/rpt (<a href="9-rpt.html#SP9_5_1">&#167;9.5.1</a>, <a href="9-rpt.html#SP10_1">&#167;10.1</a>), 9/tc (<a href="9-tc.html#SP5_4">&#167;5.4</a>, <a href="9-tc.html#SP5_4_1_1">&#167;5.4.1.1</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a>), 9/ma (<a href="9-ma.html#SP3_3_41_5">&#167;3.3.41.5</a>), 11/tc (<a href="11-tc.html#SP2">&#167;2</a>), 12/ap (<a href="12-ap.html#SP9_5_2">&#167;9.5.2</a>, <a href="12-ap.html#SP12">&#167;12</a>), 14/ds2 (<a href="14-ds2.html#SP11_9_1_1_5_1_3">&#167;11.9.1.1.5.1.3</a>), 15/pr (<a href="15-pr.html#SP27">&#167;27</a>), 15/pov (<a href="15-pov.html#SP4">&#167;4</a>), 16/is (<a href="16-is.html#SP6">&#167;6</a>, <a href="16-is.html#SP12">&#167;12</a>, <a href="16-is.html#SP17">&#167;17</a>), 16/in (<a href="16-in.html#SP19">&#167;19</a>), 16/ic (<a href="16-ic.html#SP8">&#167;8</a>, <a href="16-ic.html#SP12_1">&#167;12.1</a>, <a href="16-ic.html#SP12_3_1">&#167;12.3.1</a>, <a href="16-ic.html#SP12_3_2">&#167;12.3.2</a>, <a href="16-ic.html#SP12_3_3">&#167;12.3.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. As mere names. </b></p>
 
@@ -692,7 +692,7 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
             <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">new</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">existing</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindsIncompatible</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindsIncompatible</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but that seems to contradict %2, as %3 and %4 "</span>
                 <span class="string">"are incompatible. (If %3 were a kind of %4 or vice versa "</span>
@@ -703,7 +703,7 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
             <span class="functiontext">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">I</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">new</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">existing</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
+            <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, which made me think the kind of %2 was %4, "</span>
                 <span class="string">"but for other reasons I now think it ought to be %3, and those "</span>
@@ -1012,7 +1012,7 @@ Note that only instances, not kinds, appear.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Instances::place_objects_in_definition_sequence is used in 1/htc (<a href="1-htc.html#SP2_6">&#167;2.6</a>).</p>
+<p class="endnote">The function Instances::place_objects_in_definition_sequence is used in 1/htc (<a href="1-htc.html#SP2_5">&#167;2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32.  </b>And we read the order back using these macros:
 </p>
