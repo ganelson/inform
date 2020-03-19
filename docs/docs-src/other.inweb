@@ -1,0 +1,34 @@
+Title: Other Inform tools
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ This is a miscellany of command-line tools, which vary in size and
+usefulness. Only one (the releasing agent |inblorb|) is included in the
+GUI apps for Inform; the others are for building and maintenance.
+
+These tools are not very modular: each consists of just a single web, but
+supplemented with a single module, the |foundation| library shared by
+every Inform tool.
+
+@ Users of the Inform GUI apps generally write and test their work inside
+the app, but eventually click Release to export a stand-alone program.
+|inblorb| is the tool which performs this releasing stage. It can package
+code up into a standard IF format known as a "blorb", whence the name, and
+can also make accompanying websites.
+
+@ |indoc| is a formatter for the two Inform manuals contained inside the
+GUI app and on the |www.inform7.com| website. This is a more complex task
+than may appear, since the manuals are indexed and interlinked in intricate
+ways, and share Examples.
+
+@ |inpolicy| is a lint-like tool for checking that the Inform source base
+complies with some self-imposed social norms.
+
+@ |inrtps| is a tiny tool which generates run-time-problem pages, the HTML
+pages displayed in the GUI app when various problems occur as the user
+tests something she has written.
+
+@ Note that the |intest| and |inweb| tools have their own repositories and
+source websites, and that the |inform6| compiler, which is illiterate and
+thus not a web, is not here either.

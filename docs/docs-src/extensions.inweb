@@ -1,0 +1,43 @@
+Title: Extensions and Kits
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ The middle phase of the Inform 7 compiler turns source text into a low-level
+abstract program in a format called inter. The final phase merges this with
+pre-compiled inter libraries which do not come from source text. Those
+libraries are called "kits".
+
+Every source text needs a kit called |BasicInformKit|, and a kit associated
+with the natural language it will eventually read or write, such as
+|EnglishLanguageKit|; but then one of two things can happen:
+(a) If the user explicitly declares other kits to use, those are used;
+(b) Otherwise, |WorldModelKit| and |CommandParserKit| are used;
+(c) If neither |WorldModelKit| nor |CommandParserKit| is used, then
+|BasicInformExtras| is used.
+
+In effect, Inform by default assumes it is making an interactive fiction
+of some kind, and must be explicitly told if it's to make a "basic" program
+with no world model or command parser.
+
+Each kit is a web. Inter code is highly verbose, very low-level and not at
+all legible, so these webs do not contain textual Inter code: instead, they
+are written in Inform 6 syntax. The |inter| tool then converts these to
+binary inter code in a process called "assimilation". This means that to
+create or edit kits, you need to be able to write Inform 6 code, but it's a
+simple C-like language to learn, especially if all you're doing is writing
+functions.
+
+@ An "extension" is a supplementary piece of Inform 7 source text. Inform
+programs sometimes explicitly ask for these, with sentences like so:
+
+>> Include Locksmith by Emily Short.
+
+But their presence can also be implicitly required by the use of certain kits.
+For example, if |BasicInformKit| is used (and it always is), then the
+extension Basic Inform by Graham Nelson is auto-included. Similarly, use of
+either |WorldModelKit| or |StandardRulesKit| mandates the inclusion of the
+Standard Rules for interactive fiction.
+
+The Inform GUI apps come with numerous other built-in extensions besides these
+two, but all are smaller and easier to read, and they are not provided as webs.

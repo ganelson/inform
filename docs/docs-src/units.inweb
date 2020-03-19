@@ -1,0 +1,13 @@
+Title: Unit Test Tools
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ Some of the modules making up the Inform compiler are buried deeply enough
+that it's useful to be able to test them externally, i.e., other than by
+trying to compile an Inform source text.
+
+To do this we use small stand-alone tools which put a rudimentary command-line
+interface around the module in question. These are those tools. This testing
+code is not included anywhere else, and in particular it's not a part of the
+Inform compiler.

@@ -1,0 +1,36 @@
+Title: The Inform 7 compiler
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ The task of the Inform 7 compiler is to take source text which may be as
+minimal as "The Taj Mahal is a room.", and to turn it into a program which can
+then be compiled by a more conventional tool. The compiler works in three
+phases:
+(1) A build manager reads in the text, breaks it into sentences, finds the
+necessary extensions, merges them in, and generally decides what to do.
+(2) The core of the compiler translates this assemblage of source text into
+a low-level abstract language called "inter".
+(3) The code-generator further translates that intermediate code into our
+final output, which is often code for a conventional C-like language.
+
+@ Three ccmmand-line tools are provided: |inbuild|, |inform7|, and |inter|.
+Each tool has a tiny shell, enough to give each a command-line interface of
+its own, but otherwise all three tools are divided up into large segments
+called "modules". The three shells are all webs, and each module is a web.
+
+|inbuild| carries out phase 1, but used as a stand-alone tool it can also
+perform some useful archiving and resource management functions. Similarly,
+|inter| carries out phase 3, but used as a stand-alone tool it can also
+perform assimilation on kits, or translate inter code not originated by
+Inform.
+
+|inform7| is the compiler as it is found in apps, and carries out all
+three phases, 1, 2 and 3. To do this, it contains all the modules of
+|inbuild|, a set of modules of its own, and all the modules of |inter|.
+It therefore contains the whole of the other two programs except for their
+outer command-line interfaces, and also contains a gpod deal of unique
+material of its own.
+
+All three also contain the |foundation| module, a library of utility
+code which is present in every Inform tool.

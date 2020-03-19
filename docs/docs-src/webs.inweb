@@ -1,0 +1,45 @@
+Title: Overview
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ This website holds human-readable, or "woven", forms of the source code for
+the Inform programming language and its associated tools. To download and
+build Inform, go to the repository's front page and follow the instructions
+there. These pages are purely to help maintainers of Inform, or anyone
+interested in looking under the hood, to see how it works.
+
+This source code is platform-independent, and provides Inform as a set of
+command-line utilities following Unix conventions. Most writers using
+Inform do so through a user interface provided by an app, and those apps
+have their own repositories holding source code which is very much not
+platform-independent. But the tools here form the engine inside each of them.
+
+@ The Inform software uses literate programming, a doctrine invented by Donald
+Knuth. Under LP, a single program is called a "web", and can either be
+"woven" for humans to read or "tangled" for computers to compile. You are
+reading the woven form. There are around 30 webs in this repository,
+though half of those make modules rather than stand-alone programs, so
+the actual number of programs is smaller.
+
+The |inweb| and |intest| repositories also contain webs, and have pages
+similar to this one where they can be seen. In particular, |inweb| contains
+a web of a module called |foundation| which is used by all of the command-line
+tools associated with Inform, and which provides utility functions for
+memory-management and the like, but contains none of the logic guiding how
+a program should run or what it should do. For convenience, some of these
+pages provide links to |foundation|.
+
+@ The webs here are divided up as follows:
+(a) The Inform 7 compiler reads in natural-language source text and writes out
+a program for a conventional programming language, normally the C-like
+Inform 6. Its three phases are each provided as stand-alone tools: |inbuild|,
+the front end; |inform7|, the core; and |inter|, the back end.
+(b) Other command-line tools are useful for building or working with Inform,
+but do not involve compilation: |inblorb|, a packaging manager; |indoc|, to
+format documentation; |inpolicy|, a lint-like tool for checking Inform's source
+code; and |inrtps|, to format run-time problem messages.
+(c) Wnenever Inform 7 runs, it also reads in an "extension" piece of source
+text called |Basic Inform|, defining the language, and it often then also reads
+another called |Standard Rules|, enabling it to be used for interactive
+fiction. It also uses precompiled libraries of code called "kits".
