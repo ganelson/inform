@@ -495,7 +495,7 @@ int VersionNumbers::stricter(range_end E1, range_end E2, int lower) {
 }
 
 @ And so we finally arrive at the following, which intersects two ranges:
-that is, it changes |R1| to the range of versions which lie ibside both the
+that is, it changes |R1| to the range of versions which lie inside both the
 original |R1| and also |R2|. (This is used by Inbuild when an extension is
 included in two different places in the source text, but with possibly
 different version needs.) The return value is true if an actual change took

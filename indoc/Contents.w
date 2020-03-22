@@ -8,7 +8,7 @@ Version Name: Didache
 
 Import: foundation
 
-Preliminaries
+Manual
 	Introduction to Indoc
 	Volumes and Instructions
 	Documentation Markup

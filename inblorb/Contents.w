@@ -8,8 +8,7 @@ Version Name: Duralumin
 
 Import: foundation
 
-Preliminaries
-"The Inblorb manual."
+Manual
 	Using Inblorb
 	The Blurb Language
 

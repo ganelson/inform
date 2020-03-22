@@ -8,7 +8,7 @@ Version Name: Plan A
 
 Import: foundation
 
-Preliminaries
+Manual
 	Using Inpolicy
 
 Chapter 1: Setting Up

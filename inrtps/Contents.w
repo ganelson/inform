@@ -8,7 +8,7 @@ Version Name: Benefactive
 
 Import: foundation
 
-Preliminaries
+Manual
 	Using Inrtps
 
 Chapter 1: The Whole Shooting Match

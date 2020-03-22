@@ -27,7 +27,7 @@ Import: if
 Import: multimedia
 Import: index
 
-Preliminaries
+Manual
 	Command-Line Usage
 
 Chapter 1: Delegation

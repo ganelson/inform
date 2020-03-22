@@ -7,13 +7,14 @@ Version Number: 1
 Version Name: Axion
 
 Import: foundation
-Import: inform7/words
+Import: inbuild/words
 Import: inbuild/arch
 Import: inter
 Import: building
 Import: codegen
 
-Preliminaries
+Manual
+"Documentation for the Inter format itself, as well as the inter tool which processes it."
 	Using Inter
 	Textual Inter
 	Data Packages in Textual Inter
@@ -23,7 +24,7 @@ Preliminaries
 	Inform Organisation
 	Pipelines and Stages
 
-Chapter 1: Everything
+Chapter 1: Delegation
 	Basics
 	Main
 	Unit Tests

@@ -13,8 +13,8 @@ Import: html
 Import: arch
 Import: inbuild
 
-Preliminaries
+Manual
 	Using Inbuild
 
-Chapter 1: The Whole Shooting Match
+Chapter 1: Delegation
 	Main

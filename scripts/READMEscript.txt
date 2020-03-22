@@ -112,17 +112,17 @@ This repository is where development is done on the following executables:
 @define extension(path)
 	* @path - __@version(@path)__
 @end
-@primaryd(inform7, 'Web of InC', 'P-cu')
+@primaryd(inform7, 'Web of InC', 'M-cu')
 	* its modules [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
 	* their unit test executables [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
-@primaryd(inblorb, 'Web of InC', 'P-ui')
-@primaryd(inbuild, 'Web of InC', 'P-ui')
+@primaryd(inblorb, 'Web of InC', 'M-ui')
+@primaryd(inbuild, 'Web of InC', 'M-ui')
 	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html), [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html)
 	* two unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html)
-@primaryd(indoc, 'Web of InC', 'P-iti')
-@primaryd(inpolicy, 'Web of InC', 'P-ui')
-@primaryd(inrtps, 'Web of InC', 'P-ui')
-@primaryd(inter, 'Web of InC', 'P-ui')
+@primaryd(indoc, 'Web of InC', 'M-iti')
+@primaryd(inpolicy, 'Web of InC', 'M-ui')
+@primaryd(inrtps, 'Web of InC', 'M-ui')
+@primaryd(inter, 'Web of InC', 'M-ui')
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
 
 Two webs give detailed expositions of the most important built-in Inform extensions (at the subtree inform7/extensions):

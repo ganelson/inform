@@ -96,17 +96,17 @@ becomes public: GitHub Pages does not work on private repositories.)
 
 This repository is where development is done on the following executables:
 
-* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html) - [&#9654;&nbsp;Documentation](docs/inform7/P-cu.html)
+* inform7 - The core compiler in a natural-language design system for interactive fiction. - __version 7.10.1 'Krypton' (build 6Q21)__ - [&#9733;&nbsp;Web](docs/inform7/index.html) - [&#9654;&nbsp;Documentation](docs/inform7/M-cu.html)
 	* its modules [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
 	* their unit test executables [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
-* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html) - [&#9654;&nbsp;Documentation](docs/inblorb/P-ui.html)
-* inbuild - A simple build and package manager for the Inform tools. - __version 1 'Avignon'__ - [&#9733;&nbsp;Web](docs/inbuild/index.html) - [&#9654;&nbsp;Documentation](docs/inbuild/P-ui.html)
+* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __version 4 'Duralumin'__ - [&#9733;&nbsp;Web](docs/inblorb/index.html) - [&#9654;&nbsp;Documentation](docs/inblorb/M-ui.html)
+* inbuild - A simple build and package manager for the Inform tools. - __version 1 'Avignon'__ - [&#9733;&nbsp;Web](docs/inbuild/index.html) - [&#9654;&nbsp;Documentation](docs/inbuild/M-ui.html)
 	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html), [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html)
 	* two unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html)
-* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html) - [&#9654;&nbsp;Documentation](docs/indoc/P-iti.html)
-* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __version 1 'Plan A'__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html) - [&#9654;&nbsp;Documentation](docs/inpolicy/P-ui.html)
-* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/P-ui.html)
-* inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/P-ui.html)
+* indoc - The documentation-formatter for the Inform 7 system. - __version 4 'Didache'__ - [&#9733;&nbsp;Web](docs/indoc/index.html) - [&#9654;&nbsp;Documentation](docs/indoc/M-iti.html)
+* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __version 1 'Plan A'__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html) - [&#9654;&nbsp;Documentation](docs/inpolicy/M-ui.html)
+* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __version 2 'Benefactive'__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/M-ui.html)
+* inter - For handling intermediate Inform code. - __version 1 'Axion'__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/M-ui.html)
 	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
 
 Two webs give detailed expositions of the most important built-in Inform extensions (at the subtree inform7/extensions):
