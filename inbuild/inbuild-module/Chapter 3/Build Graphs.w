@@ -162,8 +162,8 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_de
 		for (int i=0; i<depth; i++) WRITE("  ");
 		WRITE("missing %S: ", V->findable->work->genre->genre_name);
 		Works::write(OUT, V->findable->work);
-		if (VersionNumbers::is_any_range(V->findable->version_range) == FALSE) {
-			WRITE(", need version in range "); VersionNumbers::write_range(OUT, V->findable->version_range);
+		if (VersionNumberRanges::is_any_range(V->findable->version_range) == FALSE) {
+			WRITE(", need version in range "); VersionNumberRanges::write_range(OUT, V->findable->version_range);
 		} else {
 			WRITE(", any version will do");
 		}
@@ -188,8 +188,8 @@ int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V, int true_depth) {
 	if (V->type == REQUIREMENT_VERTEX) {
 		WRITE("missing %S: ", V->findable->work->genre->genre_name);
 		Works::write(OUT, V->findable->work);
-		if (VersionNumbers::is_any_range(V->findable->version_range) == FALSE) {
-			WRITE(", need version in range "); VersionNumbers::write_range(OUT, V->findable->version_range);
+		if (VersionNumberRanges::is_any_range(V->findable->version_range) == FALSE) {
+			WRITE(", need version in range "); VersionNumberRanges::write_range(OUT, V->findable->version_range);
 		} else {
 			WRITE(", any version will do");
 		}

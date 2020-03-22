@@ -1,4 +1,4 @@
-[InbuildModule::] Inter Module.
+[InbuildModule::] Inbuild Module.
 
 Setting up the use of this module.
 

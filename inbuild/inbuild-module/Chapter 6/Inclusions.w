@@ -148,8 +148,8 @@ parse tree.
 	semantic_version_number V = VersionNumbers::null();
 	if (version_word >= 0) V = Inclusions::parse_version(version_word);
 	semver_range *R = NULL;
-	if (VersionNumbers::is_null(V)) R = VersionNumbers::any_range();
-	else R = VersionNumbers::compatibility_range(V);
+	if (VersionNumbers::is_null(V)) R = VersionNumberRanges::any_range();
+	else R = VersionNumberRanges::compatibility_range(V);
 	inbuild_requirement *req = Requirements::new(work, R);
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);

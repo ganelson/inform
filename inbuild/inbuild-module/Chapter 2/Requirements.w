@@ -20,7 +20,7 @@ inbuild_requirement *Requirements::new(inbuild_work *work, semver_range *R) {
 }
 
 inbuild_requirement *Requirements::any_version_of(inbuild_work *work) {
-	return Requirements::new(work, VersionNumbers::any_range());
+	return Requirements::new(work, VersionNumberRanges::any_range());
 }
 
 inbuild_requirement *Requirements::anything_of_genre(inbuild_genre *G) {
@@ -90,21 +90,21 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T, text_
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->version_range = VersionNumbers::compatibility_range(V);
+			req->version_range = VersionNumberRanges::compatibility_range(V);
 		} else if (Str::eq(clause, I"min")) {
 			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->version_range = VersionNumbers::at_least_range(V);
+			req->version_range = VersionNumberRanges::at_least_range(V);
 		} else if (Str::eq(clause, I"max")) {
 			semantic_version_number V = VersionNumbers::from_text(value);
 			if (VersionNumbers::is_null(V)) {
 				if (Str::len(errors) == 0)
 					WRITE_TO(errors, "not a valid version number: '%S'", value);
 			}
-			req->version_range = VersionNumbers::at_most_range(V);
+			req->version_range = VersionNumberRanges::at_most_range(V);
 		} else {
 			if (Str::len(errors) == 0)
 				WRITE_TO(errors, "no such term as '%S'", clause);
@@ -133,9 +133,9 @@ void Requirements::write(OUTPUT_STREAM, inbuild_requirement *req) {
 		if (claused) WRITE(","); claused = TRUE;
 		WRITE("author=%S", req->work->author_name);
 	}
-	if (VersionNumbers::is_any_range(req->version_range) == FALSE) {
+	if (VersionNumberRanges::is_any_range(req->version_range) == FALSE) {
 		if (claused) WRITE(","); claused = TRUE;
-		WRITE("range="); VersionNumbers::write_range(OUT, req->version_range);
+		WRITE("range="); VersionNumberRanges::write_range(OUT, req->version_range);
 	}
 	if (claused == FALSE) WRITE("all");
 }
@@ -156,5 +156,5 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 				return FALSE;
 		}
 	}
-	return VersionNumbers::in_range(edition->version, req->version_range);
+	return VersionNumberRanges::in_range(edition->version, req->version_range);
 }
