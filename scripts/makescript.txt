@@ -32,12 +32,6 @@ INBUILDX = inbuild/Tangled/inbuild
 
 -include ../make-integration-settings.mk
 
-# If present, this should define the symbol BENEVOLENTOVERLORD, which indicates
-# that you should have the power, in the build process, of advancing the master
-# build code for Inform: 6P21 -> 6P22, and so on. (It has no other effect.)
-
--include ../make-benevolent-overlord.mk
-
 # -----------------------------------------------------------------------------
 # Most components of Inform are C programs written as literate-programming
 # webs, making use of shared libraries of code called modules. We list them.
@@ -269,10 +263,6 @@ tools: {repeatspan}$(*X){endspan} $(INFORM6X)
 
 {repeatblock}
 $(*X): {dependent-files-for}*
-ifdef BENEVOLENTOVERLORD
-	$(MAKE) -f $(INPOLICYMAKER)
-	$(INPOLICYX) -advance-build $(*WEB)
-endif
 	$(MAKE) -f $(*MAKER)
 
 {endblock}
@@ -300,13 +290,7 @@ retrospective:
 
 .PHONY: forcetools
 forcetools:
-ifdef BENEVOLENTOVERLORD
-	$(MAKE) -f $(INPOLICYMAKER)
-endif
 	{repeatblock}
-ifdef BENEVOLENTOVERLORD
-	$(INPOLICYX) -advance-build $(*WEB)
-endif
 	$(MAKE) -f $(*MAKER) force
 	$(MAKE) -f inform6/inform6.mk force
 	{endblock}
@@ -360,6 +344,18 @@ define weave-webs
 	$(INWEBX) $(*WEB) $(WEAVEOPTS)
 	{endblock}
 endef
+
+# -----------------------------------------------------------------------------
+# Target "commit"
+# -----------------------------------------------------------------------------
+# "make commit" should be used only by the Benevolent Overlord of Inform.
+# It updates the build code and commits to the repository.
+# -----------------------------------------------------------------------------
+
+.PHONY: commit
+commit:
+	$(INWEBX) -advance-build-file build.txt
+	git commit -a
 
 # -----------------------------------------------------------------------------
 # Target "pages"

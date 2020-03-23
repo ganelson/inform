@@ -1,9 +1,7 @@
 Title: inform7
 Author: Graham Nelson
-Build Date: 24 February 2019
-Build Number: 6Q21
 Version Name: Krypton
-Version Number: 7.10.1
+Version Number: 10.1.0
 Purpose: The core compiler in a natural-language design system for interactive fiction.
 Language: InC
 Preform Language: English
