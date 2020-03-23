@@ -59,8 +59,3 @@ attempts to match these up. It prints out a report, and concludes with either
 	|All is well.|
 
 As this example report shows, small sins are forgiven.
-
-@ |-advance-build W| tries to advance the build code for the web |W|. In
-practice, this is used only when the web is |inform7|. The build code is
-the familiar (to Inform users) four-character version number, such as
-|3K27| or |6P98|.

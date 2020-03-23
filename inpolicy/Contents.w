@@ -17,5 +17,3 @@ Chapter 1: Setting Up
 
 Chapter 2: Policies
 	Problem Coverage
-	Version Numbering
-	Readme Writeme

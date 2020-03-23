@@ -355,6 +355,7 @@ endef
 .PHONY: commit
 commit:
 	$(INWEBX) -advance-build-file build.txt
+	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
 	git commit -a
 
 # -----------------------------------------------------------------------------
@@ -365,7 +366,7 @@ commit:
 
 .PHONY: pages
 pages:
-	$(INPOLICYX) -write-me scripts/READMEscript.txt
+	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
 	rm docs/*.html
 	$(INWEBX) docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/nav.html
 	$(INWEBX) docs/docs-src/compiler.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navc-o.html
