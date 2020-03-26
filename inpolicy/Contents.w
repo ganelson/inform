@@ -10,6 +10,7 @@ Import: foundation
 
 Manual
 	Using Inpolicy
+	Reference Card
 
 Chapter 1: Setting Up
 	Basics

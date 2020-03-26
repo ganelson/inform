@@ -12,6 +12,7 @@ Manual
 	Introduction to Indoc
 	Volumes and Instructions
 	Documentation Markup
+	Reference Card
 
 Chapter 1: Setting Up
 	Basics

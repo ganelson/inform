@@ -1,0 +1,21 @@
+For handling intermediate Inform code.
+
+usage: inter file1 file2 ... [options]
+
+-architecture X     generate inter with architecture X
+-assimilate X       assimilate I6T code into inter inside template X
+-binary X           write to file X in binary format
+-domain X           specify folder to read/write inter files from/to
+-pipeline X         specify pipeline textually
+-pipeline-file X    specify pipeline from file X
+-template X         specify folder holding i6t template files
+-test X             perform unit tests from file X
+-textual X          write to file X in textual format
+-variable X         set pipeline variable X (in form name=value)
+
+-at X               specify that this tool is installed at X
+-crash              intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+-fixtime            pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help               print this help information
+-log X              write the debugging log to include diagnostics on X
+-version            print out version number

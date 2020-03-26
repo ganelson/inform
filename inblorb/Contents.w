@@ -11,6 +11,7 @@ Import: foundation
 Manual
 	Using Inblorb
 	The Blurb Language
+	Reference Card
 
 Chapter 1: Blurbs
 "A little infrastructure, but basically, parsing of our instructions."

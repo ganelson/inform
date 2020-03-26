@@ -10,6 +10,7 @@ Import: foundation
 
 Manual
 	Using Inrtps
+	Reference Card
 
 Chapter 1: The Whole Shooting Match
 	Main

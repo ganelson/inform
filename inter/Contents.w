@@ -23,6 +23,7 @@ Manual
 	Inform Annotations
 	Inform Organisation
 	Pipelines and Stages
+	Reference Card
 
 Chapter 1: Delegation
 	Basics

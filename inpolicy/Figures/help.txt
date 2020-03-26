@@ -1,0 +1,14 @@
+A lint-like tool to check up on various policies used in Inform source code.
+
+usage: inpolicy [options]
+
+-check-problems      check problem test case coverage
+-silence             print nothing unless there's something wrong (default is -no-silence)
+-verbose             explain what inpolicy is doing (default is -no-verbose)
+
+-at X                specify that this tool is installed at X
+-crash               intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+-fixtime             pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help                print this help information
+-log X               write the debugging log to include diagnostics on X
+-version             print out version number

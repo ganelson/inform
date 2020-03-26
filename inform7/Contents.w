@@ -27,6 +27,7 @@ Import: index
 
 Manual
 	Command-Line Usage
+	Reference Card
 
 Chapter 1: Delegation
 	Main

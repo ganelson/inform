@@ -15,6 +15,7 @@ Import: inbuild
 
 Manual
 	Using Inbuild
+	Reference Card
 
 Chapter 1: Inbuild outside of Inform
 	Main
