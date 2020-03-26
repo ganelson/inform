@@ -169,10 +169,10 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 
 =
 void KitManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int rebuild, int describe_only) {
+	build_methodology *BM, int build, int rebuild, int describe_only) {
 	if (describe_only) Graphs::describe(OUT, C->vertex, TRUE);
 	else if (rebuild) Graphs::rebuild(OUT, C->vertex, BM);
-	else Graphs::build(OUT, C->vertex, BM);
+	else if (build) Graphs::build(OUT, C->vertex, BM);
 }
 
 void KitManager::build_vertex(inbuild_copy *C) {

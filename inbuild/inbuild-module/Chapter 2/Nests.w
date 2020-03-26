@@ -99,7 +99,9 @@ int Nests::better_result(inbuild_search_result *R1, inbuild_search_result *R2) {
 
 void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
 	build_methodology *meth) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, C, destination_nest, syncing, meth);
+	if (destination_nest)
+		VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
+			C, destination_nest, syncing, meth);
 }
 
 void Nests::overwrite_error(inbuild_nest *N, inbuild_copy *C) {

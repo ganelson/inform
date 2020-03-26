@@ -251,9 +251,12 @@ dependency graphs.
 inform_project *Inbuild::go_operational(void) {
 	RUN_ONLY_IN_PHASE(PROJECTED_INBUILD_PHASE)
 	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
+	inform_project *P = Inbuild::project();
+	if (P) Copies::go_operational(P->as_copy);
 	inbuild_copy *C;
 	LOOP_OVER(C, inbuild_copy)
-		Copies::go_operational(C);
+		if ((P == NULL) || (C != P->as_copy))
+			Copies::go_operational(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) Extensions::Census::handle_census_mode();
 	return Inbuild::project();

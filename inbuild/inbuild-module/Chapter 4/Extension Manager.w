@@ -22,6 +22,7 @@ void ExtensionManager::start(void) {
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
 	METHOD_ADD(extension_genre, GENRE_COPY_TO_NEST_MTID, ExtensionManager::copy_to_nest);
 	METHOD_ADD(extension_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionManager::read_source_text_for);
+	METHOD_ADD(extension_genre, GENRE_BUILD_COPY_MTID, ExtensionManager::build);
 }
 
 void ExtensionManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -193,10 +194,34 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 }
 
 @h Build graph.
-The build graph for an extension is just a single node: you don't need to
-build an extension at all.
+As far as building goes, the build graph for an extension is just a single node: 
+you don't need to build an extension at all. But it may well have use edges,
+thanks to including other extensions, and because of that we have to read the
+source text before we can do anything with the graph.
+
+We don't do this at the going operational stage because that would be
+inefficient and might cause VM-related problems -- it would mean that many
+extraneous extensions, discovered only when scanning some directory, would
+be read in as source text; and some of those might not be compatible with
+the current VM settings.
 
 =
+void ExtensionManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
+	build_methodology *BM, int build, int rebuild, int describe_only) {
+	ExtensionManager::ensure_graphed(C);
+	if (describe_only) Graphs::describe(OUT, C->vertex, TRUE);
+	else if (rebuild) Graphs::rebuild(OUT, C->vertex, BM);
+	else if (build) Graphs::build(OUT, C->vertex, BM);
+}
+
+void ExtensionManager::ensure_graphed(inbuild_copy *C) {
+	Copies::read_source_text_for(C);
+	Inclusions::traverse(C, ExtensionManager::from_copy(C)->syntax_tree);
+	build_vertex *V;
+	LOOP_OVER_LINKED_LIST(V, build_vertex, C->vertex->use_edges)
+		ExtensionManager::ensure_graphed(V->buildable_if_copy);
+}
+
 void ExtensionManager::build_vertex(inbuild_copy *C) {
 	Graphs::copy_vertex(C);
 }

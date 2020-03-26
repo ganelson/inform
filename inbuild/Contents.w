@@ -16,5 +16,5 @@ Import: inbuild
 Manual
 	Using Inbuild
 
-Chapter 1: Delegation
+Chapter 1: Inbuild outside of Inform
 	Main

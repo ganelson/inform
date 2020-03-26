@@ -67,4 +67,4 @@ VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 VMETHOD_TYPE(GENRE_BUILD_COPY_MTID,
 	inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int rebuild, int describe_only)
+	build_methodology *BM, int build, int rebuild, int describe_only)

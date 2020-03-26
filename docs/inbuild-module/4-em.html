@@ -91,6 +91,7 @@ length to one character less than the following constants:
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="constant">GENRE_SEARCH_NEST_FOR_MTID</span><span class="plain">, </span><span class="functiontext">ExtensionManager::search_nest_for</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="constant">GENRE_COPY_TO_NEST_MTID</span><span class="plain">, </span><span class="functiontext">ExtensionManager::copy_to_nest</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="constant">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain">, </span><span class="functiontext">ExtensionManager::read_source_text_for</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="constant">GENRE_BUILD_COPY_MTID</span><span class="plain">, </span><span class="functiontext">ExtensionManager::build</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExtensionManager::write_work</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
@@ -157,7 +158,7 @@ which stores data about extensions used by the Inform compiler.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ExtensionManager::from_copy is used in <a href="#SP10">&#167;10</a>, 5/es (<a href="5-es.html#SP5">&#167;5</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP2">&#167;2</a>), 6/st (<a href="6-st.html#SP11">&#167;11</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
+<p class="endnote">The function ExtensionManager::from_copy is used in <a href="#SP9">&#167;9</a>, <a href="#SP10">&#167;10</a>, 5/es (<a href="5-es.html#SP5">&#167;5</a>), 5/ed2 (<a href="5-ed2.html#SP4">&#167;4</a>), 5/ec (<a href="5-ec.html#SP2">&#167;2</a>), 6/st (<a href="6-st.html#SP11">&#167;11</a>), 6/inc (<a href="6-inc.html#SP6_1">&#167;6.1</a>).</p>
 
 <p class="endnote">The function ExtensionManager::new_copy is used in <a href="#SP6">&#167;6</a>.</p>
 
@@ -311,18 +312,47 @@ since an extension is a single file; to sync, we just overwrite.
 
 <p class="endnote">The function ExtensionManager::copy_to_nest is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Build graph. </b>The build graph for an extension is just a single node: you don't need to
-build an extension at all.
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Build graph. </b>As far as building goes, the build graph for an extension is just a single node:
+you don't need to build an extension at all. But it may well have use edges,
+thanks to including other extensions, and because of that we have to read the
+source text before we can do anything with the graph.
+</p>
+
+<p class="inwebparagraph">We don't do this at the going operational stage because that would be
+inefficient and might cause VM-related problems &mdash; it would mean that many
+extraneous extensions, discovered only when scanning some directory, would
+be read in as source text; and some of those might not be compatible with
+the current VM settings.
 </p>
 
 
 <pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExtensionManager::build</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">,</span>
+        <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">build</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rebuild</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">describe_only</span><span class="plain">) {</span>
+        <span class="functiontext">ExtensionManager::ensure_graphed</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">describe_only</span><span class="plain">) </span><span class="functiontext">Graphs::describe</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rebuild</span><span class="plain">) </span><span class="functiontext">Graphs::rebuild</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">build</span><span class="plain">) </span><span class="functiontext">Graphs::build</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExtensionManager::ensure_graphed</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Inclusions::traverse</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">)-</span><span class="element">&gt;syntax_tree</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">-</span><span class="element">&gt;use_edges</span><span class="plain">)</span>
+            <span class="functiontext">ExtensionManager::ensure_graphed</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;buildable_if_copy</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExtensionManager::build_vertex</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="functiontext">Graphs::copy_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function ExtensionManager::build is used in <a href="#SP3">&#167;3</a>.</p>
+
+<p class="endnote">The function ExtensionManager::ensure_graphed appears nowhere else.</p>
 
 <p class="endnote">The function ExtensionManager::build_vertex is used in <a href="#SP6">&#167;6</a>.</p>
 

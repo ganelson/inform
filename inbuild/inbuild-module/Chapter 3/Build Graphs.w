@@ -82,6 +82,8 @@ void Graphs::need_this_to_build(build_vertex *from, build_vertex *to) {
 	build_vertex *V;
 	LOOP_OVER_LINKED_LIST(V, build_vertex, from->build_edges)
 		if (V == to) return;
+	// Graphs::describe(STDOUT, from, FALSE); PRINT(" needs ");
+	// Graphs::describe(STDOUT, to, FALSE); PRINT("\n");
 	ADD_TO_LINKED_LIST(to, build_vertex, from->build_edges);
 }
 
@@ -146,11 +148,11 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 	}
 }
 
-void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V) {
-	Graphs::show_needs_r(OUT, V, 0, 0);
+void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V, int uses_only) {
+	Graphs::show_needs_r(OUT, V, 0, 0, uses_only);
 }
 
-void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_depth) {
+void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_depth, int uses_only) {
 	if (V->type == COPY_VERTEX) {
 		for (int i=0; i<depth; i++) WRITE("  ");
 		inbuild_copy *C = V->buildable_if_copy;
@@ -171,19 +173,20 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V, int depth, int true_de
 		depth++;
 	}
 	build_vertex *W;
-	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-		Graphs::show_needs_r(OUT, W, depth, true_depth+1);
-	if ((V->type == COPY_VERTEX) && (true_depth > 0)) {
+	if (uses_only == FALSE)
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only);
+	if ((V->type == COPY_VERTEX) && ((true_depth > 0) || (uses_only))) {
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-			Graphs::show_needs_r(OUT, W, depth, true_depth+1);
+			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only);
 	}
 }
 
-int Graphs::show_missing(OUTPUT_STREAM, build_vertex *V) {
-	return Graphs::show_missing_r(OUT, V, 0);
+int Graphs::show_missing(OUTPUT_STREAM, build_vertex *V, int uses_only) {
+	return Graphs::show_missing_r(OUT, V, 0, uses_only);
 }
 
-int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V, int true_depth) {
+int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V, int true_depth, int uses_only) {
 	int N = 0;
 	if (V->type == REQUIREMENT_VERTEX) {
 		WRITE("missing %S: ", V->findable->work->genre->genre_name);
@@ -197,11 +200,12 @@ int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V, int true_depth) {
 		N = 1;
 	}
 	build_vertex *W;
-	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-		N += Graphs::show_missing_r(OUT, W, true_depth+1);
-	if ((V->type == COPY_VERTEX) && (true_depth > 0)) {
+	if (uses_only == FALSE)
+		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+			N += Graphs::show_missing_r(OUT, W, true_depth+1, uses_only);
+	if ((V->type == COPY_VERTEX) && ((true_depth > 0) || (uses_only))) {
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-			N += Graphs::show_missing_r(OUT, W, true_depth+1);
+			N += Graphs::show_missing_r(OUT, W, true_depth+1, uses_only);
 	}
 	return N;
 }
@@ -311,7 +315,7 @@ int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *m
 	if (V->built) return TRUE;
 
 	int changes_so_far = *changes;
-	STREAM_INDENT(STDOUT);
+	if (trace_ibg) { STREAM_INDENT(STDOUT); }
 	int rv = TRUE;
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
@@ -321,7 +325,7 @@ int Graphs::build_r(OUTPUT_STREAM, int gb, build_vertex *V, build_methodology *m
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
 			if (rv)
 				rv = Graphs::build_r(OUT, gb & (BUILD_GB + FORCE_GB), W, meth, changes);
-	STREAM_OUTDENT(STDOUT);
+	if (trace_ibg) { STREAM_OUTDENT(STDOUT); }
 	if (rv) {
 		int needs_building = FALSE;
 		if ((gb & FORCE_GB) || (V->force_this)) needs_building = TRUE;

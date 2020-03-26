@@ -90,12 +90,12 @@ void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inb
 
 =
 void ProjectBundleManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int rebuild, int describe_only) {
+	build_methodology *BM, int build, int rebuild, int describe_only) {
 	inform_project *project = ProjectBundleManager::from_copy(C);
 	build_vertex *V = project->chosen_build_target;
 	if (describe_only) Graphs::describe(OUT, V, TRUE);
 	else if (rebuild) Graphs::rebuild(OUT, V, BM);
-	else Graphs::build(OUT, V, BM);
+	else if (build) Graphs::build(OUT, V, BM);
 }
 
 @ The build graph for a project will need further thought...

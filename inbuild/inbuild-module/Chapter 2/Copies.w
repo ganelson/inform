@@ -68,27 +68,28 @@ void Copies::scan(inbuild_copy *C) {
 }
 
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, FALSE, FALSE);
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, TRUE, FALSE, FALSE);
 }
 void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, TRUE, FALSE);
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, FALSE, TRUE, FALSE);
 }
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, TRUE);
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, TRUE);
 }
-void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C) {
-	Graphs::show_needs(OUT, C->vertex);
+void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	Graphs::show_needs(OUT, C->vertex, uses_only);
 }
-void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C) {
-	int N = Graphs::show_missing(OUT, C->vertex);
+void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	int N = Graphs::show_missing(OUT, C->vertex, uses_only);
 	if (N == 0) WRITE("Nothing is missing\n");
 }
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
-	int NM = Graphs::show_missing(OUT, C->vertex);
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	int NM = Graphs::show_missing(OUT, C->vertex, FALSE);
 	if (NM > 0) WRITE("Because there are missing resources, -archive is cancelled\n");
-	else {
-		Graphs::archive(OUT, C->vertex, N, BM);
-	}
+	else if (N) Graphs::archive(OUT, C->vertex, N, BM);
 }
 
 int Copies::source_text_has_been_read(inbuild_copy *C) {
@@ -139,7 +140,8 @@ void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
 		WRITE(" at path %p", C->location_if_path);
 	}
 	if (C->location_if_file) {
-		WRITE(" in directory %p", Filenames::get_path_to(C->location_if_file));
+		pathname *P = Filenames::get_path_to(C->location_if_file);
+		if (P) WRITE(" in directory %p", P);
 	}
 	int N = LinkedLists::len(C->errors_reading_source_text);
 	if (N > 0) {

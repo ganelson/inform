@@ -115,7 +115,7 @@ guaranteed to be no INCLUDE nodes remaining in the parse tree.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Inclusions::traverse is used in 5/ps (<a href="5-ps.html#SP4">&#167;4</a>).</p>
+<p class="endnote">The function Inclusions::traverse is used in 4/em (<a href="4-em.html#SP9">&#167;9</a>), 5/ps (<a href="5-ps.html#SP4">&#167;4</a>).</p>
 
 <p class="endnote">The function Inclusions::spawned_from_vertex is used in <a href="#SP1_1">&#167;1.1</a>, <a href="#SP6_1">&#167;6.1</a>.</p>
 
@@ -146,7 +146,10 @@ guaranteed to be no INCLUDE nodes remaining in the parse tree.
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">last_H0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">last_H0</span><span class="plain">, </span><span class="identifier">implied_heading_ANNOT</span><span class="plain">) != </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
                 <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="functiontext">Inclusions::spawned_from_vertex</span><span class="plain">(</span><span class="identifier">last_H0</span><span class="plain">);</span>
                 <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">EV</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-                <span class="functiontext">Graphs::need_this_to_build</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">EV</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;buildable_if_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> == </span><span class="identifier">extension_genre</span><span class="plain">)</span>
+                    <span class="functiontext">Graphs::need_this_to_use</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">EV</span><span class="plain">);</span>
+                <span class="reserved">else</span>
+                    <span class="functiontext">Graphs::need_this_to_build</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">EV</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
