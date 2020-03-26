@@ -910,7 +910,7 @@ void ParseTree::traverse_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	for (; pn; pn = pn->next) {
 		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from(pn->down, visitor);
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn);
 		}
 	}
@@ -923,7 +923,7 @@ void ParseTree::traverse_dfirst_from(parse_node *pn, void (*visitor)(parse_node 
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
 		ParseTree::traverse_dfirst_from(pn->down, visitor);
-		if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+		if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 		(*visitor)(pn);
 	}
 	current_sentence = SCS;
@@ -934,7 +934,7 @@ void ParseTree::traverse_wfirst(parse_node_tree *T, void (*visitor)(parse_node *
 void ParseTree::traverse_wfirst_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+		if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 		ParseTree::traverse_wfirst_from(pn->down, visitor);
 		(*visitor)(pn);
 	}
@@ -949,7 +949,7 @@ void ParseTree::traverse_from_with_stream(text_stream *OUT, parse_node *pn, void
 		if (ParseTree::top_level(pn->node_type))
 			ParseTree::traverse_from_with_stream(OUT, pn->down, visitor);
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(OUT, pn);
 		}
 	}
@@ -963,7 +963,7 @@ void ParseTree::traverse_from_int(parse_node *pn, void (*visitor)(parse_node *, 
 	for (; pn; pn = pn->next) {
 		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_int(pn->down, visitor, X);
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X);
 		}
 	}
@@ -977,7 +977,7 @@ void ParseTree::traverse_from_int_int(parse_node *pn, void (*visitor)(parse_node
 	for (; pn; pn = pn->next) {
 		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_int_int(pn->down, visitor, X, Y);
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X, Y);
 		}
 	}
@@ -991,7 +991,7 @@ void ParseTree::traverse_from_ppn(parse_node *pn, void (*visitor)(parse_node *, 
 	for (; pn; pn = pn->next) {
 		if (ParseTree::top_level(pn->node_type)) ParseTree::traverse_from_ppn(pn->down, visitor, X);
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X);
 		}
 	}
@@ -1010,7 +1010,7 @@ void ParseTree::traverse_from_ppni(parse_node_tree *T, parse_node *pn, void (*vi
 			ParseTree::traverse_from_ppni(T, pn->down, visitor, H0, N);
 		}
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(T, pn, last_h0, N);
 		}
 	}
@@ -1029,7 +1029,7 @@ int ParseTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn, void (*vi
 			}
 		}
 		if (ParseTree::visitable(pn->node_type)) {
-			if (SENTENCE_NODE(pn->node_type)) current_sentence = pn;
+			if (ParseTree::sentence_node(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X);
 		}
 	}
@@ -1053,6 +1053,18 @@ int ParseTree::traverse_from_ppn_nocs(parse_node *pn, int (*visitor)(parse_node 
 		}
 	}
 	return FALSE;
+}
+
+@ This provides a way for users of the module to indicate what's a sentence:
+
+=
+int ParseTree::sentence_node(node_type_t t) {
+	#ifdef SENTENCE_NODE
+	return SENTENCE_NODE(t);
+	#endif
+	#ifndef SENTENCE_NODE
+	return FALSE;
+	#endif
 }
 
 @h Verify integrity.

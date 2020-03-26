@@ -1,7 +1,7 @@
 [Main::] Main.
 
-The top level, which decides what is to be done and then carries
-this plan out.
+A command-line interface for Inbuild functions which are not part of the
+normal operation of the Inform compiler.
 
 @h Main routine.
 
@@ -39,6 +39,7 @@ int main(int argc, char **argv) {
 	InbuildModule::start();
 	targets = NEW_LINKED_LIST(inbuild_copy);
 	@<Read the command line@>;
+	@<Manage Inbuild@>;
 	
 	if (Str::len(unit_test) > 0) dry_run_mode = TRUE;
 	int use = SHELL_METHODOLOGY;
@@ -97,7 +98,64 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-@ We use Foundation to read the command line:
+@<Manage Inbuild@> =
+	if (LinkedLists::len(unsorted_nest_list) == 0)
+		Inbuild::add_nest(
+			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+
+	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
+	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
+	filename *S = Filenames::in_folder(P, I"Syntax.preform");
+	wording W = Preform::load_from_file(S);
+	Preform::parse_preform(W, FALSE);
+	
+	CommandLine::play_back_log();
+	inbuild_copy *proj = NULL, *C;
+	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
+		if (C->edition->work->genre == project_bundle_genre) {
+			if (Str::len(project_bundle_request) > 0)
+				Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
+			else if (proj) Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
+			else proj = C;
+		}
+	
+	proj = Inbuild::optioneering_complete(proj, FALSE);
+	if (proj) {
+		int found = FALSE;
+		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
+			if (C == proj)
+				found = TRUE;
+		if (found == FALSE) ADD_TO_LINKED_LIST(proj, inbuild_copy, targets);
+	}
+	inbuild_nest_list = Inbuild::nest_list();
+	Inbuild::go_operational();
+
+@ =
+void Main::load_many(pathname *P) {
+	scan_directory *D = Directories::open(P);
+	TEMPORARY_TEXT(LEAFNAME);
+	while (Directories::next(D, LEAFNAME)) {
+		TEMPORARY_TEXT(FILENAME);
+		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, LEAFNAME);
+		Main::load_one(FILENAME, FALSE);
+		DISCARD_TEXT(FILENAME);
+	}
+	DISCARD_TEXT(LEAFNAME);
+	Directories::close(D);
+}
+
+void Main::load_one(text_stream *arg, int throwing_error) {
+	inbuild_copy *C = Copies::claim(arg);
+	if (C == NULL) {
+		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
+		return;
+	}
+	ADD_TO_LINKED_LIST(C, inbuild_copy, targets);
+}
+
+@h Command line.
+Note the call below to |Inbuild::declare_options|, which adds a whole lot of
+other options to the selection defined here.
 
 @e BUILD_CLSW
 @e REBUILD_CLSW
@@ -156,38 +214,9 @@ int main(int argc, char **argv) {
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
-	if (LinkedLists::len(unsorted_nest_list) == 0)
-		Inbuild::add_nest(
-			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
+@ Here we handle those options not handled by the |inbuild| module.
 
-	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
-	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
-	filename *S = Filenames::in_folder(P, I"Syntax.preform");
-	wording W = Preform::load_from_file(S);
-	Preform::parse_preform(W, FALSE);
-	
-	CommandLine::play_back_log();
-	inbuild_copy *proj = NULL, *C;
-	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
-		if (C->edition->work->genre == project_bundle_genre) {
-			if (Str::len(project_bundle_request) > 0)
-				Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
-			else if (proj) Errors::with_text("can only work on one project bundle at a time, so ignoring '%S'", C->edition->work->title);
-			else proj = C;
-		}
-	
-	proj = Inbuild::optioneering_complete(proj, FALSE);
-	if (proj) {
-		int found = FALSE;
-		LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets)
-			if (C == proj)
-				found = TRUE;
-		if (found == FALSE) ADD_TO_LINKED_LIST(proj, inbuild_copy, targets);
-	}
-	inbuild_nest_list = Inbuild::nest_list();
-	Inbuild::go_operational();
-
-@ =
+=
 void Main::option(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case BUILD_CLSW: inbuild_task = BUILD_TTASK; break;
@@ -219,46 +248,29 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 	Inbuild::option(id, val, arg, state);
 }
 
+@ This is called for a command-line argument which doesn't appear as
+subordinate to any switch; we take it as the name of a copy.
+
+=
 void Main::bareword(int id, text_stream *arg, void *state) {
 	Main::load_one(arg, TRUE);
 }
 
-void Main::load_many(pathname *P) {
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(LEAFNAME);
-	while (Directories::next(D, LEAFNAME)) {
-		TEMPORARY_TEXT(FILENAME);
-		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, LEAFNAME);
-		Main::load_one(FILENAME, FALSE);
-		DISCARD_TEXT(FILENAME);
-	}
-	DISCARD_TEXT(LEAFNAME);
-	Directories::close(D);
-}
+@h Interface to Words module.
+Since we want to include the |words| module, we have to define the following
+structure and initialiser. The type |vocabulary_meaning| is expected to hold
+meanings associated with a given word; when |inform7| uses |word| it is rich
+and full of significance, but for us it does nothing. We give it a meaningless
+integer as its content, since in C it isn't legal to have an empty |struct|.
 
-void Main::load_one(text_stream *arg, int throwing_error) {
-	inbuild_copy *C = Copies::claim(arg);
-	if (C == NULL) {
-		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
-		return;
-	}
-	ADD_TO_LINKED_LIST(C, inbuild_copy, targets);
-}
-
-@ Since we want to include the words module, we have to define the following
-structure and initialiser:
-
-@d VOCABULARY_MEANING_INITIALISER Main::ignore
+@d VOCABULARY_MEANING_INITIALISER Main::create_meaningless_vm
 
 =
 typedef struct vocabulary_meaning {
 	int enigmatic_number;
 } vocabulary_meaning;
 
-@
-
-=
-vocabulary_meaning Main::ignore(vocabulary_entry *ve) {
+vocabulary_meaning Main::create_meaningless_vm(vocabulary_entry *ve) {
 	vocabulary_meaning vm;
 	vm.enigmatic_number = 90125;
 	return vm;
@@ -268,7 +280,7 @@ vocabulary_meaning Main::ignore(vocabulary_entry *ve) {
 
 @d PREFORM_LANGUAGE_TYPE void
 @d PARSE_TREE_TRAVERSE_TYPE void
-@d SENTENCE_NODE Main::sentence_level
+@d CCCCSENTENCE_NODE Main::sentence_level
 @d PARSE_TREE_METADATA_SETUP SourceText::node_metadata
 
 =

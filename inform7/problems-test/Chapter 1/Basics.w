@@ -150,15 +150,4 @@ void Basics::preform_problem_handler(word_assemblage base_text, nonterminal *nt,
 @
 
 @d PARSE_TREE_TRAVERSE_TYPE void
-@d SENTENCE_NODE Basics::sentence_level
-
-=
-int Basics::sentence_level(node_type_t t) {
-	return FALSE;
-}
-
-@
-
 @d NO_HEADING_LEVELS 10
-
-
