@@ -4,7 +4,7 @@ To manage the line skips which space paragraphs out.
 
 @h Paragraph Control.
 Ah, yes: the paragraph breaking algorithm. In {\it \TeX: The Program},
-Donald Knuth writes at $\S 768$: "It's sort of a miracle whenever |\halign|
+Donald Knuth writes at section 768: "It's sort of a miracle whenever |\halign|
 and |\valign| work, because they cut across so many of the control structures
 of \TeX." It's sort of a miracle whenever Inform 7's paragraph breaking
 system works, too. Most users probably imagine that it's implemented by

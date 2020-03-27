@@ -162,7 +162,7 @@ compiler via Delia scripts in |intest|.
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
 	CommandLine::declare_boolean_switch(CRASHALL_CLSW, L"crash-all", 1,
-		L"intentionally crash on Problem messages, for debugger backtracing", FALSE);
+		L"intentionally crash on Problem messages, for backtracing", FALSE);
 	CommandLine::declare_boolean_switch(INDEX_CLSW, L"index", 1,
 		L"produce an Index", TRUE);
 	CommandLine::declare_boolean_switch(PROGRESS_CLSW, L"progress", 1,

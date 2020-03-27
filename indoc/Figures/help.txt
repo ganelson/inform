@@ -13,7 +13,7 @@ where TARGET must be one of those set up in the instructions.
 -xrefs X            write a file of documentation cross-references to filename X
 
 -at X               specify that this tool is installed at X
--crash              intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+-crash              intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime            pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
 -help               print this help information
 -log X              write the debugging log to include diagnostics on X

@@ -18,10 +18,14 @@ is a valid stage description.
 A "pipeline" is a list of stage descriptions. If the pipeline is spelled
 out textually on the command line, then commas are used to divide the stages:
 
-	|$ inter/Tangled/inter -pipeline 'plugh, xyzzy, plover'|
+	|$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'|
 
-If the pipeline is in an external file, then one stage should appear on
-each line, and the comma is not needed:
+If the pipeline is in an external file, we would instead write:
+
+	|$ inter/Tangled/inter -pipeline-file mypl.interpipeline|
+
+and the file |mypl.interpipeline| would have one stage listed on each line,
+so that the commas are not needed:
 
 	|plugh|
 	|xyzzy|
@@ -59,10 +63,6 @@ For example,
 
 	|generate inventory -> *log|
 
-Template filenames are a little different: those are searched for inside
-a path of possible directories. By default there's no such path, but using
-|-template T| at the Inter command line gives a path of just one directory.
-
 @h Pipelines run by Inform.
 As the above implies, Inter pipelines normally begin with a clean slate:
 no repositories, no variables. 
@@ -78,40 +78,53 @@ effect is that any useful pipeline for Inform will begin and end thus:
 	|generate inform6 -> *out|
 
 In addition, the "domain" is set to the directory containing the |*out|
-file, and the template search path is set to the one used in Inform, that is,
-the template file |Whatever.i6t| would be looked for first in the project's
-|X.materials/I6T| directory, then in the user's |I6T| directory, and failing
-that in Inform's built-in one.
+file.
 
-The pipeline is itself looked for in the same way. If you have a project
-called |Strange.inform|, then Inform first looks for
+To Inbuild and Inform, pipelines are resources in their own right, rather
+like extensions or kits. So, for example, the standard distribution includes
 
-	|Strange.materials/Inter/default.interpipeline|
+	|inform7/Internal/Pipelines/compile.interpipeline|
 
-If it can't find this file, it next looks for |default.interpipeline| in
-the user's folder, and then in Inform's built-in one. If you're curious to
-read the pipeline normally used by a shipping version of Inform, the file
-can be found here in the Github repository for Inform:
+which is the one used for standard compilation runs. A projects Materials
+folder is free to provide a replacement:
 
-	|inform7/Internal/Inter/default.interpipeline|
+	|Strange.materials/Pipelines/compile.interpipeline|
+	
+...and then this will be used instead when compiling |Strange.inform|.
 
-The best way to change the pipeline, then, is to put a new file in the
-project's Materials folder. But there are also two other ways.
+1. This sentence in Inform source text:
 
-1. This sentence:
-
->> Use inter pipeline "PIPELINE".
+>> Use inter pipeline "NAME".
 
 replaces the pipeline normally used for code generation with the one supplied.
 (That may very well cause the compiler not to produce viable code, of course.)
+The default Inter pipeline is called |compile|, and comes built-in. Named
+pipelines are stored alongside named extensions and other resources used by
+Inform; so for example you could write:
 
-2. A replacement pipeline can be specified at the Inform 7 command line:
+>> Use inter pipeline "mypipeline".
 
-	|$ inform7/Tangled/inform7 ... -pipeline 'PIPELINE'|
+And then store the actual pipeline file as:
 
-Exactly as with Inter, Inform 7 also responds to |-pipeline-file|:
+	|Example Work.materials/Pipelines/mypipeline.interpipeline|
+
+2. You don't need the Use... sentence, though, if you're willing to choose
+on the command line instead:
+
+	|$ inform7/Tangled/inform7 ... -pipeline NAME|
+
+Or, if you want to name a file explicitly, not have it looked for by name:
 
 	|$ inform7/Tangled/inform7 ... -pipeline-file FILE|
+
+3. Finally, you can also give Inform 7 an explicit pipeline in textual form:
+
+	|$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'|
+
+Note that Inbuild and Inform 7 respond to all three of |-pipeline|,
+|-pipeline-file| and |-pipeline-text|, whereas Inter responds only to the
+last two. (It can't find pipelines by name because it doesn't contain the
+complex code for sorting out resources.)
 
 @h Stage descriptions.
 There are three sorts of stage description: those involving material coming

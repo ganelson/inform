@@ -93,9 +93,9 @@ void Inbuild::declare_options(void) {
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
 		L"include Inter code from the kit called X");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
-		L"specify code-generation pipeline");
+		L"specify code-generation pipeline by name (default is \"compile\")");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
-		L"specify code-generation pipeline from file X");
+		L"specify code-generation pipeline as file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
 	CommandLine::end_group();
@@ -103,8 +103,8 @@ void Inbuild::declare_options(void) {
 	Inbuild::set_defaults();
 }
 
-text_stream *inter_processing_file = NULL;
-text_stream *inter_processing_pipeline = NULL;
+filename *inter_pipeline_file = NULL;
+text_stream *inter_pipeline_name = NULL;
 dictionary *pipeline_vars = NULL;
 pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
@@ -114,16 +114,16 @@ int census_mode = FALSE; /* Running only to update extension documentation */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Inbuild::set_defaults(void) {
-	inter_processing_pipeline = Str::new();
-	inter_processing_file = I"compile";
+	inter_pipeline_name = Str::new(); WRITE_TO(inter_pipeline_name, "compile");
+	inter_pipeline_file = NULL;
 }
 
 void Inbuild::set_inter_pipeline(wording W) {
-	inter_processing_pipeline = Str::new();
-	WRITE_TO(inter_processing_pipeline, "%W", W);
-	Str::delete_first_character(inter_processing_pipeline);
-	Str::delete_last_character(inter_processing_pipeline);
-	LOG("Setting pipeline %S\n", inter_processing_pipeline);
+	inter_pipeline_name = Str::new();
+	WRITE_TO(inter_pipeline_name, "%W", W);
+	Str::delete_first_character(inter_pipeline_name);
+	Str::delete_last_character(inter_pipeline_name);
+	LOG("Setting pipeline %S\n", inter_pipeline_name);
 }
 
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {
@@ -146,8 +146,8 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
 		case CENSUS_CLSW: census_mode = val; break;
-		case PIPELINE_CLSW: inter_processing_pipeline = Str::duplicate(arg); break;
-		case PIPELINE_FILE_CLSW: inter_processing_file = Str::duplicate(arg); break;
+		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
+		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
 		case PIPELINE_VARIABLE_CLSW: {
 			match_results mr = Regexp::create_mr();
 			if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {

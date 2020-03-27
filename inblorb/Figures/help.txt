@@ -6,7 +6,7 @@ usage: inblorb [-options] [blurbfile [blorbfile]]
 -verbose         print running notes on what's happening (default is -no-verbose)
 
 -at X            specify that this tool is installed at X
--crash           intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+-crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
 -help            print this help information
 -log X           write the debugging log to include diagnostics on X

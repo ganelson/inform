@@ -106,12 +106,12 @@ and those not documented in this manual are covered in that one.
 
     for tweaking code generation from Inter:
       -kit X             include Inter code from the kit called X
-      -pipeline X        specify code-generation pipeline
-      -pipeline-file X   specify code-generation pipeline from file X
+      -pipeline X        specify code-generation pipeline by name (default is "compile")
+      -pipeline-file X   specify code-generation pipeline as file X
       -variable X        set pipeline variable X (in form name=value)
 
     -at X                specify that this tool is installed at X
-    -crash               intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+    -crash               intentionally crash on internal errors, for backtracing (default is -no-crash)
     -fixtime             pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
     -help                print this help information
     -log X               write the debugging log to include diagnostics on X

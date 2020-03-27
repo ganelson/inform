@@ -78,29 +78,21 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S, buil
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"),
 		Filenames::get_leafname(S->vertex->buildable_if_internal_file));
 	
-	codegen_pipeline *SS = NULL;
-	if (Str::len(inter_processing_pipeline) > 0) {
-		SS = CodeGen::Pipeline::parse(inter_processing_pipeline, pipeline_vars);
-		if (SS == NULL) {
-			Errors::nowhere("inter pipeline text could not be parsed");
-			return FALSE;
-		}
-	} else {
+	filename *F = inter_pipeline_file;
+	if (F == NULL) {
 		inbuild_requirement *req =
-			Requirements::any_version_of(Works::new(pipeline_genre, inter_processing_file, NULL));
+			Requirements::any_version_of(Works::new(pipeline_genre, inter_pipeline_name, NULL));
 		inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
 		if (R == NULL) {
-			WRITE_TO(STDERR, "Sought pipeline '%S'\n", inter_processing_file);
-			Errors::nowhere("inter pipeline file could not be found");
+			Errors::with_text("inter pipeline '%S' could not be found", inter_pipeline_name);
 			return FALSE;
 		}
-		inbuild_copy *C = R->copy;
-		filename *F = C->location_if_file;
-		SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
-		if (SS == NULL) {
-			Errors::nowhere("inter pipeline file could not be parsed");
-			return FALSE;
-		}
+		F = R->copy->location_if_file;
+	}
+	codegen_pipeline *SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
+	if (SS == NULL) {
+		Errors::nowhere("inter pipeline file could not be parsed");
+		return FALSE;
 	}
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());
 	CodeGen::Pipeline::run(Filenames::get_path_to(S->vertex->buildable_if_internal_file),

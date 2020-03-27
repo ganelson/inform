@@ -11,7 +11,6 @@ this plan out.
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
 @e DOMAIN_CLSW
-@e TEMPLATE_CLSW
 @e TEST_CLSW
 @e ARCHITECTURE_CLSW
 @e ASSIMILATE_CLSW
@@ -19,7 +18,7 @@ this plan out.
 =
 pathname *path_to_inter = NULL;
 pathname *path_to_pipelines = NULL;
-pathname *template_path = NULL;
+pathname *kit_path = NULL;
 int template_action = -1;
 pathname *domain_path = NULL;
 filename *output_textually = NULL;
@@ -49,22 +48,20 @@ int main(int argc, char **argv) {
 		L"write to file X in textual format");
 	CommandLine::declare_switch(BINARY_CLSW, L"binary", 2,
 		L"write to file X in binary format");
-	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline", 2,
-		L"specify pipeline textually");
+	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline-text", 2,
+		L"specify pipeline textually, with X being a comma-separated list of stages");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
-		L"specify pipeline from file X");
+		L"specify pipeline as file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
-	CommandLine::declare_switch(TEMPLATE_CLSW, L"template", 2,
-		L"specify folder holding i6t template files");
 	CommandLine::declare_switch(TEST_CLSW, L"test", 2,
 		L"perform unit tests from file X");
 	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
 		L"specify folder to read/write inter files from/to");
 	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
-		L"generate inter with architecture X");
+		L"generate Inter with architecture X");
 	CommandLine::declare_switch(ASSIMILATE_CLSW, L"assimilate", 2,
-		L"assimilate I6T code into inter inside template X");
+		L"assimilate (i.e., build) Inter kit X for the current architecture");
 
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
 		
@@ -73,8 +70,8 @@ int main(int argc, char **argv) {
 	if (template_action == ASSIMILATE_CLSW) {
 		inter_architecture *A = CodeGen::Architecture::current();
 		if (A == NULL) Errors::fatal("no -architecture given");
-		filename *assim = Architectures::canonical_binary(template_path, A);
-		filename *assim_t = Architectures::canonical_textual(template_path, A);
+		filename *assim = Architectures::canonical_binary(kit_path, A);
+		filename *assim_t = Architectures::canonical_textual(kit_path, A);
 		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
 		TEMPORARY_TEXT(fullname);
 		WRITE_TO(fullname, "%f", assim);
@@ -83,7 +80,7 @@ int main(int argc, char **argv) {
 		WRITE_TO(fullname, "%f", assim_t);
 		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
 		DISCARD_TEXT(fullname);
-		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(template_path));
+		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(kit_path));
 	}
 
 	Main::act();
@@ -120,8 +117,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 			break;
 		}
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
-		case TEMPLATE_CLSW: template_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
-		case ASSIMILATE_CLSW: template_path = Pathnames::from_text(arg);
+		case ASSIMILATE_CLSW: kit_path = Pathnames::from_text(arg);
 			pipeline_as_text = NULL; template_action = id; break;
 		case TEST_CLSW: unit_test_file = Filenames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
@@ -146,9 +142,9 @@ void Main::add_file(int id, text_stream *arg, void *state) {
 void Main::act(void) {
 	if ((pipeline_as_file) || (pipeline_as_text)) {
 		if (NUMBER_CREATED(inter_file) > 0)
-			Errors::fatal("-pipeline and -pipeline-file cannot be combined with inter file parameters");
+			Errors::fatal("-pipeline-text and -pipeline-file cannot be combined with inter file parameters");
 		linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-		ADD_TO_LINKED_LIST(template_path, pathname, inter_paths);
+		ADD_TO_LINKED_LIST(kit_path, pathname, inter_paths);
 		codegen_pipeline *SS;
 		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
 		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);

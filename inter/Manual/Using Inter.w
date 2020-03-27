@@ -53,7 +53,7 @@ one stage, can be quite elaborate (see later), but for example:
 
 is a valid three-stage pipeline. The command to do this is then:
 
-	|$ inter/Tangled/inter -pipeline 'PIPELINE'|
+	|$ inter/Tangled/inter -pipeline-text 'PIPELINE'|
 
 where |PIPELINE| is a textual description like the one above. In practice,
 it may not be convenient to spell the pipeline out on the command line, so
@@ -70,6 +70,32 @@ It is also possible to set the default directory for reading and writing files:
 
 	|-domain D|
 
-Finally, we can tell Inter where to find I6T template files:
+@h Assimilation.
+Inform makes use of what are called "kits" of pre-compiled Inter code:
+for example, |CommandParserKit| contains code for the traditional interactive
+fiction command parser. For speed, Inter loads these as binary Inter, but
+that means they have to be compiled from time to time. This is called
+"assimilation".
 
-	|-template T|
+The source code for these could in priniple be textual Inter, but that's too
+verbose to write comfortably. In practice we use Inform 6 code as a notation,
+and therefore assimilation is really a cross-compilation from I6 to Inter.
+
+Kits are like so-called "fat binaries", in that they contain binary Inter
+for each different architecture with which they are compatible. Inter can
+assimilate for only one architecture at a time, so a command must specify
+which is wanted. For example:
+
+	|$ inter/Tangled/inter -architecture 16 -assimilate K|
+	|$ inter/Tangled/inter -architecture 32d -assimilate K|
+
+Incrementally assimilating kits as needed could be done with something like
+the Unix tool |make|, but in fact Inbuild has this ability: the command
+
+	|$ inbuild/Tangled/inbuild -build K|
+
+looks at the kit, works out which architectures need re-assimilation, and
+then issues commands like the above to instruct |inter| to do so. Indeed,
+multiple kits can be managed with a single command:
+
+	|$ inbuild/Tangled/inbuild -build -contents-of inform7/Internal/Inter|
