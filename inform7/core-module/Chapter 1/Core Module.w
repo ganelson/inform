@@ -2,16 +2,13 @@
 
 Setting up the use of this module.
 
-@ There is no interesting code in this section: all Intools modules open with
-a section like this one, configuring the memory management and debugging log
-features we will use from |foundation|.
-
-The following symbol is defined in every tool incorporating this module:
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d CORE_MODULE TRUE
 
-@h Setting up the memory manager.
-We need to itemise the structures we'll want to allocate:
+@ To begin with, this module needs to allocate memory:
 
 @e bibliographic_datum_MT
 @e phrase_MT
@@ -184,11 +181,8 @@ ALLOCATE_IN_ARRAYS(stacked_variable, 100)
 ALLOCATE_IN_ARRAYS(table_contribution, 100)
 ALLOCATE_IN_ARRAYS(value_holster, 100)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
-
-@d WORDING_LOGS_ALLOWED
+@ Next we define some functions, by macro, which write to the debugging log
+or other text streams.
 
 @d REGISTER_WRITER(c, f) Writers::register_logger(c, &f##_writer);
 @d COMPILE_WRITER(t, f)
@@ -233,12 +227,16 @@ COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 COMPILE_WRITER(noun *, Nouns::log)
 
-@ =
+@ Like all modules, this one must define a |start| and |end| function:
+
+=
 void CoreModule::start(void) {
 	@<Register this module's memory allocation reasons@>;
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+}
+void CoreModule::end(void) {
 }
 
 @ Not all of our memory will be claimed in the form of structures: now and then
@@ -405,8 +403,217 @@ void CoreModule::writer(OUTPUT_STREAM, char *format_string, int wn) {
 	}
 }
 
-@h The end.
+@ This module uses |syntax|, and adds the following annotations to the syntax
+tree; though it's a little like itemising the baubles on a Christmas tree.
+
+@e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
+@e aph_ANNOT /* |adjectival_phrase|: which adjective is asserted */
+@e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
+@e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
+@e colon_block_command_ANNOT /* int: this COMMAND uses the ":" not begin/end syntax */
+@e condition_tense_ANNOT /* |time_period|: for specification nodes */
+@e constant_action_name_ANNOT /* |action_name|: for constant values */
+@e constant_action_pattern_ANNOT /* |action_pattern|: for constant values */
+@e constant_activity_ANNOT /* |activity|: for constant values */
+@e constant_binary_predicate_ANNOT /* |binary_predicate|: for constant values */
+@e constant_constant_phrase_ANNOT /* |constant_phrase|: for constant values */
+@e constant_enumeration_ANNOT /* |int|: which one from an enumerated kind */
+@e constant_equation_ANNOT /* |equation|: for constant values */
+@e constant_grammar_verb_ANNOT /* |grammar_verb|: for constant values */
+@e constant_instance_ANNOT /* |instance|: for constant values */
+@e constant_local_variable_ANNOT /* |local_variable|: for constant values */
+@e constant_named_action_pattern_ANNOT /* |named_action_pattern|: for constant values */
+@e constant_named_rulebook_outcome_ANNOT /* |named_rulebook_outcome|: for constant values */
+@e constant_nonlocal_variable_ANNOT /* |nonlocal_variable|: for constant values */
+@e constant_number_ANNOT /* |int|: which integer this is */
+@e constant_property_ANNOT /* |property|: for constant values */
+@e constant_rule_ANNOT /* |rule|: for constant values */
+@e constant_rulebook_ANNOT /* |rulebook|: for constant values */
+@e constant_scene_ANNOT /* |scene|: for constant values */
+@e constant_table_ANNOT /* |table|: for constant values */
+@e constant_table_column_ANNOT /* |table_column|: for constant values */
+@e constant_text_ANNOT /* |text_stream|: for constant values */
+@e constant_use_option_ANNOT /* |use_option|: for constant values */
+@e constant_verb_form_ANNOT /* |verb_form|: for constant values */
+@e control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
+@e converted_SN_ANNOT /* |int|: marking descriptions */
+@e creation_proposition_ANNOT /* |pcalc_prop|: proposition which newly created value satisfies */
+@e creation_site_ANNOT /* |int|: whether an instance was created from this node */
+@e defn_language_ANNOT /* |inform_language|: what language this definition is in */
+@e end_control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
+@e epistemological_status_ANNOT /* |int|: a bitmap of results from checking an ambiguous reading */
+@e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
+@e examine_for_ofs_ANNOT /* |int|: mark this as a possible site for removing "of" tree breaks */
+@e explicit_iname_ANNOT /* |inter_name|: is this value explicitly an iname? */
+@e explicit_literal_ANNOT /* |int|: my value is an explicit integer or text */
+@e explicit_vh_ANNOT /* |value_holster|: used for compiling I6-level properties */
+@e from_text_substitution_ANNOT /* |int|: whether this is an implicit say invocation */
+@e grammar_token_code_ANNOT /* int: used to identify grammar tokens */
+@e grammar_token_literal_ANNOT /* int: for grammar tokens which are literal words */
+@e grammar_token_relation_ANNOT /* |binary_predicate|: for relation tokens */
+@e grammar_value_ANNOT /* |parse_node|: used as a marker when evaluating Understand grammar */
+@e imperative_ANNOT /* |int|: marking definitions of imperative verbs */
+@e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
+@e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
+@e indentation_level_ANNOT /* |int|: for routines written with Pythonesque indentation */
+@e interpretation_of_subject_ANNOT /* |inference_subject|: subject, during passes */
+@e is_phrase_option_ANNOT /* |int|: this unparsed text is a phrase option */
+@e kind_of_new_variable_ANNOT /* |kind|: what if anything is returned */
+@e kind_of_value_ANNOT /* |kind|: for specification nodes */
+@e kind_required_by_context_ANNOT /* |kind|: what if anything is expected here */
+@e kind_resulting_ANNOT /* |kind|: what if anything is returned */
+@e kind_variable_declarations_ANNOT /* |kind_variable_declaration|: and of these */
+@e listing_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
+@e log_inclusion_sense_ANNOT /* |int|: should we include or exclude this from the debugging log? */
+@e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
+@e modal_verb_ANNOT /* |verb_conjugation|: relevant only for that: e.g., "might" */
+@e module_ANNOT /* |compilation_module|: set only for headings, routines and sentences */
+@e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
+@e negated_boolean_ANNOT /* int: set if adjective/verb meant negatively */
+@e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
+@e nothing_object_ANNOT /* |int|: this represents |nothing| at run-time */
+@e nowhere_ANNOT /* |int|: used by the spatial plugin to show this represents "nowhere" */
+@e phrase_invoked_ANNOT /* |phrase|: the phrase believed to be invoked... */
+@e phrase_option_ANNOT /* |int|: $2^i$ where $i$ is the option number, $0\leq i<16$ */
+@e phrase_options_invoked_ANNOT /* |invocation_options|: details of any options used */
+@e property_name_used_as_noun_ANNOT /* |int|: in ambiguous cases such as "open" */
+@e proposition_ANNOT /* |pcalc_prop|: for specification nodes */
+@e prep_ANNOT /* |preposition_identity|: for e.g. "is on" */
+@e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
+@e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
+@e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
+@e relationship_ANNOT /* |binary_predicate|: for RELATIONSHIP nodes */
+@e resolved_ANNOT /* int: temp storage when resolving NPs */
+@e response_code_ANNOT /* |int|: for responses only */
+@e results_from_splitting_ANNOT /* |int|: node in a routine's parse tree from comma block notation */
+@e row_amendable_ANNOT /* int: a candidate row for a table amendment */
+@e save_self_ANNOT /* |int|: this invocation must save and preserve |self| at run-time */
+@e say_adjective_ANNOT /* |adjectival_phrase|: ...or the adjective to be agreed with by "say" */
+@e say_verb_ANNOT /* |verb_conjugation|: ...or the verb to be conjugated by "say" */
+@e say_verb_negated_ANNOT /* relevant only for that */
+@e self_object_ANNOT /* |int|: this represents |self| at run-time */
+@e slash_class_ANNOT /* int: used when partitioning grammar tokens */
+@e slash_dash_dash_ANNOT /* |int|: used when partitioning grammar tokens */
+@e ssp_closing_segment_wn_ANNOT /* |int|: identifier for the last of these, or |-1| */
+@e ssp_segment_count_ANNOT /* |int|: number of subsequent complex-say phrases in stream */
+@e subject_ANNOT /* |inference_subject|: what this node describes */
+@e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
+@e suppress_newlines_ANNOT /* |int|: whether the next say term runs on */
+@e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
+@e text_unescaped_ANNOT /* |int|: flag used only for literal texts */
+@e token_as_parsed_ANNOT /* |parse_node|: what if anything is returned */
+@e token_check_to_do_ANNOT /* |parse_node|: what if anything is returned */
+@e token_to_be_parsed_against_ANNOT /* |parse_node|: what if anything is returned */
+@e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
+@e unproven_ANNOT /* |int|: this invocation needs run-time typechecking */
+@e verb_id_ANNOT /* int: identifying what kind of VERB node */
+@e verb_problem_issued_ANNOT /* |int|: has a problem message about the primary verb been issued already? */
+@e vu_ANNOT /* |verb_usage|: for e.g. "does not carry" */
+@e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
+
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(aph, adjectival_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
+DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
+DECLARE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
+DECLARE_ANNOTATION_FUNCTIONS(constant_constant_phrase, constant_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(constant_equation, equation)
+DECLARE_ANNOTATION_FUNCTIONS(constant_instance, instance)
+DECLARE_ANNOTATION_FUNCTIONS(constant_local_variable, local_variable)
+DECLARE_ANNOTATION_FUNCTIONS(constant_named_rulebook_outcome, named_rulebook_outcome)
+DECLARE_ANNOTATION_FUNCTIONS(constant_nonlocal_variable, nonlocal_variable)
+DECLARE_ANNOTATION_FUNCTIONS(constant_property, property)
+DECLARE_ANNOTATION_FUNCTIONS(constant_rule, rule)
+DECLARE_ANNOTATION_FUNCTIONS(constant_rulebook, rulebook)
+DECLARE_ANNOTATION_FUNCTIONS(constant_table_column, table_column)
+DECLARE_ANNOTATION_FUNCTIONS(constant_table, table)
+DECLARE_ANNOTATION_FUNCTIONS(constant_text, text_stream)
+DECLARE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
+DECLARE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
+DECLARE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
+DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
+DECLARE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(explicit_vh, value_holster)
+DECLARE_ANNOTATION_FUNCTIONS(grammar_token_relation, binary_predicate)
+DECLARE_ANNOTATION_FUNCTIONS(grammar_value, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
+DECLARE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
+DECLARE_ANNOTATION_FUNCTIONS(kind_of_new_variable, kind)
+DECLARE_ANNOTATION_FUNCTIONS(kind_of_value, kind)
+DECLARE_ANNOTATION_FUNCTIONS(kind_required_by_context, kind)
+DECLARE_ANNOTATION_FUNCTIONS(kind_resulting, kind)
+DECLARE_ANNOTATION_FUNCTIONS(kind_variable_declarations, kind_variable_declaration)
+DECLARE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
+DECLARE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
+DECLARE_ANNOTATION_FUNCTIONS(module, compilation_module)
+DECLARE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
+DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
+DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
+DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
+DECLARE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
+DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
+DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
+DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjectival_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
+DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
+DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
+DECLARE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(vu, verb_usage)
+
+@ So we itemise the pointer-valued annotations below, and the macro expands
+to provide their get and set functions:
 
 =
-void CoreModule::end(void) {
-}
+MAKE_ANNOTATION_FUNCTIONS(aph, adjectival_phrase)
+MAKE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
+MAKE_ANNOTATION_FUNCTIONS(constant_activity, activity)
+MAKE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
+MAKE_ANNOTATION_FUNCTIONS(constant_constant_phrase, constant_phrase)
+MAKE_ANNOTATION_FUNCTIONS(constant_equation, equation)
+MAKE_ANNOTATION_FUNCTIONS(constant_instance, instance)
+MAKE_ANNOTATION_FUNCTIONS(constant_local_variable, local_variable)
+MAKE_ANNOTATION_FUNCTIONS(constant_named_rulebook_outcome, named_rulebook_outcome)
+MAKE_ANNOTATION_FUNCTIONS(constant_nonlocal_variable, nonlocal_variable)
+MAKE_ANNOTATION_FUNCTIONS(constant_property, property)
+MAKE_ANNOTATION_FUNCTIONS(constant_rule, rule)
+MAKE_ANNOTATION_FUNCTIONS(constant_rulebook, rulebook)
+MAKE_ANNOTATION_FUNCTIONS(constant_table_column, table_column)
+MAKE_ANNOTATION_FUNCTIONS(constant_table, table)
+MAKE_ANNOTATION_FUNCTIONS(constant_text, text_stream)
+MAKE_ANNOTATION_FUNCTIONS(constant_use_option, use_option)
+MAKE_ANNOTATION_FUNCTIONS(constant_verb_form, verb_form)
+MAKE_ANNOTATION_FUNCTIONS(control_structure_used, control_structure_phrase)
+MAKE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
+MAKE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
+MAKE_ANNOTATION_FUNCTIONS(end_control_structure_used, control_structure_phrase)
+MAKE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
+MAKE_ANNOTATION_FUNCTIONS(explicit_vh, value_holster)
+MAKE_ANNOTATION_FUNCTIONS(grammar_token_relation, binary_predicate)
+MAKE_ANNOTATION_FUNCTIONS(grammar_value, parse_node)
+MAKE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
+MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
+MAKE_ANNOTATION_FUNCTIONS(kind_of_new_variable, kind)
+MAKE_ANNOTATION_FUNCTIONS(kind_of_value, kind)
+MAKE_ANNOTATION_FUNCTIONS(kind_required_by_context, kind)
+MAKE_ANNOTATION_FUNCTIONS(kind_resulting, kind)
+MAKE_ANNOTATION_FUNCTIONS(kind_variable_declarations, kind_variable_declaration)
+MAKE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
+MAKE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
+MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
+MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
+MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
+MAKE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
+MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
+MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
+MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjectival_phrase)
+MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
+MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
+MAKE_ANNOTATION_FUNCTIONS(subject, inference_subject)
+MAKE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
+MAKE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
+MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
+MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)

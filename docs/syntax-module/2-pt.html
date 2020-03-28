@@ -314,8 +314,6 @@ store annotations in the following:
     <span class="definitionkeyword">enum</span> <span class="constant">language_element_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: this node is not really a sentence, but a language definition Use</span>
     <span class="definitionkeyword">enum</span> <span class="constant">sentence_unparsed_ANNOT</span><span class="plain"> </span>    <span class="comment">int: set if verbs haven't been sought yet here</span>
     <span class="definitionkeyword">enum</span> <span class="constant">suppress_heading_dependencies_ANNOT</span><span class="plain"> </span>    <span class="comment">int: ignore extension dependencies on this heading node</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">embodying_heading_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">heading</span></code>: for parse nodes of headings</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inclusion_of_extension_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">inform_extension</span></code>: for parse nodes of headings</span>
     <span class="definitionkeyword">enum</span> <span class="constant">implied_heading_ANNOT</span><span class="plain"> </span>    <span class="comment">int: set only for the heading of implied inclusions</span>
     <span class="definitionkeyword">define</span> <span class="constant">MAX_ANNOT_NUMBER</span><span class="plain"> (</span><span class="identifier">NO_DEFINED_ANNOT_VALUES</span><span class="plain">+1)</span>
 </pre>
@@ -528,7 +526,7 @@ never be used.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ParseTree::log_type is used in <a href="#SP47">&#167;47</a>, 1/sm (<a href="1-sm.html#SP3_4">&#167;3.4</a>).</p>
+<p class="endnote">The function ParseTree::log_type is used in <a href="#SP47">&#167;47</a>, 1/sm (<a href="1-sm.html#SP3_5">&#167;3.5</a>).</p>
 
 <p class="endnote">The function ParseTree::get_type_name appears nowhere else.</p>
 
@@ -1185,9 +1183,9 @@ logging is a diagnostic tool, we want it to work even when Inform is sick.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ParseTree::log_tree is used in <a href="#SP49">&#167;49</a>, 1/sm (<a href="1-sm.html#SP3_4">&#167;3.4</a>).</p>
+<p class="endnote">The function ParseTree::log_tree is used in <a href="#SP49">&#167;49</a>, 1/sm (<a href="1-sm.html#SP3_5">&#167;3.5</a>).</p>
 
-<p class="endnote">The function ParseTree::log_subtree is used in 1/sm (<a href="1-sm.html#SP3_4">&#167;3.4</a>).</p>
+<p class="endnote">The function ParseTree::log_subtree is used in 1/sm (<a href="1-sm.html#SP3_5">&#167;3.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP46"></a><b>&#167;46.  </b>Either way, we recurse as follows, being careful not to make recursive calls
 to pursue <code class="display"><span class="extract">next</span></code> links, since otherwise a source text with more than 100,000
@@ -1281,7 +1279,7 @@ text in the debugging log.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ParseTree::log_node is used in 1/sm (<a href="1-sm.html#SP3_4">&#167;3.4</a>).</p>
+<p class="endnote">The function ParseTree::log_node is used in 1/sm (<a href="1-sm.html#SP3_5">&#167;3.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP48"></a><b>&#167;48.  </b>This is occasionally useful:
 </p>

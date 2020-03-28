@@ -185,11 +185,6 @@ int last_indentation_above_level[NO_HEADING_LEVELS], lial_made = FALSE;
 inbuild_work *work_identified = NULL;
 
 @ =
-DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
-MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
-DECLARE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
-MAKE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
-
 heading *Headings::from_node(parse_node *PN) {
 	return ParseTree::get_embodying_heading(PN);
 }

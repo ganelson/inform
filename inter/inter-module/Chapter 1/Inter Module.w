@@ -2,7 +2,9 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d INTER_MODULE TRUE
 
@@ -43,9 +45,7 @@ ALLOCATE_IN_ARRAYS(inter_symbol, 1024)
 ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
 ALLOCATE_IN_ARRAYS(inter_annotation, 8192)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
+@ Like all modules, this one must define a |start| and |end| function:
 
 =
 void InterModule::start(void) {
@@ -53,10 +53,11 @@ void InterModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 
 	Inter::Defn::create_language();
 	Inter::Types::create_all();
+}
+void InterModule::end(void) {
 }
 
 @
@@ -96,12 +97,3 @@ void InterModule::start(void) {
 	Writers::register_logger('4', Inter::SymbolsTables::log);
 	Writers::register_logger('5', Inter::Bookmarks::log);
 	Writers::register_logger('6', Inter::Packages::log);
-
-@<Register this module's command line switches@> =
-	;
-
-@h The end.
-
-=
-void InterModule::end(void) {
-}

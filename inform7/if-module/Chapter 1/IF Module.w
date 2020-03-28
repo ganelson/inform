@@ -2,17 +2,9 @@
 
 Setting up the use of this module.
 
-@h Predeclarations.
-
-= (early code)
-DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
-DECLARE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
-DECLARE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
-DECLARE_ANNOTATION_FUNCTIONS(constant_grammar_verb, grammar_verb)
-DECLARE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
-DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
-
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d IF_MODULE TRUE
 
@@ -104,11 +96,16 @@ COMPILE_WRITER(action_name_list *, PL::Actions::Lists::log)
 COMPILE_WRITER(action_name *, PL::Actions::log)
 
 void IFModule::start(void) {
+	@<Register this module's memory allocation reasons@>;
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 }
+void IFModule::end(void) {
+}
+
+@<Register this module's memory allocation reasons@> =
+	;
 
 @<Register this module's stream writers@> =
 	;
@@ -129,11 +126,13 @@ void IFModule::start(void) {
 	REGISTER_WRITER('L', PL::Actions::Lists::log);
 	REGISTER_WRITER('l', PL::Actions::log);
 
-@<Register this module's command line switches@> =
-	;
+@ This module uses |syntax|, and adds the following annotations to the
+syntax tree.
 
-@h The end.
-
-=
-void IFModule::end(void) {
-}
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
+DECLARE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
+DECLARE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
+DECLARE_ANNOTATION_FUNCTIONS(constant_grammar_verb, grammar_verb)
+DECLARE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
+DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)

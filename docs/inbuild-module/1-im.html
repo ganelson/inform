@@ -228,6 +228,25 @@ which use this module:
 
 <p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This module uses <code class="display"><span class="extract">syntax</span></code>, and adds the following annotations to the
+syntax tree.
+</p>
+
+
+<pre class="definitions">
+    <span class="definitionkeyword">enum</span> <span class="constant">embodying_heading_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">heading</span></code>: for parse nodes of headings</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inclusion_of_extension_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">inform_extension</span></code>: for parse nodes of headings</span>
+</pre>
+
+<pre class="display">
+    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">embodying_heading</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
+    <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">inclusion_of_extension</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
+    <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">inclusion_of_extension</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 1: Setting Up.)</i></li><li><a href="1-ic.html">Continue with 'Inbuild Control'</a></li></ul><hr class="tocbar">
 <!--End of weave-->

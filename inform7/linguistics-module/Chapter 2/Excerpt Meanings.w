@@ -64,15 +64,6 @@ typedef struct excerpt_meaning {
 	MEMORY_MANAGEMENT
 } excerpt_meaning;
 
-@ Annotations:
-
-@e meaning_ANNOT /* |excerpt_meaning|: for leaves */
-
-=
-DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
-
-MAKE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
-
 @h Meaning codes.
 These assign a context to a meaning, and so decide how the |data| pointer for
 an excerpt meaning is to interpreted. For instance, "Persian carpet" might

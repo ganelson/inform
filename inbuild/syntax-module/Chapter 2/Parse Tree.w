@@ -184,8 +184,6 @@ typedef struct parse_node_annotation {
 @e language_element_ANNOT /* |int|: this node is not really a sentence, but a language definition Use */
 @e sentence_unparsed_ANNOT /* int: set if verbs haven't been sought yet here */
 @e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
-@e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
-@e inclusion_of_extension_ANNOT /* |inform_extension|: for parse nodes of headings */
 @e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
 
 @d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)

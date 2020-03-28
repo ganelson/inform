@@ -108,3 +108,15 @@ void InbuildModule::end(void) {
 
 @<Register this module's debugging log writers@> =
 	;
+
+@ This module uses |syntax|, and adds the following annotations to the
+syntax tree.
+
+@e embodying_heading_ANNOT /* |heading|: for parse nodes of headings */
+@e inclusion_of_extension_ANNOT /* |inform_extension|: for parse nodes of headings */
+
+=
+DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+DECLARE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
+MAKE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)

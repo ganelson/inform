@@ -16,38 +16,11 @@ To construct standard verb-phrase nodes in the parse tree.
 @e KIND_NT              			/* "A woman is a kind of person" */
 @e PROPERTY_LIST_NT     			/* "capacity 2" */
 
-@e verbal_certainty_ANNOT		/* |int|: certainty level if known */
-@e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
-@e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e inverted_verb_ANNOT   		/* |int|: an inversion of subject and object has occurred */
-@e possessive_verb_ANNOT   		/* |int|: this is a non-relative use of "to have" */
-@e verb_ANNOT   					/* |verb_usage|: what's being done here */
-@e preposition_ANNOT   			/* |preposition_identity|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT   	/* |preposition_identity|: which further preposition, if any, qualifies it */
-@e verb_meaning_ANNOT   			/* |verb_meaning|: what it means */
-
-@e nounphrase_article_ANNOT 		/* |int|: definite or indefinite article: see below */
-@e plural_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident plurals */
-@e gender_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident genders */
-@e relationship_node_type_ANNOT 	/* |int|: what kind of inference this assertion makes */
-@e implicitly_refers_to_ANNOT 	/* |int|: this will implicitly refer to something */
-
 @d ASSERT_NFLAG		0x00000008 /* allow this on either side of an assertion? */
 
 @e TwoLikelihoods_LINERROR
 
 =
-DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
-DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
-DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
-
-@ =
-MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-MAKE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
-MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
-MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
-
 void Diagrams::setup(void) {
 	ParseTree::md((parse_tree_node_type) { AVERB_NT, "AVERB_NT", 0, 0, L3_NCAT, 0 });
 	ParseTree::md((parse_tree_node_type) { RELATIONSHIP_NT, "RELATIONSHIP_NT",	   					0, 2,		L3_NCAT, ASSERT_NFLAG });

@@ -2,7 +2,9 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d LINGUISTICS_MODULE TRUE
 
@@ -39,21 +41,24 @@ ALLOCATE_IN_ARRAYS(time_period, 100)
 ALLOCATE_INDIVIDUALLY(excerpt_meaning)
 ALLOCATE_INDIVIDUALLY(noun)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
+@ Like all modules, this one must define a |start| and |end| function:
 
 =
 void LinguisticsModule::start(void) {
+	@<Register this module's memory allocation reasons@>;
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 	Cardinals::enable_in_word_form();
 	Articles::mark_for_preform();
 	Prepositions::mark_for_preform();
 	Diagrams::setup();
 }
+void LinguisticsModule::end(void) {
+}
+
+@<Register this module's memory allocation reasons@> =
+	;
 
 @<Register this module's stream writers@> =
 	;
@@ -80,20 +85,47 @@ void LinguisticsModule::start(void) {
 	Writers::register_logger('w', Verbs::log_verb);
 	Writers::register_logger('y', VerbMeanings::log);
 
+@ This module uses |syntax|, and adds the following annotations to the
+syntax tree.
 
-@<Register this module's command line switches@> =
-	;
+@e meaning_ANNOT /* |excerpt_meaning|: for leaves */
 
-@ =
+@e verbal_certainty_ANNOT		/* |int|: certainty level if known */
+@e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
+@e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
+@e inverted_verb_ANNOT   		/* |int|: an inversion of subject and object has occurred */
+@e possessive_verb_ANNOT   		/* |int|: this is a non-relative use of "to have" */
+@e verb_ANNOT   					/* |verb_usage|: what's being done here */
+@e preposition_ANNOT   			/* |preposition_identity|: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT   	/* |preposition_identity|: which further preposition, if any, qualifies it */
+@e verb_meaning_ANNOT   			/* |verb_meaning|: what it means */
+
+@e nounphrase_article_ANNOT 		/* |int|: definite or indefinite article: see below */
+@e plural_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident plurals */
+@e gender_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident genders */
+@e relationship_node_type_ANNOT 	/* |int|: what kind of inference this assertion makes */
+@e implicitly_refers_to_ANNOT 	/* |int|: this will implicitly refer to something */
+
+=
+DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
+DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
+DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
+DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
+
+MAKE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
+MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+MAKE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
+MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
+MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
+
+@ This module requires |words|, which contains the Preform parser. When that
+initialises, it calls the following routine to improve its performance.
+
+=
 void LinguisticsModule::preform_optimiser(void) {
 	Cardinals::preform_optimiser();
 	VerbUsages::preform_optimiser();
 	Prepositions::preform_optimiser();
 	Quantifiers::make_built_in();
-}
-
-@h The end.
-
-=
-void LinguisticsModule::end(void) {
 }

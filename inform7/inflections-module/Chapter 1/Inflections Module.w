@@ -2,7 +2,9 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d INFLECTIONS_MODULE TRUE
 
@@ -19,9 +21,7 @@ ALLOCATE_INDIVIDUALLY(name_cluster)
 ALLOCATE_INDIVIDUALLY(plural_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(verb_conjugation)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
+@ Like all modules, this one must define a |start| and |end| function:
 
 =
 void InflectionsModule::start(void) {
@@ -29,6 +29,8 @@ void InflectionsModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	@<Register this module's command line switches@>;
+}
+void InflectionsModule::end(void) {
 }
 
 @<Register this module's stream writers@> =
@@ -48,9 +50,3 @@ void InflectionsModule::start(void) {
 
 @<Register this module's command line switches@> =
 	;
-
-@h The end.
-
-=
-void InflectionsModule::end(void) {
-}

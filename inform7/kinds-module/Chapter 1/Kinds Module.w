@@ -2,7 +2,9 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d KINDS_MODULE TRUE
 
@@ -33,17 +35,20 @@ ALLOCATE_IN_ARRAYS(kind_constructor_comparison_schema, 100)
 ALLOCATE_IN_ARRAYS(kind_constructor_instance, 100)
 ALLOCATE_IN_ARRAYS(unit_sequence, 50)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
+@ Like all modules, this one must define a |start| and |end| function:
 
 =
 void KindsModule::start(void) {
+	@<Register this module's memory allocation reasons@>;
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 }
+void KindsModule::end(void) {
+}
+
+@<Register this module's memory allocation reasons@> =
+	;
 
 @<Register this module's stream writers@> =
 	;
@@ -63,12 +68,3 @@ void KindsModule::start(void) {
 
 @<Register this module's debugging log writers@> =
 	;
-
-@<Register this module's command line switches@> =
-	;
-
-@h The end.
-
-=
-void KindsModule::end(void) {
-}

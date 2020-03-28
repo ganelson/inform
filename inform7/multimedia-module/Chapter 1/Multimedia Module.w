@@ -2,7 +2,9 @@
 
 Setting up the use of this module.
 
-@h Introduction.
+@ This section simoly sets up the module in ways expected by |foundation|, and
+contains no code of interest. The following constant exists only in tools
+which use this module:
 
 @d MULTIMEDIA_MODULE TRUE
 
@@ -17,17 +19,20 @@ ALLOCATE_INDIVIDUALLY(blorb_figure)
 ALLOCATE_INDIVIDUALLY(blorb_sound)
 ALLOCATE_INDIVIDUALLY(external_file)
 
-@h The beginning.
-(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
+@ Like all modules, this one must define a |start| and |end| function:
 
 =
 void MultimediaModule::start(void) {
+	@<Register this module's memory allocation reasons@>;
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
 }
+void MultimediaModule::end(void) {
+}
+
+@<Register this module's memory allocation reasons@> =
+	;
 
 @<Register this module's stream writers@> =
 	;
@@ -37,12 +42,3 @@ void MultimediaModule::start(void) {
 
 @<Register this module's debugging log writers@> =
 	;
-
-@<Register this module's command line switches@> =
-	;
-
-@h The end.
-
-=
-void MultimediaModule::end(void) {
-}
