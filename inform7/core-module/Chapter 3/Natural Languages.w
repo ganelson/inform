@@ -3,27 +3,6 @@
 To manage definitions of natural languages, such as English or French,
 which may be used either to write Inform or to read the works it compiles.
 
-@h The bundle scan.
-Early in Inform's run we scan for installed language bundle folders. This is
-done on demand (i.e., when we need to know something about languages). We
-only want to do it once, and we must prevent it recursing.
-
-To carry out the scan it's sufficient to ask Inbuild to generate a list of
-results, because the language bundles will be scanned as they are found. We
-can simply discard the search results.
-
-=
-int bundle_scan_made = FALSE;
-
-void NaturalLanguages::scan(void) {
-	if (bundle_scan_made == FALSE) {
-		bundle_scan_made = TRUE;
-		inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
-		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, Inbuild::nest_list(), L);
-	}
-}
-
 @h Indexing.
 
 =

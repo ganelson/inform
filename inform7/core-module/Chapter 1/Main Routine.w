@@ -125,7 +125,7 @@ gargantuan debugging logs if enabled.
 	Problems::write_reports(FALSE);
 	LOG("Total of %d files written as streams.\n", total_file_writes);
 	Writers::log_escape_usage();
-	WRITE_TO(STDOUT, "%s has finished.\n", HUMAN_READABLE_INTOOL_NAME);
+	WRITE_TO(STDOUT, "Inform 7 has finished.\n");
 
 @h Command line processing.
 The bulk of the command-line options are both registered and processed by
@@ -143,7 +143,7 @@ int CoreMain::read_command_line(int argc, char *argv[]) {
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
 	if (proceed) {
 		path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
-		Inbuild::optioneering_complete(NULL, TRUE);
+		Inbuild::optioneering_complete(NULL, TRUE, &Semantics::read_preform);
 	}
 	return proceed;
 }

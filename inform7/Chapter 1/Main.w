@@ -2,48 +2,38 @@
 
 A shell for the modules which actually form the compiler.
 
-@ The source code for the Inform 7 compiler is modularised, and each module
-has its own web, leaving very little here. (To get a sense of how Inform works,
-read the web for the Core module, and dip into the others as needed.)
+@ The |inform7| tool is made up of modules: a set of its own, of which |core|
+plays the central role; a set which makes up almost the whole of |inbuild|;
+a set which makes up almost the whole of |inter|; and the |foundation| module
+provided by Inweb, which is a general-purpose C library.
 
-First, some identification:
+The only code in |inform7| which lies outside these modules is the following
+set of dummy mains, which simply hand over to the |core| module. If you would
+like a sense of how Inform 7 works, read that, not this.
 
 @d INTOOL_NAME "inform7"
-@d INFORM7_BUILD "inform7 [[Build Number]]"
-@d HUMAN_READABLE_INTOOL_NAME "Inform 7"
 
 @ On some platforms the core Inform compiler is a separate command-line tool,
 so that execution should begin with |main()|, as in all C programs. But some
 Inform UI applications need to compile it into the body of a larger program:
-those should define the symbol |SUPPRESS_MAIN| and call |Main::core_inform_main()|
+those should define the symbol |SUPPRESS_MAIN| and call |Main::deputy|
 when they want I7 to run.
 
 =
 #ifndef SUPPRESS_MAIN
 int main(int argc, char *argv[]) {
-	return Main::core_inform_main(argc, argv);
+	return Main::deputy(argc, argv);
 }
 #endif
 
-@ Either way, that brings us here. All our modules have to be started up and
-shut down, so we take care of that with one more intermediary. These modules
-fall into four categories:
+int Main::deputy(int argc, char *argv[]) {
+    @<Start up the modules@>;
+	int rv = CoreMain::main(argc, argv);
+	@<Shut down the modules@>;
+	return rv;
+}
 
-(a) Libraries of code providing services to the compiler but containing
-none of its logic: Foundation, Words, Inflections, Syntax, Linguistics,
-Kinds, Problems, Index. Foundation is shared with numerous other tools,
-and is part of the Inweb repository.
-
-(b) Core, the front end of the compiler for the basic Inform 7 language.
-
-(c) Inter and Codegen, the back end. These modules are shared with the
-command-line tool Inter.
-
-(d) Extensions to the Inform 7 language for interactive fiction: IF,
-Multimedia.
-
-=
-int Main::core_inform_main(int argc, char *argv[]) {
+@<Start up the modules@> =
 	Foundation::start(); /* must be started first */
 	WordsModule::start();
 	InflectionsModule::start();
@@ -62,8 +52,7 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	CodegenModule::start();
 	InbuildModule::start();
 
-	int rv = CoreMain::main(argc, argv);
-
+@<Shut down the modules@> =
 	WordsModule::end();
 	InflectionsModule::end();
 	SyntaxModule::end();
@@ -81,5 +70,3 @@ int Main::core_inform_main(int argc, char *argv[]) {
 	CodegenModule::end();
 	InbuildModule::end();
 	Foundation::end(); /* must be ended last */
-	return rv;
-}

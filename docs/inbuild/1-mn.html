@@ -85,17 +85,18 @@ on; then to carry out that work, and then shut down again.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Start up the modules</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Read the command line</span> <span class="cwebmacronumber">1.7</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Load the Preform grammar</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Complete the list of targets</span> <span class="cwebmacronumber">1.3</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Act on the targets</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
-        &lt;<span class="cwebmacro">Shut down the modules</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">;</span>
+        <span class="functiontext">CommandLine::play_back_log</span><span class="plain">();</span>
+        &lt;<span class="cwebmacro">Complete the list of targets</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Act on the targets</span> <span class="cwebmacronumber">1.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Shut down the modules</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Errors::have_occurred</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain"> 1;</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main is used in 1/ic (<a href="1-ic.html#SP15">&#167;15</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 6/st (<a href="6-st.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function main is used in 1/ic (<a href="1-ic.html#SP23">&#167;23</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>), 6/st (<a href="6-st.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Start up the modules</span> <span class="cwebmacronumber">1.1</span>&gt; =
@@ -103,7 +104,7 @@ on; then to carry out that work, and then shut down again.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Foundation::start</span><span class="plain">();</span>
+        <span class="functiontext">Foundation::start</span><span class="plain">(); </span>    <span class="comment">must be started first</span>
         <span class="functiontext">WordsModule::start</span><span class="plain">();</span>
         <span class="functiontext">SyntaxModule::start</span><span class="plain">();</span>
         <span class="functiontext">HTMLModule::start</span><span class="plain">();</span>
@@ -115,35 +116,7 @@ on; then to carry out that work, and then shut down again.
 
 <p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b>Preform is the crowning jewel of the <code class="display"><span class="extract">words</span></code> module, and parses excerpts of
-natural-language text against a "grammar". The <code class="display"><span class="extract">inform7</span></code> executable makes very
-heavy-duty use of Preform, but we use a much coarser grammar, which simply
-breaks down source text into sentences, headings and so on. That grammar is
-stored in a file called <code class="display"><span class="extract">Syntax.preform</span></code> inside the installation of Inbuild,
-which is why we need to have worked out <code class="display"><span class="extract">path_to_inbuild</span></code> (the pathname at
-which we are installed) already. Once the following is run, Preform is ready
-for use.
-</p>
-
-
-<p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Load the Preform grammar</span> <span class="cwebmacronumber">1.2</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Syntax.preform"</span><span class="plain">);</span>
-        <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Preform::load_from_file</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="functiontext">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::play_back_log</span><span class="plain">();</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="inwebparagraph"><a id="SP1_3"></a><b>&#167;1.3.  </b>Targets can arise in three ways:
+<p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b>Targets can arise in three ways:
 </p>
 
 <ul class="items"><li>(1) They can be specified at the command line, either as bare names of files
@@ -169,7 +142,7 @@ error in this case.
 </li></ul>
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Complete the list of targets</span> <span class="cwebmacronumber">1.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Complete the list of targets</span> <span class="cwebmacronumber">1.2</span>&gt; =
 </code></p>
 
 
@@ -179,7 +152,7 @@ error in this case.
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> == </span><span class="identifier">project_bundle_genre</span><span class="plain">)</span>
                 <span class="identifier">proj</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">proj</span><span class="plain"> = </span><span class="functiontext">Inbuild::optioneering_complete</span><span class="plain">(</span><span class="identifier">proj</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="identifier">proj</span><span class="plain"> = </span><span class="functiontext">Inbuild::optioneering_complete</span><span class="plain">(</span><span class="identifier">proj</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, &amp;</span><span class="functiontext">Main::load_preform</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">proj</span><span class="plain">) </span><span class="functiontext">Main::add_target</span><span class="plain">(</span><span class="identifier">proj</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
@@ -194,13 +167,13 @@ error in this case.
 
 <p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_4"></a><b>&#167;1.4.  </b>We make the function call <code class="display"><span class="extract">Inbuild::go_operational</span></code> to signal to <code class="display"><span class="extract">inbuild</span></code>
+<p class="inwebparagraph"><a id="SP1_3"></a><b>&#167;1.3.  </b>We make the function call <code class="display"><span class="extract">Inbuild::go_operational</span></code> to signal to <code class="display"><span class="extract">inbuild</span></code>
 that we want to start work now.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Act on the targets</span> <span class="cwebmacronumber">1.4</span>&gt; =
+&lt;<span class="cwebmacrodefn">Act on the targets</span> <span class="cwebmacronumber">1.3</span>&gt; =
 </code></p>
 
 
@@ -219,7 +192,7 @@ that we want to start work now.
             <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Main::list_of_targets</span><span class="plain">();</span>
             <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
-                &lt;<span class="cwebmacro">Carry out the required task on the copy C</span> <span class="cwebmacronumber">1.4.2</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Carry out the required task on the copy C</span> <span class="cwebmacronumber">1.3.2</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -227,7 +200,7 @@ that we want to start work now.
 
 <p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_4_1"></a><b>&#167;1.4.1.  </b>The list of possible tasks is as follows; they basically all correspond to
+<p class="inwebparagraph"><a id="SP1_3_1"></a><b>&#167;1.3.1.  </b>The list of possible tasks is as follows; they basically all correspond to
 utility functions in the <code class="display"><span class="extract">inbuild</span></code> module, which we call.
 </p>
 
@@ -246,8 +219,8 @@ utility functions in the <code class="display"><span class="extract">inbuild</sp
     <span class="definitionkeyword">enum</span> <span class="constant">COPY_TO_TTASK</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SYNC_TO_TTASK</span>
 </pre>
-<p class="inwebparagraph"><a id="SP1_4_2"></a><b>&#167;1.4.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Carry out the required task on the copy C</span> <span class="cwebmacronumber">1.4.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP1_3_2"></a><b>&#167;1.3.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Carry out the required task on the copy C</span> <span class="cwebmacronumber">1.3.2</span>&gt; =
 </code></p>
 
 
@@ -276,10 +249,10 @@ utility functions in the <code class="display"><span class="extract">inbuild</sp
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_4">&#167;1.4</a>.</p>
+<p class="endnote">This code is used in <a href="#SP1_3">&#167;1.3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_5"></a><b>&#167;1.5.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Shut down the modules</span> <span class="cwebmacronumber">1.5</span>&gt; =
+<p class="inwebparagraph"><a id="SP1_4"></a><b>&#167;1.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Shut down the modules</span> <span class="cwebmacronumber">1.4</span>&gt; =
 </code></p>
 
 
@@ -289,12 +262,36 @@ utility functions in the <code class="display"><span class="extract">inbuild</sp
         <span class="functiontext">HTMLModule::end</span><span class="plain">();</span>
         <span class="functiontext">SyntaxModule::end</span><span class="plain">();</span>
         <span class="functiontext">WordsModule::end</span><span class="plain">();</span>
-        <span class="functiontext">Foundation::end</span><span class="plain">();</span>
+        <span class="functiontext">Foundation::end</span><span class="plain">(); </span>    <span class="comment">must be ended last</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP1_5"></a><b>&#167;1.5.  </b>Preform is the crowning jewel of the <code class="display"><span class="extract">words</span></code> module, and parses excerpts of
+natural-language text against a "grammar". The <code class="display"><span class="extract">inform7</span></code> executable makes very
+heavy-duty use of Preform, but we use a much coarser grammar, which simply
+breaks down source text into sentences, headings and so on. That grammar is
+stored in a file called <code class="display"><span class="extract">Syntax.preform</span></code> inside the installation of Inbuild,
+which is why we need to have worked out <code class="display"><span class="extract">path_to_inbuild</span></code> (the pathname at
+which we are installed) already. Once the following is run, Preform is ready
+for use.
+</p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::load_preform</span><span class="plain">(</span><span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Syntax.preform"</span><span class="plain">);</span>
+        <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Preform::load_from_file</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
+        <span class="functiontext">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Main::load_preform is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_6"></a><b>&#167;1.6. Target list. </b>This where we keep the list of targets, in which no copy occurs more than
 once. The following code runs quadratically in the number of targets, but for
@@ -360,11 +357,11 @@ Inbuild this number is never likely to be more than about 100 at a time.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Main::add_target is used in <a href="#SP1_3">&#167;1.3</a>.</p>
+<p class="endnote">The function Main::add_target is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
-<p class="endnote">The function Main::list_of_targets is used in <a href="#SP1_3">&#167;1.3</a>, <a href="#SP1_4">&#167;1.4</a>.</p>
+<p class="endnote">The function Main::list_of_targets is used in <a href="#SP1_2">&#167;1.2</a>, <a href="#SP1_3">&#167;1.3</a>.</p>
 
-<p class="endnote">The function Main::add_search_results_as_targets is used in <a href="#SP1_3">&#167;1.3</a>.</p>
+<p class="endnote">The function Main::add_search_results_as_targets is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
 <p class="endnote">The function Main::add_directory_contents_targets is used in <a href="#SP2">&#167;2</a>.</p>
 

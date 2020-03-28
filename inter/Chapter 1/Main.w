@@ -5,6 +5,8 @@ this plan out.
 
 @h Main routine.
 
+@d INTOOL_NAME "inter"
+
 @e TEXTUAL_CLSW
 @e BINARY_CLSW
 @e PIPELINE_CLSW
@@ -30,11 +32,7 @@ text_stream *pipeline_as_text = NULL;
 linked_list *requirements_list = NULL;
 
 int main(int argc, char **argv) {
-	Foundation::start();
-	ArchModule::start();
-	InterModule::start();
-	BuildingModule::start();
-	CodegenModule::start();
+    @<Start up the modules@>;
 
 	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
 	path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
@@ -85,15 +83,25 @@ int main(int argc, char **argv) {
 
 	Main::act();
 
-	InterModule::end();
-	BuildingModule::end();
-	CodegenModule::end();
-	ArchModule::end();
-	Foundation::end();
+	@<Shut down the modules@>;
 
 	if (Errors::have_occurred()) return 1;
 	return 0;
 }
+
+@<Start up the modules@> =
+	Foundation::start(); /* must be started first */
+	ArchModule::start();
+	InterModule::start();
+	BuildingModule::start();
+	CodegenModule::start();
+
+@<Shut down the modules@> =
+	InterModule::end();
+	BuildingModule::end();
+	CodegenModule::end();
+	ArchModule::end();
+	Foundation::end(); /* must be ended last */
 
 @ =
 void Main::respond(int id, int val, text_stream *arg, void *state) {

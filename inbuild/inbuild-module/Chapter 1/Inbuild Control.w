@@ -3,21 +3,31 @@
 The top-level controller through which client tools use this module.
 
 @h Phases.
-Although nothing at all clever happens in this section, it requires careful
-sequencing to avoid invisible errors coming in because function X assumes
-that function Y has already been called, or perhaos that it never will
-be again. The client tool ("the tool") has to work in the following way
-to avoid those problems.
+The |inbuild| module provides services to whichever program is using it:
+recall that the module is included both in |inform7| and in |inbuild| (the
+command line tool), so either of those might be what we call "the client".
 
-Firstly, the inbuild module runs through the following phases in sequence:
+This section defines how the client communicates with us to get everything
+set up correctly. Although nothing at all clever happens in this code, it
+requires careful sequencing to avoid invisible errors coming in because
+function X assumes that function Y has already been called, or perhaos that
+it never will be again. The |inbuild| module therefore runs through a
+number of named "phases" on its way to reaching fully-operational status,
+at which time the client can freely use its facilities.
 
-@e CONFIGURATION_INBUILD_PHASE from 1
+@e STARTUP_INBUILD_PHASE from 1
+@e CONFIGURATION_INBUILD_PHASE
 @e PRETINKERING_INBUILD_PHASE
 @e TINKERING_INBUILD_PHASE
 @e NESTED_INBUILD_PHASE
 @e PROJECTED_INBUILD_PHASE
+@e TARGETED_INBUILD_PHASE
 @e GOING_OPERATIONAL_INBUILD_PHASE
 @e OPERATIONAL_INBUILD_PHASE
+
+@ We're going to use the following assertions to make sure we don't slip up.
+Some functions run only in some phases. Phases can be skipped, but not taken
+out of turn.
 
 @d RUN_ONLY_IN_PHASE(P)
 	if (inbuild_phase < P) internal_error("too soon");
@@ -28,37 +38,67 @@ Firstly, the inbuild module runs through the following phases in sequence:
 	if (inbuild_phase >= P) internal_error("too late");
 
 =
-int inbuild_phase = CONFIGURATION_INBUILD_PHASE;
+int inbuild_phase = STARTUP_INBUILD_PHASE;
+void Inbuild::enter_phase(int p) {
+	if (p <= inbuild_phase) internal_error("phases out of sequence");
+	inbuild_phase = p;
+}
 
-@ Initially, then, we are in the configuration phase. This is when command
-line processing should be done, and the tool should use the following routines
-to add and process command line switches handled by inbuild:
+@h Startup phase.
+The following is called when the |inbuild| module starts up.
 
-@e INBUILD_INFORM_CLSG
-@e INBUILD_RESOURCES_CLSG
-@e INBUILD_INTER_CLSG
-@e INBUILD_CLSG
+=
+void Inbuild::startup(void) {
+	KitManager::start();
+	ExtensionManager::start();
+	TemplateManager::start();
+	LanguageManager::start();
+	ProjectBundleManager::start();
+	ProjectFileManager::start();
+	PipelineManager::start();
 
-@e NEST_CLSW
-@e INTERNAL_CLSW
-@e EXTERNAL_CLSW
-@e TRANSIENT_CLSW
-@e KIT_CLSW
-@e PROJECT_CLSW
-@e SOURCE_CLSW
-@e DEBUG_CLSW
-@e FORMAT_CLSW
-@e RELEASE_CLSW
-@e CENSUS_CLSW
-@e PIPELINE_CLSW
-@e PIPELINE_FILE_CLSW
-@e PIPELINE_VARIABLE_CLSW
-@e RNG_CLSW
-@e CASE_CLSW
+	InterSkill::create();
+	Inform7Skill::create();
+	Inform6Skill::create();
+	InblorbSkill::create();
+
+	ControlStructures::create_standard();
+	
+	inbuild_phase = CONFIGURATION_INBUILD_PHASE;
+	Inbuild::set_defaults();
+}
+
+@h Configuration phase.
+Initially, then, we are in the configuration phase. When the client defines
+its command-line options, we expect it to call |Inbuild::declare_options|
+so that we can define further options -- this provides the large set of
+common options found in both |inform7| and |inbuild|, our two possible clients.
 
 =
 void Inbuild::declare_options(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	@<Declare Inform-related options@>;
+	@<Declare resource-related options@>;
+	@<Declare Inter-related options@>;
+}
+
+@ These options all predate the 2015-20 reworking of the compiler, and their
+names are a series of historical accidents. |-format| in particular works in
+a clunky sort of way and should perhaps be deprecated in favour of some
+better way to choose a virtual machine to compile to.
+
+@e INBUILD_INFORM_CLSG
+
+@e PROJECT_CLSW
+@e DEBUG_CLSW
+@e RELEASE_CLSW
+@e FORMAT_CLSW
+@e SOURCE_CLSW
+@e CENSUS_CLSW
+@e RNG_CLSW
+@e CASE_CLSW
+
+@<Declare Inform-related options@> =
 	CommandLine::begin_group(INBUILD_INFORM_CLSG, I"for translating Inform source text to Inter");
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
@@ -78,6 +118,16 @@ void Inbuild::declare_options(void) {
 		L"make any source links refer to the source in extension example X");
 	CommandLine::end_group();
 
+@ Again, except for |-nest|, these go back to the mid-2010s.
+
+@e INBUILD_RESOURCES_CLSG
+
+@e NEST_CLSW
+@e INTERNAL_CLSW
+@e EXTERNAL_CLSW
+@e TRANSIENT_CLSW
+
+@<Declare resource-related options@> =
 	CommandLine::begin_group(INBUILD_RESOURCES_CLSG, I"for locating resources in the file system");
 	CommandLine::declare_switch(NEST_CLSW, L"nest", 2,
 		L"add the nest at pathname X to the search list");
@@ -89,6 +139,17 @@ void Inbuild::declare_options(void) {
 		L"use X for transient data such as the extensions census");
 	CommandLine::end_group();
 
+@ These are all new in 2020. They are not formally shared with the |inter| tool,
+but |-pipeline-file| and |-variable| have the same effect as they would there.
+
+@e INBUILD_INTER_CLSG
+
+@e KIT_CLSW
+@e PIPELINE_CLSW
+@e PIPELINE_FILE_CLSW
+@e PIPELINE_VARIABLE_CLSW
+
+@<Declare Inter-related options@> =
 	CommandLine::begin_group(INBUILD_INTER_CLSG, I"for tweaking code generation from Inter");
 	CommandLine::declare_switch(KIT_CLSW, L"kit", 2,
 		L"include Inter code from the kit called X");
@@ -99,12 +160,12 @@ void Inbuild::declare_options(void) {
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
 	CommandLine::end_group();
-	
-	Inbuild::set_defaults();
-}
 
+@ Use of the above options will cause the following global variables to be
+set appropriately.
+
+=
 filename *inter_pipeline_file = NULL;
-text_stream *inter_pipeline_name = NULL;
 dictionary *pipeline_vars = NULL;
 pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
@@ -114,28 +175,53 @@ int census_mode = FALSE; /* Running only to update extension documentation */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
 void Inbuild::set_defaults(void) {
-	inter_pipeline_name = Str::new(); WRITE_TO(inter_pipeline_name, "compile");
-	inter_pipeline_file = NULL;
+	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	#ifdef CODEGEN_MODULE
+	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.ulx");
+	#endif
+	Inbuild::set_inter_pipeline(I"compile");
 }
 
-void Inbuild::set_inter_pipeline(wording W) {
-	inter_pipeline_name = Str::new();
-	WRITE_TO(inter_pipeline_name, "%W", W);
-	Str::delete_first_character(inter_pipeline_name);
-	Str::delete_last_character(inter_pipeline_name);
-	LOG("Setting pipeline %S\n", inter_pipeline_name);
+@ The pipeline name can be set not only here but also by |inform7| much
+later on (way past the configuration stage), if it reads a sentence like:
+
+>> Use inter pipeline "special".
+
+=
+text_stream *inter_pipeline_name = NULL;
+
+void Inbuild::set_inter_pipeline(text_stream *name) {
+	if (inter_pipeline_name == NULL) inter_pipeline_name = Str::new();
+	else Str::clear(inter_pipeline_name);
+	WRITE_TO(inter_pipeline_name, "%S", name);
 }
 
+@ |inform7| needs to know this:
+
+=
+int Inbuild::currently_releasing(void) {
+	return this_is_a_release_compile;
+}
+
+@ The |inbuild| module itself doesn't parse command-line options: that's for
+the client to do, using code from Foundation. When the client finds an option
+it doesn't know about, that will be one of ourse, so it should call the following:
+
+=
 void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
 		case DEBUG_CLSW: this_is_a_debug_compile = val; break;
 		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case RELEASE_CLSW: this_is_a_release_compile = val; break;
-		case NEST_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
-		case INTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
-		case EXTERNAL_CLSW: Inbuild::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
-		case TRANSIENT_CLSW: shared_transient_resources = Pathnames::from_text(arg); break;
+		case NEST_CLSW:
+			Inbuild::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
+		case INTERNAL_CLSW:
+			Inbuild::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
+		case EXTERNAL_CLSW:
+			Inbuild::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
+		case TRANSIENT_CLSW:
+			shared_transient_resources = Pathnames::from_text(arg); break;
 		case KIT_CLSW: Inbuild::request_kit(arg); break;
 		case PROJECT_CLSW:
 			if (Inbuild::set_I7_bundle(arg) == FALSE)
@@ -148,108 +234,149 @@ void Inbuild::option(int id, int val, text_stream *arg, void *state) {
 		case CENSUS_CLSW: census_mode = val; break;
 		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
-		case PIPELINE_VARIABLE_CLSW: {
-			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
-				if (Str::get_first_char(arg) != '*') {
-					Errors::fatal("-variable names must begin with '*'");
-				} else {
-					#ifdef CODEGEN_MODULE
-					if (pipeline_vars == NULL)
-						pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.z8");
-					Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
-					#endif
-				}
-			} else {
-				Errors::fatal("-variable should take the form 'name=value'");
-			}
-			Regexp::dispose_of(&mr);
-			break;
-		}
-		case RNG_CLSW:
-			if (val) rng_seed_at_start_of_play = -16339;
-			else rng_seed_at_start_of_play = 0;
-			break;
+		case PIPELINE_VARIABLE_CLSW: @<Set a pipeline variable@>; break;
+		case RNG_CLSW: @<Seed the random number generator@>; break;
 		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
 	}
 }
 
-@ Once the tool has finished with the command line, it should call this
+@ Note that the following has no effect unless the |codegen| module is part
+of the client. In practice, that will be true for |inform7| but not |inbuild|.
+
+@<Set a pipeline variable@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+		if (Str::get_first_char(arg) != '*') {
+			Errors::fatal("-variable names must begin with '*'");
+		} else {
+			#ifdef CODEGEN_MODULE
+			Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
+			#endif
+		}
+	} else {
+		Errors::fatal("-variable should take the form 'name=value'");
+	}
+	Regexp::dispose_of(&mr);
+
+@ 16339 is a well-known prime number for use in 16-bit random number algorithms,
+such as the one used in the Z-machine VM. It works fine in 32-bit cases too.
+
+@<Seed the random number generator@> =
+	if (val) rng_seed_at_start_of_play = -16339;
+	else rng_seed_at_start_of_play = 0;
+
+@h The Pretinkering, Tinkering, Nested and Projected phases.
+Once the tool has finished with the command line, it should call this
 function. Inbuild rapidly runs through the next few phases as it does so.
 From the "nested" phase, the final list of nests in the search path for
 finding kits, extensions and so on exists; from the "projected" phase,
-the main Inform project exists. As we shall see, Inbuild deals with only
-one Inform project at a time, though it may be handling many kits and
-extensions, and so on, which are needed by that project.
+the main Inform project (if there is one) exists.
 
-A delicacy of timing is that we can only read the Preform grammar in once
-the nest list has been read in, since it may need language definitions held
-in the internal nest (which the command line has given the location of); but
-that we have to do it before reading the source text of the project.
+Recall that Inbuild does not need to be dealing with an Inform 7 project
+as a target, but that if it is, then it is the only such. We call this
+the "shared project". There will be lots of other copies known to Inbuild --
+all the kits and extensions needed to build the shared project -- but only
+one project.
+
+The client should set |compile_only| if it just wants to make a basic,
+non-incremental compilation of the project. In practice, |inform7| wants
+that but |inbuild| does not.
+
+When this call returns to the client, |inbuild| is in the Targeted phase,
+which continues until the client calls |Inbuild::go_operational| (see below).
 
 =
-target_vm *current_target_VM = NULL;
-inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only) {
+inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only,
+	void (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
+	inbuild_phase = PRETINKERING_INBUILD_PHASE;
 
-	#ifdef CODEGEN_MODULE
-	if (pipeline_vars == NULL)
-		pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.z8");
-	#endif
-	target_vm *VM = NULL;
+	@<Find the virtual machine@>;
+	inform_project *project = Inbuild::create_shared_project(C);
+	
+	inbuild_phase = TINKERING_INBUILD_PHASE;
+	Inbuild::sort_nest_list();
+
+	inbuild_phase = NESTED_INBUILD_PHASE;
+	@<Read the definition of the natural language of syntax@>;
+
+	if (project) {
+		Inbuild::pass_kit_requests();
+		Copies::read_source_text_for(project->as_copy);
+	}
+
+	inbuild_phase = PROJECTED_INBUILD_PHASE;
+	if (project)
+		Projects::construct_build_target(project,
+			Inbuild::current_vm(), this_is_a_release_compile, compile_only);
+	
+	inbuild_phase = TARGETED_INBUILD_PHASE;
+	if (project) return project->as_copy;
+	return NULL;
+}
+
+@ The VM to be used depends on the settings of all three of |-format|,
+|-release| and |-debug|, and those can be given in any order at the command
+line, which is why we couldn't work this out earlier:
+
+@<Find the virtual machine@> =
 	text_stream *ext = story_filename_extension;
 	if (Str::len(ext) == 0) ext = I"ulx";
 	int with_debugging = FALSE;
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		with_debugging = TRUE;
-	VM = TargetVMs::find(ext, with_debugging);
+	Inbuild::set_current_vm(TargetVMs::find(ext, with_debugging));
 
-	inbuild_phase = PRETINKERING_INBUILD_PHASE;
-	inform_project *project = Inbuild::create_shared_project(C);
-	
-	inbuild_phase = TINKERING_INBUILD_PHASE;
-	Inbuild::sort_nest_list();
-	inbuild_phase = NESTED_INBUILD_PHASE;
-	#ifdef CORE_MODULE
-	NaturalLanguages::scan();
-	#endif
-	if (project) Projects::set_to_English(project);
-	#ifdef CORE_MODULE
-	Semantics::read_preform(Projects::get_language_of_syntax(project));
-	#endif
-	Inbuild::pass_kit_requests();
-	current_target_VM = VM;
-	if (project) Copies::read_source_text_for(project->as_copy);
-	inbuild_phase = PROJECTED_INBUILD_PHASE;
+@ The "language of syntax" of a project is the natural language, by default
+English, in which its source text is written.
 
+We scan the available natural languages first. To do that it's sufficient to
+generate a list of search results for all possible languages: each as it
+comes to light will have been recorded as a possibility. We can then simply
+ignore the search results. Note that this can only be done in the Nested
+phase or after, because we need the nests in order to perform a search.
+
+Once that's done, we ask the client to load the Preform grammar for the
+language of the project. For now that's always English, but here is where
+we would attempt to detect the language of syntax if we could.
+
+@<Read the definition of the natural language of syntax@> =
+	inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
+	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
+	Nests::search_for(req, Inbuild::nest_list(), L);
 	if (project) {
-		Projects::construct_build_target(project, VM, this_is_a_release_compile, compile_only);
-		return project->as_copy;
+		Projects::set_to_English(project);
+		(*preform_callback)(Projects::get_language_of_syntax(project));
 	} else {
-		return NULL;
+		(*preform_callback)(Languages::internal_English());
 	}
-}
 
+@ =
+target_vm *current_target_VM = NULL;
 target_vm *Inbuild::current_vm(void) {
+	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
 	return current_target_VM;
 }
-int Inbuild::currently_releasing(void) {
-	return this_is_a_release_compile;
+void Inbuild::set_current_vm(target_vm *VM) {
+	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
+	current_target_VM = VM;
 }
 
-@ Inbuild is now in the "projected" phase, then. The idea is that this
-is a short interval during which the tool can if it wishes add further
-kit dependencies to the main project. Once that sort of thing is done,
-the tool should call the following, which puts Inbuild into its
-final "operational" phase -- at this point Inbuild is fully configured
-and ready for use.
+@h The Going Operational and Operational phases.
+|inbuild| is now in the Targeted phase, then, meaning that the client has
+called |Inbuild::optioneering_complete| and has been making further
+preparations of its own. (For example, it could attach further kit
+dependencies to the shared project.) The client has one further duty to
+perform: to call |Inbuild::go_operational|. After that, everything is ready
+for use.
 
 The brief "going operational" phase is used, for example, to build out
-dependency graphs.
+dependency graphs. We do that copy by copy. The shared project, if there is
+one, goes first; then everything else known to us.
 
 =
 inform_project *Inbuild::go_operational(void) {
-	RUN_ONLY_IN_PHASE(PROJECTED_INBUILD_PHASE)
+	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
 	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
 	inform_project *P = Inbuild::project();
 	if (P) Copies::go_operational(P->as_copy);
@@ -416,6 +543,13 @@ int Inbuild::set_I7_source(text_stream *loc) {
 	return TRUE;
 }
 
+@ If we are given a |-project| on the command line, we can then work out
+where its Materials folder is, and therefore where any expert settings files
+would be. Note that the name of the expert settings file depends on the name
+of the client, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
+depending on who's asking.
+
+=
 int Inbuild::set_I7_bundle(text_stream *loc) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_bundle_request) > 0) return FALSE;
@@ -425,7 +559,6 @@ int Inbuild::set_I7_bundle(text_stream *loc) {
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%s-settings.txt", INTOOL_NAME);
 	filename *expert_settings = Filenames::in_folder(materials, leaf);
-	LOG("Speculatively %f\n", expert_settings);
 	if (TextFiles::exists(expert_settings))
 		CommandLine::also_read_file(expert_settings);
 	DISCARD_TEXT(leaf);
@@ -560,31 +693,14 @@ void Inbuild::pass_kit_requests(void) {
 	}
 }
 
-@h Installation.
+@h Access to unmanaged Inform resources.
 Inform needs a whole pile of files to have been installed on the host computer
 before it can run: everything from the Standard Rules to a PDF file explaining
 what interactive fiction is. They're never written to, only read. They are
-referred to as "internal" or "built-in", and they occupy a folder called the
-"internal resources" folder.
+stored in subdirectories called |Miscellany| or |HTML| of the internal nest;
+but they're just plain old files, and are not managed by Inbuild as "copies".
 
-Unfortunately we don't know where it is. Typically this compiler will be an
-executable sitting somewhere inside a user interface application, and the
-internal resources folder will be somewhere else inside it. But we don't
-know how to find that folder, and we don't want to make any assumptions.
-This is the purpose of the internal nest, and this is why inform7 can only
-be run if an |-internal| switch has been used specifying where it is.
-
-The internal nest has two additional subfolders (additional in that they
-don't hold copies in the Inbuild sense, just a bunch of loose odds and ends):
-|Miscellany| and |HTML|. Many of these files are to help Inblorb to perform
-a release.
-
-The documentation snippets file is generated by |indoc| and contains
-brief specifications of phrases, extracted from the manual "Writing with
-Inform". This is used to generate the Phrasebook index.
-
-Anyway, Inform and its associated tools can then access these files using the
-following routine:
+Our client can access these files using the following function:
 
 @e CBLORB_REPORT_MODEL_IRES from 1
 @e DOCUMENTATION_SNIPPETS_IRES
@@ -606,20 +722,33 @@ filename *Inbuild::file_from_installation(int ires) {
 	pathname *misc = Pathnames::subfolder(I->location, I"Miscellany");
 	pathname *models = Pathnames::subfolder(I->location, I"HTML");
 	switch (ires) {
-		case DOCUMENTATION_SNIPPETS_IRES: return Filenames::in_folder(misc, I"definitions.html");
-		case INTRO_BOOKLET_IRES: return Filenames::in_folder(misc, I"IntroductionToIF.pdf");
-		case INTRO_POSTCARD_IRES: return Filenames::in_folder(misc, I"Postcard.pdf");
-		case LARGE_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Cover.jpg");
-		case SMALL_DEFAULT_COVER_ART_IRES: return Filenames::in_folder(misc, I"Small Cover.jpg");
+		case DOCUMENTATION_SNIPPETS_IRES: 
+				return Filenames::in_folder(misc, I"definitions.html");
+		case INTRO_BOOKLET_IRES: 
+				return Filenames::in_folder(misc, I"IntroductionToIF.pdf");
+		case INTRO_POSTCARD_IRES: 
+				return Filenames::in_folder(misc, I"Postcard.pdf");
+		case LARGE_DEFAULT_COVER_ART_IRES: 
+				return Filenames::in_folder(misc, I"Cover.jpg");
+		case SMALL_DEFAULT_COVER_ART_IRES: 
+				return Filenames::in_folder(misc, I"Small Cover.jpg");
 
-		case CBLORB_REPORT_MODEL_IRES: return Filenames::in_folder(models, I"CblorbModel.html");
-		case DOCUMENTATION_XREFS_IRES: return Filenames::in_folder(models, I"xrefs.txt");
-		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.js");
-		case JAVASCRIPT_FOR_EXTENSIONS_IRES: return Filenames::in_folder(models, I"extensions.js");
-		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: return Filenames::in_folder(models, I"extensionfile.js");
-		case CSS_FOR_STANDARD_PAGES_IRES: return Filenames::in_folder(models, I"main.css");
-		case EXTENSION_DOCUMENTATION_MODEL_IRES: return Filenames::in_folder(models, I"extensionfile.html");
+		case CBLORB_REPORT_MODEL_IRES: 
+				return Filenames::in_folder(models, I"CblorbModel.html");
+		case DOCUMENTATION_XREFS_IRES: 
+				return Filenames::in_folder(models, I"xrefs.txt");
+		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: 
+				return Filenames::in_folder(models, I"main.js");
+		case JAVASCRIPT_FOR_EXTENSIONS_IRES: 
+				return Filenames::in_folder(models, I"extensions.js");
+		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: 
+				return Filenames::in_folder(models, I"extensionfile.js");
+		case CSS_FOR_STANDARD_PAGES_IRES: 
+				return Filenames::in_folder(models, I"main.css");
+		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
+				return Filenames::in_folder(models, I"extensionfile.html");
 		}
 	internal_error("unknown installation resource file");
 	return NULL;
 }
+

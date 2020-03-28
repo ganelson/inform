@@ -47,16 +47,12 @@ inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
 
 void Projects::set_to_English(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
-	inbuild_requirement *req = Requirements::any_version_of(Works::new(language_genre, I"English", I""));
-	linked_list *L = NEW_LINKED_LIST(inbuild_nest);
-	ADD_TO_LINKED_LIST(Inbuild::internal(), inbuild_nest, L);
-	inbuild_search_result *R = Nests::first_found(req, L);
-	if (R) {
-		inform_language *E = LanguageManager::from_copy(R->copy);
+	inform_language *E = Languages::internal_English();
+	if (E) {
 		proj->language_of_play = E;
 		proj->language_of_syntax = E;
 		proj->language_of_index = E;
-	} else internal_error("no English!");
+	} else internal_error("built-in English language definition can't be found'");
 }
 
 void Projects::set_language_of_play(inform_project *proj, inform_language *L) {

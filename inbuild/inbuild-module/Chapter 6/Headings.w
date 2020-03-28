@@ -184,6 +184,16 @@ and cannot contain information about releasing or about virtual machines.
 int last_indentation_above_level[NO_HEADING_LEVELS], lial_made = FALSE;
 inbuild_work *work_identified = NULL;
 
+@ =
+DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
+DECLARE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
+MAKE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
+
+heading *Headings::from_node(parse_node *PN) {
+	return ParseTree::get_embodying_heading(PN);
+}
+
 @
 
 @d NEW_HEADING_HANDLER Headings::new_heading
@@ -667,11 +677,11 @@ void Headings::excise_material_under(parse_node_tree *T, inbuild_copy *C, headin
 
 heading *Headings::find_dependent_heading(parse_node *pn) {
 	if (ParseTree::get_type(pn) == HEADING_NT) {
-		heading *h = InbuildModule::heading(pn);
+		heading *h = Headings::from_node(pn);
 		if ((h) && (Wordings::nonempty(h->in_place_of_text))) return h;
 	}
 	for (parse_node *p = pn->down; p; p = p->next) {
-		heading *h = InbuildModule::heading(p);
+		heading *h = Headings::from_node(p);
 		if (h) return h;
 	}
 	return NULL;

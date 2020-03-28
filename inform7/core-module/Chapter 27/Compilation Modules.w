@@ -35,7 +35,7 @@ void Modules::traverse_to_define(void) {
 
 void Modules::look_for_cu(parse_node *p) {
 	if (ParseTree::get_type(p) == HEADING_NT) {
-		heading *h = InbuildModule::heading(p);
+		heading *h = Headings::from_node(p);
 		if ((h) && (h->level == 0)) Modules::new(p);
 	}
 }

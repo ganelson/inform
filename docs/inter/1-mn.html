@@ -65,6 +65,7 @@
 
 
 <pre class="definitions">
+    <span class="definitionkeyword">define</span> <span class="constant">INTOOL_NAME</span><span class="plain"> </span><span class="string">"inter"</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEXTUAL_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">BINARY_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">PIPELINE_CLSW</span>
@@ -91,11 +92,7 @@
     <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">requirements_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
-        <span class="functiontext">Foundation::start</span><span class="plain">();</span>
-        <span class="functiontext">ArchModule::start</span><span class="plain">();</span>
-        <span class="functiontext">InterModule::start</span><span class="plain">();</span>
-        <span class="functiontext">BuildingModule::start</span><span class="plain">();</span>
-        <span class="functiontext">CodegenModule::start</span><span class="plain">();</span>
+        &lt;<span class="cwebmacro">Start up the modules</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">path_to_inter</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INTER_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inter"</span><span class="plain">);</span>
         <span class="identifier">path_to_pipelines</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inter</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Pipelines"</span><span class="plain">);</span>
@@ -146,11 +143,7 @@
 
         <span class="functiontext">Main::act</span><span class="plain">();</span>
 
-        <span class="functiontext">InterModule::end</span><span class="plain">();</span>
-        <span class="functiontext">BuildingModule::end</span><span class="plain">();</span>
-        <span class="functiontext">CodegenModule::end</span><span class="plain">();</span>
-        <span class="functiontext">ArchModule::end</span><span class="plain">();</span>
-        <span class="functiontext">Foundation::end</span><span class="plain">();</span>
+        &lt;<span class="cwebmacro">Shut down the modules</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Errors::have_occurred</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain"> 1;</span>
         <span class="reserved">return</span><span class="plain"> 0;</span>
@@ -160,6 +153,40 @@
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function main is used in 2/pck (<a href="2-pck.html#SP3">&#167;3</a>), 2/cnn (<a href="2-cnn.html#SP1">&#167;1</a>), 1/bs (<a href="1-bs.html#SP2">&#167;2</a>), 3/fc (<a href="3-fc.html#SP1">&#167;1</a>).</p>
+
+<p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Start up the modules</span> <span class="cwebmacronumber">1.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="functiontext">Foundation::start</span><span class="plain">(); </span>    <span class="comment">must be started first</span>
+        <span class="functiontext">ArchModule::start</span><span class="plain">();</span>
+        <span class="functiontext">InterModule::start</span><span class="plain">();</span>
+        <span class="functiontext">BuildingModule::start</span><span class="plain">();</span>
+        <span class="functiontext">CodegenModule::start</span><span class="plain">();</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Shut down the modules</span> <span class="cwebmacronumber">1.2</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="functiontext">InterModule::end</span><span class="plain">();</span>
+        <span class="functiontext">BuildingModule::end</span><span class="plain">();</span>
+        <span class="functiontext">CodegenModule::end</span><span class="plain">();</span>
+        <span class="functiontext">ArchModule::end</span><span class="plain">();</span>
+        <span class="functiontext">Foundation::end</span><span class="plain">(); </span>    <span class="comment">must be ended last</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 

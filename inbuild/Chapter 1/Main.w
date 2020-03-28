@@ -25,36 +25,21 @@ text_stream *unit_test = NULL;
 int main(int argc, char **argv) {
     @<Start up the modules@>;
 	@<Read the command line@>;
-	@<Load the Preform grammar@>;
+	CommandLine::play_back_log();
 	@<Complete the list of targets@>;
 	@<Act on the targets@>;
 	@<Shut down the modules@>;
+	if (Errors::have_occurred()) return 1;
 	return 0;
 }
 
 @<Start up the modules@> =
-	Foundation::start();
+	Foundation::start(); /* must be started first */
 	WordsModule::start();
 	SyntaxModule::start();
 	HTMLModule::start();
 	ArchModule::start();
 	InbuildModule::start();
-
-@ Preform is the crowning jewel of the |words| module, and parses excerpts of
-natural-language text against a "grammar". The |inform7| executable makes very
-heavy-duty use of Preform, but we use a much coarser grammar, which simply
-breaks down source text into sentences, headings and so on. That grammar is
-stored in a file called |Syntax.preform| inside the installation of Inbuild,
-which is why we need to have worked out |path_to_inbuild| (the pathname at
-which we are installed) already. Once the following is run, Preform is ready
-for use.
-
-@<Load the Preform grammar@> =
-	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
-	filename *S = Filenames::in_folder(P, I"Syntax.preform");
-	wording W = Preform::load_from_file(S);
-	Preform::parse_preform(W, FALSE);
-	CommandLine::play_back_log();
 
 @ Targets can arise in three ways:
 (1) They can be specified at the command line, either as bare names of files
@@ -84,7 +69,7 @@ error in this case.
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
 		if (C->edition->work->genre == project_bundle_genre)
 			proj = C;
-	proj = Inbuild::optioneering_complete(proj, FALSE);
+	proj = Inbuild::optioneering_complete(proj, FALSE, &Main::load_preform);
 	if (proj) Main::add_target(proj);
 	int count = 0;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
@@ -159,7 +144,24 @@ utility functions in the |inbuild| module, which we call.
 	HTMLModule::end();
 	SyntaxModule::end();
 	WordsModule::end();
-	Foundation::end();
+	Foundation::end(); /* must be ended last */
+
+@ Preform is the crowning jewel of the |words| module, and parses excerpts of
+natural-language text against a "grammar". The |inform7| executable makes very
+heavy-duty use of Preform, but we use a much coarser grammar, which simply
+breaks down source text into sentences, headings and so on. That grammar is
+stored in a file called |Syntax.preform| inside the installation of Inbuild,
+which is why we need to have worked out |path_to_inbuild| (the pathname at
+which we are installed) already. Once the following is run, Preform is ready
+for use.
+
+=
+void Main::load_preform(inform_language *L) {
+	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
+	filename *S = Filenames::in_folder(P, I"Syntax.preform");
+	wording W = Preform::load_from_file(S);
+	Preform::parse_preform(W, FALSE);
+}
 
 @h Target list.
 This where we keep the list of targets, in which no copy occurs more than

@@ -2,13 +2,6 @@
 
 Some fundamental definitions.
 
-@h Build identity.
-First we define the build, using a notation which tangles out to the current
-build number as specified in the contents section of this web.
-
-@d INTOOL_NAME "inter"
-@d INTER_BUILD "inter [[Build Number]]"
-
 @ Since we want to include the words module, we have to define the following
 structure and initialiser:
 
@@ -19,17 +12,17 @@ typedef struct vocabulary_meaning {
 	int enigmatic_number;
 } vocabulary_meaning;
 
-@
-
-@d LEXER_PROBLEM_HANDLER Basics::lexer_problem_handler
-
-=
 vocabulary_meaning Basics::ignore(vocabulary_entry *ve) {
 	vocabulary_meaning vm;
 	vm.enigmatic_number = 16339;
 	return vm;
 }
 
+@
+
+@d LEXER_PROBLEM_HANDLER Basics::lexer_problem_handler
+
+=
 void Basics::lexer_problem_handler(int err, text_stream *problem_source_description, wchar_t *word) {
 	if (err == MEMORY_OUT_LEXERERROR)
 		Errors::fatal("Out of memory: unable to create lexer workspace");

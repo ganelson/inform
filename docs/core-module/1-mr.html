@@ -255,7 +255,7 @@ gargantuan debugging logs if enabled.
         <span class="identifier">Problems::write_reports</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Total of %d files written as streams.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">total_file_writes</span><span class="plain">);</span>
         <span class="identifier">Writers::log_escape_usage</span><span class="plain">();</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"%s has finished.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">HUMAN_READABLE_INTOOL_NAME</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"Inform 7 has finished.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -279,7 +279,7 @@ Inform UI apps is really a command to <code class="display"><span class="extract
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">proceed</span><span class="plain"> = </span><span class="identifier">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">CoreMain::switch</span><span class="plain">, &amp;</span><span class="functiontext">CoreMain::bareword</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">proceed</span><span class="plain">) {</span>
             <span class="identifier">path_to_inform7</span><span class="plain"> = </span><span class="identifier">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INFORM7_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform7"</span><span class="plain">);</span>
-            <span class="identifier">Inbuild::optioneering_complete</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="identifier">Inbuild::optioneering_complete</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="functiontext">Semantics::read_preform</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">proceed</span><span class="plain">;</span>
     <span class="plain">}</span>

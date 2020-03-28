@@ -106,7 +106,7 @@ which they differ.
 		if (problem_headings[i] != NULL) {
 			wording W = ParseTree::get_text(problem_headings[i]);
 			#ifdef INBUILD_MODULE
-			W = Headings::get_text(InbuildModule::heading(problem_headings[i]));
+			W = Headings::get_text(Headings::from_node(problem_headings[i]));
 			#endif
 			pos = Lexer::file_of_origin(Wordings::first_wn(W));
 			if (f) WRITE_TO(PBUFF, ", ");

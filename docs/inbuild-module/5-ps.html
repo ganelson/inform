@@ -107,16 +107,12 @@
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Projects::set_to_English</span><span class="plain">(</span><span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">proj</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">proj</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no project"</span><span class="plain">);</span>
-        <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">Requirements::any_version_of</span><span class="plain">(</span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">language_genre</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"English"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">));</span>
-        <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain">);</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="functiontext">Inbuild::internal</span><span class="plain">(), </span><span class="reserved">inbuild_nest</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-        <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Nests::first_found</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">LanguageManager::from_copy</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
+        <span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Languages::internal_English</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) {</span>
             <span class="identifier">proj</span><span class="plain">-</span><span class="element">&gt;language_of_play</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
             <span class="identifier">proj</span><span class="plain">-</span><span class="element">&gt;language_of_syntax</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
             <span class="identifier">proj</span><span class="plain">-</span><span class="element">&gt;language_of_index</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no English!"</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"built-in English language definition can't be found'"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Projects::set_language_of_play</span><span class="plain">(</span><span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">proj</span><span class="plain">, </span><span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
@@ -245,7 +241,7 @@
 
 <p class="endnote">The function Projects::new_ip is used in 4/pbm (<a href="4-pbm.html#SP2">&#167;2</a>), 4/pfm (<a href="4-pfm.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Projects::set_to_English is used in 1/ic (<a href="1-ic.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Projects::set_to_English is used in 1/ic (<a href="1-ic.html#SP9_2">&#167;9.2</a>).</p>
 
 <p class="endnote">The function Projects::set_language_of_play is used in <a href="#SP6">&#167;6</a>.</p>
 
@@ -257,13 +253,13 @@
 
 <p class="endnote">The function Projects::set_language_of_syntax appears nowhere else.</p>
 
-<p class="endnote">The function Projects::get_language_of_syntax is used in 1/ic (<a href="1-ic.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Projects::get_language_of_syntax is used in 1/ic (<a href="1-ic.html#SP9_2">&#167;9.2</a>).</p>
 
-<p class="endnote">The function Projects::fix_rng is used in 1/ic (<a href="1-ic.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Projects::fix_rng is used in 1/ic (<a href="1-ic.html#SP19">&#167;19</a>).</p>
 
-<p class="endnote">The function Projects::not_necessarily_parser_IF is used in 1/ic (<a href="1-ic.html#SP14">&#167;14</a>).</p>
+<p class="endnote">The function Projects::not_necessarily_parser_IF is used in 1/ic (<a href="1-ic.html#SP22">&#167;22</a>).</p>
 
-<p class="endnote">The function Projects::set_source_filename is used in 1/ic (<a href="1-ic.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Projects::set_source_filename is used in 1/ic (<a href="1-ic.html#SP19">&#167;19</a>).</p>
 
 <p class="endnote">The function Projects::manifest_helper appears nowhere else.</p>
 
@@ -271,7 +267,7 @@
 
 <p class="endnote">The function Projects::source is used in <a href="#SP4">&#167;4</a>, <a href="#SP7">&#167;7</a>.</p>
 
-<p class="endnote">The function Projects::add_kit_dependency is used in 1/ic (<a href="1-ic.html#SP14">&#167;14</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Projects::add_kit_dependency is used in 1/ic (<a href="1-ic.html#SP22">&#167;22</a>), 5/kts (<a href="5-kts.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Projects::uses_kit is used in 5/kts (<a href="5-kts.html#SP1">&#167;1</a>).</p>
 
@@ -481,7 +477,7 @@ may be multiple sentences, which we need to count up.
 
 <p class="endnote">The function Projects::build_pathname appears nowhere else.</p>
 
-<p class="endnote">The function Projects::construct_build_target is used in 1/ic (<a href="1-ic.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Projects::construct_build_target is used in 1/ic (<a href="1-ic.html#SP9">&#167;9</a>).</p>
 
 <p class="endnote">The function Projects::graph_dependent_kit appears nowhere else.</p>
 

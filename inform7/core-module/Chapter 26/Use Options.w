@@ -266,7 +266,14 @@ void UseOptions::set_use_options(parse_node *p) {
 
 @<Set the chain given in this word range@> =
 	wording CW = GET_RW(<use-inter-pipeline>, 1);
-	if (traverse == 1) Inbuild::set_inter_pipeline(CW);
+	if (traverse == 1) {
+		TEMPORARY_TEXT(p);
+		WRITE_TO(p, "%W", CW);
+		Str::delete_first_character(p);
+		Str::delete_last_character(p);
+		Inbuild::set_inter_pipeline(p);
+		DISCARD_TEXT(p);
+	}
 	return;
 
 @<Adjust the minimum setting@> =
