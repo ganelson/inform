@@ -3,6 +3,19 @@
 Given an excerpt of wording, to construct S-nodes for one or more
 registered excerpt meanings which it matches.
 
+@h Default bitmaps.
+The following will be useful only for minimal use of |linguistics|, so the
+serious user (i.e., |core|) will do something better.
+
+@d ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC 0x00000004
+
+@default EXACT_PARSING_BITMAP
+	(MISCELLANEOUS_MC)
+@default SUBSET_PARSING_BITMAP
+	(NOUN_MC)
+@default PARAMETRISED_PARSING_BITMAP
+	(ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC)
+
 @h Parsing methods.
 The excerpt parser tests a given wording to see if it matches something
 in the bank of excerpt meanings. It looks only for atomic meanings ("box"):

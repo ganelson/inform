@@ -17,5 +17,5 @@ Manual
 	Using Inbuild
 	Reference Card
 
-Chapter 1: Inbuild outside of Inform
+Chapter 1: Outside of inform7
 	Main

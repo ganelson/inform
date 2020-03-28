@@ -2,7 +2,9 @@
 
 To parse the many forms a verb can take.
 
-@h Definitions.
+@
+
+@default VERB_MEANING_TYPE struct verb_conjugation
 
 @ The "permitted verb" is just a piece of temporary context used in parsing:
 it's convenient for the verb currently being considered to be stored in
@@ -340,7 +342,7 @@ VERB_MEANING_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition_i
 	if (uvm == NULL) return NULL;
 	VERB_MEANING_TYPE *root = VerbMeanings::get_relational_meaning(uvm);
 	if ((vu->mood == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
-		root = VERB_MEANING_REVERSAL(root);
+		root = VerbMeanings::reverse_VMT(root);
 	return root;
 }
 
@@ -516,7 +518,7 @@ uses of verbs:
 	verb_conjugation *vc;
 	LOOP_OVER(vc, verb_conjugation)
 		if (vc->auxiliary_only == FALSE) {
-			int p = PREFORM_ADAPTIVE_PERSON(vc->defined_in);
+			int p = VerbUsages::adaptive_person(vc->defined_in);
 			word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
 			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
 			if (WordAssemblages::compare_with_wording(we_form, W)) {
@@ -579,7 +581,7 @@ or "the verb to be able to see" use these.
 	verb_conjugation *vc;
 	LOOP_OVER(vc, verb_conjugation)
 		if (vc->auxiliary_only == FALSE) {
-			int p = PREFORM_ADAPTIVE_PERSON(vc->defined_in);
+			int p = VerbUsages::adaptive_person(vc->defined_in);
 			if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[IS_TENSE][0][p] != 0) {
 				word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
 				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
@@ -613,4 +615,16 @@ void VerbUsages::preform_optimiser(void) {
 	Preform::mark_nt_as_requiring_itself_first(<universal-verb>);
 	Preform::mark_nt_as_requiring_itself_first(<negated-verb>);
 	Preform::mark_nt_as_requiring_itself_first(<past-tense-verb>);
+}
+
+@h Adaptive person.
+
+=
+int VerbUsages::adaptive_person(PREFORM_LANGUAGE_TYPE *X) {
+	#ifdef PREFORM_ADAPTIVE_PERSON
+	return PREFORM_ADAPTIVE_PERSON(X);
+	#endif
+	#ifndef PREFORM_ADAPTIVE_PERSON
+	return FIRST_PERSON_PLURAL;
+	#endif
 }

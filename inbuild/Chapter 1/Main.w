@@ -342,26 +342,7 @@ void Main::bareword(int id, text_stream *arg, void *state) {
 }
 
 @h Interface to Words module.
-Since we want to include the |words| module, we have to define the following
-structure and initialiser. The type |vocabulary_meaning| is expected to hold
-meanings associated with a given word; when |inform7| uses |word| it is rich
-and full of significance, but for us it does nothing. We give it a meaningless
-integer as its content, since in C it isn't legal to have an empty |struct|.
-
-@d VOCABULARY_MEANING_INITIALISER Main::create_meaningless_vm
-
-=
-typedef struct vocabulary_meaning {
-	int enigmatic_number;
-} vocabulary_meaning;
-
-vocabulary_meaning Main::create_meaningless_vm(vocabulary_entry *ve) {
-	vocabulary_meaning vm;
-	vm.enigmatic_number = 90125;
-	return vm;
-}
-
-@ We use the mighty Preform natural-language parser only a little when
+We use the mighty Preform natural-language parser only a little when
 Inbuild runs on its own, but it needs to be told what C type to use when
 identifying natural languages.
 
@@ -370,5 +351,4 @@ identifying natural languages.
 @h Interface to Syntax module.
 Again, we make a fairly light use of |syntax| when Inbuild runs alone.
 
-@d PARSE_TREE_TRAVERSE_TYPE void
 @d PARSE_TREE_METADATA_SETUP SourceText::node_metadata

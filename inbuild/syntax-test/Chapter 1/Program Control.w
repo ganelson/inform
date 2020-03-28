@@ -1,9 +1,10 @@
 [Main::] Program Control.
 
-The top level, which decides what is to be done and then carries
-this plan out.
+What shall we test?
 
 @h Main routine.
+
+@d INTOOL_NAME "syntax-test"
 
 @e TEST_TREE_CLSW
 
@@ -33,7 +34,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 }
 
 void Main::load(text_stream *leaf) {
-	pathname *P = Pathnames::from_text(I"inform7");
+	pathname *P = Pathnames::from_text(I"inbuild");
 	P = Pathnames::subfolder(P, I"syntax-test");
 	P = Pathnames::subfolder(P, I"Tangled");
 	filename *S = Filenames::in_folder(P, leaf);

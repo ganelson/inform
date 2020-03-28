@@ -11,7 +11,7 @@
 		<nav role="navigation">
 		<h1><a href="../webs.html">Sources</a></h1>
 <ul>
-<li><a href="../compiler.html"><b>compiler</b></a></li>
+<li><a href="../compiler.html"><b>compiler tools</b></a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
@@ -122,13 +122,17 @@ is probably a phrase, and so on &mdash; and the following is its state.
 </p>
 
 
+<pre class="definitions">
+    <span class="plain">@</span><span class="reserved">default</span><span class="plain"> </span><span class="constant">COPY_FILE_TYPE</span><span class="plain"> </span><span class="reserved">void</span>
+</pre>
+
 <pre class="display">
     <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sfsm_source_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_in_tabbed_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = -1;</span>
-    <span class="identifier">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -142,7 +146,7 @@ finite state machine.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_extension</span><span class="plain">,</span>
-        <span class="identifier">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_copy</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bwc</span><span class="plain">) {</span>
+        <span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_copy</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bwc</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">PARBREAK_V</span><span class="plain">)))</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -348,7 +352,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -361,7 +365,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -374,7 +378,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -387,7 +391,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -400,7 +404,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -583,7 +587,7 @@ is declared as if it were a super-heading in the text.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_extension_position</span><span class="plain"> == 3) &amp;&amp; (</span><span class="identifier">begins_or_ends</span><span class="plain"> == 0)) {</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
             <span class="identifier">sfsm_extension_position</span><span class="plain"> = 4; </span>    <span class="comment">to avoid multiply issuing this</span>
         <span class="plain">}</span>
 </pre>
@@ -642,7 +646,7 @@ continuing regardless.
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) &gt; 0)) {</span>
-                    <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+                    <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
 </pre>
@@ -671,7 +675,7 @@ newlines automatically added at the end of the feed of any source file.
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1;</span>
                 <span class="plain">(</span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+8) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">lexer_wordcount</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
                 <span class="identifier">k</span><span class="plain">++) ;</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -717,8 +721,8 @@ from an extension, we need to make sure we saw both beginning and end:
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -798,7 +802,7 @@ sentences and options-file sentences may have been read already.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.9.6</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">';'</span><span class="plain">) {</span>
-            <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'.'</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -1141,6 +1145,65 @@ it would be too late.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a>.</p>
+
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define <code class="display"><span class="extract">SYNTAX_PROBLEM_HANDLER</span></code>
+to some routine of her own, gazumping this one.
+</p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ref</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span>
+        <span class="identifier">SYNTAX_PROBLEM_HANDLER</span><span class="plain">(</span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ref</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">endif</span>
+        <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"unexpected semicolon in sentence: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and full stop: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a semicolon and full stop: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and semicolon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a full stop and semicolon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"extension has no beginning"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"extension has no end"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"extension continues after end: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"heading contains a line break: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">:</span>
+                <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"heading stops before end of line: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="plain">#</span><span class="identifier">endif</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Sentences::syntax_problem is used in <a href="#SP5_4_1">&#167;5.4.1</a>, <a href="#SP5_4_2">&#167;5.4.2</a>, <a href="#SP5_4_3">&#167;5.4.3</a>, <a href="#SP5_4_4">&#167;5.4.4</a>, <a href="#SP5_4_5">&#167;5.4.5</a>, <a href="#SP6_2">&#167;6.2</a>, <a href="#SP6_4">&#167;6.4</a>, <a href="#SP6_5">&#167;6.5</a>, <a href="#SP5_5">&#167;5.5</a>, <a href="#SP6_9">&#167;6.9</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-pt.html">Back to 'Parse Tree'</a></li><li><i>(This section ends Chapter 2: The Parse Tree.)</i></li></ul><hr class="tocbar">

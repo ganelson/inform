@@ -28,6 +28,8 @@ ever brings up.)
 Because of this we need a structure to represent an adjective as
 distinct from its meaning, and this is it.
 
+@default ADJECTIVE_MEANING_TYPE void
+
 =
 typedef struct adjectival_phrase {
 	struct name_cluster *adjective_names;

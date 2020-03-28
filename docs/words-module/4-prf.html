@@ -11,7 +11,7 @@
 		<nav role="navigation">
 		<h1><a href="../webs.html">Sources</a></h1>
 <ul>
-<li><a href="../compiler.html"><b>compiler</b></a></li>
+<li><a href="../compiler.html"><b>compiler tools</b></a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
@@ -65,14 +65,18 @@
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Introduction. </b></p>
 
+
+<pre class="definitions">
+    <span class="plain">@</span><span class="reserved">default</span><span class="plain"> </span><span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> </span><span class="reserved">void</span>
+</pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The parser reads source text against a specific language only, if
 <code class="display"><span class="extract">language_of_source_text</span></code> is set; or, if it isn't, from any language.
 </p>
 
 
 <pre class="display">
-    <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">language_of_source_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">language_being_read_by_Preform</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">language_of_source_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">language_being_read_by_Preform</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -273,7 +277,7 @@ all of them, and English will always be the first in the list of lists.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">production_list</span><span class="plain"> {</span>
-        <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">definition_language</span><span class="plain">;</span>
+        <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">definition_language</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">production</span><span class="plain"> *</span><span class="identifier">first_production</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">production_list</span><span class="plain"> *</span><span class="identifier">next_production_list</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">match_avinue</span><span class="plain"> *</span><span class="identifier">as_avinue</span><span class="plain">; </span>    <span class="comment">when compiled to a trie rather than for Preform</span>
@@ -798,7 +802,7 @@ syntax is very simple.
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">lname</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">lname</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="functiontext">Wordings::one_word</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">+1));</span>
-        <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">PREFORM_LANGUAGE_FROM_NAME</span><span class="plain">(</span><span class="identifier">lname</span><span class="plain">);</span>
+        <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">PREFORM_LANGUAGE_FROM_NAME</span><span class="plain">(</span><span class="identifier">lname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Missing: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">lname</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to define for missing language"</span><span class="plain">);</span>
@@ -2292,7 +2296,7 @@ paragraph break. Internally, it's a list of productions divided by stroke symbol
                     <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">acc_result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="reserved">production_list</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">-</span><span class="element">&gt;first_production_list</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;next_production_list</span><span class="plain">) {</span>
-                        <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;definition_language</span><span class="plain">;</span>
+                        <span class="constant">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;definition_language</span><span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">language_of_source_text</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">language_of_source_text</span><span class="plain"> == </span><span class="identifier">nl</span><span class="plain">)) {</span>
                             <span class="reserved">production</span><span class="plain"> *</span><span class="identifier">pr</span><span class="plain">;</span>
                             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_v</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>

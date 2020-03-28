@@ -284,7 +284,7 @@ directions, in particular, a little better.
 	VERB_MEANING_TYPE *R = VerbMeanings::get_relational_meaning(
 		Verbs::regular_meaning(permitted_verb_identity, RP[1], NULL));
 	if (R == NULL) return FALSE;
-	*XP = NounPhrases::PN_rel(W, VERB_MEANING_REVERSAL(R), -1, RP[2]);
+	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), -1, RP[2]);
 
 @ Now the heart of it. There are basically seven constructions which can make
 complex NPs from simple ones: we've already seen one of these, the relative

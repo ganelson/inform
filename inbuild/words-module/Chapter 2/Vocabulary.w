@@ -45,7 +45,9 @@ typedef struct vocabulary_entry {
 	struct vocabulary_entry *lower_case_form; /* or null if none exists */
 	struct vocabulary_entry *upper_case_form; /* or null if none exists */
 	int nt_incidence; /* bitmap hashing which Preform nonterminals it occurs in */
+	#ifdef VOCABULARY_MEANING_INITIALISER
 	struct vocabulary_meaning means;
+	#endif
 } vocabulary_entry;
 
 @ Some standard punctuation marks:
@@ -141,7 +143,9 @@ vocabulary_entry *Vocabulary::vocab_entry_new(wchar_t *text, int hash_code, unsi
 	if ((l>3) && (text[l-3] == 'i') && (text[l-2] == 'n') && (text[l-1] == 'g'))
 		ve->flags |= ING_MC;
 	ve->literal_number_value = val;
+	#ifdef VOCABULARY_MEANING_INITIALISER
 	ve->means = VOCABULARY_MEANING_INITIALISER(ve);
+	#endif
 	return ve;
 }
 

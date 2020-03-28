@@ -8,7 +8,6 @@ Import: foundation
 Import: ../inbuild/words
 Import: inflections
 
-Chapter 1: Everything
-	Basics
+Chapter 1: Scaffolding
 	Program Control
 	Unit Tests

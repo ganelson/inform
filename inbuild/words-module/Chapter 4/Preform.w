@@ -7,6 +7,8 @@ meta-language called Preform.
 
 @h Introduction.
 
+@default PREFORM_LANGUAGE_TYPE void
+
 @ The parser reads source text against a specific language only, if
 |language_of_source_text| is set; or, if it isn't, from any language.
 

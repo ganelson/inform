@@ -1,9 +1,13 @@
 [Main::] Program Control.
 
-The top level, which decides what is to be done and then carries
-this plan out.
+What shall we test?
 
 @h Main routine.
+
+@d INTOOL_NAME "linguistics-test"
+
+@d VERB_MEANING_EQUALITY vc_be
+@d VERB_MEANING_POSSESSION vc_have
 
 @e TEST_DIAGRAMS_CLSW
 

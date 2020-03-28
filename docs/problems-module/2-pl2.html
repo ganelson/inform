@@ -11,7 +11,7 @@
 		<nav role="navigation">
 		<h1><a href="../webs.html">Sources</a></h1>
 <ul>
-<li><a href="../compiler.html"><b>compiler</b></a></li>
+<li><a href="../compiler.html"><b>compiler tools</b></a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
@@ -87,9 +87,13 @@ code order.
 </p>
 
 
+<pre class="definitions">
+    <span class="plain">@</span><span class="reserved">default</span><span class="plain"> </span><span class="constant">NO_HEADING_LEVELS</span><span class="plain"> 10</span>
+</pre>
+
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::find_headings_at</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> **</span><span class="identifier">problem_headings</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sentence</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">ParseTree::traverse_ppn_nocs</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="functiontext">Problems::visit_for_headings</span><span class="plain">, &amp;</span><span class="identifier">sentence</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ParseTree::get_problem_falls_under</span><span class="plain">(</span><span class="identifier">sentence</span><span class="plain">);</span>
@@ -134,7 +138,7 @@ changed. (And we never print internally made level 0, File, headings.)
 
 
 <pre class="display">
-    <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">];</span>
+    <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -154,7 +158,7 @@ the two possibilities.
     <span class="reserved">int</span><span class="plain">	</span><span class="identifier">do_not_locate_problems</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::show_problem_location</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">) {</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">];</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">f</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -163,18 +167,18 @@ the two possibilities.
             <span class="reserved">else</span>
                 <span class="identifier">HTMLFiles::html_outcome_image</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="string">"ni_failed"</span><span class="plain">, </span><span class="string">"Failed"</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">do_not_locate_problems</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Problems::find_headings_at</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="identifier">problem_headings</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">f</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">f</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) {</span>
                     &lt;<span class="cwebmacro">Print the heading position</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">last_problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
     <span class="plain">}</span>
 </pre>
 
@@ -198,7 +202,7 @@ which they differ.
         <span class="functiontext">Problems::Buffer::clear</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="string">"&gt;---&gt; "</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="string">"In"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">=</span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">=</span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">problem_headings</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">INBUILD_MODULE</span>

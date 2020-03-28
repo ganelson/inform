@@ -1,4 +1,4 @@
--cases 'inform7/syntax-test/Tests/Test Cases'
+-cases 'inbuild/syntax-test/Tests/Test Cases'
 
 -recipe
 
@@ -6,7 +6,7 @@
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	mkdir: $PATH/_Results_Actual
 
-	step: inform7/syntax-test/Tangled/syntax-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	step: inbuild/syntax-test/Tangled/syntax-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in syntax-test' $A
 
 	show: $A

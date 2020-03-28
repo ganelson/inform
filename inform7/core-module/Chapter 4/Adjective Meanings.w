@@ -2,8 +2,6 @@
 
 One individual meaning which an adjective can have.
 
-@h Definitions.
-
 @ An adjective can have a long list of meanings in different contexts:
 
 @d ADJECTIVE_MEANING_TYPE struct adjective_meaning_block

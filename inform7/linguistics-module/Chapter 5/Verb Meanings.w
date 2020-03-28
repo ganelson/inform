@@ -2,6 +2,24 @@
 
 To abstract the meaning of a verb.
 
+
+@h Other modukes.
+We allow the modules using us to have their own data about the semantics of
+a verb, which we will attach to our own |verb_meaning| structure. It has to
+be a pointer to the type |VERB_MEANING_TYPE|, and by default, there's none:
+
+@default VERB_MEANING_TYPE void
+
+=
+VERB_MEANING_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_TYPE *recto) {
+	#ifdef VERB_MEANING_REVERSAL
+	return VERB_MEANING_REVERSAL(recto);
+	#endif
+	#ifndef VERB_MEANING_REVERSAL
+	return recto;
+	#endif
+}
+
 @h Abstracting meaning.
 Recall that each verb can have multiple forms: for example, "to go"
 might occur in three forms -- "go" alone, "go to", or "go from", which
@@ -118,7 +136,7 @@ VERB_MEANING_TYPE *VerbMeanings::get_relational_meaning(verb_meaning *vm) {
 	VERB_MEANING_TYPE *rel = vm->regular_meaning;
 	if (rel == NULL) return NULL;
 	if (vm->reversed) rev = (rev)?FALSE:TRUE;
-	if (rev) rel = VERB_MEANING_REVERSAL(rel);
+	if (rev) rel = VerbMeanings::reverse_VMT(rel);
 	return rel;
 }
 

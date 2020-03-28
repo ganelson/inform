@@ -7,6 +7,25 @@ this plan out.
 
 @d INTOOL_NAME "inter"
 
+@ The modules included in |inter| make use of the Inform 7 module |kinds|,
+but when we are using |inter| on its own, kinds have no meaning for us.
+We are required to create a |kind| type, in order for |kinds| to compile;
+but no instances of this kind will ever in fact exist. |K_value| is a
+global constant meaning "any kind at all", and that also must exist.
+
+= (early code)
+typedef void kind;
+kind *K_value = NULL;
+
+@ We need to allocate one additional type of structure in memory, so:
+
+@e inter_file_MT
+
+=
+ALLOCATE_INDIVIDUALLY(inter_file)
+
+@
+
 @e TEXTUAL_CLSW
 @e BINARY_CLSW
 @e PIPELINE_CLSW

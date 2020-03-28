@@ -11,7 +11,7 @@
 		<nav role="navigation">
 		<h1><a href="../webs.html">Sources</a></h1>
 <ul>
-<li><a href="../compiler.html"><b>compiler</b></a></li>
+<li><a href="../compiler.html"><b>compiler tools</b></a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
@@ -494,7 +494,7 @@ order of creation.
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;right</span><span class="plain"> == </span><span class="identifier">right</span><span class="plain">) {</span>
-                <span class="identifier">KINDS_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">DimensionRedundant_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">DimensionRedundant_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
 
@@ -546,13 +546,13 @@ particular way:
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">)) ||</span>
             <span class="plain">(</span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">right</span><span class="plain">)) ||</span>
             <span class="plain">(</span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">outcome</span><span class="plain">))) {</span>
-            <span class="identifier">KINDS_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">DimensionNotBaseKOV_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">DimensionNotBaseKOV_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">right</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">outcome</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">KINDS_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">NonDimensional_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">NonDimensional_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Kinds::Dimensions::record_multiplication_rule</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">, </span><span class="identifier">outcome</span><span class="plain">);</span>
@@ -842,7 +842,7 @@ accident, but we'll be careful:
 
 
 <pre class="displaydefn">
-        <span class="identifier">KINDS_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">UnitSequenceOverflow_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">UnitSequenceOverflow_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -1178,7 +1178,7 @@ the Kinds index page more helpful. But we must reject a contradiction.
             <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]), 1, &amp;</span><span class="identifier">product</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::compare_unit_sequences</span><span class="plain">(&amp;</span><span class="identifier">product</span><span class="plain">,</span>
             <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2])) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">KINDS_PROBLEM_HANDLER</span><span class="plain">(</span><span class="constant">DimensionsInconsistent_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">DimensionsInconsistent_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

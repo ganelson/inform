@@ -899,6 +899,8 @@ It's convenient to have a general system for traversing the tree, visiting
 each node in the connected component of the tree root. Unlike the logging
 routine above, these all assume that the tree is well-formed.
 
+@default PARSE_TREE_TRAVERSE_TYPE void
+
 =
 void ParseTree::traverse(parse_node_tree *T, void (*visitor)(parse_node *)) {
 	ParseTree::traverse_from(T->root_node, visitor);

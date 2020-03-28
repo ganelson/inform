@@ -122,14 +122,6 @@ INFORM6X = inform6/Tangled/inform6
 {dep} INFLECTIONSTEST on WORDS
 {dep} INFLECTIONSTEST on INFLECTIONS
 
-{tool} KINDSTEST kinds-test inform7/kinds-test
-{dep} KINDSTEST on FOUNDATION
-{dep} KINDSTEST on WORDS
-{dep} KINDSTEST on INFLECTIONS
-{dep} KINDSTEST on SYNTAX
-{dep} KINDSTEST on LINGUISTICS
-{dep} KINDSTEST on KINDS
-
 {tool} LINGUISTICSTEST linguistics-test inform7/linguistics-test
 {dep} LINGUISTICSTEST on FOUNDATION
 {dep} LINGUISTICSTEST on WORDS
@@ -421,8 +413,6 @@ pages:
 	$(INWEBX) inform7/inflections-test -weave-docs -weave-into docs/inflections-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
 	rm docs/kinds-module/*.html
 	$(INWEBX) inform7/kinds-module -weave-docs -weave-into docs/kinds-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/kinds-test/*.html
-	$(INWEBX) inform7/kinds-test -weave-docs -weave-into docs/kinds-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
 	rm docs/linguistics-module/*.html
 	$(INWEBX) inform7/linguistics-module -weave-docs -weave-into docs/linguistics-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
 	rm docs/linguistics-test/*.html

@@ -10,7 +10,6 @@ Import: inflections
 Import: ../inbuild/syntax
 Import: linguistics
 
-Chapter 1: Everything
-	Basics
+Chapter 1: Scaffolding
 	Program Control
 	Unit Tests

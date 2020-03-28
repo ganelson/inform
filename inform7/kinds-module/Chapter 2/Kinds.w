@@ -793,6 +793,23 @@ void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 	Preform::mark_vocabulary(ve, <k-kind>);
 }
 
+@h From context.
+Sometimes we need to kmow the current values of the 26 kind variables, A
+to Z: that depemds on a much wider context than the |kinds| module can see,
+so we need the client to help us. |v| is in the range 1 to 26. Returning
+|NULL| means there is no current meaning; so if the client provides no
+function to tell us, then all variables are permanently unset.
+
+=
+kind *Kinds::variable_from_context(int v) {
+	#ifdef KIND_VARIABLE_FROM_CONTEXT
+	return KIND_VARIABLE_FROM_CONTEXT(v);
+	#endif
+	#ifndef KIND_VARIABLE_FROM_CONTEXT
+	return NULL;
+	#endif
+}
+
 @h Errors.
 
 @e DimensionRedundant_KINDERROR from 1
@@ -805,4 +822,50 @@ void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 @e LPCantScaleYet_KINDERROR
 @e LPCantScaleTwice_KINDERROR
 
+@ Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |KINDS_PROBLEM_HANDLER|
+to some routine of her own, gazumping this one.
+
+=
+void Kinds::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
+	#ifdef KINDS_PROBLEM_HANDLER
+	KINDS_PROBLEM_HANDLER(err_no, pn, K1, K2);
+	#endif
+	#ifndef KINDS_PROBLEM_HANDLER
+	TEMPORARY_TEXT(text);
+	WRITE_TO(text, "%+W", ParseTree::get_text(pn));
+	switch (err_no) {
+		case DimensionRedundant_KINDERROR:
+			Errors::with_text("multiplication rule given twice: %S", text);
+			break;
+		case DimensionNotBaseKOV_KINDERROR:
+			Errors::with_text("multiplication rule too complex: %S", text);
+			break;
+		case NonDimensional_KINDERROR:
+			Errors::with_text("multiplication rule quotes non-numerical kinds: %S", text);
+			break;
+		case UnitSequenceOverflow_KINDERROR:
+			Errors::with_text("multiplication rule far too complex: %S", text);
+			break;
+		case DimensionsInconsistent_KINDERROR:
+			Errors::with_text("multiplication rule creates inconsistency: %S", text);
+			break;
+		case KindUnalterable_KINDERROR:
+			Errors::with_text("making this subkind would lead to a contradiction: %S", text);
+			break;
+		case KindsCircular_KINDERROR:
+			Errors::with_text("making this subkind would lead to a circularity: %S", text);
+			break;
+		case LPCantScaleYet_KINDERROR:
+			Errors::with_text("tries to scale a value with no point of reference: %S", text);
+			break;
+		case LPCantScaleTwice_KINDERROR:
+			Errors::with_text("tries to scale a value which has already been scaled: %S", text);
+			break;
+		default: internal_error("unimplemented problem message");
+	}
+	DISCARD_TEXT(text);
+	#endif
+}
 

@@ -249,7 +249,7 @@ void Lexer::ensure_space_up_to(int n) {
 		((lexer_details *) (Memory::I7_calloc(new_size, sizeof(lexer_details), LEXER_WORDS_MREASON)));
 
 	if (new_lw_array == NULL) {
-		LEXER_PROBLEM_HANDLER(MEMORY_OUT_LEXERERROR, NULL, NULL);
+		Lexer::lexer_problem_handler(MEMORY_OUT_LEXERERROR, NULL, NULL);
 		exit(1); /* in case the handler fails to do this */
 	}
 	for (int i=0; i<new_size; i++) {
@@ -634,11 +634,11 @@ be a bug, and NI is bug-free, so it follows that it could never happen.
         }
     }
     if (lxs_kind_of_word == STRING_KW)
-    	LEXER_PROBLEM_HANDLER(STRING_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
+    	Lexer::lexer_problem_handler(STRING_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
     if (lxs_kind_of_word == COMMENT_KW)
-    	LEXER_PROBLEM_HANDLER(COMMENT_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
+    	Lexer::lexer_problem_handler(COMMENT_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
     if (lxs_kind_of_word == I6_INCLUSION_KW)
-    	LEXER_PROBLEM_HANDLER(I6_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
+    	Lexer::lexer_problem_handler(I6_NEVER_ENDS_LEXERERROR, problem_source_description, NULL);
     lxs_kind_of_word = ORDINARY_KW;
 
 @ The feeder routine is required to send us a triple each time: |cr|
@@ -876,12 +876,12 @@ and do not come here.
     if (len > max_len) {
         lexer_word[max_len] = 0; /* truncate to its maximum length */
 		if (lxs_kind_of_word == STRING_KW) {
-			LEXER_PROBLEM_HANDLER(STRING_TOO_LONG_LEXERERROR, NULL, lexer_word);
+			Lexer::lexer_problem_handler(STRING_TOO_LONG_LEXERERROR, NULL, lexer_word);
 		} else if (lxs_kind_of_word == I6_INCLUSION_KW) {
 			lexer_word[100] = 0; /* to avoid an absurdly long problem message */
-			LEXER_PROBLEM_HANDLER(I6_TOO_LONG_LEXERERROR, NULL, lexer_word);
+			Lexer::lexer_problem_handler(I6_TOO_LONG_LEXERERROR, NULL, lexer_word);
 		} else {
-			LEXER_PROBLEM_HANDLER(WORD_TOO_LONG_LEXERERROR, NULL, lexer_word);
+			Lexer::lexer_problem_handler(WORD_TOO_LONG_LEXERERROR, NULL, lexer_word);
 		}
     }
 
@@ -1095,4 +1095,46 @@ wording Lexer::splice_words(wording W) {
 	wording N = Wordings::new(lexer_wordcount, lexer_wordcount + L - 1);
 	lexer_wordcount += L;
 	return N;
+}
+
+@h Basic command-line error handler.
+Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |LEXER_PROBLEM_HANDLER|
+to some routine of her own, gazumping this one.
+
+=
+void Lexer::lexer_problem_handler(int err, text_stream *problem_source_description, wchar_t *word) {
+	#ifdef LEXER_PROBLEM_HANDLER
+	LEXER_PROBLEM_HANDLER(err, problem_source_description, word);
+	#endif
+	#ifndef LEXER_PROBLEM_HANDLER
+	if (err == MEMORY_OUT_LEXERERROR)
+		Errors::fatal("Out of memory: unable to create lexer workspace");
+	TEMPORARY_TEXT(word_t);
+	if (word) WRITE_TO(word_t, "%w", word);
+	switch (err) {
+		case STRING_TOO_LONG_LEXERERROR:
+			Errors::with_text("Too much text in quotation marks: %S", word_t);
+            break;
+		case WORD_TOO_LONG_LEXERERROR:
+			Errors::with_text("Word too long: %S", word_t);
+			break;
+		case I6_TOO_LONG_LEXERERROR:
+			Errors::with_text("I6 inclusion too long: %S", word_t);
+			break;
+		case STRING_NEVER_ENDS_LEXERERROR:
+			Errors::with_text("Quoted text never ends: %S", problem_source_description);
+			break;
+		case COMMENT_NEVER_ENDS_LEXERERROR:
+			Errors::with_text("Square-bracketed text never ends: %S", problem_source_description);
+			break;
+		case I6_NEVER_ENDS_LEXERERROR:
+			Errors::with_text("I6 inclusion text never ends: %S", problem_source_description);
+			break;
+		default:
+			internal_error("unknown lexer error");
+    }
+	DISCARD_TEXT(word_t);
+	#endif
 }

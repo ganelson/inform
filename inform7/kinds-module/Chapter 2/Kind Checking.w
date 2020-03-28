@@ -442,7 +442,7 @@ void Kinds::Compare::show_variables(void) {
 void Kinds::Compare::show_frame_variables(void) {
 	int shown = 0;
 	for (int i=1; i<=26; i++) {
-		kind *K = KIND_VARIABLE_FROM_CONTEXT(i);
+		kind *K = Kinds::variable_from_context(i);
 		if (K) {
 			if (shown++ == 0) LOGIF(MATCHING, "Stack frame uses kind variables: ");
 			LOGIF(MATCHING, "%c=$u ", 'A'+i-1, K);
@@ -470,17 +470,21 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 		case NEVER_MATCH:
 			LOG("Tried to make $u a kind of $u\n", sub, super);
 			if (problem_count == 0)
-				KINDS_PROBLEM_HANDLER(KindUnalterable_KINDERROR,
+				Kinds::problem_handler(KindUnalterable_KINDERROR,
 					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
 			return;
 		case SOMETIMES_MATCH:
+			#ifdef KINDS_TEST_WITHIN
 			if (KINDS_TEST_WITHIN(super, sub)) {
 				if (problem_count == 0)
-					KINDS_PROBLEM_HANDLER(KindsCircular_KINDERROR,
+					Kinds::problem_handler(KindsCircular_KINDERROR,
 						Kinds::Behaviour::get_superkind_set_at(super), super, existing);
 				return;
 			}
+			#endif
+			#ifdef KINDS_MOVE_WITHIN
 			KINDS_MOVE_WITHIN(sub, super);
+			#endif
 			Kinds::Behaviour::set_superkind_set_at(sub, current_sentence);
 			LOGIF(KIND_CHANGES, "Making $u a subkind of $u\n", sub, super);
 	}

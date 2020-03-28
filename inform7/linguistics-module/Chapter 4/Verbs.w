@@ -220,7 +220,7 @@ in a canonical verbal form. For example, "translate into |+| as".
 @<Compose the reference texts for the new form@> =
 	verb_conjugation *vc = vi->conjugation;
 	if (vc) {
-		int p = PREFORM_ADAPTIVE_PERSON(vc->defined_in);
+		int p = VerbUsages::adaptive_person(vc->defined_in);
 		word_assemblage we_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
 		word_assemblage we_dont_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
 		vf->infinitive_reference_text = vc->infinitive;

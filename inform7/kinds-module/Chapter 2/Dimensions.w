@@ -332,7 +332,7 @@ void Kinds::Dimensions::record_multiplication_rule(kind *left, kind *right, kind
 
 	for (dimr = dimrs->multiplications; dimr; dimr = dimr->next)
 		if (dimr->right == right) {
-			KINDS_PROBLEM_HANDLER(DimensionRedundant_KINDERROR, NULL, NULL, NULL);
+			Kinds::problem_handler(DimensionRedundant_KINDERROR, NULL, NULL, NULL);
 			return;
 		}
 
@@ -374,13 +374,13 @@ void Kinds::Dimensions::dim_set_multiplication(kind *left, kind *right,
 	if ((Kinds::is_proper_constructor(left)) ||
 		(Kinds::is_proper_constructor(right)) ||
 		(Kinds::is_proper_constructor(outcome))) {
-		KINDS_PROBLEM_HANDLER(DimensionNotBaseKOV_KINDERROR, NULL, NULL, NULL);
+		Kinds::problem_handler(DimensionNotBaseKOV_KINDERROR, NULL, NULL, NULL);
 		return;
 	}
 	if ((Kinds::Behaviour::is_quasinumerical(left) == FALSE) ||
 		(Kinds::Behaviour::is_quasinumerical(right) == FALSE) ||
 		(Kinds::Behaviour::is_quasinumerical(outcome) == FALSE)) {
-		KINDS_PROBLEM_HANDLER(NonDimensional_KINDERROR, NULL, NULL, NULL);
+		Kinds::problem_handler(NonDimensional_KINDERROR, NULL, NULL, NULL);
 		return;
 	}
 	Kinds::Dimensions::record_multiplication_rule(left, right, outcome);
@@ -571,7 +571,7 @@ to deal with |UNKNOWN_NT| explicitly.
 accident, but we'll be careful:
 
 @<Trip a unit sequence overflow@> =
-	KINDS_PROBLEM_HANDLER(UnitSequenceOverflow_KINDERROR, NULL, NULL, NULL);
+	Kinds::problem_handler(UnitSequenceOverflow_KINDERROR, NULL, NULL, NULL);
 	return;
 
 @ The second operation is taking roots.
@@ -787,7 +787,7 @@ the Kinds index page more helpful. But we must reject a contradiction.
 		Kinds::Behaviour::get_dimensional_form(terms[1]), 1, &product);
 	if (Kinds::Dimensions::compare_unit_sequences(&product,
 		Kinds::Behaviour::get_dimensional_form(terms[2])) == FALSE)
-		KINDS_PROBLEM_HANDLER(DimensionsInconsistent_KINDERROR, NULL, NULL, NULL);
+		Kinds::problem_handler(DimensionsInconsistent_KINDERROR, NULL, NULL, NULL);
 
 @h Classifying the units.
 Some of the derived units are dimensionless, others not. Number

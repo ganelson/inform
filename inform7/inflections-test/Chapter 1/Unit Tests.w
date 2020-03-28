@@ -1,6 +1,6 @@
 [Unit::] Unit Tests.
 
-A selection of tests for, or demonstrations of, inflections features.
+How we shall test it.
 
 @h Adjectives.
 

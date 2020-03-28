@@ -1,9 +1,10 @@
 [Main::] Program Control.
 
-The top level, which decides what is to be done and then carries
-this plan out.
+What shall we test?
 
 @h Main routine.
+
+@d INTOOL_NAME "problems-test"
 
 @e TEST_PROBLEMS_CLSW
 

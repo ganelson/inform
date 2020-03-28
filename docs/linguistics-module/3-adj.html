@@ -11,7 +11,7 @@
 		<nav role="navigation">
 		<h1><a href="../webs.html">Sources</a></h1>
 <ul>
-<li><a href="../compiler.html"><b>compiler</b></a></li>
+<li><a href="../compiler.html"><b>compiler tools</b></a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
@@ -97,6 +97,10 @@ distinct from its meaning, and this is it.
 </p>
 
 
+<pre class="definitions">
+    <span class="plain">@</span><span class="reserved">default</span><span class="plain"> </span><span class="constant">ADJECTIVE_MEANING_TYPE</span><span class="plain"> </span><span class="reserved">void</span>
+</pre>
+
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjectival_phrase</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">name_cluster</span><span class="plain"> *</span><span class="identifier">adjective_names</span><span class="plain">;</span>
@@ -104,7 +108,7 @@ distinct from its meaning, and this is it.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">aph_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">aph_package</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="identifier">ADJECTIVE_MEANING_TYPE</span><span class="plain"> *</span><span class="identifier">meanings</span><span class="plain">;</span>
+        <span class="constant">ADJECTIVE_MEANING_TYPE</span><span class="plain"> *</span><span class="identifier">meanings</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">adjectival_phrase</span><span class="plain">;</span>
 </pre>

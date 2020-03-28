@@ -493,7 +493,7 @@ created, make suitable comparatives ("bigger than", etc.) and
 prepositional usages to test property-equality ("the same height as").
 
 =
-void Properties::Measurement::register_comparative(wording W, VERB_MEANING_TYPE *root) {
+void Properties::Measurement::register_comparative(wording W, binary_predicate *root) {
 	set_where_created = current_sentence;
 	verb_meaning vm = VerbMeanings::new(root, NULL);
 	preposition_identity *prep =

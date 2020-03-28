@@ -25,7 +25,6 @@ Manual
 	Pipelines and Stages
 	Reference Card
 
-Chapter 1: Delegation
-	Basics
+Chapter 1: Outside of inform7
 	Main
 	Unit Tests

@@ -545,5 +545,5 @@ the exactly equivalent idea of the hat being worn by Darcy.
 	ParseTree::set_verb_meaning(V, vm);
 	if ((ParseTree::int_annotation(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {
 		V->next->next = NounPhrases::PN_rel(
-			ParseTree::get_text(V), VERB_MEANING_REVERSAL(meaning), STANDARD_RELN, O_PN);
+			ParseTree::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
 	}

@@ -48,6 +48,8 @@ So we carry out the sentence breaking with a simple finite state machine --
 the last sentence having been a rule preamble tells us that the current one
 is probably a phrase, and so on -- and the following is its state.
 
+@default COPY_FILE_TYPE void
+
 =
 source_file *sfsm_source_file = NULL;
 int sfsm_inside_rule_mode = FALSE;
@@ -202,19 +204,19 @@ sentence divisions. The other cases are more complicated: see below.
 			stop_character, no_stop_words, sentence_start, position);
 
 @<Issue problem for colon at end of paragraph@> =
-	SYNTAX_PROBLEM_HANDLER(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_copy, 0);
+	Sentences::syntax_problem(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_copy, 0);
 
 @<Issue problem for colon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon at end of sentence@> =
-	SYNTAX_PROBLEM_HANDLER(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon after colon@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @<Issue problem for semicolon after full stop@> =
-	SYNTAX_PROBLEM_HANDLER(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
 
 @ Colons are normally dividers, too, but an exception is made if they come
 between two apparently numerical constructions, because this suggests that
@@ -334,7 +336,7 @@ is declared as if it were a super-heading in the text.
 
 @<Reject if we have run on past the end of an extension@> =
 	if ((sfsm_extension_position == 3) && (begins_or_ends == 0)) {
-		SYNTAX_PROBLEM_HANDLER(ExtSpuriouslyContinues_SYNERROR, W, sfsm_copy, 0);
+		Sentences::syntax_problem(ExtSpuriouslyContinues_SYNERROR, W, sfsm_copy, 0);
 		sfsm_extension_position = 4; /* to avoid multiply issuing this */
 	}
 
@@ -369,7 +371,7 @@ continuing regardless.
 	LOOP_THROUGH_WORDING(k, W)
 		if (k > Wordings::first_wn(W))
 			if ((Lexer::break_before(k) == '\n') || (Lexer::indentation_level(k) > 0)) {
-				SYNTAX_PROBLEM_HANDLER(HeadingOverLine_SYNERROR, W, sfsm_copy, k);
+				Sentences::syntax_problem(HeadingOverLine_SYNERROR, W, sfsm_copy, k);
 				break;
 			}
 
@@ -386,7 +388,7 @@ newlines automatically added at the end of the feed of any source file.
 		for (k = Wordings::last_wn(W)+1;
 			(k<=Wordings::last_wn(W)+8) && (k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
 			k++) ;
-		SYNTAX_PROBLEM_HANDLER(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_copy, k);
+		Sentences::syntax_problem(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_copy, k);
 	}
 
 @ We now have a genuine heading, and can declare it, calling a routine
@@ -408,8 +410,8 @@ from an extension, we need to make sure we saw both beginning and end:
 
 @<Issue a problem message if we are missing the begin and end here sentences@> =
 	switch (sfsm_extension_position) {
-		case 1: SYNTAX_PROBLEM_HANDLER(ExtNoBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
-		case 2: SYNTAX_PROBLEM_HANDLER(ExtNoEndsHere_SYNERROR, W, sfsm_copy, 0); break;
+		case 1: Sentences::syntax_problem(ExtNoBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
+		case 2: Sentences::syntax_problem(ExtNoEndsHere_SYNERROR, W, sfsm_copy, 0); break;
 		case 3: break;
 	}
 
@@ -465,7 +467,7 @@ sentences and options-file sentences may have been read already.)
 	if (sfsm_inside_rule_mode)
 		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@>
 	else if (stop_character == ';') {
-		SYNTAX_PROBLEM_HANDLER(UnexpectedSemicolon_SYNERROR, W, sfsm_copy, 0);
+		Sentences::syntax_problem(UnexpectedSemicolon_SYNERROR, W, sfsm_copy, 0);
 		stop_character = '.';
 	}
 
@@ -666,3 +668,55 @@ it would be too late.
 	current_sentence = new;
 	Preform::parse_preform(GET_RW(<language-modifying-sentence>, 1), TRUE);
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+
+@ Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |SYNTAX_PROBLEM_HANDLER|
+to some routine of her own, gazumping this one.
+
+=
+void Sentences::syntax_problem(int err_no, wording W, void *ref, int k) {
+	#ifdef SYNTAX_PROBLEM_HANDLER
+	SYNTAX_PROBLEM_HANDLER(err_no, W, ref, k);
+	#endif
+	#ifndef SYNTAX_PROBLEM_HANDLER
+	TEMPORARY_TEXT(text);
+	WRITE_TO(text, "%+W", W);
+	switch (err_no) {
+		case UnexpectedSemicolon_SYNERROR:
+			Errors::with_text("unexpected semicolon in sentence: %S", text);
+			break;
+		case ParaEndsInColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon: %S", text);
+			break;
+		case SentenceEndsInColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon and full stop: %S", text);
+			break;
+		case SentenceEndsInSemicolon_SYNERROR:
+			Errors::with_text("paragraph ends with a semicolon and full stop: %S", text);
+			break;
+		case SemicolonAfterColon_SYNERROR:
+			Errors::with_text("paragraph ends with a colon and semicolon: %S", text);
+			break;
+		case SemicolonAfterStop_SYNERROR:
+			Errors::with_text("paragraph ends with a full stop and semicolon: %S", text);
+			break;
+		case ExtNoBeginsHere_SYNERROR:
+			Errors::nowhere("extension has no beginning");
+			break;
+		case ExtNoEndsHere_SYNERROR:
+			Errors::nowhere("extension has no end");
+			break;
+		case ExtSpuriouslyContinues_SYNERROR:
+			Errors::with_text("extension continues after end: %S", text);
+			break;
+		case HeadingOverLine_SYNERROR:
+			Errors::with_text("heading contains a line break: %S", text);
+			break;
+		case HeadingStopsBeforeEndOfLine_SYNERROR:
+			Errors::with_text("heading stops before end of line: %S", text);
+			break;
+	}
+	DISCARD_TEXT(text);
+	#endif
+}

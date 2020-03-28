@@ -583,4 +583,27 @@ registering multiple inflected forms of the same text; but it's not worth
 going to any trouble to prevent this.
 
 @<Complain of excessive length of the new excerpt@> =
-	LINGUISTICS_PROBLEM_HANDLER(TooLongName_LINERROR, EMPTY_WORDING, NULL, 0);
+	ExcerptMeanings::problem_handler(TooLongName_LINERROR, EMPTY_WORDING, NULL, 0);
+
+@h Errors.
+Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |LINGUISTICS_PROBLEM_HANDLER|
+to some routine of her own, gazumping this one.
+
+=
+void ExcerptMeanings::problem_handler(int err_no, wording W, void *ref, int k) {
+	#ifdef LINGUISTICS_PROBLEM_HANDLER
+	LINGUISTICS_PROBLEM_HANDLER(err_no, W, ref, k);
+	#endif
+	#ifndef LINGUISTICS_PROBLEM_HANDLER
+	TEMPORARY_TEXT(text);
+	WRITE_TO(text, "%+W", W);
+	switch (err_no) {
+		case TooLongName_LINERROR:
+			Errors::nowhere("noun too long");
+			break;
+	}
+	DISCARD_TEXT(text);
+	#endif
+}

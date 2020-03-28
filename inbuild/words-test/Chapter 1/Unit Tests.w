@@ -1,6 +1,6 @@
 [Unit::] Unit Tests.
 
-A selection of tests for, or demonstrations of, words features.
+How we shall test it.
 
 @h Lexer.
 
@@ -48,7 +48,7 @@ void Unit::test_lexer(text_stream *arg) {
 
 @ =
 void Unit::test_preform(text_stream *arg) {
-	pathname *P = Pathnames::from_text(I"inform7");
+	pathname *P = Pathnames::from_text(I"inbuild");
 	P = Pathnames::subfolder(P, I"words-test");
 	P = Pathnames::subfolder(P, I"Tangled");
 	filename *S = Filenames::in_folder(P, I"Syntax.preform");
@@ -62,7 +62,8 @@ void Unit::test_preform(text_stream *arg) {
 		LOOP_THROUGH_WORDING(i, sf->text_read) {
 			if (Lexer::word(i) == PARBREAK_V) continue;
 			int j = i;
-			while ((j <= Wordings::last_wn(sf->text_read)) && (Lexer::word(j) != PARBREAK_V)) j++;
+			while ((j <= Wordings::last_wn(sf->text_read))
+				&& (Lexer::word(j) != PARBREAK_V)) j++;
 			wording W = Wordings::new(i, j-1);
 			i = j-1;
 			PRINT("command: %W: ", W);

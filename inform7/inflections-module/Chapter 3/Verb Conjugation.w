@@ -718,7 +718,7 @@ they can get, so we'll try to provide good problem messages.
 
 =
 void Conjugation::trie_definition_error(nonterminal *nt, production *pr, char *message) {
-	PREFORM_ERROR_HANDLER(WordAssemblages::lit_0(), nt, pr, message);
+	Conjugation::basic_problem_handler(WordAssemblages::lit_0(), nt, pr, message);
 }
 
 @ And similarly:
@@ -726,8 +726,49 @@ void Conjugation::trie_definition_error(nonterminal *nt, production *pr, char *m
 =
 void Conjugation::error(word_assemblage base_text, nonterminal *nt,
 	production *pr, char *message) {
-	PREFORM_ERROR_HANDLER(base_text, nt, pr, message);
+	Conjugation::basic_problem_handler(base_text, nt, pr, message);
 	exit(1);
+}
+
+@ Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |SYNTAX_PROBLEM_HANDLER|
+to some routine of her own, gazumping this one.
+
+=
+void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *nt,
+	production *pr, char *message) {
+	#ifdef INFLECTIONS_ERROR_HANDLER
+	INFLECTIONS_ERROR_HANDLER(base_text, nt, pr, message);
+	#endif
+	#ifndef INFLECTIONS_ERROR_HANDLER
+	if (pr) {
+		LOG("The production at fault is:\n");
+		Preform::log_production(pr, FALSE); LOG("\n");
+	}
+	TEMPORARY_TEXT(ERM);
+	if (nt == NULL)
+		WRITE_TO(ERM, "(no nonterminal)");
+	else
+		WRITE_TO(ERM, "nonterminal %w", Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
+	WRITE_TO(ERM, ": ");
+
+	if (WordAssemblages::nonempty(base_text))
+		WRITE_TO(ERM, "can't conjugate verb '%A': ", &base_text);
+
+	if (pr) {
+		TEMPORARY_TEXT(TEMP);
+		for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+			Preform::write_ptoken(TEMP, pt);
+			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
+		}
+		WRITE_TO(ERM, "line %d ('%S'): ", pr->match_number, TEMP);
+		DISCARD_TEXT(TEMP);
+	}
+	WRITE_TO(ERM, "%s", message);
+	Errors::with_text("Preform error: %S", ERM);
+	DISCARD_TEXT(ERM);
+	#endif
 }
 
 @h Testing.

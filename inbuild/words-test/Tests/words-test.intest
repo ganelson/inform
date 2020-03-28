@@ -1,4 +1,4 @@
--cases 'inform7/words-test/Tests/Test Cases'
+-cases 'inbuild/words-test/Tests/Test Cases'
 
 -recipe
 
@@ -6,7 +6,7 @@
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	mkdir: $PATH/_Results_Actual
 
-	step: inform7/words-test/Tangled/words-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	step: inbuild/words-test/Tangled/words-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in words-test' $A
 
 	show: $A

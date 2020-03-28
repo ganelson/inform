@@ -21,6 +21,8 @@ cannot optimise by simply cacheing the heading level from one problem to
 the next because it is not true that problems are always issued in source
 code order.
 
+@default NO_HEADING_LEVELS 10
+
 =
 void Problems::find_headings_at(parse_node_tree *T, parse_node *sentence, parse_node **problem_headings) {
 	for (int i=0; i<NO_HEADING_LEVELS; i++) problem_headings[i] = NULL;

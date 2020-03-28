@@ -9,7 +9,6 @@ Import: ../inbuild/words
 Import: ../inbuild/syntax
 Import: problems
 
-Chapter 1: Everything
-	Basics
+Chapter 1: Scaffolding
 	Program Control
 	Unit Tests

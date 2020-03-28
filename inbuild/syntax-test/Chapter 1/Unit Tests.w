@@ -1,6 +1,6 @@
 [Unit::] Unit Tests.
 
-A selection of tests for, or demonstrations of, syntax features.
+How we shall test it.
 
 @h
 

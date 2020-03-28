@@ -7,7 +7,6 @@ Licence: Artistic License 2.0
 Import: foundation
 Import: words
 
-Chapter 1: Everything
-	Basics
+Chapter 1: Scaffolding
 	Program Control
 	Unit Tests

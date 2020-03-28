@@ -377,7 +377,7 @@ parsed almost all of the time.
 <k-kind-variable> internal 1 {
 	int k = Kinds::Textual::parse_kind_variable_name(Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
 	if (k != 0) {
-		kind *K = KIND_VARIABLE_FROM_CONTEXT(k);
+		kind *K = Kinds::variable_from_context(k);
 		if (K) { *X = k; *XP = K; return TRUE; }
 	}
 	return FALSE;
@@ -516,7 +516,7 @@ to miss out on this detail.
 @<Describe a kind variable, either by name or by value@> =
 	int vn = Kinds::get_variable_number(K);
 	if ((substituting) && (vn > 0)) {
-		kind *subst = KIND_VARIABLE_FROM_CONTEXT(vn);
+		kind *subst = Kinds::variable_from_context(vn);
 		if (subst) { Kinds::Textual::write_inner(OUT, subst, plural_form, TRUE); return; }
 	}
 	WRITE("%c", 'A' + vn - 1);

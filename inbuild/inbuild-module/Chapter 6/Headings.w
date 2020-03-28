@@ -22,7 +22,7 @@ from disc ultimately falls under some heading, even if the source text as
 typed by the designer does not obviously have any headings in it.
 
 The hierarchy thus runs: File (0), Volume (1), Book (2), Part (3),
-Chapter (4), Section (5). (The implementation below allows for even lower
+Chapter (4), Section (5). (The implementation in |imbuild| allows for even lower
 levels of subheading, from 6 to 9, but Inform doesn't use them.) Every run
 of Inform declares at least two File (0) headings, representing the start of
 main text and the start of the Standard Rules, and these latter have a

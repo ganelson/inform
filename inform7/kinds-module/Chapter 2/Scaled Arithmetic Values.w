@@ -157,7 +157,7 @@ some existing notation, in which case the |equiv| flag is set.
 		(sc->scaling_mode == LP_SCALED_DOWN) ||
 		(equiv) ||
 		((sc->scaling_mode == LP_SCALED_AT) && (sc->use_integer_scaling == FALSE))))
-		KINDS_PROBLEM_HANDLER(LPCantScaleYet_KINDERROR, NULL, NULL, NULL);
+		Kinds::problem_handler(LPCantScaleYet_KINDERROR, NULL, NULL, NULL);
 	sc->int_M = sc->int_scalar;
 
 @ The harder case, when some scalings already exist for this kind. Firstly,
@@ -168,7 +168,7 @@ scalings (metric units such as mm, km, etc.) already have their |M| value.
 @<Determine M for a subsequent scaling of the list@> =
 	if (((sc->int_scalar != 1) || (sc->real_scalar != 1.0)) &&
 		((alt) && (sc->scaling_mode == LP_SCALED_AT)))
-		KINDS_PROBLEM_HANDLER(LPCantScaleTwice_KINDERROR, NULL, NULL, NULL);
+		Kinds::problem_handler(LPCantScaleTwice_KINDERROR, NULL, NULL, NULL);
 
 	if (equiv)
 		@<Calculate the multiplier for this equivalent scaling@>
