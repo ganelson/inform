@@ -1,0 +1,21 @@
+-cases 'inter/building-test/Tests/Test Cases'
+
+-recipe
+
+	set: $O = $PATH/$CASE.txt
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Console
+
+	step: inter/building-test/Tangled/building-test -test $O >$A 2>&1
+	or: 'failed to produce output' $A
+
+	show: $A
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end

@@ -537,7 +537,12 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	return InterNames::to_symbol(Kinds::RunTime::iname(K));
 	#endif
 	#ifndef CORE_MODULE
+	#ifdef CODEGEN_MODULE
 	return CodeGen::Pipeline::uks();
+	#endif
+	#ifndef CODEGEN_MODULE
+	return NULL;
+	#endif
 	#endif
 }
 

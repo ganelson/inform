@@ -3,7 +3,6 @@
 -cases [General] 'inter/Tests/General'
 -cases [Duplex] 'inter/Tests/Duplex'
 -cases [PipelineErrors] 'inter/Tests/PipelineErrors'
--cases [Units] 'inter/Tests/Units'
 
 -recipe [Valid]
 
@@ -118,25 +117,5 @@
 
 	match text: $A $I
 	or: 'produced incorrect errors'
-
--end
-
--recipe [Units]
-
-	set: $O = $PATH/$CASE.txt
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Console
-
-	step: inter/Tangled/inter -template inform7/Internal/I6T -test $O >$A 2>&1
-	or: 'failed to produce output' $A
-
-	show: $A
-
-	match text: $A $I
-	or: 'produced incorrect output'
 
 -end

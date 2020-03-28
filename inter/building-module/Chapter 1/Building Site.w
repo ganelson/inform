@@ -177,10 +177,12 @@ inter_package *Site::ensure_assimilation_package(inter_tree *I, inter_symbol *pl
 	if (I->site.assimilation_package == NULL) {
 		inter_package *main_package = Site::main_package(I);
 		inter_package *t_p = Inter::Packages::by_name(main_package, I"template");
+		#ifdef CODEGEN_MODULE
 		if (t_p == NULL) {
 			inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_package);
 			t_p = CodeGen::Assimilate::new_package_named(&in_main, I"template", plain_ptype_symbol);
 		}
+		#endif
 		I->site.assimilation_package = t_p;
 	}
 	return I->site.assimilation_package;

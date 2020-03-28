@@ -32,7 +32,6 @@ ALLOCATE_INDIVIDUALLY(inter_file)
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
 @e DOMAIN_CLSW
-@e TEST_CLSW
 @e ARCHITECTURE_CLSW
 @e ASSIMILATE_CLSW
 
@@ -71,8 +70,6 @@ int main(int argc, char **argv) {
 		L"specify pipeline as file X");
 	CommandLine::declare_switch(PIPELINE_VARIABLE_CLSW, L"variable", 2,
 		L"set pipeline variable X (in form name=value)");
-	CommandLine::declare_switch(TEST_CLSW, L"test", 2,
-		L"perform unit tests from file X");
 	CommandLine::declare_switch(DOMAIN_CLSW, L"domain", 2,
 		L"specify folder to read/write inter files from/to");
 	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
@@ -146,7 +143,6 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
 		case ASSIMILATE_CLSW: kit_path = Pathnames::from_text(arg);
 			pipeline_as_text = NULL; template_action = id; break;
-		case TEST_CLSW: unit_test_file = Filenames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
 			if (CodeGen::Architecture::set(arg) == FALSE)
 				Errors::fatal("no such -architecture");

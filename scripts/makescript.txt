@@ -144,6 +144,12 @@ INFORM6X = inform6/Tangled/inform6
 {dep} WORDSTEST on FOUNDATION
 {dep} WORDSTEST on WORDS
 
+{tool} BUILDINGTEST building-test inter/building-test
+{dep} BUILDINGTEST on FOUNDATION
+{dep} BUILDINGTEST on BUILDING
+{dep} BUILDINGTEST on INTER
+{dep} BUILDINGTEST on WORDS
+
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
 # -----------------------------------------------------------------------------
@@ -359,88 +365,90 @@ commit:
 .PHONY: pages
 pages:
 	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
-	rm docs/*.html
+	rm -f docs/*.html
 	$(INWEBX) docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/nav.html
 	$(INWEBX) docs/docs-src/compiler.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navc-o.html
 	$(INWEBX) docs/docs-src/extensions.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navk-o.html
 	$(INWEBX) docs/docs-src/other.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navo-o.html
 	$(INWEBX) docs/docs-src/units.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navu-o.html
-	rm docs/BasicInformKit/*.html
+	rm -f docs/BasicInformKit/*.html
 	$(INWEBX) inform7/Internal/Inter/BasicInformKit -weave-docs -weave-into docs/BasicInformKit -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
-	rm docs/WorldModelKit/*.html
+	rm -f docs/WorldModelKit/*.html
 	$(INWEBX) inform7/Internal/Inter/WorldModelKit -weave-docs -weave-into docs/WorldModelKit -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
-	rm docs/CommandParserKit/*.html
+	rm -f docs/CommandParserKit/*.html
 	$(INWEBX) inform7/Internal/Inter/CommandParserKit -weave-docs -weave-into docs/CommandParserKit -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
-	rm docs/BasicInformExtrasKit/*.html
+	rm -f docs/BasicInformExtrasKit/*.html
 	$(INWEBX) inform7/Internal/Inter/BasicInformExtrasKit -weave-docs -weave-into docs/BasicInformExtrasKit -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
-	rm docs/EnglishLanguageKit/*.html
+	rm -f docs/EnglishLanguageKit/*.html
 	$(INWEBX) inform7/Internal/Inter/EnglishLanguageKit -weave-docs -weave-into docs/EnglishLanguageKit -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
-	rm docs/inblorb/*.html
+	rm -f docs/inblorb/*.html
 	$(INBLORBX) -help >inblorb/Figures/help.txt
 	$(INWEBX) inblorb -weave-docs -weave-into docs/inblorb -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
-	rm docs/inbuild/*.html
+	rm -f docs/inbuild/*.html
 	$(INBUILDX) -help >inbuild/Figures/help.txt
 	$(INWEBX) inbuild -weave-docs -weave-into docs/inbuild -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Tools:../compiler.html'
-	rm docs/arch-module/*.html
+	rm -f docs/arch-module/*.html
 	$(INWEBX) inbuild/arch-module -weave-docs -weave-into docs/arch-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/syntax-module/*.html
+	rm -f docs/syntax-module/*.html
 	$(INWEBX) inbuild/syntax-module -weave-docs -weave-into docs/syntax-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/syntax-test/*.html
+	rm -f docs/syntax-test/*.html
 	$(INWEBX) inbuild/syntax-test -weave-docs -weave-into docs/syntax-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
-	rm docs/words-module/*.html
+	rm -f docs/words-module/*.html
 	$(INWEBX) inbuild/words-module -weave-docs -weave-into docs/words-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/words-test/*.html
+	rm -f docs/words-test/*.html
 	$(INWEBX) inbuild/words-test -weave-docs -weave-into docs/words-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
-	rm docs/inbuild-module/*.html
+	rm -f docs/inbuild-module/*.html
 	$(INWEBX) inbuild/inbuild-module -weave-docs -weave-into docs/inbuild-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/html-module/*.html
+	rm -f docs/html-module/*.html
 	$(INWEBX) inbuild/html-module -weave-docs -weave-into docs/html-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/indoc/*.html
+	rm -f docs/indoc/*.html
 	$(INDOCX) -help >indoc/Figures/help.txt
 	$(INWEBX) indoc -weave-docs -weave-into docs/indoc -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
-	rm docs/inform7/*.html
+	rm -f docs/inform7/*.html
 	$(INFORM7X) -help >inform7/Figures/help.txt
 	$(INWEBX) inform7 -weave-docs -weave-into docs/inform7 -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Tools:../compiler.html'
-	rm docs/core-module/*.html
+	rm -f docs/core-module/*.html
 	$(INWEBX) inform7/core-module -weave-docs -weave-into docs/core-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/if-module/*.html
+	rm -f docs/if-module/*.html
 	$(INWEBX) inform7/if-module -weave-docs -weave-into docs/if-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/index-module/*.html
+	rm -f docs/index-module/*.html
 	$(INWEBX) inform7/index-module -weave-docs -weave-into docs/index-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/inflections-module/*.html
+	rm -f docs/inflections-module/*.html
 	$(INWEBX) inform7/inflections-module -weave-docs -weave-into docs/inflections-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/inflections-test/*.html
+	rm -f docs/building-test/*.html
+	$(INWEBX) inter/building-test -weave-docs -weave-into docs/building-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
+	rm -f docs/inflections-test/*.html
 	$(INWEBX) inform7/inflections-test -weave-docs -weave-into docs/inflections-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
-	rm docs/kinds-module/*.html
+	rm -f docs/kinds-module/*.html
 	$(INWEBX) inform7/kinds-module -weave-docs -weave-into docs/kinds-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/linguistics-module/*.html
+	rm -f docs/linguistics-module/*.html
 	$(INWEBX) inform7/linguistics-module -weave-docs -weave-into docs/linguistics-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/linguistics-test/*.html
+	rm -f docs/linguistics-test/*.html
 	$(INWEBX) inform7/linguistics-test -weave-docs -weave-into docs/linguistics-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
-	rm docs/multimedia-module/*.html
+	rm -f docs/multimedia-module/*.html
 	$(INWEBX) inform7/multimedia-module -weave-docs -weave-into docs/multimedia-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/problems-module/*.html
+	rm -f docs/problems-module/*.html
 	$(INWEBX) inform7/problems-module -weave-docs -weave-into docs/problems-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/problems-test/*.html
+	rm -f docs/problems-test/*.html
 	$(INWEBX) inform7/problems-test -weave-docs -weave-into docs/problems-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
-	rm docs/inpolicy/*.html
+	rm -f docs/inpolicy/*.html
 	$(INPOLICYX) -help >inpolicy/Figures/help.txt
 	$(INWEBX) inpolicy -weave-docs -weave-into docs/inpolicy -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
-	rm docs/inrtps/*.html
+	rm -f docs/inrtps/*.html
 	$(INRTPSX) -help >inrtps/Figures/help.txt
 	$(INWEBX) inrtps -weave-docs -weave-into docs/inrtps -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
-	rm docs/inter/*.html
+	rm -f docs/inter/*.html
 	$(INTERX) -help >inter/Figures/help.txt
 	$(INWEBX) inter -weave-docs -weave-into docs/inter -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Tools:../compiler.html'
-	rm docs/inter-module/*.html
+	rm -f docs/inter-module/*.html
 	$(INWEBX) inter/inter-module -weave-docs -weave-into docs/inter-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/codegen-module/*.html
+	rm -f docs/codegen-module/*.html
 	$(INWEBX) inter/codegen-module -weave-docs -weave-into docs/codegen-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/building-module/*.html
+	rm -f docs/building-module/*.html
 	$(INWEBX) inter/building-module -weave-docs -weave-into docs/building-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
-	rm docs/standard_rules/*.html
+	rm -f docs/standard_rules/*.html
 	$(INWEBX) inform7/extensions/standard_rules -weave-docs -weave-into docs/standard_rules -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Extensions:../extensions.html'
-	rm docs/basic_inform/*.html
+	rm -f docs/basic_inform/*.html
 	$(INWEBX) inform7/extensions/basic_inform -weave-docs -weave-into docs/basic_inform -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Extensions:../extensions.html'
 
 # -----------------------------------------------------------------------------

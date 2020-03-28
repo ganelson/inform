@@ -27,4 +27,5 @@ Tests/Valid/_Console/
 Tests/Valid/_Textual/
 Tests/PipelineErrors/_Results_Actual/
 Tests/Units/_Results_Actual/
+building-test/Tests/Test Cases/_Results_Actual/
 
