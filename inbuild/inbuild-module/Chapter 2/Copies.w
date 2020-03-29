@@ -154,12 +154,12 @@ its main task: building an Inform project.
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	build_vertex *V = C->vertex;
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
-	Graphs::build(OUT, V, BM);
+	IncrementalBuild::build(OUT, V, BM);
 }
 void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	build_vertex *V = C->vertex;
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
-	Graphs::rebuild(OUT, V, BM);
+	IncrementalBuild::rebuild(OUT, V, BM);
 }
 
 @ Now in quick succession |-graph|, |-build-needs|, |-use-needs|, |-build-missing|,

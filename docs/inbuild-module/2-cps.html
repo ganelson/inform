@@ -91,7 +91,7 @@ stored here.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure inbuild_copy is accessed in 1/ic, 2/nst, 3/bg, 3/bs2, 3/is, 3/is2, 3/is3, 3/is4, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ps, 5/ls, 6/hdn, 6/inc and here.</p>
+<p class="endnote">The structure inbuild_copy is accessed in 1/ic, 2/nst, 3/bg, 3/ib, 3/bs2, 3/is, 3/is2, 3/is3, 3/is4, 4/km, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ps, 5/ls, 6/hdn, 6/inc and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Copies are created by the managers for the respective genres, usually when
 claiming. If you are a manager, do not call this...
@@ -196,7 +196,7 @@ for later reporting. These are stored in a list.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Copies::write_copy is used in 3/bg (<a href="3-bg.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Copies::write_copy is used in 3/bg (<a href="3-bg.html#SP5">&#167;5</a>, <a href="3-bg.html#SP6">&#167;6</a>, <a href="3-bg.html#SP8_1">&#167;8.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Reading source text. </b></p>
 
@@ -279,12 +279,12 @@ its main task: building an Inform project.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::build</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
         <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="functiontext">Graphs::build</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+        <span class="functiontext">IncrementalBuild::build</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::rebuild</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
         <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="functiontext">Graphs::rebuild</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+        <span class="functiontext">IncrementalBuild::rebuild</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -365,7 +365,7 @@ its main task: building an Inform project.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Copies::copy_to is used in 3/bg (<a href="3-bg.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Copies::copy_to is used in 3/bg (<a href="3-bg.html#SP8_1">&#167;8.1</a>).</p>
 
 <p class="endnote">The function Copies::overwrite_error is used in 4/km (<a href="4-km.html#SP6">&#167;6</a>), 4/em (<a href="4-em.html#SP8">&#167;8</a>), 4/lm (<a href="4-lm.html#SP7">&#167;7</a>), 4/tm (<a href="4-tm.html#SP6">&#167;6</a>), 4/pm (<a href="4-pm.html#SP7">&#167;7</a>).</p>
 

@@ -262,7 +262,6 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	pathname *build_folder = Projects::build_pathname(project);
 	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
 
-//	build_vertex *inter_V = Graphs::ghost_vertex(I"binary inter in memory");
 	build_vertex *inter_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inter_V, project->as_copy->vertex);
 	BuildSteps::attach(inter_V, compile_using_inform7_skill,
@@ -287,16 +286,14 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname2);
 	DISCARD_TEXT(story_file_leafname2);
 	project->blorbed_vertex = Graphs::file_vertex(blorbed_F);
-	project->blorbed_vertex->force_this = TRUE;
+	project->blorbed_vertex->always_build_this = TRUE;
 	Graphs::need_this_to_build(project->blorbed_vertex, project->unblorbed_vertex);
 	BuildSteps::attach(project->blorbed_vertex, package_using_inblorb_skill,
 		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
 
-//	inter_V->force_this = TRUE;
-
 	if (compile_only) {
 		project->chosen_build_target = inf_V;
-		inf_V->force_this = TRUE;
+		inf_V->always_build_this = TRUE;
 	} else if (releasing) project->chosen_build_target = project->blorbed_vertex;
 	else project->chosen_build_target = project->unblorbed_vertex;
 }

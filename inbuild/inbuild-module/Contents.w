@@ -20,6 +20,7 @@ Chapter 2: Conceptual Framework
 Chapter 3: Incremental Builds
 	Build Graphs
 	Build Methodology
+	Incremental Building
 	Build Scripts
 	Build Steps
 	Inter Skill

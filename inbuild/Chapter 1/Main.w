@@ -93,7 +93,7 @@ that we want to start work now.
 	build_methodology *BM;
 	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
 	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
-	if (build_trace_mode) trace_ibg = TRUE;
+	if (build_trace_mode) IncrementalBuild::enable_trace();
 	linked_list *L = Main::list_of_targets();
 	inbuild_copy *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
