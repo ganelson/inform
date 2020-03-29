@@ -3,6 +3,19 @@
 A command-line interface for Inbuild functions which are not part of the
 normal operation of the Inform compiler.
 
+@h Settings variables.
+The following will be set at the command line.
+
+=
+pathname *path_to_inbuild = NULL;
+
+int inbuild_task = INSPECT_TTASK;
+pathname *path_to_tools = NULL;
+int dry_run_mode = FALSE, build_trace_mode = FALSE;
+inbuild_nest *destination_nest = NULL;
+text_stream *filter_text = NULL;
+text_stream *unit_test = NULL;
+
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
 programs.
@@ -14,14 +27,6 @@ set the following variables as needed, and produce a list of targets to work
 on; then to carry out that work, and then shut down again.
 
 =
-int inbuild_task = INSPECT_TTASK;
-pathname *path_to_inbuild = NULL;
-pathname *path_to_tools = NULL;
-int dry_run_mode = FALSE, build_trace_mode = FALSE;
-inbuild_nest *destination_nest = NULL;
-text_stream *filter_text = NULL;
-text_stream *unit_test = NULL;
-
 int main(int argc, char **argv) {
     @<Start up the modules@>;
 	@<Read the command line@>;

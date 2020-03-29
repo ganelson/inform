@@ -1,30 +1,133 @@
 [Main::] Main.
 
-The top level, which decides what is to be done and then carries
-this plan out.
+A command-line interface for Inter functions which are not part of the
+normal operation of the Inform compiler.
 
-@h Main routine.
-
-@d INTOOL_NAME "inter"
-
-@ The modules included in |inter| make use of the Inform 7 module |kinds|,
-but when we are using |inter| on its own, kinds have no meaning for us.
-We are required to create a |kind| type, in order for |kinds| to compile;
-but no instances of this kind will ever in fact exist. |K_value| is a
-global constant meaning "any kind at all", and that also must exist.
-
-= (early code)
-typedef void kind;
-kind *K_value = NULL;
-
-@ We need to allocate one additional type of structure in memory, so:
-
-@e inter_file_MT
+@h Settings variables.
+The following will be set at the command line.
 
 =
-ALLOCATE_INDIVIDUALLY(inter_file)
+pathname *path_to_inter = NULL;
 
-@
+pathname *kit_to_assimilate = NULL;
+pathname *domain_path = NULL;
+linked_list *inter_file_list = NULL; /* of |filename| */
+filename *output_textually = NULL;
+filename *output_binarily = NULL;
+dictionary *pipeline_vars = NULL;
+filename *pipeline_as_file = NULL;
+text_stream *pipeline_as_text = NULL;
+
+void Main::add_pipeline_variable(text_stream *name, text_stream *value) {
+	Str::copy(Dictionaries::create_text(pipeline_vars, name), value);
+}
+void Main::add_pipeline_variable_from_filename(text_stream *name, filename *F) {
+	TEMPORARY_TEXT(fullname);
+	WRITE_TO(fullname, "%f", F);
+	Main::add_pipeline_variable(name, fullname);
+	DISCARD_TEXT(fullname);
+}
+
+@h Main routine.
+When Inter is called at the command line, it begins at |main|, like all C
+programs.
+
+Inter can do three different things: assimilate a kit, run a pipeline of
+code generation stages, and verify/transcode files of Inter code. In fact,
+though, that's really only two different things, because assimilation is
+also done with a pipeline.
+
+=
+int main(int argc, char **argv) {
+    @<Start up the modules@>;
+	@<Begin with an empty file list and variables dictionary@>;
+	@<Read the command line@>;
+	if (kit_to_assimilate) @<Set up a pipeline for assimilation@>;
+	if ((pipeline_as_file) || (pipeline_as_text))
+		@<Run the pipeline@>
+	else
+		@<Read the list of inter files, and perhaps transcode them@>;
+	@<Shut down the modules@>;
+	if (Errors::have_occurred()) return 1;
+	return 0;
+}
+
+@<Start up the modules@> =
+	Foundation::start(); /* must be started first */
+	ArchModule::start();
+	InterModule::start();
+	BuildingModule::start();
+	CodegenModule::start();
+
+@<Begin with an empty file list and variables dictionary@> =
+	inter_file_list = NEW_LINKED_LIST(filename);
+	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
+
+@ This pipeline is supplied built in to the installation of |inter|. In fact,
+it only ever writes the binary form of the code it produces, so only |*out|
+is used. But at times in the past it has been useful to debug with the text
+form, which would be written to |*outt|.
+
+@<Set up a pipeline for assimilation@> =
+	inter_architecture *A = CodeGen::Architecture::current();
+	if (A == NULL) Errors::fatal("no -architecture given");
+
+	pathname *path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
+	pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
+	pipeline_as_text = NULL; 
+
+	Main::add_pipeline_variable(I"*kit",
+		Pathnames::directory_name(kit_to_assimilate));
+	Main::add_pipeline_variable_from_filename(I"*out",
+		Architectures::canonical_binary(kit_to_assimilate, A));
+	Main::add_pipeline_variable_from_filename(I"*outt",
+		Architectures::canonical_textual(kit_to_assimilate, A));
+
+@<Run the pipeline@> =
+	if (LinkedLists::len(inter_file_list) > 0)
+		Errors::fatal("-pipeline-text and -pipeline-file cannot be combined with inter files");
+	if ((pipeline_as_file) && (pipeline_as_text))
+		Errors::fatal("-pipeline-text and -pipeline-file are mutually exclusive");
+	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
+	if (kit_to_assimilate) ADD_TO_LINKED_LIST(kit_to_assimilate, pathname, inter_paths);
+	codegen_pipeline *SS;
+	if (pipeline_as_file)
+		SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
+	else
+		SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
+	linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
+	if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list);
+	else Errors::fatal("pipeline could not be parsed");
+
+@<Read the list of inter files, and perhaps transcode them@> =
+	inter_tree *I = Inter::Tree::new();
+	filename *F;
+	LOOP_OVER_LINKED_LIST(F, filename, inter_file_list) {
+		if (Inter::Binary::test_file(F))
+			Inter::Binary::read(I, F);
+		else
+			Inter::Textual::read(I, F);
+	}
+	if (output_textually) {
+		text_stream C_struct; text_stream *OUT = &C_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, output_textually, UTF8_ENC) == FALSE)
+			Errors::fatal_with_file("unable to open textual inter file for output: %f",
+				output_textually);
+		Inter::Textual::write(OUT, I, NULL, 1);
+		STREAM_CLOSE(OUT);
+	}
+	if (output_binarily) Inter::Binary::write(output_binarily, I);
+
+@<Shut down the modules@> =
+	InterModule::end();
+	BuildingModule::end();
+	CodegenModule::end();
+	ArchModule::end();
+	Foundation::end(); /* must be ended last */
+
+@h Command line.
+
+@d INTOOL_NAME "inter"
 
 @e TEXTUAL_CLSW
 @e BINARY_CLSW
@@ -35,27 +138,7 @@ ALLOCATE_INDIVIDUALLY(inter_file)
 @e ARCHITECTURE_CLSW
 @e ASSIMILATE_CLSW
 
-=
-pathname *path_to_inter = NULL;
-pathname *path_to_pipelines = NULL;
-pathname *kit_path = NULL;
-int template_action = -1;
-pathname *domain_path = NULL;
-filename *output_textually = NULL;
-filename *output_binarily = NULL;
-filename *unit_test_file = NULL;
-dictionary *pipeline_vars = NULL;
-filename *pipeline_as_file = NULL;
-text_stream *pipeline_as_text = NULL;
-linked_list *requirements_list = NULL;
-
-int main(int argc, char **argv) {
-    @<Start up the modules@>;
-
-	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
-	path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
-	requirements_list = NEW_LINKED_LIST(inter_library);
-
+@<Read the command line@> =
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
 		L"usage: inter file1 file2 ... [options]\n");
@@ -76,73 +159,21 @@ int main(int argc, char **argv) {
 		L"generate Inter with architecture X");
 	CommandLine::declare_switch(ASSIMILATE_CLSW, L"assimilate", 2,
 		L"assimilate (i.e., build) Inter kit X for the current architecture");
-
-	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
 		
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
-	if (template_action == ASSIMILATE_CLSW) {
-		inter_architecture *A = CodeGen::Architecture::current();
-		if (A == NULL) Errors::fatal("no -architecture given");
-		filename *assim = Architectures::canonical_binary(kit_path, A);
-		filename *assim_t = Architectures::canonical_textual(kit_path, A);
-		pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
-		TEMPORARY_TEXT(fullname);
-		WRITE_TO(fullname, "%f", assim);
-		Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), fullname);
-		Str::clear(fullname);
-		WRITE_TO(fullname, "%f", assim_t);
-		Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
-		DISCARD_TEXT(fullname);
-		Str::copy(Dictionaries::create_text(pipeline_vars, I"*attach"), Pathnames::directory_name(kit_path));
-	}
-
-	Main::act();
-
-	@<Shut down the modules@>;
-
-	if (Errors::have_occurred()) return 1;
-	return 0;
-}
-
-@<Start up the modules@> =
-	Foundation::start(); /* must be started first */
-	ArchModule::start();
-	InterModule::start();
-	BuildingModule::start();
-	CodegenModule::start();
-
-@<Shut down the modules@> =
-	InterModule::end();
-	BuildingModule::end();
-	CodegenModule::end();
-	ArchModule::end();
-	Foundation::end(); /* must be ended last */
+	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
 
 @ =
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case TEXTUAL_CLSW: output_textually = Filenames::from_text(arg); break;
-		case BINARY_CLSW: output_binarily = Filenames::from_text(arg); pipeline_as_text = NULL; break;
+		case BINARY_CLSW: output_binarily = Filenames::from_text(arg); break;
 		case PIPELINE_CLSW: pipeline_as_text = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: pipeline_as_file = Filenames::from_text(arg); break;
-		case PIPELINE_VARIABLE_CLSW: {
-			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
-				if (Str::get_first_char(arg) != '*') {
-					Errors::fatal("-variable names must begin with '*'");
-				} else {
-					Str::copy(Dictionaries::create_text(pipeline_vars, mr.exp[0]), mr.exp[1]);
-				}
-			} else {
-				Errors::fatal("-variable should take the form 'name=value'");
-			}
-			Regexp::dispose_of(&mr);
-			break;
-		}
-		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); pipeline_as_text = NULL; break;
-		case ASSIMILATE_CLSW: kit_path = Pathnames::from_text(arg);
-			pipeline_as_text = NULL; template_action = id; break;
+		case PIPELINE_VARIABLE_CLSW: @<Add a pipeline variable to the dictionary@>; break;
+		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); break;
+		case ASSIMILATE_CLSW: kit_to_assimilate = Pathnames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
 			if (CodeGen::Architecture::set(arg) == FALSE)
 				Errors::fatal("no such -architecture");
@@ -150,48 +181,31 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 	}
 }
 
-@ =
-typedef struct inter_file {
-	struct filename *inter_filename;
-	MEMORY_MANAGEMENT
-} inter_file;
-
-void Main::add_file(int id, text_stream *arg, void *state) {
-	inter_file *IF = CREATE(inter_file);
-	IF->inter_filename = Filenames::from_text(arg);
-}
-
-@ =
-void Main::act(void) {
-	if ((pipeline_as_file) || (pipeline_as_text)) {
-		if (NUMBER_CREATED(inter_file) > 0)
-			Errors::fatal("-pipeline-text and -pipeline-file cannot be combined with inter file parameters");
-		linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-		ADD_TO_LINKED_LIST(kit_path, pathname, inter_paths);
-		codegen_pipeline *SS;
-		if (pipeline_as_file) SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
-		else SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
-		if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list);
-		else Errors::fatal("pipeline could not be parsed");
-	} else if (unit_test_file) {
-		UnitTests::run(unit_test_file);
+@<Add a pipeline variable to the dictionary@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, arg, L"(%c+)=(%c+)")) {
+		if (Str::get_first_char(arg) != '*') {
+			Errors::fatal("-variable names must begin with '*'");
+		} else {
+			Main::add_pipeline_variable(mr.exp[0], mr.exp[1]);
+		}
 	} else {
-		inter_tree *I = Inter::Tree::new();
-		inter_file *IF;
-		LOOP_OVER(IF, inter_file) {
-			if (Inter::Binary::test_file(IF->inter_filename))
-				Inter::Binary::read(I, IF->inter_filename);
-			else
-				Inter::Textual::read(I, IF->inter_filename);
-		}
-		if (output_textually) {
-			text_stream C_struct; text_stream *OUT = &C_struct;
-			if (STREAM_OPEN_TO_FILE(OUT, output_textually, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to open textual inter file for output: %f",
-					output_textually);
-			Inter::Textual::write(OUT, I, NULL, 1);
-			STREAM_CLOSE(OUT);
-		}
-		if (output_binarily) Inter::Binary::write(output_binarily, I);
+		Errors::fatal("-variable should take the form 'name=value'");
 	}
+	Regexp::dispose_of(&mr);
+
+@ =
+void Main::add_file(int id, text_stream *arg, void *state) {
+	filename *F = Filenames::from_text(arg);
+	ADD_TO_LINKED_LIST(F, filename, inter_file_list);
 }
+
+@ The modules included in |inter| make use of the Inform 7 module |kinds|,
+but when we are using |inter| on its own, kinds have no meaning for us.
+We are required to create a |kind| type, in order for |kinds| to compile;
+but no instances of this kind will ever in fact exist. |K_value| is a
+global constant meaning "any kind at all", and that also must exist.
+
+= (early code)
+typedef void kind;
+kind *K_value = NULL;

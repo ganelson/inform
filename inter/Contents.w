@@ -27,4 +27,3 @@ Manual
 
 Chapter 1: Outside of inform7
 	Main
-	Unit Tests
