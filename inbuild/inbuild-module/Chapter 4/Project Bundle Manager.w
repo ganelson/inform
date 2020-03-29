@@ -14,7 +14,7 @@ void ProjectBundleManager::start(void) {
 	METHOD_ADD(project_bundle_genre, GENRE_COPY_TO_NEST_MTID, ProjectBundleManager::copy_to_nest);
 	METHOD_ADD(project_bundle_genre, GENRE_GO_OPERATIONAL_MTID, ProjectBundleManager::go_operational);
 	METHOD_ADD(project_bundle_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectBundleManager::read_source_text_for);
-	METHOD_ADD(project_bundle_genre, GENRE_BUILD_COPY_MTID, ProjectBundleManager::build);
+	METHOD_ADD(project_bundle_genre, GENRE_BUILDING_SOON_MTID, ProjectBundleManager::building_soon);
 }
 
 void ProjectBundleManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -89,13 +89,9 @@ void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inb
 @h Build graph.
 
 =
-void ProjectBundleManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int build, int rebuild, int describe_only) {
+void ProjectBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
 	inform_project *project = ProjectBundleManager::from_copy(C);
-	build_vertex *V = project->chosen_build_target;
-	if (describe_only) Graphs::describe(OUT, V, TRUE);
-	else if (rebuild) Graphs::rebuild(OUT, V, BM);
-	else if (build) Graphs::build(OUT, V, BM);
+	*V = project->chosen_build_target;
 }
 
 @ The build graph for a project will need further thought...

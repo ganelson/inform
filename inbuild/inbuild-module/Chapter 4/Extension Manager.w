@@ -18,11 +18,10 @@ void ExtensionManager::start(void) {
 	extension_genre = Genres::new(I"extension", TRUE);
 	METHOD_ADD(extension_genre, GENRE_WRITE_WORK_MTID, ExtensionManager::write_work);
 	METHOD_ADD(extension_genre, GENRE_CLAIM_AS_COPY_MTID, ExtensionManager::claim_as_copy);
-	METHOD_ADD(extension_genre, GENRE_SCAN_COPY_MTID, Extensions::scan);
 	METHOD_ADD(extension_genre, GENRE_SEARCH_NEST_FOR_MTID, ExtensionManager::search_nest_for);
 	METHOD_ADD(extension_genre, GENRE_COPY_TO_NEST_MTID, ExtensionManager::copy_to_nest);
 	METHOD_ADD(extension_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ExtensionManager::read_source_text_for);
-	METHOD_ADD(extension_genre, GENRE_BUILD_COPY_MTID, ExtensionManager::build);
+	METHOD_ADD(extension_genre, GENRE_BUILDING_SOON_MTID, ExtensionManager::building_soon);
 }
 
 void ExtensionManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -60,7 +59,7 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 		C = Copies::new_in_file(
 			Editions::new(Works::new(extension_genre, I"Untitled", I"Anonymous"),
 				VersionNumbers::null()), F, NULL_GENERAL_POINTER);
-		Copies::scan(C);
+		Extensions::scan(C);
 		if (Works::is_standard_rules(C->edition->work))
 			Extensions::make_standard(ExtensionManager::from_copy(C));
 		Dictionaries::create(ext_copy_cache, key);
@@ -206,12 +205,9 @@ be read in as source text; and some of those might not be compatible with
 the current VM settings.
 
 =
-void ExtensionManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int build, int rebuild, int describe_only) {
+void ExtensionManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
 	ExtensionManager::ensure_graphed(C);
-	if (describe_only) Graphs::describe(OUT, C->vertex, TRUE);
-	else if (rebuild) Graphs::rebuild(OUT, C->vertex, BM);
-	else if (build) Graphs::build(OUT, C->vertex, BM);
+	*V = C->vertex;
 }
 
 void ExtensionManager::ensure_graphed(inbuild_copy *C) {

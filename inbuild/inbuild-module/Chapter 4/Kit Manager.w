@@ -10,11 +10,10 @@ void KitManager::start(void) {
 	kit_genre = Genres::new(I"kit", TRUE);
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, KitManager::write_work);
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
-	METHOD_ADD(kit_genre, GENRE_SCAN_COPY_MTID, Kits::scan);
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);
 	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, KitManager::copy_to_nest);
 	METHOD_ADD(kit_genre, GENRE_GO_OPERATIONAL_MTID, KitManager::go_operational);
-	METHOD_ADD(kit_genre, GENRE_BUILD_COPY_MTID, KitManager::build);
+	METHOD_ADD(kit_genre, GENRE_BUILDING_SOON_MTID, KitManager::building_soon);
 }
 
 void KitManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -52,7 +51,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
 		C = Copies::new_in_path(edition, P, NULL_GENERAL_POINTER);
-		Copies::scan(C);
+		Kits::scan(C);
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);
 	}
@@ -168,11 +167,8 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 @h Build graph.
 
 =
-void KitManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int build, int rebuild, int describe_only) {
-	if (describe_only) Graphs::describe(OUT, C->vertex, TRUE);
-	else if (rebuild) Graphs::rebuild(OUT, C->vertex, BM);
-	else if (build) Graphs::build(OUT, C->vertex, BM);
+void KitManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
+	*V = C->vertex;
 }
 
 void KitManager::build_vertex(inbuild_copy *C) {

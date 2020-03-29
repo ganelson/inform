@@ -14,7 +14,7 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
 	METHOD_ADD(project_file_genre, GENRE_GO_OPERATIONAL_MTID, ProjectFileManager::go_operational);
 	METHOD_ADD(project_file_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectFileManager::read_source_text_for);
-	METHOD_ADD(project_file_genre, GENRE_BUILD_COPY_MTID, ProjectFileManager::build);
+	METHOD_ADD(project_file_genre, GENRE_BUILDING_SOON_MTID, ProjectFileManager::building_soon);
 }
 
 void ProjectFileManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work *work) {
@@ -92,13 +92,9 @@ void ProjectFileManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbui
 @h Build graph.
 
 =
-void ProjectFileManager::build(inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int build, int rebuild, int describe_only) {
-	inform_project *project = ProjectBundleManager::from_copy(C);
-	build_vertex *V = project->chosen_build_target;
-	if (describe_only) Graphs::describe(OUT, V, TRUE);
-	else if (rebuild) Graphs::rebuild(OUT, V, BM);
-	else if (build) Graphs::build(OUT, V, BM);
+void ProjectFileManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
+	inform_project *project = ProjectFileManager::from_copy(C);
+	*V = project->chosen_build_target;
 }
 
 @ The build graph for a project will need further thought...

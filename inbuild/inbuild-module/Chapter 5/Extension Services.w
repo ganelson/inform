@@ -22,7 +22,7 @@ typedef struct inform_extension {
 	MEMORY_MANAGEMENT
 } inform_extension;
 
-void Extensions::scan(inbuild_genre *G, inbuild_copy *C) {
+void Extensions::scan(inbuild_copy *C) {
 	inform_extension *E = CREATE(inform_extension);
 	E->as_copy = C;
 	Copies::set_content(C, STORE_POINTER_inform_extension(E));

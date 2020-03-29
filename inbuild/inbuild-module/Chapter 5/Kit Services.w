@@ -33,7 +33,7 @@ typedef struct element_activation {
 	MEMORY_MANAGEMENT
 } element_activation;
 
-void Kits::scan(inbuild_genre *G, inbuild_copy *C) {
+void Kits::scan(inbuild_copy *C) {
 	if (C == NULL) internal_error("no copy to scan");
 
 	inform_kit *K = CREATE(inform_kit);

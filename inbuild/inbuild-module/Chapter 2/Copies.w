@@ -63,30 +63,35 @@ void Copies::go_operational(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
 }
 
-void Copies::scan(inbuild_copy *C) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_SCAN_COPY_MTID, C);
-}
-
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, TRUE, FALSE, FALSE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Graphs::build(OUT, V, BM);
 }
 void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, BM, FALSE, TRUE, FALSE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Graphs::rebuild(OUT, V, BM);
 }
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, TRUE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	Graphs::describe(OUT, V, TRUE);
 }
 void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	Graphs::show_needs(OUT, C->vertex, uses_only);
 }
 void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	int N = Graphs::show_missing(OUT, C->vertex, uses_only);
 	if (N == 0) WRITE("Nothing is missing\n");
 }
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILD_COPY_MTID, OUT, C, NULL, FALSE, FALSE, FALSE);
+	build_vertex *V = C->vertex;
+	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	int NM = Graphs::show_missing(OUT, C->vertex, FALSE);
 	if (NM > 0) WRITE("Because there are missing resources, -archive is cancelled\n");
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);

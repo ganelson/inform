@@ -74,7 +74,7 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_COPY_TO_NEST_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::copy_to_nest</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_GO_OPERATIONAL_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::go_operational</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::read_source_text_for</span><span class="plain">);</span>
-        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_BUILD_COPY_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::build</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_file_genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="functiontext">ProjectFileManager::building_soon</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectFileManager::write_work</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
@@ -112,7 +112,7 @@ which stores data about extensions used by the Inform compiler.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ProjectFileManager::from_copy is used in <a href="#SP8">&#167;8</a>, 1/ic (<a href="1-ic.html#SP19">&#167;19</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>), 3/is4 (<a href="3-is4.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function ProjectFileManager::from_copy is used in <a href="#SP6">&#167;6</a>, <a href="#SP8">&#167;8</a>, 1/ic (<a href="1-ic.html#SP19">&#167;19</a>), 3/is2 (<a href="3-is2.html#SP1">&#167;1</a>), 3/is3 (<a href="3-is3.html#SP1">&#167;1</a>), 3/is4 (<a href="3-is4.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function ProjectFileManager::new_copy is used in <a href="#SP3">&#167;3</a>.</p>
 
@@ -190,19 +190,15 @@ projects lived there.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectFileManager::build</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">,</span>
-        <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">build</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rebuild</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">describe_only</span><span class="plain">) {</span>
-        <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">ProjectBundleManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;chosen_build_target</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">describe_only</span><span class="plain">) </span><span class="functiontext">Graphs::describe</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rebuild</span><span class="plain">) </span><span class="functiontext">Graphs::rebuild</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">build</span><span class="plain">) </span><span class="functiontext">Graphs::build</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectFileManager::building_soon</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain"> **</span><span class="identifier">V</span><span class="plain">) {</span>
+        <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">ProjectFileManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;chosen_build_target</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ProjectFileManager::build is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">The function ProjectFileManager::building_soon is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The build graph for a project will need further thought...
 </p>

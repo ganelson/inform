@@ -3,8 +3,17 @@
 The different sorts of work managed by inbuild.
 
 @h Genres.
-For example, "kit" and "extension" will both be both genres. There will be
-few of these.
+Each different genre of work managed by Inbuild is represented by an instance
+of the following structure. (At present, then, there are exactly seven
+instances of it: nothing the user can do at the command line can change
+that total.) A work unambiguously specifies what genre it has by means
+of a non-null pointer to |inbuild_genre|. Moreover, the rules for how Inbuild
+manages works of this genre are expressed by methods attached to the structure.
+For example, to copy a work, Inbuild calls the |GENRE_COPY_TO_NEST_MTID|
+method attached to its |inbuild_genre|.
+
+Each genre has its own section of code: for example, |Kit Manager| defines
+the instance |kit_genre| and provides its method functions.
 
 =
 typedef struct inbuild_genre {
@@ -15,11 +24,7 @@ typedef struct inbuild_genre {
 } inbuild_genre;
 
 inbuild_genre *Genres::new(text_stream *name, int nested) {
-	inbuild_genre *gen;
-	LOOP_OVER(gen, inbuild_genre)
-		if (Str::eq(gen->genre_name, name))
-			return gen;
-	gen = CREATE(inbuild_genre);
+	inbuild_genre *gen = CREATE(inbuild_genre);
 	gen->genre_name = Str::duplicate(name);
 	gen->stored_in_nests = nested;
 	ENABLE_METHOD_CALLS(gen);
@@ -31,40 +36,108 @@ text_stream *Genres::name(inbuild_genre *G) {
 	return G->genre_name;
 }
 
+@ Some genres of work, such as kits and extensions, can be stored in nests;
+others, such as Inform projects, cannot. Whether a copy can be stored in a
+nest depends only on its genre.
+
+=
 int Genres::stored_in_nests(inbuild_genre *G) {
 	if (G == NULL) return FALSE;
 	return G->stored_in_nests;
 }
 
-@
+@h Method functions.
+And here are the method functions which a genre can, optionally, provide.
+All of these act on a given work, or a given copy of a work, having the
+genre in question.
+
+First, this writes text sufficient to identify a work: e.g., "Locksmith
+by Emily Short".
 
 @e GENRE_WRITE_WORK_MTID
-@e GENRE_CLAIM_AS_COPY_MTID
-@e GENRE_SCAN_COPY_MTID
-@e GENRE_SEARCH_NEST_FOR_MTID
-@e GENRE_COPY_TO_NEST_MTID
-@e GENRE_GO_OPERATIONAL_MTID
-@e GENRE_READ_SOURCE_TEXT_FOR_MTID
-@e GENRE_BUILD_COPY_MTID
 
 =
 VMETHOD_TYPE(GENRE_WRITE_WORK_MTID,
 	inbuild_genre *gen, text_stream *OUT, inbuild_work *work)
+
+@ This looks at a textual file locator, which might be a pathname or a
+filename, to see if it might refer to a copy of a work of the given genre.
+If it does, an |inbuild_copy| is created, and the pointer |*C| is set to
+point to it. If not, no error is issued, and |*C| is left unchanged.
+
+Errors can, however, be produced if Inbuild is pretty sure that the object
+in the file system is intended to be such a copy, but is damaged in some way:
+an extension with a malformed titling line, for example. Such errors are
+attached to the copy for later issuing.
+
+@e GENRE_CLAIM_AS_COPY_MTID
+
+=
 VMETHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID,
 	inbuild_genre *gen, inbuild_copy **C, text_stream *arg, text_stream *ext,
 	int directory_status)
-VMETHOD_TYPE(GENRE_SCAN_COPY_MTID,
-	inbuild_genre *gen, inbuild_copy *C)
+
+@ This searches the nest |N| for anything which (a) looks like a copy of a
+work of our genre, and (b) meets the given requirements. If a genre does
+not provide this method, then nothing of that genre can ever appear in
+|-matching| search results.
+
+@e GENRE_SEARCH_NEST_FOR_MTID
+
+=
 VMETHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID,
 	inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req,
 	linked_list *search_results)
+
+@ Some genres of work involve Inform source text -- Inform projects and
+extensions, for example. Reading in source text is fairly fast, but it's not
+an instant process, and we don't automatically perform it. (When an extension
+is scanned for metadata during claiming, only the opening line is looked at.)
+
+This method should exist only for such genres, and it should read the source
+text. It will never be called twice on the same copy.
+
+@e GENRE_READ_SOURCE_TEXT_FOR_MTID
+
+=
+VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
+	inbuild_genre *gen, inbuild_copy *C)
+
+@ At the Going Operational phase of Inbuild, each copy is offered the chance
+to finalise its internal representation. For example, this may be when its
+build graph is constructed, because we can now know for sure that there are
+no further unsuspected dependencies.
+
+This method is optional, and is called exactly once on every copy (whose genre
+provides it) which has been claimed by Inbuild.
+
+@e GENRE_GO_OPERATIONAL_MTID
+
+=
+VMETHOD_TYPE(GENRE_GO_OPERATIONAL_MTID,
+	inbuild_genre *gen, inbuild_copy *C)
+
+@ This method is called when a copy is about to be built or have its graph
+described, for example by |-graph|, |-build| and |-rebuild|. Nothing actually
+needs to be done, but if any work is needed before building can take place,
+now's the time; and the vertex to build from can be altered by setting |*V|.
+(This is used to create upstream targets for Inform projects, such as the
+blorbed release version. It affects |-graph|, |-build| and |-rebuild| but
+is ignored for other inspection options such as |-use-missing|.)
+
+@e GENRE_BUILDING_SOON_MTID
+
+=
+VMETHOD_TYPE(GENRE_BUILDING_SOON_MTID,
+	inbuild_genre *gen, inbuild_copy *C, build_vertex **V)
+
+@ This duplicates, or syncs, a copy |C| of a work in our genre, placing it
+at a canonical location inside the given nest |N|. In effect, it implements
+the Inbuild command-line options |-copy-to N| and |-sync-to N|.
+
+@e GENRE_COPY_TO_NEST_MTID
+
+=
 VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 	inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing,
 	build_methodology *meth)
-VMETHOD_TYPE(GENRE_GO_OPERATIONAL_MTID,
-	inbuild_genre *gen, inbuild_copy *C)
-VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
-	inbuild_genre *gen, inbuild_copy *C)
-VMETHOD_TYPE(GENRE_BUILD_COPY_MTID,
-	inbuild_genre *gen, text_stream *OUT, inbuild_copy *C,
-	build_methodology *BM, int build, int rebuild, int describe_only)

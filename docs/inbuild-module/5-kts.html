@@ -93,7 +93,7 @@
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">element_activation</span><span class="plain">;</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::scan</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::scan</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no copy to scan"</span><span class="plain">);</span>
 
         <span class="reserved">inform_kit</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inform_kit</span><span class="plain">);</span>
@@ -258,7 +258,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Kits::scan is used in 4/km (<a href="4-km.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Kits::scan is used in 4/km (<a href="4-km.html#SP3">&#167;3</a>).</p>
 
 <p class="endnote">The function Kits::read_metadata appears nowhere else.</p>
 
