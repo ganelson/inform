@@ -36,7 +36,8 @@ inbuild_copy *ProjectBundleManager::new_copy(text_stream *name, pathname *P) {
 	inform_project *K = Projects::new_ip(name, NULL, P);
 	inbuild_work *work = Works::new(project_bundle_genre, Str::duplicate(name), NULL);
 	inbuild_edition *edition = Editions::new(work, K->version);
-	K->as_copy = Copies::new_in_path(edition, P, STORE_POINTER_inform_project(K));
+	K->as_copy = Copies::new_in_path(edition, P);
+	Copies::set_content(K->as_copy, STORE_POINTER_inform_project(K));
 	return K->as_copy;
 }
 

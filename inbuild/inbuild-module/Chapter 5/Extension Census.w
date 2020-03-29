@@ -154,7 +154,7 @@ void Extensions::Census::transcribe_census_errors(OUTPUT_STREAM, extension_censu
 				HTML_OPEN("p");
 				#endif
 				WRITE("<b>%X</b> - ", R->copy->edition->work);
-				Copies::write_problem(OUT, CE);
+				CopyErrors::write(OUT, CE);
 				HTML_CLOSE("p");
 			}
 		}

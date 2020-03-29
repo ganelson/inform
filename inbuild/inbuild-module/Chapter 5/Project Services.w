@@ -405,7 +405,7 @@ void Projects::read_source_text_for(inform_project *project) {
 	Headings::satisfy_dependencies(project->syntax_tree, project->as_copy);
 
 	#ifndef CORE_MODULE
-	Copies::list_problems_arising(STDERR, project->as_copy);
+	Copies::list_attached_errors(STDERR, project->as_copy);
 	#endif
 }
 
@@ -433,10 +433,9 @@ void Projects::notify_of_bibliographic_sentence(inform_project *project, parse_n
 		@<Extract title and author name wording@>;
 		@<Dequote the title and, perhaps, author name@>;
 	} else {
-		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-		CE->error_subcategory = BadTitleSentence_SYNERROR;
-		CE->details_node = PN;
-		Copies::attach(project->as_copy, CE);
+		copy_error *CE = CopyErrors::new(SYNTAX_CE, BadTitleSentence_SYNERROR);
+		CopyErrors::supply_node(CE, PN);
+		Copies::attach_error(project->as_copy, CE);
 	}
 }
 

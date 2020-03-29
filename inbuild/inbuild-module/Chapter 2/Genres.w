@@ -46,6 +46,17 @@ int Genres::stored_in_nests(inbuild_genre *G) {
 	return G->stored_in_nests;
 }
 
+@ The requirements parser needs to identify genres by name, so:
+
+=
+inbuild_genre *Genres::by_name(text_stream *name) {
+	inbuild_genre *G;
+	LOOP_OVER(G, inbuild_genre)
+		if (Str::eq_insensitive(G->genre_name, name))
+			return G;
+	return NULL;
+}
+
 @h Method functions.
 And here are the method functions which a genre can, optionally, provide.
 All of these act on a given work, or a given copy of a work, having the
@@ -110,6 +121,9 @@ no further unsuspected dependencies.
 
 This method is optional, and is called exactly once on every copy (whose genre
 provides it) which has been claimed by Inbuild.
+
+Text should actually be read by feeding it into the lexer. Inbuild will take
+of it from there.
 
 @e GENRE_GO_OPERATIONAL_MTID
 

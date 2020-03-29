@@ -35,7 +35,7 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S, build_m
 
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
-	inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
+	inbuild_search_result *R = Nests::search_for_best(req, Inbuild::nest_list());
 	if (R == NULL) {
 		Errors::nowhere("assimilate pipeline could not be found");
 		return FALSE;
@@ -82,7 +82,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S, buil
 	if (F == NULL) {
 		inbuild_requirement *req =
 			Requirements::any_version_of(Works::new(pipeline_genre, inter_pipeline_name, NULL));
-		inbuild_search_result *R = Nests::first_found(req, Inbuild::nest_list());
+		inbuild_search_result *R = Nests::search_for_best(req, Inbuild::nest_list());
 		if (R == NULL) {
 			Errors::with_text("inter pipeline '%S' could not be found", inter_pipeline_name);
 			return FALSE;

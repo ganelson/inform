@@ -233,7 +233,7 @@ void Graphs::archive_r(OUTPUT_STREAM, build_vertex *V, int true_depth, inbuild_n
 				WRITE(" -- already there\n");
 			} else {
 				WRITE(" -- archiving\n");
-				Nests::copy_to(C, N, TRUE, BM);
+				Copies::copy_to(C, N, TRUE, BM);
 			}
 			DISCARD_TEXT(nl);
 			DISCARD_TEXT(cl);

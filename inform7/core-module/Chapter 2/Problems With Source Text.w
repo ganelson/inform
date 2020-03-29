@@ -14,7 +14,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
 		switch (CE->error_category) {
 			case OPEN_FAILED_CE:
-				Problems::quote_stream(1, Filenames::get_leafname(CE->file));
+				Problems::quote_stream(1, Filenames::get_leafname(CE->details_file));
 				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 				Problems::issue_problem_segment(
 					"I can't open the file '%1' of source text. %P"
@@ -25,7 +25,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				break;
 			case EXT_MISWORDED_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
-				Problems::quote_stream(2, CE->notes);
+				Problems::quote_stream(2, CE->details);
 				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMiswordedBeginsHere));
 				Problems::issue_problem_segment(
 					"The extension %1, which your source text makes use of, seems to be "
@@ -35,7 +35,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				break;
 			case KIT_MISWORDED_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
-				Problems::quote_stream(2, CE->notes);
+				Problems::quote_stream(2, CE->details);
 				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 				Problems::issue_problem_segment(
 					"The kit %1, which your source text makes use of, seems to be "
@@ -75,14 +75,14 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				switch (CE->error_subcategory) {
 					case STRING_TOO_LONG_LEXERERROR:
 						Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(PM_TooMuchQuotedText),
-							"Too much text in quotation marks", CE->word,
+							"Too much text in quotation marks", CE->details_word,
 							"...\" The maximum length is very high, so this is more "
 							"likely to be because a close quotation mark was "
 							"forgotten.");
 						break;
 					case WORD_TOO_LONG_LEXERERROR:
 						  Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(PM_WordTooLong),
-							"Word too long", CE->word,
+							"Word too long", CE->details_word,
 							"(Individual words of unquoted text can run up to "
 							"128 letters long, which ought to be plenty. The longest "
 							"recognised place name in the English speaking world is "
@@ -97,7 +97,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case I6_TOO_LONG_LEXERERROR:
 						Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(Untestable), /* well, not at all conveniently */
-							"Verbatim Inform 6 extract too long", CE->word,
+							"Verbatim Inform 6 extract too long", CE->details_word,
 							"... -). The maximum length is quite high, so this "
 							"may be because a '-)' was forgotten. Still, if "
 							"you do need to paste a huge I6 program in, try "

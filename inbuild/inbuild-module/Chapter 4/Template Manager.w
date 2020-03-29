@@ -41,7 +41,8 @@ inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P) {
 	inform_template *K = Templates::new_it(name, P);
 	inbuild_work *work = Works::new(template_genre, Str::duplicate(name), NULL);
 	inbuild_edition *edition = Editions::new(work, K->version);
-	K->as_copy = Copies::new_in_path(edition, P, STORE_POINTER_inform_template(K));
+	K->as_copy = Copies::new_in_path(edition, P);
+	Copies::set_content(K->as_copy, STORE_POINTER_inform_template(K));
 	return K->as_copy;
 }
 
@@ -121,7 +122,7 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	filename *canary1 = Filenames::in_folder(P, I"(manifest).txt");
 	filename *canary2 = Filenames::in_folder(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
-		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);

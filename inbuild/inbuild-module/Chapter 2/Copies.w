@@ -2,67 +2,155 @@
 
 A copy is an instance in the file system of a specific edition of a work.
 
-@h Copies.
+@h Creation.
 A "copy" of a work exists in the file system when we've actually got hold of
 some edition of it. For some genres, copies will be files; for others,
 directories holding a set of files.
 
+A purist view would be that a copy is simply an edition at a location in the
+file system. And so it is. But copies are the main things Inbuild works on,
+and we will need to generate data about them, some of which is most usefully
+stored here.
+
 =
 typedef struct inbuild_copy {
-	struct inbuild_edition *edition;
-	struct pathname *location_if_path;
+	struct inbuild_edition *edition; /* what is this a copy of? */
+	struct pathname *location_if_path; /* exactly one of these must be non-|NULL| */
 	struct filename *location_if_file;
+
 	general_pointer content; /* the type of which depends on the work's genre */
-	struct build_vertex *vertex;
-	int source_text_read;
-	struct wording source_text;
-	struct linked_list *errors_reading_source_text;
-	struct inbuild_requirement *found_by;
+	struct build_vertex *vertex; /* head vertex of build graph for this copy */
+	int source_text_read; /* have we attempted to read Inform source text from this? */
+	struct wording source_text; /* the source text we read, if so */
+	struct inbuild_requirement *found_by; /* if this was claimed in a search */
+	struct linked_list *errors_reading_source_text; /* of |copy_error| */
 	MEMORY_MANAGEMENT
 } inbuild_copy;
 
-inbuild_copy *Copies::new_p(inbuild_edition *edition, general_pointer ref) {
+@ Copies are created by the managers for the respective genres, usually when
+claiming. If you are a manager, do not call this...
+
+=
+inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	inbuild_copy *copy = CREATE(inbuild_copy);
 	copy->edition = edition;
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
-	copy->content = ref;
+	copy->content = NULL_GENERAL_POINTER;
 	copy->vertex = NULL;
 	copy->source_text_read = FALSE;
 	copy->source_text = EMPTY_WORDING;
-	copy->errors_reading_source_text = NEW_LINKED_LIST(copy_error);
 	copy->found_by = NULL;
+	copy->errors_reading_source_text = NEW_LINKED_LIST(copy_error);
 	return copy;
 }
 
-inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F, general_pointer ref) {
-	inbuild_copy *copy = Copies::new_p(edition, ref);
+@ ...call one of these:
+
+=
+inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F) {
+	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_file = F;
 	return copy;
 }
 
-inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, general_pointer ref) {
-	inbuild_copy *copy = Copies::new_p(edition, ref);
+inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P) {
+	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_path = P;
 	return copy;
 }
 
+@ And then probably follow up by calling this, to attach a pointer to some
+additional data specific to your genre:
+
+=
 void Copies::set_content(inbuild_copy *C, general_pointer ref) {
 	C->content = ref;
 }
 
+@h List of errors.
+When copies are found to be malformed, error messages are attached to them
+for later reporting. These are stored in a list.
+
+=
+void Copies::attach_error(inbuild_copy *C, copy_error *CE) {
+	if (C == NULL) internal_error("no copy to attach to");
+	CopyErrors::supply_attached_copy(CE, C);
+	ADD_TO_LINKED_LIST(CE, copy_error, C->errors_reading_source_text);
+}
+
+void Copies::list_attached_errors(OUTPUT_STREAM, inbuild_copy *C) {
+	if (C == NULL) return;
+	copy_error *CE;
+	int c = 1;
+	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
+		WRITE("%d. ", c++); CopyErrors::write(OUT, CE); WRITE("\n");
+	}
+}
+
+@h Writing.
+
+=
 void Copies::write_copy(OUTPUT_STREAM, inbuild_copy *C) {
 	Editions::write(OUT, C->edition);
 }
 
-void Copies::inspect_copy(OUTPUT_STREAM, inbuild_copy *C) {
-	Editions::inspect(OUT, C->edition);
+@h Reading source text.
+
+=
+int Copies::source_text_has_been_read(inbuild_copy *C) {
+	if (C == NULL) internal_error("no copy");
+	return C->source_text_read;
 }
 
+wording Copies::get_source_text(inbuild_copy *C) {
+	if (C->source_text_read == FALSE) {
+		C->source_text_read = TRUE;
+		feed_t id = Feeds::begin();
+		VMETHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
+		wording W = Feeds::end(id);
+		if (Wordings::nonempty(W)) C->source_text = W;
+	}
+	return C->source_text;
+}
+
+@h Going operational.
+
+=
 void Copies::go_operational(inbuild_copy *C) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
 }
 
+@h Miscellaneous Inbuild commands.
+This function implements the command-line instruction to |-inspect|.
+
+=
+void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
+	WRITE("%S: ", Genres::name(C->edition->work->genre));
+	Editions::inspect(OUT, C->edition);
+	if (C->location_if_path) {
+		WRITE(" at path %p", C->location_if_path);
+	}
+	if (C->location_if_file) {
+		pathname *P = Filenames::get_path_to(C->location_if_file);
+		if (P) WRITE(" in directory %p", P);
+	}
+	int N = LinkedLists::len(C->errors_reading_source_text);
+	if (N > 0) {
+		WRITE(" - %d error", N);
+		if (N > 1) WRITE("s");
+	}
+	WRITE("\n");
+	if (N > 0) {
+		INDENT; Copies::list_attached_errors(OUT, C); OUTDENT;
+	}
+}
+
+@ And here are |-build| and |-rebuild|, though note that |Copies::build|
+is also called by the |core| module of the Inform 7 compiler to perform
+its main task: building an Inform project.
+
+=
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	build_vertex *V = C->vertex;
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
@@ -73,6 +161,11 @@ void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	Graphs::rebuild(OUT, V, BM);
 }
+
+@ Now in quick succession |-graph|, |-build-needs|, |-use-needs|, |-build-missing|,
+|-use-missing|:
+
+=
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
 	build_vertex *V = C->vertex;
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
@@ -89,6 +182,10 @@ void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 	int N = Graphs::show_missing(OUT, C->vertex, uses_only);
 	if (N == 0) WRITE("Nothing is missing\n");
 }
+
+@ And here is |-archive| and |-archive-to N|:
+
+=
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
 	build_vertex *V = C->vertex;
 	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
@@ -97,220 +194,18 @@ void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_meth
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);
 }
 
-int Copies::source_text_has_been_read(inbuild_copy *C) {
-	if (C == NULL) internal_error("no copy");
-	return C->source_text_read;
-}
-
-wording Copies::read_source_text_for(inbuild_copy *C) {
-	if (C->source_text_read == FALSE) {
-		C->source_text_read = TRUE;
-		feed_t id = Feeds::begin();
-		VMETHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
-		wording W = Feeds::end(id);
-		if (Wordings::nonempty(W)) C->source_text = W;
-	}
-	return C->source_text;
-}
-
-inbuild_copy *Copies::claim(text_stream *arg) {
-	TEMPORARY_TEXT(ext);
-	int pos = Str::len(arg) - 1, dotpos = -1;
-	while (pos >= 0) {
-		wchar_t c = Str::get_at(arg, pos);
-		if (c == FOLDER_SEPARATOR) break;
-		if (c == '.') dotpos = pos;
-		pos--;
-	}
-	if (dotpos >= 0)
-		Str::substr(ext, Str::at(arg, dotpos+1), Str::end(arg));
-	int directory_status = NOT_APPLICABLE;
-	if (Str::get_last_char(arg) == FOLDER_SEPARATOR) {
-		Str::delete_last_character(arg);
-		directory_status = TRUE;
-	}
-	inbuild_copy *C = NULL;
-	inbuild_genre *G;
-	LOOP_OVER(G, inbuild_genre)
-		if (C == NULL)
-			VMETHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
-	DISCARD_TEXT(ext);
-	return C;
-}
-
-void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
-	WRITE("%S: ", Genres::name(C->edition->work->genre));
-	Copies::inspect_copy(STDOUT, C);
-	if (C->location_if_path) {
-		WRITE(" at path %p", C->location_if_path);
-	}
-	if (C->location_if_file) {
-		pathname *P = Filenames::get_path_to(C->location_if_file);
-		if (P) WRITE(" in directory %p", P);
-	}
-	int N = LinkedLists::len(C->errors_reading_source_text);
-	if (N > 0) {
-		WRITE(" - %d error", N);
-		if (N > 1) WRITE("s");
-	}
-	WRITE("\n");
-	if (N > 0) {
-		INDENT; Copies::list_problems_arising(OUT, C); OUTDENT;
-	}
-}
-
-@h Errors.
-Copies can sometimes exist in a damaged form: for example, they are purportedly
-extension files but have a mangled identification line. Each copy structure
-therefore has a list attached of errors which occurred in reading it.
-
-@e OPEN_FAILED_CE from 1
-@e KIT_MISWORDED_CE
-@e EXT_MISWORDED_CE
-@e EXT_TITLE_TOO_LONG_CE
-@e EXT_AUTHOR_TOO_LONG_CE
-@e LEXER_CE
-@e SYNTAX_CE
+@ And lastly |-copy-to N| and |-sync-to N|:
 
 =
-typedef struct copy_error {
-	int error_category;
-	int error_subcategory;
-	struct inbuild_copy *copy;
-	struct filename *file;
-	struct text_file_position pos;
-	struct text_stream *notes;
-	struct text_stream *details;
-	int details_N;
-	struct wording details_W;
-	struct parse_node *details_node;
-	struct parse_node *details_node2;
-	struct inbuild_work *details_work;
-	struct inbuild_work *details_work2;
-	wchar_t *word;
-	MEMORY_MANAGEMENT
-} copy_error;
-
-copy_error *Copies::new_error(int cat, text_stream *NB) {
-	copy_error *CE = CREATE(copy_error);
-	CE->error_category = cat;
-	CE->error_subcategory = -1;
-	CE->file = NULL;
-	CE->notes = Str::duplicate(NB);
-	CE->details = NULL;
-	CE->details_N = -1;
-	CE->details_W = EMPTY_WORDING;
-	CE->details_node = NULL;
-	CE->details_node2 = NULL;
-	CE->details_work = NULL;
-	CE->details_work2 = NULL;
-	CE->pos = TextFiles::nowhere();
-	CE->copy = NULL;
-	CE->word = NULL;
-	return CE;
+void Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
+	build_methodology *meth) {
+	if (destination_nest)
+		VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
+			C, destination_nest, syncing, meth);
 }
 
-copy_error *Copies::new_error_N(int cat, int N) {
-	copy_error *CE = Copies::new_error(cat, NULL);
-	CE->details_N = N;
-	return CE;
-}
-
-copy_error *Copies::new_error_on_file(int cat, filename *F) {
-	copy_error *CE = Copies::new_error(cat, NULL);
-	CE->file = F;
-	return CE;
-}
-
-void Copies::attach(inbuild_copy *C, copy_error *CE) {
-	if (C == NULL) internal_error("no copy to attach to");
-	CE->copy = C;
-	ADD_TO_LINKED_LIST(CE, copy_error, C->errors_reading_source_text);
-}
-
-void Copies::list_problems_arising(OUTPUT_STREAM, inbuild_copy *C) {
-	if (C == NULL) return;
-	copy_error *CE;
-	int c = 1;
-	LOOP_OVER_LINKED_LIST(CE, copy_error, C->errors_reading_source_text) {
-		WRITE("%d. ", c++); Copies::write_problem(OUT, CE); WRITE("\n");
-	}
-}
-
-void Copies::write_problem(OUTPUT_STREAM, copy_error *CE) {
-	switch (CE->error_category) {
-		case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->file); break;
-		case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->notes); break;
-		case KIT_MISWORDED_CE: WRITE("kit has incorrect metadata: %S", CE->notes); break;
-		case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
-			CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
-		case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",
-			CE->details_N, MAX_EXTENSION_AUTHOR_LENGTH); break;
-		case LEXER_CE: WRITE("%S", CE->notes); break;
-		case SYNTAX_CE:
-			switch (CE->error_subcategory) {
-				case UnexpectedSemicolon_SYNERROR:
-					WRITE("unexpected semicolon in sentence"); break;
-				case ParaEndsInColon_SYNERROR:
-					WRITE("paragraph ends with a colon"); break;
-				case SentenceEndsInColon_SYNERROR:
-					WRITE("paragraph ends with a colon and full stop"); break;
-				case SentenceEndsInSemicolon_SYNERROR:
-					WRITE("paragraph ends with a semicolon and full stop"); break;
-				case SemicolonAfterColon_SYNERROR:
-					WRITE("paragraph ends with a colon and semicolon"); break;
-				case SemicolonAfterStop_SYNERROR:
-					WRITE("paragraph ends with a full stop and semicolon"); break;
-				case HeadingOverLine_SYNERROR:
-					WRITE("heading contains a line break"); break;
-				case HeadingStopsBeforeEndOfLine_SYNERROR:
-					WRITE("heading stops before end of line"); break;
-				case ExtNoBeginsHere_SYNERROR:
-					WRITE("extension has no beginning"); break;
-				case ExtNoEndsHere_SYNERROR:
-					WRITE("extension has no end"); break;
-				case ExtSpuriouslyContinues_SYNERROR:
-					WRITE("extension continues after end"); break;
-				case ExtMultipleBeginsHere_SYNERROR:
-					WRITE("extension has multiple 'begins here' sentences"); break;
-				case ExtBeginsAfterEndsHere_SYNERROR:
-					WRITE("extension has a 'begins here' after its 'ends here'"); break;
-				case ExtEndsWithoutBegins_SYNERROR:
-					WRITE("extension has an 'ends here' but no 'begins here'"); break;
-				case ExtMultipleEndsHere_SYNERROR:
-					WRITE("extension has multiple 'ends here' sentences"); break;
-				case BadTitleSentence_SYNERROR:
-					WRITE("bibliographic sentence at the start is malformed"); break;
-				case UnknownLanguageElement_SYNERROR:
-					WRITE("unrecognised stipulation about Inform language elements"); break;
-				case UnknownVirtualMachine_SYNERROR:
-					WRITE("unrecognised stipulation about virtual machine"); break;
-				case UseElementWithdrawn_SYNERROR:
-					WRITE("use language element is no longer supported"); break;
-				case IncludeExtQuoted_SYNERROR:
-					WRITE("extension name should not be double-quoted"); break;
-				case BogusExtension_SYNERROR:
-					WRITE("can't find this extension"); break;
-				case ExtVersionTooLow_SYNERROR:
-					WRITE("extension version too low"); break;
-				case ExtVersionMalformed_SYNERROR:
-					WRITE("extension version is malformed"); break;
-				case ExtInadequateVM_SYNERROR:
-					WRITE("extension is not compatible with the target virtual machine"); break;
-				case ExtMisidentifiedEnds_SYNERROR:
-					WRITE("extension has an 'ends here' but it does not match the 'begins here'"); break;
-				case HeadingInPlaceOfUnincluded_SYNERROR:
-					WRITE("heading is in place of an extension not included"); break;
-				case UnequalHeadingInPlaceOf_SYNERROR:
-					WRITE("heading is in place of another heading but of a diffeent level"); break;
-				case HeadingInPlaceOfSubordinate_SYNERROR:
-					WRITE("heading is in place of another heading subordinate to itself"); break;
-				case HeadingInPlaceOfUnknown_SYNERROR:
-					WRITE("heading is in place of another heading which doesn't seem to exist'"); break;
-				default:
-					WRITE("syntax error"); break;
-			}
-			break;
-		default: internal_error("an unknown error occurred");
-	}
+void Copies::overwrite_error(inbuild_copy *C, inbuild_nest *N) {
+	text_stream *ext = Str::new();
+	WRITE_TO(ext, "%X", C->edition->work);
+	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
 }

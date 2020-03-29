@@ -330,17 +330,15 @@ allowed; they should probably be withdrawn.
 
 @<Issue PM_UnknownLanguageElement problem@> =
 	#ifdef CORE_MODULE
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = UnknownLanguageElement_SYNERROR;
-	CE->details_node = current_sentence;
-	Copies::attach(sfsm_copy, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnknownLanguageElement_SYNERROR);
+	CopyErrors::supply_node(CE, current_sentence);
+	Copies::attach_error(sfsm_copy, CE);
 	#endif
 
 @<Issue PM_UnknownVirtualMachine problem@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = UnknownVirtualMachine_SYNERROR;
-	CE->details_node = current_sentence;
-	Copies::attach(sfsm_copy, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnknownVirtualMachine_SYNERROR);
+	CopyErrors::supply_node(CE, current_sentence);
+	Copies::attach_error(sfsm_copy, CE);
 
 @<Set for-use-with extension identifier@> =
 	*X = R[0] + 4;
@@ -638,11 +636,10 @@ void Headings::satisfy_individual_heading_dependency(parse_node_tree *T, inbuild
 }
 
 @<Can't replace heading in an unincluded extension@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = HeadingInPlaceOfUnincluded_SYNERROR;
-	CE->details_node = h->sentence_declaring;
-	CE->details_work = h->for_use_with;
-	Copies::attach(C, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, HeadingInPlaceOfUnincluded_SYNERROR);
+	CopyErrors::supply_node(CE, h->sentence_declaring);
+	CopyErrors::supply_work(CE, h->for_use_with);
+	Copies::attach_error(C, CE);
 
 @ To excise, we simply prune the heading's contents from the parse tree,
 though optionally grafting them to another node rather than discarding them
@@ -690,13 +687,10 @@ void Headings::suppress_dependencies(parse_node *pn) {
 }
 
 @<Can't replace heading subordinate to another replaced heading@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = HeadingInPlaceOfSubordinate_SYNERROR;
-	CE->details_node = h2->sentence_declaring;
-	CE->details_work = h2->for_use_with;
-	CE->details_work2 = h->for_use_with;
-	CE->details_node2 = h->sentence_declaring;
-	Copies::attach(C, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, HeadingInPlaceOfSubordinate_SYNERROR);
+	CopyErrors::supply_works(CE, h2->for_use_with, h->for_use_with);
+	CopyErrors::supply_nodes(CE, h2->sentence_declaring, h->sentence_declaring);
+	Copies::attach_error(C, CE);
 
 @<Can't find heading in the given extension@> =
 	TEMPORARY_TEXT(vt);
@@ -707,17 +701,14 @@ void Headings::suppress_dependencies(parse_node *pn) {
 			Str::clear(vt);
 			VersionNumbers::to_text(vt, E->as_copy->edition->version);
 		}
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = HeadingInPlaceOfUnknown_SYNERROR;
-	CE->details_node = h->sentence_declaring;
-	CE->details_work = h->for_use_with;
-	CE->details_W = h->in_place_of_text;
-	CE->details = Str::duplicate(vt);
-	Copies::attach(C, CE);
+	copy_error *CE = CopyErrors::new_T(SYNTAX_CE, HeadingInPlaceOfUnknown_SYNERROR, vt);
+	CopyErrors::supply_node(CE, h->sentence_declaring);
+	CopyErrors::supply_work(CE, h->for_use_with);
+	CopyErrors::supply_wording(CE, h->in_place_of_text);
+	Copies::attach_error(C, CE);
 	DISCARD_TEXT(vt);
 
 @<Can't replace heading unless level matches@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = UnequalHeadingInPlaceOf_SYNERROR;
-	CE->details_node = h->sentence_declaring;
-	Copies::attach(C, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnequalHeadingInPlaceOf_SYNERROR);
+	CopyErrors::supply_node(CE, h->sentence_declaring);
+	Copies::attach_error(C, CE);

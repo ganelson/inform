@@ -149,7 +149,7 @@ inform_language *Languages::internal_English(void) {
 	if (I) {
 		linked_list *L = NEW_LINKED_LIST(inbuild_nest);
 		ADD_TO_LINKED_LIST(I, inbuild_nest, L);
-		inbuild_search_result *R = Nests::first_found(req, L);
+		inbuild_search_result *R = Nests::search_for_best(req, L);
 		if (R) return LanguageManager::from_copy(R->copy);
 	}
 	return NULL;

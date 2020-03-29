@@ -36,7 +36,8 @@ inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
 	inform_project *K = Projects::new_ip(name, F, NULL);
 	inbuild_work *work = Works::new(project_file_genre, Str::duplicate(name), NULL);
 	inbuild_edition *edition = Editions::new(work, K->version);
-	K->as_copy = Copies::new_in_file(edition, F, STORE_POINTER_inform_project(K));
+	K->as_copy = Copies::new_in_file(edition, F);
+	Copies::set_content(K->as_copy, STORE_POINTER_inform_project(K));
 	return K->as_copy;
 }
 

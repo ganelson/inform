@@ -23,7 +23,7 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 		sf = TextFromFiles::feed_open_file_into_lexer(F, handle,
 			leaf, documentation_only, ref);
 		if (sf == NULL) {
-			Copies::attach(C, Copies::new_error_on_file(OPEN_FAILED_CE, F));
+			Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
 		} else {
 			fclose(handle);
 			#ifdef CORE_MODULE
@@ -63,37 +63,10 @@ application.
 void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word) {
 	if (err == MEMORY_OUT_LEXERERROR)
 		Errors::fatal("Out of memory: unable to create lexer workspace");
-	TEMPORARY_TEXT(erm);
-	switch (err) {
-		case STRING_TOO_LONG_LEXERERROR:
-			WRITE_TO(erm, "Too much text in quotation marks: %w", word);
-            break;
-		case WORD_TOO_LONG_LEXERERROR:
-			WRITE_TO(erm, "Word too long: %w", word);
-			break;
-		case I6_TOO_LONG_LEXERERROR:
-			WRITE_TO(erm, "I6 inclusion too long: %w", word);
-			break;
-		case STRING_NEVER_ENDS_LEXERERROR:
-			WRITE_TO(erm, "Quoted text never ends: %S", desc);
-			break;
-		case COMMENT_NEVER_ENDS_LEXERERROR:
-			WRITE_TO(erm, "Square-bracketed text never ends: %S", desc);
-			break;
-		case I6_NEVER_ENDS_LEXERERROR:
-			WRITE_TO(erm, "I6 inclusion text never ends: %S", desc);
-			break;
-		default:
-			internal_error("unknown lexer error");
-    }
     if (currently_lexing_into) {
-    	copy_error *CE = Copies::new_error(LEXER_CE, erm);
-    	CE->error_subcategory = err;
-    	CE->details = Str::duplicate(desc);
-    	CE->word = word;
-    	Copies::attach(currently_lexing_into, CE);
+		copy_error *CE = CopyErrors::new_WT(LEXER_CE, err, word, desc);
+		Copies::attach_error(currently_lexing_into, CE);
     }
-	DISCARD_TEXT(erm);
 }
 
 @
@@ -107,11 +80,9 @@ void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word
 =
 void SourceText::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
 	inbuild_copy *C = (inbuild_copy *) ref;
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = err_no;
-	CE->details_W = W;
-	CE->details_N = k;
-	Copies::attach(C, CE);
+	copy_error *CE = CopyErrors::new_N(SYNTAX_CE, err_no, k);
+	CopyErrors::supply_wording(CE, W);
+	Copies::attach_error(C, CE);
 }
 
 @ Sentences in the source text are of five categories: dividing sentences,
@@ -278,8 +249,7 @@ void SourceText::new_beginend(parse_node *new, inbuild_copy *C) {
 
 =
 void SourceText::new_language(wording W) {
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = UseElementWithdrawn_SYNERROR;
-	CE->details_node = current_sentence;
-	Copies::attach(sfsm_copy, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, UseElementWithdrawn_SYNERROR);
+	CopyErrors::supply_node(CE, current_sentence);
+	Copies::attach_error(sfsm_copy, CE);
 }

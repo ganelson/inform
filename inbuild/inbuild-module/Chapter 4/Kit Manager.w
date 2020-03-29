@@ -50,7 +50,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-		C = Copies::new_in_path(edition, P, NULL_GENERAL_POINTER);
+		C = Copies::new_in_path(edition, P);
 		Kits::scan(C);
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);
@@ -138,7 +138,7 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition);
 	filename *dest_kit_metadata = Filenames::in_folder(dest_kit, I"kit_metadata.txt");
 	if (TextFiles::exists(dest_kit_metadata)) {
-		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);

@@ -2,21 +2,18 @@
 
 Nests are repositories of Inform-related resources.
 
-@
+@h Creation.
+To "create" a nest here does not mean actually altering the file system, for
+example by making a directory: nests here are merely notes in memory of
+positions in the file system hierarchy which may or may not exist.
 
 =
 typedef struct inbuild_nest {
 	struct pathname *location;
-	int read_only;
-	int tag_value;
+	int read_only; /* files cannot be written into this nest */
+	int tag_value; /* used to indicate whether internal, external, and such */
 	MEMORY_MANAGEMENT
 } inbuild_nest;
-
-typedef struct inbuild_search_result {
-	struct inbuild_nest *nest;
-	struct inbuild_copy *copy;
-	MEMORY_MANAGEMENT
-} inbuild_search_result;
 
 =
 inbuild_nest *Nests::new(pathname *P) {
@@ -27,6 +24,19 @@ inbuild_nest *Nests::new(pathname *P) {
 	return N;
 }
 
+@ Nests used by the Inform and Inbuild tools are tagged with the following
+comstamts. (There used to be quite a good joke here, but refactoring of the
+code removed its premiss. Literate programming is like that sometimes.)
+
+The sequence of the following enumerated values is very significant --
+see below for why. Lower-tag-numbered origins are better than later ones.
+
+@e MATERIALS_NEST_TAG from 1
+@e EXTERNAL_NEST_TAG
+@e GENERIC_NEST_TAG
+@e INTERNAL_NEST_TAG
+
+=
 int Nests::get_tag(inbuild_nest *N) {
 	if (N == NULL) return -1;
 	return N->tag_value;
@@ -37,20 +47,21 @@ void Nests::set_tag(inbuild_nest *N, int t) {
 	N->tag_value = t;
 }
 
+@ =
 void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
 }
 
-void Nests::add_search_result(linked_list *results, inbuild_nest *N, inbuild_copy *C,
-	inbuild_requirement *req) {
-	inbuild_search_result *R = CREATE(inbuild_search_result);
-	R->nest = N;
-	R->copy = C;
-	C->found_by = req;
-	if (req == NULL) internal_error("bad search result");
-	ADD_TO_LINKED_LIST(R, inbuild_search_result, results);
-}
+@h Search list.
+When we search for copies, we do so by looking through nests in a list. The
+following builds such lists, removing duplicates -- where duplicates are
+shown up by having the same textual form of pathname. (This is not foolproof
+by any means: Unix is replete with ways to describe the same directory, thanks
+to simlinks, |~| and so on. But in the circumstances arising inside Inbuild,
+it will do. In any case, having duplicates would not actually matter: it
+would just produce search results which were more copious than needed.)
 
+=
 void Nests::add_to_search_sequence(linked_list *search_list, inbuild_nest *N) {
 	TEMPORARY_TEXT(NS);
 	WRITE_TO(NS, "%p", N->location);
@@ -67,7 +78,36 @@ void Nests::add_to_search_sequence(linked_list *search_list, inbuild_nest *N) {
 	ADD_TO_LINKED_LIST(N, inbuild_nest, search_list);
 }
 
-void Nests::search_for(inbuild_requirement *req, linked_list *search_list, linked_list *results) {
+@h Search results.
+When we search a list of nests for copies satisfying certain requirements,
+we create one of these for each hit:
+
+=
+typedef struct inbuild_search_result {
+	struct inbuild_copy *copy; /* what was found */
+	struct inbuild_nest *nest; /* from whence it came */
+	MEMORY_MANAGEMENT
+} inbuild_search_result;
+
+@ These can be created only as entries in a list:
+
+=
+void Nests::add_search_result(linked_list *results, inbuild_nest *N, inbuild_copy *C,
+	inbuild_requirement *req) {
+	inbuild_search_result *R = CREATE(inbuild_search_result);
+	R->nest = N;
+	R->copy = C;
+	C->found_by = req;
+	if (req == NULL) internal_error("bad search result");
+	ADD_TO_LINKED_LIST(R, inbuild_search_result, results);
+}
+
+@ And here is our search engine, such as it is. For each nest, we ask each
+genre's manager to look for copies of that genre:
+
+=
+void Nests::search_for(inbuild_requirement *req,
+	linked_list *search_list, linked_list *results) {
 	inbuild_nest *N;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
 		inbuild_genre *G;
@@ -76,7 +116,12 @@ void Nests::search_for(inbuild_requirement *req, linked_list *search_list, linke
 	}
 }
 
-inbuild_search_result *Nests::first_found(inbuild_requirement *req, linked_list *search_list) {
+@ Oftentimes, we want only the single best result, and won't even look at the
+others:
+
+=
+inbuild_search_result *Nests::search_for_best(inbuild_requirement *req,
+	linked_list *search_list) {
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(req, search_list, L);
 	inbuild_search_result *best = NULL, *search_result;
@@ -86,26 +131,29 @@ inbuild_search_result *Nests::first_found(inbuild_requirement *req, linked_list 
 	return best;
 }
 
+@ Where "better" is defined as follows. This innocent-looking function is
+in fact critical to what Inbuild does. It uses tags on nests to prefer copies
+in the Materials folder to those in the external nest, and to prefer those in
+turn to copies in the internal nest; and within nests of equal importance,
+it chooses the earliest hit among those which have the highest-precedence
+semantic version numbers.
+
+=
 int Nests::better_result(inbuild_search_result *R1, inbuild_search_result *R2) {
+	/* Something is better than nothing */
 	if (R1 == NULL) return FALSE;
 	if (R2 == NULL) return TRUE;
+
+	/* Otherwise, a more important nest beats a less important nest */
 	int o1 = Nests::get_tag(R1->nest);
 	int o2 = Nests::get_tag(R2->nest);
 	if (o1 < o2) return TRUE;
 	if (o1 > o2) return FALSE;
-	if (VersionNumbers::gt(R1->copy->edition->version, R2->copy->edition->version)) return TRUE;
+
+	/* Otherwise, a higher semantic version number beats a lower */
+	if (VersionNumbers::gt(R1->copy->edition->version, R2->copy->edition->version))
+		return TRUE;
+
+	/* Otherwise, better the devil we know */
 	return FALSE;
-}
-
-void Nests::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
-	build_methodology *meth) {
-	if (destination_nest)
-		VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
-			C, destination_nest, syncing, meth);
-}
-
-void Nests::overwrite_error(inbuild_nest *N, inbuild_copy *C) {
-	text_stream *ext = Str::new();
-	WRITE_TO(ext, "%X", C->edition->work);
-	Errors::with_text("already present (to overwrite, use -sync-to not -copy-to): '%S'", ext);
 }

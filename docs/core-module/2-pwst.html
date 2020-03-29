@@ -71,7 +71,7 @@ group.
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">errors_reading_source_text</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">error_category</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPEN_FAILED_CE</span><span class="plain">:</span>
-                    <span class="identifier">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">file</span><span class="plain">));</span>
+                    <span class="identifier">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_file</span><span class="plain">));</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"I can't open the file '%1' of source text. %P"</span>
@@ -82,7 +82,7 @@ group.
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_MISWORDED_CE</span><span class="plain">:</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
-                    <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">notes</span><span class="plain">);</span>
+                    <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtMiswordedBeginsHere</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"The extension %1, which your source text makes use of, seems to be "</span>
@@ -92,7 +92,7 @@ group.
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIT_MISWORDED_CE</span><span class="plain">:</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
-                    <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">notes</span><span class="plain">);</span>
+                    <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"The kit %1, which your source text makes use of, seems to be "</span>
@@ -132,14 +132,14 @@ group.
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">error_subcategory</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                             <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooMuchQuotedText</span><span class="plain">),</span>
-                                <span class="string">"Too much text in quotation marks"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">word</span><span class="plain">,</span>
+                                <span class="string">"Too much text in quotation marks"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
                                 <span class="string">"...\</span><span class="plain">"</span><span class="string"> The maximum length is very high, so this is more "</span>
                                 <span class="string">"likely to be because a close quotation mark was "</span>
                                 <span class="string">"forgotten."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                             <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WordTooLong</span><span class="plain">),</span>
-                                <span class="string">"Word too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">word</span><span class="plain">,</span>
+                                <span class="string">"Word too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
                                 <span class="string">"(Individual words of unquoted text can run up to "</span>
                                 <span class="string">"128 letters long, which ought to be plenty. The longest "</span>
                                 <span class="string">"recognised place name in the English speaking world is "</span>
@@ -154,7 +154,7 @@ group.
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
                             <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">), </span>    <span class="comment">well, not at all conveniently</span>
-                                <span class="string">"Verbatim Inform 6 extract too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">word</span><span class="plain">,</span>
+                                <span class="string">"Verbatim Inform 6 extract too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
                                 <span class="string">"... -). The maximum length is quite high, so this "</span>
                                 <span class="string">"may be because a '-)' was forgotten. Still, if "</span>
                                 <span class="string">"you do need to paste a huge I6 program in, try "</span>

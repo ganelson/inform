@@ -71,7 +71,7 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 		else {
 			TEMPORARY_TEXT(err);
 			WRITE_TO(err, "cannot read compatibility '%S'", mr.exp[0]);
-			Copies::attach(C, Copies::new_error(KIT_MISWORDED_CE, err));
+			Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
 			DISCARD_TEXT(err);
 		}
 	} else if (Regexp::match(&mr, text, L"defines Main: yes")) {
@@ -106,7 +106,7 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	} else {
 		TEMPORARY_TEXT(err);
 		WRITE_TO(err, "unreadable instruction '%S'", text);
-		Copies::attach(C, Copies::new_error(KIT_MISWORDED_CE, err));
+		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
 		DISCARD_TEXT(err);	
 	}
 	Regexp::dispose_of(&mr);
@@ -115,7 +115,7 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(kit_genre, name, I""));
-	inbuild_search_result *R = Nests::first_found(req, nest_list);
+	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
 	if (R == NULL) Errors::fatal_with_text("cannot find kit", name);
 	inbuild_copy *C = R->copy;
 	if (C->vertex == NULL) KitManager::build_vertex(C);

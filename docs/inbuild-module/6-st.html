@@ -83,7 +83,7 @@ from multiple files and indeed from elsewhere.
             <span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">TextFromFiles::feed_open_file_into_lexer</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">handle</span><span class="plain">,</span>
                 <span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">documentation_only</span><span class="plain">, </span><span class="identifier">ref</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">Copies::new_error_on_file</span><span class="plain">(</span><span class="constant">OPEN_FAILED_CE</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">));</span>
+                <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">CopyErrors::new_F</span><span class="plain">(</span><span class="constant">OPEN_FAILED_CE</span><span class="plain">, -1, </span><span class="identifier">F</span><span class="plain">));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">handle</span><span class="plain">);</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -149,37 +149,10 @@ application.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SourceText::lexer_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">desc</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">word</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain"> == </span><span class="identifier">MEMORY_OUT_LEXERERROR</span><span class="plain">)</span>
             <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"Out of memory: unable to create lexer workspace"</span><span class="plain">);</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"Too much text in quotation marks: %w"</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"Word too long: %w"</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"I6 inclusion too long: %w"</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"Quoted text never ends: %S"</span><span class="plain">, </span><span class="identifier">desc</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"Square-bracketed text never ends: %S"</span><span class="plain">, </span><span class="identifier">desc</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">, </span><span class="string">"I6 inclusion text never ends: %S"</span><span class="plain">, </span><span class="identifier">desc</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
-                <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown lexer error"</span><span class="plain">);</span>
-        <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">currently_lexing_into</span><span class="plain">) {</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">LEXER_CE</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="identifier">err</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">desc</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;word</span><span class="plain"> = </span><span class="identifier">word</span><span class="plain">;</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">currently_lexing_into</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_WT</span><span class="plain">(</span><span class="constant">LEXER_CE</span><span class="plain">, </span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">, </span><span class="identifier">desc</span><span class="plain">);</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">currently_lexing_into</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">erm</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -203,11 +176,9 @@ application.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SourceText::syntax_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ref</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = (</span><span class="reserved">inbuild_copy</span><span class="plain"> *) </span><span class="identifier">ref</span><span class="plain">;</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="identifier">err_no</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_W</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_N</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_N</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_wording</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -475,10 +446,9 @@ saved up to be parsed later, so we will use the following:
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SourceText::new_language</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">UseElementWithdrawn_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">UseElementWithdrawn_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

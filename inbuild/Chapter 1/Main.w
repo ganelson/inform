@@ -133,8 +133,8 @@ utility functions in the |inbuild| module, which we call.
 		case BUILD_MISSING_TTASK: Copies::show_missing(STDOUT, C, FALSE); break;
 		case BUILD_TTASK: Copies::build(STDOUT, C, BM); break;
 		case REBUILD_TTASK: Copies::rebuild(STDOUT, C, BM); break;
-		case COPY_TO_TTASK: Nests::copy_to(C, destination_nest, FALSE, BM); break;
-		case SYNC_TO_TTASK: Nests::copy_to(C, destination_nest, TRUE, BM); break;
+		case COPY_TO_TTASK: Copies::copy_to(C, destination_nest, FALSE, BM); break;
+		case SYNC_TO_TTASK: Copies::copy_to(C, destination_nest, TRUE, BM); break;
 	}
 
 @<Shut down the modules@> =
@@ -214,7 +214,27 @@ void Main::add_directory_contents_targets(pathname *P) {
 }
 
 void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
-	inbuild_copy *C = Copies::claim(arg);
+	TEMPORARY_TEXT(ext);
+	int pos = Str::len(arg) - 1, dotpos = -1;
+	while (pos >= 0) {
+		wchar_t c = Str::get_at(arg, pos);
+		if (c == FOLDER_SEPARATOR) break;
+		if (c == '.') dotpos = pos;
+		pos--;
+	}
+	if (dotpos >= 0)
+		Str::substr(ext, Str::at(arg, dotpos+1), Str::end(arg));
+	int directory_status = NOT_APPLICABLE;
+	if (Str::get_last_char(arg) == FOLDER_SEPARATOR) {
+		Str::delete_last_character(arg);
+		directory_status = TRUE;
+	}
+	inbuild_copy *C = NULL;
+	inbuild_genre *G;
+	LOOP_OVER(G, inbuild_genre)
+		if (C == NULL)
+			VMETHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
+	DISCARD_TEXT(ext);
 	if (C == NULL) {
 		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
 		return;

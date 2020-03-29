@@ -135,7 +135,7 @@ calls.
 	Feeds::feed_text(L"This sentence provides a firebreak, no more. ");
 	E = Extensions::Documentation::load(work);
 	if (E == NULL) return 0; /* shouldn't happen: it was there only moments ago */
-	Copies::read_source_text_for(E->as_copy);
+	Copies::get_source_text(E->as_copy);
 	Extensions::Documentation::write_extension_documentation(NULL, E, census_mode);
 
 @ We now make much the same "paste into the gap in the template" copying

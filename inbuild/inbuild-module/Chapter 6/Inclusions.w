@@ -105,10 +105,9 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 
 @<Issue PM_IncludeExtQuoted problem@> =
 	<<t1>> = -1; <<t2>> = -1;
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = IncludeExtQuoted_SYNERROR;
-	CE->details_node = current_sentence;
-	Copies::attach(inclusions_errors_to, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, IncludeExtQuoted_SYNERROR);
+	CopyErrors::supply_node(CE, current_sentence);
+	Copies::attach_error(inclusions_errors_to, CE);
 
 @ This internal parses version text such as "12/110410".
 
@@ -184,7 +183,7 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_
 }
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	inbuild_search_result *search_result = Nests::first_found(req, Inbuild::nest_list());
+	inbuild_search_result *search_result = Nests::search_for_best(req, Inbuild::nest_list());
 	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
 		Extensions::set_inclusion_sentence(E, at);
@@ -195,10 +194,10 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
-			Copies::read_source_text_for(search_result->copy);
+			Copies::get_source_text(search_result->copy);
 		}
 		#ifndef CORE_MODULE
-		Copies::list_problems_arising(STDERR, search_result->copy);
+		Copies::list_attached_errors(STDERR, search_result->copy);
 		#endif
 	} else {
 		#ifdef CORE_MODULE
@@ -215,21 +214,18 @@ matter of removing the inclusion, not of altering the extension, so we
 report this problem at the inclusion line.
 
 @<Issue a problem message saying that the VM does not meet requirements@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = ExtInadequateVM_SYNERROR;
-	CE->details_node = Extensions::get_inclusion_sentence(E);
-	CE->details = C->parsed_from;
-	Copies::attach(inclusions_errors_to, CE);
+	copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtInadequateVM_SYNERROR, C->parsed_from);
+	CopyErrors::supply_node(CE, Extensions::get_inclusion_sentence(E));
+	Copies::attach_error(inclusions_errors_to, CE);
 
 @<Issue a cannot-find problem@> =
 	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
 	Nests::search_for(req2, Inbuild::nest_list(), L);
 	if (LinkedLists::len(L) == 0) {
-		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-		CE->error_subcategory = BogusExtension_SYNERROR;
-		CE->details_node = current_sentence;
-		Copies::attach(inclusions_errors_to, CE);
+		copy_error *CE = CopyErrors::new(SYNTAX_CE, BogusExtension_SYNERROR);
+		CopyErrors::supply_node(CE, current_sentence);
+		Copies::attach_error(inclusions_errors_to, CE);
 	} else {
 		TEMPORARY_TEXT(versions);
 		inbuild_search_result *search_result;
@@ -239,11 +235,9 @@ report this problem at the inclusion line.
 			if (VersionNumbers::is_null(V)) WRITE_TO(versions, "an unnumbered version");
 			else WRITE_TO(versions, "version %v", &V);
 		}
-		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-		CE->error_subcategory = ExtVersionTooLow_SYNERROR;
-		CE->details_node = at;
-		CE->details = Str::duplicate(versions);
-		Copies::attach(inclusions_errors_to, CE);
+		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtVersionTooLow_SYNERROR, versions);
+		CopyErrors::supply_node(CE, at);
+		Copies::attach_error(inclusions_errors_to, CE);
 		DISCARD_TEXT(versions);
 	}
 
@@ -270,10 +264,9 @@ version number text.
 	if (last_PM_ExtVersionMalformed_at != vwn) {
 		last_PM_ExtVersionMalformed_at = vwn;
 		LOG("Offending word number %d <%N>\n", vwn, vwn);
-		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-		CE->error_subcategory = ExtVersionMalformed_SYNERROR;
-		CE->details_node = current_sentence;
-		Copies::attach(inclusions_errors_to, CE);
+		copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtVersionMalformed_SYNERROR);
+		CopyErrors::supply_node(CE, current_sentence);
+		Copies::attach_error(inclusions_errors_to, CE);
 	}
 
 @h Checking the begins here and ends here sentences.
@@ -305,10 +298,9 @@ problem messages if it is malformed.
 	...										==> @<Issue problem@>
 
 @<Issue problem@> =
-	copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-	CE->error_subcategory = ExtNoBeginsHere_SYNERROR;
-	CE->details_node = current_sentence;
-	Copies::attach(inclusions_errors_to, CE);
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtNoBeginsHere_SYNERROR);
+	CopyErrors::supply_node(CE, current_sentence);
+	Copies::attach_error(inclusions_errors_to, CE);
 
 @ =
 void Inclusions::check_begins_here(parse_node *PN, inform_extension *E) {
@@ -335,11 +327,10 @@ void Inclusions::check_ends_here(parse_node *PN, inform_extension *E) {
 	if (<the-prefix-for-extensions>(W)) W = GET_RW(<the-prefix-for-extensions>, 1);
 	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
 	if ((problem_count == 0) && (Wordings::match(T, W) == FALSE)) {
-		copy_error *CE = Copies::new_error(SYNTAX_CE, NULL);
-		CE->error_subcategory = ExtMisidentifiedEnds_SYNERROR;
-		CE->details_node = PN;
-		CE->details_W = ParseTree::get_text(PN);
-		Copies::attach(inclusions_errors_to, CE);
+		copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtMisidentifiedEnds_SYNERROR);
+		CopyErrors::supply_node(CE, PN);
+		CopyErrors::supply_wording(CE, ParseTree::get_text(PN));
+		Copies::attach_error(inclusions_errors_to, CE);
 	}
 	inclusions_errors_to = S;
 }

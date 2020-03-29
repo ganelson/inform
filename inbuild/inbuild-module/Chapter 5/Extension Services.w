@@ -48,10 +48,10 @@ void Extensions::scan(inbuild_copy *C) {
 	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
 	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
 	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH) {
-		Copies::attach(C, Copies::new_error_N(EXT_TITLE_TOO_LONG_CE, Str::len(claimed_title)));
+		Copies::attach_error(C, CopyErrors::new_N(EXT_TITLE_TOO_LONG_CE, -1, Str::len(claimed_title)));
 	}
 	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH) {
-		Copies::attach(C, Copies::new_error_N(EXT_AUTHOR_TOO_LONG_CE, Str::len(claimed_author_name)));
+		Copies::attach_error(C, CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
 	}
 	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
 	if (Str::len(reqs) > 0) {
@@ -60,7 +60,7 @@ void Extensions::scan(inbuild_copy *C) {
 		else {
 			TEMPORARY_TEXT(err);
 			WRITE_TO(err, "cannot read compatibility '%S'", reqs);
-			Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, err));
+			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, err));
 			DISCARD_TEXT(err);
 		}
 	}
@@ -80,7 +80,7 @@ alone, and the version number is returned.
 	TEMPORARY_TEXT(version_text);
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
-		Copies::attach(C, Copies::new_error_on_file(OPEN_FAILED_CE, F));
+		Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
 	} else {
 		@<Read the titling line of the extension and normalise its casing@>;
 		@<Read the rubric text, if any is present@>;
@@ -91,7 +91,7 @@ alone, and the version number is returned.
 			if (VersionNumbers::is_null(V)) {
 				TEMPORARY_TEXT(error_text);
 				WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
-				Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, error_text));
+				Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
 				DISCARD_TEXT(error_text);
 			}
 		}
@@ -151,7 +151,7 @@ load the entire file.
 			(Regexp::match(&mr, titling_line, L"(%c*) Starts Here"))) {
 			Str::copy(titling_line, mr.exp[0]);
 		}
-		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE,
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the opening line does not end 'begin(s) here'"));
 	}
 	@<Scan the version text, if any, and advance to the position past Version... Of@>;
@@ -181,7 +181,7 @@ not a situation we need to contend with.
 		Str::copy(claimed_author_name, mr.exp[1]);
 	} else {
 		Str::copy(claimed_title, titling_line);
-		Copies::attach(C, Copies::new_error(EXT_MISWORDED_CE, 
+		Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1,
 			I"the titling line does not give both author and title"));
 	}
 

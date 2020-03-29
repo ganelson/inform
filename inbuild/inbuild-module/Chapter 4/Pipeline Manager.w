@@ -41,7 +41,8 @@ inform_pipeline *PipelineManager::from_copy(inbuild_copy *C) {
 
 inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F) {
 	inform_pipeline *E = Pipelines::new_ip(edition->work->title, F);
-	inbuild_copy *C = Copies::new_in_file(edition, F, STORE_POINTER_inform_pipeline(E));
+	inbuild_copy *C = Copies::new_in_file(edition, F);
+	Copies::set_content(C, STORE_POINTER_inform_pipeline(E));
 	E->as_copy = C;
 	return C;
 }
@@ -123,7 +124,7 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	filename *F = PipelineManager::filename_in_nest(N, C->edition);
 
 	if (TextFiles::exists(F)) {
-		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);

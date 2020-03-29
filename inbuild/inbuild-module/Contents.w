@@ -13,6 +13,7 @@ Chapter 2: Conceptual Framework
 	Works
 	Editions
 	Copies
+	Copy Errors
 	Requirements
 	Nests
 

@@ -317,7 +317,7 @@ would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
 again, this is following semver conventions. To specify an explicit maximum
 and minimum version number, use |max| and |min|. For example:
 
-	|-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2|
+	|-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'|
 
 @h Nests and searches.
 When searching with |-matching R|, or indeed when running Inform and needing

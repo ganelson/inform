@@ -57,8 +57,10 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 		C = Dictionaries::read_value(ext_copy_cache, key);
 	if (C == NULL) {
 		C = Copies::new_in_file(
-			Editions::new(Works::new(extension_genre, I"Untitled", I"Anonymous"),
-				VersionNumbers::null()), F, NULL_GENERAL_POINTER);
+				Editions::new(
+					Works::new(extension_genre, I"Untitled", I"Anonymous"),
+					VersionNumbers::null()),
+				F);
 		Extensions::scan(C);
 		if (Works::is_standard_rules(C->edition->work))
 			Extensions::make_standard(ExtensionManager::from_copy(C));
@@ -169,7 +171,7 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 	DISCARD_TEXT(leaf);
 
 	if (TextFiles::exists(F)) {
-		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);
@@ -211,7 +213,7 @@ void ExtensionManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_
 }
 
 void ExtensionManager::ensure_graphed(inbuild_copy *C) {
-	Copies::read_source_text_for(C);
+	Copies::get_source_text(C);
 	Inclusions::traverse(C, ExtensionManager::from_copy(C)->syntax_tree);
 	build_vertex *V;
 	LOOP_OVER_LINKED_LIST(V, build_vertex, C->vertex->use_edges)

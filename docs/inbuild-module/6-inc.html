@@ -202,10 +202,9 @@ guaranteed to be no INCLUDE nodes remaining in the parse tree.
 
 <pre class="displaydefn">
         <span class="plain">&lt;&lt;</span><span class="identifier">t1</span><span class="plain">&gt;&gt; = -1; &lt;&lt;</span><span class="identifier">t2</span><span class="plain">&gt;&gt; = -1;</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">IncludeExtQuoted_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">IncludeExtQuoted_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -326,7 +325,7 @@ Sausages by Mr Punch, and loaded it, but then read the sentence
 
 
 <pre class="displaydefn">
-        <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">search_result</span><span class="plain"> = </span><span class="functiontext">Nests::first_found</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="functiontext">Inbuild::nest_list</span><span class="plain">());</span>
+        <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">search_result</span><span class="plain"> = </span><span class="functiontext">Nests::search_for_best</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="functiontext">Inbuild::nest_list</span><span class="plain">());</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">search_result</span><span class="plain">) {</span>
             <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
             <span class="functiontext">Extensions::set_inclusion_sentence</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">);</span>
@@ -337,10 +336,10 @@ Sausages by Mr Punch, and loaded it, but then read the sentence
                 &lt;<span class="cwebmacro">Issue a problem message saying that the VM does not meet requirements</span> <span class="cwebmacronumber">6.1.1</span>&gt;<span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">-</span><span class="element">&gt;errors_reading_source_text</span><span class="plain">) == 0) {</span>
-                <span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
+                <span class="functiontext">Copies::get_source_text</span><span class="plain">(</span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-            <span class="functiontext">Copies::list_problems_arising</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
+            <span class="functiontext">Copies::list_attached_errors</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">search_result</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -369,11 +368,9 @@ report this problem at the inclusion line.
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">ExtInadequateVM_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="functiontext">Extensions::get_inclusion_sentence</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">parsed_from</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_T</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">ExtInadequateVM_SYNERROR</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">parsed_from</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="functiontext">Extensions::get_inclusion_sentence</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">));</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -390,10 +387,9 @@ report this problem at the inclusion line.
         <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">inbuild_search_result</span><span class="plain">);</span>
         <span class="functiontext">Nests::search_for</span><span class="plain">(</span><span class="identifier">req2</span><span class="plain">, </span><span class="functiontext">Inbuild::nest_list</span><span class="plain">(), </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">) == 0) {</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">BogusExtension_SYNERROR</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">BogusExtension_SYNERROR</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">versions</span><span class="plain">);</span>
             <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">search_result</span><span class="plain">;</span>
@@ -403,11 +399,9 @@ report this problem at the inclusion line.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">)) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">versions</span><span class="plain">, </span><span class="string">"an unnumbered version"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">versions</span><span class="plain">, </span><span class="string">"version %v"</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">ExtVersionTooLow_SYNERROR</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">versions</span><span class="plain">);</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_T</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">ExtVersionTooLow_SYNERROR</span><span class="plain">, </span><span class="identifier">versions</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">);</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">versions</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -454,10 +448,9 @@ version number text.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_PM_ExtVersionMalformed_at</span><span class="plain"> != </span><span class="identifier">vwn</span><span class="plain">) {</span>
             <span class="identifier">last_PM_ExtVersionMalformed_at</span><span class="plain"> = </span><span class="identifier">vwn</span><span class="plain">;</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Offending word number %d &lt;%N&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">vwn</span><span class="plain">, </span><span class="identifier">vwn</span><span class="plain">);</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">ExtVersionMalformed_SYNERROR</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">ExtVersionMalformed_SYNERROR</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -509,10 +502,9 @@ problem messages if it is malformed.
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="identifier">ExtNoBeginsHere_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">ExtNoBeginsHere_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -554,11 +546,10 @@ that the extension isn't the one he thinks it is.
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">the</span><span class="plain">-</span><span class="identifier">prefix</span><span class="plain">-</span><span class="reserved">for</span><span class="plain">-</span><span class="identifier">extensions</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">the</span><span class="plain">-</span><span class="identifier">prefix</span><span class="plain">-</span><span class="reserved">for</span><span class="plain">-</span><span class="identifier">extensions</span><span class="plain">&gt;, 1);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">ExtMisidentifiedEnds_SYNERROR</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_W</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">ExtMisidentifiedEnds_SYNERROR</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">PN</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_wording</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">));</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">inclusions_errors_to</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">inclusions_errors_to</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
     <span class="plain">}</span>

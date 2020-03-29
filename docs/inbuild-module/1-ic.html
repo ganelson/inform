@@ -486,7 +486,7 @@ which continues until the client calls <code class="display"><span class="extrac
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) {</span>
             <span class="functiontext">Inbuild::pass_kit_requests</span><span class="plain">();</span>
-            <span class="functiontext">Copies::read_source_text_for</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
+            <span class="functiontext">Copies::get_source_text</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">PROJECTED_INBUILD_PHASE</span><span class="plain">;</span>
@@ -646,25 +646,6 @@ used by applications, so <code class="display"><span class="extract">-transient<
 Materials folder. For example, in <code class="display"><span class="extract">Jane Eyre.inform</span></code> is a project, then
 alongside it is <code class="display"><span class="extract">Jane Eyre.materials</span></code> and this is a nest.
 </li></ul>
-<p class="inwebparagraph">Nests used by the Inform and Inbuild tools are tagged with the following
-comstamts, except that no nest is ever tagged <code class="display"><span class="extract">NOT_A_NEST_TAG</span></code>.
-(There used to be quite a good joke here, but refactoring of the
-code removed its premiss. Literate programming is like that sometimes.)
-</p>
-
-<p class="inwebparagraph">The sequence of the following enumerated values is significant: lower
-origins are better than later ones, when choosing the best result of
-a search for resources.
-</p>
-
-
-<pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">NOT_A_NEST_TAG</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MATERIALS_NEST_TAG</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">EXTERNAL_NEST_TAG</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">GENERIC_NEST_TAG</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">INTERNAL_NEST_TAG</span>
-</pre>
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Inform customarily has exactly one <code class="display"><span class="extract">-internal</span></code> and one <code class="display"><span class="extract">-external</span></code> nest,
 but in fact any number of each are allowed, including none. However, the
 first to be declared are used by the compiler as "the" internal and external

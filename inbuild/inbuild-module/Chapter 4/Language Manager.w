@@ -51,7 +51,8 @@ inbuild_copy *LanguageManager::new_copy(text_stream *name, pathname *P) {
 		inform_language *K = Languages::new_il(name, P);
 		inbuild_work *work = Works::new(language_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, K->version);
-		C = Copies::new_in_path(edition, P, STORE_POINTER_inform_language(K));
+		C = Copies::new_in_path(edition, P);
+		Copies::set_content(C, STORE_POINTER_inform_language(K));
 		K->as_copy = C;
 		Dictionaries::create(language_copy_cache, key);
 		Dictionaries::write_value(language_copy_cache, key, C);
@@ -143,7 +144,7 @@ void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	pathname *dest_language = LanguageManager::pathname_in_nest(N, C->edition);
 	filename *dest_language_metadata = Filenames::in_folder(dest_language, I"about.txt");
 	if (TextFiles::exists(dest_language_metadata)) {
-		if (syncing == FALSE) { Nests::overwrite_error(N, C); return; }
+		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);

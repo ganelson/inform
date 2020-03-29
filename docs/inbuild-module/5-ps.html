@@ -552,7 +552,7 @@ may be multiple sentences, which we need to count up.
         <span class="functiontext">Headings::satisfy_dependencies</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
 
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="functiontext">Copies::list_problems_arising</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
+        <span class="functiontext">Copies::list_attached_errors</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 </pre>
@@ -589,10 +589,9 @@ it happens during the call to <code class="display"><span class="extract">Senten
             &lt;<span class="cwebmacro">Extract title and author name wording</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Dequote the title and, perhaps, author name</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">BadTitleSentence_SYNERROR</span><span class="plain">;</span>
-            <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
-            <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+            <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">BadTitleSentence_SYNERROR</span><span class="plain">);</span>
+            <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">PN</span><span class="plain">);</span>
+            <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

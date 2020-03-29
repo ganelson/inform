@@ -520,10 +520,9 @@ allowed; they should probably be withdrawn.
 
 <pre class="displaydefn">
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">UnknownLanguageElement_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">UnknownLanguageElement_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 
@@ -537,10 +536,9 @@ allowed; they should probably be withdrawn.
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">UnknownVirtualMachine_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">UnknownVirtualMachine_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -998,11 +996,10 @@ the parse tree on quite a large scale, and that's just what we do.
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">HeadingInPlaceOfUnincluded_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfUnincluded_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1072,13 +1069,10 @@ elsewhere).
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">HeadingInPlaceOfSubordinate_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work</span><span class="plain"> = </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work2</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node2</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfSubordinate_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_works</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_nodes</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1099,13 +1093,11 @@ elsewhere).
                 <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">);</span>
                 <span class="identifier">VersionNumbers::to_text</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">HeadingInPlaceOfUnknown_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_work</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_W</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">);</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_T</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfUnknown_SYNERROR</span><span class="plain">, </span><span class="identifier">vt</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_wording</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">);</span>
 </pre>
 
@@ -1119,10 +1111,9 @@ elsewhere).
 
 
 <pre class="displaydefn">
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">Copies::new_error</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;error_subcategory</span><span class="plain"> = </span><span class="constant">UnequalHeadingInPlaceOf_SYNERROR</span><span class="plain">;</span>
-        <span class="identifier">CE</span><span class="plain">-</span><span class="element">&gt;details_node</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="functiontext">Copies::attach</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">UnequalHeadingInPlaceOf_SYNERROR</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

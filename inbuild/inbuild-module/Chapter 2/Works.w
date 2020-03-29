@@ -27,21 +27,7 @@ typedef struct inbuild_work {
 } inbuild_work;
 
 @ Each work structure is written only once, and its title and author name are
-not subsequently altered. We therefore hash-code on arrival. As when
-hashing vocabulary, we apply the X 30011 algorithm, this time with 499
-(coprime to 30011) as base, to the text of the Unix-style pathname
-|Author/Title|.
-
-Though it is probably the case that the author name and title supplied are
-already of normalised casing, we do not want to rely on that. Works intending
-to represent (e.g.) the same extension but named with different casing
-conventions would fail to match: and this could happen if a new build of
-Inform were published which made a subtle change to the casing conventions,
-but which continued to use an extension dictionary file first written by
-previous builds under the previous conventions.
-
-The hash code is an integer between 0 and the following constant minus 1,
-derived from its title and author name.
+not subsequently altered.
 
 @d WORK_HASH_CODING_BASE 499
 
@@ -53,6 +39,18 @@ inbuild_work *Works::new_raw(inbuild_genre *genre, text_stream *ti, text_stream 
 	return Works::new_inner(genre, ti, an, FALSE);
 }
 
+@ Though it is probably the case that the author name and title supplied are
+already of normalised casing, we do not want to rely on that. Works intending
+to represent (e.g.) the same extension but named with different casing
+conventions would fail to match: and this could happen if a new build of
+Inform were published which made a subtle change to the casing conventions,
+but which continued to use an extension dictionary file first written by
+previous builds under the previous conventions.
+
+The "raw", i.e., not case-normalised, forms of the title and author name are
+preserved for use in text output, but not identification.
+
+=
 inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_stream *an, int norm) {
 	inbuild_work *work = CREATE(inbuild_work);
 	work->genre = genre;
@@ -64,6 +62,17 @@ inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_strea
 		Works::normalise_casing(work->author_name);
 		Works::normalise_casing(work->title);
 	}
+	@<Compute the hash code@>;
+	return work;
+}
+
+@ We hash-code all works on arrival, using the X 30011 algorithm, with 499
+(coprime to 30011) as base, to the text of the pseudo-pathname |Author/Title|.
+
+The hash code is an integer between 0 and the following constant minus 1,
+derived from its title and author name.
+
+@<Compute the hash code@> =
 	unsigned int hc = 0;
 	LOOP_THROUGH_TEXT(pos, work->author_name)
 		hc = hc*30011 + (unsigned int) Str::get(pos);
@@ -72,14 +81,29 @@ inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_strea
 		hc = hc*30011 + (unsigned int) Str::get(pos);
 	hc = hc % WORK_HASH_CODING_BASE;
 	work->inbuild_work_hash_code = (int) hc;
-	return work;
+
+@ Casing is normalised as follows. Every word is capitalised, where a word
+begins at the start of the text, after a hyphen, or after a bracket. Thus
+"Every Word Counts", "Even Double-Barrelled Ones (And Even Parenthetically)".
+
+=
+void Works::normalise_casing(text_stream *p) {
+	int boundary = TRUE;
+	LOOP_THROUGH_TEXT(pos, p) {
+		wchar_t c = Str::get(pos);
+		if (boundary) Str::put(pos, Characters::toupper(c));
+		else Str::put(pos, Characters::tolower(c));
+		boundary = FALSE;
+		if (c == ' ') boundary = TRUE;
+		if (c == '-') boundary = TRUE;
+		if (c == '(') boundary = TRUE;
+	}
 }
 
-void Works::set_raw(inbuild_work *work, text_stream *raw_an, text_stream *raw_ti) {
-	work->raw_author_name = Str::duplicate(raw_an);
-	work->raw_title = Str::duplicate(raw_ti);
-}
+@h Printing.
+As noted above, the raw forms are used for output.
 
+=
 void Works::write(OUTPUT_STREAM, inbuild_work *work) {
 	VMETHOD_CALL(work->genre, GENRE_WRITE_WORK_MTID, OUT, work);
 }
@@ -92,6 +116,10 @@ void Works::write_to_HTML_file(OUTPUT_STREAM, inbuild_work *work, int fancy) {
 	WRITE("%S", work->raw_author_name);
 }
 
+@ The following is only sensible for extensions, and is used when Inform
+generates its Extensions index entries.
+
+=
 void Works::write_link_to_HTML_file(OUTPUT_STREAM, inbuild_work *work) {
 	HTML_OPEN_WITH("a", "href='Extensions/%S/%S.html' style=\"text-decoration: none\"",
 		work->author_name, work->title);
@@ -102,6 +130,10 @@ void Works::write_link_to_HTML_file(OUTPUT_STREAM, inbuild_work *work) {
 	HTML_CLOSE("a");
 }
 
+@ The Inbuild module provides the |%X| escape sequence for printing names of
+works. (The X used to stand for Extension.) |%<X| ptovides an abbreviated form.
+
+=
 void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 	inbuild_work *work = (inbuild_work *) vE;
 	switch (format_string[0]) {
@@ -109,7 +141,8 @@ void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 			if (work == NULL) WRITE("source text");
 			else {
 				WRITE("%S", work->raw_title);
-				if (Works::is_standard_rules(work) == FALSE)
+				if ((Works::is_standard_rules(work) == FALSE) &&
+					(Works::is_basic_inform(work) == FALSE))
 					WRITE(" by %S", work->raw_author_name);
 			}
 			break;
@@ -122,15 +155,16 @@ void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 	}
 }
 
-@ Two works with different hash codes definitely identify different extensions;
-if the code is the same, we must use |strcmp| on the actual title and author
+@h Identification.
+Two works with different hash codes definitely identify different works;
+if the code is the same, we must use |Str::eq| on the actual title and author
 name. This is in effect case insensitive, since we normalised casing when
 the works were created.
 
 (Note that this is not a lexicographic function suitable for sorting
 works into alphabetical order: it cannot be, since the hash code is not
 order-preserving. To emphasise this we return true or false rather than a
-|strcmp|-style delta value. For |Works::compare|, see below...)
+|strcmp|-style delta value.)
 
 =
 int Works::match(inbuild_work *eid1, inbuild_work *eid2) {
@@ -141,7 +175,8 @@ int Works::match(inbuild_work *eid1, inbuild_work *eid2) {
 	return TRUE;
 }
 
-@ These are quite a deal slower, but trichotomous.
+@ These are quite a deal slower, but are trichotomous and can be used for
+sorting.
 
 =
 int Works::compare(inbuild_work *eid1, inbuild_work *eid2) {
@@ -176,9 +211,9 @@ int Works::compare_by_length(inbuild_work *eid1, inbuild_work *eid2) {
 	return Str::cmp(eid1->author_name, eid2->author_name);
 }
 
-@ Because the Standard Rules are treated slightly differently by the
-documentation, and so forth, it's convenient to provide a single function
-testing if a work refers to them.
+@ Because Basic Inform and the Standard Rules extensions are treated slightly
+differently by the documentation, and so forth, it's convenient to provide a
+single function testing if a work refers to them.
 
 =
 inbuild_work *a_work_for_standard_rules = NULL;
@@ -406,25 +441,6 @@ void Works::log_work_hash_table(void) {
 		}
 	}
 	LOG("%d entries in all\n", total);
-}
-
-@h How casing is normalised.
-Every word is capitalised, where a word begins at the start of the text,
-after a hyphen, or after a bracket. Thus "Every Word Counts", "Even
-Double-Barrelled Ones (And Even Parenthetically)".
-
-=
-void Works::normalise_casing(text_stream *p) {
-	int boundary = TRUE;
-	LOOP_THROUGH_TEXT(pos, p) {
-		wchar_t c = Str::get(pos);
-		if (boundary) Str::put(pos, Characters::toupper(c));
-		else Str::put(pos, Characters::tolower(c));
-		boundary = FALSE;
-		if (c == ' ') boundary = TRUE;
-		if (c == '-') boundary = TRUE;
-		if (c == '(') boundary = TRUE;
-	}
 }
 
 @h Documentation links.
