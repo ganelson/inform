@@ -6,7 +6,7 @@
 # script for making that makefile; it's human-readable and editable.
 # To perform the translation, run this as a shell command:
 #
-#    $ ../inweb/Tangled/inweb -prototype makescript.txt -makefile makefile
+#    $ ../inweb/Tangled/inweb -prototype scripts/makescript.txt -makefile makefile
 #
 # In the syntax of this file, only curly braces {thus} represent special
 # features: everything else is raw makefile syntax, copied directly across.
@@ -149,6 +149,10 @@ INFORM6X = inform6/Tangled/inform6
 {dep} BUILDINGTEST on BUILDING
 {dep} BUILDINGTEST on INTER
 {dep} BUILDINGTEST on WORDS
+
+{tool} ARCHTEST arch-test inbuild/arch-test
+{dep} ARCHTEST on FOUNDATION
+{dep} ARCHTEST on ARCH
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
@@ -415,6 +419,8 @@ pages:
 	$(INWEBX) inform7/index-module -weave-docs -weave-into docs/index-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
 	rm -f docs/inflections-module/*.html
 	$(INWEBX) inform7/inflections-module -weave-docs -weave-into docs/inflections-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
+	rm -f docs/arch-test/*.html
+	$(INWEBX) inbuild/arch-test -weave-docs -weave-into docs/arch-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
 	rm -f docs/building-test/*.html
 	$(INWEBX) inter/building-test -weave-docs -weave-into docs/building-test -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
 	rm -f docs/inflections-test/*.html

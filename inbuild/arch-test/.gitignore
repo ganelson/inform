@@ -10,11 +10,3 @@ Tests/Transient/
 Tests/hashes.intest
 Tests/_Results_Actual/
 
-inbuild.mk
-syntax-test/syntax-test.mk
-words-test/words-test.mk
-arch-test/arch-test.mk
-
-Tests/Units/_Results_Actual/
-Tests/Miscellany/_Results_Actual/
-

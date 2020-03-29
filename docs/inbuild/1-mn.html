@@ -73,7 +73,6 @@
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dry_run_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">build_trace_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">destination_nest</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">filter_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">unit_test</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -188,21 +187,16 @@ that we want to start work now.
 
 <pre class="displaydefn">
         <span class="functiontext">Inbuild::go_operational</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">) &gt; 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">unit_test</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"compatibility"</span><span class="plain">)) </span><span class="functiontext">Compatibility::test</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"no such unit test: %S"</span><span class="plain">, </span><span class="identifier">unit_test</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">SHELL_METHODOLOGY</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dry_run_mode</span><span class="plain">) </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">;</span>
-            <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">path_to_tools</span><span class="plain">) </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="identifier">path_to_tools</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">), </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">build_trace_mode</span><span class="plain">) </span><span class="identifier">trace_ibg</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Main::list_of_targets</span><span class="plain">();</span>
-            <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
-                &lt;<span class="cwebmacro">Carry out the required task on the copy C</span> <span class="cwebmacronumber">2.3.2</span>&gt;<span class="plain">;</span>
-        <span class="plain">}</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">SHELL_METHODOLOGY</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dry_run_mode</span><span class="plain">) </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">;</span>
+        <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">path_to_tools</span><span class="plain">) </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="identifier">path_to_tools</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">BM</span><span class="plain"> = </span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">path_to_inbuild</span><span class="plain">), </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">use</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">build_trace_mode</span><span class="plain">) </span><span class="identifier">trace_ibg</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Main::list_of_targets</span><span class="plain">();</span>
+        <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
+            &lt;<span class="cwebmacro">Carry out the required task on the copy C</span> <span class="cwebmacronumber">2.3.2</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -400,7 +394,6 @@ other options to the selection defined here.
     <span class="definitionkeyword">enum</span> <span class="constant">MATCHING_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">COPY_TO_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SYNC_TO_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">UNIT_TEST_CLSW</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -446,8 +439,6 @@ other options to the selection defined here.
             <span class="identifier">L</span><span class="string">"apply to all works in nest(s) matching requirement X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">CONTENTS_OF_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"contents-of"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"apply to all targets in the directory X"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">UNIT_TEST_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"unit-test"</span><span class="plain">, 2,</span>
-            <span class="identifier">L</span><span class="string">"perform unit test X (for debugging inbuild only)"</span><span class="plain">);</span>
         <span class="functiontext">Inbuild::declare_options</span><span class="plain">();</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::option</span><span class="plain">, &amp;</span><span class="functiontext">Main::bareword</span><span class="plain">);</span>
@@ -495,7 +486,6 @@ other options to the selection defined here.
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SYNC_TO_CLSW</span><span class="plain">: </span><span class="identifier">inbuild_task</span><span class="plain"> = </span><span class="constant">SYNC_TO_TTASK</span><span class="plain">;</span>
                 <span class="identifier">destination_nest</span><span class="plain"> = </span><span class="functiontext">Nests::new</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNIT_TEST_CLSW</span><span class="plain">: </span><span class="identifier">unit_test</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Inbuild::option</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
     <span class="plain">}</span>

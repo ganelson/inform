@@ -14,7 +14,6 @@ pathname *path_to_tools = NULL;
 int dry_run_mode = FALSE, build_trace_mode = FALSE;
 inbuild_nest *destination_nest = NULL;
 text_stream *filter_text = NULL;
-text_stream *unit_test = NULL;
 
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
@@ -89,21 +88,16 @@ that we want to start work now.
 
 @<Act on the targets@> =
 	Inbuild::go_operational();
-	if (Str::len(unit_test) > 0) {
-		if (Str::eq(unit_test, I"compatibility")) Compatibility::test(STDOUT);
-		else Errors::with_text("no such unit test: %S", unit_test);
-	} else {
-		int use = SHELL_METHODOLOGY;
-		if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
-		build_methodology *BM;
-		if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
-		else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
-		if (build_trace_mode) trace_ibg = TRUE;
-		linked_list *L = Main::list_of_targets();
-		inbuild_copy *C;
-		LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
-			@<Carry out the required task on the copy C@>;
-	}
+	int use = SHELL_METHODOLOGY;
+	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
+	build_methodology *BM;
+	if (path_to_tools) BM = BuildMethodology::new(path_to_tools, FALSE, use);
+	else BM = BuildMethodology::new(Pathnames::up(path_to_inbuild), TRUE, use);
+	if (build_trace_mode) trace_ibg = TRUE;
+	linked_list *L = Main::list_of_targets();
+	inbuild_copy *C;
+	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
+		@<Carry out the required task on the copy C@>;
 
 @ The list of possible tasks is as follows; they basically all correspond to
 utility functions in the |inbuild| module, which we call.
@@ -251,7 +245,6 @@ other options to the selection defined here.
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
-@e UNIT_TEST_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -291,8 +284,6 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
-	CommandLine::declare_switch(UNIT_TEST_CLSW, L"unit-test", 2,
-		L"perform unit test X (for debugging inbuild only)");
 	Inbuild::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -333,7 +324,6 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
-		case UNIT_TEST_CLSW: unit_test = Str::duplicate(arg); break;
 	}
 	Inbuild::option(id, val, arg, state);
 }

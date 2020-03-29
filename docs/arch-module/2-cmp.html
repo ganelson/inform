@@ -306,46 +306,6 @@
                 <span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">decision</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain">;</span>
     <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Compatibility::test</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for all"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"all"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not for all"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not all"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for none"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"none"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not for none"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not none"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for 16-bit with debugging"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not for 32-bit"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for 16-bit with debugging or 32-bit with debugging"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not for 32-bit or 16-bit"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for 16-bit with debugging, 32-bit with debugging or 32-bit"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"not for 16-bit with debugging, 32-bit with debugging or 32-bit"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for glulx"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for glulx or z-machine version 8"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for glulx without debugging"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for z-machine version 8"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for z-machine version 5 with debugging"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for z-machine version 8, or Glulx without debugging"</span><span class="plain">);</span>
-        <span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for z-machine version 5 or 8"</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Compatibility::test_one</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"'%S': "</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">);</span>
-        <span class="reserved">compatibility_specification</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">Compatibility::from_text</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"not a valid compatibility specification\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="functiontext">Compatibility::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">":\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-        <span class="reserved">target_vm</span><span class="plain"> *</span><span class="identifier">VM</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">VM</span><span class="plain">, </span><span class="reserved">target_vm</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Compatibility::with</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">VM</span><span class="plain">)) {</span>
-                <span class="functiontext">TargetVMs::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">VM</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -365,10 +325,6 @@
 <p class="endnote">The function Compatibility::add appears nowhere else.</p>
 
 <p class="endnote">The function Compatibility::with appears nowhere else.</p>
-
-<p class="endnote">The function Compatibility::test appears nowhere else.</p>
-
-<p class="endnote">The function Compatibility::test_one appears nowhere else.</p>
 
 <p class="endnote">The structure compatibility_specification is private to this section.</p>
 
