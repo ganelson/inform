@@ -100,7 +100,7 @@ the instance <code class="display"><span class="extract">kit_genre</span></code>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Genres::new is used in 4/km (<a href="4-km.html#SP1">&#167;1</a>), 4/em (<a href="4-em.html#SP2">&#167;2</a>), 4/lm (<a href="4-lm.html#SP1">&#167;1</a>), 4/pbm (<a href="4-pbm.html#SP1">&#167;1</a>), 4/pfm (<a href="4-pfm.html#SP1">&#167;1</a>), 4/tm (<a href="4-tm.html#SP1">&#167;1</a>), 4/pm (<a href="4-pm.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Genres::new is used in 4/em (<a href="4-em.html#SP2">&#167;2</a>), 4/km (<a href="4-km.html#SP1">&#167;1</a>), 4/lm (<a href="4-lm.html#SP1">&#167;1</a>), 4/pm (<a href="4-pm.html#SP1">&#167;1</a>), 4/pbm (<a href="4-pbm.html#SP1">&#167;1</a>), 4/pfm (<a href="4-pfm.html#SP1">&#167;1</a>), 4/tm (<a href="4-tm.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function Genres::name is used in 2/cps (<a href="2-cps.html#SP9">&#167;9</a>).</p>
 
@@ -216,6 +216,10 @@ is scanned for metadata during claiming, only the opening line is looked at.)
 text. It will never be called twice on the same copy.
 </p>
 
+<p class="inwebparagraph">Text should actually be read by feeding it into the lexer. Inbuild will take
+of it from there.
+</p>
+
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">GENRE_READ_SOURCE_TEXT_FOR_MTID</span>
@@ -228,7 +232,7 @@ text. It will never be called twice on the same copy.
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At the Going Operational phase of Inbuild, each copy is offered the chance
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At the Graph Construction phase of Inbuild, each copy is offered the chance
 to finalise its internal representation. For example, this may be when its
 build graph is constructed, because we can now know for sure that there are
 no further unsuspected dependencies.
@@ -238,17 +242,13 @@ no further unsuspected dependencies.
 provides it) which has been claimed by Inbuild.
 </p>
 
-<p class="inwebparagraph">Text should actually be read by feeding it into the lexer. Inbuild will take
-of it from there.
-</p>
-
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">GENRE_GO_OPERATIONAL_MTID</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">GENRE_CONSTRUCT_GRAPH_MTID</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">GENRE_GO_OPERATIONAL_MTID</span><span class="plain">,</span>
+    <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain">,</span>
         <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">)</span>
 </pre>
 

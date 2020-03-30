@@ -39,7 +39,7 @@ void Unit::test_problems(text_stream *arg) {
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	syntax_tree = ParseTree::new_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(syntax_tree, W, FALSE, NULL, -1);
+	Sentences::break(syntax_tree, W);
 
 	ParseTree::traverse(syntax_tree, Unit::scan_tree);
 }

@@ -1,6 +1,7 @@
 [LanguageManager::] Language Manager.
 
-A language is a combination of Inter code with an Inform 7 extension.
+Claiming and creating copies of the language genre: used for bundles of
+natural language metadata in the Inform 7 compiler.
 
 @h Genre definition.
 The |language_genre| can be summarised as follows. Language definitions

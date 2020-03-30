@@ -1,8 +1,9 @@
 [Extensions::] Extension Services.
 
-An Inform 7 extension.
+Behaviour specific to copies of the extension genre.
 
-@ An extension has a title and an author name, each of which is limited in
+@h Scanning metadata.
+An extension has a title and an author name, each of which is limited in
 length to one character less than the following constants:
 
 @d MAX_EXTENSION_TITLE_LENGTH 51
@@ -26,10 +27,30 @@ typedef struct inform_extension {
 	MEMORY_MANAGEMENT
 } inform_extension;
 
+@ This is called as soon as a new copy |C| of the extension genre is created.
+We scan the extension file for the title, author, version number and any
+compatibility notes given (such as "for Glulx only").
+
+=
 void Extensions::scan(inbuild_copy *C) {
 	inform_extension *E = CREATE(inform_extension);
 	E->as_copy = C;
 	Copies::set_content(C, STORE_POINTER_inform_extension(E));
+	@<Initialise the extension docket@>;
+
+	TEMPORARY_TEXT(claimed_author_name);
+	TEMPORARY_TEXT(claimed_title);
+	TEMPORARY_TEXT(reqs);
+	semantic_version_number V = VersionNumbers::null();
+	@<Scan the file@>;
+	@<Change the edition of the copy in light of the metadata found in the scan@>;
+	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
+	DISCARD_TEXT(claimed_author_name);
+	DISCARD_TEXT(claimed_title);
+	DISCARD_TEXT(reqs);
+}
+
+@<Initialise the extension docket@> =
 	E->body_text = EMPTY_WORDING;
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
@@ -43,37 +64,6 @@ void Extensions::scan(inbuild_copy *C) {
 	E->syntax_tree = ParseTree::new_tree();
 	E->inclusion_sentence = NULL;
 
-	TEMPORARY_TEXT(claimed_author_name);
-	TEMPORARY_TEXT(claimed_title);
-	TEMPORARY_TEXT(reqs);
-	filename *F = C->location_if_file;
-	semantic_version_number V = VersionNumbers::null();
-	@<Scan the file@>;
-	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
-	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
-	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH) {
-		Copies::attach_error(C, CopyErrors::new_N(EXT_TITLE_TOO_LONG_CE, -1, Str::len(claimed_title)));
-	}
-	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH) {
-		Copies::attach_error(C, CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
-	}
-	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
-	if (Str::len(reqs) > 0) {
-		compatibility_specification *CS = Compatibility::from_text(reqs);
-		if (CS) C->edition->compatibility = CS;
-		else {
-			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "cannot read compatibility '%S'", reqs);
-			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, err));
-			DISCARD_TEXT(err);
-		}
-	}
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	DISCARD_TEXT(claimed_author_name);
-	DISCARD_TEXT(claimed_title);
-	DISCARD_TEXT(reqs);
-}
-
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
 alone, and the version number is returned.
@@ -82,6 +72,7 @@ alone, and the version number is returned.
 @<Scan the file@> =
 	TEMPORARY_TEXT(titling_line);
 	TEMPORARY_TEXT(version_text);
+	filename *F = C->location_if_file;
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
 		Copies::attach_error(C, CopyErrors::new_F(OPEN_FAILED_CE, -1, F));
@@ -198,7 +189,121 @@ this is unambiguous.
 		Str::copy(reqs, mr.exp[1]);
 	}
 
-@ =
+@ Note that we don't attempt to modify the |inbuild_work| structure inside
+the edition; we create an entirely new |inbuild_work|. That's because they
+are immutable, and need to be for the extensions dictionary to work.
+
+@<Change the edition of the copy in light of the metadata found in the scan@> =
+	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
+	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
+	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH) {
+		Copies::attach_error(C, CopyErrors::new_N(EXT_TITLE_TOO_LONG_CE, -1, Str::len(claimed_title)));
+	}
+	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH) {
+		Copies::attach_error(C, CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
+	}
+	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
+	if (Str::len(reqs) > 0) {
+		compatibility_specification *CS = Compatibility::from_text(reqs);
+		if (CS) C->edition->compatibility = CS;
+		else {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "cannot read compatibility '%S'", reqs);
+			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, err));
+			DISCARD_TEXT(err);
+		}
+	}
+
+@h Read source text.
+The scan only skimmed the surface of the file, and didn't try to parse it as
+natural language text with Preform. But if the extension turns out to be one
+that we need to use for something, we'll need to read its full text eventually.
+This is that time.
+
+=
+void Extensions::read_source_text_for(inform_extension *E) {
+	filename *F = E->as_copy->location_if_file;
+	int doc_only = FALSE;
+	if (census_mode) doc_only = TRUE;
+	TEMPORARY_TEXT(synopsis);
+	@<Concoct a synopsis for the extension to be read@>;
+	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
+	DISCARD_TEXT(synopsis);
+	if (E->read_into_file) {
+		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
+		@<Break the text into sentences@>;
+		E->body_text_unbroken = FALSE;
+	}
+}
+
+@ We concoct a textual synopsis in the form
+
+	|"Pantomime Sausages by Mr Punch"|
+
+to be used by |SourceFiles::read_extension_source_text| for printing to |stdout|. Since
+we dare not assume |stdout| can manage characters outside the basic ASCII
+range, we flatten them from general ISO to plain ASCII.
+
+@<Concoct a synopsis for the extension to be read@> =
+	WRITE_TO(synopsis, "%S by %S", 
+		E->as_copy->edition->work->title,
+		E->as_copy->edition->work->author_name);
+	LOOP_THROUGH_TEXT(pos, synopsis)
+		Str::put(pos,
+			Characters::make_filename_safe(Str::get(pos)));
+
+@ Note that if there is an active project, then we are reading the extension
+in order to include it in that, and so we send it to the project's syntax tree,
+rather than to the extension's own one. But if we are simply examining the
+extension by running |-graph| on it in the Inbuild command line, for example,
+then its sentences will go to the extension's own tree.
+
+@<Break the text into sentences@> =
+	wording EXW = E->read_into_file->text_read;
+	if (Wordings::nonempty(EXW))
+		@<Break the extension's text into body and documentation@>;
+	inform_project *project = Inbuild::project();
+	if (project) E->syntax_tree = project->syntax_tree;
+	Sentences::break_into_extension_copy(E->syntax_tree, E->body_text, E->as_copy);
+	E->body_text_unbroken = FALSE;
+
+@  If an extension file contains the special text (outside literal mode) of
+
+	|---- Documentation ----|
+
+then this is taken as the end of the Inform source, and the beginning of a
+snippet of documentation about the extension; text from that point on is
+saved until later, but not broken into sentences for the parse tree, and it
+is therefore invisible to the rest of Inform. If this division line is not
+present then the extension contains only body source and no documentation.
+
+=
+<extension-body> ::=
+	*** ---- documentation ---- ... |	==> TRUE
+	...									==> FALSE
+
+@<Break the extension's text into body and documentation@> =
+	<extension-body>(EXW);
+	E->body_text = GET_RW(<extension-body>, 1);
+	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
+	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */
+
+@ When the extension source text was read from its |source_file|, we
+attached a reference to say which |inform_extension| it was, and here we
+make use of that:
+
+=
+inform_extension *Extensions::corresponding_to(source_file *sf) {
+	if (sf == NULL) return NULL;
+	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
+	if (C == NULL) return NULL;
+	if (C->edition->work->genre != extension_genre) return NULL;
+	return ExtensionManager::from_copy(C);
+}
+
+@h Miscellaneous.
+
+=
 void Extensions::write(OUTPUT_STREAM, inform_extension *E) {
 	if (E == NULL) WRITE("none");
 	else WRITE("%X", E->as_copy->edition->work);
@@ -212,8 +317,8 @@ void Extensions::write_author_to_file(inform_extension *E, OUTPUT_STREAM) {
 	WRITE("%S", E->as_copy->edition->work->raw_author_name);
 }
 
-@ Three pieces of information (not available when the EF is created) will
-be set later on, by other parts of Inform calling the routines below.
+@ Three pieces of information will be set later on, by other parts of Inform
+calling the routines below.
 
 The rubric text for an extension, which is double-quoted matter just below
 its "begins here" line, is parsed as a sentence and will be read as an
@@ -252,7 +357,9 @@ void Extensions::set_authorial_modesty(inform_extension *E) {
 	if (E == NULL) internal_error("unfound ef");
 	E->authorial_modesty = TRUE;
 }
-void Extensions::set_general_authorial_modesty(void) { general_authorial_modesty = TRUE; }
+void Extensions::set_general_authorial_modesty(void) {
+	general_authorial_modesty = TRUE;
+}
 
 void Extensions::set_inclusion_sentence(inform_extension *E, parse_node *N) {
 	E->inclusion_sentence = N;
@@ -273,79 +380,10 @@ void Extensions::make_standard(inform_extension *E) {
 
 void Extensions::must_satisfy(inform_extension *E, inbuild_requirement *req) {
 	if (E->must_satisfy == NULL) E->must_satisfy = req;
-	else if (VersionNumberRanges::intersect_range(E->must_satisfy->version_range, req->version_range)) {
-		#ifdef CORE_MODULE
-		Extensions::set_inclusion_sentence(E, current_sentence);
-		#endif
-	}
+	else VersionNumberRanges::intersect_range(E->must_satisfy->version_range, req->version_range);
 }
 
 int Extensions::satisfies(inform_extension *E) {
 	if (E == NULL) return FALSE;
 	return Requirements::meets(E->as_copy->edition, E->must_satisfy);
 }
-
-@
-
-=
-void Extensions::read_source_text_for(inform_extension *E) {
-	filename *F = E->as_copy->location_if_file;
-	int doc_only = FALSE;
-	if (census_mode) doc_only = TRUE;
-	TEMPORARY_TEXT(synopsis);
-	@<Concoct a synopsis for the extension to be read@>;
-	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
-	DISCARD_TEXT(synopsis);
-	if (E->read_into_file) {
-		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
-		wording EXW = E->read_into_file->text_read;
-		if (Wordings::nonempty(EXW)) @<Break the extension's text into body and documentation@>;
-		inform_project *project = Inbuild::project();
-		if (project) E->syntax_tree = project->syntax_tree;
-		Sentences::break(E->syntax_tree, E->body_text, TRUE, E->as_copy, -1);
-		E->body_text_unbroken = FALSE;
-	}
-}
-
-inform_extension *Extensions::corresponding_to(source_file *sf) {
-	if (sf == NULL) return NULL;
-	inbuild_copy *C = RETRIEVE_POINTER_inbuild_copy(sf->your_ref);
-	if (C == NULL) return NULL;
-	if (C->edition->work->genre != extension_genre) return NULL;
-	return ExtensionManager::from_copy(C);
-}
-
-@ We concoct a textual synopsis in the form
-
-	|"Pantomime Sausages by Mr Punch"|
-
-to be used by |SourceFiles::read_extension_source_text| for printing to |stdout|. Since
-we dare not assume |stdout| can manage characters outside the basic ASCII
-range, we flatten them from general ISO to plain ASCII.
-
-@<Concoct a synopsis for the extension to be read@> =
-	WRITE_TO(synopsis, "%S by %S", E->as_copy->edition->work->title, E->as_copy->edition->work->author_name);
-	LOOP_THROUGH_TEXT(pos, synopsis)
-		Str::put(pos,
-			Characters::make_filename_safe(Str::get(pos)));
-
-@  If an extension file contains the special text (outside literal mode) of
-
-	|---- Documentation ----|
-
-then this is taken as the end of the Inform source, and the beginning of a
-snippet of documentation about the extension; text from that point on is
-saved until later, but not broken into sentences for the parse tree, and it
-is therefore invisible to the rest of Inform. If this division line is not
-present then the extension contains only body source and no documentation.
-
-=
-<extension-body> ::=
-	*** ---- documentation ---- ... |	==> TRUE
-	...									==> FALSE
-
-@<Break the extension's text into body and documentation@> =
-	<extension-body>(EXW);
-	E->body_text = GET_RW(<extension-body>, 1);
-	if (<<r>>) E->documentation_text = GET_RW(<extension-body>, 2);
-	E->body_text_unbroken = TRUE; /* mark this to be sentence-broken */

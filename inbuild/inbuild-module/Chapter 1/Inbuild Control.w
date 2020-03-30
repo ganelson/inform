@@ -22,7 +22,7 @@ at which time the client can freely use its facilities.
 @e NESTED_INBUILD_PHASE
 @e PROJECTED_INBUILD_PHASE
 @e TARGETED_INBUILD_PHASE
-@e GOING_OPERATIONAL_INBUILD_PHASE
+@e GRAPH_CONSTRUCTION_INBUILD_PHASE
 @e OPERATIONAL_INBUILD_PHASE
 
 @ We're going to use the following assertions to make sure we don't slip up.
@@ -370,7 +370,7 @@ void Inbuild::set_current_vm(target_vm *VM) {
 	current_target_VM = VM;
 }
 
-@h The Going Operational and Operational phases.
+@h The Graph Construction and Operational phases.
 |inbuild| is now in the Targeted phase, then, meaning that the client has
 called |Inbuild::optioneering_complete| and has been making further
 preparations of its own. (For example, it could attach further kit
@@ -378,20 +378,20 @@ dependencies to the shared project.) The client has one further duty to
 perform: to call |Inbuild::go_operational|. After that, everything is ready
 for use.
 
-The brief "going operational" phase is used, for example, to build out
-dependency graphs. We do that copy by copy. The shared project, if there is
-one, goes first; then everything else known to us.
+The brief "graph construction" phase is used to build out dependency graphs.
+We do that copy by copy. The shared project, if there is one, goes first;
+then everything else known to us.
 
 =
 inform_project *Inbuild::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
-	inbuild_phase = GOING_OPERATIONAL_INBUILD_PHASE;
+	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
 	inform_project *P = Inbuild::project();
-	if (P) Copies::go_operational(P->as_copy);
+	if (P) Copies::construct_graph(P->as_copy);
 	inbuild_copy *C;
 	LOOP_OVER(C, inbuild_copy)
 		if ((P == NULL) || (C != P->as_copy))
-			Copies::go_operational(C);
+			Copies::construct_graph(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) Extensions::Census::handle_census_mode();
 	return Inbuild::project();

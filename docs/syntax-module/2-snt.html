@@ -133,9 +133,15 @@ is probably a phrase, and so on &mdash; and the following is its state.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_in_tabbed_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = -1;</span>
     <span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::set_start_of_source</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
+        <span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
+
+<p class="endnote">The function Sentences::set_start_of_source appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Now for the routine itself. We break into bite-sized chunks, each of which is
 despatched to the <code class="display"><span class="extract">Sentences::make_node</span></code> routine with a note of the punctuation
@@ -145,8 +151,17 @@ finite state machine.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_extension</span><span class="plain">,</span>
-        <span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_copy</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bwc</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
+        <span class="functiontext">Sentences::break_inner</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break_into_project_copy</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="functiontext">Sentences::break_inner</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+    <span class="plain">}</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break_into_extension_copy</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
+        <span class="functiontext">Sentences::break_inner</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break_inner</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_extension</span><span class="plain">, </span><span class="constant">COPY_FILE_TYPE</span><span class="plain"> *</span><span class="identifier">from_copy</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">PARBREAK_V</span><span class="plain">)))</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -190,6 +205,12 @@ finite state machine.
 
 <p class="endnote">The function Sentences::break appears nowhere else.</p>
 
+<p class="endnote">The function Sentences::break_into_project_copy appears nowhere else.</p>
+
+<p class="endnote">The function Sentences::break_into_extension_copy appears nowhere else.</p>
+
+<p class="endnote">The function Sentences::break_inner appears nowhere else.</p>
+
 <p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>Each call to <code class="display"><span class="extract">Sentences::break</span></code> starts afresh, with no residual state
 left over from previous calls. (The same cannot be said for <code class="display"><span class="extract">Sentences::make_node</span></code>,
 which constructs individual sentences and is repeatedly called by us, and
@@ -209,7 +230,6 @@ that is why these are global variables rather than locals in <code class="displa
         <span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">from_copy</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">is_extension</span><span class="plain">) </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 1;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 0;</span>
-        <span class="identifier">sfsm_main_source_start_wn</span><span class="plain"> = </span><span class="identifier">bwc</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>

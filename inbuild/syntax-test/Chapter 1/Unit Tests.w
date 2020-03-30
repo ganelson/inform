@@ -28,7 +28,7 @@ void Unit::test_tree(text_stream *arg) {
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	syntax_tree = ParseTree::new_tree();
 	PRINT("Read %d words\n", Wordings::length(W));
-	Sentences::break(syntax_tree, W, FALSE, NULL, -1);
+	Sentences::break(syntax_tree, W);
 
 	text_stream *save_DL = DL;
 	DL = STDOUT;

@@ -1,6 +1,7 @@
 [KitManager::] Kit Manager.
 
-A kit is a combination of Inter code with an Inform 7 extension.
+Claiming and creating copies of the kit genre: used for kits of precompiled
+Inter code.
 
 @h Genre definition.
 The |kit_genre| can be summarised as follows. Kits consist of directories,
@@ -19,7 +20,7 @@ void KitManager::start(void) {
 	METHOD_ADD(kit_genre, GENRE_CLAIM_AS_COPY_MTID, KitManager::claim_as_copy);
 	METHOD_ADD(kit_genre, GENRE_SEARCH_NEST_FOR_MTID, KitManager::search_nest_for);
 	METHOD_ADD(kit_genre, GENRE_COPY_TO_NEST_MTID, KitManager::copy_to_nest);
-	METHOD_ADD(kit_genre, GENRE_GO_OPERATIONAL_MTID, KitManager::go_operational);
+	METHOD_ADD(kit_genre, GENRE_CONSTRUCT_GRAPH_MTID, KitManager::construct_graph);
 	METHOD_ADD(kit_genre, GENRE_BUILDING_SOON_MTID, KitManager::building_soon);
 }
 
@@ -177,6 +178,6 @@ void KitManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex
 	*V = C->vertex;
 }
 
-void KitManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+void KitManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
 	Kits::construct_graph(KitManager::from_copy(C));
 }

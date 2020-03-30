@@ -1,6 +1,7 @@
 [ExtensionManager::] Extension Manager.
 
-An Inform 7 extension.
+Claiming and creating copies of the extension genre: used for Inform 7
+extensions.
 
 @h Genre definition.
 The |extension_genre| can be summarised as follows. Copies consist of single
@@ -8,6 +9,12 @@ files. These are recognised by having the filename extension |.i7x|. They are
 stored in nests, in |N/Extensions/Author/Title-vVersion.i7x|. Their build
 graphs are a single vertex with no build edges, but with use edges to any
 further extensions which they Include.
+
+It may seem surprising that we do not provide a |GENRE_CONSTRUCT_GRAPH_MTID|
+method. This is for efficiency reasons: we don't want to read and parse the
+source text of every extension we ever see, and that's what would be needed
+to make the graphs of every such extension. Instead we build out the graph
+later on, as needed, just for extensions of interest: see below.
 
 @ =
 void ExtensionManager::start(void) {

@@ -28,29 +28,31 @@ Chapter 3: Incremental Builds
 	Inform6 Skill
 	Inblorb Skill
 
-Chapter 4: Managing Genres of Work
-	Kit Manager
+Chapter 4: Genre Management
 	Extension Manager
+	Kit Manager
 	Language Manager
+	Pipeline Manager
 	Project Bundle Manager
 	Project File Manager
 	Template Manager
-	Pipeline Manager
 
-Chapter 5: Services for the Inform Compiler
-	Kit Services
+Chapter 5: Genre Services
 	Extension Services
-	Extension Dictionary
-	Extension Documentation
-	Extension Census
-	Template Services
-	Project Services
+	Kit Services
 	Language Services
 	Pipeline Services
+	Project Services
+	Template Services
 
-Chapter 6: Handling Inform Source Text
+Chapter 6: Inform Source Text
 	Source Text
 	Headings
 	Inclusions
 	Control Structures
 	Virtual Machine Grammar
+
+Chapter 7: Extension Indexing
+	Extension Dictionary
+	Extension Documentation
+	Extension Census

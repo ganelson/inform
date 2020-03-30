@@ -108,13 +108,16 @@ is scanned for metadata during claiming, only the opening line is looked at.)
 This method should exist only for such genres, and it should read the source
 text. It will never be called twice on the same copy.
 
+Text should actually be read by feeding it into the lexer. Inbuild will take
+of it from there.
+
 @e GENRE_READ_SOURCE_TEXT_FOR_MTID
 
 =
 VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 
-@ At the Going Operational phase of Inbuild, each copy is offered the chance
+@ At the Graph Construction phase of Inbuild, each copy is offered the chance
 to finalise its internal representation. For example, this may be when its
 build graph is constructed, because we can now know for sure that there are
 no further unsuspected dependencies.
@@ -122,13 +125,10 @@ no further unsuspected dependencies.
 This method is optional, and is called exactly once on every copy (whose genre
 provides it) which has been claimed by Inbuild.
 
-Text should actually be read by feeding it into the lexer. Inbuild will take
-of it from there.
-
-@e GENRE_GO_OPERATIONAL_MTID
+@e GENRE_CONSTRUCT_GRAPH_MTID
 
 =
-VMETHOD_TYPE(GENRE_GO_OPERATIONAL_MTID,
+VMETHOD_TYPE(GENRE_CONSTRUCT_GRAPH_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 
 @ This method is called when a copy is about to be built or have its graph

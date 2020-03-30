@@ -1,6 +1,6 @@
 [Templates::] Template Services.
 
-An Inform 7 website template.
+Behaviour specific to copies of the template genre.
 
 @ =
 typedef struct inform_template {

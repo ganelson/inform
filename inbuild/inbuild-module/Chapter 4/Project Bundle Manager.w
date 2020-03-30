@@ -1,6 +1,7 @@
 [ProjectBundleManager::] Project Bundle Manager.
 
-A project bundle is a folder holding an Inform 7 work. The app creates these.
+Claiming and creating copies of the projectbundle genre: used for Inform 7
+projects as created by the GUI apps.
 
 @h Genre definition.
 The |project_bundle_genre| can be summarised as follows. Copies consist of
@@ -23,7 +24,7 @@ void ProjectBundleManager::start(void) {
 	METHOD_ADD(project_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectBundleManager::claim_as_copy);
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);
 	METHOD_ADD(project_bundle_genre, GENRE_COPY_TO_NEST_MTID, ProjectBundleManager::copy_to_nest);
-	METHOD_ADD(project_bundle_genre, GENRE_GO_OPERATIONAL_MTID, ProjectBundleManager::go_operational);
+	METHOD_ADD(project_bundle_genre, GENRE_CONSTRUCT_GRAPH_MTID, ProjectBundleManager::construct_graph);
 	METHOD_ADD(project_bundle_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectBundleManager::read_source_text_for);
 	METHOD_ADD(project_bundle_genre, GENRE_BUILDING_SOON_MTID, ProjectBundleManager::building_soon);
 }
@@ -105,7 +106,7 @@ void ProjectBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C, bu
 	*V = project->chosen_build_target;
 }
 
-void ProjectBundleManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+void ProjectBundleManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectBundleManager::from_copy(C));
 }
 

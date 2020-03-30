@@ -117,8 +117,8 @@ wording Copies::get_source_text(inbuild_copy *C) {
 @h Going operational.
 
 =
-void Copies::go_operational(inbuild_copy *C) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_GO_OPERATIONAL_MTID, C);
+void Copies::construct_graph(inbuild_copy *C) {
+	VMETHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
 }
 
 @h Miscellaneous Inbuild commands.

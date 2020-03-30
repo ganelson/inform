@@ -1,6 +1,7 @@
 [PipelineManager::] Pipeline Manager.
 
-An Inform 7 pipeline.
+Claiming and creating copies of the pipeline genre: used for pipelines of
+code-generation stages.
 
 @h Genre definition.
 The |pipeline_genre| can be summarised as follows. Copies consist of single

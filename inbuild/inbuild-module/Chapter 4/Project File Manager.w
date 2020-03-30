@@ -1,6 +1,7 @@
 [ProjectFileManager::] Project File Manager.
 
-A project file is a plain text file of Inform 7 source text.
+Claiming and creating copies of the projectfile genre: used for Inform 7
+source texts stored as stand-alone plain text files, outside the GUI apps.
 
 @h Genre definition.
 The |project_file_genre| can be summarised as follows. Copies consist of
@@ -21,7 +22,7 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
-	METHOD_ADD(project_file_genre, GENRE_GO_OPERATIONAL_MTID, ProjectFileManager::go_operational);
+	METHOD_ADD(project_file_genre, GENRE_CONSTRUCT_GRAPH_MTID, ProjectFileManager::construct_graph);
 	METHOD_ADD(project_file_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectFileManager::read_source_text_for);
 	METHOD_ADD(project_file_genre, GENRE_BUILDING_SOON_MTID, ProjectFileManager::building_soon);
 }
@@ -106,7 +107,7 @@ void ProjectFileManager::building_soon(inbuild_genre *gen, inbuild_copy *C, buil
 	*V = project->chosen_build_target;
 }
 
-void ProjectFileManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
+void ProjectFileManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectFileManager::from_copy(C));
 }
 

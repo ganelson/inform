@@ -58,14 +58,27 @@ int sfsm_in_tabbed_mode = FALSE;
 int sfsm_main_source_start_wn = -1;
 COPY_FILE_TYPE *sfsm_copy = NULL;
 
+void Sentences::set_start_of_source(int wn) {
+	sfsm_main_source_start_wn = wn;
+}
+
 @ Now for the routine itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| routine with a note of the punctuation
 which was used to end it. Each call to this routine represents one cycle of our
 finite state machine.
 
 =
-void Sentences::break(parse_node_tree *T, wording W, int is_extension,
-	COPY_FILE_TYPE *from_copy, int bwc) {
+void Sentences::break(parse_node_tree *T, wording W) {
+	Sentences::break_inner(T, W, FALSE, NULL);
+}
+void Sentences::break_into_project_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C) {
+	Sentences::break_inner(T, W, FALSE, C);
+}
+void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C) {
+	Sentences::break_inner(T, W, TRUE, C);
+}
+
+void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension, COPY_FILE_TYPE *from_copy) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
 	if (Wordings::empty(W)) return;
@@ -116,7 +129,6 @@ that is why these are global variables rather than locals in |Sentences::break|.
 	sfsm_copy = from_copy;
 	if (is_extension) sfsm_extension_position = 1;
 	else sfsm_extension_position = 0;
-	sfsm_main_source_start_wn = bwc;
 
 @ A table is any sentence beginning with the word "Table". (Bad news for
 anyone writing "Table Mountain is a room.", of course, but there are other

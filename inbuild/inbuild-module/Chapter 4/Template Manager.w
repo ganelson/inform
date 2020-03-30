@@ -1,6 +1,7 @@
 [TemplateManager::] Template Manager.
 
-A template is the outline for a website presenting an Inform work.
+Claiming and creating copies of the template genre: used for website and
+interpreter templates when releasing an Inform project.
 
 @h Genre definition.
 The |template_genre| can be summarised as follows. Website templates

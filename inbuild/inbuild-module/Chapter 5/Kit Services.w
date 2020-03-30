@@ -1,6 +1,6 @@
 [Kits::] Kits.
 
-A kit is a combination of Inter code with an Inform 7 extension.
+Behaviour specific to copies of the kit genre.
 
 @h Genre definition.
 
@@ -201,7 +201,7 @@ If there are $S$ sections then the graph has $S+5$ vertices and $4(S+1)$ edges.
 
 =
 void Kits::construct_graph(inform_kit *K) {
-	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
+	RUN_ONLY_IN_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
 	if (K == NULL) return;
 	inbuild_copy *C = K->as_copy;
 	pathname *P = C->location_if_path;

@@ -1,6 +1,6 @@
 [Languages::] Language Services.
 
-An Inform 7 language definition bundle.
+Behaviour specific to copies of the language genre.
 
 @ Inform can read and write text in multiple natural languages, though it
 needs help to do so. Each natural language known to Inform comes from a

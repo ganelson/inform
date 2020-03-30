@@ -1,7 +1,6 @@
 [Pipelines::] Pipeline Services.
 
-A pipeline is a list of steps to be followed by the Inter processor forming
-the back end of the Inform compiler.
+Behaviour specific to copies of the pipeline genre.
 
 @ =
 typedef struct inform_pipeline {

@@ -1,6 +1,6 @@
 [Projects::] Project Services.
 
-An Inform 7 project.
+Behaviour specific to copies of either the projectbundle or projectfile genres.
 
 @ =
 typedef struct kit_dependency {
@@ -319,7 +319,7 @@ void Projects::graph_dependent_language(inform_project *project, build_vertex *V
 }
 
 void Projects::construct_graph(inform_project *project) {
-	RUN_ONLY_IN_PHASE(GOING_OPERATIONAL_INBUILD_PHASE)
+	RUN_ONLY_IN_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
 	if (project == NULL) return;
 	build_vertex *V = project->as_copy->vertex;
 	build_vertex *S;
@@ -355,7 +355,7 @@ void Projects::read_source_text_for(inform_project *project) {
 	ParseTree::annotate_int(inclusions_heading, implied_heading_ANNOT, TRUE);
 	Headings::declare(project->syntax_tree, inclusions_heading);
 
-	int wc = lexer_wordcount, bwc = -1;
+	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early);
 	Projects::early_source_text(early, project);
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
@@ -366,22 +366,26 @@ void Projects::read_source_text_for(inform_project *project) {
 	wording early_W = Wordings::new(wc, lexer_wordcount-1);
 	
 	int l = ParseTree::push_attachment_point(project->syntax_tree, inclusions_heading);
-	Sentences::break(project->syntax_tree, early_W, FALSE, project->as_copy, bwc);
+	Sentences::break_into_project_copy(project->syntax_tree, early_W, project->as_copy);
 	ParseTree::pop_attachment_point(project->syntax_tree, l);
 	
 	wc = lexer_wordcount;
+	int start_set = FALSE;
 	linked_list *L = Projects::source(project);
 	if (L) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
 			filename *F = N->as_file;
-			if (bwc == -1) bwc = lexer_wordcount;
+			if (start_set == FALSE) {
+				start_set = TRUE;
+				Sentences::set_start_of_source(lexer_wordcount);
+			}
 			N->as_source_file = SourceText::read_file(project->as_copy, F, N->source_source,
 				FALSE, TRUE);
 		}
 	}
 	l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
-	Sentences::break(project->syntax_tree, Wordings::new(wc, lexer_wordcount-1), FALSE, project->as_copy, bwc);
+	Sentences::break_into_project_copy(project->syntax_tree, Wordings::new(wc, lexer_wordcount-1), project->as_copy);
 	ParseTree::pop_attachment_point(project->syntax_tree, l);
 
 	l = ParseTree::push_attachment_point(project->syntax_tree, project->syntax_tree->root_node);
