@@ -3,15 +3,11 @@
 An Inform 7 extension.
 
 @h Genre definition.
-
-= (early code)
-inbuild_genre *extension_genre = NULL;
-
-@ An extension has a title and an author name, each of which is limited in
-length to one character less than the following constants:
-
-@d MAX_EXTENSION_TITLE_LENGTH 51
-@d MAX_EXTENSION_AUTHOR_LENGTH 51
+The |extension_genre| can be summarised as follows. Copies consist of single
+files. These are recognised by having the filename extension |.i7x|. They are
+stored in nests, in |N/Extensions/Author/Title-vVersion.i7x|. Their build
+graphs are a single vertex with no build edges, but with use edges to any
+further extensions which they Include.
 
 @ =
 void ExtensionManager::start(void) {
@@ -194,7 +190,7 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 }
 
 @h Build graph.
-As far as building goes, the build graph for an extension is just a single node: 
+As far as building goes, the build graph for an extension is just a single vertex: 
 you don't need to build an extension at all. But it may well have use edges,
 thanks to including other extensions, and because of that we have to read the
 source text before we can do anything with the graph.
@@ -204,6 +200,8 @@ inefficient and might cause VM-related problems -- it would mean that many
 extraneous extensions, discovered only when scanning some directory, would
 be read in as source text; and some of those might not be compatible with
 the current VM settings.
+
+We therefore generate the build graph only on demand.
 
 =
 void ExtensionManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {

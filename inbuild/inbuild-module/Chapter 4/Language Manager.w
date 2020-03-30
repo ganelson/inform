@@ -3,11 +3,13 @@
 A language is a combination of Inter code with an Inform 7 extension.
 
 @h Genre definition.
+The |language_genre| can be summarised as follows. Language definitions
+consist of directories, containing metadata in |D/about.txt|. They are
+recognised by having this metadata file in place. They are stored in
+nests, in |N/Languages/Title-vVersion|. Their build graphs are single
+vertices with no build or use edges.
 
-= (early code)
-inbuild_genre *language_genre = NULL;
-
-@ =
+=
 void LanguageManager::start(void) {
 	language_genre = Genres::new(I"language", TRUE);
 	METHOD_ADD(language_genre, GENRE_WRITE_WORK_MTID, LanguageManager::write_work);

@@ -126,14 +126,22 @@ out of turn.
 
 
 <pre class="display">
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">extension_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">kit_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">language_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">pipeline_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">project_file_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">template_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inbuild::startup</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">KitManager::start</span><span class="plain">();</span>
         <span class="functiontext">ExtensionManager::start</span><span class="plain">();</span>
-        <span class="functiontext">TemplateManager::start</span><span class="plain">();</span>
+        <span class="functiontext">KitManager::start</span><span class="plain">();</span>
         <span class="functiontext">LanguageManager::start</span><span class="plain">();</span>
+        <span class="functiontext">PipelineManager::start</span><span class="plain">();</span>
         <span class="functiontext">ProjectBundleManager::start</span><span class="plain">();</span>
         <span class="functiontext">ProjectFileManager::start</span><span class="plain">();</span>
-        <span class="functiontext">PipelineManager::start</span><span class="plain">();</span>
+        <span class="functiontext">TemplateManager::start</span><span class="plain">();</span>
 
         <span class="functiontext">InterSkill::create</span><span class="plain">();</span>
         <span class="functiontext">Inform7Skill::create</span><span class="plain">();</span>

@@ -3,9 +3,18 @@
 A project file is a plain text file of Inform 7 source text.
 
 @h Genre definition.
+The |project_file_genre| can be summarised as follows. Copies consist of
+single files. These are recognised by having the filename extension |.txt|,
+|.ni| or |.i7|. They cannot be stored in nests. Their build graphs are
+extensive, having "upstream" vertices representing possible ways to build or
+release them, and having numerous "downstream" vertices as well: build edges
+run out to the extensions, kits and language definitions that they need.
+
+Note that |project_bundle_genre| and |project_file_genre| are managed
+differently, but share the same annotation data structure |inform_project|.
+However it is stored in the file system, a project is a project.
 
 =
-inbuild_genre *project_file_genre = NULL;
 void ProjectFileManager::start(void) {
 	project_file_genre = Genres::new(I"projectfile", FALSE);
 	METHOD_ADD(project_file_genre, GENRE_WRITE_WORK_MTID, ProjectFileManager::write_work);

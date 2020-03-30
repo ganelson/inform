@@ -3,9 +3,20 @@
 A project bundle is a folder holding an Inform 7 work. The app creates these.
 
 @h Genre definition.
+The |project_bundle_genre| can be summarised as follows. Copies consist of
+directories, which are Inform project bundles: for example,
+|Counterfeit Monkey.inform| might be such a bundle. They are recognised by
+being directories and having names ending in |.inform|. They cannot be
+stored in nests. Their build graphs are extensive, having "upstream" vertices
+representing possible ways to build or release them, and having numerous
+"downstream" vertices as well: build edges run out to the extensions, kits
+and language definitions that they need.
+
+Note that |project_bundle_genre| and |project_file_genre| are managed
+differently, but share the same annotation data structure |inform_project|.
+However it is stored in the file system, a project is a project.
 
 =
-inbuild_genre *project_bundle_genre = NULL;
 void ProjectBundleManager::start(void) {
 	project_bundle_genre = Genres::new(I"projectbundle", FALSE);
 	METHOD_ADD(project_bundle_genre, GENRE_WRITE_WORK_MTID, ProjectBundleManager::write_work);

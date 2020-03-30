@@ -48,14 +48,22 @@ void Inbuild::enter_phase(int p) {
 The following is called when the |inbuild| module starts up.
 
 =
+inbuild_genre *extension_genre = NULL;
+inbuild_genre *kit_genre = NULL;
+inbuild_genre *language_genre = NULL;
+inbuild_genre *pipeline_genre = NULL;
+inbuild_genre *project_bundle_genre = NULL;
+inbuild_genre *project_file_genre = NULL;
+inbuild_genre *template_genre = NULL;
+
 void Inbuild::startup(void) {
-	KitManager::start();
 	ExtensionManager::start();
-	TemplateManager::start();
+	KitManager::start();
 	LanguageManager::start();
+	PipelineManager::start();
 	ProjectBundleManager::start();
 	ProjectFileManager::start();
-	PipelineManager::start();
+	TemplateManager::start();
 
 	InterSkill::create();
 	Inform7Skill::create();

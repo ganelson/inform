@@ -3,9 +3,16 @@
 A kit is a combination of Inter code with an Inform 7 extension.
 
 @h Genre definition.
+The |kit_genre| can be summarised as follows. Kits consist of directories,
+containing metadata in |D/kit_metadata.txt|, but which are also valid Inweb
+webs of Inform 6 source text. They are recognised by having directory names
+ending in |Kit|, and by having a metadata file in place. They are stored in
+nests, in |N/Inter/Title-vVersion|. Their build graphs are quite extensive,
+with build edges to Inter binaries for each architecture with which they
+are compatible, and use edges to extensions or other kits as laid out in
+the metadata file.
 
 =
-inbuild_genre *kit_genre = NULL;
 void KitManager::start(void) {
 	kit_genre = Genres::new(I"kit", TRUE);
 	METHOD_ADD(kit_genre, GENRE_WRITE_WORK_MTID, KitManager::write_work);
@@ -120,7 +127,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 }
 
 @h Copying.
-Now the task is to copy a kit into place in a nest. Since a kit is a folder,
+Now the task is to copy a kit into place in a nest. Since a kit is a directory,
 we need to |rsync| it.
 
 =
@@ -172,21 +179,4 @@ void KitManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex
 
 void KitManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 	Kits::construct_graph(KitManager::from_copy(C));
-}
-
-typedef struct kit_contents_section_state {
-	struct linked_list *sects; /* of |text_stream| */
-	int active;
-} kit_contents_section_state;
-
-void KitManager::read_contents(text_stream *text, text_file_position *tfp, void *state) {
-	kit_contents_section_state *CSS = (kit_contents_section_state *) state;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"Sections"))
-		CSS->active = TRUE;
-	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
-		WRITE_TO(mr.exp[0], ".i6t");
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
-	}
-	Regexp::dispose_of(&mr);
 }

@@ -2,7 +2,11 @@
 
 An Inform 7 extension.
 
-@
+@ An extension has a title and an author name, each of which is limited in
+length to one character less than the following constants:
+
+@d MAX_EXTENSION_TITLE_LENGTH 51
+@d MAX_EXTENSION_AUTHOR_LENGTH 51
 
 =
 typedef struct inform_extension {

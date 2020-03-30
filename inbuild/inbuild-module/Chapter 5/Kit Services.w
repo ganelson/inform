@@ -225,7 +225,7 @@ void Kits::construct_graph(inform_kit *K) {
 	kit_contents_section_state CSS;
 	CSS.active = FALSE;
 	CSS.sects = NEW_LINKED_LIST(text_stream);
-	TextFiles::read(contents_page, FALSE, NULL, FALSE, KitManager::read_contents, NULL, (void *) &CSS);
+	TextFiles::read(contents_page, FALSE, NULL, FALSE, Kits::read_contents, NULL, (void *) &CSS);
 	text_stream *segment;
 	LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects) {
 		filename *SF = Filenames::in_folder(
@@ -251,4 +251,21 @@ void Kits::construct_graph(inform_kit *K) {
 			Graphs::need_this_to_use(KV, RV);
 		}
 	}
+}
+
+typedef struct kit_contents_section_state {
+	struct linked_list *sects; /* of |text_stream| */
+	int active;
+} kit_contents_section_state;
+
+void Kits::read_contents(text_stream *text, text_file_position *tfp, void *state) {
+	kit_contents_section_state *CSS = (kit_contents_section_state *) state;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, L"Sections"))
+		CSS->active = TRUE;
+	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
+		WRITE_TO(mr.exp[0], ".i6t");
+		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
+	}
+	Regexp::dispose_of(&mr);
 }

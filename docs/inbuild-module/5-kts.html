@@ -316,7 +316,7 @@ If there are S sections then the graph has S+5 vertices and 4(S+1) edges.
         <span class="reserved">kit_contents_section_state</span><span class="plain"> </span><span class="identifier">CSS</span><span class="plain">;</span>
         <span class="identifier">CSS</span><span class="element">.active</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">CSS</span><span class="element">.sects</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain">);</span>
-        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">contents_page</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">KitManager::read_contents</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) &amp;</span><span class="identifier">CSS</span><span class="plain">);</span>
+        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">contents_page</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Kits::read_contents</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) &amp;</span><span class="identifier">CSS</span><span class="plain">);</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">segment</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">CSS</span><span class="element">.sects</span><span class="plain">) {</span>
             <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">SF</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span>
@@ -343,11 +343,32 @@ If there are S sections then the graph has S+5 vertices and 4(S+1) edges.
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
+
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kit_contents_section_state</span><span class="plain"> {</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">sects</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">text_stream</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="reserved">kit_contents_section_state</span><span class="plain">;</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::read_contents</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">kit_contents_section_state</span><span class="plain"> *</span><span class="identifier">CSS</span><span class="plain"> = (</span><span class="reserved">kit_contents_section_state</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Sections"</span><span class="plain">))</span>
+            <span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" (%c+)"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain">)) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="string">".i6t"</span><span class="plain">);</span>
+            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]), </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;sects</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Kits::construct_graph is used in 4/km (<a href="4-km.html#SP7">&#167;7</a>).</p>
+
+<p class="endnote">The function Kits::read_contents appears nowhere else.</p>
+
+<p class="endnote">The structure kit_contents_section_state is private to this section.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 5: Services for the Inform Compiler.)</i></li><li><a href="5-es.html">Continue with 'Extension Services'</a></li></ul><hr class="tocbar">

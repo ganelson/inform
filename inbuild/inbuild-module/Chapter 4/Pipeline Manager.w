@@ -3,11 +3,12 @@
 An Inform 7 pipeline.
 
 @h Genre definition.
+The |pipeline_genre| can be summarised as follows. Copies consist of single
+files. These are recognised by having the filename extension |.interpipeline|.
+They are stored in nests, in |N/Pipelines/Title-vVersion.i7x|. Their build
+graphs are single vertices with no build or use edges.
 
-= (early code)
-inbuild_genre *pipeline_genre = NULL;
-
-@ =
+= 
 void PipelineManager::start(void) {
 	pipeline_genre = Genres::new(I"pipeline", TRUE);
 	METHOD_ADD(pipeline_genre, GENRE_WRITE_WORK_MTID, PipelineManager::write_work);

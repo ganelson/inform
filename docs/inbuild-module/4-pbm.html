@@ -61,11 +61,23 @@
 
 <ul class="toc"><li><a href="#SP1">&#167;1. Genre definition</a></li><li><a href="#SP3">&#167;3. Claiming</a></li><li><a href="#SP4">&#167;4. Searching</a></li><li><a href="#SP5">&#167;5. Copying</a></li><li><a href="#SP6">&#167;6. Build graph</a></li><li><a href="#SP7">&#167;7. Source text</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Genre definition. </b></p>
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Genre definition. </b>The <code class="display"><span class="extract">project_bundle_genre</span></code> can be summarised as follows. Copies consist of
+directories, which are Inform project bundles: for example,
+<code class="display"><span class="extract">Counterfeit Monkey.inform</span></code> might be such a bundle. They are recognised by
+being directories and having names ending in <code class="display"><span class="extract">.inform</span></code>. They cannot be
+stored in nests. Their build graphs are extensive, having "upstream" vertices
+representing possible ways to build or release them, and having numerous
+"downstream" vertices as well: build edges run out to the extensions, kits
+and language definitions that they need.
+</p>
+
+<p class="inwebparagraph">Note that <code class="display"><span class="extract">project_bundle_genre</span></code> and <code class="display"><span class="extract">project_file_genre</span></code> are managed
+differently, but share the same annotation data structure <code class="display"><span class="extract">inform_project</span></code>.
+However it is stored in the file system, a project is a project.
+</p>
 
 
 <pre class="display">
-    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectbundle"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">project_bundle_genre</span><span class="plain">, </span><span class="constant">GENRE_WRITE_WORK_MTID</span><span class="plain">, </span><span class="functiontext">ProjectBundleManager::write_work</span><span class="plain">);</span>

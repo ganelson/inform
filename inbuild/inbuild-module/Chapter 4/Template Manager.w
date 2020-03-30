@@ -3,9 +3,13 @@
 A template is the outline for a website presenting an Inform work.
 
 @h Genre definition.
+The |template_genre| can be summarised as follows. Website templates
+are directories. They are recognised by containing either a metadata file
+called |(manifest).txt| or |index.html|, or both. They are stored in
+nests, in |N/Templates/Title-vVersion|. Their build graphs are single
+vertices with no build or use edges.
 
 =
-inbuild_genre *template_genre = NULL;
 void TemplateManager::start(void) {
 	template_genre = Genres::new(I"template", TRUE);
 	METHOD_ADD(template_genre, GENRE_WRITE_WORK_MTID, TemplateManager::write_work);

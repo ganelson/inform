@@ -61,11 +61,18 @@
 
 <ul class="toc"><li><a href="#SP1">&#167;1. Genre definition</a></li><li><a href="#SP4">&#167;4. Claiming</a></li><li><a href="#SP5">&#167;5. Searching</a></li><li><a href="#SP6">&#167;6. Copying</a></li><li><a href="#SP7">&#167;7. Build graph</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Genre definition. </b></p>
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Genre definition. </b>The <code class="display"><span class="extract">kit_genre</span></code> can be summarised as follows. Kits consist of directories,
+containing metadata in <code class="display"><span class="extract">D/kit_metadata.txt</span></code>, but which are also valid Inweb
+webs of Inform 6 source text. They are recognised by having directory names
+ending in <code class="display"><span class="extract">Kit</span></code>, and by having a metadata file in place. They are stored in
+nests, in <code class="display"><span class="extract">N/Inter/Title-vVersion</span></code>. Their build graphs are quite extensive,
+with build edges to Inter binaries for each architecture with which they
+are compatible, and use edges to extensions or other kits as laid out in
+the metadata file.
+</p>
 
 
 <pre class="display">
-    <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">kit_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">kit_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"kit"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">kit_genre</span><span class="plain">, </span><span class="constant">GENRE_WRITE_WORK_MTID</span><span class="plain">, </span><span class="functiontext">KitManager::write_work</span><span class="plain">);</span>
@@ -217,7 +224,7 @@ requirements.
 
 <p class="endnote">The function KitManager::search_nest_for is used in <a href="#SP1">&#167;1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Copying. </b>Now the task is to copy a kit into place in a nest. Since a kit is a folder,
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Copying. </b>Now the task is to copy a kit into place in a nest. Since a kit is a directory,
 we need to <code class="display"><span class="extract">rsync</span></code> it.
 </p>
 
@@ -280,23 +287,6 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::go_operational</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="functiontext">Kits::construct_graph</span><span class="plain">(</span><span class="functiontext">KitManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
     <span class="plain">}</span>
-
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kit_contents_section_state</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">sects</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">text_stream</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">kit_contents_section_state</span><span class="plain">;</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::read_contents</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">kit_contents_section_state</span><span class="plain"> *</span><span class="identifier">CSS</span><span class="plain"> = (</span><span class="reserved">kit_contents_section_state</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
-        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Sections"</span><span class="plain">))</span>
-            <span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" (%c+)"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain">)) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="string">".i6t"</span><span class="plain">);</span>
-            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]), </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;sects</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -304,10 +294,6 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
 <p class="endnote">The function KitManager::building_soon is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="endnote">The function KitManager::go_operational is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function KitManager::read_contents is used in 5/kts (<a href="5-kts.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The structure kit_contents_section_state is accessed in 5/kts and here.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 4: Managing Genres of Work.)</i></li><li><a href="4-em.html">Continue with 'Extension Manager'</a></li></ul><hr class="tocbar">
